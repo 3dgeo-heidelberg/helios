@@ -34,7 +34,7 @@ def handle_relative_path(root, *paths):
 
 
 if __name__ == "__main__":
-    xsd_dir = Path(__file__).parent / 'xsd'
+    xsd_dir = Path(__file__).parent / "xsd"
     helios_root = Path(__file__).parent.parent.parent
     survey_file = Path(sys.argv[1])
     survey_file = handle_relative_path(helios_root, survey_file)[0]
@@ -46,20 +46,28 @@ if __name__ == "__main__":
     HELIOS_EXE = str(list(helios_root.glob(f"**/{HELIOS_EXE_NAME}"))[0])
     print(f"Found HELIOS++ executable: {HELIOS_EXE}")
 
-    survey_schema = xmlschema.XMLSchema(str(xsd_dir / 'survey.xsd'))
-    scene_schema = xmlschema.XMLSchema(str(xsd_dir / 'scene.xsd'))
-    scanner_schema = xmlschema.XMLSchema(str(xsd_dir / 'scanner.xsd'))
-    platform_schema = xmlschema.XMLSchema(str(xsd_dir / 'platform.xsd'))
+    survey_schema = xmlschema.XMLSchema(str(xsd_dir / "survey.xsd"))
+    scene_schema = xmlschema.XMLSchema(str(xsd_dir / "scene.xsd"))
+    scanner_schema = xmlschema.XMLSchema(str(xsd_dir / "scanner.xsd"))
+    platform_schema = xmlschema.XMLSchema(str(xsd_dir / "platform.xsd"))
 
     # get paths of any referenced XML files; assuming they are relative to helios root dir or absolute
     try:
-        scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
-        scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
-        platform_file = ET.parse(survey_file).find('survey').attrib['platform'].split('#')[0]
-        scene_file, scanner_file, platform_file = handle_relative_path(helios_root, scene_file, scanner_file, platform_file)
+        scene_file = ET.parse(survey_file).find("survey").attrib["scene"].split("#")[0]
+        scanner_file = (
+            ET.parse(survey_file).find("survey").attrib["scanner"].split("#")[0]
+        )
+        platform_file = (
+            ET.parse(survey_file).find("survey").attrib["platform"].split("#")[0]
+        )
+        scene_file, scanner_file, platform_file = handle_relative_path(
+            helios_root, scene_file, scanner_file, platform_file
+        )
     except KeyError as e:
-        print("ERROR: Missing 'platform', 'scanner' or 'scene' key in <survey> tag.\n"
-              "Please check your survey file.\n")
+        print(
+            "ERROR: Missing 'platform', 'scanner' or 'scene' key in <survey> tag.\n"
+            "Please check your survey file.\n"
+        )
         raise e
 
     # validate XML files

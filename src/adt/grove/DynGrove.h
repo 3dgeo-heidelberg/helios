@@ -11,20 +11,21 @@
  * @tparam Subject The type of subject for the observer-like behavior of the
  *  DynGrove interface
  */
-template <typename Subject>
-class DynGrove{
+template<typename Subject>
+class DynGrove
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    virtual ~DynGrove() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  virtual ~DynGrove() = default;
 
-    // ***  OBSERVER METHODS  *** //
-    // ************************** //
-    /**
-     * @brief The update method. It is expected that always that a subject
-     *  must notify that it has been updated, it calls this method so the
-     *  observer can act as corresponds.
-     * @param s The subject notifying its update
-     */
-    virtual void update(Subject &s) = 0;
+  // ***  OBSERVER METHODS  *** //
+  // ************************** //
+  /**
+   * @brief The update method. It is expected that always that a subject
+   *  must notify that it has been updated, it calls this method so the
+   *  observer can act as corresponds.
+   * @param s The subject notifying its update
+   */
+  virtual void update(Subject& s) = 0;
 };

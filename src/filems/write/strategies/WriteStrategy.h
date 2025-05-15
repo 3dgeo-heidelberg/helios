@@ -1,6 +1,7 @@
 #pragma once
 
-namespace helios { namespace filems {
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -10,26 +11,26 @@ namespace helios { namespace filems {
  * @tparam WriteArgs Arguments for the write operation
  * @see filems::SyncFileWriter
  */
-template <typename ... WriteArgs>
-class WriteStrategy{
+template<typename... WriteArgs>
+class WriteStrategy
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for write strategy
-     */
-    WriteStrategy() = default;
-    virtual ~WriteStrategy() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for write strategy
+   */
+  WriteStrategy() = default;
+  virtual ~WriteStrategy() = default;
 
-    // ***  WRITE STRATEGY INTERFACE *** //
-    // ********************************* //
-    /**
-     * @brief Abstract write function. Must be overridden by
-     * children classes.
-     */
-    virtual void write(WriteArgs ... writeArgs) = 0;
-
+  // ***  WRITE STRATEGY INTERFACE *** //
+  // ********************************* //
+  /**
+   * @brief Abstract write function. Must be overridden by
+   * children classes.
+   */
+  virtual void write(WriteArgs... writeArgs) = 0;
 };
 
-}}
-
+}
+}

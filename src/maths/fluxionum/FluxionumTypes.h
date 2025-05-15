@@ -1,7 +1,6 @@
 #pragma once
 
-namespace fluxionum{
-
+namespace fluxionum {
 
 // ***  ENUMERATIONS  *** //
 // ********************** //
@@ -9,10 +8,11 @@ namespace fluxionum{
  * @brief Potential differential types of any fluxionum::DiffDesignMatrix
  * @see fluxionum::DiffDesignMatrix
  */
-enum class DiffDesignMatrixType {
-    FORWARD_FINITE_DIFFERENCES,
-    CENTRAL_FINITE_DIFFERENCES,
-    UNKNOWN
+enum class DiffDesignMatrixType
+{
+  FORWARD_FINITE_DIFFERENCES,
+  CENTRAL_FINITE_DIFFERENCES,
+  UNKNOWN
 };
 
 }

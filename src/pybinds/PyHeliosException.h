@@ -2,8 +2,7 @@
 
 #include <HeliosException.h>
 
-namespace pyhelios{
-
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -11,9 +10,13 @@ namespace pyhelios{
  *
  * Simple wrapper for HeliosException
  */
-class PyHeliosException : public HeliosException{
+class PyHeliosException : public HeliosException
+{
 public:
-    PyHeliosException(std::string const msg = "") : HeliosException(msg) {}
+  PyHeliosException(std::string const msg = "")
+    : HeliosException(msg)
+  {
+  }
 };
 
 }

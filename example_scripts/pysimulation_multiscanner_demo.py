@@ -29,7 +29,7 @@ def callback(output=None):
 
         # Update last cycle point
         if len(measurements) > 0:
-            pos = measurements[len(measurements)-1].getPosition()
+            pos = measurements[len(measurements) - 1].getPosition()
             cpn[0] = pos.x
             cpn[1] = pos.y
             cpn[2] = pos.z
@@ -40,7 +40,7 @@ def callback(output=None):
 
 # ---  M A I N  --- #
 # ----------------- #
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Configure simulation context
     # pyhelios.loggingVerbose()
     # pyhelios.loggingVerbose2()
@@ -49,9 +49,7 @@ if __name__ == '__main__':
 
     # Build a simulation
     simBuilder = pyhelios.SimulationBuilder(
-        'data/surveys/demo/light_als_toyblocks_multiscanner.xml',
-        'assets/',
-        'output/'
+        "data/surveys/demo/light_als_toyblocks_multiscanner.xml", "assets/", "output/"
     )
     simBuilder.setNumThreads(0)
     simBuilder.setLasOutput(False)
@@ -73,23 +71,19 @@ if __name__ == '__main__':
     # Multiscanner stuff
     sc = sim.getScanner()
     for i in range(sc.getNumDevices()):
-        print(
-            'ScanningDevice[{i}] has id "{iid}"'.format(
-                i=i, iid=sc.getDeviceId(i)
-            )
-        )
+        print('ScanningDevice[{i}] has id "{iid}"'.format(i=i, iid=sc.getDeviceId(i)))
 
     # Run the simulation
     sim.start()
 
     # Pause and resume simulation
     sim.pause()
-    print('Simulation paused!')
+    print("Simulation paused!")
     time.sleep(2.5)
-    print('Resuming simulation ...')
+    print("Resuming simulation ...")
     time.sleep(0.5)
     sim.resume()
-    print('Simulation resumed!')
+    print("Simulation resumed!")
 
     # Join simulation thread
     output = sim.join()
@@ -97,29 +91,21 @@ if __name__ == '__main__':
     # Digest output
     measurements = output.measurements
     trajectories = output.trajectories
-    print('number of cycle measurements: {n}'.format(
-        n=cycleMeasurementsCount))
-    print('number of measurements : {n}'.format(n=len(measurements)))
-    print('number of trajectories: {n}'.format(n=len(trajectories)))
+    print("number of cycle measurements: {n}".format(n=cycleMeasurementsCount))
+    print("number of measurements : {n}".format(n=len(measurements)))
+    print("number of trajectories: {n}".format(n=len(trajectories)))
     p1Pos = measurements[0].getPosition()
-    pnPos = measurements[len(measurements)-1].getPosition()
-    print('p1 position : ({x}, {y}, {z})'.format(
-        x=p1Pos.x, y=p1Pos.y, z=p1Pos.z))
-    print('cp1 position : ({x}, {y}, {z})'.format(
-        x=cp1[0], y=cp1[1], z=cp1[2]))
-    print('pn position : ({x}, {y}, {z})'.format(
-        x=pnPos.x, y=pnPos.y, z=pnPos.z))
-    print('cpn position : ({x}, {y}, {z})'.format(
-        x=cpn[0], y=cpn[1], z=cpn[2]))
+    pnPos = measurements[len(measurements) - 1].getPosition()
+    print("p1 position : ({x}, {y}, {z})".format(x=p1Pos.x, y=p1Pos.y, z=p1Pos.z))
+    print("cp1 position : ({x}, {y}, {z})".format(x=cp1[0], y=cp1[1], z=cp1[2]))
+    print("pn position : ({x}, {y}, {z})".format(x=pnPos.x, y=pnPos.y, z=pnPos.z))
+    print("cpn position : ({x}, {y}, {z})".format(x=cpn[0], y=cpn[1], z=cpn[2]))
 
     # PyHelios Tools
     npMeasurements, npTrajectories = pyhelios.outputToNumpy(output)
-    print('Numpy measurements shape:', np.shape(npMeasurements))
-    print('Numpy trajectories shape:', np.shape(npTrajectories))
+    print("Numpy measurements shape:", np.shape(npMeasurements))
+    print("Numpy trajectories shape:", np.shape(npTrajectories))
     coords = npMeasurements[:, 0:3]
     spher = pyhelios.cartesianToSpherical(coords)
     cart = pyhelios.sphericalToCartesian(spher)
-    print(
-        'Max precision loss due to coordinate translation:',
-        np.max(coords-cart)
-    )
+    print("Max precision loss due to coordinate translation:", np.max(coords - cart))

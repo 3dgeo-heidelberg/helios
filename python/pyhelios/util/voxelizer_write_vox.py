@@ -65,13 +65,27 @@ class Voxelizer:
             localOrigin = origin
 
         # Find 3 - dimensional indices of voxels in which points are lying
-        idxVoxel = np.array([np.floor((self.data[:, 0] - localOrigin[0] + self.voxel_size[0] / 2) / self.voxel_size[0]),
-                             np.floor((self.data[:, 1] - localOrigin[1] + self.voxel_size[1] / 2) / self.voxel_size[1]),
-                             np.floor((self.data[:, 2] - localOrigin[2] + self.voxel_size[2] / 2) / self.voxel_size[2])]).T
+        idxVoxel = np.array(
+            [
+                np.floor(
+                    (self.data[:, 0] - localOrigin[0] + self.voxel_size[0] / 2)
+                    / self.voxel_size[0]
+                ),
+                np.floor(
+                    (self.data[:, 1] - localOrigin[1] + self.voxel_size[1] / 2)
+                    / self.voxel_size[1]
+                ),
+                np.floor(
+                    (self.data[:, 2] - localOrigin[2] + self.voxel_size[2] / 2)
+                    / self.voxel_size[2]
+                ),
+            ]
+        ).T
 
         # Remove multiple voxels
-        idxVoxelUnique, ic = np.unique(idxVoxel, axis=0,
-                                       return_inverse=True)  # ic contains "voxel index" for each point
+        idxVoxelUnique, ic = np.unique(
+            idxVoxel, axis=0, return_inverse=True
+        )  # ic contains "voxel index" for each point
 
         # No.of voxel(equal to no.of selected points)
         noVoxel = idxVoxelUnique.shape[0]
@@ -85,7 +99,7 @@ class Voxelizer:
         idxSort = np.argsort(ic)
         ic = ic[idxSort]
 
-        idxJump, = np.nonzero(np.diff(ic))
+        (idxJump,) = np.nonzero(np.diff(ic))
         idxJump += 1
 
         # Example (3 voxel)
@@ -113,7 +127,9 @@ class Voxelizer:
 
 
 def filter_by_point_count(voxel_idx, pt_idxs_in_voxels, target_count):
-    keep = [i for i in range(len(voxel_idx)) if len(pt_idxs_in_voxels[i]) >= target_count]
+    keep = [
+        i for i in range(len(voxel_idx)) if len(pt_idxs_in_voxels[i]) >= target_count
+    ]
     pt_idxs_in_voxels = np.array(pt_idxs_in_voxels)
     filtered_idx = voxel_idx[keep]
     filtered_pt_idxs = pt_idxs_in_voxels[keep][:]
@@ -121,7 +137,8 @@ def filter_by_point_count(voxel_idx, pt_idxs_in_voxels, target_count):
     n_voxels_filtered = len(filtered_idx)
     print(
         f"{n_voxels - n_voxels_filtered} voxels contained less than {target_count} points and were removed. "
-        f"{n_voxels_filtered} voxels left.")
+        f"{n_voxels_filtered} voxels left."
+    )
     return np.array(filtered_idx), np.array(filtered_pt_idxs)
 
 
@@ -132,10 +149,16 @@ def save_vox(voxel_idx, origin, max_corner, vox_size, fname):
     with open(fname, "w") as outfile:
         outfile.write("VOXEL SPACE\n")
         outfile.write(f"#min_corner: {origin[0]-c:f} {origin[1]-c:f} {origin[2]-c:f}\n")
-        outfile.write(f"#max_corner: {max_corner[0]:f} {max_corner[1]:f} {max_corner[2]:f}\n")
-        outfile.write(f"#split: {int(split[0]) + 1} {int(split[1]) + 1} {int(split[2]) + 1}\n")
+        outfile.write(
+            f"#max_corner: {max_corner[0]:f} {max_corner[1]:f} {max_corner[2]:f}\n"
+        )
+        outfile.write(
+            f"#split: {int(split[0]) + 1} {int(split[1]) + 1} {int(split[2]) + 1}\n"
+        )
         outfile.write(f"#res: {vox_size:f}\n")
-        outfile.write("i j k PadBVTotal angleMean bsEntering bsIntercepted bsPotential ground_distance lMeanTotal lgTotal nbEchos nbSampling transmittance attenuation attenuationBiasCorrection\n")
+        outfile.write(
+            "i j k PadBVTotal angleMean bsEntering bsIntercepted bsPotential ground_distance lMeanTotal lgTotal nbEchos nbSampling transmittance attenuation attenuationBiasCorrection\n"
+        )
         arr = np.zeros((voxel_idx.shape[0], 16))
 
         for idx, x in enumerate(voxel_idx):
@@ -146,16 +169,17 @@ def save_vox(voxel_idx, origin, max_corner, vox_size, fname):
         np.savetxt(outfile, arr, delimiter=" ", fmt="%i")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import time
     import pandas as pd
     import laspy
     import sys
     import os
     import glob
+
     if len(sys.argv) < 3:
         print("Usage: voxelizer.py input.las vox_size out_dir")
-    print("Loading file...", end='')
+    print("Loading file...", end="")
 
     source_files = glob.glob(sys.argv[1])
     out_dir = sys.argv[3]
@@ -171,12 +195,21 @@ if __name__ == '__main__':
         if source_ext == ".las" or source_ext == ".laz":
             las = laspy.read(source)
             pc_data = np.vstack((las.x, las.y, las.z)).transpose()
-        elif source_ext == ".txt" or source_ext == ".asc" or source_ext == ".xyz" or source_ext == "csv":
-            pc_data = pd.read_csv(source, delimiter=' ', skipinitialspace=True, usecols=(0, 1, 2)).to_numpy(dtype=float)
+        elif (
+            source_ext == ".txt"
+            or source_ext == ".asc"
+            or source_ext == ".xyz"
+            or source_ext == "csv"
+        ):
+            pc_data = pd.read_csv(
+                source, delimiter=" ", skipinitialspace=True, usecols=(0, 1, 2)
+            ).to_numpy(dtype=float)
         else:
-            raise ValueError("Please give a valid LAS or ASCII point cloud.\n"
-                  "Supported extensions: ['.las'., '.laz', '.txt', '.asc', '.xyt', '.csv']")
-        print(f" [done ({time.time() - t:.3f} s)].\nVoxelizing...", end='')
+            raise ValueError(
+                "Please give a valid LAS or ASCII point cloud.\n"
+                "Supported extensions: ['.las'., '.laz', '.txt', '.asc', '.xyt', '.csv']"
+            )
+        print(f" [done ({time.time() - t:.3f} s)].\nVoxelizing...", end="")
 
         t = time.time()
         vox_size_x = vox_size_y = vox_size_z = float(sys.argv[2])
@@ -185,8 +218,17 @@ if __name__ == '__main__':
         print(f" [done ({time.time() - t:.3f} s)].")
         print(
             f"Voxelization of {pc_data.shape[0]} points with a voxel size of ({vox_size_x}|{vox_size_y}|{vox_size_z}) "
-            f"resulted in {vox_idx.shape[0]:d} filled voxels")
+            f"resulted in {vox_idx.shape[0]:d} filled voxels"
+        )
 
         # filtered_idx, filtered_pt_idxs = filter_by_point_count(voxel_idx, pt_idxs, 4)
         # save_vox(filtered_idx, origin, max, vox_size_x, os.path.join(out_dir, source_fname + "_" + str(int(vox_size_x*1000)) + ".vox"))
-        save_vox(vox_idx, origin, v_max, vox_size_x, os.path.join(out_dir, source_fname + "_" + str(int(vox_size_x * 1000)) + ".vox"))
+        save_vox(
+            vox_idx,
+            origin,
+            v_max,
+            vox_size_x,
+            os.path.join(
+                out_dir, source_fname + "_" + str(int(vox_size_x * 1000)) + ".vox"
+            ),
+        )

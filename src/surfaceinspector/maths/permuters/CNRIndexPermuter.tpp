@@ -50,5 +50,3 @@ vector<T> CNRIndexPermuter<T>::next(){
     ++current;
     return indices;
 }
-
-

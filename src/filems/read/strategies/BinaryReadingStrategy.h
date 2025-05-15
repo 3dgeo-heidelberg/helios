@@ -4,7 +4,8 @@
 
 #include <fstream>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 using std::fstream;
 
@@ -15,30 +16,30 @@ using std::fstream;
  *  stream
  * @see filems::SimpleReadingStrategy
  */
-class BinaryReadingStrategy : public SimpleReadingStrategy<int> {
+class BinaryReadingStrategy : public SimpleReadingStrategy<int>
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for binary reading strategy
-     * @see filems::SimpleReadingStrategy::SimpleReadingStrategy
-     */
-    BinaryReadingStrategy(ifstream &ifs) :
-        SimpleReadingStrategy<int>(ifs)
-    {}
-    virtual ~BinaryReadingStrategy() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for binary reading strategy
+   * @see filems::SimpleReadingStrategy::SimpleReadingStrategy
+   */
+  BinaryReadingStrategy(ifstream& ifs)
+    : SimpleReadingStrategy<int>(ifs)
+  {
+  }
+  virtual ~BinaryReadingStrategy() = default;
 
-    // ***  READING STRATEGY METHODS  *** //
-    // ********************************** //
-    /**
-     * @brief Read from input file stream
-     * @return Either what has been read from input file or EOF if end of file
-     *  was reached
-     */
-    int read() override{
-        return ifs.get();
-    };
-
+  // ***  READING STRATEGY METHODS  *** //
+  // ********************************** //
+  /**
+   * @brief Read from input file stream
+   * @return Either what has been read from input file or EOF if end of file
+   *  was reached
+   */
+  int read() override { return ifs.get(); };
 };
 
-}}
+}
+}

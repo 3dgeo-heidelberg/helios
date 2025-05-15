@@ -6,7 +6,8 @@
 
 #include <memory>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 
@@ -19,26 +20,25 @@ using std::make_shared;
  * @see filems::ZipSyncFileWriter
  * @see filems::ZipSyncFilePulseWriter
  */
-class ZipSyncFilePulseWriter : public ZipSyncFileWriter<PulseRecord const &>{
+class ZipSyncFilePulseWriter : public ZipSyncFileWriter<PulseRecord const&>
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous zipped pulse writer constructor
-     * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
-     */
-    explicit ZipSyncFilePulseWriter(
-        string const &path,
-        int compressionMode = boost::iostreams::zlib::best_compression
-    ) :
-        ZipSyncFileWriter<PulseRecord const &>(path, compressionMode)
-    {
-        this->writeStrategy = make_shared<ZipPulseWriteStrategy>(
-            this->ofs,
-            *(this->oa)
-        );
-    }
-    virtual ~ZipSyncFilePulseWriter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous zipped pulse writer constructor
+   * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
+   */
+  explicit ZipSyncFilePulseWriter(
+    string const& path,
+    int compressionMode = boost::iostreams::zlib::best_compression)
+    : ZipSyncFileWriter<PulseRecord const&>(path, compressionMode)
+  {
+    this->writeStrategy =
+      make_shared<ZipPulseWriteStrategy>(this->ofs, *(this->oa));
+  }
+  virtual ~ZipSyncFilePulseWriter() = default;
 };
 
-}}
+}
+}

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <scanner/Measurement.h>
 #include <filems/facade/FMSWriteFacade.h>
+#include <scanner/Measurement.h>
 #include <util/WriteYielder.h>
 
 #include <cstdlib>
@@ -18,39 +18,38 @@ using std::size_t;
  *  size has been reached or, alternatively, when yielder is directly forced
  *  to yield
  */
-class PointcloudYielder : public WriteYielder<Measurement> {
+class PointcloudYielder : public WriteYielder<Measurement>
+{
 protected:
-    // ***  USING  *** //
-    // *************** //
-    using WriteYielder<Measurement>::write;
+  // ***  USING  *** //
+  // *************** //
+  using WriteYielder<Measurement>::write;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for point cloud yielder
-     * @see WriteYielder::write
-     * @see Yielder::bufferSize
-     */
-    PointcloudYielder(
-        FMSWriteFacade &write,
-        size_t bufferSize=256
-    ) :
-        WriteYielder<Measurement>(write, bufferSize)
-    {}
-    virtual ~PointcloudYielder() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for point cloud yielder
+   * @see WriteYielder::write
+   * @see Yielder::bufferSize
+   */
+  PointcloudYielder(FMSWriteFacade& write, size_t bufferSize = 256)
+    : WriteYielder<Measurement>(write, bufferSize)
+  {
+  }
+  virtual ~PointcloudYielder() = default;
 
-
-    // ***  YIELD METHODS  *** //
-    // *********************** //
-    /**
-     * @brief Write the temporal copy of the measurements through the write
-     *  facade of the filems
-     * @param copy The temporal copy of measurements buffer to be digested
-     * @see WriteYielder
-     */
-    void digest(vector<Measurement> &copy) override {
-        if(!copy.empty()) write.writeMeasurementsUnsafe(copy);
-    }
-
+  // ***  YIELD METHODS  *** //
+  // *********************** //
+  /**
+   * @brief Write the temporal copy of the measurements through the write
+   *  facade of the filems
+   * @param copy The temporal copy of measurements buffer to be digested
+   * @see WriteYielder
+   */
+  void digest(vector<Measurement>& copy) override
+  {
+    if (!copy.empty())
+      write.writeMeasurementsUnsafe(copy);
+  }
 };

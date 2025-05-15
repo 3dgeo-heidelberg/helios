@@ -31,7 +31,7 @@ class SimulationBuild:
         kdtSAHLossNodes=32,
         parallelizationStrategy=1,
         chunkSize=32,
-        warehouseFactor=4
+        warehouseFactor=4,
     ):
         if copy:
             return
@@ -50,7 +50,7 @@ class SimulationBuild:
             kdtSAHLossNodes,
             parallelizationStrategy,
             chunkSize,
-            warehouseFactor
+            warehouseFactor,
         )
         self.sim.fixedGpsTimeStart = fixedGpsTimeStart
 
@@ -85,9 +85,7 @@ class SimulationBuild:
         Return:
             SimulationBuild which is a copy of current one
         """
-        copySim = SimulationBuild(
-            None, None, None, None, None, None, None, None, True
-        )
+        copySim = SimulationBuild(None, None, None, None, None, None, None, None, True)
         copySim.sim = self.sim.copy()
         return copySim
 

@@ -20,15 +20,14 @@
  * @see fluxionum::Function::eval
  * @see fluxionum::Function::operator()
  */
-class TrajectoryFunction :
-    public fluxionum::Function<double, arma::Col<double>>
+class TrajectoryFunction : public fluxionum::Function<double, arma::Col<double>>
 {
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for TrajectoryFunction
-     */
-    TrajectoryFunction() = default;
-    virtual ~TrajectoryFunction() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for TrajectoryFunction
+   */
+  TrajectoryFunction() = default;
+  virtual ~TrajectoryFunction() = default;
 };

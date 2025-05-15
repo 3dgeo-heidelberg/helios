@@ -279,5 +279,3 @@ It can be the case that some errors about `module load` commands are shown.
 They are not critical for the script and can be safely ignored. They are
 in the script to handle the loading of necessary modules in the context of the
 [CESGA](https://www.cesga.es/) supercomputing infrastructure.
-
-

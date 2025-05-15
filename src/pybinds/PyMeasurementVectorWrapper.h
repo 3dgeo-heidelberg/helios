@@ -1,10 +1,10 @@
 #pragma once
 
-#include <PyMeasurementWrapper.h>
 #include <PyHeliosUtils.h>
+#include <PyMeasurementWrapper.h>
 #include <vector>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -15,33 +15,36 @@ namespace pyhelios{
  * @see PyWrapperMeasurement
  * @see Measurement
  */
-class PyMeasurementVectorWrapper{
+class PyMeasurementVectorWrapper
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    std::vector<Measurement> allMeasurements;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  std::vector<Measurement> allMeasurements;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyMeasurementVectorWrapper(std::vector<Measurement> &allMeasurements) :
-        allMeasurements(allMeasurements) {}
-    virtual ~PyMeasurementVectorWrapper() {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyMeasurementVectorWrapper(std::vector<Measurement>& allMeasurements)
+    : allMeasurements(allMeasurements)
+  {
+  }
+  virtual ~PyMeasurementVectorWrapper() {}
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    PyMeasurementWrapper * get(long index){
-        return new PyMeasurementWrapper(allMeasurements[
-            PyHeliosUtils::handlePythonIndex(index, allMeasurements.size())
-        ]);
-    }
-    void erase(long index){
-        allMeasurements.erase(
-            allMeasurements.begin() +
-            PyHeliosUtils::handlePythonIndex(index, allMeasurements.size())
-        );
-    }
-    size_t length() {return allMeasurements.size();}
-
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  PyMeasurementWrapper* get(long index)
+  {
+    return new PyMeasurementWrapper(
+      allMeasurements[PyHeliosUtils::handlePythonIndex(
+        index, allMeasurements.size())]);
+  }
+  void erase(long index)
+  {
+    allMeasurements.erase(
+      allMeasurements.begin() +
+      PyHeliosUtils::handlePythonIndex(index, allMeasurements.size()));
+  }
+  size_t length() { return allMeasurements.size(); }
 };
 
 }

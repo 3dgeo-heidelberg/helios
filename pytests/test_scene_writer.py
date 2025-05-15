@@ -20,7 +20,9 @@ def test_add_translation_filter():
 
     trafo_filter = scene_writer.add_transformation_filters(translation=tr)
 
-    assert re.sub(r"\s+", " ", trafo_filter) == re.sub(r"\s+", " ", trafo_filter_expected)
+    assert re.sub(r"\s+", " ", trafo_filter) == re.sub(
+        r"\s+", " ", trafo_filter_expected
+    )
 
 
 def test_add_rotation_filter():
@@ -56,7 +58,9 @@ def test_add_scale_filter():
 
     scale_filter = scene_writer.add_transformation_filters(scale=sc)
 
-    assert re.sub(r"\s+", " ", scale_filter) == re.sub(r"\s+", " ", scale_filter_expected)
+    assert re.sub(r"\s+", " ", scale_filter) == re.sub(
+        r"\s+", " ", scale_filter_expected
+    )
 
 
 def test_add_translation_filter_on_ground():
@@ -72,9 +76,13 @@ def test_add_translation_filter_on_ground():
                         <param type="vec3" key="offset" value="{tr[0]};{tr[1]};{tr[2]}" /> 
                     </filter>\n"""
 
-    trafo_filter = scene_writer.add_transformation_filters(translation=tr, on_ground=on_gnd)
+    trafo_filter = scene_writer.add_transformation_filters(
+        translation=tr, on_ground=on_gnd
+    )
 
-    assert re.sub(r"\s+", " ", trafo_filter) == re.sub(r"\s+", " ", trafo_filter_expected)
+    assert re.sub(r"\s+", " ", trafo_filter) == re.sub(
+        r"\s+", " ", trafo_filter_expected
+    )
 
 
 def test_create_scenepart_obj_efilepath():
@@ -83,14 +91,14 @@ def test_create_scenepart_obj_efilepath():
     filepath = "data/sceneparts/basic/groundplane/groundplane.obj"
 
     # expected
-    obj_filter_expected = f'''
+    obj_filter_expected = f"""
             <part>
                 <filter type="objloader">
                     <param type="string" key="efilepath" value="{filepath}" />
                     <param type="string" key="up" value="z" />
                 </filter>
 
-            </part>'''
+            </part>"""
 
     obj_filter = scene_writer.create_scenepart_obj(filepath, efilepath=True)
 
@@ -109,4 +117,3 @@ def test_create_scenepart_obj_invalid_up():
     with pytest.raises(AssertionError) as e:
         scene_writer.create_scenepart_obj(filepath, up_axis=up_axis)
     assert e.type is AssertionError
-

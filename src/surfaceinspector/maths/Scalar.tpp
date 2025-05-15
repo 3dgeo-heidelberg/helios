@@ -30,4 +30,3 @@ T Scalar<T>::variationsRepetition(T const n, T const k){
     for(T i = 0 ; i < k ; ++i) v*= n;
     return v;
 }
-

@@ -10,30 +10,31 @@
  * @see SharedSubTask
  * @see SharedTaskSequencer
  */
-class SharedSubTaskCompletionHandler{
+class SharedSubTaskCompletionHandler
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for the shared task completion handler
-     */
-    SharedSubTaskCompletionHandler() = default;
-    virtual ~SharedSubTaskCompletionHandler() {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for the shared task completion handler
+   */
+  SharedSubTaskCompletionHandler() = default;
+  virtual ~SharedSubTaskCompletionHandler() {}
 
-    // ***  SHARED SUB-TASK COMPLETION HANDLING  *** //
-    // ********************************************* //
-    /**
-     * @brief Pure virtual method that must be overridden by any concrete class
-     *  to provide handling mechanism for completed shared sub-tasks.
-     *
-     * It is expected that this method is called always that a shared sub-task
-     *  is finished.
-     *
-     * @param key Key identifying the completed shared sub-task inside its
-     *  associated shared sub-task sequencer context
-     *
-     * @see SharedTaskSequencer
-     * @see SharedSubTask
-     */
-    virtual void onSharedSubTaskCompletion(std::size_t const key) = 0;
+  // ***  SHARED SUB-TASK COMPLETION HANDLING  *** //
+  // ********************************************* //
+  /**
+   * @brief Pure virtual method that must be overridden by any concrete class
+   *  to provide handling mechanism for completed shared sub-tasks.
+   *
+   * It is expected that this method is called always that a shared sub-task
+   *  is finished.
+   *
+   * @param key Key identifying the completed shared sub-task inside its
+   *  associated shared sub-task sequencer context
+   *
+   * @see SharedTaskSequencer
+   * @see SharedSubTask
+   */
+  virtual void onSharedSubTaskCompletion(std::size_t const key) = 0;
 };

@@ -1,7 +1,5 @@
 #ifndef _DYN_SEQUENCE_H_
 
-#include <util/HeliosException.h>
-
 #include <sstream>
 
 using std::stringstream;

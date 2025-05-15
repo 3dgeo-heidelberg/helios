@@ -2,18 +2,20 @@
 
 // ***  KDGROVE METHODS  *** //
 // ************************* //
-std::shared_ptr<KDGrove> KDGrove::makeTemporalClone() const{
-    std::vector<BasicDynGroveSubject<GroveKDTreeRaycaster, DynMovingObject> *>
-        const &subjects = getSubjects();
-    size_t const numTrees = getNumTrees();
-    std::shared_ptr<KDGrove> tkdg = std::make_shared<KDGrove>(numTrees);
-    for(size_t i = 0 ; i < numTrees ; ++i){
-        if(subjects[i] == nullptr){  // Tree for static object, reference copy
-            tkdg->addTree(getTreeShared(i));
-        }
-        else{ // Tree for dynamic moving object, value copy
-            tkdg->addTree(getTreeShared(i)->makeTemporalClone());
-        }
+std::shared_ptr<KDGrove>
+KDGrove::makeTemporalClone() const
+{
+  std::vector<BasicDynGroveSubject<GroveKDTreeRaycaster,
+                                   DynMovingObject>*> const& subjects =
+    getSubjects();
+  size_t const numTrees = getNumTrees();
+  std::shared_ptr<KDGrove> tkdg = std::make_shared<KDGrove>(numTrees);
+  for (size_t i = 0; i < numTrees; ++i) {
+    if (subjects[i] == nullptr) { // Tree for static object, reference copy
+      tkdg->addTree(getTreeShared(i));
+    } else { // Tree for dynamic moving object, value copy
+      tkdg->addTree(getTreeShared(i)->makeTemporalClone());
     }
-    return tkdg;
+  }
+  return tkdg;
 }

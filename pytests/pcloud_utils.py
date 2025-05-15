@@ -15,9 +15,9 @@ from scipy.spatial import KDTree as KDT
 # ---   CONSTANTS   --- #
 # --------------------- #
 # Expected names for the features
-PCLOUD_FNAME_GPS_TIME = 'gps_time'
-PCLOUD_FNAME_REFLECTANCE = 'reflectance'
-PCLOUD_FNAME_NIR = 'nir'
+PCLOUD_FNAME_GPS_TIME = "gps_time"
+PCLOUD_FNAME_REFLECTANCE = "reflectance"
+PCLOUD_FNAME_NIR = "nir"
 
 
 # ---   POINT CLOUD   --- #
@@ -36,6 +36,7 @@ class PointCloud:
     :ivar y: The vector of classes (represented by integers), if any.
     :vartype: :class:`np.ndarray` or None
     """
+
     # ---   CONSTRUCTION   --- #
     # ------------------------ #
     def __init__(self, X, fnames=None, F=None, y=None):
@@ -58,11 +59,13 @@ class PointCloud:
         """
         # Extract structure space
         scales, offsets = las.header.scales, las.header.offsets
-        X = np.array([
-            las.X * scales[0] + offsets[0],
-            las.Y * scales[1] + offsets[1],
-            las.Z * scales[2] + offsets[2],
-        ]).T
+        X = np.array(
+            [
+                las.X * scales[0] + offsets[0],
+                las.Y * scales[1] + offsets[1],
+                las.Z * scales[2] + offsets[2],
+            ]
+        ).T
         # Extract features
         F = None
         if fnames is not None:
@@ -84,7 +87,7 @@ class PointCloud:
         return PointCloud.from_las(laspy.read(path))
 
     @staticmethod
-    def from_xyz_file(path, cols, names, sep=' '):
+    def from_xyz_file(path, cols, names, sep=" "):
         """
         Build a point cloud object from the XYZ/CSV file at the given path.
 
@@ -102,13 +105,12 @@ class PointCloud:
         # Read data
         P = pd.read_csv(path, usecols=cols, names=names, header=None, sep=sep)
         # Extract structure space
-        X = np.array([P['x'], P['y'], P['z']]).T
+        X = np.array([P["x"], P["y"], P["z"]]).T
         # Extract classes
-        y = P['classification'] if 'classification' in names else None
+        y = P["classification"] if "classification" in names else None
         # Extract features
         fnames = [
-            name
-            for name in names if name not in ['x', 'y', 'z', 'classification']
+            name for name in names if name not in ["x", "y", "z", "classification"]
         ]
         F = None
         if len(fnames) > 0:
@@ -187,7 +189,7 @@ class PointCloud:
             min_distance_mask = (D.T == np.min(D, axis=1)).T
             N = [ni[min_distance_mask[i]] for i, ni in enumerate(N)]
             for i, ni in enumerate(N):
-                jmin = np.argmin(np.abs(pcloud_t[ni]-t[i]))
+                jmin = np.argmin(np.abs(pcloud_t[ni] - t[i]))
                 N[i] = ni[jmin]
             return N
 
@@ -201,7 +203,7 @@ class PointCloud:
         np.random.shuffle(indices)
         self.X = self.X[indices]
         # Random shuffle any other array-like member attribute
-        for attr in ['F', 'y']:
+        for attr in ["F", "y"]:
             if getattr(self, attr, None) is not None:
                 setattr(self, attr, getattr(self, attr)[indices])
         return self  # Return the object itself, because fluent :)
@@ -210,17 +212,17 @@ class PointCloud:
 # ---   M A I N   --- #
 # ------------------- #
 # Check the logic when called as an executable script
-if __name__ == '__main__':
+if __name__ == "__main__":
+
     def clipped_normal(mu, sigma, shape, xmin, xmax):
         return np.clip(  # Force values to be inside [xmin, xmax]
             np.random.normal(  # Normal distribution
-                mu,  # Mean
-                sigma,  # Standard deviation
-                shape  # Output dimensionality
+                mu, sigma, shape  # Mean  # Standard deviation  # Output dimensionality
             ),
             xmin,  # Min value for clipping
-            xmax  # Max value for clipping
+            xmax,  # Max value for clipping
         )
+
     # Test data with no repeated positions and no GPS time
     X1 = np.unique(np.random.normal(0, 1, (1024, 3)), axis=0)
     fnames1 = [PCLOUD_FNAME_REFLECTANCE, PCLOUD_FNAME_NIR]
@@ -262,22 +264,22 @@ if __name__ == '__main__':
 
     # Run asserts that must be passed
     pcloud1.assert_equals(pcloud1)
-    print('Asserted PointCloud 1')
+    print("Asserted PointCloud 1")
     pcloud2.assert_equals(pcloud2)
-    print('Asserted PointCloud 2')
+    print("Asserted PointCloud 2")
     pcloud3.assert_equals(pcloud3)
-    print('Asserted PointCloud 3')
+    print("Asserted PointCloud 3")
     pcloud4.assert_equals(pcloud4)
-    print('Asserted PointCloud 4')
+    print("Asserted PointCloud 4")
     pcloud5.assert_equals(pcloud5)
-    print('Asserted PointCloud 5')
+    print("Asserted PointCloud 5")
     pcloud6.assert_equals(pcloud6)
     pcloud1.assert_equals(pcloud6)
     pcloud6.assert_equals(pcloud1)
-    print('Asserted PointCloud 6')
+    print("Asserted PointCloud 6")
     pcloud7.assert_equals(pcloud7)
     pcloud2.assert_equals(pcloud7)
     pcloud7.assert_equals(pcloud2)
-    print('Asserted PointCloud 7')
+    print("Asserted PointCloud 7")
     # All asserts passed
-    print('\nAll asserts passed!  :)')
+    print("\nAll asserts passed!  :)")

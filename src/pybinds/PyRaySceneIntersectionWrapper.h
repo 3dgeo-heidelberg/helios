@@ -2,7 +2,7 @@
 
 #include <PythonDVec3.h>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -11,28 +11,33 @@ namespace pyhelios{
  *
  * @see RaySceneIntersection
  */
-class PyRaySceneIntersectionWrapper{
+class PyRaySceneIntersectionWrapper
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    RaySceneIntersection * rsi;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  RaySceneIntersection* rsi;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyRaySceneIntersectionWrapper(RaySceneIntersection const rsi) :
-        rsi(new RaySceneIntersection(rsi)) {}
-    virtual ~PyRaySceneIntersectionWrapper() {delete rsi;}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyRaySceneIntersectionWrapper(RaySceneIntersection const rsi)
+    : rsi(new RaySceneIntersection(rsi))
+  {
+  }
+  virtual ~PyRaySceneIntersectionWrapper() { delete rsi; }
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    PyPrimitiveWrapper * getPrimitive()
-        {return new PyPrimitiveWrapper(rsi->prim);}
-    PythonDVec3 * getPoint()
-        {return new PythonDVec3(rsi->point);}
-    double getIncidenceAngle() {return rsi->incidenceAngle;}
-    void setIncidenceAngle(double incidenceAngle)
-        {rsi->incidenceAngle = incidenceAngle;}
-
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  PyPrimitiveWrapper* getPrimitive()
+  {
+    return new PyPrimitiveWrapper(rsi->prim);
+  }
+  PythonDVec3* getPoint() { return new PythonDVec3(rsi->point); }
+  double getIncidenceAngle() { return rsi->incidenceAngle; }
+  void setIncidenceAngle(double incidenceAngle)
+  {
+    rsi->incidenceAngle = incidenceAngle;
+  }
 };
 
 }

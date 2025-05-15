@@ -1,0 +1,47 @@
+repos:
+- repo: https://github.com/psf/black
+  rev: 24.10.0
+  hooks:
+  # Run Black - the uncompromising Python code formatter (Jupyter version)
+  - id: black-jupyter
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  # Ensure existence of newline characters at file ends
+  - id: end-of-file-fixer
+  # Make sure that contained YAML files are well-formed
+  - id: check-yaml
+  # Apply a file size limit of 500kB
+  - id: check-added-large-files
+  # Simple parser validation of e.g. pyproject.toml
+  - id: check-toml
+  # Ensure consistent line endings
+  - id: mixed-line-ending
+
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.6
+  hooks:
+  # GitHub Actions Workflow linter
+  - id: actionlint
+
+- repo: https://github.com/citation-file-format/cffconvert
+  rev: main
+  hooks:
+  # Validate CFF format
+  - id: validate-cff
+
+- repo: https://github.com/abravalheri/validate-pyproject
+  rev: v0.23
+  hooks:
+  # Validate the contents of pyproject.toml
+  - id: validate-pyproject
+
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v20.1.4
+  hooks:
+  # Format C/C++/Objective-C code with clang-format
+  - id: clang-format
+    args:
+      - --style=Mozilla
+    types_or: [c++]

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Trajectory.h>
 #include <PythonDVec3.h>
+#include <Trajectory.h>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -14,30 +14,36 @@ namespace pyhelios{
  * @see PyTrajectoryVectorWrapper
  */
 
-class PyTrajectoryWrapper{
+class PyTrajectoryWrapper
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    Trajectory &t;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  Trajectory& t;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyTrajectoryWrapper(Trajectory &t) : t(t) {}
-    virtual ~PyTrajectoryWrapper() {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyTrajectoryWrapper(Trajectory& t)
+    : t(t)
+  {
+  }
+  virtual ~PyTrajectoryWrapper() {}
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    long getGpsTime() {return t.gpsTime;}
-    void setGpsTime(long gpsTime) {t.gpsTime = gpsTime;}
-    PythonDVec3 *getPosition() {return new PythonDVec3(t.position);}
-    void setPosition(double x, double y, double z)
-        {t.position = glm::dvec3(x, y, z);}
-    double getRoll() {return t.roll;}
-    void setRoll(double roll) {t.roll = roll;}
-    double getPitch() {return t.pitch;}
-    void setPitch(double pitch) {t.pitch = pitch;}
-    double getYaw() {return t.yaw;}
-    void setYaw(double yaw) {t.yaw = yaw;}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  long getGpsTime() { return t.gpsTime; }
+  void setGpsTime(long gpsTime) { t.gpsTime = gpsTime; }
+  PythonDVec3* getPosition() { return new PythonDVec3(t.position); }
+  void setPosition(double x, double y, double z)
+  {
+    t.position = glm::dvec3(x, y, z);
+  }
+  double getRoll() { return t.roll; }
+  void setRoll(double roll) { t.roll = roll; }
+  double getPitch() { return t.pitch; }
+  void setPitch(double pitch) { t.pitch = pitch; }
+  double getYaw() { return t.yaw; }
+  void setYaw(double yaw) { t.yaw = yaw; }
 };
 
 }

@@ -77,4 +77,3 @@ SerialClass * SerialIO::read(
     ifs.close();
     return object;
 }
-

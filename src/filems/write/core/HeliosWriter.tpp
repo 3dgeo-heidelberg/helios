@@ -1,6 +1,3 @@
-#include <filems/write/core/HeliosWriter.h>
-#include <util/HeliosException.h>
-
 // ***  HELIOS WRITER METHODS  *** //
 // ******************************* //
 template <typename ... WriteArgs>

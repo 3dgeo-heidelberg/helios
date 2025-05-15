@@ -33,4 +33,3 @@ IndexedDesignMatrix<IndexType, VarType>::toLinearTimeDiffDesignMatrixPointer(
         arma::linspace(ta, tb, X.n_rows)
     ).toDiffDesignMatrixPointer(diffType);
 }
-

@@ -2,16 +2,17 @@
 
 #include <filems/read/comps/FileReader.h>
 
-#include <sstream>
 #include <fstream>
 #include <memory>
+#include <sstream>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
-using std::string;
 using std::ifstream;
 using std::ios_base;
 using std::make_shared;
+using std::string;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -21,79 +22,79 @@ using std::make_shared;
  * @tparam ReadArg Type of what is read from file
  * @see filems::FileReader
  */
-template <typename ReadArg>
-class SimpleFileReader : public FileReader<ReadArg>{
+template<typename ReadArg>
+class SimpleFileReader : public FileReader<ReadArg>
+{
 protected:
-    // ***  USING  *** //
-    // *************** //
-    using FileReader<ReadArg>::readingStrategy;
-    using FileReader<ReadArg>::makeStrategy;
+  // ***  USING  *** //
+  // *************** //
+  using FileReader<ReadArg>::readingStrategy;
+  using FileReader<ReadArg>::makeStrategy;
 
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The input file stream to read from
-     */
-    ifstream ifs;
-    /**
-     * @brief The open mode flags for the input file stream
-     * @see filems::SimpleFileReader::ifs
-     */
-    ios_base::openmode openMode;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The input file stream to read from
+   */
+  ifstream ifs;
+  /**
+   * @brief The open mode flags for the input file stream
+   * @see filems::SimpleFileReader::ifs
+   */
+  ios_base::openmode openMode;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for simple file reader
-     * @see filems::FileReader::FileReader
-     * @see filems::SimpleFileReader::ifs
-     * @see filems::SimpleFileReader::openMode
-     */
-    SimpleFileReader(
-        string const &path,
-        ios_base::openmode openMode = ios_base::in
-    ) :
-        FileReader<ReadArg>(path),
-        ifs(path, openMode),
-        openMode(openMode)
-    {
-        if(!ifs.is_open()){
-            std::stringstream ss;
-            ss  << "SimpleFileReader::SimpleFileReader("
-                << "string const &, ios__base::openmode"
-                << ") failed to open file at path:\n\""
-                << path << "\"";
-            throw std::ios_base::failure(ss.str());
-        }
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for simple file reader
+   * @see filems::FileReader::FileReader
+   * @see filems::SimpleFileReader::ifs
+   * @see filems::SimpleFileReader::openMode
+   */
+  SimpleFileReader(string const& path,
+                   ios_base::openmode openMode = ios_base::in)
+    : FileReader<ReadArg>(path)
+    , ifs(path, openMode)
+    , openMode(openMode)
+  {
+    if (!ifs.is_open()) {
+      std::stringstream ss;
+      ss << "SimpleFileReader::SimpleFileReader("
+         << "string const &, ios__base::openmode"
+         << ") failed to open file at path:\n\"" << path << "\"";
+      throw std::ios_base::failure(ss.str());
     }
-    virtual ~SimpleFileReader() = default;
+  }
+  virtual ~SimpleFileReader() = default;
 
-    // ***  READ METHODS  *** //
-    // ********************** //
-    /**
-     * @brief Read from file simply by applying the reading strategy.
-     *  Therefore, there is no concurrency handling mechanism and usage of
-     *  simple file reader is not thread safe
-     * @see filems::FileReader::read
-     * @see filems::SimpleReadingStrategy
-     */
-    ReadArg read() override {return readingStrategy->read();};
+  // ***  READ METHODS  *** //
+  // ********************** //
+  /**
+   * @brief Read from file simply by applying the reading strategy.
+   *  Therefore, there is no concurrency handling mechanism and usage of
+   *  simple file reader is not thread safe
+   * @see filems::FileReader::read
+   * @see filems::SimpleReadingStrategy
+   */
+  ReadArg read() override { return readingStrategy->read(); };
 
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @brief Set the path to the file to be read, also opening the input
-     *  stream for the new file and updating the strategy. It assures the
-     *  previous input file stream is closed before opening the new one.
-     * @see filems::FileReader::setPath
-     */
-    void setPath(string const &path) override {
-        FileReader<string>::setPath(path);
-        ifs.close();
-        ifs = ifstream(path, openMode);
-        makeStrategy();
-    }
+  // ***  GETTERs and SETTERs  *** //
+  // ***************************** //
+  /**
+   * @brief Set the path to the file to be read, also opening the input
+   *  stream for the new file and updating the strategy. It assures the
+   *  previous input file stream is closed before opening the new one.
+   * @see filems::FileReader::setPath
+   */
+  void setPath(string const& path) override
+  {
+    FileReader<string>::setPath(path);
+    ifs.close();
+    ifs = ifstream(path, openMode);
+    makeStrategy();
+  }
 };
 
-}}
+}
+}

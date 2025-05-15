@@ -4,9 +4,8 @@
  * @brief Util print functions
  */
 
-#include <ostream>
 #include <glm/glm.hpp>
-
+#include <ostream>
 
 // ***  OPERATOR <<  *** //
 // ********************* //
@@ -17,4 +16,5 @@
  * std::cout << "My vector: " << v << std::endl;
  * @endcode
  */
-std::ostream& operator << (std::ostream& out, glm::dvec3 const &v);
+std::ostream&
+operator<<(std::ostream& out, glm::dvec3 const& v);

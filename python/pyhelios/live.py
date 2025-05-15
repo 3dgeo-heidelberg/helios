@@ -28,9 +28,13 @@ def callback(output=None):
         trajectories = output.trajectories
 
         if len(trajectories) != 0:
-            tpoints.append([trajectories[len(trajectories) - 1].getPosition().x,
-                        trajectories[len(trajectories) - 1].getPosition().y,
-                        trajectories[len(trajectories) - 1].getPosition().z])
+            tpoints.append(
+                [
+                    trajectories[len(trajectories) - 1].getPosition().x,
+                    trajectories[len(trajectories) - 1].getPosition().y,
+                    trajectories[len(trajectories) - 1].getPosition().z,
+                ]
+            )
 
             callback_counter = 0
 
@@ -42,10 +46,14 @@ def callback(output=None):
 
     # Add current values to list.
     try:
-        mpoints.append([measurements[len(measurements) - 1].getPosition().x,
-                        measurements[len(measurements) - 1].getPosition().y,
-                        measurements[len(measurements) - 1].getPosition().z,
-                        int(measurements[len(measurements) - 1].hitObjectId)])
+        mpoints.append(
+            [
+                measurements[len(measurements) - 1].getPosition().x,
+                measurements[len(measurements) - 1].getPosition().y,
+                measurements[len(measurements) - 1].getPosition().z,
+                int(measurements[len(measurements) - 1].hitObjectId),
+            ]
+        )
 
     except Exception as err:
         print(err)
@@ -80,9 +88,7 @@ def helios_live():
 
     # Build a simulation
     simBuilder = pyhelios.SimulationBuilder(
-        args.survey_file,
-        args.assets_path,
-        args.output_path
+        args.survey_file, args.assets_path, args.output_path
     )
 
     # Configure sim
@@ -109,9 +115,11 @@ def helios_live():
         try:
             import open3d as o3d
         except ImportError:
-            print('Open3D is not installed. Please install Open3D with "pip install open3d".')
+            print(
+                'Open3D is not installed. Please install Open3D with "pip install open3d".'
+            )
             sys.exit()
-        
+
         import numpy as np
         import time
 
@@ -159,5 +167,5 @@ def helios_live():
         scene.visualizer.run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     helios_live()

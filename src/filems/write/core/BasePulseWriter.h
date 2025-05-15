@@ -3,15 +3,16 @@
 
 #include <filems/write/core/HeliosWriter.h>
 
+#include <memory>
 #include <string>
 #include <unordered_map>
-#include <memory>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
+using std::shared_ptr;
 using std::string;
 using std::unordered_map;
-using std::shared_ptr;
 
 /**
  * @author Alberto M. Esmoris PEna
@@ -22,79 +23,80 @@ using std::shared_ptr;
  * @see filems::MeasurementWriter
  * @see filems::VectorialMeasurementWriter
  */
-template <typename ... WriteArgs>
-class BasePulseWriter : public HeliosWriter<WriteArgs ...>{
+template<typename... WriteArgs>
+class BasePulseWriter : public HeliosWriter<WriteArgs...>
+{
 protected:
-    // ***  USING  *** //
-    // *************** //
-    using HeliosWriter<WriteArgs ...>::sfw;
-public:
-    using HeliosWriter<WriteArgs ...>::isZipOutput;
-    using HeliosWriter<WriteArgs ...>::getOutputPath;
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief Map of writers. This map allows to reuse writers for legs grouped
-     *  in the same strip.
-     */
-    unordered_map<string, shared_ptr<SyncFileWriter<WriteArgs ...>>> writers{};
+  // ***  USING  *** //
+  // *************** //
+  using HeliosWriter<WriteArgs...>::sfw;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for base pulse writer
-     */
-    BasePulseWriter() = default;
-    virtual ~BasePulseWriter() = default;
+  using HeliosWriter<WriteArgs...>::isZipOutput;
+  using HeliosWriter<WriteArgs...>::getOutputPath;
 
-    // ***   M E T H O D S   *** //
-    // ************************* //
-    /**
-     * @brief Configure the output path for the base pulse writer
-     * @param parent Path to output directory for pulse files
-     * @param prefix Prefix for the name of the output file
-     * @param writePulse Flag to specify whether the pulses must be written
-     *  (true) or not (false)
-     */
-    virtual void configure(
-        string const &parent,
-        string const &prefix,
-        bool const writePulse
-    );
-    /**
-     * @brief Make a SyncFileWriter that is suitable to be used by the base
-     *  pulse writer
-     * @return SyncFileWriter which is compatible with the base full waveform
-     *  writer
-     * @see SyncFileWriter
-     * @see helios::filems::PulseWriter::makeWriter
-     * @see helios::filems::VectorialFullWaveformWriter::makeWriter
-     */
-    virtual shared_ptr<SyncFileWriter<WriteArgs ...>> makeWriter(
-        string const &path
-    ) const = 0;
+protected:
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief Map of writers. This map allows to reuse writers for legs grouped
+   *  in the same strip.
+   */
+  unordered_map<string, shared_ptr<SyncFileWriter<WriteArgs...>>> writers{};
 
-    // ***  HELIOS WRITER METHODS  *** //
-    // ******************************* //
-    /**
-     * @brief Finishes all writers
-     * @see filems::BasePulseWriter::writers
-     */
-    void finish() override;
+public:
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for base pulse writer
+   */
+  BasePulseWriter() = default;
+  virtual ~BasePulseWriter() = default;
 
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @brief Set the path to the output file
-     * @param path New path to the output file
-     */
-     virtual void setOutputFilePath(string const &path);
+  // ***   M E T H O D S   *** //
+  // ************************* //
+  /**
+   * @brief Configure the output path for the base pulse writer
+   * @param parent Path to output directory for pulse files
+   * @param prefix Prefix for the name of the output file
+   * @param writePulse Flag to specify whether the pulses must be written
+   *  (true) or not (false)
+   */
+  virtual void configure(string const& parent,
+                         string const& prefix,
+                         bool const writePulse);
+  /**
+   * @brief Make a SyncFileWriter that is suitable to be used by the base
+   *  pulse writer
+   * @return SyncFileWriter which is compatible with the base full waveform
+   *  writer
+   * @see SyncFileWriter
+   * @see helios::filems::PulseWriter::makeWriter
+   * @see helios::filems::VectorialFullWaveformWriter::makeWriter
+   */
+  virtual shared_ptr<SyncFileWriter<WriteArgs...>> makeWriter(
+    string const& path) const = 0;
+
+  // ***  HELIOS WRITER METHODS  *** //
+  // ******************************* //
+  /**
+   * @brief Finishes all writers
+   * @see filems::BasePulseWriter::writers
+   */
+  void finish() override;
+
+  // ***  GETTERs and SETTERs  *** //
+  // ***************************** //
+  /**
+   * @brief Set the path to the output file
+   * @param path New path to the output file
+   */
+  virtual void setOutputFilePath(string const& path);
 };
 
 #include <filems/write/core/BasePulseWriter.tpp>
 
-}}
+}
+}
 
 #endif

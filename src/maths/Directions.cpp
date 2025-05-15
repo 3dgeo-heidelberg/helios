@@ -1,5 +1,5 @@
-#include <glm/glm.hpp>
 #include "Directions.h"
+#include <glm/glm.hpp>
 
 // ***  CONSTANTS  *** //
 // ******************* //

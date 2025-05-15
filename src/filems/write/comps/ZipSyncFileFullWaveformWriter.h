@@ -7,7 +7,8 @@
 #include <memory>
 #include <vector>
 
-namespace helios{ namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 
@@ -20,29 +21,27 @@ using std::make_shared;
  * @see filems::ZipSyncFileWriter
  * @see filems::ZipFullWaveformWriteStrategy
  */
-class ZipSyncFileFullWaveformWriter :
-    public ZipSyncFileWriter<FullWaveform const &>
+class ZipSyncFileFullWaveformWriter
+  : public ZipSyncFileWriter<FullWaveform const&>
 {
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous zipped full waveform writer constructor
-     * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
-     */
-    explicit ZipSyncFileFullWaveformWriter(
-        string const &path,
-        int compressionMode = boost::iostreams::zlib::best_compression
-    ) :
-        ZipSyncFileWriter<FullWaveform const &>(path, compressionMode)
-    {
-        this->writeStrategy = make_shared<ZipFullWaveformWriteStrategy>(
-            this->ofs,
-            *(this->oa)
-        );
-    }
-    virtual ~ZipSyncFileFullWaveformWriter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous zipped full waveform writer constructor
+   * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
+   */
+  explicit ZipSyncFileFullWaveformWriter(
+    string const& path,
+    int compressionMode = boost::iostreams::zlib::best_compression)
+    : ZipSyncFileWriter<FullWaveform const&>(path, compressionMode)
+  {
+    this->writeStrategy =
+      make_shared<ZipFullWaveformWriteStrategy>(this->ofs, *(this->oa));
+  }
+  virtual ~ZipSyncFileFullWaveformWriter() = default;
 };
 
-}}
+}
+}

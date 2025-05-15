@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Vertex.h>
 #include <PythonDVec3.h>
+#include <Vertex.h>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -12,29 +12,32 @@ namespace pyhelios{
  *
  * @see Vertex
  */
-class PyVertexWrapper{
+class PyVertexWrapper
+{
 public:
-    // ***  ATTRIBUTE  *** //
-    // ******************* //
-    Vertex *v;
-    bool release = true;
+  // ***  ATTRIBUTE  *** //
+  // ******************* //
+  Vertex* v;
+  bool release = true;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyVertexWrapper(Vertex *v){
-        this->v = v;
-        release = false;
-    }
-    PyVertexWrapper(Vertex const v){
-        this->v = new Vertex(v);
-        release = true;
-    }
-    virtual ~PyVertexWrapper(){}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyVertexWrapper(Vertex* v)
+  {
+    this->v = v;
+    release = false;
+  }
+  PyVertexWrapper(Vertex const v)
+  {
+    this->v = new Vertex(v);
+    release = true;
+  }
+  virtual ~PyVertexWrapper() {}
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    PythonDVec3 * getPosition() {return new PythonDVec3(&v->pos);}
-    PythonDVec3 * getNormal() {return new PythonDVec3(&v->normal);}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  PythonDVec3* getPosition() { return new PythonDVec3(&v->pos); }
+  PythonDVec3* getNormal() { return new PythonDVec3(&v->normal); }
 };
 
 }

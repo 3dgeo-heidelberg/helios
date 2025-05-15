@@ -1,21 +1,21 @@
 #pragma once
 
-#include <fluxionum/FluxionumException.h>
 #include <fluxionum/AbstractDesignMatrix.h>
-#include <fluxionum/TemporalDesignMatrix.h>
+#include <fluxionum/FluxionumException.h>
 #include <fluxionum/FluxionumTypes.h>
+#include <fluxionum/TemporalDesignMatrix.h>
 
 #include <armadillo>
 
-#include <vector>
-#include <string>
-#include <sstream>
 #include <algorithm>
+#include <sstream>
+#include <string>
+#include <vector>
 
 namespace fluxionum {
 
-using std::vector;
 using std::string;
+using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -165,320 +165,299 @@ using std::string;
  * @see fluxionum::TemporalDesignMatrix
  * @see fluxionum::DiffDesignMatrixType
  */
-template <typename TimeType, typename VarType>
-class DiffDesignMatrix : public AbstractDesignMatrix<VarType>{
+template<typename TimeType, typename VarType>
+class DiffDesignMatrix : public AbstractDesignMatrix<VarType>
+{
 public:
-    // ***  USING  *** //
-    // *************** //
-    using AbstractDesignMatrix<VarType>::getColumnNames;
+  // ***  USING  *** //
+  // *************** //
+  using AbstractDesignMatrix<VarType>::getColumnNames;
 
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief Specify the type of differential of the DiffDesignMatrix
-     * @see fluxionum::DiffDesignMatrixType
-     */
-    enum DiffDesignMatrixType diffType;
-    /**
-     * @brief The starting value for differential time interval, \f$t_a\f$
-     */
-    TimeType ta;
-    /**
-     * @brief The end value for the differential time interval, \f$t_b\f$
-     */
-    TimeType tb;
-    /**
-     * @brief The sorted series of time values so
-     *  \f$\forall i, t_{i+1} > t_{i}\f$ is strictly satisfied and the
-     *  \f$i\f$-th time value corresponds to the approximated
-     *  \f$\overrightarrow{\frac{dx_i}{dt}}\f$ row vector in the
-     *  \f$\frac{DX}{DT} \in \mathbb{R}^{(m-1) \times n}\f$ matrix. It is used
-     *  to build the \f$T\f$ matrix.
-     *
-     * Notice the \f$\vec{t}\f$ vector is in fact the \f$\vec{\tau}\f$ vector
-     *  when the DiffDesignMatrix is built from central finite differences
-     *
-     * <b><span color="red">WARNING</span>!</b>: The
-     *  DiffDesignMatrix::t vector must not be confused with
-     *  TemporalDesignMatrix::t vector. For the case of forward finite
-     *  differences the DiffDesignMatrix::t vector is
-     *  \f$\vec{t} = \left(t_1, \ldots, t_{m-1}\right) \in \mathbb{R}^{m-1}\f$.
-     *  It is, all values from DiffDesignMatrix::t but the last one. In the
-     *  case of central finite differences the DiffDesignMatrix::t vector is
-     *  \f$\vec{t} =
-     *      \left(\frac{t_1+t_2}{2}, \ldots, \frac{t_{m-2}-t_{m-1}}{2}\right)
-     *      \in \mathbb{R}^{m-2}\f$.
-     *  It is, all values from the \f$\vec{\tau}\f$ vector but the last one.
-     *
-     */
-    arma::Col<TimeType> t;
-    /**
-     * @brief The \f$\frac{DX}{DT}\f$ matrix, whether it comes from forward
-     *  finite differences or from central finite differences.
-     */
-    arma::Mat<VarType> A;
-    /**
-     * @brief The name of the time field.
-     *
-     * By default, it is "time"
-     */
-    string timeName;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief Specify the type of differential of the DiffDesignMatrix
+   * @see fluxionum::DiffDesignMatrixType
+   */
+  enum DiffDesignMatrixType diffType;
+  /**
+   * @brief The starting value for differential time interval, \f$t_a\f$
+   */
+  TimeType ta;
+  /**
+   * @brief The end value for the differential time interval, \f$t_b\f$
+   */
+  TimeType tb;
+  /**
+   * @brief The sorted series of time values so
+   *  \f$\forall i, t_{i+1} > t_{i}\f$ is strictly satisfied and the
+   *  \f$i\f$-th time value corresponds to the approximated
+   *  \f$\overrightarrow{\frac{dx_i}{dt}}\f$ row vector in the
+   *  \f$\frac{DX}{DT} \in \mathbb{R}^{(m-1) \times n}\f$ matrix. It is used
+   *  to build the \f$T\f$ matrix.
+   *
+   * Notice the \f$\vec{t}\f$ vector is in fact the \f$\vec{\tau}\f$ vector
+   *  when the DiffDesignMatrix is built from central finite differences
+   *
+   * <b><span color="red">WARNING</span>!</b>: The
+   *  DiffDesignMatrix::t vector must not be confused with
+   *  TemporalDesignMatrix::t vector. For the case of forward finite
+   *  differences the DiffDesignMatrix::t vector is
+   *  \f$\vec{t} = \left(t_1, \ldots, t_{m-1}\right) \in \mathbb{R}^{m-1}\f$.
+   *  It is, all values from DiffDesignMatrix::t but the last one. In the
+   *  case of central finite differences the DiffDesignMatrix::t vector is
+   *  \f$\vec{t} =
+   *      \left(\frac{t_1+t_2}{2}, \ldots, \frac{t_{m-2}-t_{m-1}}{2}\right)
+   *      \in \mathbb{R}^{m-2}\f$.
+   *  It is, all values from the \f$\vec{\tau}\f$ vector but the last one.
+   *
+   */
+  arma::Col<TimeType> t;
+  /**
+   * @brief The \f$\frac{DX}{DT}\f$ matrix, whether it comes from forward
+   *  finite differences or from central finite differences.
+   */
+  arma::Mat<VarType> A;
+  /**
+   * @brief The name of the time field.
+   *
+   * By default, it is "time"
+   */
+  string timeName;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Build a DiffDesignMatrix with no data
-     * @param columnNames Either the name for each column or an empty vector if
-     *  there are no names
-     */
-    DiffDesignMatrix(
-        vector<string> const &columnNames=vector<string>(0),
-        string const timeName="time",
-        DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
-    ) :
-        AbstractDesignMatrix<VarType>(columnNames),
-        diffType(diffType),
-        timeName(timeName)
-    {}
-    /**
-     * @brief Build a DiffDesignMatrix from given armadillo column vector of
-     *  time values and given armadillo matrix of attributes
-     * @param t Armadillo column vector of time values to build
-     *  DiffDesignMatrix from
-     * @param A Armadillo matrix of attributes to build DiffDesignMatrix from
-     * @param columnNames Either the name for each column or an empty vector if
-     *  there are no names
-     */
-    DiffDesignMatrix(
-        arma::Col<TimeType> const &t,
-        arma::Mat<VarType> const &A,
-        string const &timeName="time",
-        vector<string> const &columnNames=vector<string>(0),
-        DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
-    ) :
-        AbstractDesignMatrix<VarType>(columnNames),
-        diffType(diffType),
-        ta(arma::min(t)),
-        tb(arma::max(t)),
-        t(t),
-        A(A),
-        timeName(timeName)
-    {}
-    /**
-     * @brief Build a DiffDesignMatrix from data in file at given path
-     * @param path Path to the file containing the data for the
-     *  DiffDesignMatrix
-     * @param columnNames The default column names to be used if no column
-     *  names are read from file at given path
-     */
-    DiffDesignMatrix(
-        string const &path,
-        string const &timeName="time",
-        DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
-    ){
-        helios::filems::DesignMatrixReader<VarType> reader(path);
-        std::unordered_map<string, string> kv;
-        DesignMatrix<VarType> const dm = reader.read(&kv);
-        size_t const tCol = (size_t) std::strtoul(
-            kv.at("TIME_COLUMN").c_str(), nullptr, 10
-        );
-        if(kv.find("DIFF_TYPE") != kv.end()){
-            string diffTypeStr = kv.at("DIFF_TYPE");
-            string::iterator begin = diffTypeStr.begin();
-            string::iterator end = diffTypeStr.end();
-            std::function<bool(char const)> filter = [&] (
-                char const c
-            ) -> bool{
-                return c==' ' || c=='\t';
-            };
-            end = std::remove_if(
-                diffTypeStr.begin(), diffTypeStr.end(), filter
-            );
-            diffTypeStr = string(begin, end);
-            if(diffTypeStr == "FORWARD_FINITE_DIFFERENCES"){
-                diffType = DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES;
-            }
-            else if(diffTypeStr == "CENTRAL_FINITE_DIFFERENCES"){
-                diffType = DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES;
-            }
-        }
-        *this = DiffDesignMatrix<TimeType, VarType>(
-            TemporalDesignMatrix<TimeType, VarType>::extractTimeVector(
-                dm.getX(), tCol
-            ),
-            TemporalDesignMatrix<TimeType, VarType>::extractNonTimeMatrix(
-                dm.getX(), tCol
-            ),
-            dm.hasColumnNames() ? dm.getColumnName(tCol) : timeName,
-            TemporalDesignMatrix<TimeType, VarType>::extractNonTimeNames(
-                dm.getColumnNames(), tCol
-            ),
-            diffType
-        );
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Build a DiffDesignMatrix with no data
+   * @param columnNames Either the name for each column or an empty vector if
+   *  there are no names
+   */
+  DiffDesignMatrix(
+    vector<string> const& columnNames = vector<string>(0),
+    string const timeName = "time",
+    DiffDesignMatrixType diffType = DiffDesignMatrixType::UNKNOWN)
+    : AbstractDesignMatrix<VarType>(columnNames)
+    , diffType(diffType)
+    , timeName(timeName)
+  {
+  }
+  /**
+   * @brief Build a DiffDesignMatrix from given armadillo column vector of
+   *  time values and given armadillo matrix of attributes
+   * @param t Armadillo column vector of time values to build
+   *  DiffDesignMatrix from
+   * @param A Armadillo matrix of attributes to build DiffDesignMatrix from
+   * @param columnNames Either the name for each column or an empty vector if
+   *  there are no names
+   */
+  DiffDesignMatrix(
+    arma::Col<TimeType> const& t,
+    arma::Mat<VarType> const& A,
+    string const& timeName = "time",
+    vector<string> const& columnNames = vector<string>(0),
+    DiffDesignMatrixType diffType = DiffDesignMatrixType::UNKNOWN)
+    : AbstractDesignMatrix<VarType>(columnNames)
+    , diffType(diffType)
+    , ta(arma::min(t))
+    , tb(arma::max(t))
+    , t(t)
+    , A(A)
+    , timeName(timeName)
+  {
+  }
+  /**
+   * @brief Build a DiffDesignMatrix from data in file at given path
+   * @param path Path to the file containing the data for the
+   *  DiffDesignMatrix
+   * @param columnNames The default column names to be used if no column
+   *  names are read from file at given path
+   */
+  DiffDesignMatrix(
+    string const& path,
+    string const& timeName = "time",
+    DiffDesignMatrixType diffType = DiffDesignMatrixType::UNKNOWN)
+  {
+    helios::filems::DesignMatrixReader<VarType> reader(path);
+    std::unordered_map<string, string> kv;
+    DesignMatrix<VarType> const dm = reader.read(&kv);
+    size_t const tCol =
+      (size_t)std::strtoul(kv.at("TIME_COLUMN").c_str(), nullptr, 10);
+    if (kv.find("DIFF_TYPE") != kv.end()) {
+      string diffTypeStr = kv.at("DIFF_TYPE");
+      string::iterator begin = diffTypeStr.begin();
+      string::iterator end = diffTypeStr.end();
+      std::function<bool(char const)> filter = [&](char const c) -> bool {
+        return c == ' ' || c == '\t';
+      };
+      end = std::remove_if(diffTypeStr.begin(), diffTypeStr.end(), filter);
+      diffTypeStr = string(begin, end);
+      if (diffTypeStr == "FORWARD_FINITE_DIFFERENCES") {
+        diffType = DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES;
+      } else if (diffTypeStr == "CENTRAL_FINITE_DIFFERENCES") {
+        diffType = DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES;
+      }
     }
-    /**
-     * @brief Build a DiffDesignMatrix from given TemporalDesignMatrix
-     * @param tdm The TemporalDesignMatrix to be used to build the
-     *  DiffDesignMatrix
-     * @param sort When true, the DiffDesignMatrix construction will lead to an
-     *  expensive sort operation to assure the finite differences
-     *  computation makes sense.
-     *  When false, the expensive sort computation will be skipped as it is
-     *  expected that the TemporalDesignMatrix is already sorted
-     * @param diffType The type of differencing method
-     * @see TemporalDesignMatrix::toDiffDesignMatrix
-     */
-    DiffDesignMatrix(
-        TemporalDesignMatrix<TimeType, VarType> const &tdm,
-        DiffDesignMatrixType const diffType,
-        bool const sort=true
-    ) :
-        AbstractDesignMatrix<VarType>(tdm.getColumnNames())
-    {
-        switch (diffType) {
-            case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES:{
-                arma::uvec const tSort = (sort) ?
-                    arma::sort_index(tdm.getTimeVector()) : arma::uvec();
-                arma::Col<TimeType> const t = (sort) ?
-                    tdm.getTimeVector()(tSort) : tdm.getTimeVector();
-                arma::Mat<VarType> const X = (sort) ?
-                    tdm.getX().rows(tSort) : tdm.getX();
-                arma::Mat<VarType> DXDT = arma::diff(X, 1, 0);
-                DXDT.each_col() /= arma::diff(t, 1);
-                *this = DiffDesignMatrix(
-                    t.subvec(0, t.n_elem-2),
-                    DXDT,
-                    tdm.getTimeName(),
-                    getColumnNames(),
-                    diffType
-                );
-                break;
-            }
-            case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{
-                arma::uvec const tSort = (sort) ?
-                    arma::sort_index(tdm.getTimeVector()) : arma::uvec();
-                arma::Col<TimeType> const t = (sort) ?
-                    tdm.getTimeVector()(tSort) : tdm.getTimeVector();
-                arma::Mat<VarType> const X = (sort) ?
-                    tdm.getX().rows(tSort) : tdm.getX();
-                arma::Col<TimeType> T(
-                    (t.subvec(0, t.n_elem-2) + t.subvec(1, t.n_elem-1))
-                );
-                arma::Mat<VarType> DXDT(
-                    (X.rows(2, X.n_rows-1) - X.rows(0, X.n_rows-3))
-                );
-                DXDT.each_col() /= arma::diff(T, 1);
-                T = T.subvec(0, T.n_elem-2) / 2.0;
-                *this = DiffDesignMatrix(
-                    T,
-                    DXDT,
-                    tdm.getTimeName(),
-                    getColumnNames(),
-                    diffType
-                );
-                break;
-            }
-            default:{
-                std::stringstream ss;
-                ss  << "DiffDesignMatrix::DiffDesignMatrix("
-                       "TemporalDesignMatrix const &, DiffType const) failed."
-                       "\n\tUnexpected differential type";
-                throw FluxionumException(ss.str());
-            }
-        }
+    *this = DiffDesignMatrix<TimeType, VarType>(
+      TemporalDesignMatrix<TimeType, VarType>::extractTimeVector(dm.getX(),
+                                                                 tCol),
+      TemporalDesignMatrix<TimeType, VarType>::extractNonTimeMatrix(dm.getX(),
+                                                                    tCol),
+      dm.hasColumnNames() ? dm.getColumnName(tCol) : timeName,
+      TemporalDesignMatrix<TimeType, VarType>::extractNonTimeNames(
+        dm.getColumnNames(), tCol),
+      diffType);
+  }
+  /**
+   * @brief Build a DiffDesignMatrix from given TemporalDesignMatrix
+   * @param tdm The TemporalDesignMatrix to be used to build the
+   *  DiffDesignMatrix
+   * @param sort When true, the DiffDesignMatrix construction will lead to an
+   *  expensive sort operation to assure the finite differences
+   *  computation makes sense.
+   *  When false, the expensive sort computation will be skipped as it is
+   *  expected that the TemporalDesignMatrix is already sorted
+   * @param diffType The type of differencing method
+   * @see TemporalDesignMatrix::toDiffDesignMatrix
+   */
+  DiffDesignMatrix(TemporalDesignMatrix<TimeType, VarType> const& tdm,
+                   DiffDesignMatrixType const diffType,
+                   bool const sort = true)
+    : AbstractDesignMatrix<VarType>(tdm.getColumnNames())
+  {
+    switch (diffType) {
+      case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES: {
+        arma::uvec const tSort =
+          (sort) ? arma::sort_index(tdm.getTimeVector()) : arma::uvec();
+        arma::Col<TimeType> const t =
+          (sort) ? tdm.getTimeVector()(tSort) : tdm.getTimeVector();
+        arma::Mat<VarType> const X =
+          (sort) ? tdm.getX().rows(tSort) : tdm.getX();
+        arma::Mat<VarType> DXDT = arma::diff(X, 1, 0);
+        DXDT.each_col() /= arma::diff(t, 1);
+        *this = DiffDesignMatrix(t.subvec(0, t.n_elem - 2),
+                                 DXDT,
+                                 tdm.getTimeName(),
+                                 getColumnNames(),
+                                 diffType);
+        break;
+      }
+      case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES: {
+        arma::uvec const tSort =
+          (sort) ? arma::sort_index(tdm.getTimeVector()) : arma::uvec();
+        arma::Col<TimeType> const t =
+          (sort) ? tdm.getTimeVector()(tSort) : tdm.getTimeVector();
+        arma::Mat<VarType> const X =
+          (sort) ? tdm.getX().rows(tSort) : tdm.getX();
+        arma::Col<TimeType> T(
+          (t.subvec(0, t.n_elem - 2) + t.subvec(1, t.n_elem - 1)));
+        arma::Mat<VarType> DXDT(
+          (X.rows(2, X.n_rows - 1) - X.rows(0, X.n_rows - 3)));
+        DXDT.each_col() /= arma::diff(T, 1);
+        T = T.subvec(0, T.n_elem - 2) / 2.0;
+        *this = DiffDesignMatrix(
+          T, DXDT, tdm.getTimeName(), getColumnNames(), diffType);
+        break;
+      }
+      default: {
+        std::stringstream ss;
+        ss << "DiffDesignMatrix::DiffDesignMatrix("
+              "TemporalDesignMatrix const &, DiffType const) failed."
+              "\n\tUnexpected differential type";
+        throw FluxionumException(ss.str());
+      }
     }
+  }
 
-    // ***  OPERATORS  *** //
-    // ******************* //
-    /**
-     * @brief Access to the \f$a_{ij}\f$ component of the \f$A\f$ design
-     *  matrix
-     * @param i The row of the element being accessed
-     * @param j The column of the element being accessed
-     * @return Reference to the element at \f$i\f$-th row and \f$j\f$-th
-     *  column
-     * @see fluxionum::DiffDesignMatrix::A
-     * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
-     */
-    inline VarType& operator() (size_t const i, size_t const j) override
-    {return A.at(i, j);}
-    /**
-     * @brief Access to the \f$t_{i}\f$ component of the \f$\vec{t}\f$ sorted
-     *  time vector
-     * @param i The index of the time being accessed (its position in the
-     *  time vector)
-     * @return Reference to the \f$t_{i}\f$ component of the sorted time vector
-     *  \f$\vec{t}\f$
-     */
-    inline TimeType& operator[] (size_t const i) {return t.at(i);}
+  // ***  OPERATORS  *** //
+  // ******************* //
+  /**
+   * @brief Access to the \f$a_{ij}\f$ component of the \f$A\f$ design
+   *  matrix
+   * @param i The row of the element being accessed
+   * @param j The column of the element being accessed
+   * @return Reference to the element at \f$i\f$-th row and \f$j\f$-th
+   *  column
+   * @see fluxionum::DiffDesignMatrix::A
+   * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
+   */
+  inline VarType& operator()(size_t const i, size_t const j) override
+  {
+    return A.at(i, j);
+  }
+  /**
+   * @brief Access to the \f$t_{i}\f$ component of the \f$\vec{t}\f$ sorted
+   *  time vector
+   * @param i The index of the time being accessed (its position in the
+   *  time vector)
+   * @return Reference to the \f$t_{i}\f$ component of the sorted time vector
+   *  \f$\vec{t}\f$
+   */
+  inline TimeType& operator[](size_t const i) { return t.at(i); }
 
-    // ***  METHODS  *** //
-    // ***************** //
-    /**
-     * @brief Add given time \f$x\f$ to all time values in vector \f$\vec{t}\f$
-     *
-     * \vec{t'} = \vec{t} + x = \left[\begin{array}{c}
-     *  t_1 + x \\
-     *  \vdots
-     *  t_m + x
-     * \end{array}\right.
-     *
-     * @param x The time shift for each time component
-     */
-    virtual void shiftTime(TimeType const x){
-        t += x;
-    }
+  // ***  METHODS  *** //
+  // ***************** //
+  /**
+   * @brief Add given time \f$x\f$ to all time values in vector \f$\vec{t}\f$
+   *
+   * \vec{t'} = \vec{t} + x = \left[\begin{array}{c}
+   *  t_1 + x \\
+   *  \vdots
+   *  t_m + x
+   * \end{array}\right.
+   *
+   * @param x The time shift for each time component
+   */
+  virtual void shiftTime(TimeType const x) { t += x; }
 
-
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @brief Obtain the number of rows of the DiffDesignMatrix \f$A\f$
-     * @return The number of rows of the DiffDesignMatrix \f$A\f$
-     * @see fluxionum::DiffDesignMatrix::A
-     * @see fluxionum::AbstractDesignMatrix::getNumRows
-     */
-    inline size_t getNumRows() const override {return A.n_rows;}
-    /**
-     * @brief Obtain the number of columns of the DiffDesignMatrix \f$A\f$
-     * @return The number of columns of the DiffDesignMatrix \f$A\f$
-     * @see fluxionum::DiffDesignMatrix::A
-     * @see fluxionum::AbstractDesignMatrix::getNumColumns
-     */
-    inline size_t getNumColumns() const override {return A.n_cols;}
-    /**
-     * @brief Obtain the number of elements of the DiffDesignMatrix \f$A\f$
-     * @return The number of elements of the DiffDesignMatrix \f$A\f$
-     * @see fluxionum::DiffDesignMatrix::A
-     * @see fluxionum::AbstractDesignMatrix::getNumElements
-     */
-    inline size_t getNumElements() const override {return A.n_elem;}
-    /**
-     * @brief Obtain the type of differential of the DiffDesignMatrix
-     * @return The type of tdifferential of the DiffDesignMatrix
-     * @see fluxionum::DiffDesignMatrix::diffType
-     */
-    inline DiffDesignMatrixType getDiffType() const {return diffType;}
-    /**
-     * @brief Obtain the name of the time attribute
-     * @return The name of the time attribute
-     * @see fluxionum::TemporalDesignMatrix::timeName
-     */
-    inline string const & getTimeName() const {return timeName;}
-    /**
-     * @brief Obtain the sorted series of time values DiffDesignMatrix::t
-     * @return The sorted series of time values DiffDesignMatrix::t
-     * @see fluxionum::DiffDesignMatrix::t
-     */
-    inline arma::Col<TimeType> const & getTimeVector() const {return t;}
-    /**
-     * @brief Obtain a constant/read reference to the \f$A\f$ matrix
-     * @return Constant/read reference to the \f$A\f$ matrix
-     * @see fluxionum::DiffDesignMatrix::A
-     */
-    inline arma::Mat<VarType> const & getA() const {return A;}
+  // ***  GETTERs and SETTERs  *** //
+  // ***************************** //
+  /**
+   * @brief Obtain the number of rows of the DiffDesignMatrix \f$A\f$
+   * @return The number of rows of the DiffDesignMatrix \f$A\f$
+   * @see fluxionum::DiffDesignMatrix::A
+   * @see fluxionum::AbstractDesignMatrix::getNumRows
+   */
+  inline size_t getNumRows() const override { return A.n_rows; }
+  /**
+   * @brief Obtain the number of columns of the DiffDesignMatrix \f$A\f$
+   * @return The number of columns of the DiffDesignMatrix \f$A\f$
+   * @see fluxionum::DiffDesignMatrix::A
+   * @see fluxionum::AbstractDesignMatrix::getNumColumns
+   */
+  inline size_t getNumColumns() const override { return A.n_cols; }
+  /**
+   * @brief Obtain the number of elements of the DiffDesignMatrix \f$A\f$
+   * @return The number of elements of the DiffDesignMatrix \f$A\f$
+   * @see fluxionum::DiffDesignMatrix::A
+   * @see fluxionum::AbstractDesignMatrix::getNumElements
+   */
+  inline size_t getNumElements() const override { return A.n_elem; }
+  /**
+   * @brief Obtain the type of differential of the DiffDesignMatrix
+   * @return The type of tdifferential of the DiffDesignMatrix
+   * @see fluxionum::DiffDesignMatrix::diffType
+   */
+  inline DiffDesignMatrixType getDiffType() const { return diffType; }
+  /**
+   * @brief Obtain the name of the time attribute
+   * @return The name of the time attribute
+   * @see fluxionum::TemporalDesignMatrix::timeName
+   */
+  inline string const& getTimeName() const { return timeName; }
+  /**
+   * @brief Obtain the sorted series of time values DiffDesignMatrix::t
+   * @return The sorted series of time values DiffDesignMatrix::t
+   * @see fluxionum::DiffDesignMatrix::t
+   */
+  inline arma::Col<TimeType> const& getTimeVector() const { return t; }
+  /**
+   * @brief Obtain a constant/read reference to the \f$A\f$ matrix
+   * @return Constant/read reference to the \f$A\f$ matrix
+   * @see fluxionum::DiffDesignMatrix::A
+   */
+  inline arma::Mat<VarType> const& getA() const { return A; }
 };
 
 }

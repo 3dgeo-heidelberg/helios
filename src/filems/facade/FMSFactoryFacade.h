@@ -1,28 +1,31 @@
 #pragma once
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief The facade for FMS factories
  */
-class FMSFactoryFacade{
+class FMSFactoryFacade
+{
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for FMS factory facade
-     */
-    FMSFactoryFacade() = default;
-    virtual ~FMSFactoryFacade() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for FMS factory facade
+   */
+  FMSFactoryFacade() = default;
+  virtual ~FMSFactoryFacade() = default;
 
-    // ***  FACTORY FACADE METHODS  *** //
-    // ******************************** //
+  // ***  FACTORY FACADE METHODS  *** //
+  // ******************************** //
 };
 
-}}
+}
+}

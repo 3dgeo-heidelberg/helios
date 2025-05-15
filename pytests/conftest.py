@@ -11,7 +11,7 @@ TEST_DATA_CHECKSUM = "581b9f13ab3dcaf0422a8ab6069ba4534db276c75c098da23dd8ed264a
 
 @pytest.fixture
 def regression_data(request):
-    """ A fixture that ensures the existence of regression data
+    """A fixture that ensures the existence of regression data
 
     Returns the Path to where that data is located after (cached) download
     from GitHub.
