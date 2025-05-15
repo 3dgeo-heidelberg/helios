@@ -164,7 +164,7 @@ def test_rotate_scenepart_two_vectors(box_f):
     box1 = box_f()
     box2 = box_f()
 
-    box2.rotate(origin=np.array([0, 1.0, 0]), image=np.array([0.0, 1.0, 1.0]))
+    box2.rotate(from_axis=np.array([0, 1.0, 0]), to_axis=np.array([0.0, 1.0, 1.0]))
 
     check_rotation(box1, box2)
 
@@ -179,10 +179,10 @@ def test_rotate_scenepart_too_many_parameters(box):
         box.rotate(quaternion=[1.0, 0, 0, 0], axis=[1.0, 0, 0])
 
     with pytest.raises(ValueError):
-        box.rotate(quaternion=[1.0, 0, 0, 0], origin=[1.0, 0, 0])
+        box.rotate(quaternion=[1.0, 0, 0, 0], from_axis=[1.0, 0, 0])
 
     with pytest.raises(ValueError):
-        box.rotate(axis=[1.0, 0, 0], angle=0.0, origin=[0, 0, 0])
+        box.rotate(axis=[1.0, 0, 0], angle=0.0, from_axis=[0, 0, 0])
 
 
 def test_rotate_scenepart_missing_parameters(box):
@@ -193,10 +193,22 @@ def test_rotate_scenepart_missing_parameters(box):
         box.rotate(angle=0.0)
 
     with pytest.raises(ValueError):
-        box.rotate(origin=[0.0, 0.0, 0.0])
+        box.rotate(from_axis=[0.0, 0.0, 0.0])
 
     with pytest.raises(ValueError):
-        box.rotate(image=[1.0, 0, 0])
+        box.rotate(to_axis=[1.0, 0, 0])
+
+
+def test_rotate_scenepart_rotation_center(box_f):
+    box1 = box_f()
+    box2 = box_f()
+
+    box1.rotate(angle="180 deg", axis=[0, 0, 1.0], rotation_center=[100.0, 0.0, 0.0])
+    box2.translate([200.0, 0.0, 0.0])
+    bbox1 = get_bbox(box1)
+    bbox2 = get_bbox(box2)
+
+    assert np.allclose(bbox1, bbox2)
 
 
 def test_scale_scenepart(box_f):

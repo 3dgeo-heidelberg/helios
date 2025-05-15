@@ -1,6 +1,6 @@
 from helios.settings import ExecutionSettings, compose_execution_settings, ForceOnGroundStrategy
 from helios.utils import get_asset_directories, detect_separator
-from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
+from helios.validation import Angle, AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
 from pydantic import PositiveFloat, PositiveInt, NonNegativeFloat, NonNegativeInt, validate_call
@@ -21,9 +21,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         self,
         quaternion: Optional[NDArray[Shape["4"], np.float64]] = None,
         axis: Optional[NDArray[Shape["3"], np.float64]] = None,
-        angle: Optional[float] = None,
-        origin: Optional[NDArray[Shape["3"], np.float64]] = None,
-        image: Optional[NDArray[Shape["3"], np.float64]] = None,
+        angle: Optional[Angle] = None,
+        from_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        to_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        rotation_center: Optional[NDArray[Shape["3"], np.float64]] = None,
     ):
         """Rotate the scene part.
 
@@ -31,6 +32,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         * A quaternion
         * An axis and an angle
         * An origin and an image vector
+
+        Optionally, you may specify a rotation center. If omitted the origin
+        of the coordinate system of the scene part will be used.
         """
 
         # The rotation object that we want to construct
@@ -54,21 +58,29 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             rot = _helios.Rotation(axis, angle)
 
         # Handle construction via two vectors
-        if origin is not None or image is not None:
+        if from_axis is not None or to_axis is not None:
             if rot is not None:
                 raise ValueError("Too many rotation parameters specified")
-            if origin is None:
+            if from_axis is None:
                 raise ValueError("Origin must be specified when image is specified")
-            if image is None:
+            if to_axis is None:
                 raise ValueError("Image must be specified when origin is specified")
 
-            rot = _helios.Rotation(origin, image)
+            rot = _helios.Rotation(from_axis, to_axis)
 
         if rot is None:
             raise ValueError("No rotation parameters specified")
 
+        # Maybe shift by the rotation center
+        if rotation_center is not None:
+            self.translate(-rotation_center)
+
         # Perform the actual rotation
         _helios.rotate_scene_part(self._cpp_object, rot)
+
+        # Undo the shift by the rotation center
+        if rotation_center is not None:
+            self.translate(rotation_center)
 
         return self
 
