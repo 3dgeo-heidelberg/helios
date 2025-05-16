@@ -14,28 +14,9 @@ target_sources(
   helios_test
   PUBLIC
   "CatchTests.cpp"
-)
-
-target_sources(
-  helios_test
-  PUBLIC
   "CatchDiscreteTimeTest.cpp"
-)
-
-target_sources(
-  helios_test
-  PUBLIC
   "CatchFunctionalPlatformTest.cpp"
-)
-
-target_sources(
-  helios_test
-  PUBLIC
   "CatchVoxelParsingTest.cpp"
-)
-
-target_sources(
-  helios_test
-  PUBLIC
   "CatchHPCTest.cpp"
+  "CatchEnergyModelsTest.cpp"
 )
