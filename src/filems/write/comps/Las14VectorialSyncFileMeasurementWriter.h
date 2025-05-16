@@ -7,6 +7,7 @@
 
 #include <glm/glm.hpp>
 
+#include <optional>
 #include <memory>
 #include <string>
 
@@ -41,7 +42,7 @@ protected:
      *  ( filems::LasSyncFileWriter::writeStrategy )
      * @see filems::LasMeasurementWriteStrategy
      */
-    LasMeasurementWriteStrategy lmws;
+    std::optional<LasMeasurementWriteStrategy> lmws;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -71,19 +72,6 @@ public:
             minIntensity,
             deltaIntensity,
             false
-        ),
-        lmws(
-            *lw,
-            lws.lp,
-            lws.scaleFactorInverse,
-            lws.offset,
-            lws.minIntensity,
-            lws.maxIntensity,
-            lws.intensityCoefficient,
-            lws.ewAttrStart,
-            lws.fwiAttrStart,
-            lws.hoiAttrStart,
-            lws.ampAttrStart
         )
     {
         // If construct requires creating the wi
@@ -91,7 +79,7 @@ public:
             // Create the LASWriter
             createLasWriter(path, compress);
             // In-place update LasMeasurementWriteStrategy
-            new(&lmws) LasMeasurementWriteStrategy(
+            lmws.emplace(
                 *lw,
                 lws.lp,
                 lws.scaleFactorInverse,
@@ -105,11 +93,14 @@ public:
                 lws.ampAttrStart
             );
         }
+        if (!lmws) {
+            throw std::runtime_error("LasMeasurementWriteStrategy was not constructed.");
+        }
         // Write strategy
         this->writeStrategy = make_shared<VectorialWriteStrategy<
             Measurement,
             glm::dvec3 const &
-        >>(lmws);
+        >>(*lmws);        
     }
 
     // ***  CREATE WRITER  *** //
