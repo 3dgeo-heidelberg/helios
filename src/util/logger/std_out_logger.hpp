@@ -1,5 +1,10 @@
 #pragma once
 
+#include <logger.hpp>
+
+#include <iostream>
+#include <string>
+
 // logger that writes to standard out
 /**
  * @brief Class representing a logger capable of writing to standard out stream

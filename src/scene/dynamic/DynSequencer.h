@@ -2,6 +2,8 @@
 
 #include <scene/dynamic/DynSequence.h>
 
+#include <boost/serialization/access.hpp>
+
 #include <memory>
 #include <string>
 #include <unordered_map>

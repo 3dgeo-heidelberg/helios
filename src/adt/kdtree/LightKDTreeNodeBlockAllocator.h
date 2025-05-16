@@ -1,6 +1,9 @@
 #pragma once
 
+#include <boost/serialization/void_cast.hpp>
+
 #include <BlockAllocator.h>
+#include <LightKDTreeNode.h>
 
 /**
  * @author Alberto M. Esmoris Pena

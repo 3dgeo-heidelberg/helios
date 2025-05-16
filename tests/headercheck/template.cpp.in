@@ -1,5 +1,11 @@
 #include <@header@>
 
+namespace logging {
+bool LOGGING_SHOW_TRACE, LOGGING_SHOW_DEBUG,
+     LOGGING_SHOW_INFO, LOGGING_SHOW_TIME,
+     LOGGING_SHOW_WARN, LOGGING_SHOW_ERR;
+}
+
 int main()
 {
     // This is a test to check if the header check works

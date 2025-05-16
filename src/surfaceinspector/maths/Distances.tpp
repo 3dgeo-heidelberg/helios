@@ -9,20 +9,20 @@ using SurfaceInspector::maths::Distances;
 // ***  STATIC METHODS  *** //
 // ************************ //
 template <typename T>
-T Distances::manhattan(vector<T> const &p, vector<T> const &q){
+T Distances::manhattan(std::vector<T> const &p, std::vector<T> const &q){
     T mdist = 0;
-    size_t n = p.size();
-    for(size_t i = 0 ; i < n ; i++){
+    std::size_t n = p.size();
+    for(std::size_t i = 0 ; i < n ; i++){
         if(p[i] > q[i]) mdist += p[i] - q[i];
         else mdist += q[i] - p[i];
     }
     return mdist;
 }
 template <typename T>
-T Distances::euclidean(vector<T> const &p, vector<T> const &q){
+T Distances::euclidean(std::vector<T> const &p, std::vector<T> const &q){
     T edist = 0;
-    size_t const n = p.size();
-    for(size_t i = 0 ; i < n ; i++){
+    std::size_t const n = p.size();
+    for(std::size_t i = 0 ; i < n ; i++){
         T diff = p[i] - q[i];
         edist += diff*diff;
     }
@@ -48,14 +48,14 @@ T Distances::euclidean(
     return std::sqrt(xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 }
 template <typename T>
-T Distances::minkowski(int d, vector<T> const &p, vector<T> const &q){
+T Distances::minkowski(int d, std::vector<T> const &p, std::vector<T> const &q){
     if(d == 1) return manhattan(p, q);
     if(d == 2) return euclidean(p, q);
     T mdist = 0;
-    size_t n =  p.size();
+    std::size_t n =  p.size();
     double exponent = (double) d;
     double rootExponent = 1.0/exponent;
-    for(size_t i = 0 ; i < n ; i++){
+    for(std::size_t i = 0 ; i < n ; i++){
         T diff = std::fabs(p[i] - q[i]);
         mdist += std::pow(diff, exponent);
     }

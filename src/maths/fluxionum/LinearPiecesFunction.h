@@ -53,9 +53,9 @@ public:
    * @see fluxionum::LinearPiecesFunction::slope
    * @see fluxionum::LinearPiecesFunction::intercept
    */
-  LinearPiecesFunction(Col<A> const& start,
-                       Col<B> const& slope,
-                       Col<B> const& intercept)
+  LinearPiecesFunction(arma::Col<A> const& start,
+                       arma::Col<B> const& slope,
+                       arma::Col<B> const& intercept)
     : start(start)
     , slope(slope)
     , intercept(intercept)
@@ -78,7 +78,7 @@ public:
    */
   B eval(A const& x) override
   {
-    size_t const xIdx = findIndex(x);
+    std::size_t const xIdx = findIndex(x);
     return (x - getStart(xIdx)) * getSlope(xIdx) + getIntercept(xIdx);
   }
 
@@ -90,21 +90,24 @@ public:
    * @param i Index of the start point to be obtained,
    * @return The \f$i\f$-th start point of the linear function
    */
-  inline A getStart(size_t const i = 0) const { return start.at(i); }
+  inline A getStart(std::size_t const i = 0) const { return start.at(i); }
   /**
    * @brief Obtain the \f$i\f$-th slope \f$a_i\f$ of the linear function
    * @param i Index of the slope to be obtained. In case there are no
    *  multiple slopes, the default value \f$i=0\f$ must be used.
    * @return The \f$i\f$-th slope \f$a_i\f$ of the linear function
    */
-  inline B getSlope(size_t const i = 0) const { return slope.at(i); }
+  inline B getSlope(std::size_t const i = 0) const { return slope.at(i); }
   /**
    * @brief Obtain the \f$i\f$-th intercept \f$b_i\f$ of the linear function
    * @param i Index of the intercept to be obtained. In case there are no
    *  multiple intercepts, the default value \f$i=0\f$ must be used.
    * @return The \f$i\f$-th intercept \f$b_i\f$ of the linear function
    */
-  inline B getIntercept(size_t const i = 0) const { return intercept.at(i); }
+  inline B getIntercept(std::size_t const i = 0) const
+  {
+    return intercept.at(i);
+  }
   /**
    * @brief Obtain the index identifying the interval where \f$x\f$ belongs
    *  to. It is, find \f$i\f$ such that \f$x \in [s_{i}, s_{i+1})\f$
@@ -112,15 +115,15 @@ public:
    * @return The index identifying the interval where \f$x\f$ belongs to
    * @see LinearPiecesFunction::findIndex(A const &, arma::Col<A> const &)
    */
-  inline size_t findIndex(A const& x) const { return findIndex(x, start); }
+  inline std::size_t findIndex(A const& x) const { return findIndex(x, start); }
   /**
    * @brief Assist the LinearPiecesFunction::findIndex(A const &)
    * @see fluxionum::LinearPiecesFunction::findIndex(A const &)
    */
-  static inline size_t findIndex(A const& x, arma::Col<A> const& start)
+  static inline std::size_t findIndex(A const& x, arma::Col<A> const& start)
   {
-    size_t const m = start.n_elem - 1;
-    for (size_t i = m; i > 0; --i)
+    std::size_t const m = start.n_elem - 1;
+    for (std::size_t i = m; i > 0; --i)
       if (x >= start.at(i))
         return i;
     return 0;

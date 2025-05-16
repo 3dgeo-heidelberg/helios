@@ -3,6 +3,8 @@
 #include <IBinaryTreeNode.h>
 #include <ITreeIterator.h>
 
+#include <boost/serialization/base_object.hpp>
+
 #include <deque>
 #include <iterator>
 

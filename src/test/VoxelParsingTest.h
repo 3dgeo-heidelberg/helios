@@ -1,5 +1,6 @@
 #pragma once
 
+#include <BaseTest.h>
 #include <VoxelFileParser.h>
 #include <string>
 

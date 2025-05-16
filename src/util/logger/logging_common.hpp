@@ -1,15 +1,15 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <unordered_map>
-
 
 // TODO: use macros (again) so __FILE__ __LINE__ could be automatically added to
 // certain error levels? the log levels we support
 /**
  * @brief Logging levels enumeration
  */
-enum class log_level : uint8_t
+enum class log_level : std::uint8_t
 {
   TRACE = 0,
   DEBUG = 1,

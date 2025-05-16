@@ -18,7 +18,7 @@ using SurfaceInspector::maths::Statistics;
 // *** CONSTRUCTION / DESTRUCTION  *** //
 // *********************************** //
 template <typename T>
-Histogram<T>::Histogram(vector<T> x, size_t n, bool relative, bool density) :
+Histogram<T>::Histogram(std::vector<T> x, std::size_t n, bool relative, bool density) :
     n(n)
 {
     // Extract min and max values
@@ -41,8 +41,8 @@ template <typename T>
 Histogram<T>::Histogram(
     T xmin,
     T xmax,
-    vector<T> x,
-    size_t n,
+    std::vector<T> x,
+    std::size_t n,
     bool relative,
     bool density
 ) :
@@ -91,7 +91,7 @@ size_t Histogram<T>::absCumsum(size_t const start, size_t const end){
 // ***  INNER METHODS  *** //
 // *********************** //
 template <typename T>
-void Histogram<T>::extractMinMax(vector<T> const &x){
+void Histogram<T>::extractMinMax(std::vector<T> const &x){
     xmin = Vector<T>::min(x);
     xmax = Vector<T>::max(x);
 }
@@ -100,21 +100,21 @@ template <typename T>
 void Histogram<T>::computeBinningIntervals(){
     delta = xmax - xmin;
     step = delta / ((T)n);
-    a = vector<T>(0);
-    b = vector<T>(0);
-    for(size_t i = 0 ; i < n ; ++i){
+    a = std::vector<T>(0);
+    b = std::vector<T>(0);
+    for(std::size_t i = 0 ; i < n ; ++i){
         a.push_back(xmin + step * i);
         b.push_back(xmin + step * (i+1));
     }
 }
 
 template <typename T>
-void Histogram<T>::recount(vector<T> const &x){
+void Histogram<T>::recount(std::vector<T> const &x){
     m = x.size();
-    c = vector<size_t>(n, 0);
-    size_t cIdx; // Index of bin which count must be increased
+    c = std::vector<std::size_t>(n, 0);
+    std::size_t cIdx; // Index of bin which count must be increased
     for(T const &xi : x){
-        cIdx = (size_t) std::floor((xi-xmin)/delta * n);
+        cIdx = (std::size_t) std::floor((xi-xmin)/delta * n);
         if(cIdx >= n) cIdx = n-1;
         c[cIdx] += 1;
     }
@@ -122,8 +122,8 @@ void Histogram<T>::recount(vector<T> const &x){
 
 template <typename T>
 void Histogram<T>::computeRelativeFrequencies() {
-    r = vector<double>(n);
-    for(size_t i = 0 ; i < n ; ++i){
+    r = std::vector<double>(n);
+    for(std::size_t i = 0 ; i < n ; ++i){
         r[i] = c[i] / ((double)m);
     }
 }
@@ -132,9 +132,9 @@ template <typename T>
 void Histogram<T>::computeDensity(){
     // Compute unitary area norm
     norm = 0.0;
-    for(size_t i = 0 ; i < n ; ++i) norm += step*c[i];
+    for(std::size_t i = 0 ; i < n ; ++i) norm += step*c[i];
 
     // Compute density for each bin
-    d = vector<double>(n);
-    for(size_t i = 0 ; i < n ; ++i) d[i] = c[i] / norm;
+    d = std::vector<double>(n);
+    for(std::size_t i = 0 ; i < n ; ++i) d[i] = c[i] / norm;
 }

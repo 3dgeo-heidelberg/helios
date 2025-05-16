@@ -1,5 +1,6 @@
 #pragma once
 
+#include <BaseTest.h>
 #include <noise/NormalNoiseSource.h>
 #include <noise/UniformNoiseSource.h>
 

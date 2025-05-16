@@ -1,8 +1,12 @@
 #pragma once
 
+#include <file_logger.hpp>
+#include <full_logger.hpp>
 #include <logging_common.hpp>
 #include <logging_creation.hpp>
 #include <std_out_logger.hpp>
+
+#include <exception>
 
 /**
  * @brief Logger factory class can be used to build loggers

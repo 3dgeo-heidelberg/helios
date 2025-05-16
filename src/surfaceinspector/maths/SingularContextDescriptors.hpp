@@ -1,9 +1,8 @@
 #pragma once
 
-#include <vector>
+#include <surfaceinspector/util/Object.hpp>
 
-using std::vector;
-using SurfaceInspector::util::Object;
+#include <vector>
 
 namespace SurfaceInspector {
 namespace maths {
@@ -18,7 +17,7 @@ namespace maths {
  * @see SurfaceInspector::maths::SingularContextComputer
  */
 template<typename T>
-class SingularContextDescriptors : public Object
+class SingularContextDescriptors : public SurfaceInspector::util::Object
 {
 public:
   // ***  ATTRIBUTES  *** //
@@ -37,42 +36,42 @@ public:
    * @brief The indices of components from worst fitting vector which
    *  explain the least
    */
-  vector<size_t> worstVectorMinIndices;
+  std::vector<std::size_t> worstVectorMinIndices;
   /**
    * @brief The indices of components from worst fitting vector which
    *  explain the most
    */
-  vector<size_t> worstVectorMaxIndices;
+  std::vector<std::size_t> worstVectorMaxIndices;
   /**
    * @brief The indices of components from best fitting vector which
    *  explain the least
    */
-  vector<size_t> bestVectorMinIndices;
+  std::vector<std::size_t> bestVectorMinIndices;
   /**
    * @brief The indices of components from best fitting vector which
    *  explain the most
    */
-  vector<size_t> bestVectorMaxIndices;
+  std::vector<std::size_t> bestVectorMaxIndices;
   /**
    * @brief The unitary components of the worst fitting vector which
    *  explain the least
    */
-  vector<T> worstVectorMinComponents;
+  std::vector<T> worstVectorMinComponents;
   /**
    * @brief The unitary components of the worst fitting vector which
    *  explain the most
    */
-  vector<T> worstVectorMaxComponents;
+  std::vector<T> worstVectorMaxComponents;
   /**
    * @brief The unitary components of the best fitting vector which
    *  explain the least
    */
-  vector<T> bestVectorMinComponents;
+  std::vector<T> bestVectorMinComponents;
   /**
    * @brief The unitary components of the best fitting vector which
    *  explain the most
    */
-  vector<T> bestVectorMaxComponents;
+  std::vector<T> bestVectorMaxComponents;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <filems/write/comps/SimpleSyncFileWriter.h>
 #include <filems/write/comps/SimpleSyncFileTrajectoryWriter.h>
+#include <filems/write/comps/SimpleSyncFileWriter.h>
 #include <filems/write/strategies/DirectTrajectoryWriteStrategy.h>
 
 #include <memory>

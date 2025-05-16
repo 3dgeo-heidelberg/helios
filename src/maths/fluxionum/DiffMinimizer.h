@@ -2,7 +2,9 @@
 
 #include <Minimizer.h>
 
+#include <boost/serialization/base_object.hpp>
 #include <boost/serialization/serialization.hpp>
+#include <boost/serialization/void_cast.hpp>
 
 #include <vector>
 

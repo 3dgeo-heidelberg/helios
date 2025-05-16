@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filems/read/exceptions/EndOfReadingException.h>
 #include <filems/read/strategies/ReadingStrategy.h>
 
 #include <queue>
@@ -27,7 +28,7 @@ protected:
    * @brief The maximum number of ReadArg type elements that a buffer is
    *  allowed to hold
    */
-  size_t bufferSize;
+  std::size_t bufferSize;
   /**
    * @brief The buffer where multiple consecutive reads are stored
    */
@@ -40,12 +41,12 @@ protected:
   /**
    * @brief The cached index defining the state of the buffer
    */
-  size_t cachedIndex = 0;
+  std::size_t cachedIndex = 0;
   /**
    * @brief The cached index defining the next to the greatest
    *  admissible index for the current state of the buffer
    */
-  size_t cachedMaxIndex = 0;
+  std::size_t cachedMaxIndex = 0;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -55,7 +56,7 @@ public:
    * @see BufferedReadingStrategy::readingStrategy
    */
   BufferedReadingStrategy(ReadingStrategy<ReadArg>& readingStrategy,
-                          size_t const bufferSize = 256)
+                          std::size_t const bufferSize = 256)
     : bufferSize(bufferSize)
     , readingStrategy(readingStrategy)
   {
@@ -75,7 +76,7 @@ public:
   {
     // When buffer is not empty : read next element (FIFO)
     if (!isBufferEmpty()) {
-      size_t const bufferIndex = cachedIndex;
+      std::size_t const bufferIndex = cachedIndex;
       ++cachedIndex;
       --cachedMaxIndex;
       return buffer[bufferIndex];
@@ -116,14 +117,14 @@ public:
    * @see filems::BufferedReadingStrategy::bufferSize
    * @see filems::BufferedReadingStrategy::setBufferSize
    */
-  virtual inline size_t getBufferSize() { return bufferSize; }
+  virtual inline std::size_t getBufferSize() { return bufferSize; }
   /**
    * @brief Set the buffer size and update the buffer to fit
    * @param bufferSize The new buffer size
    * @see filems::BufferedReadingStrategy::bufferSize
    * @see filems::BufferedReadingStrategy::getBufferSize
    */
-  virtual inline void setBufferSize(size_t const bufferSize)
+  virtual inline void setBufferSize(std::size_t const bufferSize)
   {
     this->bufferSize = bufferSize;
     delete[] this->buffer;

@@ -4,7 +4,6 @@
 #include <surfaceinspector/util/Object.hpp>
 #include <vector>
 
-using std::vector;
 using SurfaceInspector::util::Object;
 
 namespace SurfaceInspector {
@@ -35,7 +34,7 @@ public:
    *  calculated
    */
   template<typename T>
-  static T manhattan(vector<T> const& p, vector<T> const& q);
+  static T manhattan(std::vector<T> const& p, std::vector<T> const& q);
   /**
    * @brief Compute the euclidean distance between p and q
    *
@@ -50,7 +49,7 @@ public:
    *  calculated
    */
   template<typename T>
-  static T euclidean(vector<T> const& p, vector<T> const& q);
+  static T euclidean(std::vector<T> const& p, std::vector<T> const& q);
   /**
    * @see Distances::euclidean(vector<T> const&, vector<T> const &)
    */
@@ -80,7 +79,7 @@ public:
    *  calculated
    */
   template<typename T>
-  static T minkowski(int d, vector<T> const& p, vector<T> const& q);
+  static T minkowski(int d, std::vector<T> const& p, std::vector<T> const& q);
 };
 }
 }

@@ -10,11 +10,6 @@
 
 namespace fluxionum {
 
-using namespace helios::filems;
-
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

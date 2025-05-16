@@ -1,7 +1,7 @@
 #pragma once
 
-#include <KDTreeNode.h>
 #include <KDTreeFactoryThreadPool.h>
+#include <KDTreeNode.h>
 #include <SharedTaskSequencer.h>
 #include <SimpleKDTreeFactory.h>
 #include <SimpleKDTreeGeometricStrategy.h>

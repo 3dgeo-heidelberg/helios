@@ -1,5 +1,6 @@
 #pragma once
 
+#include <BaseTest.h>
 #include <noise/RandomnessGenerator.h>
 
 // Defines below are commented because they are only needed for old std::random

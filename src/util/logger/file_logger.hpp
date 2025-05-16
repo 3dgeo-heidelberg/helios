@@ -4,7 +4,6 @@
 
 #include <fstream>
 
-
 // TODO: add log rolling
 // logger that writes to file
 /**

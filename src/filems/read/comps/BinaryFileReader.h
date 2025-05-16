@@ -8,9 +8,6 @@
 namespace helios {
 namespace filems {
 
-using std::ios_base;
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -32,8 +29,8 @@ public:
    * @see filems::SimpleFileReader::SimpleFileReader
    */
   BinaryFileReader(string const& path,
-                   ios_base::openmode openMode = ios_base::in)
-    : SimpleFileReader<int>(path, in)
+                   std::ios_base::openmode openMode = std::ios_base::in)
+    : SimpleFileReader<int>(path, std::ios_base::in)
   {
     makeStrategy();
   }
@@ -48,7 +45,7 @@ protected:
    */
   void makeStrategy() override
   {
-    readingStrategy = make_shared<BinaryReadingStrategy>(ifs);
+    readingStrategy = std::make_shared<BinaryReadingStrategy>(ifs);
   }
 };
 

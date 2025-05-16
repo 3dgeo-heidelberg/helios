@@ -1,5 +1,10 @@
 #pragma once
 
+#include <boost/serialization/access.hpp>
+
+#include <functional>
+#include <vector>
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -43,7 +48,7 @@ protected:
    *  to the starting element of a block of blockSize elements
    * @see BlockAllocator::lastBlock
    */
-  vector<Class*> blocks;
+  std::vector<Class*> blocks;
   /**
    * @brief The number of already used elements in last block
    * @see BlockAllocator::lastBlock
@@ -133,5 +138,5 @@ public:
    * @brief Obtain a vector with pointers to start of allocated blocks
    * @return Vector with pointers to start of allocated blocks
    */
-  virtual inline vector<Class*> getBlocks() const { return blocks; }
+  virtual inline std::vector<Class*> getBlocks() const { return blocks; }
 };

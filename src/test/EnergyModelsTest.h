@@ -1,5 +1,7 @@
 #pragma once
 
+#include <BaseTest.h>
+#include <SingleScanner.h>
 #include <maths/EnergyMaths.h>
 #include <scanner/detector/FullWaveformPulseRunnable.h>
 

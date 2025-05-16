@@ -2,6 +2,8 @@
 
 #include <HeliosException.h>
 
+#include <boost/serialization/access.hpp>
+
 #include <memory>
 #include <string>
 #include <vector>

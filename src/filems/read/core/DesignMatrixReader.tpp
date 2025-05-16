@@ -1,27 +1,22 @@
-using namespace helios::filems;
-using namespace fluxionum;
-using std::string;
-using std::vector;
-
 // ***  READING METHODS  *** //
 // ************************* //
 template <typename VarType>
-DesignMatrix<VarType> DesignMatrixReader<VarType>::read(
+fluxionum::DesignMatrix<VarType> helios::filems::DesignMatrixReader<VarType>::read(
     std::unordered_map<string, string> *keyval
 ){
     // Prepare variables
-    vector<string> header;
-    vector<VarType> values;
+    std::vector<string> header;
+    std::vector<VarType> values;
     bool firstRow = true;
-    size_t nValuesPerRow = 0;
+    std::size_t nValuesPerRow = 0;
     try{
         // Parsing loop : fill variables
         while(true){
-            string const str = br.read();
-            size_t const comIdx = str.find(com);
-            size_t const nonEmptyIdx = str.find_first_not_of(" \t");
+            std::string const str = br.read();
+            std::size_t const comIdx = str.find(com);
+            std::size_t const nonEmptyIdx = str.find_first_not_of(" \t");
             if(comIdx==nonEmptyIdx) parseComment(str, comIdx, header, keyval);
-            else if(nonEmptyIdx!=string::npos){
+            else if(nonEmptyIdx!=std::string::npos){
                 parseRow(str, nonEmptyIdx, values);
                 if(firstRow){
                     nValuesPerRow = values.size();
@@ -32,7 +27,7 @@ DesignMatrix<VarType> DesignMatrixReader<VarType>::read(
     }
     catch(EndOfReadingException &eofrex){} // Catch on end of reading
     // Build the DesignMatrix
-    size_t const nRows = values.size() / nValuesPerRow;
+    std::size_t const nRows = values.size() / nValuesPerRow;
     arma::Mat<VarType> X(nRows, nValuesPerRow);
     for(size_t i = 0 ; i < nRows ; ++i){
         size_t const rowOffset = i*nValuesPerRow;
@@ -41,35 +36,37 @@ DesignMatrix<VarType> DesignMatrixReader<VarType>::read(
         }
     }
     // Return
-    return DesignMatrix<VarType>(X, header);
+    return fluxionum::DesignMatrix<VarType>(X, header);
 }
 
 // ***  PARSING UTILS  *** //
 // *********************** //
-template <typename VarType> void DesignMatrixReader<VarType>::parseComment(
-    string const &str,
-    size_t const comIdx,
-    vector<string> &header,
-    unordered_map<string, string> *keyval
+template <typename VarType>
+void helios::filems::DesignMatrixReader<VarType>::parseComment(
+    std::string const &str,
+    std::size_t const comIdx,
+    std::vector<string> &header,
+    std::unordered_map<string, string> *keyval
 ){
     size_t colonIdx;
     if(isSpecComment(str, colonIdx)){
-        string key, val;
+        std::string key, val;
         extractSpecCommentKeyValue(str, comIdx, colonIdx, key, val);
         if(key=="HEADER") parseColumnNames(val, header);
         else if(keyval != nullptr) keyval->emplace(key, val);
     }
 }
 
-template <typename VarType> void DesignMatrixReader<VarType>::parseRow(
-    string const &str,
-    size_t const nonEmptyIdx,
-    vector<VarType> &values
+template <typename VarType>
+void helios::filems::DesignMatrixReader<VarType>::parseRow(
+    std::string const &str,
+    std::size_t const nonEmptyIdx,
+    std::vector<VarType> &values
 ){
     // Make string s initially as str[nonEmptyIdx:] without spaces and tabs
-    string s = str.substr(nonEmptyIdx);
-    size_t n = s.size();
-    size_t eraseStart = string::npos;
+    std::string s = str.substr(nonEmptyIdx);
+    std::size_t n = s.size();
+    std::size_t eraseStart = std::string::npos;
     for(size_t i = 0 ; i < n ; ++i){
         // TODO Rethink : Ignore space or tab if they are the separator
         if(s[i]==' ' || s[i]=='\t'){
@@ -92,34 +89,36 @@ template <typename VarType> void DesignMatrixReader<VarType>::parseRow(
     }
 }
 
-template <typename VarType> bool DesignMatrixReader<VarType>::isSpecComment(
-    string const &str,
-    size_t &colonIdx
+template <typename VarType>
+bool helios::filems::DesignMatrixReader<VarType>::isSpecComment(
+    std::string const &str,
+    std::size_t &colonIdx
 ){
     colonIdx = str.find(':');
     return colonIdx != string::npos;
 }
 
-template <typename VarType> void
-DesignMatrixReader<VarType>::extractSpecCommentKeyValue(
-    string const &str,
-    size_t const comIdx,
-    size_t const colonIdx,
-    string &key,
-    string &val
+template <typename VarType>
+void helios::filems::DesignMatrixReader<VarType>::extractSpecCommentKeyValue(
+    std::string const &str,
+    std::size_t const comIdx,
+    std::size_t const colonIdx,
+    std::string &key,
+    std::string &val
 ){
     key = str.substr(comIdx+com.size(), colonIdx-comIdx-com.size());
     val = str.substr(colonIdx+1);
 }
 
-template <typename VarType> void DesignMatrixReader<VarType>::parseColumnNames(
-    string const &val,
-    vector<string> &header
+template <typename VarType>
+void helios::filems::DesignMatrixReader<VarType>::parseColumnNames(
+    std::string const &val,
+    std::vector<std::string> &header
 ){
     bool insideName = false;
-    size_t const nChars = val.size();
-    size_t nameStart;
-    for(size_t i = 0 ; i < nChars ; ++i){
+    std::size_t const nChars = val.size();
+    std::size_t nameStart;
+    for(std::size_t i = 0 ; i < nChars ; ++i){
         if(val[i]=='\"'){
             insideName = !insideName;
             if(insideName) nameStart = i;

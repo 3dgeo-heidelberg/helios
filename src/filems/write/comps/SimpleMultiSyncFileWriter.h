@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filems/write/comps/MultiSyncFileWriter.h>
+
 namespace helios {
 namespace filems {
 

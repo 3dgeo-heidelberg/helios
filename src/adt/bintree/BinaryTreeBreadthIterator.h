@@ -4,6 +4,8 @@
 #include <ITreeIterator.h>
 #include <IterableTreeNode.h>
 
+#include <boost/serialization/base_object.hpp>
+
 #include <deque>
 #include <iterator>
 

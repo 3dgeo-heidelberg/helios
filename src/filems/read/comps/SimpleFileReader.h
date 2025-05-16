@@ -9,11 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::ifstream;
-using std::ios_base;
-using std::make_shared;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -28,6 +23,7 @@ class SimpleFileReader : public FileReader<ReadArg>
 protected:
   // ***  USING  *** //
   // *************** //
+  using FileReader<ReadArg>::setPath;
   using FileReader<ReadArg>::readingStrategy;
   using FileReader<ReadArg>::makeStrategy;
 
@@ -36,12 +32,12 @@ protected:
   /**
    * @brief The input file stream to read from
    */
-  ifstream ifs;
+  std::ifstream ifs;
   /**
    * @brief The open mode flags for the input file stream
    * @see filems::SimpleFileReader::ifs
    */
-  ios_base::openmode openMode;
+  std::ios_base::openmode openMode;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -53,7 +49,7 @@ public:
    * @see filems::SimpleFileReader::openMode
    */
   SimpleFileReader(string const& path,
-                   ios_base::openmode openMode = ios_base::in)
+                   std::ios_base::openmode openMode = std::ios_base::in)
     : FileReader<ReadArg>(path)
     , ifs(path, openMode)
     , openMode(openMode)
@@ -87,11 +83,11 @@ public:
    *  previous input file stream is closed before opening the new one.
    * @see filems::FileReader::setPath
    */
-  void setPath(string const& path) override
+  void setPath(std::string const& path) override
   {
-    FileReader<string>::setPath(path);
+    setPath(path);
     ifs.close();
-    ifs = ifstream(path, openMode);
+    ifs = std::ifstream(path, openMode);
     makeStrategy();
   }
 };

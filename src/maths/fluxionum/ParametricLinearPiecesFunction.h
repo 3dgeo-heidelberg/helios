@@ -60,9 +60,9 @@ public:
    * @see fluxionum::ParametricLinearPiecesFunction::slope
    * @see fluxionum::ParametricLinearPiecesFunction::intercept
    */
-  ParametricLinearPiecesFunction(Col<A> const& start,
-                                 Mat<B> const& slope,
-                                 Mat<B> const& intercept)
+  ParametricLinearPiecesFunction(arma::Col<A> const& start,
+                                 arma::Mat<B> const& slope,
+                                 arma::Mat<B> const& intercept)
     : start(start)
     , slope(slope)
     , intercept(intercept)

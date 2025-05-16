@@ -5,6 +5,8 @@
 #include <surfaceinspector/maths/Scalar.hpp>
 
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 using SurfaceInspector::maths::Scalar;
 
@@ -172,7 +174,7 @@ public:
     int const initDepth = (int)std::ceil(std::log2(tIdx + 1)); // d_*
     RandomAccessIterator workA = begin;
     std::vector<RandomAccessIterator> workB(1, end);
-    vector<std::shared_ptr<
+    std::vector<std::shared_ptr<
       SM_ParallelMergeSortSubTask<RandomAccessIterator, Comparator>>>
       childrenTasks(0);
 
