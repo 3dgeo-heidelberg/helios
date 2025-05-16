@@ -6,6 +6,7 @@
 
 #include <maths/EnergyMaths.h>
 #include <scanner/detector/FullWaveformPulseRunnable.h>
+#include <SingleScanner.h>
 
 TEST_CASE( "Energy Models Test ") {
     double const eps = 0.00001;
