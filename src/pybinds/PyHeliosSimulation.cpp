@@ -285,13 +285,6 @@ PyHeliosSimulation::join()
       survey->scanner->fms->write.getMeasurementWriterOutputPath().string();
   }
 
-  // Obtain measurements output path
-  std::string mwOutPath = "";
-  if (exportToFile) {
-    mwOutPath =
-      survey->scanner->fms->write.getMeasurementWriterOutputPath().string();
-  }
-
   // Callback concurrency handling (NON BLOCKING MODE)
   if (callbackFrequency != 0 && callback != nullptr) {
     if (!playback->finished) {
