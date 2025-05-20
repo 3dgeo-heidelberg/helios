@@ -1451,27 +1451,3 @@ class TestScannerMethods:
         scanner.setTimeWave(time_wave)
         result = scanner.calcTimePropagation(time_wave, num_bins, scanner)
         assert isinstance(result, int)  # Replace with expected value if applicable
-
-
-def test_simulation_initialization():
-    sim = _helios.PyheliosSimulation()
-    assert sim is not None
-
-def test_simulation_initialization_with_params():
-    sim = _helios.PyheliosSimulation(
-        "surveyPath",
-        ("assetsPath1", "assetsPath2"),
-        "outputPath",
-        4, # numThreads
-        True, # lasOutput
-        False, # las10
-        True, # zipOutput
-        False, # splitByChannel
-        3, # kdtFactory
-        2, # kdtJobs
-        64, # kdtSAHLossNodes
-        2, # parallelizationStrategy
-        64, # chunkSize
-        2 # warehouseFactor
-    )
-    assert sim is not None

@@ -3,7 +3,7 @@
 #include <filems/read/comps/LineFileReader.h>
 #include <filems/read/strategies/BufferedReadingStrategy.h>
 #include <filems/read/strategies/LineReadingStrategy.h>
-
+#include <optional>
 namespace helios { namespace filems{
 
 class BufferedLineFileReader : public LineFileReader{
@@ -21,7 +21,7 @@ protected:
      *  operation
      * @see filems::LineReadingStrategy
      */
-    LineReadingStrategy lrs;
+    std::optional<LineReadingStrategy> lrs;
     /**
      * @brief The buffer size for the buffered strategy
      */
@@ -40,7 +40,7 @@ public:
         size_t const bufferSize = 100000
     ) :
         LineFileReader(path, openMode, maxCharsPerLine, false),
-        lrs(ifs, this->maxCharsPerLine),
+        lrs(std::in_place, ifs, this->maxCharsPerLine),
         bufferSize(bufferSize)
     {makeBufferedStrategy();}
     ~BufferedLineFileReader() override = default;
@@ -54,7 +54,7 @@ protected:
      * @see LineFileReader::makeStrategy
      */
     void makeStrategy() override{
-        new (&lrs) LineReadingStrategy(ifs, maxCharsPerLine);
+        lrs.emplace(ifs, maxCharsPerLine);
         makeBufferedStrategy();
     }
     /**
@@ -63,7 +63,7 @@ protected:
      */
     virtual void makeBufferedStrategy() {
         readingStrategy = make_shared<BufferedReadingStrategy<string>>(
-            lrs,
+            *lrs,
             bufferSize
         );
     }

@@ -15,7 +15,7 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     SimpleKDTreeFactory(),
     kdtf(kdtf),
     gs(gs),
-    tpNode(numJobs),
+    tpNode(std::in_place, numJobs),
     minTaskPrimitives(32),
     numJobs(numJobs),
     geomJobs(geomJobs),
@@ -83,10 +83,10 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
         masters->joinAll(); // Join masters threads from geometry-level
         size_t geomJobsToBeReleased = geomJobs-finishedGeomJobs;
         if(geomJobsToBeReleased > 0){
-            tpNode.safeSubtractPendingTasks(geomJobsToBeReleased);
+            tpNode->safeSubtractPendingTasks(geomJobsToBeReleased);
         }
     }
-    tpNode.join(); // Join auxiliar threads from node-level
+    tpNode->join(); // Join auxiliar threads from node-level
     if(root == nullptr){
         /*
          * NOTICE building a null KDTree is not necessarily a bug.
@@ -244,7 +244,7 @@ void MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
     if(depth == maxGeometryDepth){
         // Move auxiliar threads from geometry thread pool to node thread pool
         if(auxiliarThreads > 0){
-            tpNode.safeSubtractPendingTasks(auxiliarThreads);
+            tpNode->safeSubtractPendingTasks(auxiliarThreads);
             increaseFinishedGeomJobsCount(auxiliarThreads);
         }
         // Recursively build children nodes
@@ -258,7 +258,7 @@ void MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
             rightPrimitives
         );
         // Allow one more thread to node-level pool when master thread finishes
-        tpNode.safeSubtractPendingTasks(1);
+        tpNode->safeSubtractPendingTasks(1);
         increaseFinishedGeomJobsCount(1);
     }
     else{
@@ -292,7 +292,7 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
             depth,
             index
         );
-        posted = tpNode.try_run_md_task(
+        posted = tpNode->try_run_md_task(
             [&] (
                 KDTreeNode *parent,
                 bool const left,
@@ -332,21 +332,18 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
 void MultiThreadKDTreeFactory::prepareToMake(){
     // If first use, mark it as already used for future cases
     if(notUsed) notUsed = false;
-    else{ // If it has been used before
-        // Destroy old thread pool in place
-        tpNode.KDTreeFactoryThreadPool::~KDTreeFactoryThreadPool();
-        // Initialize node-level parallelization thread pool in place
-        new (&tpNode) KDTreeFactoryThreadPool(numJobs);
+    else{ 
+        tpNode.emplace(numJobs);
     }
 
     // Prepare parallelization strategies (see header doc for more info)
     if(geomJobs == 1){
-        tpNode.setPendingTasks(0);
+        tpNode->setPendingTasks(0);
         maxGeometryDepth = -1;
         masters = nullptr;
     }
     else if(geomJobs > 1){
-        tpNode.setPendingTasks(geomJobs);
+        tpNode->setPendingTasks(geomJobs);
         maxGeometryDepth = (int) std::floor(std::log2(geomJobs));
         masters = std::make_shared<SharedTaskSequencer>(
             Scalar<int>::pow2(maxGeometryDepth)-1
