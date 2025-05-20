@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 #include <vector>
-using namespace std;
 
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
@@ -12,23 +11,23 @@ using namespace std;
 
 #include "MaterialsFileReader.h"
 
-map<string, Material>
-MaterialsFileReader::loadMaterials(string filePathString)
+std::map<std::string, Material>
+MaterialsFileReader::loadMaterials(std::string filePathString)
 {
-  ifstream ifs;
+  std::ifstream ifs;
   Material newMat;
-  map<string, Material> newMats;
+  std::map<std::string, Material> newMats;
   bool firstMaterial = true;
 
   logging::DEBUG("Reading materials from .mtl file '" + filePathString + "'");
-  string line;
+  std::string line;
 
   try {
-    ifs = ifstream(filePathString, ifstream::binary);
+    ifs = std::ifstream(filePathString, std::ifstream::binary);
     while (getline(ifs, line)) {
       if (line.empty() || line == "\r" || line == "\r\n" || line == "\n")
         continue;
-      vector<string> lineParts;
+      std::vector<std::string> lineParts;
       boost::regex_split(
         std::back_inserter(lineParts), line, boost::regex("\\s+"));
 
@@ -38,7 +37,7 @@ MaterialsFileReader::loadMaterials(string filePathString)
         if (firstMaterial)
           firstMaterial = false;
         else
-          newMats.insert(pair<string, Material>(newMat.name, newMat));
+          newMats.insert(std::pair<std::string, Material>(newMat.name, newMat));
         newMat = Material();
         newMat.matFilePath = filePathString;
         newMat.name = lineParts[1];
@@ -94,7 +93,8 @@ MaterialsFileReader::loadMaterials(string filePathString)
 
     // Don't forget to put final material to the map:
     newMat.setSpecularity(); // Specularity scalar from components
-    newMats.insert(newMats.end(), pair<string, Material>(newMat.name, newMat));
+    newMats.insert(newMats.end(),
+                   std::pair<std::string, Material>(newMat.name, newMat));
     std::stringstream ss;
     ss << newMats.size() << " material(s) loaded.";
     logging::DEBUG(ss.str());

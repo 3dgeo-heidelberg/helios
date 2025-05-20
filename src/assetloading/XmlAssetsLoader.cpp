@@ -42,8 +42,6 @@ namespace fs = boost::filesystem;
 #include "MathConverter.h"
 #include "TimeWatcher.h"
 
-using std::unique_ptr;
-
 // ***  CONSTANTS  *** //
 // ******************* //
 std::string const XmlAssetsLoader::defaultScannerSettingsMsg =
@@ -525,13 +523,14 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
     if (!alreadyLoaded) { // Load trajectory data if not already loaded
       if (platform->tdm == nullptr) { // First loaded trajectory
         if (indices.find(trajectoryPath) != indices.end()) { // XML inds
-          DesignMatrix<double> dm(trajectoryPath, sep);
+          fluxionum::DesignMatrix<double> dm(trajectoryPath, sep);
           dm.swapColumns(indices[trajectoryPath]);
           platform->tdm =
-            std::make_shared<TemporalDesignMatrix<double, double>>(dm, 0);
+            std::make_shared<fluxionum::TemporalDesignMatrix<double, double>>(
+              dm, 0);
         } else { // Trajectory file indices
           platform->tdm =
-            std::make_shared<TemporalDesignMatrix<double, double>>(
+            std::make_shared<fluxionum::TemporalDesignMatrix<double, double>>(
               trajectoryPath, sep);
           if (interpDom == "position") { // t, x, y, z from header
             vector<unsigned long long> inds({ 0, 1, 2 });
@@ -601,15 +600,18 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
       } else {
         // Not first loaded, so merge with previous data
         auto resolved_path = locateAssetFile(trajectoryPath).string();
-        std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
+        std::unique_ptr<fluxionum::TemporalDesignMatrix<double, double>> tdm;
         if (indices.find(trajectoryPath) != indices.end()) { // XML inds
-          DesignMatrix<double> dm(resolved_path, sep);
+          fluxionum::DesignMatrix<double> dm(resolved_path, sep);
           dm.swapColumns(indices[trajectoryPath]);
-          tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
-            new TemporalDesignMatrix<double, double>(dm, 0));
+          tdm =
+            std::unique_ptr<fluxionum::TemporalDesignMatrix<double, double>>(
+              new fluxionum::TemporalDesignMatrix<double, double>(dm, 0));
         } else { // Trajectory file indices
-          tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
-            new TemporalDesignMatrix<double, double>(resolved_path, sep));
+          tdm =
+            std::unique_ptr<fluxionum::TemporalDesignMatrix<double, double>>(
+              new fluxionum::TemporalDesignMatrix<double, double>(resolved_path,
+                                                                  sep));
           if (interpDom == "position") { // t, x, y, z from header
             vector<unsigned long long> inds({ 0, 1, 2 });
             vector<string> const& names = tdm->getColumnNames();
@@ -691,7 +693,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
 
   // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
   platform->ddm = platform->tdm->toDiffDesignMatrixPointer(
-    DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES, false);
+    fluxionum::DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES, false);
 
   // Configure interpolation scope
   if (interpDom == "position") {
@@ -717,7 +719,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
   string basePlatformLocation = boost::get<string>(
     XmlUtils::getAttribute(survey, "basePlatform", "string", string("")));
   if (basePlatformLocation.size() > 0) { // If so, ScannerMount from base plat.
-    std::shared_ptr<Platform> bp = dynamic_pointer_cast<Platform>(
+    std::shared_ptr<Platform> bp = std::dynamic_pointer_cast<Platform>(
       getAssetByLocation("platform", basePlatformLocation));
     platform->cfg_device_relativeMountPosition =
       bp->cfg_device_relativeMountPosition;
@@ -927,12 +929,12 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
         std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr =
           XmlUtils::createUnivarExprTree<double>(deflectionErrorNode,
                                                  { { "THETA", "t" } });
-        beamDeflector =
-          make_shared<EvalPolygonMirrorBeamDeflector>(scanFreqMax_Hz,
-                                                      scanFreqMin_Hz,
-                                                      scanAngleMax_rad,
-                                                      scanAngleEffectiveMax_rad,
-                                                      vertAngErrExpr);
+        beamDeflector = std::make_shared<EvalPolygonMirrorBeamDeflector>(
+          scanFreqMax_Hz,
+          scanFreqMin_Hz,
+          scanAngleMax_rad,
+          scanAngleEffectiveMax_rad,
+          vertAngErrExpr);
       } else {
         throw HeliosException(
           "XmlAssetsLoader::createBeamDeflectorFromXml received a "

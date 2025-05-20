@@ -24,8 +24,8 @@ public:
     InterpolatedMovingPlatform::InterpolationScope::POSITION_AND_ATTITUDE;
   InterpolatedMovingPlatform::RotationSpec rotspec =
     InterpolatedMovingPlatform::RotationSpec::CANONICAL;
-  std::shared_ptr<TemporalDesignMatrix<double, double>> tdm;
-  std::shared_ptr<DiffDesignMatrix<double, double>> ddm;
+  std::shared_ptr<fluxionum::TemporalDesignMatrix<double, double>> tdm;
+  std::shared_ptr<fluxionum::DiffDesignMatrix<double, double>> ddm;
   bool syncGPSTime; // If true, set start GPS time to first time from data
   double startTime; // To be used when syncGPSTime is true and also to
                     // translate to simulation time s.t. -startTime

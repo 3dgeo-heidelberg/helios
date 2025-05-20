@@ -9,8 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -37,7 +35,8 @@ public:
     std::ios_base::openmode om = std::ios_base::app)
     : SimpleSyncFileWriter<Trajectory const&>(path, om)
   {
-    this->writeStrategy = make_shared<DirectTrajectoryWriteStrategy>(this->ofs);
+    this->writeStrategy =
+      std::make_shared<DirectTrajectoryWriteStrategy>(this->ofs);
   }
   virtual ~SimpleSyncFileTrajectoryWriter() = default;
 };

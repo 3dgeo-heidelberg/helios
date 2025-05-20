@@ -9,9 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -38,7 +35,7 @@ public:
     : SimpleSyncFileWriter<Measurement const&, glm::dvec3 const&>(path, om)
   {
     this->writeStrategy =
-      make_shared<DirectMeasurementWriteStrategy>(this->ofs);
+      std::make_shared<DirectMeasurementWriteStrategy>(this->ofs);
   }
   virtual ~SimpleSyncFileMeasurementWriter() = default;
 };

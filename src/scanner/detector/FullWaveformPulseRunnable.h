@@ -253,8 +253,8 @@ private:
    * @param v The ray director vector
    * @return Intersection between the scene and given ray
    */
-  virtual shared_ptr<RaySceneIntersection> findIntersection(
-    vector<double> const& tMinMax,
+  virtual std::shared_ptr<RaySceneIntersection> findIntersection(
+    std::vector<double> const& tMinMax,
     glm::dvec3 const& o,
     glm::dvec3 const& v) const;
   /**
@@ -262,7 +262,7 @@ private:
    */
   bool detectPeak(int const i,
                   int const win_size,
-                  vector<double> const& fullwave,
+                  std::vector<double> const& fullwave,
                   double const eps);
 
   /**

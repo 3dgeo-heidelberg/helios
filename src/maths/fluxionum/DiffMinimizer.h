@@ -6,11 +6,10 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/void_cast.hpp>
 
+#include <functional>
 #include <vector>
 
 namespace fluxionum {
-
-using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -54,7 +53,7 @@ protected:
    * @brief The derivatives of the function to be minimized such that
    *  df[i] corresponds with \f$\frac{d^if}{dx^i}\f$
    */
-  vector<function<OT(IT)>> df;
+  std::vector<std::function<OT(IT)>> df;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -63,7 +62,7 @@ public:
    * @brief Differential minimizer default constructor
    * @see fluxionum::DiffMinimizer::df
    */
-  DiffMinimizer(function<OT(IT)> f, vector<function<OT(IT)>> df)
+  DiffMinimizer(std::function<OT(IT)> f, std::vector<std::function<OT(IT)>> df)
     : Minimizer<IT, OT>(f)
     , df(df)
   {
@@ -77,34 +76,43 @@ public:
    * @return Derivatives of the function to be minimized
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual vector<function<OT(IT)>> getDerivatives() const { return df; }
+  virtual std::vector<std::function<OT(IT)>> getDerivatives() const
+  {
+    return df;
+  }
   /**
    * @brief Set the derivatives of the function to be minimized
    * @param df New vector of derivatives of the function to be minimized
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual void setDerivatives(vector<function<OT(IT)>> df) { this->df = df; }
+  virtual void setDerivatives(std::vector<std::function<OT(IT)>> df)
+  {
+    this->df = df;
+  }
   /**
    * @brief Obtain the number of available derivatives for the function to be
    *  minimized
    * @return Number of available derivatives for the function to be minimized
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual size_t numDerivatives() const { return df.size(); }
+  virtual std::size_t numDerivatives() const { return df.size(); }
   /**
    * @brief Obtain the i-th derivative for the function being minimized
    * @param i Index of the derivative to be obtained
    * @return i-th derivative for the function being minimized
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual function<OT(IT)> getDerivative(size_t const i) { return df[i]; }
+  virtual std::function<OT(IT)> getDerivative(std::size_t const i)
+  {
+    return df[i];
+  }
   /**
    * @brief Set the i-th derivative for the function being minimized
    * @param i Index of the derivative to be setted
    * @param df New i-th derivative for the function being minimized
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual void setDerivative(size_t const i, function<OT(IT)> df)
+  virtual void setDerivative(std::size_t const i, std::function<OT(IT)> df)
   {
     this->df[i] = df;
   }
@@ -113,12 +121,18 @@ public:
    * @param i Index of the derivative to be removed
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual void removeDerivative(size_t const i) { df.erase(df.begin() + i); }
+  virtual void removeDerivative(std::size_t const i)
+  {
+    df.erase(df.begin() + i);
+  }
   /**
    * @brief Append given derivative
    * @see fluxionum::DiffMinimizer::df
    */
-  virtual void addDerivative(function<OT(IT)> df) { this->df.push_back(df); }
+  virtual void addDerivative(std::function<OT(IT)> df)
+  {
+    this->df.push_back(df);
+  }
 };
 
 }

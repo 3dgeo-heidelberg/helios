@@ -1,9 +1,6 @@
-#ifndef _SURFACEINSPECTOR_MATHS_PERMUTERS_CNRINDEXPERMUTER_HPP_
-#define _SURFACEINSPECTOR_MATHS_PERMUTERS_CNRINDEXPERMUTER_HPP_
+#pragma once
 
 #include <surfaceinspector/maths/permuters/IPermuter.hpp>
-
-using SurfaceInspector::maths::permuters::IPermuter;
 
 namespace SurfaceInspector {
 namespace maths {
@@ -16,7 +13,7 @@ namespace permuters {
  *  going to be used to represent an index
  */
 template<typename T>
-class CNRIndexPermuter : public IPermuter<T>
+class CNRIndexPermuter : public SurfaceInspector::maths::permuters::IPermuter<T>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -41,7 +38,7 @@ protected:
   /**
    * @brief Current indices permutation
    */
-  vector<T> indices;
+  std::vector<T> indices;
   /**
    * @brief Index to be used as stop condition
    */
@@ -76,11 +73,11 @@ public:
   /**
    * @see IPermuter::next
    */
-  vector<T> next();
+  std::vector<T> next();
   /**
    * @see IPermuter::get
    */
-  inline vector<T> get() { return indices; }
+  inline std::vector<T> get() { return indices; }
 };
 
 }
@@ -88,5 +85,3 @@ public:
 }
 
 #include <maths/permuters/CNRIndexPermuter.tpp>
-
-#endif

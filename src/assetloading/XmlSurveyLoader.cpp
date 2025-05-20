@@ -1,31 +1,25 @@
-#include <chrono>
-using namespace std::chrono;
-
-#include <boost/algorithm/string.hpp>
-
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
-
-#include "typedef.h"
-#include <XmlUtils.h>
-#include <logging.hpp>
-
-#include "TimeWatcher.h"
-#include "XmlSurveyLoader.h"
 #include <RandomnessGenerator.h>
 #include <SerialSceneWrapper.h>
+#include <TimeWatcher.h>
+#include <XmlSurveyLoader.h>
+#include <XmlUtils.h>
 #include <adt/exprtree/UnivarExprTreeStringFactory.h>
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
+#include <logging.hpp>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
+
+#include <chrono>
+#include <memory>
 #include <unordered_set>
 
-using namespace glm;
-using namespace std;
+namespace fs = boost::filesystem;
 
-shared_ptr<Survey>
+std::shared_ptr<Survey>
 XmlSurveyLoader::load(bool legNoiseDisabled, bool rebuildScene)
 {
   tinyxml2::XMLNode* pRoot = doc.FirstChild();
@@ -36,7 +30,7 @@ XmlSurveyLoader::load(bool legNoiseDisabled, bool rebuildScene)
   tinyxml2::XMLElement* surveyNodes =
     pRoot->NextSiblingElement()->FirstChildElement("survey");
   if (surveyNodes == nullptr) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "XML Survey playback loader: "
        << "ERROR: No survey elements found in file " << this->xmlDocFilename;
     logging::WARN(ss.str());
@@ -46,14 +40,14 @@ XmlSurveyLoader::load(bool legNoiseDisabled, bool rebuildScene)
   return createSurveyFromXml(surveyNodes, legNoiseDisabled, rebuildScene);
 }
 
-shared_ptr<Survey>
+std::shared_ptr<Survey>
 XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
                                      bool legNoiseDisabled,
                                      bool rebuildScene)
 {
   // Prepare survey loading
   reinitLoader();
-  shared_ptr<Survey> survey = make_shared<Survey>();
+  std::shared_ptr<Survey> survey = std::make_shared<Survey>();
 
   // Load survey core
   loadSurveyCore(surveyNode, survey);
@@ -78,7 +72,7 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
   // failed.
 
   // Load scene
-  string sceneString = surveyNode->Attribute("scene");
+  std::string sceneString = surveyNode->Attribute("scene");
   survey->scanner->platform->scene = loadScene(sceneString, rebuildScene);
   SpectralLibrary spectralLibrary = SpectralLibrary(
     (float)survey->scanner->getWavelength(), assetsDir, "spectra");
@@ -118,7 +112,7 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
   return survey;
 }
 
-shared_ptr<Leg>
+std::shared_ptr<Leg>
 XmlSurveyLoader::createLegFromXML(
   tinyxml2::XMLElement* legNode,
   std::unordered_set<std::string>* scannerFields,
@@ -126,14 +120,14 @@ XmlSurveyLoader::createLegFromXML(
 
 )
 {
-  shared_ptr<Leg> leg = make_shared<Leg>();
+  std::shared_ptr<Leg> leg = std::make_shared<Leg>();
 
   // Leg serial ID
   ++lastLegSerialId;
   leg->setSerialId(lastLegSerialId);
 
   // Strip ID
-  std::string stripId = boost::get<string>(XmlUtils::getAttribute(
+  std::string stripId = boost::get<std::string>(XmlUtils::getAttribute(
     legNode, "stripId", "string", ScanningStrip::NULL_STRIP_ID));
   if (stripId != ScanningStrip::NULL_STRIP_ID) { // Handle strip
     std::shared_ptr<ScanningStrip> strip = nullptr;
@@ -162,7 +156,7 @@ XmlSurveyLoader::createLegFromXML(
     leg->mScannerSettings =
       createScannerSettingsFromXml(scannerSettingsNode, scannerFields);
   } else {
-    leg->mScannerSettings = make_shared<ScannerSettings>();
+    leg->mScannerSettings = std::make_shared<ScannerSettings>();
   }
 
   // Trajectory settings
@@ -186,25 +180,26 @@ XmlSurveyLoader::reinitLoader()
   lastLegSerialId = -1;
   strips.clear();
 }
-shared_ptr<Scene>
-XmlSurveyLoader::loadScene(string sceneString, bool rebuildScene)
+
+std::shared_ptr<Scene>
+XmlSurveyLoader::loadScene(std::string sceneString, bool rebuildScene)
 {
   logging::INFO("Loading Scene...");
 
-  shared_ptr<Scene> scene;
+  std::shared_ptr<Scene> scene;
   TimeWatcher tw;
   tw.start();
 
-  string sceneFullPath;
+  std::string sceneFullPath;
   try {
-    vector<string> paths;
+    std::vector<std::string> paths;
     boost::split(paths, sceneString, boost::is_any_of("#"));
     sceneFullPath = paths.at(0);
     sceneFullPath = sceneFullPath.substr(0, sceneFullPath.length() - 3);
   } catch (...) { // Case for having Survey and Scene in the same XML
     sceneFullPath = xmlDocFilePath.substr(0, xmlDocFilePath.length() - 3);
   }
-  string sceneObjPath = sceneFullPath + "scene";
+  std::string sceneObjPath = sceneFullPath + "scene";
   try {
     fs::path sceneObj(sceneObjPath);
     fs::path sceneXml(sceneFullPath + "xml");
@@ -224,11 +219,11 @@ XmlSurveyLoader::loadScene(string sceneString, bool rebuildScene)
         !rebuildScene) {
       SerialSceneWrapper* ssw =
         SerialSceneWrapper::readScene(sceneObj.string());
-      scene = shared_ptr<Scene>(ssw->getScene());
+      scene = std::shared_ptr<Scene>(ssw->getScene());
       delete ssw;
     } else {
       SerialSceneWrapper::SceneType sceneType;
-      scene = dynamic_pointer_cast<Scene>(
+      scene = std::dynamic_pointer_cast<Scene>(
         getAssetByLocation("scene", sceneString, &sceneType));
       if (writeScene) {
         SerialSceneWrapper(sceneType, scene.get())
@@ -241,8 +236,8 @@ XmlSurveyLoader::loadScene(string sceneString, bool rebuildScene)
        */
       scene->buildKDGroveWithLog();
     }
-  } catch (exception& e) {
-    stringstream ss;
+  } catch (std::exception& e) {
+    std::stringstream ss;
     ss << "EXCEPTION at XmlSurveyLoader::loadScene:\n\t" << e.what();
     logging::WARN(ss.str());
   }
@@ -253,7 +248,7 @@ XmlSurveyLoader::loadScene(string sceneString, bool rebuildScene)
   }
 
   tw.stop();
-  stringstream ss;
+  std::stringstream ss;
   ss << "Scene loaded in " << tw.getElapsedDecimalSeconds() << "s";
   logging::TIME(ss.str());
 
@@ -269,14 +264,14 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
     XmlUtils::getAttribute(surveyNode, "name", "string", xmlDocFilename));
   survey->sourceFilePath = xmlDocFilePath;
   // Load scanner
-  string scannerAssetLocation = boost::get<string>(
-    XmlUtils::getAttribute(surveyNode, "scanner", "string", string("")));
-  survey->scanner = dynamic_pointer_cast<Scanner>(
+  std::string scannerAssetLocation = boost::get<std::string>(
+    XmlUtils::getAttribute(surveyNode, "scanner", "string", std::string("")));
+  survey->scanner = std::dynamic_pointer_cast<Scanner>(
     getAssetByLocation("scanner", scannerAssetLocation));
   // Load platform
-  string platformAssetLocation = boost::get<string>(
-    XmlUtils::getAttribute(surveyNode, "platform", "string", string("")));
-  survey->scanner->platform = dynamic_pointer_cast<Platform>(
+  std::string platformAssetLocation = boost::get<std::string>(
+    XmlUtils::getAttribute(surveyNode, "platform", "string", std::string("")));
+  survey->scanner->platform = std::dynamic_pointer_cast<Platform>(
     getAssetByLocation("platform", platformAssetLocation));
   // Load fullwave form
   tinyxml2::XMLElement* scannerFWFSettingsNode =
@@ -323,7 +318,7 @@ XmlSurveyLoader::handleCoreOverloading(tinyxml2::XMLElement* surveyNode,
       char const* expr = dsNode->Attribute("distanceMeasurementError");
       std::string exprStr(expr);
       detector.errorDistanceExpr =
-        static_pointer_cast<UnivarExprTreeNode<double>>(
+        std::static_pointer_cast<UnivarExprTreeNode<double>>(
           UnivarExprTreeStringFactory<double>().makeShared(exprStr));
     }
   }
@@ -340,16 +335,16 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
     platform->retrieveCurrentSettings();
   size_t xIdx = 3, yIdx = 4, zIdx = 5;
   // Obtain trajectory interpolator, if any
-  std::shared_ptr<ParametricLinearPiecesFunction<double, double>> trajInterp =
-    nullptr;
+  std::shared_ptr<fluxionum::ParametricLinearPiecesFunction<double, double>>
+    trajInterp = nullptr;
   std::shared_ptr<InterpolatedMovingPlatformEgg> ip = nullptr;
   try {
-    ip = dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(platform);
+    ip = std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(platform);
     if (ip != nullptr) {
-      trajInterp =
-        std::make_shared<ParametricLinearPiecesFunction<double, double>>(
-          DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
-            *(ip->ddm), *(ip->tdm)));
+      trajInterp = std::make_shared<
+        fluxionum::ParametricLinearPiecesFunction<double, double>>(
+        fluxionum::DiffDesignMatrixInterpolator::
+          makeParametricLinearPiecesFunction(*(ip->ddm), *(ip->tdm)));
       if (ip->scope ==
           InterpolatedMovingPlatform::InterpolationScope::POSITION) {
         xIdx = 0;
@@ -366,7 +361,7 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
     glm::dvec3 origin = glm::dvec3(0, 0, 0);
     std::unordered_set<std::string> scannerFields;
     std::unordered_set<std::string> platformFields;
-    shared_ptr<Leg> leg(
+    std::shared_ptr<Leg> leg(
       createLegFromXML(legNodes, &scannerFields, &platformFields));
     // Add originWaypoint shift to waypoint coordinates:
     if (leg->mPlatformSettings != nullptr /* && originWaypoint != null*/) {
@@ -429,11 +424,11 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
       stopLeg->mPlatformSettings->x = xEnd[xIdx];
       stopLeg->mPlatformSettings->y = xEnd[yIdx];
       stopLeg->mPlatformSettings->z = xEnd[zIdx];
-      stopLeg->mTrajectorySettings = make_shared<TrajectorySettings>();
+      stopLeg->mTrajectorySettings = std::make_shared<TrajectorySettings>();
       legs.push_back(stopLeg);
       // Insert teleport to start leg (after stop leg), if requested
       if (leg->mTrajectorySettings->teleportToStart) {
-        std::shared_ptr<Leg> startLeg = make_shared<Leg>(*stopLeg);
+        std::shared_ptr<Leg> startLeg = std::make_shared<Leg>(*stopLeg);
         startLeg->mPlatformSettings->x = leg->mPlatformSettings->x;
         startLeg->mPlatformSettings->y = leg->mPlatformSettings->y;
         startLeg->mPlatformSettings->z = leg->mPlatformSettings->z;
@@ -465,7 +460,7 @@ XmlSurveyLoader::applySceneShift(tinyxml2::XMLElement* surveyNode,
   // Apply scene shift to interpolated trajectory, if any
   try {
     std::shared_ptr<InterpolatedMovingPlatformEgg> pe =
-      dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
+      std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
         survey->scanner->platform);
     if (pe != nullptr) {
       size_t xIdx = 3, yIdx = 4, zIdx = 5;

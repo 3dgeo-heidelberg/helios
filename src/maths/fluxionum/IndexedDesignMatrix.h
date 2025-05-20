@@ -1,4 +1,4 @@
-#ifndef _FLUXIONUM_INDEXED_DESIGN_MATRIX_H_
+#pragma once
 
 #include <filems/read/core/DesignMatrixReader.h>
 #include <fluxionum/DesignMatrix.h>
@@ -9,10 +9,6 @@
 #include <vector>
 
 namespace fluxionum {
-
-using std::make_shared;
-using std::shared_ptr;
-using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -67,13 +63,13 @@ protected:
    *  \f$(\iota_{i+1} - \iota_{i}) {\Delta t}\f$ where \f${\Delta t}\f$ is
    *  the time step between consecutive indices.
    */
-  vector<IndexType> indices;
+  std::vector<IndexType> indices;
   /**
    * @brief The name of the index field in the original DesignMatrix
    *
    * By default, it is "index"
    */
-  string indexName;
+  std::string indexName;
 
 public:
   // ***  STATIC METHODS  *** //
@@ -86,14 +82,14 @@ public:
    * @return The copy of the indices column from DesignMatrix \f$X\f$
    * @see fluxionum::DesignMatrix::X
    */
-  static inline vector<IndexType> extractIndices(
+  static inline std::vector<IndexType> extractIndices(
     arma::Mat<VarType> const& X,
-    size_t const indicesColumnIndex)
+    std::size_t const indicesColumnIndex)
   {
     arma::Col<VarType> inds = X.col(indicesColumnIndex);
-    size_t const m = inds.n_rows;
-    vector<IndexType> indices(inds.n_rows);
-    for (size_t i = 0; i < m; ++i)
+    std::size_t const m = inds.n_rows;
+    std::vector<IndexType> indices(inds.n_rows);
+    for (std::size_t i = 0; i < m; ++i)
       indices[i] = (IndexType)inds[i];
     return indices;
   }
@@ -109,10 +105,11 @@ public:
    *  case the given DesignMatrix does not specify a column name for its
    *  indices column
    */
-  IndexedDesignMatrix(DesignMatrix<VarType> const& designMatrix,
-                      size_t const indicesColumnIndex,
-                      string const indexName = "index",
-                      vector<string> const& columnNames = vector<string>(0))
+  IndexedDesignMatrix(
+    DesignMatrix<VarType> const& designMatrix,
+    std::size_t const indicesColumnIndex,
+    std::string const indexName = "index",
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : DesignMatrix<VarType>(
         TemporalDesignMatrix<double, VarType>::extractNonTimeMatrix(
           designMatrix.getX(),
@@ -135,10 +132,11 @@ public:
    * @param indices The vector of indices
    * @param indexName The name for the index attribute
    */
-  IndexedDesignMatrix(DesignMatrix<VarType> const& designMatrix,
-                      vector<IndexType> const& indices,
-                      string const indexName = "index",
-                      vector<string> const& columnNames = vector<string>(0))
+  IndexedDesignMatrix(
+    DesignMatrix<VarType> const& designMatrix,
+    std::vector<IndexType> const& indices,
+    std::string const indexName = "index",
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : DesignMatrix<VarType>(designMatrix)
     , indices(indices)
     , indexName(indexName)
@@ -151,10 +149,11 @@ public:
    * @param indicesColumnIndex Index of the column containing indices
    * @param indexName The name for the index attribute
    */
-  IndexedDesignMatrix(arma::Mat<VarType> const& X,
-                      size_t const indicesColumnIndex,
-                      string const indexName = "index",
-                      vector<string> const& columnNames = vector<string>(0))
+  IndexedDesignMatrix(
+    arma::Mat<VarType> const& X,
+    std::size_t const indicesColumnIndex,
+    std::string const indexName = "index",
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : DesignMatrix<VarType>(
         TemporalDesignMatrix<double, VarType>::extractNonTimeMatrix(
           X,
@@ -171,10 +170,11 @@ public:
    * @param indices The indices
    * @param indexName The name for the index attribute
    */
-  IndexedDesignMatrix(arma::Mat<VarType> const& X,
-                      vector<IndexType> const& indices,
-                      string const indexName = "index",
-                      vector<string> const& columnNames = vector<string>(0))
+  IndexedDesignMatrix(
+    arma::Mat<VarType> const& X,
+    std::vector<IndexType> const& indices,
+    std::string const indexName = "index",
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : DesignMatrix<VarType>(X, columnNames)
     , indices(indices)
     , indexName(indexName)
@@ -188,13 +188,14 @@ public:
    *  case the read DesignMatrix does not specify a column name for its
    *  indices column
    */
-  IndexedDesignMatrix(string const& path, string const indexName = "index")
+  IndexedDesignMatrix(std::string const& path,
+                      std::string const indexName = "index")
   {
     helios::filems::DesignMatrixReader<VarType> reader(path);
-    std::unordered_map<string, string> kv;
+    std::unordered_map<std::string, std::string> kv;
     DesignMatrix<VarType> const dm = reader.read(&kv);
-    size_t const idxCol =
-      (size_t)std::strtoul(kv.at("INDEX_COLUMN").c_str(), nullptr, 10);
+    std::size_t const idxCol =
+      (std::size_t)std::strtoul(kv.at("INDEX_COLUMN").c_str(), nullptr, 10);
     *this = IndexedDesignMatrix<IndexType, VarType>(
       dm, idxCol, dm.hasColumnNames() ? dm.getColumnName(idxCol) : indexName);
   }
@@ -207,7 +208,7 @@ public:
    * @param i The index (in the indices vector) of the index being accessed
    * @return Reference to the \f$i\f$-th index
    */
-  inline IndexType& operator[](size_t const i) { return indices[i]; }
+  inline IndexType& operator[](std::size_t const i) { return indices[i]; }
 
   // ***  METHODS  *** //
   // ***************** //
@@ -236,7 +237,7 @@ public:
    * @see IndexedDesignMatrix::toLinearTimeDiffDesignMatrix
    * @see fluxionum::DiffDesignMatrix
    */
-  shared_ptr<DiffDesignMatrix<double, VarType>>
+  std::shared_ptr<DiffDesignMatrix<double, VarType>>
   toLinearTimeDiffDesignMatrixPointer(
     double const ta = 0.0,
     double const tb = 1.0,
@@ -264,19 +265,19 @@ public:
    * @return Constant/read reference to the vector of indices
    * @see fluxionum::IndexedDesignMatrix::indices
    */
-  inline vector<IndexType> const& getIndices() const { return indices; }
+  inline std::vector<IndexType> const& getIndices() const { return indices; }
   /**
    * @brief Obtain the name of the index attribute
    * @return The name of the index attribute
    * @see fluxionum::IndexedDesignMatrix::indexName
    */
-  inline string const getIndexName() const { return indexName; }
+  inline std::string const getIndexName() const { return indexName; }
   /**
    * @brief Set the name of the index attribute
    * @param indexName The new name for the index attribute
    * @see fluxionum::IndexedDesignMatrix::indexName
    */
-  inline void setIndexName(string const& indexName)
+  inline void setIndexName(std::string const& indexName)
   {
     this->indexName = indexName;
   }
@@ -284,6 +285,4 @@ public:
 
 }
 
-#define _FLUXIONUM_INDEXED_DESIGN_MATRIX_H_
 #include <fluxionum/IndexedDesignMatrix.tpp>
-#endif

@@ -9,10 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -47,21 +43,21 @@ public:
    * @see filems::MultiLasSyncFileWriter::MultiLasSyncFileWriter
    */
   explicit LasMultiVectorialSyncFileMeasurementWriter(
-    vector<std::string> const& path,
+    std::vector<std::string> const& path,
     bool const compress,
-    vector<double> const& scaleFactor,
-    vector<glm::dvec3> const& offset,
-    vector<double> const& minIntensity,
-    vector<double> const& deltaIntensity,
+    std::vector<double> const& scaleFactor,
+    std::vector<glm::dvec3> const& offset,
+    std::vector<double> const& minIntensity,
+    std::vector<double> const& deltaIntensity,
     bool const createWriter = true)
-    : MultiLasSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>(
-        path,
-        compress,
-        scaleFactor,
-        offset,
-        minIntensity,
-        deltaIntensity,
-        createWriter)
+    : MultiLasSyncFileWriter<std::vector<Measurement> const&,
+                             glm::dvec3 const&>(path,
+                                                compress,
+                                                scaleFactor,
+                                                offset,
+                                                minIntensity,
+                                                deltaIntensity,
+                                                createWriter)
   {
     if (createWriter) {
       // Build measurement write strategies
@@ -113,8 +109,8 @@ public:
     size_t const nStreams = path.size();
     for (size_t i = 0; i < nStreams; ++i) {
       writeStrategy.push_back(
-        make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(
-          lmws[i]));
+        std::make_shared<
+          VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(lmws[i]));
     }
   }
 
@@ -123,7 +119,7 @@ public:
   /**
    * @see MultiSyncFileWriter::indexFromWriteArgs
    */
-  size_t indexFromWriteArgs(vector<Measurement> const& measurements,
+  size_t indexFromWriteArgs(std::vector<Measurement> const& measurements,
                             glm::dvec3 const& offset) override
   {
     return measurements[0].devIdx;

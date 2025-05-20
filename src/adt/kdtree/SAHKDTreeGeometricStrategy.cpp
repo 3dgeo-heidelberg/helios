@@ -16,11 +16,12 @@ SAHKDTreeGeometricStrategy::clone(SimpleKDTreeFactory* kdtf) const
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //
 void
-SAHKDTreeGeometricStrategy::GEOM_defineSplit(KDTreeNode* node,
-                                             KDTreeNode* parent,
-                                             vector<Primitive*>& primitives,
-                                             int const depth,
-                                             int const assignedThreads) const
+SAHKDTreeGeometricStrategy::GEOM_defineSplit(
+  KDTreeNode* node,
+  KDTreeNode* parent,
+  std::vector<Primitive*>& primitives,
+  int const depth,
+  int const assignedThreads) const
 {
   // Find split axis
   node->splitAxis = depth % 3;
@@ -30,7 +31,7 @@ SAHKDTreeGeometricStrategy::GEOM_defineSplit(KDTreeNode* node,
 double
 SAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
   KDTreeNode* node,
-  vector<Primitive*>& primitives,
+  std::vector<Primitive*>& primitives,
   int assignedThreads) const
 {
   if (assignedThreads < 2) { // Sequential search
@@ -39,18 +40,18 @@ SAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
     return sahkdtf.findSplitPositionBySAHRecipe(
       node,
       primitives,
-      [&](vector<Primitive*>::iterator begin,
-          vector<Primitive*>::iterator end,
+      [&](std::vector<Primitive*>::iterator begin,
+          std::vector<Primitive*>::iterator end,
           KDTreePrimitiveComparator comparator) -> void {
-        SM_ParallelMergeSort<vector<Primitive*>::iterator,
+        SM_ParallelMergeSort<std::vector<Primitive*>::iterator,
                              KDTreePrimitiveComparator>
           sorter(assignedThreads, assignedThreads * 2);
         sorter.sort(primitives.begin(),
                     primitives.end(),
                     KDTreePrimitiveComparator(node->splitAxis));
       },
-      [&](vector<Primitive*>& primitives,
-          size_t const lossNodes,
+      [&](std::vector<Primitive*>& primitives,
+          std::size_t const lossNodes,
           double const start,
           double const step,
           int const splitAxis,
@@ -74,12 +75,13 @@ SAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
          */
         if (assignedThreads > (int)lossNodes)
           assignedThreads = (int)lossNodes;
-        size_t const chunkSize = lossNodes / ((size_t)assignedThreads);
+        std::size_t const chunkSize =
+          lossNodes / ((std::size_t)assignedThreads);
         int const extraThreads = assignedThreads - 1;
         std::shared_ptr<SharedTaskSequencer> stSequencer =
           std::make_shared<SharedTaskSequencer>(extraThreads);
-        vector<double> partialLoss(extraThreads, loss);
-        vector<double> partialSplitPos(extraThreads, 0);
+        std::vector<double> partialLoss(extraThreads, loss);
+        std::vector<double> partialSplitPos(extraThreads, 0);
         for (int i = 0; i < extraThreads; ++i) {
           stSequencer->start(std::make_shared<SAHKDTreeComputeLossNodesSubTask>(
             stSequencer,
@@ -93,7 +95,7 @@ SAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
             (i + 1) * chunkSize,
             partialLoss[i],
             partialSplitPos[i],
-            [&](vector<Primitive*> const& primitives,
+            [&](std::vector<Primitive*> const& primitives,
                 int const splitAxis,
                 double const splitPos,
                 double const r) -> double {
@@ -112,7 +114,7 @@ SAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
           lossNodes,
           partialLoss[extraThreads],
           partialSplitPos[extraThreads],
-          [&](vector<Primitive*> const& primitives,
+          [&](std::vector<Primitive*> const& primitives,
               int const splitAxis,
               double const splitPos,
               double const r) -> double {
@@ -139,11 +141,11 @@ void
 SAHKDTreeGeometricStrategy::GEOM_buildChildrenNodes(
   KDTreeNode* node,
   KDTreeNode* parent,
-  vector<Primitive*> const& primitives,
+  std::vector<Primitive*> const& primitives,
   int const depth,
   int const index,
-  vector<Primitive*>& leftPrimitives,
-  vector<Primitive*>& rightPrimitives,
+  std::vector<Primitive*>& leftPrimitives,
+  std::vector<Primitive*>& rightPrimitives,
   std::shared_ptr<SharedTaskSequencer> masters)
 {
   // Call recipe to build children nodes
@@ -158,9 +160,9 @@ SAHKDTreeGeometricStrategy::GEOM_buildChildrenNodes(
     [&](KDTreeNode* node,
         int const depth,
         int const index,
-        vector<Primitive*>& leftPrimitives,
-        vector<Primitive*>& rightPrimitives) -> void {
-      shared_ptr<SimpleKDTreeBuildChildrenNodesSubTask> task = nullptr;
+        std::vector<Primitive*>& leftPrimitives,
+        std::vector<Primitive*>& rightPrimitives) -> void {
+      std::shared_ptr<SimpleKDTreeBuildChildrenNodesSubTask> task = nullptr;
       bool buildRightNode = !rightPrimitives.empty();
       if (buildRightNode) {
         task = std::make_shared<SimpleKDTreeBuildChildrenNodesSubTask>(

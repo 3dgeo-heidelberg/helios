@@ -9,7 +9,6 @@ namespace filems {
 class FMSFacade;
 }
 }
-using helios::filems::FMSFacade;
 class Scanner;
 
 #include <memory>
@@ -117,7 +116,7 @@ protected:
    * @param fms The file management system to be restarted.
    * @see FMSFacade
    */
-  void restartFileMS(FMSFacade& fms);
+  void restartFileMS(helios::filems::FMSFacade& fms);
   /**
    * @brief Restart a scanner to its start point.
    * @param sc The scanner to be restarted.

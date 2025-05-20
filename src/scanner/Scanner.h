@@ -23,7 +23,6 @@ namespace filems {
 class FMSFacade;
 }
 }
-using helios::filems::FMSFacade;
 
 /**
  * @brief Class representing a scanner asset
@@ -85,7 +84,7 @@ public:
   /**
    * @brief Main facade to file management system
    */
-  std::shared_ptr<FMSFacade> fms;
+  std::shared_ptr<helios::filems::FMSFacade> fms;
   /**
    * @brief Platform carrying the scanner
    * @see Platform

@@ -1,27 +1,20 @@
 // #include <iostream>
 #include "logging.hpp"
 
-#include <fstream>
-// #include <set>
-#include <unordered_set>
-
-#include <SerialIO.h>
-
-#include <chrono>
-using namespace std::chrono;
-using namespace std;
-
-#include <glm/glm.hpp>
-#include <glm/gtx/string_cast.hpp>
-using namespace glm;
-
 #include <KDTreeRaycaster.h>
-
 #include <Scene.h>
+#include <SerialIO.h>
 #include <TimeWatcher.h>
 #include <UniformNoiseSource.h>
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
+
+#include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
+
+#include <chrono>
+#include <fstream>
+#include <unordered_set>
 
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
@@ -90,14 +83,14 @@ Scene::finalizeLoading(bool const safe)
   }
 
   // Report number of primitives in the scene
-  ostringstream s;
+  std::ostringstream s;
   s << "Total # of primitives in scene: " << primitives.size() << "\n";
   logging::DEBUG(s.str());
   if (primitives.size() == 0)
     return false;
 
   // Compute the number of vertices in the scene
-  size_t numVertices = 0;
+  std::size_t numVertices = 0;
   for (Primitive* p : primitives)
     numVertices += p->getNumVertices();
 
@@ -108,7 +101,7 @@ Scene::finalizeLoading(bool const safe)
   // Store original bounding box (CRS coordinates):
   this->bbox_crs = AABB::getForPrimitives(primitives);
   glm::dvec3 const diff = this->bbox_crs->getCentroid();
-  stringstream ss;
+  std::stringstream ss;
   ss << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
      << "\nShift: " << glm::to_string(diff)
      << "\n# vertices to translate: " << numVertices;
@@ -118,7 +111,7 @@ Scene::finalizeLoading(bool const safe)
   // Iterate over the primitives and translate each vertex:
   for (Primitive* p : primitives) {
     Vertex* v = p->getVertices();
-    for (size_t i = 0; i < p->getNumVertices(); i++) {
+    for (std::size_t i = 0; i < p->getNumVertices(); i++) {
       v[i].pos = v[i].pos - diff;
     }
     p->update();
@@ -134,7 +127,7 @@ Scene::finalizeLoading(bool const safe)
   // ################ END Shift primitives to originWaypoint ##################
 
   // Compute each part centroid wrt to scene
-  for (shared_ptr<ScenePart>& part : parts)
+  for (std::shared_ptr<ScenePart>& part : parts)
     part->computeCentroid();
 
   // Build KDGrove
@@ -148,19 +141,19 @@ void
 Scene::registerParts()
 {
   // Find scene parts from primitives
-  unordered_set<shared_ptr<ScenePart>> partsSet;
+  std::unordered_set<std::shared_ptr<ScenePart>> partsSet;
   for (Primitive* primitive : primitives)
     if (primitive->part != nullptr)
       partsSet.insert(primitive->part);
   // Remove already registered scene parts
-  unordered_set<shared_ptr<ScenePart>>::iterator it;
-  for (shared_ptr<ScenePart> part : parts)
+  std::unordered_set<std::shared_ptr<ScenePart>>::iterator it;
+  for (std::shared_ptr<ScenePart> part : parts)
     partsSet.erase(part);
   // Register all new scene parts
   parts.insert(parts.end(), partsSet.begin(), partsSet.end());
 }
 
-shared_ptr<AABB>
+std::shared_ptr<AABB>
 Scene::getAABB()
 {
   return this->bbox;
@@ -173,11 +166,11 @@ Scene::getGroundPointAt(glm::dvec3 point)
   glm::dvec3 origin = glm::dvec3(point.x, point.y, bbox->getMin()[2] - 0.1);
   glm::dvec3 dir = glm::dvec3(0, 0, 1);
 
-  shared_ptr<RaySceneIntersection> intersect =
+  std::shared_ptr<RaySceneIntersection> intersect =
     getIntersection(origin, dir, true);
 
   if (intersect == nullptr) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "getGroundPointAt(" << point.x << "," << point.y << "," << point.z
        << ") : intersect is NULL";
     ss << "\n\torigin = (" << origin.x << ", " << origin.y << ", " << origin.z
@@ -191,17 +184,17 @@ Scene::getGroundPointAt(glm::dvec3 point)
   return intersect->point;
 }
 
-shared_ptr<RaySceneIntersection>
+std::shared_ptr<RaySceneIntersection>
 Scene::getIntersection(glm::dvec3 const& rayOrigin,
                        glm::dvec3 const& rayDir,
                        bool const groundOnly) const
 {
-  vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
+  std::vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   return getIntersection(tMinMax, rayOrigin, rayDir, groundOnly);
 }
 
 std::shared_ptr<RaySceneIntersection>
-Scene::getIntersection(vector<double> const& tMinMax,
+Scene::getIntersection(std::vector<double> const& tMinMax,
                        glm::dvec3 const& rayOrigin,
                        glm::dvec3 const& rayDir,
                        bool const groundOnly) const
@@ -213,17 +206,17 @@ Scene::getIntersection(vector<double> const& tMinMax,
 #endif
     return nullptr;
   }
-  return shared_ptr<RaySceneIntersection>(
+  return std::shared_ptr<RaySceneIntersection>(
     raycaster->search(rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
 }
 
-map<double, Primitive*>
+std::map<double, Primitive*>
 Scene::getIntersections(glm::dvec3& rayOrigin,
                         glm::dvec3& rayDir,
                         bool const groundOnly)
 {
 
-  vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
+  std::vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
     logging::DEBUG("tMinMax is empty");
     return {};
@@ -239,14 +232,14 @@ Scene::getShift()
   return this->bbox_crs->getCentroid();
 }
 
-vector<Vertex*>
+std::vector<Vertex*>
 Scene::getAllVertices()
 {
-  unordered_set<Vertex*> vset;
+  std::unordered_set<Vertex*> vset;
   for (Primitive* primitive : primitives) {
-    size_t const m = primitive->getNumVertices();
+    std::size_t const m = primitive->getNumVertices();
     Vertex* vertices = primitive->getVertices();
-    for (size_t i = 0; i < m; ++i)
+    for (std::size_t i = 0; i < m; ++i)
       vset.insert(vertices + i);
   }
   return { vset.begin(), vset.end() };
@@ -256,11 +249,12 @@ void
 Scene::doForceOnGround()
 {
   // 1. Find min and max vertices of ground scene parts
-  vector<size_t> I;                         // Indices of ground parts
-  vector<unique_ptr<Plane<double>>> planes; // Ground best fitting planes
-  size_t const m = parts.size(); // How many parts there are in the scene
-  for (size_t i = 0; i < m; ++i) {
-    shared_ptr<ScenePart> part = parts[i];
+  std::vector<std::size_t> I; // Indices of ground parts
+  std::vector<std::unique_ptr<SurfaceInspector::maths::Plane<double>>>
+    planes;                           // Ground best fitting planes
+  std::size_t const m = parts.size(); // How many parts there are in the scene
+  for (std::size_t i = 0; i < m; ++i) {
+    std::shared_ptr<ScenePart> part = parts[i];
     if (part->isNull())
       continue;
     if (!part->mPrimitives[0]->material->isGround)
@@ -277,7 +271,7 @@ Scene::doForceOnGround()
   }
 
   // Compute remaining algorithm steps for each on ground scene part
-  for (shared_ptr<ScenePart>& part : parts) {
+  for (std::shared_ptr<ScenePart>& part : parts) {
     if (part->forceOnGround == 0) { // Ignore not on ground scene parts
       std::stringstream ss;
       ss << "Scene::doForceOnGround skipped part \"" << part->mId << "\"\n"
@@ -291,19 +285,19 @@ Scene::doForceOnGround()
       logging::DEBUG(ss.str());
     }
     // 2. Find minimum z vertex and pick first ground reference
-    vector<Vertex*> vertices = part->getAllVertices();
+    std::vector<Vertex*> vertices = part->getAllVertices();
     glm::dvec3 minzv = vertices[0]->pos; // First vertex as minz candidate
-    size_t const n = vertices.size();
-    for (size_t i = 1; i < n; ++i) { // Find best minz candidate
+    std::size_t const n = vertices.size();
+    for (std::size_t i = 1; i < n; ++i) { // Find best minz candidate
       Vertex* vertex = vertices[i];
       if (vertex->pos.z < minzv.z)
         minzv = vertex->pos;
     }
-    size_t groundLocalIndex;
-    shared_ptr<ScenePart> groundPart = nullptr; // Ground scene part
-    for (size_t j = 0; j < I.size(); ++j) {
-      size_t const i = I[j]; // Ground index i
-      shared_ptr<ScenePart> groundCandidate = parts[i];
+    std::size_t groundLocalIndex;
+    std::shared_ptr<ScenePart> groundPart = nullptr; // Ground scene part
+    for (std::size_t j = 0; j < I.size(); ++j) {
+      std::size_t const i = I[j]; // Ground index i
+      std::shared_ptr<ScenePart> groundCandidate = parts[i];
       if ( // Ground candidate is valid if minz vertex lies inside in R2
         minzv.x >= groundCandidate->bound->getMin().x &&
         minzv.x <= groundCandidate->bound->getMax().x &&
@@ -324,22 +318,25 @@ Scene::doForceOnGround()
     }
     // 3. Find ground reference best fitting plane
     if (planes[groundLocalIndex] == nullptr) { // Estimate plane if needed
-      vector<Vertex*> groundVertices = groundPart->getAllVertices();
-      size_t const ngv = groundVertices.size();
-      size_t const ngv2 = 2 * ngv;
+      std::vector<Vertex*> groundVertices = groundPart->getAllVertices();
+      std::size_t const ngv = groundVertices.size();
+      std::size_t const ngv2 = 2 * ngv;
       arma::mat groundVerticesMatrix(ngv, 3);
-      for (size_t i = 0; i < ngv; ++i) {
+      for (std::size_t i = 0; i < ngv; ++i) {
         glm::dvec3 const& vert = groundVertices[i]->pos;
         groundVerticesMatrix[i] = vert.x;
         groundVerticesMatrix[ngv + i] = vert.y;
         groundVerticesMatrix[ngv2 + i] = vert.z;
       }
-      planes[groundLocalIndex] = unique_ptr<Plane<double>>(new Plane<double>(
-        PlaneFitter::bestFittingPlaneSVD<double>(groundVerticesMatrix)));
+      planes[groundLocalIndex] =
+        std::unique_ptr<SurfaceInspector::maths::Plane<double>>(
+          new SurfaceInspector::maths::Plane<double>(
+            SurfaceInspector::maths::PlaneFitter::bestFittingPlaneSVD<double>(
+              groundVerticesMatrix)));
     }
     // 4. Compute the vertical projection of min vertex on ground plane
-    vector<double> const& o = planes[groundLocalIndex]->centroid;
-    vector<double> const& v = planes[groundLocalIndex]->orthonormal;
+    std::vector<double> const& o = planes[groundLocalIndex]->centroid;
+    std::vector<double> const& v = planes[groundLocalIndex]->orthonormal;
     glm::dvec3 q =
       findForceOnGroundQ(part->forceOnGround, minzv, vertices, o, v);
     double zDelta = q.z - (v[0] * o[0] + v[1] * o[1] + v[2] * o[2] -
@@ -354,23 +351,23 @@ Scene::doForceOnGround()
 glm::dvec3
 Scene::findForceOnGroundQ(int const searchDepth,
                           glm::dvec3 const minzv,
-                          vector<Vertex*>& vertices,
-                          vector<double> const& o,
-                          vector<double> const& v)
+                          std::vector<Vertex*>& vertices,
+                          std::vector<double> const& o,
+                          std::vector<double> const& v)
 {
   if (searchDepth == -1 || searchDepth > 1) { // Iterative search process for q
     // Compute loop configuration
-    size_t const maxIters = (searchDepth == -1)
-                              ? vertices.size()
-                              : std::min<size_t>(searchDepth, vertices.size());
-    size_t const stepSize =
-      (searchDepth == -1) ? 1 : (size_t)(vertices.size() / maxIters);
+    std::size_t const maxIters =
+      (searchDepth == -1) ? vertices.size()
+                          : std::min<std::size_t>(searchDepth, vertices.size());
+    std::size_t const stepSize =
+      (searchDepth == -1) ? 1 : (std::size_t)(vertices.size() / maxIters);
     // Compute the iterative search itself : argmin zDelta
     double const dot = v[0] * o[0] + v[1] * o[1] + v[2] * o[2];
     glm::dvec3 qBest = vertices[0]->pos;
     double zDeltaBest =
       qBest.z - (dot - v[0] * qBest.x - v[1] * qBest.y) / v[2];
-    for (size_t i = stepSize; i < maxIters; i += stepSize) {
+    for (std::size_t i = stepSize; i < maxIters; i += stepSize) {
       glm::dvec3 const q = vertices[i]->pos;
       double const zDelta = q.z - (dot - v[0] * q.x - v[1] * q.y) / v[2];
       if (zDelta < zDeltaBest) {
@@ -452,7 +449,7 @@ Scene::writeObject(string path)
 Scene*
 Scene::readObject(string path)
 {
-  stringstream ss;
+  std::stringstream ss;
   ss << "Reading scene object from " << path << " ...";
   logging::INFO(ss.str());
   return SerialIO::getInstance()->read<Scene>(path);

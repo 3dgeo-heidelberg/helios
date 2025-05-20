@@ -4,10 +4,6 @@
 
 #include <surfaceinspector/util/Object.hpp>
 
-using std::vector;
-
-using SurfaceInspector::util::Object;
-
 namespace SurfaceInspector {
 namespace maths {
 namespace functions {
@@ -21,7 +17,7 @@ namespace functions {
  * @brief Interface defining math function core mechanics
  */
 template<typename Tin, typename Tout>
-class IMathFunction : public Object
+class IMathFunction : public SurfaceInspector::util::Object
 {
 public:
   // ***  MATH FUNCTION INTERFACE  *** //
@@ -47,9 +43,9 @@ public:
    * @param u Input vector
    * @return Output vector
    */
-  virtual inline vector<Tout> operator()(vector<Tin> const& u)
+  virtual inline std::vector<Tout> operator()(std::vector<Tin> const& u)
   {
-    vector<Tout> v(0);
+    std::vector<Tout> v(0);
     for (Tin const& x : u)
       v.push_back((*this)(x));
     return v;

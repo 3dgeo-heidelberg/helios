@@ -63,7 +63,7 @@ protected:
    */
   virtual void GEOM_defineSplit(KDTreeNode* node,
                                 KDTreeNode* parent,
-                                vector<Primitive*>& primitives,
+                                std::vector<Primitive*>& primitives,
                                 int const depth,
                                 int const assignedThreads) const;
   /**
@@ -73,11 +73,12 @@ protected:
    *  computations
    * @see SimpleKDTreeFactory::computeNodeBoundaries
    */
-  virtual void GEOM_computeNodeBoundaries(KDTreeNode* node,
-                                          KDTreeNode* parent,
-                                          bool const left,
-                                          vector<Primitive*> const& primitives,
-                                          int assignedThreads);
+  virtual void GEOM_computeNodeBoundaries(
+    KDTreeNode* node,
+    KDTreeNode* parent,
+    bool const left,
+    std::vector<Primitive*> const& primitives,
+    int assignedThreads);
   /**
    * @brief Geometry-level parallel version of the
    *  SimpleKDTreeFactory::populateSplits function
@@ -85,11 +86,11 @@ protected:
    *  computations
    * @see SimpleKDTreeFactory::populateSplits
    */
-  virtual void GEOM_populateSplits(vector<Primitive*> const& primitives,
+  virtual void GEOM_populateSplits(std::vector<Primitive*> const& primitives,
                                    int const splitAxis,
                                    double const splitPos,
-                                   vector<Primitive*>& leftPrimitives,
-                                   vector<Primitive*>& rightPrimitives,
+                                   std::vector<Primitive*>& leftPrimitives,
+                                   std::vector<Primitive*>& rightPrimitives,
                                    int assignedThreads) const;
   /**
    * @brief Geometry-level parallel version of the
@@ -108,10 +109,10 @@ protected:
   virtual void GEOM_buildChildrenNodes(
     KDTreeNode* node,
     KDTreeNode* parent,
-    vector<Primitive*> const& primitives,
+    std::vector<Primitive*> const& primitives,
     int const depth,
     int const index,
-    vector<Primitive*>& leftPrimitives,
-    vector<Primitive*>& rightPrimitives,
+    std::vector<Primitive*>& leftPrimitives,
+    std::vector<Primitive*>& rightPrimitives,
     std::shared_ptr<SharedTaskSequencer> masters);
 };

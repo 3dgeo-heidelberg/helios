@@ -8,11 +8,6 @@
 #include <mutex>
 #include <vector>
 
-using helios::filems::FMSWriteFacade;
-
-using std::size_t;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -35,7 +30,8 @@ public:
    * @see WriteYielder::write
    * @see Yielder::bufferSize
    */
-  FullWaveformYielder(FMSWriteFacade& write, size_t bufferSize = 256)
+  FullWaveformYielder(helios::filems::FMSWriteFacade& write,
+                      std::size_t bufferSize = 256)
     : WriteYielder<FullWaveform>(write, bufferSize)
   {
   }
@@ -49,7 +45,7 @@ public:
    * @param copy The temporal copy of full waveforms buffer to be digested
    * @see WriteYielder
    */
-  void digest(vector<FullWaveform>& copy) override
+  void digest(std::vector<FullWaveform>& copy) override
   {
     write.writeFullWaveformsUnsafe(copy);
   }

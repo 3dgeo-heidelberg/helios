@@ -2,7 +2,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-SAHKDTreeFactory::SAHKDTreeFactory(size_t const lossNodes,
+SAHKDTreeFactory::SAHKDTreeFactory(std::size_t const lossNodes,
                                    double const ci,
                                    double const cl,
                                    double const co)
@@ -18,7 +18,7 @@ SAHKDTreeFactory::SAHKDTreeFactory(size_t const lossNodes,
    */
   _buildRecursive = [&](KDTreeNode* parent,
                         bool const left,
-                        vector<Primitive*>& primitives,
+                        std::vector<Primitive*>& primitives,
                         int const depth,
                         int const index) -> KDTreeNode* {
     return this->buildRecursive(parent, left, primitives, depth, index);
@@ -55,7 +55,7 @@ SAHKDTreeFactory::_clone(KDTreeFactory* _kdtf) const
 void
 SAHKDTreeFactory::defineSplit(KDTreeNode* node,
                               KDTreeNode* parent,
-                              vector<Primitive*>& primitives,
+                              std::vector<Primitive*>& primitives,
                               int const depth) const
 {
   // Find split axis
@@ -93,11 +93,11 @@ SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot* root) const
 void
 SAHKDTreeFactory::buildChildrenNodes(KDTreeNode* node,
                                      KDTreeNode* parent,
-                                     vector<Primitive*> const& primitives,
+                                     std::vector<Primitive*> const& primitives,
                                      int const depth,
                                      int const index,
-                                     vector<Primitive*>& leftPrimitives,
-                                     vector<Primitive*>& rightPrimitives)
+                                     std::vector<Primitive*>& leftPrimitives,
+                                     std::vector<Primitive*>& rightPrimitives)
 {
   // Call recipe to build children nodes
   buildChildrenNodesRecipe(
@@ -111,8 +111,8 @@ SAHKDTreeFactory::buildChildrenNodes(KDTreeNode* node,
     [&](KDTreeNode* node,
         int const depth,
         int const index,
-        vector<Primitive*>& leftPrimitives,
-        vector<Primitive*>& rightPrimitives) -> void {
+        std::vector<Primitive*>& leftPrimitives,
+        std::vector<Primitive*>& rightPrimitives) -> void {
       if (!leftPrimitives.empty()) { // Build left child
         setChild(
           node->left,
@@ -130,16 +130,17 @@ void
 SAHKDTreeFactory::buildChildrenNodesRecipe(
   KDTreeNode* node,
   KDTreeNode* parent,
-  vector<Primitive*> const& primitives,
+  std::vector<Primitive*> const& primitives,
   int const depth,
   int const index,
-  vector<Primitive*>& leftPrimitives,
-  vector<Primitive*>& rightPrimitives,
+  std::vector<Primitive*>& leftPrimitives,
+  std::vector<Primitive*>& rightPrimitives,
   std::function<void(KDTreeNode* node,
                      int const depth,
                      int const index,
-                     vector<Primitive*>& leftPrimitives,
-                     vector<Primitive*>& rightPrimitives)> f_buildChildrenNodes)
+                     std::vector<Primitive*>& leftPrimitives,
+                     std::vector<Primitive*>& rightPrimitives)>
+    f_buildChildrenNodes)
 {
   if (parent == nullptr) {      // Compute parent heuristic (INIT ILOT)
     initILOT(node, primitives); // Lock not need, only sequential
@@ -172,9 +173,9 @@ SAHKDTreeFactory::buildChildrenNodesRecipe(
 // ************************ //
 bool
 SAHKDTreeFactory::checkNodeMustSplit(
-  vector<Primitive*> const& primitives,
-  vector<Primitive*> const& leftPrimitives,
-  vector<Primitive*> const& rightPrimitives) const
+  std::vector<Primitive*> const& primitives,
+  std::vector<Primitive*> const& leftPrimitives,
+  std::vector<Primitive*> const& rightPrimitives) const
 {
   return primitives.size() >= minSplitPrimitives;
 }
@@ -182,7 +183,7 @@ SAHKDTreeFactory::checkNodeMustSplit(
 // ***  SAH UTILS  *** //
 // ******************* //
 double
-SAHKDTreeFactory::splitLoss(vector<Primitive*> const& primitives,
+SAHKDTreeFactory::splitLoss(std::vector<Primitive*> const& primitives,
                             int const splitAxis,
                             double const splitPos,
                             double const r) const
@@ -202,8 +203,8 @@ SAHKDTreeFactory::splitLoss(vector<Primitive*> const& primitives,
 }
 
 void
-SAHKDTreeFactory::computeBestSplit(vector<Primitive*>& primitives,
-                                   size_t const lossNodes,
+SAHKDTreeFactory::computeBestSplit(std::vector<Primitive*>& primitives,
+                                   std::size_t const lossNodes,
                                    double const start,
                                    double const step,
                                    int const splitAxis,
@@ -212,7 +213,7 @@ SAHKDTreeFactory::computeBestSplit(vector<Primitive*>& primitives,
                                    double& loss,
                                    double& splitPos) const
 {
-  for (size_t i = 0; i < lossNodes; ++i) {
+  for (std::size_t i = 0; i < lossNodes; ++i) {
     double const phi = start + ((double)i) * step;
     double const newLoss =
       splitLoss(primitives, splitAxis, phi, (phi - minBound) / boundLength);
@@ -224,20 +225,21 @@ SAHKDTreeFactory::computeBestSplit(vector<Primitive*>& primitives,
 }
 
 double
-SAHKDTreeFactory::findSplitPositionBySAH(KDTreeNode* node,
-                                         vector<Primitive*>& primitives) const
+SAHKDTreeFactory::findSplitPositionBySAH(
+  KDTreeNode* node,
+  std::vector<Primitive*>& primitives) const
 {
   // Call recipe to find split position by SAH
   return findSplitPositionBySAHRecipe(
     node,
     primitives,
-    [&](vector<Primitive*>::iterator begin,
-        vector<Primitive*>::iterator end,
+    [&](std::vector<Primitive*>::iterator begin,
+        std::vector<Primitive*>::iterator end,
         KDTreePrimitiveComparator comparator) -> void {
       std::sort(begin, end, comparator);
     },
-    [&](vector<Primitive*>& primitives,
-        size_t const lossNodes,
+    [&](std::vector<Primitive*>& primitives,
+        std::size_t const lossNodes,
         double const start,
         double const step,
         int const splitAxis,
@@ -260,12 +262,12 @@ SAHKDTreeFactory::findSplitPositionBySAH(KDTreeNode* node,
 double
 SAHKDTreeFactory::findSplitPositionBySAHRecipe(
   KDTreeNode* node,
-  vector<Primitive*>& primitives,
-  std::function<void(vector<Primitive*>::iterator begin,
-                     vector<Primitive*>::iterator end,
+  std::vector<Primitive*>& primitives,
+  std::function<void(std::vector<Primitive*>::iterator begin,
+                     std::vector<Primitive*>::iterator end,
                      KDTreePrimitiveComparator comparator)> f_sortPrimitives,
-  std::function<void(vector<Primitive*>& primitives,
-                     size_t const lossNodes,
+  std::function<void(std::vector<Primitive*>& primitives,
+                     std::size_t const lossNodes,
                      double const start,
                      double const step,
                      int const splitAxis,
@@ -313,7 +315,7 @@ SAHKDTreeFactory::heuristicILOT(double& hi,
                                 double const surfaceAreaRoot,
                                 double const surfaceAreaInterior,
                                 double const surfaceAreaLeaf,
-                                vector<Primitive*> const& primitives) const
+                                std::vector<Primitive*> const& primitives) const
 {
   // Extract constants of interest
   double const No = (double)primitives.size();
@@ -347,14 +349,15 @@ SAHKDTreeFactory::cumulativeILOT(double& hi,
 }
 
 void
-SAHKDTreeFactory::internalizeILOT(double& hi,
-                                  double& hl,
-                                  double& ho,
-                                  double& ht,
-                                  KDTreeNode* node,
-                                  vector<Primitive*> const& primitives,
-                                  vector<Primitive*> const& leftPrimitives,
-                                  vector<Primitive*> const& rightPrimitives)
+SAHKDTreeFactory::internalizeILOT(
+  double& hi,
+  double& hl,
+  double& ho,
+  double& ht,
+  KDTreeNode* node,
+  std::vector<Primitive*> const& primitives,
+  std::vector<Primitive*> const& leftPrimitives,
+  std::vector<Primitive*> const& rightPrimitives)
 {
   heuristicILOT( // Subtract old leaf cost and add new interior cost
     hi,
@@ -387,7 +390,7 @@ SAHKDTreeFactory::internalizeILOT(double& hi,
 // ********************* //
 void
 SAHKDTreeFactory::initILOT(KDTreeNode* root,
-                           vector<Primitive*> const& primitives)
+                           std::vector<Primitive*> const& primitives)
 {
   double hi, hl, ho, ht;
   setCacheRoot(root); // Cache root node to compute future children's ILOT

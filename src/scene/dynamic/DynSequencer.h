@@ -1,4 +1,4 @@
-#ifndef _DYN_SEQUENCER_H_
+#pragma once
 
 #include <scene/dynamic/DynSequence.h>
 
@@ -8,11 +8,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-using std::shared_ptr;
-using std::string;
-using std::unordered_map;
-using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -50,15 +45,15 @@ protected:
   /**
    * @brief The dynamic sequences handled by the dynamic sequencer
    */
-  unordered_map<string, shared_ptr<DynSequence<T>>> dynseqs;
+  std::unordered_map<std::string, std::shared_ptr<DynSequence<T>>> dynseqs;
   /**
    * @brief The start dynamic sequence
    */
-  shared_ptr<DynSequence<T>> start;
+  std::shared_ptr<DynSequence<T>> start;
   /**
    * @brief The current dynamic sequence
    */
-  shared_ptr<DynSequence<T>> current;
+  std::shared_ptr<DynSequence<T>> current;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -79,7 +74,7 @@ public:
    * @brief Handle next sequential behavior
    * @return Sequence for the step
    */
-  virtual vector<shared_ptr<T>> nextStep();
+  virtual std::vector<std::shared_ptr<T>> nextStep();
   /**
    * @brief Check if the dynamic sequencer supports a next step or not
    * @return True if dynamic sequencer supports a next step, false otherwise
@@ -105,18 +100,18 @@ public:
    *
    * @param dynseq Dynamic sequence to be added
    */
-  void add(shared_ptr<DynSequence<T>> dynseq);
+  void add(std::shared_ptr<DynSequence<T>> dynseq);
   /**
    * @brief Remove the dynamic sequence with given identifier
    * @param id Identifier of dynamic sequence to be removed
    */
-  inline void remove(string const& id) { dynseqs.erase(dynseqs.find(id)); }
+  inline void remove(std::string const& id) { dynseqs.erase(dynseqs.find(id)); }
   /**
    * @brief Get the dynamic sequence with given identifier
    * @param id Identifier of dynamic sequence to be retrieved
    * @return Requested dynamic sequence if any, nullptr otherwise
    */
-  shared_ptr<DynSequence<T>> get(string const& id);
+  std::shared_ptr<DynSequence<T>> get(std::string const& id);
   /**
    * @brief Check if the dynamic sequencer has a dynamic sequence with given
    *  identifier
@@ -124,7 +119,7 @@ public:
    * @return True if there is a dynamic sequence with given identifier, false
    *  otherwise
    */
-  inline bool has(string const& id)
+  inline bool has(std::string const& id)
   {
     return dynseqs.find(id) != dynseqs.end();
   }
@@ -140,7 +135,7 @@ public:
    *
    * @return All the dynamic sequences
    */
-  inline unordered_map<string, shared_ptr<DynSequence<T>>>&
+  inline std::unordered_map<std::string, std::shared_ptr<DynSequence<T>>>&
   getAllSequencesByRef()
   {
     return dynseqs;
@@ -148,5 +143,3 @@ public:
 };
 
 #include <scene/dynamic/DynSequencer.tpp>
-#define _DYN_SEQUENCER_H_
-#endif

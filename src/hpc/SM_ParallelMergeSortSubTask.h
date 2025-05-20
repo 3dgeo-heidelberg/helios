@@ -8,8 +8,6 @@
 #include <memory>
 #include <vector>
 
-using SurfaceInspector::maths::Scalar;
-
 namespace helios {
 namespace hpc {
 
@@ -183,7 +181,8 @@ public:
       // Distribute workload to another thread if available
       size_t const k = 1 + depth - initDepth;
       size_t const rightIdx =
-        (Scalar<size_t>::pow2(k)) * tIdx + Scalar<size_t>::pow2(k - 1);
+        (SurfaceInspector::maths::Scalar<size_t>::pow2(k)) * tIdx +
+        SurfaceInspector::maths::Scalar<size_t>::pow2(k - 1);
       if (rightIdx < numThreads) {
         RandomAccessIterator workSplit =
           workA + std::distance(workA, workB[depth]) / 2;

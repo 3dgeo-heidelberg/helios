@@ -19,8 +19,6 @@
 
 #include <iomanip>
 
-using helios::main::LidarSim;
-
 namespace fs = boost::filesystem;
 
 // ***  DECLARATIONS  *** //
@@ -127,7 +125,7 @@ main(int argc, char** argv)
     }
 
     // Load lidar simulation
-    LidarSim app;
+    helios::main::LidarSim app;
     app.init(ap.parseSurveyPath(),
              ap.parseAssetsPath(),
              ap.parseOutputPath(),

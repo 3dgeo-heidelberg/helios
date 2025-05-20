@@ -8,8 +8,6 @@
 #include <deque>
 #include <iterator>
 
-using std::deque;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -72,7 +70,7 @@ protected:
   /**
    * @brief Double ended queue used as a stack to handle nodes visiting
    */
-  deque<IBinaryTreeNode*> pendingNodes;
+  std::deque<IBinaryTreeNode*> pendingNodes;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

@@ -21,8 +21,6 @@ using helios::analytics::HDA_StateJSONReporter;
 #include <TimeWatcher.h>
 #include <filems/facade/FMSFacade.h>
 
-using namespace std;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Simulation::Simulation(
@@ -167,16 +165,18 @@ Simulation::start()
 #endif
 
   // Finish the main loop of the simulation
-  chrono::nanoseconds timeMainLoopFinish =
-    duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+  std::chrono::nanoseconds timeMainLoopFinish =
+    duration_cast<std::chrono::nanoseconds>(
+      system_clock::now().time_since_epoch());
   double const seconds =
     ((double)(timeMainLoopFinish - timeStart_ns).count()) / 1000000000.0;
   reporter.preFinishReport(seconds);
   mScanner->onSimulationFinished();
 
   // End of simulation report
-  chrono::nanoseconds const timeFinishAll =
-    duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+  std::chrono::nanoseconds const timeFinishAll =
+    duration_cast<std::chrono::nanoseconds>(
+      system_clock::now().time_since_epoch());
   double const secondsAll =
     ((double)(timeFinishAll - timeStart_ns).count()) / 1000000000.0;
   reporter.postFinishReport(secondsAll);
@@ -287,7 +287,7 @@ Simulation::setSimSpeedFactor(double factor)
 }
 
 void
-Simulation::setScanner(shared_ptr<Scanner> scanner)
+Simulation::setScanner(std::shared_ptr<Scanner> scanner)
 {
   if (scanner == mScanner) {
     return;
@@ -295,5 +295,5 @@ Simulation::setScanner(shared_ptr<Scanner> scanner)
 
   logging::INFO("Simulation: Scanner changed!");
 
-  this->mScanner = shared_ptr<Scanner>(scanner);
+  this->mScanner = std::shared_ptr<Scanner>(scanner);
 }

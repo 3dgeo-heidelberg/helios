@@ -44,7 +44,7 @@ protected:
   /**
    * @brief The index of the current sorted domain sample
    */
-  size_t i;
+  std::size_t i;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -59,7 +59,7 @@ public:
    */
   ClosestLesserSampleFunction(arma::Col<A> const& t,
                               arma::Col<B> const& y,
-                              size_t const i = 0)
+                              std::size_t const i = 0)
     : t(t)
     , y(y)
     , i(i)
@@ -127,11 +127,11 @@ public:
   /**
    * @see fluxionum::ClosestLesserSampleFunction::i
    */
-  inline size_t getCurrentSampleIndex() const { return i; }
+  inline std::size_t getCurrentSampleIndex() const { return i; }
   /**
    * @see fluxionum::ClosestLesserSampleFunction::i
    */
-  inline void setCurrentSampleIndex(size_t const i) { this->i = i; }
+  inline void setCurrentSampleIndex(std::size_t const i) { this->i = i; }
 };
 
 }

@@ -9,9 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::fstream;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -19,12 +16,12 @@ using std::string;
  *  stream
  * @see filems::SimpleReadingStrategy
  */
-class LineReadingStrategy : public SimpleReadingStrategy<string>
+class LineReadingStrategy : public SimpleReadingStrategy<std::string>
 {
 protected:
   // ***  USING  *** //
   // *************** //
-  using SimpleReadingStrategy<string>::ifs;
+  using SimpleReadingStrategy<std::string>::ifs;
 
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -48,8 +45,8 @@ public:
    * @brief Default constructor for line reading strategy
    * @see filems::SimpleReadingStrategy::SimpleReadingStrategy
    */
-  LineReadingStrategy(ifstream& ifs, long const& maxCharsPerLine)
-    : SimpleReadingStrategy<string>(ifs)
+  LineReadingStrategy(std::ifstream& ifs, long const& maxCharsPerLine)
+    : SimpleReadingStrategy<std::string>(ifs)
     , maxCharsPerLine(maxCharsPerLine)
   {
     buffer = new char[maxCharsPerLine];
@@ -64,10 +61,10 @@ public:
    *  if end of file was reached ( filems::EndOfReadingException )
    * @see helios::filems::EndOfReadingException
    */
-  string read() override
+  std::string read() override
   {
     if (ifs.getline(buffer, maxCharsPerLine))
-      return string(buffer);
+      return std::string(buffer);
     throw EndOfReadingException();
   }
 };

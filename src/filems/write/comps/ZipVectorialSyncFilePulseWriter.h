@@ -10,9 +10,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -25,7 +22,7 @@ using std::vector;
  * @see filems::ZipSyncFilePulseWriter
  */
 class ZipVectorialSyncFilePulseWriter
-  : public ZipSyncFileWriter<vector<PulseRecord> const&>
+  : public ZipSyncFileWriter<std::vector<PulseRecord> const&>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -46,13 +43,13 @@ public:
    * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
    */
   explicit ZipVectorialSyncFilePulseWriter(
-    const string& path,
+    const std::string& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
-    : ZipSyncFileWriter<vector<PulseRecord> const&>(path, compressionMode)
+    : ZipSyncFileWriter<std::vector<PulseRecord> const&>(path, compressionMode)
     , zpws(this->ofs, *(this->oa))
   {
     this->writeStrategy =
-      make_shared<VectorialWriteStrategy<PulseRecord>>(zpws);
+      std::make_shared<VectorialWriteStrategy<PulseRecord>>(zpws);
   }
   virtual ~ZipVectorialSyncFilePulseWriter() = default;
 };

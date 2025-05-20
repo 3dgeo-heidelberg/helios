@@ -4,8 +4,6 @@
 
 #include <armadillo>
 
-using namespace arma;
-
 namespace rigidmotion {
 
 /**
@@ -74,7 +72,7 @@ public:
    * @param X The point as column vector to be transformed
    * @return Result of applying the rigid motion to the point
    */
-  colvec apply(RigidMotion const& f, colvec const& X);
+  arma::colvec apply(RigidMotion const& f, arma::colvec const& X);
   /**
    * @brief Compose given rigid motions: \f$f \circ g = f(g(X))\f$
    *
@@ -110,7 +108,7 @@ public:
    *  orthonormal vector of the plane will be returned.
    */
   arma::mat computeFixedPoints(RigidMotion const& f,
-                               size_t& dim,
+                               std::size_t& dim,
                                bool safe = true);
   /**
    * @brief Compute the associated invariant of given rigid motion.
@@ -140,7 +138,7 @@ public:
    *   a plane, then the orthonormal vector of the plane will be returned.
    */
   arma::mat computeAssociatedInvariant(RigidMotion const& f,
-                                       size_t& dim,
+                                       std::size_t& dim,
                                        bool safe = true);
 };
 }

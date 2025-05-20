@@ -14,7 +14,7 @@ FastSAHKDTreeGeometricStrategy::clone(SimpleKDTreeFactory* kdtf) const
 double
 FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
   KDTreeNode* node,
-  vector<Primitive*>& primitives,
+  std::vector<Primitive*>& primitives,
   int assignedThreads) const
 {
   // Handle cases where sequential execution is preferred
@@ -25,16 +25,17 @@ FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
   return fsahkdtf.findSplitPositionByFastSAHRecipe(
     node,
     primitives,
-    [&](vector<Primitive*>& primitives,
+    [&](std::vector<Primitive*>& primitives,
         int const splitAxis,
         double const minp,
         double const deltap,
-        size_t const lossNodes,
-        size_t const lossCases,
-        vector<size_t>& cForward,
-        vector<size_t>& cBackward) -> void { // Count forward and backward
+        std::size_t const lossNodes,
+        std::size_t const lossCases,
+        std::vector<std::size_t>& cForward,
+        std::vector<std::size_t>& cBackward)
+      -> void { // Count forward and backward
       // Distribute workload
-      size_t const numPrimitives = primitives.size();
+      std::size_t const numPrimitives = primitives.size();
       /*
        * Using assignedThreads = min(assignedThreads, numPrimitives)
        *  might degrade performance because the overhead of handling
@@ -49,10 +50,11 @@ FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
        */
       if (assignedThreads > (int)numPrimitives)
         assignedThreads = (int)numPrimitives;
-      size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
-      vector<vector<size_t>> lForward(assignedThreads,
-                                      vector<size_t>(lossCases, 0));
-      vector<vector<size_t>> lBackward = lForward;
+      std::size_t const chunkSize =
+        numPrimitives / ((std::size_t)assignedThreads);
+      std::vector<std::vector<std::size_t>> lForward(
+        assignedThreads, std::vector<std::size_t>(lossCases, 0));
+      std::vector<std::vector<std::size_t>> lBackward = lForward;
       int const extraThreads = assignedThreads - 1;
       std::shared_ptr<SharedTaskSequencer> stSequencer =
         std::make_shared<SharedTaskSequencer>(extraThreads);
@@ -86,11 +88,11 @@ FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
       stSequencer->joinAll();
 
       // Reduce local counts to counts
-      for (size_t i = 0; i < lossCases; ++i) {
-        for (vector<size_t>& lf : lForward) {
+      for (std::size_t i = 0; i < lossCases; ++i) {
+        for (std::vector<std::size_t>& lf : lForward) {
           cForward[i] += lf[i];
         }
-        for (vector<size_t>& lb : lBackward) {
+        for (std::vector<std::size_t>& lb : lBackward) {
           cBackward[i] += lb[i];
         }
       }

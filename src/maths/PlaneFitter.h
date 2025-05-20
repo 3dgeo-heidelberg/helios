@@ -3,9 +3,6 @@
 #include <armadillo>
 #include <vector>
 
-using arma::Mat;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -25,7 +22,7 @@ public:
    * M[2] := Row with Z coordinates
    */
   template<typename T>
-  static void centerCoordinatesMatrix(Mat<T>& M);
+  static void centerCoordinatesMatrix(arma::Mat<T>& M);
 
   /**
    * @brief Compute the orthonormal of best fitting plane for given Matrix
@@ -54,7 +51,8 @@ public:
    * @return Orthonormal of best fitting plane
    */
   template<typename T>
-  static vector<T> bestFittingPlaneOrthoNormal(Mat<T>& M, bool center = true);
+  static std::vector<T> bestFittingPlaneOrthoNormal(arma::Mat<T>& M,
+                                                    bool center = true);
 };
 
 // ***  IMPLEMENTATION  *** //
@@ -65,7 +63,7 @@ public:
  */
 template<typename T>
 void
-PlaneFitter::centerCoordinatesMatrix(Mat<T>& M)
+PlaneFitter::centerCoordinatesMatrix(arma::Mat<T>& M)
 {
   arma::colvec mins = arma::min(M, 1);
   arma::colvec maxs = arma::max(M, 1);
@@ -84,7 +82,7 @@ PlaneFitter::centerCoordinatesMatrix(Mat<T>& M)
  */
 template<typename T>
 std::vector<T>
-PlaneFitter::bestFittingPlaneOrthoNormal(Mat<T>& M, bool center)
+PlaneFitter::bestFittingPlaneOrthoNormal(arma::Mat<T>& M, bool center)
 {
   // Transpose M to originWaypoint
   if (center)

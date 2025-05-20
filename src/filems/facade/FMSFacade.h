@@ -10,8 +10,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

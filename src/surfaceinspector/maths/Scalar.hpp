@@ -1,9 +1,6 @@
-#ifndef _SURFACEINSPECTOR_MATHS_SCALAR_HPP_
-#define _SURFACEINSPECTOR_MATHS_SCALAR_HPP_
+#pragma once
 
 #include <surfaceinspector/util/Object.hpp>
-
-using SurfaceInspector::util::Object;
 
 namespace SurfaceInspector {
 namespace maths {
@@ -16,7 +13,7 @@ namespace maths {
  * @tparam T Type of scalar to work with
  */
 template<typename T>
-class Scalar : public Object
+class Scalar : public SurfaceInspector::util::Object
 {
 public:
   // ***  GENERAL PURPOSE  *** //
@@ -110,5 +107,3 @@ public:
 }
 
 #include <surfaceinspector/maths/Scalar.tpp>
-
-#endif

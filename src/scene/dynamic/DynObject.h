@@ -7,9 +7,6 @@
 #include <assetloading/ScenePart.h>
 #include <sim/tools/NonVoidStepLoop.h>
 
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -108,7 +105,7 @@ public:
    * @param id The id for the dynamic object
    * @see DynObject::id
    */
-  DynObject(string const id)
+  DynObject(std::string const id)
     : stepLoop(1, [&]() -> bool { return doSimStep(); })
     , dynTimeStep(std::numeric_limits<double>::quiet_NaN())
   {
@@ -119,7 +116,7 @@ public:
    * @param primitives The primitives defining the dynamic object
    * @see DynObject::primitives
    */
-  DynObject(vector<Primitive*> const& primitives)
+  DynObject(std::vector<Primitive*> const& primitives)
     : stepLoop(1, [&]() -> bool { return doSimStep(); })
     , dynTimeStep(std::numeric_limits<double>::quiet_NaN())
   {
@@ -132,7 +129,7 @@ public:
    * @see DynObject::id
    * @see DynObject::primitives
    */
-  DynObject(string const id, vector<Primitive*> const& primitives)
+  DynObject(std::string const id, std::vector<Primitive*> const& primitives)
     : stepLoop(1, [&]() -> bool { return doSimStep(); })
     , dynTimeStep(std::numeric_limits<double>::quiet_NaN())
   {
@@ -191,7 +188,7 @@ public:
    * @return How many vertices there are defining the dynamic object
    * @see primitives
    */
-  size_t countVertices() const;
+  std::size_t countVertices() const;
   /**
    * @brief Obtain the position matrix for primitives defining the dynamic
    *  object
@@ -221,7 +218,7 @@ public:
    * @see DynObject::positionMatrixFromPrimitives
    * @see DynObject::countVertices
    */
-  arma::mat positionMatrixFromPrimitives(size_t const m) const;
+  arma::mat positionMatrixFromPrimitives(std::size_t const m) const;
   /**
    * @brief Obtain the normal matrix for primitives defining the dynamic
    *  object
@@ -251,7 +248,7 @@ public:
    * @see DynObject::normalMatrixFromPrimitives
    * @see DynObject::countVertices
    */
-  arma::mat normalMatrixFromPrimitives(size_t const m) const;
+  arma::mat normalMatrixFromPrimitives(std::size_t const m) const;
   /**
    * @brief Update the position of each primitive with given matrix
    *
@@ -278,7 +275,8 @@ public:
    * @param m Total number of vertices
    * @see updatePrimitivesPositionFromMatrix(arma::mat const &)
    */
-  void updatePrimitivesPositionFromMatrix(size_t const m, arma::mat const& X);
+  void updatePrimitivesPositionFromMatrix(std::size_t const m,
+                                          arma::mat const& X);
   /**
    * @brief Update the normal of each primitive with given matrix
    *
@@ -305,7 +303,8 @@ public:
    * @param m Total number of vertices
    * @see updatePrimitivesNormalFromMatrix(arma::mat const &)
    */
-  void updatePrimitivesNormalFromMatrix(size_t const m, arma::mat const& X);
+  void updatePrimitivesNormalFromMatrix(std::size_t const m,
+                                        arma::mat const& X);
 
 protected:
   /**
@@ -353,7 +352,7 @@ protected:
    * @see DynObject::countVertices
    */
   arma::mat matrixFromPrimitives(
-    size_t const m,
+    std::size_t const m,
     std::function<arma::colvec(Vertex const*)> get) const;
   /**
    * @brief Update primitives defining the dynamic object from given matrix.
@@ -399,7 +398,7 @@ protected:
    * @see DynObject::matrixToPrimitives
    * @see DynObject::countVertices
    */
-  void matrixToPrimitives(size_t const m,
+  void matrixToPrimitives(std::size_t const m,
                           std::function<void(Vertex*, arma::colvec const&)> set,
                           arma::mat const& X);
 

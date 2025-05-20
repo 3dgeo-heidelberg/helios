@@ -321,7 +321,7 @@ public:
    */
   void defineSplit(KDTreeNode* node,
                    KDTreeNode* parent,
-                   vector<Primitive*>& primitives,
+                   std::vector<Primitive*>& primitives,
                    int const depth) const override;
 
   /**
@@ -398,11 +398,11 @@ public:
    */
   void buildChildrenNodes(KDTreeNode* node,
                           KDTreeNode* parent,
-                          vector<Primitive*> const& primitives,
+                          std::vector<Primitive*> const& primitives,
                           int const depth,
                           int const index,
-                          vector<Primitive*>& leftPrimitives,
-                          vector<Primitive*>& rightPrimitives) override;
+                          std::vector<Primitive*>& leftPrimitives,
+                          std::vector<Primitive*>& rightPrimitives) override;
 
   /**
    * @brief The recipe for building of children nodes by SAH algorithm. It is
@@ -421,16 +421,16 @@ public:
   virtual void buildChildrenNodesRecipe(
     KDTreeNode* node,
     KDTreeNode* parent,
-    vector<Primitive*> const& primitives,
+    std::vector<Primitive*> const& primitives,
     int const depth,
     int const index,
-    vector<Primitive*>& leftPrimitives,
-    vector<Primitive*>& rightPrimitives,
+    std::vector<Primitive*>& leftPrimitives,
+    std::vector<Primitive*>& rightPrimitives,
     std::function<void(KDTreeNode* node,
                        int const depth,
                        int const index,
-                       vector<Primitive*>& leftPrimitives,
-                       vector<Primitive*>& rightPrimitives)>
+                       std::vector<Primitive*>& leftPrimitives,
+                       std::vector<Primitive*>& rightPrimitives)>
       f_buildChildrenNodes);
 
 protected:
@@ -447,9 +447,9 @@ protected:
    * @see SimpleKDTreeFactory::minSplitPrimitives
    */
   bool checkNodeMustSplit(
-    vector<Primitive*> const& primitives,
-    vector<Primitive*> const& leftPrimitives,
-    vector<Primitive*> const& rightPrimitives) const override;
+    std::vector<Primitive*> const& primitives,
+    std::vector<Primitive*> const& leftPrimitives,
+    std::vector<Primitive*> const& rightPrimitives) const override;
 
   // ***  SAH UTILS  *** //
   // ******************* //
@@ -481,7 +481,7 @@ protected:
    * @see SAHKDTreeFactory::defineSplit
    * @see SAHKDTreeFactory::lossNodes
    */
-  virtual double splitLoss(vector<Primitive*> const& primitives,
+  virtual double splitLoss(std::vector<Primitive*> const& primitives,
                            int const splitAxis,
                            double const splitPos,
                            double const r) const;
@@ -500,7 +500,7 @@ protected:
    * @see SAHKDTreeFactory::findSplitPositionBySAHRecipe
    * @see SAHKDTreeFactory::splitLoss
    */
-  virtual void computeBestSplit(vector<Primitive*>& primitives,
+  virtual void computeBestSplit(std::vector<Primitive*>& primitives,
                                 size_t const lossNodes,
                                 double const start,
                                 double const step,
@@ -517,8 +517,9 @@ protected:
    *  stored in given node
    * @see SAHKDTreeFactory::defineSplit
    */
-  virtual double findSplitPositionBySAH(KDTreeNode* node,
-                                        vector<Primitive*>& primitives) const;
+  virtual double findSplitPositionBySAH(
+    KDTreeNode* node,
+    std::vector<Primitive*>& primitives) const;
 
   /**
    * @brief The recipe for finding split position by SAH algorithm. It is
@@ -540,11 +541,11 @@ protected:
    */
   virtual double findSplitPositionBySAHRecipe(
     KDTreeNode* node,
-    vector<Primitive*>& primitives,
-    std::function<void(vector<Primitive*>::iterator begin,
-                       vector<Primitive*>::iterator end,
+    std::vector<Primitive*>& primitives,
+    std::function<void(std::vector<Primitive*>::iterator begin,
+                       std::vector<Primitive*>::iterator end,
                        KDTreePrimitiveComparator comparator)> f_sortPrimitives,
-    std::function<void(vector<Primitive*>& primitives,
+    std::function<void(std::vector<Primitive*>& primitives,
                        size_t const lossNodes,
                        double const start,
                        double const step,
@@ -578,7 +579,7 @@ protected:
                                double const surfaceAreaRoot,
                                double const surfaceAreaInterior,
                                double const surfaceAreaLeaf,
-                               vector<Primitive*> const& primitives) const;
+                               std::vector<Primitive*> const& primitives) const;
 
   /**
    * @brief Compute the cumulative of \f$C_T\f$ heuristic ILOT.
@@ -623,9 +624,9 @@ protected:
                                double& ho,
                                double& ht,
                                KDTreeNode* node,
-                               vector<Primitive*> const& primitives,
-                               vector<Primitive*> const& leftPrimitives,
-                               vector<Primitive*> const& rightPrimitives);
+                               std::vector<Primitive*> const& primitives,
+                               std::vector<Primitive*> const& leftPrimitives,
+                               std::vector<Primitive*> const& rightPrimitives);
 
   // ***  CACHE UTILS  *** //
   // ********************* //
@@ -689,7 +690,8 @@ protected:
    * @param root Root node to initialize ILOT cache from
    * @param primitives Primitives contained in root node
    */
-  virtual void initILOT(KDTreeNode* root, vector<Primitive*> const& primitives);
+  virtual void initILOT(KDTreeNode* root,
+                        std::vector<Primitive*> const& primitives);
   /**
    * @brief Set the cached root node
    * @param root The new root node to be cached
@@ -705,7 +707,7 @@ public:
    * @return Nmber of loss nodes used to compute the Surface Area Heuristic
    * @see SAHKDTreeFactory::lossNodes
    */
-  virtual inline size_t getLossNodes() const { return lossNodes; }
+  virtual inline std::size_t getLossNodes() const { return lossNodes; }
   /**
    * @brief Set the number loss nodes used to compute the Surface Area
    *  Heuristic
@@ -713,7 +715,7 @@ public:
    *  Heuristic
    * @see SAHKDTreeFactory::lossNodes
    */
-  virtual inline void setLossNodes(size_t const lossNodes)
+  virtual inline void setLossNodes(std::size_t const lossNodes)
   {
     this->lossNodes = lossNodes;
   }

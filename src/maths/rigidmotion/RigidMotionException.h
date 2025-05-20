@@ -3,9 +3,6 @@
 #include <stdexcept>
 #include <string>
 
-using std::runtime_error;
-using std::string;
-
 namespace rigidmotion {
 /**
  * @author Alberto M. Esmoris Pena
@@ -13,7 +10,7 @@ namespace rigidmotion {
  *
  * @brief Base class for rigid motion exceptions
  */
-class RigidMotionException : public runtime_error
+class RigidMotionException : public std::runtime_error
 {
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -22,8 +19,8 @@ public:
    * @brief Rigid motion exception constructor
    * @param msg Rigid motion exception message
    */
-  RigidMotionException(string const msg = "")
-    : runtime_error(msg)
+  RigidMotionException(std::string const msg = "")
+    : std::runtime_error(msg)
   {
   }
   virtual ~RigidMotionException() = default;

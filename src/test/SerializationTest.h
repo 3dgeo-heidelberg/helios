@@ -99,7 +99,7 @@ SerializationTest::run()
     return false;
 
   // Scene serialization test
-  size_t nRepeats = 32;
+  std::size_t nRepeats = 32;
   Scene scene1;
   Vertex t1v1;
   t1v1.pos = glm::dvec3(0.0, 0.0, 0.0);
@@ -114,15 +114,15 @@ SerializationTest::run()
   scene1.primitives.push_back(t1.clone());
   scene1.primitives.push_back(v1.clone());
   scene1.primitives.push_back(box1.clone());
-  for (size_t i = 0; i < nRepeats; i++)
+  for (std::size_t i = 0; i < nRepeats; i++)
     scene1.primitives.push_back(dv1.clone());
-  shared_ptr<ScenePart> part = make_shared<ScenePart>();
+  std::shared_ptr<ScenePart> part = std::make_shared<ScenePart>();
   for (Primitive* prim : scene1.primitives) {
     prim->part = part;
     part->mPrimitives.push_back(prim);
   }
   scene1.finalizeLoading(true);
-  shared_ptr<KDGroveFactory> kdgf = scene1.getKDGroveFactory();
+  std::shared_ptr<KDGroveFactory> kdgf = scene1.getKDGroveFactory();
   scene1.writeObject(path);
   scene1.setKDGroveFactory(kdgf);
   Scene* scene2 = Scene::readObject(path);

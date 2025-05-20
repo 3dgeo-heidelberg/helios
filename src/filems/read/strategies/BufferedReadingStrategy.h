@@ -8,8 +8,6 @@
 namespace helios {
 namespace filems {
 
-using std::queue;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

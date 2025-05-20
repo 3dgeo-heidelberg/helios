@@ -46,8 +46,8 @@ public:
    *  involved
    * @see FullWaveformPulserunnable::findIntersection
    */
-  shared_ptr<RaySceneIntersection> findIntersection(
-    vector<double> const& tMinMax,
+  std::shared_ptr<RaySceneIntersection> findIntersection(
+    std::vector<double> const& tMinMax,
     glm::dvec3 const& o,
     glm::dvec3 const& v) const override;
 };

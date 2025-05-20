@@ -42,7 +42,7 @@ protected:
   /**
    * @brief How many elements per allocated block
    */
-  size_t blockSize;
+  std::size_t blockSize;
   /**
    * @brief Vector of allocated blocks. Each pointer in this vectors points
    *  to the starting element of a block of blockSize elements
@@ -53,7 +53,7 @@ protected:
    * @brief The number of already used elements in last block
    * @see BlockAllocator::lastBlock
    */
-  size_t lastBlockElements;
+  std::size_t lastBlockElements;
   /**
    * @brief Pointer to last block in blocks. It is useful to prevent multiple
    *  queries for the same block at blocks vector
@@ -65,7 +65,7 @@ protected:
    * @brief Compute the next block size. By default it preserves blockSize
    *  but it can be overridden to provide a dynamic behavior for block size.
    */
-  std::function<size_t(void)> _nextBlockSize;
+  std::function<std::size_t(void)> _nextBlockSize;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -74,11 +74,11 @@ public:
    * @brief Default constructor for BlockAllocator
    * @param blockSize The block size to be used for allocations
    */
-  BlockAllocator(size_t const blockSize = 256)
+  BlockAllocator(std::size_t const blockSize = 256)
     : blockSize(blockSize)
     , lastBlockElements(0)
     , lastBlock(nullptr)
-    , _nextBlockSize([&]() -> size_t { return blockSize; })
+    , _nextBlockSize([&]() -> std::size_t { return blockSize; })
   {
   }
   /**

@@ -7,8 +7,6 @@
 
 #include <vector>
 
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -97,7 +95,7 @@ public:
    * @return Pointer to root node of built KDTree
    */
   virtual KDTreeNodeRoot* makeFromPrimitivesUnsafe(
-    vector<Primitive*>& primitives,
+    std::vector<Primitive*>& primitives,
     bool const computeStats = false,
     bool const reportStats = false) = 0;
   /**
@@ -113,11 +111,11 @@ public:
    * @see KDTreeFactory::makeFromPrimitivesUnsafe
    */
   virtual KDTreeNodeRoot* makeFromPrimitives(
-    vector<Primitive*> const& primitives,
+    std::vector<Primitive*> const& primitives,
     bool const computeStats = false,
     bool const reportStats = false)
   {
-    vector<Primitive*> prims = primitives; // Copy to work over
+    std::vector<Primitive*> prims = primitives; // Copy to work over
     return makeFromPrimitivesUnsafe(prims, computeStats, reportStats);
   };
 

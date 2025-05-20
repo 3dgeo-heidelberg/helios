@@ -6,9 +6,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -16,12 +13,12 @@ using std::string;
  * @see filems::SimpleFileReader
  * @see filems::LineReadingStrategy
  */
-class LineFileReader : public SimpleFileReader<string>
+class LineFileReader : public SimpleFileReader<std::string>
 {
 protected:
   // ***  USING  *** //
   // *************** //
-  using SimpleFileReader<string>::readingStrategy;
+  using SimpleFileReader<std::string>::readingStrategy;
 
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -41,11 +38,11 @@ public:
    * @brief Default constructor for line file reader
    * @see filems::SimpleFileReader::SimpleFileReader
    */
-  LineFileReader(string const& path,
+  LineFileReader(std::string const& path,
                  std::ios_base::openmode openMode = std::ios_base::in,
                  long const maxCharsPerLine = 8192,
                  bool const constructStrategy = true)
-    : SimpleFileReader<string>(path, openMode)
+    : SimpleFileReader<std::string>(path, openMode)
     , maxCharsPerLine(maxCharsPerLine)
   {
     if (constructStrategy)
@@ -62,7 +59,8 @@ protected:
    */
   void makeStrategy() override
   {
-    readingStrategy = make_shared<LineReadingStrategy>(ifs, maxCharsPerLine);
+    readingStrategy =
+      std::make_shared<LineReadingStrategy>(ifs, maxCharsPerLine);
   }
 
 public:

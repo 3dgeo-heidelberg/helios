@@ -1,10 +1,5 @@
-#ifndef _SURFACEINSPECTOR_MATHS_DISTANCES_HPP_
-#define _SURFACEINSPECTOR_MATHS_DISTANCES_HPP_
-
 #include <surfaceinspector/util/Object.hpp>
 #include <vector>
-
-using SurfaceInspector::util::Object;
 
 namespace SurfaceInspector {
 namespace maths {
@@ -15,7 +10,7 @@ namespace maths {
  *
  * @brief Class providing common distance computations
  */
-class Distances : public Object
+class Distances : public SurfaceInspector::util::Object
 {
 public:
   // ***  STATIC METHODS  *** //
@@ -85,5 +80,3 @@ public:
 }
 
 #include <maths/Distances.tpp>
-
-#endif

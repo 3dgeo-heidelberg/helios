@@ -9,8 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -37,7 +35,7 @@ public:
     : SimpleSyncFileWriter<FullWaveform const&>(path, om)
   {
     this->writeStrategy =
-      make_shared<DirectFullWaveformWriteStrategy>(this->ofs);
+      std::make_shared<DirectFullWaveformWriteStrategy>(this->ofs);
   }
   virtual ~SimpleSyncFileFullWaveformWriter() = default;
 };

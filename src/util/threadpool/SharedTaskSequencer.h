@@ -8,9 +8,6 @@
 #include <memory>
 #include <unordered_map>
 
-using std::size_t;
-using std::unordered_map;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -30,22 +27,22 @@ protected:
    *
    * If it is 0, it means that there is no limit to concurrent threads.
    */
-  size_t maxThreads = 0;
+  std::size_t maxThreads = 0;
   /**
    * @brief How many threads there are available to compute a task
    */
-  size_t availableThreads = 0;
+  std::size_t availableThreads = 0;
   /**
    * @brief Key of next shared sub-task to be inserted
    */
-  size_t nextSharedSubTaskKey = 0;
+  std::size_t nextSharedSubTaskKey = 0;
   /**
    * @brief The collection of running shared sub-tasks.
    *
    * Only queued and running shared sub-tasks are included. Those which are
    *  fully finished or were not started yet will not be here.
    */
-  unordered_map<size_t, std::shared_ptr<SharedSubTask>> subTasks;
+  std::unordered_map<std::size_t, std::shared_ptr<SharedSubTask>> subTasks;
   /**
    * @brief Mutex to handle concurrent start of sub-tasks
    */
@@ -62,7 +59,7 @@ public:
    * @brief Default constructor for shared task sequencer
    * @see SharedTaskSequencer::maxThreads
    */
-  explicit SharedTaskSequencer(size_t const maxThreads)
+  explicit SharedTaskSequencer(std::size_t const maxThreads)
     : maxThreads(maxThreads)
     , availableThreads(maxThreads)
     , nextSharedSubTaskKey(0)

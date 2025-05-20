@@ -10,7 +10,6 @@
 #include "PlaneFitter.h"
 
 #include <iostream>
-using namespace std;
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -18,7 +17,6 @@ using namespace std;
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>
-using namespace glm;
 namespace fs = boost::filesystem;
 
 // ***  R U N  *** //
@@ -31,7 +29,7 @@ XYZPointCloudFileLoader::run()
     FileUtils::handleFilePath(params, assetsDir);
 
   // Read separator
-  string const& pSep = boost::get<string const&>(params["separator"]);
+  std::string const& pSep = boost::get<std::string const&>(params["separator"]);
   if (!pSep.empty())
     separator = pSep;
 
@@ -60,7 +58,7 @@ XYZPointCloudFileLoader::run()
   for (std::string const& filePath : filePaths) {
     if (!fs::exists(fs::path(filePath))) { // Error : file not found
       std::stringstream ss;
-      ss << "File not found: " << filePath << endl;
+      ss << "File not found: " << filePath << std::endl;
       logging::ERR(ss.str());
       exit(1);
     }
@@ -90,12 +88,13 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
   // Legacy default material commented below
   /*mat.useVertexColors = true;
   mat.isGround = true;*/
-  materials.insert(materials.end(), pair<string, Material>(mat.name, mat));
+  materials.insert(materials.end(),
+                   std::pair<std::string, Material>(mat.name, mat));
 
   // Open file input stream
-  ifstream ifs;
+  std::ifstream ifs;
   try {
-    ifs = ifstream(filePath, ifstream::binary);
+    ifs = std::ifstream(filePath, std::ifstream::binary);
   } catch (std::exception& e) {
     logging::ERR("Failed to open xyz point cloud file: " + filePath +
                  "\nEXCEPTION: " + e.what());
@@ -119,7 +118,7 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
   loadMaterial();
 
   // Final report
-  stringstream ss;
+  std::stringstream ss;
   ss << "Point cloud file read successful ("
      << primsOut->mPrimitives.size() - lastNumVoxels << " voxels)\n";
   if (unsafeNormalEstimations > 0) {
@@ -137,18 +136,19 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
 }
 
 void
-XYZPointCloudFileLoader::firstPass(string const& filePathString, ifstream& ifs)
+XYZPointCloudFileLoader::firstPass(std::string const& filePathString,
+                                   std::ifstream& ifs)
 {
   // Initial values
-  minX = numeric_limits<double>::max();
-  minY = numeric_limits<double>::max();
-  minZ = numeric_limits<double>::max();
-  maxX = numeric_limits<double>::lowest();
-  maxY = numeric_limits<double>::lowest();
-  maxZ = numeric_limits<double>::lowest();
+  minX = std::numeric_limits<double>::max();
+  minY = std::numeric_limits<double>::max();
+  minZ = std::numeric_limits<double>::max();
+  maxX = std::numeric_limits<double>::lowest();
+  maxY = std::numeric_limits<double>::lowest();
+  maxZ = std::numeric_limits<double>::lowest();
 
   // Parse
-  string line;
+  std::string line;
   double x, y, z;
   try {
     n = 0;
@@ -156,7 +156,7 @@ XYZPointCloudFileLoader::firstPass(string const& filePathString, ifstream& ifs)
       if (isLineComment(line))
         continue;
       boost::algorithm::trim(line);
-      vector<string> lineParts;
+      std::vector<std::string> lineParts;
       boost::split(lineParts, line, boost::is_any_of(separator));
       // ########## BEGIN Read vertex position ##########
       unsigned int size = lineParts.size();
@@ -203,9 +203,9 @@ XYZPointCloudFileLoader::firstPass(string const& filePathString, ifstream& ifs)
 }
 
 void
-XYZPointCloudFileLoader::secondPass(string const& filePathString,
-                                    string const& matName,
-                                    ifstream& ifs)
+XYZPointCloudFileLoader::secondPass(std::string const& filePathString,
+                                    std::string const& matName,
+                                    std::ifstream& ifs)
 {
   // Prepare voxels grid
   int estimateNormals;
@@ -302,27 +302,27 @@ XYZPointCloudFileLoader::prepareVoxelsGrid(int& estimateNormals,
 }
 
 void
-XYZPointCloudFileLoader::fillVoxelsGrid(ifstream& ifs,
+XYZPointCloudFileLoader::fillVoxelsGrid(std::ifstream& ifs,
                                         int estimateNormals,
                                         double halfVoxelSize,
-                                        string const& filePathString)
+                                        std::string const& filePathString)
 {
   // Retrieve voxel grid parameters
-  size_t rgbRIndex = 6;
-  size_t rgbGIndex = 7;
-  size_t rgbBIndex = 8;
-  size_t normalXIndex = 3;
-  size_t normalYIndex = 4;
-  size_t normalZIndex = 5;
+  std::size_t rgbRIndex = 6;
+  std::size_t rgbGIndex = 7;
+  std::size_t rgbBIndex = 8;
+  std::size_t normalXIndex = 3;
+  std::size_t normalYIndex = 4;
+  std::size_t normalZIndex = 5;
   if (params.find("rgbRIndex") != params.end()) {
-    rgbRIndex = (size_t)boost::get<int>(params["rgbRIndex"]);
-    rgbGIndex = (size_t)boost::get<int>(params["rgbGIndex"]);
-    rgbBIndex = (size_t)boost::get<int>(params["rgbBIndex"]);
+    rgbRIndex = (std::size_t)boost::get<int>(params["rgbRIndex"]);
+    rgbGIndex = (std::size_t)boost::get<int>(params["rgbGIndex"]);
+    rgbBIndex = (std::size_t)boost::get<int>(params["rgbBIndex"]);
   }
   if (params.find("normalXIndex") != params.end()) {
-    normalXIndex = (size_t)boost::get<int>(params["normalXIndex"]);
-    normalYIndex = (size_t)boost::get<int>(params["normalYIndex"]);
-    normalZIndex = (size_t)boost::get<int>(params["normalZIndex"]);
+    normalXIndex = (std::size_t)boost::get<int>(params["normalXIndex"]);
+    normalYIndex = (std::size_t)boost::get<int>(params["normalYIndex"]);
+    normalZIndex = (std::size_t)boost::get<int>(params["normalZIndex"]);
   }
   if (params.find("snapNeighborNormal") != params.end()) {
     snapNeighborNormal = boost::get<bool>(params["snapNeighborNormal"]);
@@ -330,7 +330,7 @@ XYZPointCloudFileLoader::fillVoxelsGrid(ifstream& ifs,
 
   // Fill voxel grid
   try {
-    string line;
+    std::string line;
     double x = 0, y = 0, z = 0, r = 0, g = 0, b = 0, xnorm = 0, ynorm = 0,
            znorm = 0;
     while (getline(ifs, line)) {
@@ -338,7 +338,7 @@ XYZPointCloudFileLoader::fillVoxelsGrid(ifstream& ifs,
       if (isLineComment(line))
         continue;
       boost::algorithm::trim(line);
-      vector<string> lineParts;
+      std::vector<std::string> lineParts;
       boost::split(lineParts, line, boost::is_any_of(separator));
       unsigned int size = lineParts.size();
 
@@ -362,9 +362,9 @@ XYZPointCloudFileLoader::fillVoxelsGrid(ifstream& ifs,
       // Normal
       if (!estimateNormals) {
         if (size >= normalZIndex) {
-          xnorm = strtod(lineParts[normalXIndex].c_str(), nullptr);
-          ynorm = strtod(lineParts[normalYIndex].c_str(), nullptr);
-          znorm = strtod(lineParts[normalZIndex].c_str(), nullptr);
+          xnorm = std::strtod(lineParts[normalXIndex].c_str(), nullptr);
+          ynorm = std::strtod(lineParts[normalYIndex].c_str(), nullptr);
+          znorm = std::strtod(lineParts[normalZIndex].c_str(), nullptr);
           // Correct voxel normal if necessary
           if (!correctNormal(xnorm, ynorm, znorm)) {
             // Ignore points which normals are not correct and
@@ -423,8 +423,8 @@ XYZPointCloudFileLoader::digestVoxel(int estimateNormals,
                                      double znorm)
 {
   // Compute index and indices to obtain corresponding voxel
-  size_t I, J, K;
-  size_t const IDX = indexFromCoordinates(x, y, z, I, J, K);
+  std::size_t I, J, K;
+  std::size_t const IDX = indexFromCoordinates(x, y, z, I, J, K);
   Voxel* voxel = voxelGrid->getVoxel(IDX);
 
   // If voxel does not exist, create it
@@ -467,7 +467,8 @@ XYZPointCloudFileLoader::digestVoxel(int estimateNormals,
 }
 
 void
-XYZPointCloudFileLoader::warnAboutPotentialErrors(string const& filePathString)
+XYZPointCloudFileLoader::warnAboutPotentialErrors(
+  std::string const& filePathString)
 {
   // Iterate over voxels to check them
   Voxel* voxel;
@@ -529,27 +530,27 @@ XYZPointCloudFileLoader::postProcess(std::string const& matName,
 }
 
 void
-XYZPointCloudFileLoader::estimateNormals(ifstream& ifs)
+XYZPointCloudFileLoader::estimateNormals(std::ifstream& ifs)
 {
   // Prepare voxel matrices
   for (size_t i = 0; i < maxNVoxels; i++) {
     if (voxelGrid->hasVoxel(i)) {
       voxelGrid->setMatrix(
-        i, new Mat<double>(3, voxelGrid->getVoxel(i)->numPoints));
+        i, new arma::Mat<double>(3, voxelGrid->getVoxel(i)->numPoints));
     }
   }
 
   // Populate voxel matrices
   try {
     std::string line;
-    size_t I, J, K, IDX;
+    std::size_t I, J, K, IDX;
     double x, y, z;
     while (getline(ifs, line)) {
       // Parse
       if (isLineComment(line))
         continue;
       boost::algorithm::trim(line);
-      vector<string> lineParts;
+      std::vector<std::string> lineParts;
       boost::split(lineParts, line, boost::is_any_of(separator));
       unsigned int size = lineParts.size();
       // Extract coordinates
@@ -581,16 +582,16 @@ XYZPointCloudFileLoader::estimateNormals(ifstream& ifs)
 }
 
 void
-XYZPointCloudFileLoader::estimateNormalsBatch(ifstream& ifs)
+XYZPointCloudFileLoader::estimateNormalsBatch(std::ifstream& ifs)
 {
   // Prepare variables
-  size_t startIdx = 0; // Start index for current batch [INCLUSIVE]
-  size_t endIdx;       // End index of current batch [EXCLUSIVE]
+  std::size_t startIdx = 0; // Start index for current batch [INCLUSIVE]
+  std::size_t endIdx;       // End index of current batch [EXCLUSIVE]
 
   // Estimate normals by batches
-  for (size_t batch = 0; batch < numBatches; batch++) {
+  for (std::size_t batch = 0; batch < numBatches; batch++) {
     // Initialize points count to 0  (How many points considered for batch)
-    size_t pointsCount = 0;
+    std::size_t pointsCount = 0;
 
     // Prepare voxel matrices
     for (endIdx = startIdx; endIdx < maxNVoxels; endIdx++) {
@@ -598,28 +599,28 @@ XYZPointCloudFileLoader::estimateNormalsBatch(ifstream& ifs)
       if (!voxelGrid->hasVoxel(endIdx))
         continue;
       // Handle number of points for this batch
-      size_t const voxelNumPoints = voxelGrid->getVoxel(endIdx)->numPoints;
-      size_t const newPointsCount = pointsCount + voxelNumPoints;
+      std::size_t const voxelNumPoints = voxelGrid->getVoxel(endIdx)->numPoints;
+      std::size_t const newPointsCount = pointsCount + voxelNumPoints;
       if (newPointsCount > batchSize) {
         // If batch size has been exceeded then finish
         break;
       }
       // Continue batch
       pointsCount = newPointsCount;
-      voxelGrid->setMatrix(endIdx, new Mat<double>(3, voxelNumPoints));
+      voxelGrid->setMatrix(endIdx, new arma::Mat<double>(3, voxelNumPoints));
     }
 
     // Populate voxel matrices
     try {
       std::string line;
-      size_t I, J, K, IDX;
+      std::size_t I, J, K, IDX;
       double x, y, z;
       while (getline(ifs, line)) {
         // Parse
         if (isLineComment(line))
           continue;
         boost::algorithm::trim(line);
-        vector<string> lineParts;
+        std::vector<std::string> lineParts;
         boost::split(lineParts, line, boost::is_any_of(separator));
         unsigned int size = lineParts.size();
         // Extract coordinates
@@ -658,14 +659,14 @@ XYZPointCloudFileLoader::estimateNormalsBatch(ifstream& ifs)
 }
 
 void
-XYZPointCloudFileLoader::_estimateNormals(size_t start, size_t end)
+XYZPointCloudFileLoader::_estimateNormals(std::size_t start, std::size_t end)
 {
   // Find populated matrices
   voxelGrid->whileLoopStart();
   while (voxelGrid->whileLoopHasNext()) {
     size_t key;
     Voxel* voxel = voxelGrid->whileLoopNext(&key);
-    Mat<double>* matrix = voxelGrid->getMatrix(key);
+    arma::Mat<double>* matrix = voxelGrid->getMatrix(key);
     if (matrix != nullptr) {
       if (voxel->numPoints <
           XYZPointCloudFileLoader::minPointsForSafeNormalEstimation) {
@@ -703,36 +704,36 @@ XYZPointCloudFileLoader::voxelsGridToScenePart()
   }
 }
 
-size_t
+std::size_t
 XYZPointCloudFileLoader::indexFromCoordinates(double x,
                                               double y,
                                               double z,
-                                              size_t& I,
-                                              size_t& J,
-                                              size_t& K)
+                                              std::size_t& I,
+                                              std::size_t& J,
+                                              std::size_t& K)
 {
-  I = (size_t)((x - minX) * xCoeff);
+  I = (std::size_t)((x - minX) * xCoeff);
   if (I >= nx)
     I = nx - 1;
-  J = (size_t)((y - minY) * yCoeff);
+  J = (std::size_t)((y - minY) * yCoeff);
   if (J >= ny)
     J = ny - 1;
-  K = (size_t)((z - minZ) * zCoeff);
+  K = (std::size_t)((z - minZ) * zCoeff);
   if (K >= nz)
     K = nz - 1;
   return I * nynz + J * nz + K;
 }
 
 bool
-XYZPointCloudFileLoader::isLineComment(string const& line)
+XYZPointCloudFileLoader::isLineComment(std::string const& line)
 {
   return line[0] == '/' && line[1] == '/';
 }
 
 void
-XYZPointCloudFileLoader::restartInputFileStream(ifstream& ifs)
+XYZPointCloudFileLoader::restartInputFileStream(std::ifstream& ifs)
 {
   // Restore file cursor position to beginning
   ifs.clear();
-  ifs.seekg(0, ios::beg);
+  ifs.seekg(0, std::ios::beg);
 }

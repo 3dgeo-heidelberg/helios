@@ -7,34 +7,34 @@ using namespace rigidmotion;
 // ***  CONSTANTS  *** //
 // ******************* //
 double const RigidMotionR3Factory::eps = 0.000000001;
-mat const RigidMotionR3Factory::canonicalReflection =
-  mat("-1 0 0; 0 1 0; 0 0 1");
+arma::mat const RigidMotionR3Factory::canonicalReflection =
+  arma::mat("-1 0 0; 0 1 0; 0 0 1");
 
 // ***  RIGID MOTION FACTORY METHODS  *** //
 // ************************************** //
 RigidMotion
 RigidMotionR3Factory::makeIdentity() const
 {
-  return RigidMotion(zeros(3), eye(3, 3));
+  return RigidMotion(arma::zeros(3), arma::eye(3, 3));
 }
 
 RigidMotion
-RigidMotionR3Factory::makeTranslation(colvec const shift) const
+RigidMotionR3Factory::makeTranslation(arma::colvec const shift) const
 {
-  return RigidMotion(shift, eye(3, 3));
+  return RigidMotion(shift, arma::eye(3, 3));
 }
 
 RigidMotion
-RigidMotionR3Factory::makeReflection(colvec const ortho) const
+RigidMotionR3Factory::makeReflection(arma::colvec const ortho) const
 {
-  return makeReflectionFast(normalise(ortho));
+  return makeReflectionFast(arma::normalise(ortho));
 }
 
 RigidMotion
-RigidMotionR3Factory::makeReflectionFast(colvec const orthonormal) const
+RigidMotionR3Factory::makeReflectionFast(arma::colvec const orthonormal) const
 {
   // Compute alpha vector
-  colvec alpha(3);
+  arma::colvec alpha(3);
   if (orthonormal[0] == 0.0 && orthonormal[1] == 0.0) {
     alpha[0] = SQRT2;
     alpha[1] = SQRT2;
@@ -43,70 +43,70 @@ RigidMotionR3Factory::makeReflectionFast(colvec const orthonormal) const
     alpha[0] = -orthonormal(2) / orthonormal(0);
     alpha[1] = 1;
     alpha[2] = 1;
-    alpha = normalise(alpha);
+    alpha = arma::normalise(alpha);
   } else {
     alpha[0] = 1;
     alpha[1] = (-orthonormal[0] - orthonormal[2]) / orthonormal[1];
     alpha[2] = 1;
-    alpha = normalise(alpha);
+    alpha = arma::normalise(alpha);
   }
 
   // Compute beta vector
-  colvec beta = normalise(cross(orthonormal, alpha));
+  arma::colvec beta = arma::normalise(arma::cross(orthonormal, alpha));
 
   // Build reflection
   return makeReflectionFast(orthonormal, alpha, beta);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeReflectionFast(colvec const u,
-                                         colvec const alpha,
-                                         colvec const beta) const
+RigidMotionR3Factory::makeReflectionFast(arma::colvec const u,
+                                         arma::colvec const alpha,
+                                         arma::colvec const beta) const
 {
   // Build basis matrix
-  mat B(3, 3);
+  arma::mat B(3, 3);
   B.col(0) = u;
   B.col(1) = alpha;
   B.col(2) = beta;
 
   // Inverse of basis matrix
-  mat Binv = inv(B);
+  arma::mat Binv = inv(B);
 
   // Build reflection
-  return RigidMotion(zeros(3), B * canonicalReflection * Binv);
+  return RigidMotion(arma::zeros(3), B * canonicalReflection * Binv);
 }
 
 RigidMotion
 RigidMotionR3Factory::makeReflectionX() const
 {
-  return RigidMotion(zeros(3), canonicalReflection);
+  return RigidMotion(arma::zeros(3), canonicalReflection);
 }
 
 RigidMotion
 RigidMotionR3Factory::makeReflectionY() const
 {
-  return RigidMotion(zeros(3), mat("1 0 0; 0 -1 0; 0 0 1"));
+  return RigidMotion(arma::zeros(3), arma::mat("1 0 0; 0 -1 0; 0 0 1"));
 }
 
 RigidMotion
 RigidMotionR3Factory::makeReflectionZ() const
 {
-  return RigidMotion(zeros(3), mat("1 0 0; 0 1 0; 0 0 -1"));
+  return RigidMotion(arma::zeros(3), arma::mat("1 0 0; 0 1 0; 0 0 -1"));
 }
 
 RigidMotion
-RigidMotionR3Factory::makeGlideReflection(colvec const ortho,
-                                          colvec const shift) const
+RigidMotionR3Factory::makeGlideReflection(arma::colvec const ortho,
+                                          arma::colvec const shift) const
 {
-  return makeGlideReflectionFast(normalise(ortho), shift);
+  return makeGlideReflectionFast(arma::normalise(ortho), shift);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeGlideReflectionFast(colvec const orthonormal,
-                                              colvec const shift) const
+RigidMotionR3Factory::makeGlideReflectionFast(arma::colvec const orthonormal,
+                                              arma::colvec const shift) const
 {
   // Check shift is orthogonal to plane orthonormal
-  if (std::fabs(dot(orthonormal, shift)) > eps) {
+  if (std::fabs(arma::dot(orthonormal, shift)) > eps) {
     throw RigidMotionException(
       "RigidMotionR3Factory failed to build glide reflection.\n"
       "Shift vector was not contained in the reflection plane");
@@ -119,13 +119,14 @@ RigidMotionR3Factory::makeGlideReflectionFast(colvec const orthonormal,
 }
 
 RigidMotion
-RigidMotionR3Factory::makeRotation(colvec const axis, double const theta) const
+RigidMotionR3Factory::makeRotation(arma::colvec const axis,
+                                   double const theta) const
 {
-  return makeRotationFast(normalise(axis), theta);
+  return makeRotationFast(arma::normalise(axis), theta);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeRotationFast(colvec const axis,
+RigidMotionR3Factory::makeRotationFast(arma::colvec const axis,
                                        double const theta) const
 {
   // Cache partial computations
@@ -143,7 +144,7 @@ RigidMotionR3Factory::makeRotationFast(colvec const axis,
   double const uztsin = axis(2) * tsin;
 
   // Compute the rotation matrix
-  mat A(3, 3);
+  arma::mat A(3, 3);
   A.at(0, 0) = tcos + axis(0) * axis(0) * ccos;
   A.at(0, 1) = uxuyccos - uztsin;
   A.at(0, 2) = uxuzccos + uytsin;
@@ -155,7 +156,7 @@ RigidMotionR3Factory::makeRotationFast(colvec const axis,
   A.at(2, 2) = tcos + axis(2) * axis(2) * ccos;
 
   // Build the rigid motion
-  return RigidMotion(zeros(3), A);
+  return RigidMotion(arma::zeros(3), A);
 }
 
 RigidMotion
@@ -166,14 +167,14 @@ RigidMotionR3Factory::makeRotationX(double const theta) const
   double const thetasin = std::sin(theta);
 
   // Compute the rotation matrix
-  mat A = eye(3, 3);
+  arma::mat A = arma::eye(3, 3);
   A.at(1, 1) = thetacos;
   A.at(1, 2) = -thetasin;
   A.at(2, 1) = thetasin;
   A.at(2, 2) = thetacos;
 
   // Build the rigid motion
-  return RigidMotion(zeros(3), A);
+  return RigidMotion(arma::zeros(3), A);
 }
 
 RigidMotion
@@ -184,14 +185,14 @@ RigidMotionR3Factory::makeRotationY(double const theta) const
   double const thetasin = std::sin(theta);
 
   // Compute the rotation matrix
-  mat A = eye(3, 3);
+  arma::mat A = arma::eye(3, 3);
   A.at(0, 0) = thetacos;
   A.at(0, 2) = thetasin;
   A.at(2, 0) = -thetasin;
   A.at(2, 2) = thetacos;
 
   // Build the rigid motion
-  return RigidMotion(zeros(3), A);
+  return RigidMotion(arma::zeros(3), A);
 }
 
 RigidMotion
@@ -202,26 +203,26 @@ RigidMotionR3Factory::makeRotationZ(double const theta) const
   double const thetasin = std::sin(theta);
 
   // Compute the rotation matrix
-  mat A = eye(3, 3);
+  arma::mat A = arma::eye(3, 3);
   A.at(0, 0) = thetacos;
   A.at(0, 1) = -thetasin;
   A.at(1, 0) = thetasin;
   A.at(1, 1) = thetacos;
 
   // Build the rigid motion
-  return RigidMotion(zeros(3), A);
+  return RigidMotion(arma::zeros(3), A);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeHelical(colvec const axis,
+RigidMotionR3Factory::makeHelical(arma::colvec const axis,
                                   double const theta,
                                   double const glide) const
 {
-  return makeHelicalFast(normalise(axis), theta, glide);
+  return makeHelicalFast(arma::normalise(axis), theta, glide);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeHelicalFast(colvec const axis,
+RigidMotionR3Factory::makeHelicalFast(arma::colvec const axis,
                                       double const theta,
                                       double const glide) const
 {
@@ -234,7 +235,7 @@ RigidMotion
 RigidMotionR3Factory::makeHelicalX(double const theta, double const glide) const
 {
   RigidMotion rm = makeRotationX(theta);
-  rm.setC(colvec(std::vector<double>({ glide, 0, 0 })));
+  rm.setC(arma::colvec(std::vector<double>({ glide, 0, 0 })));
   return rm;
 }
 
@@ -242,7 +243,7 @@ RigidMotion
 RigidMotionR3Factory::makeHelicalY(double const theta, double const glide) const
 {
   RigidMotion rm = makeRotationY(theta);
-  rm.setC(colvec(std::vector<double>({ 0, glide, 0 })));
+  rm.setC(arma::colvec(std::vector<double>({ 0, glide, 0 })));
   return rm;
 }
 
@@ -250,19 +251,19 @@ RigidMotion
 RigidMotionR3Factory::makeHelicalZ(double const theta, double const glide) const
 {
   RigidMotion rm = makeRotationZ(theta);
-  rm.setC(colvec(std::vector<double>({ 0, 0, glide })));
+  rm.setC(arma::colvec(std::vector<double>({ 0, 0, glide })));
   return rm;
 }
 
 RigidMotion
-RigidMotionR3Factory::makeRotationalSymmetry(colvec const axis,
+RigidMotionR3Factory::makeRotationalSymmetry(arma::colvec const axis,
                                              double const theta) const
 {
-  return makeRotationalSymmetryFast(normalise(axis), theta);
+  return makeRotationalSymmetryFast(arma::normalise(axis), theta);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeRotationalSymmetryFast(colvec const axis,
+RigidMotionR3Factory::makeRotationalSymmetryFast(arma::colvec const axis,
                                                  double const theta) const
 {
   return makeReflectionFast(axis).compose(makeRotation(axis, theta));
@@ -287,19 +288,20 @@ RigidMotionR3Factory::makeRotationalSymmetryZ(double const theta) const
 }
 
 RigidMotion
-RigidMotionR3Factory::makeRotationalSymmetry(colvec const axis,
+RigidMotionR3Factory::makeRotationalSymmetry(arma::colvec const axis,
                                              double const theta,
-                                             colvec const center) const
+                                             arma::colvec const center) const
 {
-  return makeRotationalSymmetryFast(normalise(axis), theta, center);
+  return makeRotationalSymmetryFast(arma::normalise(axis), theta, center);
 }
 
 RigidMotion
-RigidMotionR3Factory::makeRotationalSymmetryFast(colvec const axis,
-                                                 double const theta,
-                                                 colvec const center) const
+RigidMotionR3Factory::makeRotationalSymmetryFast(
+  arma::colvec const axis,
+  double const theta,
+  arma::colvec const center) const
 {
   RigidMotion rm = makeRotationalSymmetryFast(axis, theta);
-  rm.setC((eye(3, 3) - rm.getA()) * center);
+  rm.setC((arma::eye(3, 3) - rm.getA()) * center);
   return rm;
 }

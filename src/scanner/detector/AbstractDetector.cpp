@@ -40,7 +40,7 @@ AbstractDetector::onLegComplete()
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 void
-AbstractDetector::setFMS(std::shared_ptr<FMSFacade> fms)
+AbstractDetector::setFMS(std::shared_ptr<helios::filems::FMSFacade> fms)
 {
   this->fms = fms;
   if (fms != nullptr) {

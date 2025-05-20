@@ -16,8 +16,6 @@ namespace fms = helios::filems;
 namespace helios {
 namespace main {
 
-using std::make_shared;
-
 void
 LidarSim::init(std::string surveyPath,
                std::vector<std::string> assetsPath,
@@ -111,7 +109,7 @@ LidarSim::init(std::string surveyPath,
    * May return 0 when not able to detect
    */
   unsigned numSysThreads = std::thread::hardware_concurrency();
-  size_t const poolSize = (njobs == 0) ? numSysThreads - 1 : njobs - 1;
+  std::size_t const poolSize = (njobs == 0) ? numSysThreads - 1 : njobs - 1;
   PulseThreadPoolFactory ptpf(
     parallelizationStrategy,
     poolSize,

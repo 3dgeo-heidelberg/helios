@@ -6,9 +6,6 @@
 #include <assetloading/ScenePart.h>
 #include <scene/Scene.h>
 
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -47,7 +44,7 @@ protected:
   /**
    * @brief Static objects composing the scene
    */
-  vector<shared_ptr<ScenePart>> staticObjs;
+  std::vector<std::shared_ptr<ScenePart>> staticObjs;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -85,7 +82,7 @@ public:
    * @param obj Static object to be appended to the scene
    * @see ScenePart
    */
-  inline void appendStaticObject(shared_ptr<ScenePart> obj)
+  inline void appendStaticObject(std::shared_ptr<ScenePart> obj)
   {
     staticObjs.push_back(obj);
   }
@@ -94,7 +91,7 @@ public:
    * @param index Index of static object to be obtained
    * @return Static object at given index
    */
-  inline shared_ptr<ScenePart> getStaticObject(size_t const index)
+  inline std::shared_ptr<ScenePart> getStaticObject(std::size_t const index)
   {
     return staticObjs[index];
   }
@@ -103,7 +100,8 @@ public:
    * @param index Index of static object to be setted
    * @param obj New static object
    */
-  inline void setStaticObject(size_t const index, shared_ptr<ScenePart> obj)
+  inline void setStaticObject(std::size_t const index,
+                              std::shared_ptr<ScenePart> obj)
   {
     staticObjs[index] = obj;
   }
@@ -111,7 +109,7 @@ public:
    * @brief Remove static object at given index
    * @param index Index of static object to be removed
    */
-  inline void removeStaticObject(size_t const index)
+  inline void removeStaticObject(std::size_t const index)
   {
     staticObjs.erase(staticObjs.begin() + index);
   }

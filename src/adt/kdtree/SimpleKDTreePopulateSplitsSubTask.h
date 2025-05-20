@@ -81,8 +81,8 @@ public:
     std::function<void(Primitive* p,
                        int const splitAxis,
                        double const splitPos,
-                       vector<Primitive*>& leftPrimitives,
-                       vector<Primitive*>& rightPrimitives)>
+                       std::vector<Primitive*>& leftPrimitives,
+                       std::vector<Primitive*>& rightPrimitives)>
       onPopulateSplitsDigestPrimitive)
     : SharedSubTask(ch)
     , primitives(primitives)

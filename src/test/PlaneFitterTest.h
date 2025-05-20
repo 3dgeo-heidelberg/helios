@@ -3,6 +3,8 @@
 #include "BaseTest.h"
 #include <PlaneFitter.h>
 
+using namespace arma;
+
 namespace HeliosTests {
 
 /**

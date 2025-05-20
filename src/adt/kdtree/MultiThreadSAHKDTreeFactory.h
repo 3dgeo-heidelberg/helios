@@ -3,8 +3,6 @@
 #include <MultiThreadKDTreeFactory.h>
 #include <SAHKDTreeFactory.h>
 
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -69,10 +67,10 @@ public:
    * @param kdtf The SAH factory to be used to build the KDTree
    */
   MultiThreadSAHKDTreeFactory(
-    shared_ptr<SimpleKDTreeFactory> const kdtf,
-    shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
-    size_t const numJobs = 2,
-    size_t const geomJobs = 2);
+    std::shared_ptr<SimpleKDTreeFactory> const kdtf,
+    std::shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
+    std::size_t const numJobs = 2,
+    std::size_t const geomJobs = 2);
   ~MultiThreadSAHKDTreeFactory() override = default;
 
   // ***  CLONE  *** //

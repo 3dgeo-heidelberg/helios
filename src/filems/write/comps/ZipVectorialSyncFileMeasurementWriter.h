@@ -10,9 +10,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -25,7 +22,7 @@ using std::vector;
  * @see filems::ZipSyncFileMeasurementWriter
  */
 class ZipVectorialSyncFileMeasurementWriter
-  : public ZipSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>
+  : public ZipSyncFileWriter<std::vector<Measurement> const&, glm::dvec3 const&>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -46,15 +43,16 @@ public:
    * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
    */
   explicit ZipVectorialSyncFileMeasurementWriter(
-    const string& path,
+    const std::string& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
-    : ZipSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>(
+    : ZipSyncFileWriter<std::vector<Measurement> const&, glm::dvec3 const&>(
         path,
         compressionMode)
     , zmws(this->ofs, *(this->oa))
   {
     this->writeStrategy =
-      make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(zmws);
+      std::make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(
+        zmws);
   }
   virtual ~ZipVectorialSyncFileMeasurementWriter() = default;
 };

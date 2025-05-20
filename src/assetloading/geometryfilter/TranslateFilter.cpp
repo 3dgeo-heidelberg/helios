@@ -1,10 +1,6 @@
-#include <iostream>
+#include "TranslateFilter.h"
 
 #include <boost/variant/get.hpp>
-
-using namespace std;
-
-#include "TranslateFilter.h"
 
 ScenePart*
 TranslateFilter::run()

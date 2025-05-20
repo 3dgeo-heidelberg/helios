@@ -9,8 +9,6 @@
 
 #include <memory>
 
-using std::dynamic_pointer_cast;
-
 // ***  UTIL FUNCTIONS  *** //
 // ************************ //
 char

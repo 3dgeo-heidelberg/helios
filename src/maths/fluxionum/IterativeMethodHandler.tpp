@@ -1,12 +1,6 @@
-#ifndef _ITERATIVEMETHODHANDLER_H_
-#include <IterativeMethodHandler.h>
-#endif
-
-using namespace fluxionum;
-
 template <typename IT, typename ET>
-typename IterativeMethodHandler<IT, ET>::IterativeMethodStatus
-IterativeMethodHandler<IT, ET>::handleEndOfIteration(
+typename fluxionum::IterativeMethodHandler<IT, ET>::IterativeMethodStatus
+fluxionum::IterativeMethodHandler<IT, ET>::handleEndOfIteration(
     IT const &input,
     ET const &error
 ){

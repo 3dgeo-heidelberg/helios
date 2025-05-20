@@ -8,8 +8,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -32,13 +30,13 @@ public:
    * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
    */
   explicit ZipSyncFileMeasurementWriter(
-    const string& path,
+    const std::string& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
     : ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>(path,
                                                                compressionMode)
   {
     this->writeStrategy =
-      make_shared<ZipMeasurementWriteStrategy>(this->ofs, *(this->oa));
+      std::make_shared<ZipMeasurementWriteStrategy>(this->ofs, *(this->oa));
   }
   virtual ~ZipSyncFileMeasurementWriter() = default;
 };

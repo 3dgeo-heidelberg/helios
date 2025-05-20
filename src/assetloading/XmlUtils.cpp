@@ -266,8 +266,8 @@ XmlUtils::createDynMotionsVector(tinyxml2::XMLElement* element)
       "XmlUtils::createDynMotionsVector cannot create a vector from "
       "a XML element with not even a single motion child");
   }
-  std::vector<shared_ptr<DynMotion>> dms;
-  RigidMotionR3Factory rm3f;
+  std::vector<std::shared_ptr<DynMotion>> dms;
+  rigidmotion::RigidMotionR3Factory rm3f;
   tinyxml2::XMLAttribute const* motionAttr;
 
   // Handle children motion elements defining the sequence

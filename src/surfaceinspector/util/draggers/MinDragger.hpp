@@ -1,9 +1,6 @@
-#ifndef _SURFACEINSPECTOR_UTIL_DRAGGERS_MIN_DRAGGER_HPP_
-#define _SURFACEINSPECTOR_UTIL_DRAGGERS_MIN_DRAGGER_HPP_
+#pragma once
 
 #include <surfaceinspector/util/draggers/OptimizationDragger.hpp>
-
-using SurfaceInspector::util::draggers::IDragger;
 
 namespace SurfaceInspector {
 namespace util {
@@ -26,13 +23,13 @@ protected:
   /**
    * @brief The collection (as vector) to min-drag from
    */
-  vector<E> x;
+  std::vector<E> x;
   /**
    * @brief The number of elements in the collection x, minus 1
    *
    * It is necessary to handle iterative dragging.
    */
-  size_t stopSize;
+  std::size_t stopSize;
   /**
    * @brief Specify if the min dragger has been initialized (true) or nor
    *  (false).
@@ -44,15 +41,15 @@ protected:
   /**
    * @brief The start index
    */
-  size_t a = 0;
+  std::size_t a = 0;
   /**
    * @brief The end index
    */
-  size_t b = 0;
+  std::size_t b = 0;
   /**
    * @brief The current index
    */
-  size_t c = 0;
+  std::size_t c = 0;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -62,7 +59,7 @@ public:
    * @param x The collection to drag over
    * @see MinDragger::x
    */
-  MinDragger(vector<E> x)
+  MinDragger(std::vector<E> x)
     : x(x)
     , stopSize(x.size() - 1)
     , initialized(false) {};
@@ -132,4 +129,3 @@ public:
 }
 
 #include <surfaceinspector/util/draggers/MinDragger.tpp>
-#endif

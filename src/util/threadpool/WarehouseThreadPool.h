@@ -94,17 +94,17 @@ public:
   // ****************************** //
   /**
    * @brief Expose the warehouse post method
-   * @see TaskWarehouse::post(shared_ptr<Task>)
+   * @see TaskWarehouse::post(std::shared_ptr<Task>)
    */
-  virtual inline bool post(shared_ptr<Task> task)
+  virtual inline bool post(std::shared_ptr<Task> task)
   {
     return warehouse.post(task);
   }
   /**
    * @brief Expose the warehouse post method
-   * @see TaskWarehouse::post(vector<shared_ptr<Task>>&)
+   * @see TaskWarehouse::post(std::vector<std::shared_ptr<Task>>&)
    */
-  virtual inline bool post(vector<shared_ptr<Task>>& tasks)
+  virtual inline bool post(std::vector<std::shared_ptr<Task>>& tasks)
   {
     return warehouse.post(tasks);
   }
@@ -112,7 +112,7 @@ public:
    * @brief Expose the warehouse get method
    * @see TaskWarehouse::get
    */
-  virtual inline shared_ptr<Task> get() { return warehouse.get(); }
+  virtual inline std::shared_ptr<Task> get() { return warehouse.get(); }
   /**
    * @brief Expose the warehouse notify method
    * @see TaskWarehouse::notify
@@ -135,7 +135,7 @@ public:
   {
     // Start threads
     workersCount = pool_size;
-    for (size_t tid = 0; tid < pool_size; ++tid) {
+    for (std::size_t tid = 0; tid < pool_size; ++tid) {
       io_service_.post(boost::bind(&WarehouseThreadPool::_start, this, tid));
     }
   }
@@ -176,9 +176,9 @@ protected:
    * @see WarehouseThreadPool::finish
    * @see WarehouseThreadPool::start
    */
-  virtual void _start(size_t const tid)
+  virtual void _start(std::size_t const tid)
   {
-    shared_ptr<Task> task;
+    std::shared_ptr<Task> task;
 
     // Standard working mode : Compute tasks and wait for new ones
     while (working) {
@@ -223,7 +223,10 @@ protected:
    * @param tid Index/identifier of thread that must compute the task
    * @param task Task to be computed
    */
-  virtual void doTask(size_t const tid, shared_ptr<Task> task) { (*task)(); }
+  virtual void doTask(std::size_t const tid, std::shared_ptr<Task> task)
+  {
+    (*task)();
+  }
 
   /**
    * @brief Lock until all pending tasks have been finished. If it is not

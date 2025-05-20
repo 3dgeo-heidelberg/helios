@@ -2,8 +2,6 @@
 
 #include <surfaceinspector/util/Object.hpp>
 
-using SurfaceInspector::util::Object;
-
 namespace SurfaceInspector {
 namespace util {
 namespace draggers {
@@ -20,7 +18,7 @@ namespace draggers {
  * @tparam C Type of container to drag elements from
  */
 template<typename E, typename C>
-class IDragger : public Object
+class IDragger : public SurfaceInspector::util::Object
 {
 public:
   // ***  INTERFACE  *** //

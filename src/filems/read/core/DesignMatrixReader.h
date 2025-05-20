@@ -101,7 +101,7 @@ public:
    * @return Built design matrix
    */
   virtual fluxionum::DesignMatrix<VarType> read(
-    std::unordered_map<string, string>* keyval = nullptr);
+    std::unordered_map<std::string, std::string>* keyval = nullptr);
 
 protected:
   // ***  PARSING UTILS  *** //
@@ -175,7 +175,7 @@ protected:
    * @see DesignMatrixReader::sep
    */
   virtual void parseColumnNames(std::string const& val,
-                                std::vector<string>& header);
+                                std::vector<std::string>& header);
 };
 
 }

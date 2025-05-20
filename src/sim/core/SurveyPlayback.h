@@ -12,7 +12,6 @@ namespace filems {
 class FMSFacade;
 }
 }
-using helios::filems::FMSFacade;
 
 /**
  * @brief Survey playback class, used to extend simulation functionalities
@@ -40,7 +39,7 @@ public:
   /**
    * @brief Main facade to file management system
    */
-  shared_ptr<FMSFacade> fms = nullptr;
+  std::shared_ptr<helios::filems::FMSFacade> fms = nullptr;
 
 private:
   /**
@@ -106,7 +105,7 @@ public:
    */
   SurveyPlayback(
     std::shared_ptr<Survey> survey,
-    std::shared_ptr<FMSFacade> fms,
+    std::shared_ptr<helios::filems::FMSFacade> fms,
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,

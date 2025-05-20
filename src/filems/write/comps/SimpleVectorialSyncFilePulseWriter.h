@@ -11,9 +11,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -26,7 +23,7 @@ using std::vector;
  * @see filems::SimpleSyncFilePulseWriter
  */
 class SimpleVectorialSyncFilePulseWriter
-  : public SimpleSyncFileWriter<vector<PulseRecord> const&>
+  : public SimpleSyncFileWriter<std::vector<PulseRecord> const&>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -53,7 +50,7 @@ public:
     , dpws(this->ofs)
   {
     this->writeStrategy =
-      make_shared<VectorialWriteStrategy<PulseRecord>>(dpws);
+      std::make_shared<VectorialWriteStrategy<PulseRecord>>(dpws);
   }
   virtual ~SimpleVectorialSyncFilePulseWriter() = default;
 };

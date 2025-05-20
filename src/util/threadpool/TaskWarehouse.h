@@ -7,9 +7,6 @@
 #include <memory>
 #include <vector>
 
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -26,11 +23,11 @@ protected:
   /**
    * @brief Maximum number of tasks the warehouse can handle
    */
-  size_t maxTasks;
+  std::size_t maxTasks;
   /**
    * @brief Tasks handled by the warehouse
    */
-  vector<shared_ptr<Task>> tasks;
+  std::vector<std::shared_ptr<Task>> tasks;
   /**
    * @brief The mutex to handle concurrent access to the tasks
    */
@@ -50,7 +47,7 @@ public:
   /**
    * @brief Default constructor for task warehouse
    */
-  TaskWarehouse(size_t const maxTasks = 256)
+  TaskWarehouse(std::size_t const maxTasks = 256)
     : maxTasks(maxTasks)
   {
   }
@@ -65,7 +62,7 @@ public:
    * @return True if task was successfully stored in warehouse, false
    *  otherwise
    */
-  virtual bool post(shared_ptr<Task> task)
+  virtual bool post(std::shared_ptr<Task> task)
   {
     boost::unique_lock<boost::shared_mutex> writeLock(mtx);
     if (tasks.size() >= maxTasks)
@@ -82,7 +79,7 @@ public:
    * @return True if tasks were successfully stored in warehouse, false
    *  otherwise
    */
-  virtual bool post(vector<shared_ptr<Task>>& _tasks)
+  virtual bool post(std::vector<std::shared_ptr<Task>>& _tasks)
   {
     boost::unique_lock<boost::shared_mutex> writeLock(mtx);
     if ((tasks.size() + _tasks.size()) > maxTasks)
@@ -96,12 +93,12 @@ public:
    *  warehouse
    * @return Retrieved task
    */
-  virtual shared_ptr<Task> get()
+  virtual std::shared_ptr<Task> get()
   {
     boost::unique_lock<boost::shared_mutex> writeLock(mtx);
     if (tasks.empty())
       return nullptr;
-    shared_ptr<Task> task = tasks.back();
+    std::shared_ptr<Task> task = tasks.back();
     tasks.pop_back();
     return task;
   }
@@ -112,10 +109,10 @@ public:
    *  empty vector is returned. If there are \f$<n\f$ tasks, then as many
    *  as possible are returned
    */
-  virtual vector<shared_ptr<Task>> get(size_t const n)
+  virtual std::vector<std::shared_ptr<Task>> get(std::size_t const n)
   {
-    vector<shared_ptr<Task>> _tasks;
-    typename vector<shared_ptr<Task>>::iterator begin, end;
+    std::vector<std::shared_ptr<Task>> _tasks;
+    typename std::vector<std::shared_ptr<Task>>::iterator begin, end;
     boost::unique_lock<boost::shared_mutex> writeLock(mtx);
     if (tasks.empty())
       return _tasks;

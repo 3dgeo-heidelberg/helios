@@ -5,15 +5,15 @@ using namespace rigidmotion;
 
 // ***  RIGID MOTION ENGINE METHODS  *** //
 // ************************************* //
-mat
-RigidMotionEngine::apply(RigidMotion const& f, mat const& X)
+arma::mat
+RigidMotionEngine::apply(RigidMotion const& f, arma::mat const& X)
 {
-  mat Y = f.getA() * X;
+  arma::mat Y = f.getA() * X;
   return f.getC() + Y.each_col();
 }
 
-colvec
-RigidMotionEngine::apply(RigidMotion const& f, colvec const& X)
+arma::colvec
+RigidMotionEngine::apply(RigidMotion const& f, arma::colvec const& X)
 {
   return f.getC() + f.getA() * X;
 }
@@ -24,9 +24,9 @@ RigidMotionEngine::compose(RigidMotion const& f, RigidMotion const& g)
   return f.compose(g);
 }
 
-mat
+arma::mat
 RigidMotionEngine::computeFixedPoints(RigidMotion const& f,
-                                      size_t& dim,
+                                      std::size_t& dim,
                                       bool safe)
 {
   // When safe mode is requested, check that indeed there are fixed points
@@ -39,29 +39,29 @@ RigidMotionEngine::computeFixedPoints(RigidMotion const& f,
   }
 
   // Find space dimensionality and invariant dimensionality
-  size_t n = f.getDimensionality();
+  std::size_t n = f.getDimensionality();
   dim = f.findInvariantDimensionality();
-  size_t eigenvecIndex = 0;
+  std::size_t eigenvecIndex = 0;
   if (dim == 1)
     eigenvecIndex = n - 1;
 
   // The set of fixed points is the exact solution for the system (1 point)
   if (dim == 0) {
-    return solve(eye(n, n) - f.getA(), f.getC());
+    return solve(arma::eye(n, n) - f.getA(), f.getC());
   }
 
   // The set of fixed points is a lineal variety with dimensionality > 0
-  colvec s;
-  mat U, V;
-  svd_econ(U, s, V, eye(n, n) - f.getA(), "left", "std");
+  arma::colvec s;
+  arma::mat U, V;
+  svd_econ(U, s, V, arma::eye(n, n) - f.getA(), "left", "std");
   if (dim < n)
     return U.col(eigenvecIndex);
   return U;
 }
 
-mat
+arma::mat
 RigidMotionEngine::computeAssociatedInvariant(RigidMotion const& f,
-                                              size_t& dim,
+                                              std::size_t& dim,
                                               bool safe)
 {
   // When safe mode, check that indeed there is an associated invariant
@@ -74,11 +74,11 @@ RigidMotionEngine::computeAssociatedInvariant(RigidMotion const& f,
   }
 
   // Find space dimensionality and invariant dimensionality
-  size_t n = f.getDimensionality();
+  std::size_t n = f.getDimensionality();
   dim = f.findInvariantDimensionality();
-  mat I = eye(n, n);
-  mat A = f.getA();
-  size_t eigenvecIndex = 0;
+  arma::mat I = arma::eye(n, n);
+  arma::mat A = f.getA();
+  std::size_t eigenvecIndex = 0;
   if (dim == 1)
     eigenvecIndex = n - 1;
 
@@ -88,8 +88,8 @@ RigidMotionEngine::computeAssociatedInvariant(RigidMotion const& f,
   }
 
   // The associated invariant is a lineal variety with dimensionality > 0
-  colvec s;
-  mat U, V;
+  arma::colvec s;
+  arma::mat U, V;
   svd_econ(U, s, V, I - A);
   if (dim < n)
     return U.col(eigenvecIndex);

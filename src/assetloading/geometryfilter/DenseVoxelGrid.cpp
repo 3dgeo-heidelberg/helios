@@ -2,7 +2,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-DenseVoxelGrid::DenseVoxelGrid(size_t const maxNVoxels)
+DenseVoxelGrid::DenseVoxelGrid(std::size_t const maxNVoxels)
   : IVoxelGrid(maxNVoxels)
 {
   voxels = new VoxelGridCell[maxNVoxels];
@@ -20,19 +20,19 @@ DenseVoxelGrid::release()
 }
 
 bool
-DenseVoxelGrid::hasVoxel(size_t const key)
+DenseVoxelGrid::hasVoxel(std::size_t const key)
 {
   return voxels[key].voxel != nullptr;
 }
 
 Voxel*
-DenseVoxelGrid::getVoxel(size_t const key)
+DenseVoxelGrid::getVoxel(std::size_t const key)
 {
   return voxels[key].voxel;
 }
 
 Voxel*
-DenseVoxelGrid::setVoxel(size_t const key,
+DenseVoxelGrid::setVoxel(std::size_t const key,
                          double const x,
                          double const y,
                          double const z,
@@ -44,7 +44,7 @@ DenseVoxelGrid::setVoxel(size_t const key,
 }
 
 void
-DenseVoxelGrid::deleteVoxel(size_t const key)
+DenseVoxelGrid::deleteVoxel(std::size_t const key)
 {
   Voxel* voxel = voxels[key].voxel;
   if (voxel == nullptr)
@@ -53,26 +53,26 @@ DenseVoxelGrid::deleteVoxel(size_t const key)
   voxels[key].voxel = nullptr;
 }
 
-Mat<double>*
-DenseVoxelGrid::getMatrix(size_t const key) const
+arma::Mat<double>*
+DenseVoxelGrid::getMatrix(std::size_t const key) const
 {
   return voxels[key].matrix;
 }
 
-Mat<double>&
-DenseVoxelGrid::getMatrixRef(size_t const key) const
+arma::Mat<double>&
+DenseVoxelGrid::getMatrixRef(std::size_t const key) const
 {
   return *voxels[key].matrix;
 }
 
-Mat<double> const&
-DenseVoxelGrid::getMatrixConstRef(size_t const key) const
+arma::Mat<double> const&
+DenseVoxelGrid::getMatrixConstRef(std::size_t const key) const
 {
   return *voxels[key].matrix;
 }
 
 void
-DenseVoxelGrid::setMatrix(size_t const key, Mat<double>* mat)
+DenseVoxelGrid::setMatrix(std::size_t const key, arma::Mat<double>* mat)
 {
   VoxelGridCell& vgc = voxels[key];
   if (vgc.matrix != nullptr)
@@ -81,13 +81,13 @@ DenseVoxelGrid::setMatrix(size_t const key, Mat<double>* mat)
 }
 
 void
-DenseVoxelGrid::setNextMatrixCol(size_t const key,
+DenseVoxelGrid::setNextMatrixCol(std::size_t const key,
                                  double const x,
                                  double const y,
                                  double const z)
 {
   VoxelGridCell& vgc = voxels[key];
-  size_t const startIdx = vgc.cursor * 3;
+  std::size_t const startIdx = vgc.cursor * 3;
   (*vgc.matrix)[startIdx] = x;
   (*vgc.matrix)[startIdx + 1] = y;
   (*vgc.matrix)[startIdx + 2] = z;
@@ -95,7 +95,7 @@ DenseVoxelGrid::setNextMatrixCol(size_t const key,
 }
 
 void
-DenseVoxelGrid::deleteMatrix(size_t const key)
+DenseVoxelGrid::deleteMatrix(std::size_t const key)
 {
   delete voxels[key].matrix;
   voxels[key].matrix = nullptr;
@@ -103,35 +103,36 @@ DenseVoxelGrid::deleteMatrix(size_t const key)
 void
 DenseVoxelGrid::deleteMatrices()
 {
-  for (size_t i = 0; i < maxNVoxels; ++i)
+  for (std::size_t i = 0; i < maxNVoxels; ++i)
     deleteMatrix(i);
 }
 
-size_t
-DenseVoxelGrid::getCursor(size_t const key) const
+std::size_t
+DenseVoxelGrid::getCursor(std::size_t const key) const
 {
   return voxels[key].cursor;
 }
 
 void
-DenseVoxelGrid::setCursor(size_t const key, size_t const cursor)
+DenseVoxelGrid::setCursor(std::size_t const key, std::size_t const cursor)
 {
   voxels[key].cursor = cursor;
 }
 
 void
-DenseVoxelGrid::incrementCursor(size_t const key)
+DenseVoxelGrid::incrementCursor(std::size_t const key)
 {
   ++voxels[key].cursor;
 }
 
 double
-DenseVoxelGrid::getClosestPointDistance(size_t const key) const
+DenseVoxelGrid::getClosestPointDistance(std::size_t const key) const
 {
   return voxels[key].closestPointDistance;
 }
 void
-DenseVoxelGrid::setClosestPointDistance(size_t const key, double const distance)
+DenseVoxelGrid::setClosestPointDistance(std::size_t const key,
+                                        double const distance)
 {
   voxels[key].closestPointDistance = distance;
 }

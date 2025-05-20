@@ -72,10 +72,11 @@ Platform::applySettings(std::shared_ptr<PlatformSettings> settings, bool manual)
   // Set platform position:
   setPosition(settings->getPosition());
 }
-shared_ptr<PlatformSettings>
+std::shared_ptr<PlatformSettings>
 Platform::retrieveCurrentSettings()
 {
-  shared_ptr<PlatformSettings> settings = make_shared<PlatformSettings>();
+  std::shared_ptr<PlatformSettings> settings =
+    std::make_shared<PlatformSettings>();
   // Settings from Platform
   settings->movePerSec_m = cfg_settings_movePerSec_m;
   settings->onGround = onGround;

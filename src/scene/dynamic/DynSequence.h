@@ -1,4 +1,4 @@
-#ifndef _DYN_SEQUENCE_H_
+#pragma once
 
 #include <HeliosException.h>
 
@@ -7,10 +7,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-using std::shared_ptr;
-using std::string;
-using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -66,7 +62,7 @@ protected:
   /**
    * @brief Unique identifier for the dynamic sequence
    */
-  string id;
+  std::string id;
   /**
    * @brief Unique identifier for dynamic sequence that must come after this
    *  one.
@@ -74,22 +70,22 @@ protected:
    * NOTICE in case there is no sequence after this one, next should be an
    *  empty string ""
    */
-  string next;
+  std::string next;
   /**
    * @brief Specify for how long the dynamic sequence must be repeated, using
    *  simulation steps as unit
    */
-  size_t loop;
+  std::size_t loop;
   /**
    * @brief The elements composing the dynamic sequence
    */
-  vector<shared_ptr<T>> sequence;
+  std::vector<std::shared_ptr<T>> sequence;
   /**
    * @brief Current iteration. It is used to control the dynamic sequence
    *  application loop. By default, it must applied until iteration \f$=\f$
    *  loop
    */
-  size_t iteration = 0;
+  std::size_t iteration = 0;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -110,7 +106,7 @@ public:
    * @see DynSequence::next
    * @see DynSequence::loop
    */
-  DynSequence(string id, string next, size_t loop)
+  DynSequence(std::string id, std::string next, std::size_t loop)
     : id(id)
     , next(next)
     , loop(loop)
@@ -124,7 +120,7 @@ public:
   /**
    * @brief Obtain sequence corresponding to next step
    */
-  vector<shared_ptr<T>> nextStep();
+  std::vector<std::shared_ptr<T>> nextStep();
   /**
    * @brief Restart the dynamic sequence so when nextStep is called again
    *  it will start from the first iteration
@@ -138,14 +134,17 @@ public:
    * @param element Element to be appended to the sequence
    * @see DynSequence::sequence
    */
-  inline void append(shared_ptr<T> element) { sequence.push_back(element); }
+  inline void append(std::shared_ptr<T> element)
+  {
+    sequence.push_back(element);
+  }
   /**
    * @brief Append vector of elements to the end of the sequence.
    * @param elements Vector of elements to be appended to the end of the
    *  sequence
    * @see DynSequence::sequence
    */
-  inline void append(vector<shared_ptr<T>> elements)
+  inline void append(std::vector<std::shared_ptr<T>> elements)
   {
     sequence.insert(sequence.end(), elements.begin(), elements.end());
   }
@@ -155,39 +154,45 @@ public:
    * @return Element at given index
    * @see DynSequence::sequence
    */
-  inline shared_ptr<T> get(size_t index) const { return sequence[index]; }
+  inline std::shared_ptr<T> get(std::size_t index) const
+  {
+    return sequence[index];
+  }
   /**
    * @brief Set element at given index in the sequence
    * @param index Index of element to be retrieved
    * @param element Element at given index
    * @see DynSequence::sequence
    */
-  inline void set(size_t index, shared_ptr<T> element)
+  inline void set(std::size_t index, std::shared_ptr<T> element)
   {
-    sequence[index = element];
+    sequence[index] = element;
   }
   /**
    * @brief Remove element at given index in the sequence
    * @param index Index of the element to be removed
    * @see DynSequence::sequence
    */
-  inline void remove(size_t index) { sequence.erase(sequence.begin() + index); }
+  inline void remove(std::size_t index)
+  {
+    sequence.erase(sequence.begin() + index);
+  }
   /**
    * @brief Obtain the number of elements composing the sequence
    * @return Number of elements composing the sequence
    * @see DynSequence::sequence
    */
-  inline size_t size() const { return sequence.size(); }
+  inline std::size_t size() const { return sequence.size(); }
   /**
    * @brief Obtain a iterator pointing to the first dynamic sequence element
    * @return Iterator pointing to the first dynamic sequence element
    */
-  inline typename vector<T>::iterator begin() { return sequence.begin(); }
+  inline typename std::vector<T>::iterator begin() { return sequence.begin(); }
   /**
    * @brief Obtain a iterator pointing to the last dynamic sequence element
    * @return Iterator pointing to the last dynamic sequence element
    */
-  inline typename vector<T>::iterator end() { return sequence.end(); }
+  inline typename std::vector<T>::iterator end() { return sequence.end(); }
   /**
    * @brief Remove all elements composing the sequence
    */
@@ -197,43 +202,41 @@ public:
    * @return Current iteration
    * @see DynSequence::iteration
    */
-  inline size_t getIteration() const { return iteration; }
+  inline std::size_t getIteration() const { return iteration; }
   /**
    * @brief Get loop value (max iterations)
    * @return Loop value (max iterations)
    * @see DynSequence::loop
    */
-  inline size_t getLoop() const { return loop; }
+  inline std::size_t getLoop() const { return loop; }
   /**
    * @brief Set loop value (max iterations)
    * @param loop New loop value (max iterations)
    * @see DynSequence::loop
    */
-  inline void setLoop(size_t const loop) { this->loop = loop; }
+  inline void setLoop(std::size_t const loop) { this->loop = loop; }
   /**
    * @brief Get current identifier for the dynamic sequence
    * @return Current identifier for the dynamic sequence
    * @see DynSequence::getId
    */
-  inline string getId() const { return id; }
+  inline std::string getId() const { return id; }
   /**
    * @brief Set identifier for the dynamic sequence
    * @param id New identifier for the dynamic sequence
    * @see DynSequence::setId
    */
-  inline void setId(string const& id) { this->id = id; }
+  inline void setId(std::string const& id) { this->id = id; }
   /**
    * @brief Get next identifier for the dynamic sequence
    * @return Identifier of next dynamic sequence
    */
-  inline string getNext() const { return next; }
+  inline std::string getNext() const { return next; }
   /**
    * @brief Set next identifier for the dynamic sequence
    * @param next Identifier for new next dynamic sequence
    */
-  inline void setNext(string const& next) { this->next = next; }
+  inline void setNext(std::string const& next) { this->next = next; }
 };
 
 #include <scene/dynamic/DynSequence.tpp>
-#define _DYN_SEQUENCE_H_
-#endif

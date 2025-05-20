@@ -1,20 +1,14 @@
-#ifndef _SURFACEINSPECTOR_MATHS_PERMUTERS_CNRINDEXPERMUTER_HPP_
-#include <surfaceinspector/maths/permuters/CNRIndexPermuter.hpp>
-#endif
-
 #include <surfaceinspector/maths/Scalar.hpp>
-
-using SurfaceInspector::maths::permuters::CNRIndexPermuter;
-using SurfaceInspector::maths::Scalar;
+#include <surfaceinspector/maths/Vector.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 template <typename T>
-CNRIndexPermuter<T>::CNRIndexPermuter(T n, T k) :
+SurfaceInspector::maths::permuters::CNRIndexPermuter<T>::CNRIndexPermuter(T n, T k) :
     n(n),
     k(k)
 {
-    max = Scalar<T>::combinationsNoRepetition(n, k);
+    max = SurfaceInspector::maths::Scalar<T>::combinationsNoRepetition(n, k);
     stopIndex = n-k;
     current = max;
 }
@@ -22,7 +16,7 @@ CNRIndexPermuter<T>::CNRIndexPermuter(T n, T k) :
 // ***  IPERMUTER  *** //
 // ******************* //
 template <typename T>
-vector<T> CNRIndexPermuter<T>::next(){
+std::vector<T> SurfaceInspector::maths::permuters::CNRIndexPermuter<T>::next(){
     // Handle no remaining permutations scenario
     if(!hasNext()) return indices;
 

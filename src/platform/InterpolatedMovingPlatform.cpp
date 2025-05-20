@@ -8,8 +8,8 @@
 // ************************************ //
 InterpolatedMovingPlatform::InterpolatedMovingPlatform(
   SimulationStepLoop& stepLoop,
-  TemporalDesignMatrix<double, double> const& tdm,
-  DiffDesignMatrix<double, double> const& ddm,
+  fluxionum::TemporalDesignMatrix<double, double> const& tdm,
+  fluxionum::DiffDesignMatrix<double, double> const& ddm,
   InterpolationScope scope,
   bool const syncGPSTime,
   double const startTime,

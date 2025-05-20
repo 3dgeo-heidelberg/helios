@@ -27,7 +27,7 @@ using namespace std;
 // ************************************ //
 SurveyPlayback::SurveyPlayback(
   shared_ptr<Survey> survey,
-  shared_ptr<FMSFacade> fms,
+  shared_ptr<helios::filems::FMSFacade> fms,
   int const parallelizationStrategy,
   std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
   int const chunkSize,

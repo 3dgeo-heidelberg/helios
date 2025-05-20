@@ -1,17 +1,10 @@
-#ifndef _SURFACEINSPECTOR_MATHS_SINGULARCONTEXTCOMPUTER_HPP_
-#define _SURFACEINSPECTOR_MATHS_SINGULARCONTEXTCOMPUTER_HPP_
+#pragma once
 
 #include <armadillo>
 #include <vector>
 
 #include <maths/SingularContextDescriptors.hpp>
 #include <util/Object.hpp>
-
-using arma::Mat;
-using std::vector;
-
-using SurfaceInspector::maths::SingularContextDescriptors;
-using SurfaceInspector::util::Object;
 
 namespace SurfaceInspector {
 namespace maths {
@@ -109,7 +102,7 @@ namespace maths {
  * @see SingularContextComputer::beta
  */
 template<typename T>
-class SingularContextComputer : public Object
+class SingularContextComputer : public SurfaceInspector::util::Object
 {
 public:
   // ***  ATTRIBUTES  *** //
@@ -159,7 +152,7 @@ public:
    *
    * @see SingularContextComputer::normalizeDefault
    */
-  void (SingularContextComputer<T>::*normalize)(Mat<T>& M) const;
+  void (SingularContextComputer<T>::*normalize)(arma::Mat<T>& M) const;
   /**
    * @brief Function which centers the matrix if necessary.
    *  A default implementation is provided as the centerDefault function.
@@ -169,7 +162,7 @@ public:
    *
    * @see SingularContextComputer::centerDefault
    */
-  void (SingularContextComputer<T>::*center)(Mat<T>& M) const;
+  void (SingularContextComputer<T>::*center)(arma::Mat<T>& M) const;
 
   /**
    * @brief The \f$\vec{a}\f$ vector must contain the start of normalization
@@ -177,20 +170,20 @@ public:
    *
    * \f$a_i\f$ is the start of normalization interval for i-th component
    */
-  vector<T> aNorm;
+  std::vector<T> aNorm;
   /**
    * @brief The \f$\vec{b}\f$ vector must contain the end of normalization
    *  interval if the normalization strategy requires it.
    *
    * \f$b_i\f$ is the end of normalization interval for i-th component
    */
-  vector<T> bNorm;
+  std::vector<T> bNorm;
   /**
    * \f[
    *  \vec{\Delta} = \vec{b} - \vec{a}
    * \f]
    */
-  vector<T> deltaNorm;
+  std::vector<T> deltaNorm;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -211,10 +204,10 @@ public:
    * @brief Non default constructor for singular context computer
    * @see SingularContextComputer::init
    */
-  SingularContextComputer(size_t aWorst,
-                          size_t aBest,
-                          size_t bWorst,
-                          size_t bBest)
+  SingularContextComputer(std::size_t aWorst,
+                          std::size_t aBest,
+                          std::size_t bWorst,
+                          std::size_t bBest)
   {
     init(true, true, aWorst, aBest, bWorst, bBest);
   }
@@ -224,10 +217,10 @@ public:
    */
   SingularContextComputer(bool normalize,
                           bool center,
-                          size_t aWorst,
-                          size_t aBest,
-                          size_t bWorst,
-                          size_t bBest)
+                          std::size_t aWorst,
+                          std::size_t aBest,
+                          std::size_t bWorst,
+                          std::size_t bBest)
   {
     init(normalize, center, aWorst, aBest, bWorst, bBest);
   }
@@ -246,10 +239,10 @@ public:
    */
   void init(bool normalize,
             bool center,
-            size_t aWorst,
-            size_t aBest,
-            size_t bWorst,
-            size_t bBest);
+            std::size_t aWorst,
+            std::size_t aBest,
+            std::size_t bWorst,
+            std::size_t bBest);
 
   // ***  MAIN FUNCTIONS  *** //
   // ************************ //
@@ -262,7 +255,8 @@ public:
    * @return The singular context descriptors of given matrix
    * @see SingularContextDescriptors
    */
-  SingularContextDescriptors<T> describe(Mat<T>& M) const;
+  SurfaceInspector::maths::SingularContextDescriptors<T> describe(
+    arma::Mat<T>& M) const;
 
   // ***  AUXILIAR FUNCTIONS  *** //
   // **************************** //
@@ -272,14 +266,14 @@ public:
    * @param a How many minimum values extract from vector \f$\vec{v}\f$
    * @return Indices of \f$a\f$ minimum values from \f$\vec{v}\f$
    */
-  vector<size_t> alpha(arma::vec const& v, size_t const a) const;
+  std::vector<std::size_t> alpha(arma::vec const& v, std::size_t const a) const;
   /**
    * @brief Extract indices for \f$b\f$ maximum values of \f$\vec{v}\f$
    * @param v Vector to extract indices of \f$b\f$ maximum values from
    * @param b How many maximum values extract from vector \f$\vec{v}\f$
    * @return Indices of \f$b\f$ maximum values from \f$\vec{v}\f$
    */
-  vector<size_t> beta(arma::vec const& v, size_t const b) const;
+  std::vector<std::size_t> beta(arma::vec const& v, std::size_t const b) const;
   /**
    * @brief Extract components of given vector \f$\vec{v}\f$ corresponding to
    *  given indices
@@ -287,7 +281,8 @@ public:
    * @param indices Indices of components to be extracted
    * @return Vector containing extracted components
    */
-  vector<T> extractComponents(arma::vec const& v, vector<size_t> indices) const;
+  std::vector<T> extractComponents(arma::vec const& v,
+                                   std::vector<std::size_t> indices) const;
 
   // ***  NORMALIZATION  *** //
   // *********************** //
@@ -299,19 +294,19 @@ public:
    * @see SingularContextComputer::bNorm
    * @see SingularContextComputer::deltaNorm
    */
-  void configureNorm(vector<T> const& a, vector<T> const& b);
+  void configureNorm(std::vector<T> const& a, std::vector<T> const& b);
   /**
    * @brief Configure normalization vectors from given matrix.
    * @param X Matrix containing all values so X[i][j] is the j-th value
    *  of the i-th attribute. It is, X[i] is the vector containing all values
    *  for i-th attribute.
    */
-  void configureNorm(vector<vector<T>> const& X);
+  void configureNorm(std::vector<std::vector<T>> const& X);
   /**
    * @brief Normalize given matrix by default criteria
    * @param M Matrix to be normalized
    */
-  void normalizeDefault(Mat<T>& M) const;
+  void normalizeDefault(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 3 components are RGB
    *  so they must be inside \f$[0, 255]\f$ interval.
@@ -322,97 +317,97 @@ public:
    *
    * @param M Matrix to be normalized
    */
-  void normalizeRGB(Mat<T>& M) const;
+  void normalizeRGB(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 3 components are HSO
    *  (Horizontality, Sum and Omnivariance).
    *
    * @param M Matrix to be normalized
    */
-  void normalizeHSO(Mat<T>& M) const;
+  void normalizeHSO(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 3 components are HLI
    *  (Horizontality, Linearity and Intensity).
    *
    * @param M Matrix to be normalized
    */
-  void normalizeHLI(Mat<T>& M) const;
+  void normalizeHLI(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are LP
    *  (Linearity and Planarity)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeLP(Mat<T>& M) const;
+  void normalizeLP(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are GdCd
    *  (Ground-distance and Ceiling-distance)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeGdCd(Mat<T>& M) const;
+  void normalizeGdCd(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 3 components are
    *  GdCdI (Ground-distance, Ceiling-distance, Intensity
    *
    * @param M Matrix to be normalized
    */
-  void normalizeGdCdI(Mat<T>& M) const;
+  void normalizeGdCdI(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are HV
    *  (Horizontality and Verticality)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeHV(Mat<T>& M) const;
+  void normalizeHV(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are SO
    *  (Sum and Omnivariance)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeSO(Mat<T>& M) const;
+  void normalizeSO(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are LC
    *  (Linearity and Curvature)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeLC(Mat<T>& M) const;
+  void normalizeLC(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are VC
    *  (Verticality and Curvature)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeVC(Mat<T>& M) const;
+  void normalizeVC(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are PC
    *  (Planarity and Curvature)
    *
    * @param M Matrix to be normalized
    */
-  void normalizePC(Mat<T>& M) const;
+  void normalizePC(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming each first 2 components are VR
    *  (Verticality and Roughness)
    *
    * @param M Matrix to be normalized
    */
-  void normalizeVR(Mat<T>& M) const;
+  void normalizeVR(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming (X,Y,Z) components for a cone
    *
    * @param M Matrix to be normalized
    */
-  void normalizeCone(Mat<T>& M) const;
+  void normalizeCone(arma::Mat<T>& M) const;
   /**
    * @brief Normalize given matrix assuming (X,Y,Z) components for a
    *  hyperbolic paraboloid
    *
    * @param M Matrix to be normalized
    */
-  void normalizeHyperbolicParaboloid(Mat<T>& M) const;
+  void normalizeHyperbolicParaboloid(arma::Mat<T>& M) const;
 
   // ***  CENTERING  *** //
   // ******************* //
@@ -420,11 +415,9 @@ public:
    * @brief Center given matrix by default criteria
    * @param M Matrix to be centered
    */
-  void centerDefault(Mat<T>& M) const;
+  void centerDefault(arma::Mat<T>& M) const;
 };
 }
 }
 
 #include <maths/SingularContextComputer.tpp>
-
-#endif

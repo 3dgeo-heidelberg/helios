@@ -1,9 +1,7 @@
 #include "KDTreeRaycaster.h"
 #include "logging.hpp"
 
-using namespace std;
-
-map<double, Primitive*>
+std::map<double, Primitive*>
 KDTreeRaycaster::searchAll(glm::dvec3 const rayOrigin,
                            glm::dvec3 const rayDir,
                            double const tmin,
@@ -55,7 +53,7 @@ KDTreeRaycaster::searchAll_recursive(LightKDTreeNode* node,
   // all primitives in the leaf's bucket ###########
   if (node->splitAxis == -1) {
     for (auto prim : *node->primitives) {
-      vector<double> tMinMax =
+      std::vector<double> tMinMax =
         prim->getRayIntersection(search.rayOrigin, search.rayDir);
       if (tMinMax.empty()) {
         logging::DEBUG("searchAll_recursive: tMinMax is empty");
@@ -82,7 +80,7 @@ KDTreeRaycaster::searchAll_recursive(LightKDTreeNode* node,
         if (!search.groundOnly ||
             (prim->material != nullptr && prim->material->isGround)) {
           search.collectedPoints.insert(
-            pair<double, Primitive*>(newDistance, prim));
+            std::pair<double, Primitive*>(newDistance, prim));
         }
       }
     }
@@ -94,7 +92,7 @@ KDTreeRaycaster::searchAll_recursive(LightKDTreeNode* node,
   // traverse next, in which order #############
   else {
     int a = node->splitAxis;
-    double thit = numeric_limits<double>::infinity();
+    double thit = std::numeric_limits<double>::infinity();
     LightKDTreeNode* first = nullptr;
     LightKDTreeNode* second = nullptr;
 
@@ -207,7 +205,7 @@ KDTreeRaycaster::search_recursive(LightKDTreeNode* node,
 
     int const a = node->splitAxis;
 
-    double thit = numeric_limits<double>::infinity();
+    double thit = std::numeric_limits<double>::infinity();
 
     LightKDTreeNode* first = nullptr;
     LightKDTreeNode* second = nullptr;

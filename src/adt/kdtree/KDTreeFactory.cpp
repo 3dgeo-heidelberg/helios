@@ -42,12 +42,12 @@ KDTreeFactory::lighten(KDTreeNodeRoot* root)
 
   // Lighten children
   lkdtnBlockAllocator = LightKDTreeNodeBlockAllocator(); // Reset allocator
-  size_t const maxBlockSize = 100000;
-  size_t const maxNodes = root->stats_numInterior + root->stats_numLeaves;
-  size_t curNodes = 0;
-  vector<size_t> blocksSize;
-  lkdtnBlockAllocator.setNextBlockSize([&]() -> size_t {
-    size_t const nextSize = std::min(maxBlockSize, maxNodes - curNodes);
+  std::size_t const maxBlockSize = 100000;
+  std::size_t const maxNodes = root->stats_numInterior + root->stats_numLeaves;
+  std::size_t curNodes = 0;
+  std::vector<std::size_t> blocksSize;
+  lkdtnBlockAllocator.setNextBlockSize([&]() -> std::size_t {
+    std::size_t const nextSize = std::min(maxBlockSize, maxNodes - curNodes);
     curNodes += nextSize;
     blocksSize.push_back(nextSize);
     return nextSize;

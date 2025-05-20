@@ -3,8 +3,6 @@
 #include <armadillo>
 #include <boost/serialization/serialization.hpp>
 
-using namespace arma;
-
 namespace rigidmotion {
 
 /**
@@ -78,7 +76,7 @@ protected:
   /**
    * @brief The column vector representing the translation
    */
-  colvec C;
+  arma::colvec C;
   /**
    * @brief The matrix representing the fixed origin transformation
    */
@@ -160,7 +158,7 @@ public:
    * @see rigidmotion::RigidMotion::C
    * @see rigidmotion::RigidMotion::A
    */
-  RigidMotion(colvec const& C, arma::mat const& A)
+  RigidMotion(arma::colvec const& C, arma::mat const& A)
     : C(C)
     , A(A) {};
   virtual ~RigidMotion() = default;
@@ -224,7 +222,7 @@ public:
    *
    * @return Dimensionality of the associated invariant
    */
-  virtual size_t findInvariantDimensionality() const;
+  virtual std::size_t findInvariantDimensionality() const;
 
   // ***  GETTERS and SETTERS  *** //
   // ***************************** //
@@ -232,12 +230,12 @@ public:
    * @brief Get the translation column vector
    * @return Translation column vector of the rigid motion
    */
-  inline colvec getC() const { return C; }
+  inline arma::colvec getC() const { return C; }
   /**
    * @brief Set the translation column vector
    * @param C New translation column vector for the rigid motion
    */
-  inline void setC(colvec const C) { this->C = C; }
+  inline void setC(arma::colvec const C) { this->C = C; }
   /**
    * @brief Get the fixed origin transformation matrix
    * @return Fixed origin transformation matrix of the rigid motion
@@ -252,7 +250,7 @@ public:
    * @brief Get the dimensionality of the rigid motion
    * @return Rigid motion dimensionality
    */
-  inline size_t getDimensionality() const { return this->A.n_rows; }
+  inline std::size_t getDimensionality() const { return this->A.n_rows; }
 };
 
 }

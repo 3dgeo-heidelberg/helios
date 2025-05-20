@@ -86,7 +86,7 @@ BuddingScanningPulseProcess::handlePulseComputationSequential(
   SimulatedPulse const& sp)
 {
   // Sequential pulse computation
-  shared_ptr<PulseTask> worker = ptf.build(*this, sp);
+  std::shared_ptr<PulseTask> worker = ptf.build(*this, sp);
   (*worker)( // call functor
     apMatrix,
     randGen1,

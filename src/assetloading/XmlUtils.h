@@ -16,8 +16,6 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace rigidmotion;
-
 /**
  * @brief Common utils for XML handling
  */

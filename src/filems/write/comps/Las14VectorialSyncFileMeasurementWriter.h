@@ -13,8 +13,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -95,7 +93,8 @@ public:
     }
     // Write strategy
     this->writeStrategy =
-      make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(lmws);
+      std::make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(
+        lmws);
   }
 
   // ***  CREATE WRITER  *** //

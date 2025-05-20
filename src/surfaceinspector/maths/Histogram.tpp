@@ -1,24 +1,14 @@
-#ifndef _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
-#include <surfaceinspector/maths/Histogram.hpp>
-#endif
-
 #include <cmath>
 
 #include <surfaceinspector/util/SurfaceInspectorException.hpp>
+#include <surfaceinspector/maths/functions/GaussianFunction.hpp>
 #include <surfaceinspector/maths/Vector.hpp>
 #include <surfaceinspector/maths/Statistics.hpp>
-
-using SurfaceInspector::util::SurfaceInspectorException;
-using SurfaceInspector::maths::Histogram;
-using SurfaceInspector::maths::Vector;
-using SurfaceInspector::maths::Statistics;
-
-
 
 // *** CONSTRUCTION / DESTRUCTION  *** //
 // *********************************** //
 template <typename T>
-Histogram<T>::Histogram(std::vector<T> x, std::size_t n, bool relative, bool density) :
+SurfaceInspector::maths::Histogram<T>::Histogram(std::vector<T> x, std::size_t n, bool relative, bool density) :
     n(n)
 {
     // Extract min and max values
@@ -38,7 +28,7 @@ Histogram<T>::Histogram(std::vector<T> x, std::size_t n, bool relative, bool den
 }
 
 template <typename T>
-Histogram<T>::Histogram(
+SurfaceInspector::maths::Histogram<T>::Histogram(
     T xmin,
     T xmax,
     std::vector<T> x,
@@ -66,15 +56,15 @@ Histogram<T>::Histogram(
 // ***  HISTOGRAM METHODS  *** //
 // *************************** //
 template <typename T>
-GaussianFunction<T> Histogram<T>::estimateGaussian(){
-    throw SurfaceInspectorException(
+SurfaceInspector::maths::functions::GaussianFunction<T> SurfaceInspector::maths::Histogram<T>::estimateGaussian(){
+    throw SurfaceInspector::util::SurfaceInspectorException(
         "GaussianFunction<T> Histogram<T>::estimateGaussian() is not "
         "implemented yet"
     );
 }
 
 template <typename T>
-T Histogram<T>::findCutPoint(double p){
+T SurfaceInspector::maths::Histogram<T>::findCutPoint(double p){
     double rsum = 0.0;
     size_t i;
     for(i = 0 ; i < n && rsum < p ; ++i) rsum += r[i];
@@ -82,7 +72,7 @@ T Histogram<T>::findCutPoint(double p){
 }
 
 template <typename T>
-size_t Histogram<T>::absCumsum(size_t const start, size_t const end){
+size_t SurfaceInspector::maths::Histogram<T>::absCumsum(size_t const start, size_t const end){
     size_t cumsum = 0;
     for(size_t i = start ; i < end ; ++i) cumsum += c[i];
     return cumsum;
@@ -91,13 +81,13 @@ size_t Histogram<T>::absCumsum(size_t const start, size_t const end){
 // ***  INNER METHODS  *** //
 // *********************** //
 template <typename T>
-void Histogram<T>::extractMinMax(std::vector<T> const &x){
-    xmin = Vector<T>::min(x);
-    xmax = Vector<T>::max(x);
+void SurfaceInspector::maths::Histogram<T>::extractMinMax(std::vector<T> const &x){
+    xmin = SurfaceInspector::maths::Vector<T>::min(x);
+    xmax = SurfaceInspector::maths::Vector<T>::max(x);
 }
 
 template <typename T>
-void Histogram<T>::computeBinningIntervals(){
+void SurfaceInspector::maths::Histogram<T>::computeBinningIntervals(){
     delta = xmax - xmin;
     step = delta / ((T)n);
     a = std::vector<T>(0);
@@ -109,7 +99,7 @@ void Histogram<T>::computeBinningIntervals(){
 }
 
 template <typename T>
-void Histogram<T>::recount(std::vector<T> const &x){
+void SurfaceInspector::maths::Histogram<T>::recount(std::vector<T> const &x){
     m = x.size();
     c = std::vector<std::size_t>(n, 0);
     std::size_t cIdx; // Index of bin which count must be increased
@@ -121,7 +111,7 @@ void Histogram<T>::recount(std::vector<T> const &x){
 }
 
 template <typename T>
-void Histogram<T>::computeRelativeFrequencies() {
+void SurfaceInspector::maths::Histogram<T>::computeRelativeFrequencies() {
     r = std::vector<double>(n);
     for(std::size_t i = 0 ; i < n ; ++i){
         r[i] = c[i] / ((double)m);
@@ -129,7 +119,7 @@ void Histogram<T>::computeRelativeFrequencies() {
 }
 
 template <typename T>
-void Histogram<T>::computeDensity(){
+void SurfaceInspector::maths::Histogram<T>::computeDensity(){
     // Compute unitary area norm
     norm = 0.0;
     for(std::size_t i = 0 ; i < n ; ++i) norm += step*c[i];

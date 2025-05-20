@@ -1,13 +1,8 @@
-#ifndef _ITERATIVEMETHODHANDLER_H_
-#define _ITERATIVEMETHODHANDLER_H_
+#pragma once
 
 #include <boost/serialization/access.hpp>
 
-#include <functional>
-
 namespace fluxionum {
-
-using std::function;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -322,6 +317,5 @@ public:
 };
 
 }
-#endif
 
 #include <IterativeMethodHandler.tpp>

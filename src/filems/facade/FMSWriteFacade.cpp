@@ -4,12 +4,9 @@
 
 #include <sstream>
 
-using namespace helios::filems;
-
 namespace fs = boost::filesystem;
 
-using std::list;
-using std::stringstream;
+namespace helios::filems {
 
 // ***  FACADE WRITE METHODS  *** //
 // ****************************** //
@@ -18,8 +15,9 @@ FMSWriteFacade::disconnect()
 {
   mw->setScanner(nullptr); // Disconnect from scanner
 }
+
 void
-FMSWriteFacade::configure(string const& prefix,
+FMSWriteFacade::configure(std::string const& prefix,
                           bool const computeWaveform,
                           bool const writePulse,
                           bool const lastLegInStrip)
@@ -46,19 +44,19 @@ FMSWriteFacade::configure(string const& prefix,
 // ***  FACADE MEASUREMENT WRITE METHODS  *** //
 // ****************************************** //
 void
-FMSWriteFacade::validateMeasurementWriter(string const& callerName,
-                                          string const& errorMsg) const
+FMSWriteFacade::validateMeasurementWriter(std::string const& callerName,
+                                          std::string const& errorMsg) const
 {
   // Check measurement writer does exist
   if (mw == nullptr) {
-    stringstream ss;
+    std::stringstream ss;
     ss << callerName << " " << errorMsg << " because it does not exist";
     throw HeliosException(ss.str());
   }
 }
 
 void
-FMSWriteFacade::writeMeasurements(vector<Measurement> const& measurements)
+FMSWriteFacade::writeMeasurements(std::vector<Measurement> const& measurements)
 {
   // Check it is possible to do the operation
   validateMeasurementWriter("FMSWriteFacade::writeMeasurements",
@@ -190,12 +188,12 @@ FMSWriteFacade::setMeasurementWriterLasScale(double const lasScale)
 // ***  FACADE TRAJECTORY WRITE METHODS  *** //
 // ***************************************** //
 void
-FMSWriteFacade::validateTrajectoryWriter(string const& callerName,
-                                         string const& errorMsg) const
+FMSWriteFacade::validateTrajectoryWriter(std::string const& callerName,
+                                         std::string const& errorMsg) const
 {
   // Check trajectory writer does exist
   if (tw == nullptr) {
-    stringstream ss;
+    std::stringstream ss;
     ss << callerName << " " << errorMsg << " because it does not exist";
     throw HeliosException(ss.str());
   }
@@ -231,7 +229,7 @@ FMSWriteFacade::getTrajectoryWriterOutputPath()
 }
 
 void
-FMSWriteFacade::setTrajectoryWriterOutputPath(string const& path)
+FMSWriteFacade::setTrajectoryWriterOutputPath(std::string const& path)
 {
   // Check it is possible to do the operation
   validateMeasurementWriter("FMSWriteFacade::setTrajectoryWriterOutputPath",
@@ -263,18 +261,19 @@ FMSWriteFacade::setTrajectoryWriterZipOutput(bool const zipOutput)
 // ***  FACADE FULL WAVEFORM WRITE METHODS  *** //
 // ******************************************** //
 void
-FMSWriteFacade::validateFullWaveformWriter(string const& callerName,
-                                           string const& errorMsg) const
+FMSWriteFacade::validateFullWaveformWriter(std::string const& callerName,
+                                           std::string const& errorMsg) const
 {
   // Check full waveform writer does exist
   if (fww == nullptr) {
-    stringstream ss;
+    std::stringstream ss;
     ss << callerName << " " << errorMsg << " because it does not exist";
     throw HeliosException(ss.str());
   }
 }
 void
-FMSWriteFacade::writeFullWaveforms(vector<FullWaveform> const& fullWaveforms)
+FMSWriteFacade::writeFullWaveforms(
+  std::vector<FullWaveform> const& fullWaveforms)
 {
   // Check it is possible to do the operation
   validateFullWaveformWriter("FMSWriteFacade::writeFullWaveform",
@@ -318,19 +317,19 @@ FMSWriteFacade::setFullWaveformWriterZipOutput(bool const zipOutput)
 // ***  FACADE PULSE WRITE METHODS  *** //
 // ************************************ //
 void
-FMSWriteFacade::validatePulseWriter(string const& callerName,
-                                    string const& errorMsg) const
+FMSWriteFacade::validatePulseWriter(std::string const& callerName,
+                                    std::string const& errorMsg) const
 {
   // Check pulse writer does exist
   if (pw == nullptr) {
-    stringstream ss;
+    std::stringstream ss;
     ss << callerName << " " << errorMsg << " because it does not exist";
     throw HeliosException(ss.str());
   }
 }
 
 void
-FMSWriteFacade::writePulses(vector<PulseRecord> const& pulses)
+FMSWriteFacade::writePulses(std::vector<PulseRecord> const& pulses)
 {
   // Check it is possible to do the operation
   validatePulseWriter("FMSWriteFacade::writePulses", "could not write pulse");
@@ -366,4 +365,6 @@ FMSWriteFacade::setPulseWriterZipOutput(bool const zipOutput)
                       "could not set PulseWriter zip output flag");
   // Set the zip output flag
   pw->setZipOutput(zipOutput);
+}
+
 }

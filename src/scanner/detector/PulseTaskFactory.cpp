@@ -14,20 +14,20 @@ PulseTaskFactory::PulseTaskFactory(Scene& scene)
 
 // ***  FACTORY METHODS  *** //
 // ************************* //
-shared_ptr<PulseTask>
+std::shared_ptr<PulseTask>
 PulseTaskFactory::buildFullWaveformPulseRunnable(
   ScanningPulseProcess const& spp,
   SimulatedPulse const& sp) const
 {
-  return make_shared<FullWaveformPulseRunnable>(spp.getScanner(), sp);
+  return std::make_shared<FullWaveformPulseRunnable>(spp.getScanner(), sp);
 }
 
-shared_ptr<PulseTask>
+std::shared_ptr<PulseTask>
 PulseTaskFactory::buildDynFullWaveformPulseRunnable(
   ScanningPulseProcess const& spp,
   SimulatedPulse const& sp) const
 {
-  return make_shared<DynFullWaveformPulseRunnable>(
+  return std::make_shared<DynFullWaveformPulseRunnable>(
     scene.getRaycaster()->makeTemporalClone(), spp.getScanner(), sp);
 }
 
@@ -36,12 +36,12 @@ PulseTaskFactory::configureBuildMethod()
 {
   if (scene.hasMovingObjects()) {
     _build = [&](ScanningPulseProcess const& spp,
-                 SimulatedPulse const& sp) -> shared_ptr<PulseTask> {
+                 SimulatedPulse const& sp) -> std::shared_ptr<PulseTask> {
       return buildDynFullWaveformPulseRunnable(spp, sp);
     };
   } else {
     _build = [&](ScanningPulseProcess const& spp,
-                 SimulatedPulse const& sp) -> shared_ptr<PulseTask> {
+                 SimulatedPulse const& sp) -> std::shared_ptr<PulseTask> {
       return buildFullWaveformPulseRunnable(spp, sp);
     };
   }

@@ -4,10 +4,6 @@
 
 #include <surfaceinspector/maths/functions/IMathFunction.hpp>
 
-using std::exp;
-
-using SurfaceInspector::maths::functions::IMathFunction;
-
 namespace SurfaceInspector {
 namespace maths {
 namespace functions {
@@ -25,7 +21,8 @@ namespace functions {
  * \f]
  */
 template<typename T>
-class GaussianFunction : public IMathFunction<T, T>
+class GaussianFunction
+  : public SurfaceInspector::maths::functions::IMathFunction<T, T>
 {
 public:
   // ***  CONSTANTS  *** //
@@ -89,7 +86,7 @@ public:
    */
   T operator()(T const& x) override
   {
-    return exp(-(x * x) / (twiceSigmaSquare)) / sqrt2PiSigma;
+    return std::exp(-(x * x) / (twiceSigmaSquare)) / sqrt2PiSigma;
   }
 };
 }

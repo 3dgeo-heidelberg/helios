@@ -12,8 +12,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -50,17 +48,17 @@ public:
   {
     // Write strategy
     this->writeStrategy =
-      make_shared<LasMeasurementWriteStrategy>(*lw,
-                                               lws.lp,
-                                               lws.scaleFactorInverse,
-                                               lws.offset,
-                                               lws.minIntensity,
-                                               lws.maxIntensity,
-                                               lws.intensityCoefficient,
-                                               lws.ewAttrStart,
-                                               lws.fwiAttrStart,
-                                               lws.hoiAttrStart,
-                                               lws.ampAttrStart);
+      std::make_shared<LasMeasurementWriteStrategy>(*lw,
+                                                    lws.lp,
+                                                    lws.scaleFactorInverse,
+                                                    lws.offset,
+                                                    lws.minIntensity,
+                                                    lws.maxIntensity,
+                                                    lws.intensityCoefficient,
+                                                    lws.ewAttrStart,
+                                                    lws.fwiAttrStart,
+                                                    lws.hoiAttrStart,
+                                                    lws.ampAttrStart);
   }
 
   virtual ~LasSyncFileMeasurementWriter()

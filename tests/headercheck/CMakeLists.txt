@@ -7,9 +7,9 @@ if(HELIOS_HEADERCHECK)
   foreach(header ${helios_headers})
     # Check that this is not from the pybinds subdirectory. We excllude that directory
     # as it would complicate this logic to link properly against the Python standard library.
-    string(FIND "${header}" "pybinds" found_index)
-    message("Header: ${header} found_index: ${found_index}")
-    if(found_index EQUAL -1)
+    string(FIND "${header}" "pybinds" pybind_index)
+    string(FIND "${header}" "src/test" test_index)
+    if((pybind_index EQUAL -1) AND (test_index EQUAL -1))
       get_filename_component(header_name ${header} NAME)
       string(REPLACE ".h" "" header_name ${header_name})
       string(REPLACE ".hpp" "" header_name ${header_name})
@@ -17,7 +17,6 @@ if(HELIOS_HEADERCHECK)
         ${CMAKE_CURRENT_BINARY_DIR}/${header_name}.headercheck.cpp
         @ONLY
       )
-      message(STATUS "Generating headercheck for ${header_name}: ${header_name}.headercheck")
       add_executable(${header_name}_headercheck
         ${CMAKE_CURRENT_BINARY_DIR}/${header_name}.headercheck.cpp
       )

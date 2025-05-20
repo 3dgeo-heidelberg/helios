@@ -10,9 +10,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -48,13 +45,13 @@ public:
    * @brief Make a single pulse SyncFileWriter
    * @see BasePulseWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<PulseRecord const&>> makeWriter(
-    string const& path) const override
+  std::shared_ptr<SyncFileWriter<PulseRecord const&>> makeWriter(
+    std::string const& path) const override
   {
     if (isZipOutput()) {
-      return make_shared<ZipSyncFilePulseWriter>(path);
+      return std::make_shared<ZipSyncFilePulseWriter>(path);
     } else
-      return make_shared<SimpleSyncFilePulseWriter>(path);
+      return std::make_shared<SimpleSyncFilePulseWriter>(path);
   }
 };
 

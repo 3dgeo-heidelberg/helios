@@ -48,7 +48,7 @@ public:
    * @see filems::SimpleFileReader::ifs
    * @see filems::SimpleFileReader::openMode
    */
-  SimpleFileReader(string const& path,
+  SimpleFileReader(std::string const& path,
                    std::ios_base::openmode openMode = std::ios_base::in)
     : FileReader<ReadArg>(path)
     , ifs(path, openMode)

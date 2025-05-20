@@ -19,10 +19,6 @@ namespace fs = boost::filesystem;
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -59,13 +55,13 @@ public:
    * @brief Make a single full waveform SyncFileWriter
    * @see BaseFullWaveformWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<FullWaveform const&>> makeWriter(
-    string const& path) const override
+  std::shared_ptr<SyncFileWriter<FullWaveform const&>> makeWriter(
+    std::string const& path) const override
   {
     if (isZipOutput()) {
-      return make_shared<ZipSyncFileFullWaveformWriter>(path);
+      return std::make_shared<ZipSyncFileFullWaveformWriter>(path);
     } else
-      return make_shared<SimpleSyncFileFullWaveformWriter>(path);
+      return std::make_shared<SimpleSyncFileFullWaveformWriter>(path);
   }
 };
 

@@ -11,9 +11,6 @@
 
 #include <memory>
 
-using std::make_shared;
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -144,8 +141,8 @@ public:
 #endif
                                              >& dropper) override
   {
-    return post(
-      make_shared<PulseTaskDropper>(static_cast<PulseTaskDropper&>(dropper)));
+    return post(std::make_shared<PulseTaskDropper>(
+      static_cast<PulseTaskDropper&>(dropper)));
   }
   /**
    * @see PulseThreadPoolInterface::join

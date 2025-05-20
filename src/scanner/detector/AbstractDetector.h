@@ -16,7 +16,6 @@ namespace filems {
 class FMSFacade;
 }
 }
-using helios::filems::FMSFacade;
 
 /**
  * @brief Base abstract class for detectors
@@ -35,7 +34,7 @@ protected:
   /**
    * @brief Main facade to file management system
    */
-  std::shared_ptr<FMSFacade> fms = nullptr;
+  std::shared_ptr<helios::filems::FMSFacade> fms = nullptr;
 
 public:
   /**
@@ -137,12 +136,15 @@ public:
    * @brief Obtain the main facade to file management system
    * @return The main facade to file management system
    */
-  inline std::shared_ptr<FMSFacade> getFMS() const { return fms; }
+  inline std::shared_ptr<helios::filems::FMSFacade> getFMS() const
+  {
+    return fms;
+  }
   /**
    * @brief Set the main facade to file management system that will be used
    *  by the detector
    * @param fms The new main facade to file management system for the
    *  detector
    */
-  void setFMS(std::shared_ptr<FMSFacade> fms);
+  void setFMS(std::shared_ptr<helios::filems::FMSFacade> fms);
 };

@@ -1,6 +1,8 @@
 #pragma once
-#include "Primitive.h"
-#include "Vertex.h"
+
+#include <Primitive.h>
+#include <Vertex.h>
+
 #include <set>
 #include <unordered_set>
 
@@ -159,7 +161,7 @@ public:
   /**
    * @see Primitive::getNumVertices
    */
-  size_t getNumVertices() override { return 2; }
+  std::size_t getNumVertices() override { return 2; }
   /**
    * @see Primitive::getVertices
    */

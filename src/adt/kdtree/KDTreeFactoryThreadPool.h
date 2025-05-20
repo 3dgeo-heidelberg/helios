@@ -17,7 +17,7 @@ class KDTreeFactoryThreadPool
   : public MDThreadPool<KDTreeBuildType,
                         KDTreeNode*,
                         bool const,
-                        vector<Primitive*>&,
+                        std::vector<Primitive*>&,
                         int const,
                         int const>
 {
@@ -32,7 +32,7 @@ public:
     : MDThreadPool<KDTreeBuildType,
                    KDTreeNode*,
                    bool const,
-                   vector<Primitive*>&,
+                   std::vector<Primitive*>&,
                    int const,
                    int const>(_pool_size)
   {
@@ -61,11 +61,12 @@ protected:
    * @param data It will be deleted after computing the task
    * @see ThreadPool::do_task
    */
-  inline void do_md_task(
-    boost::function<
-      void(KDTreeNode*, bool const, vector<Primitive*>&, int const, int const)>&
-      task,
-    KDTreeBuildType* data) override
+  inline void do_md_task(boost::function<void(KDTreeNode*,
+                                              bool const,
+                                              std::vector<Primitive*>&,
+                                              int const,
+                                              int const)>& task,
+                         KDTreeBuildType* data) override
   {
     task(data->parent, data->left, data->primitives, data->depth, data->index);
     delete data;

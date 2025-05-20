@@ -12,9 +12,6 @@
 #include <memory>
 #include <vector>
 
-using std::shared_ptr;
-using std::vector;
-
 class KDGroveFactory
 {
 private:
@@ -40,7 +37,7 @@ protected:
   /**
    * @brief The KDTree factory used to build trees composing the grove
    */
-  shared_ptr<KDTreeFactory> kdtf;
+  std::shared_ptr<KDTreeFactory> kdtf;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -48,7 +45,7 @@ public:
   /**
    * @brief K dimensional grove factory default constructor
    */
-  KDGroveFactory(shared_ptr<KDTreeFactory> kdtf)
+  KDGroveFactory(std::shared_ptr<KDTreeFactory> kdtf)
     : kdtf(kdtf)
   {
   }
@@ -75,8 +72,8 @@ public:
    * @see KDGroveFactory::makeFull
    * @see KDGroveFactory::makeMergeNonMoving
    */
-  virtual shared_ptr<KDGrove> makeFromSceneParts(
-    vector<shared_ptr<ScenePart>> parts,
+  virtual std::shared_ptr<KDGrove> makeFromSceneParts(
+    std::vector<std::shared_ptr<ScenePart>> parts,
     bool const mergeNonMoving = false,
     bool const safe = false,
     bool const computeKDGroveStats = false,
@@ -94,9 +91,9 @@ public:
    * @param treePrimitives The number of primitives for each tree inside
    *  the KDGrove
    */
-  void handleKDGroveStats(shared_ptr<KDGrove> kdgrove,
-                          vector<double>& buildingTimes,
-                          vector<int>& treePrimitives);
+  void handleKDGroveStats(std::shared_ptr<KDGrove> kdgrove,
+                          std::vector<double>& buildingTimes,
+                          std::vector<int>& treePrimitives);
 
 protected:
   // ***  UTIL BUILDING METHODS  *** //
@@ -108,29 +105,31 @@ protected:
    * @see KDGroveFactory::makeFull
    * @see KDGroveFactory::makeMergeNonMoving
    */
-  virtual shared_ptr<KDGrove> makeCommon(vector<shared_ptr<ScenePart>> parts,
-                                         bool const safe,
-                                         bool const computeKDGroveStats,
-                                         bool const reportKDGroveStats,
-                                         bool const computeKDTreeStats,
-                                         bool const reportKDTreeStats);
+  virtual std::shared_ptr<KDGrove> makeCommon(
+    std::vector<std::shared_ptr<ScenePart>> parts,
+    bool const safe,
+    bool const computeKDGroveStats,
+    bool const reportKDGroveStats,
+    bool const computeKDTreeStats,
+    bool const reportKDTreeStats);
   /**
    * @brief Build a KDGrove on a KDTree per ScenePart basis
    * @see KDGroveFactory::makeFromSceneParts
    */
-  virtual shared_ptr<KDGrove> makeFull(vector<shared_ptr<ScenePart>> parts,
-                                       bool const safe,
-                                       bool const computeKDGroveStats,
-                                       bool const reportKDGroveStats,
-                                       bool const computeKDTreeStats,
-                                       bool const reportKDTreeStats);
+  virtual std::shared_ptr<KDGrove> makeFull(
+    std::vector<std::shared_ptr<ScenePart>> parts,
+    bool const safe,
+    bool const computeKDGroveStats,
+    bool const reportKDGroveStats,
+    bool const computeKDTreeStats,
+    bool const reportKDTreeStats);
   /**
    * @brief Build a KDGrove where all non moving scene parts are merged
    *  to build a single KDTree
    * @see KDGroveFactory::makeFromSceneParts
    */
-  virtual shared_ptr<KDGrove> makeMergeNonMoving(
-    vector<shared_ptr<ScenePart>> parts,
+  virtual std::shared_ptr<KDGrove> makeMergeNonMoving(
+    std::vector<std::shared_ptr<ScenePart>> parts,
     bool const safe,
     bool const computeKDGroveStats,
     bool const reportKDGroveStats,
@@ -145,11 +144,14 @@ public:
    * @return KDTreeFactory used by the KDGroveFactory
    * @see KDGroveFactory::kdtf
    */
-  inline shared_ptr<KDTreeFactory> getKdtf() const { return kdtf; }
+  inline std::shared_ptr<KDTreeFactory> getKdtf() const { return kdtf; }
   /**
    * @brief Set the KDTreeFactory to be used by the KDGroveFactory
    * @param kdtf New KDTreeFactory to be used by the KDGroveFactory
    * @see KDGroveFactory::kdtf
    */
-  inline void setKdtf(shared_ptr<KDTreeFactory> kdtf) { this->kdtf = kdtf; }
+  inline void setKdtf(std::shared_ptr<KDTreeFactory> kdtf)
+  {
+    this->kdtf = kdtf;
+  }
 };

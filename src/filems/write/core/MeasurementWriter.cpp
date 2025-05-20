@@ -1,12 +1,10 @@
 #include <filems/write/core/MeasurementWriter.h>
 #include <util/HeliosException.h>
 
-using namespace helios::filems;
-
 // ***   M E T H O D S   *** //
 // ************************* //
 void
-MeasurementWriter::writeMeasurement(Measurement const& m)
+helios::filems::MeasurementWriter::writeMeasurement(Measurement const& m)
 {
   // Check there is a sync file writer
   if (sfw == nullptr) {

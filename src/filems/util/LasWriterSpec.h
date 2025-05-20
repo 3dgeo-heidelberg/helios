@@ -13,8 +13,6 @@
 namespace helios {
 namespace filems {
 
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -142,7 +140,7 @@ public:
    * @see LasWriterSpec::minIntensity
    * @see LasWriterSpec::deltaIntensity
    */
-  explicit LasWriterSpec(const string& path,
+  explicit LasWriterSpec(const std::string& path,
                          double const scaleFactor = 0.0001,
                          glm::dvec3 const offset = glm::dvec3(0, 0, 0),
                          double const minIntensity = 0.0,

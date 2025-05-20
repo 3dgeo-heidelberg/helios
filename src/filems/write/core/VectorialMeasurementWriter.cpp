@@ -4,13 +4,11 @@
 #include <fstream>
 #include <sstream>
 
-using namespace helios::filems;
-
 // ***  M E T H O D S  *** //
 // *********************** //
 void
-VectorialMeasurementWriter::writeMeasurements(
-  vector<Measurement> const& measurements)
+helios::filems::VectorialMeasurementWriter::writeMeasurements(
+  std::vector<Measurement> const& measurements)
 {
   // Check there is a sync file writer
   if (sfw == nullptr) {

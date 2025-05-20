@@ -3,13 +3,10 @@
 #include "WavefrontObjCache.h"
 #include <filems/read/comps/BufferedLineFileReader.h>
 #include <filems/read/exceptions/EndOfReadingException.h>
-using helios::filems::BufferedLineFileReader;
-using helios::filems::EndOfReadingException;
 
 #include <iostream>
 #include <string>
 #include <util/logger/logging.hpp>
-using namespace std;
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -42,17 +39,17 @@ WavefrontObjFileLoader::run()
   bool yIsUp = false;
   try {
     // ######### BEGIN Read up axis ###########
-    string const& upAxis = boost::get<string const&>(params["up"]);
+    std::string const& upAxis = boost::get<std::string const&>(params["up"]);
     if (upAxis == "y") {
       yIsUp = true;
     } else if (upAxis != "z") {
-      stringstream ss;
+      std::stringstream ss;
       ss << "Error: 'up'-axis in the scene XML file may only be one of 'y' or "
             "'z'.\nSetting 'up' to 'z'.";
       logging::ERR(ss.str());
     }
   } catch (std::exception& e) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "Failed to read 'up'-axis from scene XML file.\n"
        << "Assuming 'z' axis points upwards for scene part \"" << filePathString
        << "\".\n"
@@ -66,7 +63,7 @@ WavefrontObjFileLoader::run()
   auto& cache = WavefrontObjCache::getInstance();
   WavefrontObj* loadedObj = nullptr;
   for (std::string const& pathString : filePaths) {
-    stringstream ss;
+    std::stringstream ss;
     // TODO Restore cache usage below
     /*if (!cache.contains(pathString)) {
       ss << ".obj not found in cache";
@@ -117,10 +114,10 @@ WavefrontObjFileLoader::run()
 }
 
 Vertex
-WavefrontObjFileLoader::readVertex(vector<string> const& lineParts,
+WavefrontObjFileLoader::readVertex(std::vector<std::string> const& lineParts,
                                    bool const yIsUp)
 {
-  stringstream ss;
+  std::stringstream ss;
   Vertex v;
 
   // Read position:
@@ -136,7 +133,7 @@ WavefrontObjFileLoader::readVertex(vector<string> const& lineParts,
     }
   } catch (boost::bad_lexical_cast& e) {
     v.pos = glm::dvec3(0, 0, 0);
-    ss << "Error reading vertex.\nEXCEPTION: " << e.what() << endl;
+    ss << "Error reading vertex.\nEXCEPTION: " << e.what() << std::endl;
     logging::WARN(ss.str());
     ss.str("");
   }
@@ -150,7 +147,7 @@ WavefrontObjFileLoader::readVertex(vector<string> const& lineParts,
       g = boost::lexical_cast<float>(lineParts[5]);
       b = boost::lexical_cast<float>(lineParts[6]);
     } catch (boost::bad_lexical_cast& e) {
-      ss << "Error reading vertex color.\nEXCEPTION: " << e.what() << endl;
+      ss << "Error reading vertex color.\nEXCEPTION: " << e.what() << std::endl;
       logging::WARN(ss.str());
       ss.str("");
     }
@@ -163,8 +160,9 @@ WavefrontObjFileLoader::readVertex(vector<string> const& lineParts,
 }
 
 glm::dvec3
-WavefrontObjFileLoader::readNormalVector(vector<string> const& lineParts,
-                                         bool const yIsUp)
+WavefrontObjFileLoader::readNormalVector(
+  std::vector<std::string> const& lineParts,
+  bool const yIsUp)
 {
   try {
     if (yIsUp) {
@@ -176,7 +174,7 @@ WavefrontObjFileLoader::readNormalVector(vector<string> const& lineParts,
                       boost::lexical_cast<double>(lineParts[2]),
                       boost::lexical_cast<double>(lineParts[3]));
   } catch (boost::bad_lexical_cast& e) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "Error reading normal vector.\nEXCEPTION: " << e.what();
     logging::WARN(ss.str());
   }
@@ -186,15 +184,15 @@ WavefrontObjFileLoader::readNormalVector(vector<string> const& lineParts,
 
 void
 WavefrontObjFileLoader::readPrimitive(WavefrontObj* loadedObj,
-                                      vector<string> const& lineParts,
-                                      vector<Vertex> const& vertices,
-                                      vector<glm::dvec2> const& texcoords,
-                                      vector<glm::dvec3> const& normals,
-                                      string const& currentMat,
-                                      string const& pathString)
+                                      std::vector<std::string> const& lineParts,
+                                      std::vector<Vertex> const& vertices,
+                                      std::vector<glm::dvec2> const& texcoords,
+                                      std::vector<glm::dvec3> const& normals,
+                                      std::string const& currentMat,
+                                      std::string const& pathString)
 {
 
-  stringstream ss;
+  std::stringstream ss;
   // ######### BEGIN Read triangle or quad ##############
   if (lineParts.size() >= 4 && lineParts.size() <= 5) {
     Vertex verts[4];
@@ -202,7 +200,7 @@ WavefrontObjFileLoader::readPrimitive(WavefrontObj* loadedObj,
     // Try to read vertex position, texture and normal indices:
     try {
       for (size_t i = 0; i < lineParts.size() - 1; i++) {
-        std::vector<string> fields;
+        std::vector<std::string> fields;
         boost::split(fields, lineParts[i + 1], boost::is_any_of("/"));
         int vi = boost::lexical_cast<int>(fields[0]);
         int ti = 0;
@@ -254,7 +252,7 @@ WavefrontObjFileLoader::readPrimitive(WavefrontObj* loadedObj,
 WavefrontObj*
 WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
 {
-  stringstream ss;
+  std::stringstream ss;
 
   WavefrontObj* loadedObj = new WavefrontObj();
 
@@ -264,21 +262,21 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
 
   fs::path filePath(pathString);
   if (!fs::exists(filePath)) {
-    ss << "File not found: " << pathString << endl;
+    ss << "File not found: " << pathString << std::endl;
     logging::ERR(ss.str());
     exit(1);
   }
   try {
-    BufferedLineFileReader lfr(pathString);
-    vector<Vertex> vertices;
-    vector<glm::dvec3> normals;
-    vector<glm::dvec2> texcoords;
-    string currentMat = "default";
+    helios::filems::BufferedLineFileReader lfr(pathString);
+    std::vector<Vertex> vertices;
+    std::vector<glm::dvec3> normals;
+    std::vector<glm::dvec2> texcoords;
+    std::string currentMat = "default";
     Material mat;
     mat.useVertexColors = true;
     mat.matFilePath = filePath.string();
-    materials.insert(std::pair<string, Material>(currentMat, mat));
-    string line;
+    materials.insert(std::pair<std::string, Material>(currentMat, mat));
+    std::string line;
     try {
       while (true) { // Loop until EndOfReadingException
         line = lfr.read();
@@ -286,7 +284,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
           continue;
         }
         boost::algorithm::trim(line);
-        vector<string> lineParts;
+        std::vector<std::string> lineParts;
         boost::regex_split(
           std::back_inserter(lineParts), line, boost::regex("\\s+"));
 
@@ -323,8 +321,9 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
 
         // Read materials
         else if (lineParts[0] == "mtllib") {
-          string s = filePath.parent_path().string() + "/" + lineParts[1];
-          map<string, Material> mats = MaterialsFileReader::loadMaterials(s);
+          std::string s = filePath.parent_path().string() + "/" + lineParts[1];
+          std::map<std::string, Material> mats =
+            MaterialsFileReader::loadMaterials(s);
           materials.insert(mats.begin(), mats.end());
         }
 
@@ -343,7 +342,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
           ss.str("");
         }
       }
-    } catch (EndOfReadingException& eorex) {
+    } catch (helios::filems::EndOfReadingException& eorex) {
       // This exception is okay, since it means the reader has finished
     } catch (std::exception& e) {
       ss << "Error reading primitives.\nEXCEPTION: " << e.what();

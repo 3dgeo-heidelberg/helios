@@ -9,10 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -35,7 +31,7 @@ protected:
    * @brief The measurement write strategies that are wrapped by the main
    *  write strategies in a vectorial fashion
    */
-  vector<LasMeasurementWriteStrategy> lmws;
+  std::vector<LasMeasurementWriteStrategy> lmws;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -46,12 +42,12 @@ public:
    * @see filems::MultiLasSyncFileWriter::MultiLasSyncFileWriter
    */
   explicit Las14MultiVectorialSyncFileMeasurementWriter(
-    vector<std::string> const& path,
+    std::vector<std::string> const& path,
     bool const compress,
-    vector<double> const& scaleFactor,
-    vector<glm::dvec3> const& offset,
-    vector<double> const& minIntensity,
-    vector<double> const& deltaIntensity,
+    std::vector<double> const& scaleFactor,
+    std::vector<glm::dvec3> const& offset,
+    std::vector<double> const& minIntensity,
+    std::vector<double> const& deltaIntensity,
     bool const createWriter = true)
     : LasMultiVectorialSyncFileMeasurementWriter(path,
                                                  compress,

@@ -28,7 +28,7 @@ public:
    * @brief Default constructor for binary file reader
    * @see filems::SimpleFileReader::SimpleFileReader
    */
-  BinaryFileReader(string const& path,
+  BinaryFileReader(std::string const& path,
                    std::ios_base::openmode openMode = std::ios_base::in)
     : SimpleFileReader<int>(path, std::ios_base::in)
   {

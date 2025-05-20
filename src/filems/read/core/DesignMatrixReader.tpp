@@ -2,10 +2,10 @@
 // ************************* //
 template <typename VarType>
 fluxionum::DesignMatrix<VarType> helios::filems::DesignMatrixReader<VarType>::read(
-    std::unordered_map<string, string> *keyval
+    std::unordered_map<std::string, std::string> *keyval
 ){
     // Prepare variables
-    std::vector<string> header;
+    std::vector<std::string> header;
     std::vector<VarType> values;
     bool firstRow = true;
     std::size_t nValuesPerRow = 0;
@@ -29,9 +29,9 @@ fluxionum::DesignMatrix<VarType> helios::filems::DesignMatrixReader<VarType>::re
     // Build the DesignMatrix
     std::size_t const nRows = values.size() / nValuesPerRow;
     arma::Mat<VarType> X(nRows, nValuesPerRow);
-    for(size_t i = 0 ; i < nRows ; ++i){
-        size_t const rowOffset = i*nValuesPerRow;
-        for(size_t j = 0 ; j < nValuesPerRow ; ++j){
+    for(std::size_t i = 0 ; i < nRows ; ++i){
+        std::size_t const rowOffset = i*nValuesPerRow;
+        for(std::size_t j = 0 ; j < nValuesPerRow ; ++j){
             X(i, j) = values[rowOffset+j];
         }
     }
@@ -45,10 +45,10 @@ template <typename VarType>
 void helios::filems::DesignMatrixReader<VarType>::parseComment(
     std::string const &str,
     std::size_t const comIdx,
-    std::vector<string> &header,
-    std::unordered_map<string, string> *keyval
+    std::vector<std::string> &header,
+    std::unordered_map<std::string, std::string> *keyval
 ){
-    size_t colonIdx;
+    std::size_t colonIdx;
     if(isSpecComment(str, colonIdx)){
         std::string key, val;
         extractSpecCommentKeyValue(str, comIdx, colonIdx, key, val);
@@ -70,21 +70,21 @@ void helios::filems::DesignMatrixReader<VarType>::parseRow(
     for(size_t i = 0 ; i < n ; ++i){
         // TODO Rethink : Ignore space or tab if they are the separator
         if(s[i]==' ' || s[i]=='\t'){
-            if(eraseStart == string::npos) eraseStart = i;
+            if(eraseStart == std::string::npos) eraseStart = i;
         }
-        else if(eraseStart != string::npos){
+        else if(eraseStart != std::string::npos){
             s.erase(eraseStart, i-eraseStart);
-            eraseStart = string::npos;
+            eraseStart = std::string::npos;
         }
     }
 
     // Extract values from row
     bool parsing = true;
     while(parsing){
-        size_t const sepIdx = s.find(sep);
-        size_t const endIdx = (sepIdx==string::npos) ? s.size() : sepIdx;
+        std::size_t const sepIdx = s.find(sep);
+        std::size_t const endIdx = (sepIdx==std::string::npos) ? s.size() : sepIdx;
         values.push_back((VarType) std::stod(s.substr(0, endIdx)));
-        if(sepIdx == string::npos) parsing=false; // Stop condition
+        if(sepIdx == std::string::npos) parsing=false; // Stop condition
         else s = s.substr(endIdx+sep.size());
     }
 }
@@ -95,7 +95,7 @@ bool helios::filems::DesignMatrixReader<VarType>::isSpecComment(
     std::size_t &colonIdx
 ){
     colonIdx = str.find(':');
-    return colonIdx != string::npos;
+    return colonIdx != std::string::npos;
 }
 
 template <typename VarType>

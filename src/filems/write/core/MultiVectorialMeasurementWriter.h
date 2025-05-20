@@ -6,9 +6,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -35,9 +32,10 @@ public:
    * @brief Make a multi vectorial measurement SyncFileWriter
    * @see VectorialMeasurementWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>>
+  std::shared_ptr<
+    SyncFileWriter<std::vector<Measurement> const&, glm::dvec3 const&>>
   makeWriter(WriterType const& type,
-             string const& path,
+             std::string const& path,
              bool const zipOutput,
              double const lasScale,
              glm::dvec3 shift,
@@ -49,11 +47,11 @@ public:
     std::string pathNonExt;
     FileUtils::extractExtensionAndPathWithoutExtension(path, ext, pathNonExt);
     // Build vectors of data to build multi vectorial writer
-    vector<string> paths;
-    vector<double> scaleFactors;
-    vector<glm::dvec3> shifts;
-    vector<double> minIntensities;
-    vector<double> deltaIntensities;
+    std::vector<std::string> paths;
+    std::vector<double> scaleFactors;
+    std::vector<glm::dvec3> shifts;
+    std::vector<double> minIntensities;
+    std::vector<double> deltaIntensities;
     size_t const nDevs = scanner->getNumDevices();
     for (size_t i = 0; i < nDevs; ++i) {
       paths.push_back(FileUtils::craftPathWithSuffix(

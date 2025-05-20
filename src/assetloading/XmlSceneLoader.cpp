@@ -38,7 +38,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
     bool dynObject = false;
 
     // Load filter nodes, if any
-    shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode, holistic);
+    std::shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode, holistic);
 
     // Read and set scene part ID
     bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
@@ -51,7 +51,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
     }
 
     // Load dynamic motions if any
-    shared_ptr<DynSequentiableMovingObject> dsmo =
+    std::shared_ptr<DynSequentiableMovingObject> dsmo =
       loadDynMotions(scenePartNode, scenePart);
     if (!dynScene && dsmo != nullptr) {
       scene = makeSceneDynamic(scene);
@@ -109,7 +109,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
   return scene;
 }
 
-shared_ptr<ScenePart>
+std::shared_ptr<ScenePart>
 XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
 {
   ScenePart* scenePart = nullptr;
@@ -150,7 +150,7 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
     filterNodes = filterNodes->NextSiblingElement("filter");
   }
   // ############## END Loop over filter nodes ##################
-  return shared_ptr<ScenePart>(scenePart);
+  return std::shared_ptr<ScenePart>(scenePart);
 }
 
 AbstractGeometryFilter*
@@ -208,7 +208,7 @@ XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
   return filter;
 }
 
-shared_ptr<SwapOnRepeatHandler>
+std::shared_ptr<SwapOnRepeatHandler>
 XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
                                    ScenePart* scenePart)
 {
@@ -218,7 +218,7 @@ XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
   if (swapNodes == nullptr)
     return nullptr;
   // Build handler from the swaps
-  shared_ptr<SwapOnRepeatHandler> sorh =
+  std::shared_ptr<SwapOnRepeatHandler> sorh =
     std::make_shared<SwapOnRepeatHandler>();
   while (swapNodes != nullptr) {
     bool holistic = false;
@@ -257,7 +257,7 @@ XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
 bool
 XmlSceneLoader::loadScenePartId(tinyxml2::XMLElement* scenePartNode,
                                 int partIndex,
-                                shared_ptr<ScenePart> scenePart)
+                                std::shared_ptr<ScenePart> scenePart)
 {
   std::string partId = "";
   tinyxml2::XMLAttribute const* partIdAttr = scenePartNode->FindAttribute("id");
@@ -291,7 +291,7 @@ XmlSceneLoader::loadScenePartId(tinyxml2::XMLElement* scenePartNode,
 }
 
 bool
-XmlSceneLoader::validateScenePart(shared_ptr<ScenePart> scenePart,
+XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
                                   tinyxml2::XMLElement* scenePartNode)
 {
   // If the scene part is not valid ...
@@ -337,8 +337,8 @@ XmlSceneLoader::validateScenePart(shared_ptr<ScenePart> scenePart,
 }
 
 void
-XmlSceneLoader::digestScenePart(shared_ptr<ScenePart>& scenePart,
-                                shared_ptr<StaticScene>& scene,
+XmlSceneLoader::digestScenePart(std::shared_ptr<ScenePart>& scenePart,
+                                std::shared_ptr<StaticScene>& scene,
                                 bool holistic,
                                 bool splitPart,
                                 bool dynObject,
@@ -372,7 +372,7 @@ XmlSceneLoader::digestScenePart(shared_ptr<ScenePart>& scenePart,
     scenePart->primitiveType = ScenePart::VOXEL;
 }
 
-shared_ptr<KDTreeFactory>
+std::shared_ptr<KDTreeFactory>
 XmlSceneLoader::makeKDTreeFactory()
 {
   if (kdtNumJobs == 0)
@@ -415,17 +415,17 @@ XmlSceneLoader::makeKDTreeFactory()
   }
 }
 
-shared_ptr<KDGroveFactory>
+std::shared_ptr<KDGroveFactory>
 XmlSceneLoader::makeKDGroveFactory()
 {
-  return make_shared<KDGroveFactory>(makeKDTreeFactory());
+  return std::make_shared<KDGroveFactory>(makeKDTreeFactory());
 }
 
 // ***  DYNAMIC SCENE LOADINGMETHODS  *** //
 // ************************************** //
-shared_ptr<DynSequentiableMovingObject>
+std::shared_ptr<DynSequentiableMovingObject>
 XmlSceneLoader::loadDynMotions(tinyxml2::XMLElement* scenePartNode,
-                               shared_ptr<ScenePart> scenePart)
+                               std::shared_ptr<ScenePart> scenePart)
 {
   // Find first dmotion node
   tinyxml2::XMLElement* dmotionNode =
@@ -434,8 +434,8 @@ XmlSceneLoader::loadDynMotions(tinyxml2::XMLElement* scenePartNode,
     return nullptr; // No dmotion found
 
   // Build the basis of dynamic sequential moving object from scene part
-  shared_ptr<DynSequentiableMovingObject> dsmo =
-    make_shared<DynSequentiableMovingObject>(*scenePart, true);
+  std::shared_ptr<DynSequentiableMovingObject> dsmo =
+    std::make_shared<DynSequentiableMovingObject>(*scenePart, true);
 
   // Complete building of dynamic sequential moving object from XML
   while (dmotionNode != nullptr) {
@@ -459,8 +459,8 @@ XmlSceneLoader::loadDynMotions(tinyxml2::XMLElement* scenePartNode,
         "no loop");
 
     // Add dynamic motion sequence
-    shared_ptr<DynSequence<DynMotion>> dmSequence =
-      make_shared<DynSequence<DynMotion>>(
+    std::shared_ptr<DynSequence<DynMotion>> dmSequence =
+      std::make_shared<DynSequence<DynMotion>>(
         idAttr->Value(), nextId, loopAttr->Int64Value());
     dmSequence->append(XmlUtils::createDynMotionsVector(dmotionNode));
     if (dmSequence == nullptr) { // Check dmSequence is not null
@@ -506,24 +506,24 @@ XmlSceneLoader::loadDynMotions(tinyxml2::XMLElement* scenePartNode,
   return dsmo;
 }
 
-shared_ptr<StaticScene>
-XmlSceneLoader::makeSceneDynamic(shared_ptr<StaticScene> scene)
+std::shared_ptr<StaticScene>
+XmlSceneLoader::makeSceneDynamic(std::shared_ptr<StaticScene> scene)
 {
   // Upgrade static scene to dynamic scene
   std::shared_ptr<StaticScene> newScene =
-    std::static_pointer_cast<StaticScene>(make_shared<DynScene>(*scene));
+    std::static_pointer_cast<StaticScene>(std::make_shared<DynScene>(*scene));
 
   // Primitives were automatically updated at scene level
   // Now, update them at static object level
   // It is as simple as rebuilding the static objects because at this point
   // there is no dynamic object in the scene yet, since it didnt support them
   newScene->clearStaticObjects();
-  std::set<shared_ptr<ScenePart>> parts; // Scene parts with no repeats
+  std::set<std::shared_ptr<ScenePart>> parts; // Scene parts with no repeats
   std::vector<Primitive*> const primitives = newScene->primitives;
   for (Primitive* primitive : primitives)
     if (primitive->part != nullptr)
       parts.insert(primitive->part);
-  for (shared_ptr<ScenePart> part : parts)
+  for (std::shared_ptr<ScenePart> part : parts)
     newScene->appendStaticObject(part);
 
   // Return upgraded scene
@@ -532,7 +532,7 @@ XmlSceneLoader::makeSceneDynamic(shared_ptr<StaticScene> scene)
 
 void
 XmlSceneLoader::handleDynamicSceneAttributes(tinyxml2::XMLElement* sceneNode,
-                                             shared_ptr<DynScene> scene)
+                                             std::shared_ptr<DynScene> scene)
 {
   // Configure step interval
   scene->setStepInterval(

@@ -1,5 +1,4 @@
-#ifndef _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
-#define _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
+#pragma once
 
 #include <vector>
 
@@ -7,9 +6,6 @@
 
 #include <surfaceinspector/maths/functions/GaussianFunction.hpp>
 #include <surfaceinspector/util/Object.hpp>
-
-using SurfaceInspector::maths::functions::GaussianFunction;
-using SurfaceInspector::util::Object;
 
 namespace SurfaceInspector {
 namespace maths {
@@ -22,7 +18,7 @@ namespace maths {
  * @brief Class for representation and handling of 1D histograms
  */
 template<typename T>
-class Histogram : public Object
+class Histogram : public SurfaceInspector::util::Object
 {
 private:
   // ***  SERIALIZATION  *** //
@@ -155,7 +151,7 @@ public:
    *  available.
    * @see SurfaceInspector::maths::functions::GaussianFunction
    */
-  GaussianFunction<T> estimateGaussian();
+  SurfaceInspector::maths::functions::GaussianFunction<T> estimateGaussian();
   /**
    * @brief Obtain the cut point (value) \f$\tau\f$ so approximately
    *  \f$100p \%\f$ of the elements are greater than it.
@@ -256,5 +252,3 @@ private:
 }
 
 #include <surfaceinspector/maths/Histogram.tpp>
-
-#endif

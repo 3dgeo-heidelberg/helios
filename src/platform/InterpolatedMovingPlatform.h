@@ -188,13 +188,14 @@ public:
    * @see InterpolatedMovingPlatform::stepLoop
    * @see InterpolatedMovingPlatform::RotationSpec
    */
-  InterpolatedMovingPlatform(SimulationStepLoop& stepLoop,
-                             TemporalDesignMatrix<double, double> const& tdm,
-                             DiffDesignMatrix<double, double> const& ddm,
-                             InterpolationScope scope,
-                             bool const syncGPSTime,
-                             double const startTime,
-                             RotationSpec rotspec = RotationSpec::ARINC_705);
+  InterpolatedMovingPlatform(
+    SimulationStepLoop& stepLoop,
+    fluxionum::TemporalDesignMatrix<double, double> const& tdm,
+    fluxionum::DiffDesignMatrix<double, double> const& ddm,
+    InterpolationScope scope,
+    bool const syncGPSTime,
+    double const startTime,
+    RotationSpec rotspec = RotationSpec::ARINC_705);
   ~InterpolatedMovingPlatform() override = default;
 
   // ***  M E T H O D S  *** //

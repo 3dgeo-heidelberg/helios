@@ -1,8 +1,8 @@
 #pragma once
 
 #include <KDTreeNode.h>
+
 #include <vector>
-using std::vector;
 
 /**
  * @brief Class representing the root node of a KDTree
@@ -69,12 +69,12 @@ public:
    *  lightened, thus its allocation is not block based.a
    * @see KDTreeNodeRoot::blocksSize
    */
-  vector<LightKDTreeNode*> blocks;
+  std::vector<LightKDTreeNode*> blocks;
   /**
    * @brief The size (number of nodes) for each allocated block, if any
    * @see KDTreeNodeRoot::blocks
    */
-  vector<size_t> blocksSize;
+  std::vector<std::size_t> blocksSize;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
