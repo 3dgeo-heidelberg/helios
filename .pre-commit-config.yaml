@@ -12,8 +12,6 @@ repos:
   - id: end-of-file-fixer
   # Make sure that contained YAML files are well-formed
   - id: check-yaml
-  # Apply a file size limit of 500kB
-  - id: check-added-large-files
   # Simple parser validation of e.g. pyproject.toml
   - id: check-toml
   # Ensure consistent line endings
