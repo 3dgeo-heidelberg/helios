@@ -285,6 +285,13 @@ PyHeliosSimulation::join()
       survey->scanner->fms->write.getMeasurementWriterOutputPath().string();
   }
 
+  // Obtain measurements output path
+  std::string mwOutPath = "";
+  if (exportToFile) {
+    mwOutPath =
+      survey->scanner->fms->write.getMeasurementWriterOutputPath().string();
+  }
+
   // Callback concurrency handling (NON BLOCKING MODE)
   if (callbackFrequency != 0 && callback != nullptr) {
     if (!playback->finished) {
@@ -297,6 +304,16 @@ PyHeliosSimulation::join()
                                        false);
     } else {
       finished = true;
+
+      // get shift from scene
+      // apply shift to beam origin of measurement
+      if (survey->scanner->platform != nullptr) {
+        glm::dvec3 shift = survey->scanner->platform->scene->getShift();
+        for (Measurement& m : *(survey->scanner->allMeasurements)) {
+          m.beamOrigin += shift;
+        }
+      }
+
       return new PyHeliosOutputWrapper(survey->scanner->allMeasurements,
                                        survey->scanner->allTrajectories,
                                        mwOutPath,
@@ -314,6 +331,16 @@ PyHeliosSimulation::join()
   // Final output (BLOCKING MODE)
   if (!finalOutput)
     return nullptr;
+
+  // get shift from scene
+  // apply shift to beam origin of measurement
+  if (survey->scanner->platform != nullptr) {
+    glm::dvec3 shift = survey->scanner->platform->scene->getShift();
+    for (Measurement& m : *(survey->scanner->allMeasurements)) {
+      m.beamOrigin += shift;
+    }
+  }
+
   return new PyHeliosOutputWrapper(survey->scanner->allMeasurements,
                                    survey->scanner->allTrajectories,
                                    mwOutPath,

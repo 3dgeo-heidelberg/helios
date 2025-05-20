@@ -18,6 +18,10 @@ import pyhelios
 from .test_demo_scenes import find_playback_dir
 from . import pcloud_utils as pcu
 
+cycleMeasurementsCount = 0
+cp1 = []
+cpn = [0, 0, 0]
+
 
 def find_scene(survey_file):
     """helper function which returns the path to the scene XML file"""
@@ -69,6 +73,35 @@ def test_sim(output_dir):
         simB.setLas10(las10)
         simB.setRebuildScene(True)
         simB.setZipOutput(zip_output)
+
+        sim = simB.build()
+
+        return sim
+
+    return create_test_sim
+
+
+@pytest.fixture(scope="session")
+def test_sim_callback(output_dir):
+    """
+    Fixture which returns a simulation object for a given survey path
+    """
+
+    def create_test_sim(survey_path, zip_output=True, las_output=True):
+        # pyhelios.loggingSilent()
+        from pyhelios import SimulationBuilder
+
+        simB = SimulationBuilder(
+            surveyPath=str(survey_path.absolute()),
+            assetsDir=str(Path("assets")),
+            outputDir=str(output_dir),
+        )
+        simB.setLasOutput(las_output)
+        simB.setRebuildScene(True)
+        simB.setZipOutput(zip_output)
+        simB.setCallbackFrequency(10)
+        simB.setCallback(callback)
+        simB.setNumThreads(0)
 
         sim = simB.build()
 
