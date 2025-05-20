@@ -25,7 +25,7 @@ public:
    * @brief Add two vectors
    * @return Vector from addition
    */
-  std::vector<T> add(std::vector<T> const u, std::vector<T> const v);
+  static std::vector<T> add(std::vector<T> const u, std::vector<T> const v);
 
   /**
    * @brief Subtract two vectors
