@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <SimpleKDTreeFactory.h>
 #include <SimpleKDTreeGeometricStrategy.h>
 #include <KDTreeFactoryThreadPool.h>
@@ -77,7 +78,7 @@ protected:
      * @brief The thread pool to handle concurrency during recursive KDTree
      *  building at node-level
      */
-    KDTreeFactoryThreadPool tpNode;
+    std::optional<KDTreeFactoryThreadPool> tpNode;
     /**
      * @brief The minimum number of primitives on a given split so a new
      *  task is started to handle them
@@ -410,7 +411,7 @@ public:
      * @return Pool size of the thread pool (num jobs)
      */
     virtual inline size_t getPoolSize() const
-    {return tpNode.getPoolSize();}
+    {return tpNode->getPoolSize();}
     /**
      * @brief Obtain the number of threads for node-level parallelization
      * @return Number of threads for node-level parallelization
