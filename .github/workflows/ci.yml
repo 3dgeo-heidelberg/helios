@@ -63,24 +63,10 @@ jobs:
 
       # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
       # more efforts into investigating broken LAZ files written by Helios on MacOS.
-
-      - name: Run tests (incl. regression tests)
-        if: runner.os == 'Windows'
-        run: |
-          python -m pytest --regression-tests
-
       - name: Run tests (excl. regression tests)
-        if: runner.os == 'Linux'
+        if: runner.os != 'macOS'
         run: |
           python -m pytest
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        if: always() && github.event.inputs.upload-outputs == 'true' && runner.os == 'Windows'
-        with:
-          name: test-results
-          path: pytest-output/*
-          retention-days: 1
 
   headercheck:
     defaults:

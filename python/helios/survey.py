@@ -93,7 +93,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                 output_settings.split_by_channel,
                 self._cpp_object,
             )
-     
+
         # Set up internal data structures for the execution
 
         accuracy = self.scanner._cpp_object.detector.accuracy
