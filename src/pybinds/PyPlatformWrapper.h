@@ -1,119 +1,166 @@
 #pragma once
 
-#include <PythonDVec3.h>
 #include <PyNoiseSourceWrapper.h>
+#include <PythonDVec3.h>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Wrapper for Platform class
  */
-class PyPlatformWrapper {
+class PyPlatformWrapper
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    Platform &platform;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  Platform& platform;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyPlatformWrapper(Platform &platform) : platform(platform) {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyPlatformWrapper(Platform& platform)
+    : platform(platform)
+  {
+  }
 
-    virtual ~PyPlatformWrapper() = default;
+  virtual ~PyPlatformWrapper() = default;
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    double getLastCheckZ() { return platform.lastCheckZ; }
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  double getLastCheckZ() { return platform.lastCheckZ; }
 
-    void setLastCheckZ(double checkZ) { platform.lastCheckZ = checkZ; }
+  void setLastCheckZ(double checkZ) { platform.lastCheckZ = checkZ; }
 
-    double getDmax() { return platform.dmax; }
+  double getDmax() { return platform.dmax; }
 
-    void setDmax(double dmax) { platform.dmax = dmax; }
+  void setDmax(double dmax) { platform.dmax = dmax; }
 
-    double getMovePerSec() { return platform.cfg_settings_movePerSec_m; }
+  double getMovePerSec() { return platform.cfg_settings_movePerSec_m; }
 
-    void setMovePerSec(double movePerSec) { platform.cfg_settings_movePerSec_m = movePerSec; }
+  void setMovePerSec(double movePerSec)
+  {
+    platform.cfg_settings_movePerSec_m = movePerSec;
+  }
 
-    bool isOnGround() { return platform.onGround; }
+  bool isOnGround() { return platform.onGround; }
 
-    void setOnGround(bool onGround) { platform.onGround = onGround; }
+  void setOnGround(bool onGround) { platform.onGround = onGround; }
 
-    bool isStopAndTurn() { return platform.stopAndTurn; }
+  bool isStopAndTurn() { return platform.stopAndTurn; }
 
-    void setStopAndTurn(bool stopAndTurn) { platform.stopAndTurn = stopAndTurn; }
+  void setStopAndTurn(bool stopAndTurn) { platform.stopAndTurn = stopAndTurn; }
 
-    bool isSlowdownEnabled() { return platform.slowdownEnabled; }
+  bool isSlowdownEnabled() { return platform.slowdownEnabled; }
 
-    void setSlowdownEnabled(bool slowdownEnabled) { platform.slowdownEnabled = slowdownEnabled; }
+  void setSlowdownEnabled(bool slowdownEnabled)
+  {
+    platform.slowdownEnabled = slowdownEnabled;
+  }
 
-    //double getYawAtDeparture() { return platform.yawAtDeparture; }
+  // double getYawAtDeparture() { return platform.yawAtDeparture; }
 
-    //void setYawAtDeparture(double yawAtDeparture) { platform.yawAtDeparture = yawAtDeparture; }
+  // void setYawAtDeparture(double yawAtDeparture) { platform.yawAtDeparture =
+  // yawAtDeparture; }
 
-    bool isSmoothTurn() { return platform.smoothTurn; }
+  bool isSmoothTurn() { return platform.smoothTurn; }
 
-    void setSmoothTurn(bool smoothTurn) { platform.smoothTurn = smoothTurn; }
+  void setSmoothTurn(bool smoothTurn) { platform.smoothTurn = smoothTurn; }
 
-    bool isOrientationOnLegInit() { return platform.mSetOrientationOnLegInit; }
+  bool isOrientationOnLegInit() { return platform.mSetOrientationOnLegInit; }
 
-    void setOrientationOnLegInit(bool setOrientationOnLegInit) { platform.mSetOrientationOnLegInit = setOrientationOnLegInit; }
+  void setOrientationOnLegInit(bool setOrientationOnLegInit)
+  {
+    platform.mSetOrientationOnLegInit = setOrientationOnLegInit;
+  }
 
-    PyNoiseSourceWrapper *getPositionXNoiseSource() {
-        if (platform.positionXNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*platform.positionXNoiseSource);
-    }
+  PyNoiseSourceWrapper* getPositionXNoiseSource()
+  {
+    if (platform.positionXNoiseSource == nullptr)
+      return nullptr;
+    return new PyNoiseSourceWrapper(*platform.positionXNoiseSource);
+  }
 
-    PyNoiseSourceWrapper *getPositionYNoiseSource() {
-        if (platform.positionYNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*platform.positionYNoiseSource);
-    }
+  PyNoiseSourceWrapper* getPositionYNoiseSource()
+  {
+    if (platform.positionYNoiseSource == nullptr)
+      return nullptr;
+    return new PyNoiseSourceWrapper(*platform.positionYNoiseSource);
+  }
 
-    PyNoiseSourceWrapper *getPositionZNoiseSource() {
-        if (platform.positionZNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*platform.positionZNoiseSource);
-    }
+  PyNoiseSourceWrapper* getPositionZNoiseSource()
+  {
+    if (platform.positionZNoiseSource == nullptr)
+      return nullptr;
+    return new PyNoiseSourceWrapper(*platform.positionZNoiseSource);
+  }
 
-    PyNoiseSourceWrapper *getAttitudeXNoiseSource(){
-        if(platform.attitudeXNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*platform.attitudeXNoiseSource);
-    }
+  PyNoiseSourceWrapper* getAttitudeXNoiseSource()
+  {
+    if (platform.attitudeXNoiseSource == nullptr)
+      return nullptr;
+    return new PyNoiseSourceWrapper(*platform.attitudeXNoiseSource);
+  }
 
-    PyNoiseSourceWrapper *getAttitudeYNoiseSource(){
-        if(platform.attitudeYNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*platform.attitudeYNoiseSource);
-    }
+  PyNoiseSourceWrapper* getAttitudeYNoiseSource()
+  {
+    if (platform.attitudeYNoiseSource == nullptr)
+      return nullptr;
+    return new PyNoiseSourceWrapper(*platform.attitudeYNoiseSource);
+  }
 
-    PyNoiseSourceWrapper *getAttitudeZNoiseSource(){
-        if(platform.attitudeZNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*platform.attitudeZNoiseSource);
-    }
+  PyNoiseSourceWrapper* getAttitudeZNoiseSource()
+  {
+    if (platform.attitudeZNoiseSource == nullptr)
+      return nullptr;
+    return new PyNoiseSourceWrapper(*platform.attitudeZNoiseSource);
+  }
 
-    PythonDVec3 * getRelativePosition()
-        {return new PythonDVec3(&platform.cfg_device_relativeMountPosition);}
-    Rotation & getRelativeAttitude()
-        {return platform.cfg_device_relativeMountAttitude;}
-    PythonDVec3 * getLastGroundCheck()
-        {return new PythonDVec3(&platform.lastGroundCheck);}
-    PythonDVec3 * getNextWaypointPosition()
-        {return new PythonDVec3(&platform.targetWaypoint);}
-    PythonDVec3 * getPositionPython()
-        {return new PythonDVec3(&platform.position);}
-    Rotation & getAttitudePython()
-        {return platform.attitude;}
-    PythonDVec3 * getCachedAbsolutePosition()
-        {return new PythonDVec3(&platform.cached_absoluteMountPosition);}
-    Rotation & getCachedAbsoluteAttitude()
-        {return platform.cached_absoluteMountAttitude;}
-    PythonDVec3 * getCachedCurrentDir()
-        {return new PythonDVec3(&platform.cached_dir_current);}
-    PythonDVec3 * getCachedCurrentDirXY()
-        {return new PythonDVec3(&platform.cached_dir_current_xy);}
-    PythonDVec3 * getCachedVectorToTarget()
-        {return new PythonDVec3(&platform.cached_vectorToTarget);}
-    PythonDVec3 * getCachedVectorToTargetXY()
-        {return new PythonDVec3(&platform.cached_vectorToTarget_xy);}
+  PythonDVec3* getRelativePosition()
+  {
+    return new PythonDVec3(&platform.cfg_device_relativeMountPosition);
+  }
+  Rotation& getRelativeAttitude()
+  {
+    return platform.cfg_device_relativeMountAttitude;
+  }
+  PythonDVec3* getLastGroundCheck()
+  {
+    return new PythonDVec3(&platform.lastGroundCheck);
+  }
+  PythonDVec3* getNextWaypointPosition()
+  {
+    return new PythonDVec3(&platform.targetWaypoint);
+  }
+  PythonDVec3* getPositionPython()
+  {
+    return new PythonDVec3(&platform.position);
+  }
+  Rotation& getAttitudePython() { return platform.attitude; }
+  PythonDVec3* getCachedAbsolutePosition()
+  {
+    return new PythonDVec3(&platform.cached_absoluteMountPosition);
+  }
+  Rotation& getCachedAbsoluteAttitude()
+  {
+    return platform.cached_absoluteMountAttitude;
+  }
+  PythonDVec3* getCachedCurrentDir()
+  {
+    return new PythonDVec3(&platform.cached_dir_current);
+  }
+  PythonDVec3* getCachedCurrentDirXY()
+  {
+    return new PythonDVec3(&platform.cached_dir_current_xy);
+  }
+  PythonDVec3* getCachedVectorToTarget()
+  {
+    return new PythonDVec3(&platform.cached_vectorToTarget);
+  }
+  PythonDVec3* getCachedVectorToTargetXY()
+  {
+    return new PythonDVec3(&platform.cached_vectorToTarget_xy);
+  }
 };
 
 }

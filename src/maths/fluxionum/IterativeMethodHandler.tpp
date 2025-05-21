@@ -33,4 +33,3 @@ IterativeMethodHandler<IT, ET>::handleEndOfIteration(
     // Return iterative method not finished
     return IterativeMethodStatus::CONTINUE;
 }
-

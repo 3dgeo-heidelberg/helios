@@ -3,7 +3,7 @@
 #include <PyPrimitiveWrapper.h>
 #include <Triangle.h>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -12,20 +12,26 @@ namespace pyhelios{
  *
  * @see Triangle
  */
-class PyTriangleWrapper : public PyPrimitiveWrapper {
+class PyTriangleWrapper : public PyPrimitiveWrapper
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyTriangleWrapper(Triangle * tri) : PyPrimitiveWrapper(tri) {}
-    ~PyTriangleWrapper() override = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyTriangleWrapper(Triangle* tri)
+    : PyPrimitiveWrapper(tri)
+  {
+  }
+  ~PyTriangleWrapper() override = default;
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    inline PythonDVec3 * getFaceNormal()
-        {return new PythonDVec3( ((Triangle *) prim)->getFaceNormal() ); }
-    // ***  TO STRING  *** //
-    // ******************* //
-    inline std::string toString(){return ((Triangle *) prim)->toString();}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  inline PythonDVec3* getFaceNormal()
+  {
+    return new PythonDVec3(((Triangle*)prim)->getFaceNormal());
+  }
+  // ***  TO STRING  *** //
+  // ******************* //
+  inline std::string toString() { return ((Triangle*)prim)->toString(); }
 };
 
 }

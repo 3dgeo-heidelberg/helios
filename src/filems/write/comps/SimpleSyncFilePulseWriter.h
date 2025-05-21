@@ -8,7 +8,8 @@
 
 #include <memory>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 
@@ -21,27 +22,26 @@ using std::make_shared;
  * @see filems::SimpleSyncFileWriter
  * @see filems::DirectPulseWriteStrategy
  */
-class SimpleSyncFilePulseWriter :
-    public SimpleSyncFileWriter<PulseRecord const &>
+class SimpleSyncFilePulseWriter
+  : public SimpleSyncFileWriter<PulseRecord const&>
 {
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous file pulse writer constructor
-     * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
-     */
-    explicit SimpleSyncFilePulseWriter(
-        const std::string &path,
-        std::ios_base::openmode om = std::ios_base::app
-    ) :
-        SimpleSyncFileWriter<PulseRecord const &>(path, om)
-    {
-        this->writeStrategy = make_shared<DirectPulseWriteStrategy>(this->ofs);
-    }
-    virtual ~SimpleSyncFilePulseWriter() = default;
-
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous file pulse writer constructor
+   * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
+   */
+  explicit SimpleSyncFilePulseWriter(
+    const std::string& path,
+    std::ios_base::openmode om = std::ios_base::app)
+    : SimpleSyncFileWriter<PulseRecord const&>(path, om)
+  {
+    this->writeStrategy = make_shared<DirectPulseWriteStrategy>(this->ofs);
+  }
+  virtual ~SimpleSyncFilePulseWriter() = default;
 };
 
-}}
+}
+}

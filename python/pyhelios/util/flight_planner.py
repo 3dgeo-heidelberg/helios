@@ -32,8 +32,8 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
     x = xy[:, 0]
     y = xy[:, 1]
     offset_x, offset_y = origin
-    adjusted_x = (x - offset_x)
-    adjusted_y = (y - offset_y)
+    adjusted_x = x - offset_x
+    adjusted_y = y - offset_y
     cos_rad = math.cos(radians)
     sin_rad = math.sin(radians)
     qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y
@@ -53,13 +53,17 @@ def compute_flight_length(waypoints):
     distance = 0
     curr_point = waypoints[-1]
     for point in waypoints[::-1]:
-        distance += np.sqrt((curr_point[0] - point[0])**2 + (curr_point[1] - point[1])**2)
+        distance += np.sqrt(
+            (curr_point[0] - point[0]) ** 2 + (curr_point[1] - point[1]) ** 2
+        )
         curr_point = point
 
     return distance
 
 
-def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="parallel"):
+def compute_flight_lines(
+    bounding_box, spacing, rotate_deg=0.0, flight_pattern="parallel"
+):
     """This function creates a flight plan (resembling e.g. DJI flight planner) within a given bounding box
     based on the strip (flight line) spacing, the pattern and a rotation.
 
@@ -77,20 +81,31 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
             Centre point of the bounding box (and flight plan),
             Total distance of the flight plan
     """
-    centre = np.array([(bounding_box[0] + bounding_box[2]) / 2, (bounding_box[1] + bounding_box[3]) / 2])
-    bbox_dims = np.array([bounding_box[2] - bounding_box[0], bounding_box[3] - bounding_box[1]])
+    centre = np.array(
+        [
+            (bounding_box[0] + bounding_box[2]) / 2,
+            (bounding_box[1] + bounding_box[3]) / 2,
+        ]
+    )
+    bbox_dims = np.array(
+        [bounding_box[2] - bounding_box[0], bounding_box[3] - bounding_box[1]]
+    )
     n_flight_lines_x = int(np.floor(bbox_dims[1] / spacing))
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
     pattern_options = ["parallel", "criss-cross"]
     if flight_pattern not in pattern_options:
-        warnings.warn("""
+        warnings.warn(
+            """
         Specified flight pattern is not available.
         Possible choices: 'parallel', 'criss-cross'
         Flight pattern will be set to 'parallel'
-        """)
+        """
+        )
         flight_pattern = "parallel"
 
-    if (flight_pattern == "parallel" and bbox_dims[0] >= bbox_dims[1]) or flight_pattern == "criss-cross":
+    if (
+        flight_pattern == "parallel" and bbox_dims[0] >= bbox_dims[1]
+    ) or flight_pattern == "criss-cross":
         y_start = centre[1] - spacing * (n_flight_lines_x / 2)
         curr_strip = np.array([[bounding_box[0], y_start], [bounding_box[2], y_start]])
         strips = curr_strip[::-1]
@@ -99,7 +114,9 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
             strips = np.vstack((strips, next_strip))
             curr_strip = next_strip[::-1]
 
-    if flight_pattern == "criss-cross" or (flight_pattern == "parallel" and bbox_dims[1] > bbox_dims[0]):
+    if flight_pattern == "criss-cross" or (
+        flight_pattern == "parallel" and bbox_dims[1] > bbox_dims[0]
+    ):
         x_start = centre[0] - spacing * (n_flight_lines_y / 2)
         curr_strip = np.array([[x_start, bounding_box[1]], [x_start, bounding_box[3]]])
         if flight_pattern != "criss-cross":
@@ -135,7 +152,9 @@ def flight_lines_from_shp(filename: str):
         for rec in shapefile:
             # check if type LineString
             if not rec["geometry"]["type"] == "LineString":
-                raise TypeError(f"Expecting geometries of type 'LineString' in {filename}.")
+                raise TypeError(
+                    f"Expecting geometries of type 'LineString' in {filename}."
+                )
             coords = rec["geometry"]["coordinates"]
             coords = [list(ele[:2]) for ele in coords]
             coordinates.append(coords)
@@ -159,13 +178,19 @@ def plot_flight_plan(waypoints):
     plt.plot(waypoints[:, 0], waypoints[:, 1])
     plt.xlabel("X")
     plt.ylabel("Y")
-    plt.axis('equal')
+    plt.axis("equal")
 
     return plt
 
 
-def write_legs(waypoints, altitude, template_id, speed,
-               trajectory_time_interval=0.05, always_active=False):
+def write_legs(
+    waypoints,
+    altitude,
+    template_id,
+    speed,
+    trajectory_time_interval=0.05,
+    always_active=False,
+):
     """This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
@@ -189,31 +214,39 @@ def write_legs(waypoints, altitude, template_id, speed,
     active = "true" if always_active else "false"
     for i, leg in enumerate(waypoints):
         if i % 2 == 0 or i == 0:
-            xml_string += f'''
+            xml_string += f"""
         <!-- leg{i:03} -->
         <leg>
             <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-        '''
+        """
         elif i % 2 != 0:
-            xml_string += f'''
+            xml_string += f"""
         <!-- leg{i:03} -->
         <leg>
             <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-        '''
+        """
     return xml_string
 
 
 if __name__ == "__main__":
     # Usage Demo
     bbox = [478250, 5473800, 478400, 5473950]
-    wp, c, dist = compute_flight_lines(bbox, spacing=30, rotate_deg=45, flight_pattern="criss-cross")
+    wp, c, dist = compute_flight_lines(
+        bbox, spacing=30, rotate_deg=45, flight_pattern="criss-cross"
+    )
     plot = plot_flight_plan(wp)
     plot.show()
     platform_speed = 5
     print(f"Flight duration: {dist / platform_speed / 60} min")
     alt = 490
-    print(str(write_legs(wp, altitude=alt, template_id="uls_template", speed=platform_speed)))
+    print(
+        str(
+            write_legs(
+                wp, altitude=alt, template_id="uls_template", speed=platform_speed
+            )
+        )
+    )

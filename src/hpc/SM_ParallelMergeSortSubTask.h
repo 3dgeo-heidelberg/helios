@@ -8,7 +8,8 @@
 
 using SurfaceInspector::maths::Scalar;
 
-namespace helios{ namespace hpc {
+namespace helios {
+namespace hpc {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -82,143 +83,139 @@ namespace helios{ namespace hpc {
  * @see SharedSubTask
  * @see helios::hpc::SM_ParallelMergeSort
  */
-template <typename RandomAccessIterator, typename Comparator>
-class SM_ParallelMergeSortSubTask : public SharedSubTask {
+template<typename RandomAccessIterator, typename Comparator>
+class SM_ParallelMergeSortSubTask : public SharedSubTask
+{
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::stSequencer
-     * @see SharedTaskSequencer
-     */
-    std::shared_ptr<SharedTaskSequencer> stSequencer;
-    /**
-     * @brief Thread index in \f$[0, n-1]\f$
-     */
-    size_t tIdx;
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::numThreads
-     */
-    size_t numThreads;
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::minElements
-     */
-    size_t minElements;
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::maxDepth
-     */
-    int maxDepth;
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::trySort
-     */
-    RandomAccessIterator begin;
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::trySort
-     */
-    RandomAccessIterator end;
-    /**
-     * @see helios::hpc::SM_ParallelMergeSort::trySort
-     */
-    Comparator comparator;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::stSequencer
+   * @see SharedTaskSequencer
+   */
+  std::shared_ptr<SharedTaskSequencer> stSequencer;
+  /**
+   * @brief Thread index in \f$[0, n-1]\f$
+   */
+  size_t tIdx;
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::numThreads
+   */
+  size_t numThreads;
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::minElements
+   */
+  size_t minElements;
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::maxDepth
+   */
+  int maxDepth;
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::trySort
+   */
+  RandomAccessIterator begin;
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::trySort
+   */
+  RandomAccessIterator end;
+  /**
+   * @see helios::hpc::SM_ParallelMergeSort::trySort
+   */
+  Comparator comparator;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Main constructor for shared context parallel merge sort sub-task
-     * @see helios::hpc::SM_ParallelMergeSort
-     */
-    SM_ParallelMergeSortSubTask(
-        std::shared_ptr<SharedTaskSequencer> ch,
-        size_t const tIdx,
-        size_t const numThreads,
-        size_t const minElements,
-        int const maxDepth,
-        RandomAccessIterator begin,
-        RandomAccessIterator end,
-        Comparator comparator
-    ) :
-        SharedSubTask(ch),
-        stSequencer(ch),
-        tIdx(tIdx),
-        numThreads(numThreads),
-        minElements(minElements),
-        maxDepth(maxDepth),
-        begin(begin),
-        end(end),
-        comparator(comparator)
-    {}
-    ~SM_ParallelMergeSortSubTask() override = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Main constructor for shared context parallel merge sort sub-task
+   * @see helios::hpc::SM_ParallelMergeSort
+   */
+  SM_ParallelMergeSortSubTask(std::shared_ptr<SharedTaskSequencer> ch,
+                              size_t const tIdx,
+                              size_t const numThreads,
+                              size_t const minElements,
+                              int const maxDepth,
+                              RandomAccessIterator begin,
+                              RandomAccessIterator end,
+                              Comparator comparator)
+    : SharedSubTask(ch)
+    , stSequencer(ch)
+    , tIdx(tIdx)
+    , numThreads(numThreads)
+    , minElements(minElements)
+    , maxDepth(maxDepth)
+    , begin(begin)
+    , end(end)
+    , comparator(comparator)
+  {
+  }
+  ~SM_ParallelMergeSortSubTask() override = default;
 
-    // ***  RUNNABLE SHARED TASK  *** //
-    // ****************************** //
-    /**
-     * @brief Implementation of the sort method itself
-     * @see SharedSubTask::run
-     * @see helios::hpc::SM_ParallelMergeSort
-     * @see helios::hpc::SM_ParallelMergeSort::trySort
-     */
-    void run() override{
-        // Handle single thread sort cases
-        size_t const numElements = std::distance(begin, end); // m
-        if(numElements < minElements || numThreads==1){
-            std::sort(begin, end, comparator);
-            return;
-        }
-
-        // Prepare handling of parallel cases
-        int const initDepth = (int) std::ceil(std::log2(tIdx+1)); // d_*
-        RandomAccessIterator workA = begin;
-        std::vector<RandomAccessIterator> workB(1, end);
-        vector<std::shared_ptr<SM_ParallelMergeSortSubTask<
-            RandomAccessIterator, Comparator
-        >>> childrenTasks(0);
-
-        // Compute workload distribution
-        for(int depth = 0 ; depth < maxDepth ; ++depth){
-            // Distribute workload to another thread if available
-            size_t const k = 1 + depth - initDepth;
-            size_t const rightIdx = \
-                (Scalar<size_t>::pow2(k))*tIdx +
-                Scalar<size_t>::pow2(k-1);
-            if(rightIdx < numThreads){
-                RandomAccessIterator workSplit = workA +
-                    std::distance(workA, workB[depth]) / 2;
-                std::shared_ptr<SM_ParallelMergeSortSubTask> childTask = \
-                    std::make_shared<SM_ParallelMergeSortSubTask<
-                        RandomAccessIterator, Comparator
-                    >>(
-                        stSequencer,
-                        rightIdx,
-                        numThreads,
-                        minElements,
-                        maxDepth,
-                        workSplit,
-                        workB[depth],
-                        comparator
-                    );
-                childrenTasks.push_back(childTask);
-                stSequencer->start(childTask);
-                workB.push_back(workSplit);
-            }
-            else{
-                break;
-            }
-        }
-
-        // Compute workload itself (partial sorting)
-        std::sort(workA, workB[workB.size()-1], comparator);
-
-        // Merge computed workload (merge partial sortings)
-        for(int i = childrenTasks.size()-1 ; i >= 0 ; --i){
-            std::shared_ptr<SM_ParallelMergeSortSubTask> childTask = \
-                childrenTasks[i];
-            childTask->getThread()->join();
-            std::inplace_merge(workA, workB[i+1], workB[i], comparator);
-        }
-        return;
+  // ***  RUNNABLE SHARED TASK  *** //
+  // ****************************** //
+  /**
+   * @brief Implementation of the sort method itself
+   * @see SharedSubTask::run
+   * @see helios::hpc::SM_ParallelMergeSort
+   * @see helios::hpc::SM_ParallelMergeSort::trySort
+   */
+  void run() override
+  {
+    // Handle single thread sort cases
+    size_t const numElements = std::distance(begin, end); // m
+    if (numElements < minElements || numThreads == 1) {
+      std::sort(begin, end, comparator);
+      return;
     }
 
+    // Prepare handling of parallel cases
+    int const initDepth = (int)std::ceil(std::log2(tIdx + 1)); // d_*
+    RandomAccessIterator workA = begin;
+    std::vector<RandomAccessIterator> workB(1, end);
+    vector<std::shared_ptr<
+      SM_ParallelMergeSortSubTask<RandomAccessIterator, Comparator>>>
+      childrenTasks(0);
+
+    // Compute workload distribution
+    for (int depth = 0; depth < maxDepth; ++depth) {
+      // Distribute workload to another thread if available
+      size_t const k = 1 + depth - initDepth;
+      size_t const rightIdx =
+        (Scalar<size_t>::pow2(k)) * tIdx + Scalar<size_t>::pow2(k - 1);
+      if (rightIdx < numThreads) {
+        RandomAccessIterator workSplit =
+          workA + std::distance(workA, workB[depth]) / 2;
+        std::shared_ptr<SM_ParallelMergeSortSubTask> childTask =
+          std::make_shared<
+            SM_ParallelMergeSortSubTask<RandomAccessIterator, Comparator>>(
+            stSequencer,
+            rightIdx,
+            numThreads,
+            minElements,
+            maxDepth,
+            workSplit,
+            workB[depth],
+            comparator);
+        childrenTasks.push_back(childTask);
+        stSequencer->start(childTask);
+        workB.push_back(workSplit);
+      } else {
+        break;
+      }
+    }
+
+    // Compute workload itself (partial sorting)
+    std::sort(workA, workB[workB.size() - 1], comparator);
+
+    // Merge computed workload (merge partial sortings)
+    for (int i = childrenTasks.size() - 1; i >= 0; --i) {
+      std::shared_ptr<SM_ParallelMergeSortSubTask> childTask = childrenTasks[i];
+      childTask->getThread()->join();
+      std::inplace_merge(workA, workB[i + 1], workB[i], comparator);
+    }
+    return;
+  }
 };
 
-}}
+}
+}

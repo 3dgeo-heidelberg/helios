@@ -26,4 +26,3 @@ TemporalDesignMatrix<TimeType, VarType>::toDiffDesignMatrixPointer(
         *this, diffType, sort
     );
 }
-
