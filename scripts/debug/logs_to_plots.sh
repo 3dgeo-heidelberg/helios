@@ -84,4 +84,3 @@ if ! $(module is-loaded numpy/1.18.1-python-3.8.1); then
     module load numpy/1.18.1-python-3.8.1
 fi
 python plot_log_data.py "$2" "$3"
-

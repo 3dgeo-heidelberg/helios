@@ -13,7 +13,7 @@ from pydantic import PositiveInt
 from typing import Optional
 from logging import ERROR, DEBUG, INFO, WARNING
 from datetime import datetime
-import os 
+import os
 
 import _helios
 import sys
@@ -77,8 +77,8 @@ class ForceOnGroundStrategy(IntEnum):
     NONE = 0
     LEAST_COMPLEX = 1
     MOST_COMPLEX = -1
-    
-    
+
+
 class ExecutionSettings(Model, UpdateableMixin):
     parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
     num_threads: ThreadCount = None
@@ -186,7 +186,7 @@ def _compose_settings(settings, parameters):
     """
 
     result = None
- 
+
     # Find the most specialized base settings class
     for base in settings:
         if base is not None:
@@ -238,11 +238,13 @@ def compose_output_settings(
 def apply_log_writing(execution_settings: ExecutionSettings):
     """Apply the chosen log writing mode to c++ part"""
     config: dict[str, str] = {}
-    
+
     if execution_settings.log_file_only or execution_settings.log_file:
         log_dir = "output/logs"
         os.makedirs(log_dir, exist_ok=True)
-        file_log = os.path.join(log_dir, f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log")
+        file_log = os.path.join(
+            log_dir, f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+        )
         config["file_name"] = file_log
 
     if execution_settings.log_file_only:
@@ -251,7 +253,7 @@ def apply_log_writing(execution_settings: ExecutionSettings):
         config["type"] = "full"
     else:
         config["type"] = "std_out"
-    
+
     if config["type"] in {"file", "full"} and "file_name" not in config:
         raise ValueError(f"Logger type '{config['type']}' requires a file_name")
 

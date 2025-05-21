@@ -11,6 +11,7 @@ import pytest
 
 from helios import HeliosException
 
+
 def test_construct_scene_from_xml():
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
 
@@ -75,33 +76,54 @@ def test_scenepart_from_tiffs():
     scene_parts = ScenePart.from_tiffs("data/test/*.tif")
     assert len(scene_parts) == 2
 
+
 def test_scenepart_from_xyz():
     scene_part1 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0,
-          max_color_value=255.0, default_normal=[0.0, 0.0, 1.0])
-    
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+
     scene_part2 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000_sepcomma.xyz", separator=",", voxel_size=1.0,
-          max_color_value=255.0)
-    
+        "data/sceneparts/pointclouds/sphere_dens25000_sepcomma.xyz",
+        separator=",",
+        voxel_size=1.0,
+        max_color_value=255.0,
+    )
+
     scene_part3 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0)
-    
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+    )
+
     scene_part4 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", voxel_size=1.0,
-          default_normal=[0.0, 0.0, 1.0], sparse=True)
-    
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        voxel_size=1.0,
+        default_normal=[0.0, 0.0, 1.0],
+        sparse=True,
+    )
+
     assert len(scene_part1._cpp_object.primitives) > 0
     assert len(scene_part2._cpp_object.primitives) > 0
     assert len(scene_part3._cpp_object.primitives) > 0
     assert len(scene_part4._cpp_object.primitives) > 0
 
+
 def test_scenepart_from_xyzs():
-    scene_parts1 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz", voxel_size= 1.0)
-                                         
-    scene_parts2 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz",
-                            voxel_size= 1.0, max_color_value= 255.0, default_normal= [0.0, 0.0, 1.0]) 
-                               
+    scene_parts1 = ScenePart.from_xyzs(
+        "data/sceneparts/pointclouds/*.xyz", voxel_size=1.0
+    )
+
+    scene_parts2 = ScenePart.from_xyzs(
+        "data/sceneparts/pointclouds/*.xyz",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+
     assert len(scene_parts1) > 2
     assert len(scene_parts2) > 2
 
@@ -112,19 +134,32 @@ def test_scenepart_from_xyzs():
             separator=",",
         )
 
+
 def test_scenepart_from_vox():
-    scene_parts1 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed")
-    scene_parts2 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled", intersection_argument=0.5)
-    scene_parts3 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled")
+    scene_parts1 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed"
+    )
+    scene_parts2 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox",
+        intersection_mode="scaled",
+        intersection_argument=0.5,
+    )
+    scene_parts3 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled"
+    )
 
     assert len(scene_parts1._cpp_object.primitives) > 0
     assert len(scene_parts2._cpp_object.primitives) > 0
-    assert len(scene_parts3._cpp_object.primitives) > 0    
+    assert len(scene_parts3._cpp_object.primitives) > 0
 
     with pytest.raises(ValueError):
-        ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed", intersection_argument=0.1)
-    
-    
+        ScenePart.from_vox(
+            "data/sceneparts/syssifoss/F_BR08_08_crown_250.vox",
+            intersection_mode="fixed",
+            intersection_argument=0.1,
+        )
+
+
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])
     scene._finalize()
@@ -256,7 +291,7 @@ def test_ground_plane():
     This test verifies that scene parts are correctly adjusted vertically to the ground plane
     depending on their force_on_ground flag.
 
-    Here, the following is tested: 
+    Here, the following is tested:
     - Scene parts with not NONE force_on_ground value will have their z-coordinate translated
       to the ground plane's z-coordinate after finalization.
     - Scene parts with force_on_ground = NONE will not be vertically adjusted.
@@ -266,34 +301,43 @@ def test_ground_plane():
 
     sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
     sp1.force_on_ground = ForceOnGroundStrategy.LEAST_COMPLEX
-    
+
     sp2 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
     sp2.force_on_ground = ForceOnGroundStrategy.NONE
 
     sp3 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
     sp3.scale(70)
-    
+
     sp4 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
     sp4.force_on_ground = 5
 
     scene = StaticScene(scene_parts=[sp1, sp2, sp3, sp4])
     scene._finalize()
 
-    assert np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
-    assert not np.isclose(sp2._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
-    assert np.isclose(sp4._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
+    assert np.isclose(
+        sp1._cpp_object.all_vertices[0].position[2],
+        sp3._cpp_object.all_vertices[0].position[2],
+    )
+    assert not np.isclose(
+        sp2._cpp_object.all_vertices[0].position[2],
+        sp3._cpp_object.all_vertices[0].position[2],
+    )
+    assert np.isclose(
+        sp4._cpp_object.all_vertices[0].position[2],
+        sp3._cpp_object.all_vertices[0].position[2],
+    )
 
 
 def test_is_ground():
     """
     Test the effect of the is_ground flag on the Z-coordinate adjustment of a scene part.
-    If is_ground is set to False for the ground plane, indicating that there are no valid ground scene parts in the scene, 
+    If is_ground is set to False for the ground plane, indicating that there are no valid ground scene parts in the scene,
     any other scene part should not be adjusted or aligned to the ground plane.
     """
 
     sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
     sp1.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
-    
+
     sp2 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
     sp2.scale(70)
     sp2.is_ground = False
@@ -301,8 +345,11 @@ def test_is_ground():
     scene = StaticScene(scene_parts=[sp1, sp2])
     scene._finalize()
 
-    assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp2._cpp_object.all_vertices[0].position[2])
-    
+    assert not np.isclose(
+        sp1._cpp_object.all_vertices[0].position[2],
+        sp2._cpp_object.all_vertices[0].position[2],
+    )
+
 
 def test_classification_scenepart():
     """
@@ -313,5 +360,5 @@ def test_classification_scenepart():
     assert survey.scene.scene_parts[0]._cpp_object.classification == 1
 
     meas, _ = survey.run()
-   
+
     assert np.any(meas["classification"] == 1)
