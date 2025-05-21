@@ -1,23 +1,16 @@
-#ifndef _SURFACEINSPECTOR_MATHS_PLANEFITTER_HPP_
-#include <maths/PlaneFitter.hpp>
-#endif
-
 #include <surfaceinspector/maths/Vector.hpp>
-
-using SurfaceInspector::maths::Vector;
-using SurfaceInspector::maths::PlaneFitter;
 
 // ***  STATIC FUNCTIONS  *** //
 // ************************** //
 template <typename T>
-vector<T> PlaneFitter::centerCoordinatesMatrix(Mat<T> & M) {
+std::vector<T> SurfaceInspector::maths::PlaneFitter::centerCoordinatesMatrix(arma::Mat<T> & M) {
     // Compute center
     arma::rowvec mins = arma::min(M, 0);
     arma::rowvec maxs = arma::max(M, 0);
     arma::rowvec centers = (maxs + mins) / 2.0;
 
     // Build centroid vector
-    vector<T> centroid;
+    std::vector<T> centroid;
     bool needsCentering = false;
     for (size_t i = 0; i < centers.n_elem; i++) {
         centroid.push_back(centers[i]);
@@ -32,11 +25,11 @@ vector<T> PlaneFitter::centerCoordinatesMatrix(Mat<T> & M) {
 }
 
 template <typename T>
-vector<T> PlaneFitter::translateToOrigin(Mat<T> &M, vector<T> center){
+std::vector<T> SurfaceInspector::maths::PlaneFitter::translateToOrigin(arma::Mat<T> &M, std::vector<T> center){
     // Computer centroid
-    size_t n = center.size();
+    std::size_t n = center.size();
     arma::rowvec centroid(n);
-    for(size_t i = 0 ; i < n ; ++i) centroid[i] = center[i];
+    for(std::size_t i = 0 ; i < n ; ++i) centroid[i] = center[i];
 
     // Transpose
     M.each_row() -= centroid;
@@ -47,9 +40,9 @@ vector<T> PlaneFitter::translateToOrigin(Mat<T> &M, vector<T> center){
 
 
 template <typename T>
-Plane<T> PlaneFitter::bestFittingPlaneSVD(Mat<T> & M){
+SurfaceInspector::maths::Plane<T> SurfaceInspector::maths::PlaneFitter::bestFittingPlaneSVD(arma::Mat<T> & M){
     // Transpose M to origin
-    vector<T> centroid = PlaneFitter::centerCoordinatesMatrix(M);
+    std::vector<T> centroid = SurfaceInspector::maths::PlaneFitter::centerCoordinatesMatrix(M);
 
     // Compute SVD
     arma::mat U;
@@ -58,7 +51,7 @@ Plane<T> PlaneFitter::bestFittingPlaneSVD(Mat<T> & M){
     arma::svd_econ(U, s, V, M, "right", "std");
 
     // Extract common plane components
-    Plane<T> p (centroid, vector<T>(0), 0, 0);
+    SurfaceInspector::maths::Plane<T> p (centroid, std::vector<T>(0), 0, 0);
     T sum = 0.0;
     extractCommonPlaneComponents(V, s, sum, p);
 
@@ -67,9 +60,9 @@ Plane<T> PlaneFitter::bestFittingPlaneSVD(Mat<T> & M){
 }
 
 template <typename T>
-Plane<T> PlaneFitter::bestFittingPlanePCA(Mat<T> &M){
+SurfaceInspector::maths::Plane<T> SurfaceInspector::maths::PlaneFitter::bestFittingPlanePCA(arma::Mat<T> &M){
     // Transpose M to origin
-    vector<T> centroid = PlaneFitter::centerCoordinatesMatrix(M);
+    std::vector<T> centroid = SurfaceInspector::maths::PlaneFitter::centerCoordinatesMatrix(M);
 
     // Compute PCA
     arma::mat coeff;
@@ -78,7 +71,7 @@ Plane<T> PlaneFitter::bestFittingPlanePCA(Mat<T> &M){
     arma::princomp(coeff, score, latent, M);
 
     // Extract plane components
-    Plane<T> p (centroid, vector<T>(0), 0, 0);
+    SurfaceInspector::maths::Plane<T> p (centroid, std::vector<T>(0), 0, 0);
     T sum = 0.0;
     extractCommonPlaneComponents(coeff, latent, sum, p);
 
@@ -87,7 +80,7 @@ Plane<T> PlaneFitter::bestFittingPlanePCA(Mat<T> &M){
 }
 
 template <typename T>
-Plane<T> PlaneFitter::bestFittingPlaneFromCovariances(Mat<T> &M){
+SurfaceInspector::maths::Plane<T> SurfaceInspector::maths::PlaneFitter::bestFittingPlaneFromCovariances(arma::Mat<T> &M){
     // Compute PCA
     arma::vec eigvals;
     arma::mat eigvecs;
@@ -96,7 +89,7 @@ Plane<T> PlaneFitter::bestFittingPlaneFromCovariances(Mat<T> &M){
     eigvecs = arma::reverse(eigvecs, 1);
 
     // Extract plane components
-    Plane<T> p (vector<T>(0), vector<T>(0), 0, 0);
+    SurfaceInspector::maths::Plane<T> p (std::vector<T>(0), std::vector<T>(0), 0, 0);
     T sum = 0.0;
     extractCommonPlaneComponents(eigvecs, eigvals, sum, p);
 
@@ -105,14 +98,14 @@ Plane<T> PlaneFitter::bestFittingPlaneFromCovariances(Mat<T> &M){
 }
 
 template <typename T>
-DetailedPlane<T> PlaneFitter::bestFittingDetailedPlaneSVD(
-    Mat<T> &M,
-    vector<T> center
+SurfaceInspector::maths::DetailedPlane<T> SurfaceInspector::maths::PlaneFitter::bestFittingDetailedPlaneSVD(
+    arma::Mat<T> &M,
+    std::vector<T> center
 ){
     // Transpose M to origin
-    vector<T> centroid;
-    if(center.empty()) centroid = PlaneFitter::centerCoordinatesMatrix(M);
-    else centroid = PlaneFitter::translateToOrigin(M, center);
+    std::vector<T> centroid;
+    if(center.empty()) centroid = SurfaceInspector::maths::PlaneFitter::centerCoordinatesMatrix(M);
+    else centroid = SurfaceInspector::maths::PlaneFitter::translateToOrigin(M, center);
 
     // Compute SVD
     arma::mat U;
@@ -121,7 +114,7 @@ DetailedPlane<T> PlaneFitter::bestFittingDetailedPlaneSVD(
     arma::svd_econ(U, s, V, M, "right", "std");
 
     // Extract plane components
-    DetailedPlane<T> p (centroid, vector<T>(0), 0, 0, 0);
+    SurfaceInspector::maths::DetailedPlane<T> p (centroid, std::vector<T>(0), 0, 0, 0);
     T sum = 0.0;
     extractCommonPlaneComponents(V, s, sum, p);
 
@@ -133,14 +126,14 @@ DetailedPlane<T> PlaneFitter::bestFittingDetailedPlaneSVD(
 }
 
 template <typename T>
-DetailedPlane<T> PlaneFitter::bestFittingDetailedPlanePCA(
-    Mat<T> &M,
-    vector<T> center
+SurfaceInspector::maths::DetailedPlane<T> SurfaceInspector::maths::PlaneFitter::bestFittingDetailedPlanePCA(
+    arma::Mat<T> &M,
+    std::vector<T> center
 ){
     // Transpose M to origin
-    vector<T> centroid = PlaneFitter::centerCoordinatesMatrix(M);
-    if(center.empty()) centroid = PlaneFitter::centerCoordinatesMatrix(M);
-    else centroid = PlaneFitter::translateToOrigin(M, center);
+    std::vector<T> centroid = SurfaceInspector::maths::PlaneFitter::centerCoordinatesMatrix(M);
+    if(center.empty()) centroid = SurfaceInspector::maths::PlaneFitter::centerCoordinatesMatrix(M);
+    else centroid = SurfaceInspector::maths::PlaneFitter::translateToOrigin(M, center);
 
     // Compute PCA
     arma::mat coeff;
@@ -149,7 +142,7 @@ DetailedPlane<T> PlaneFitter::bestFittingDetailedPlanePCA(
     arma::princomp(coeff, score, latent, M);
 
     // Extract plane components
-    DetailedPlane<T> p (centroid, vector<T>(0), 0, 0, 0);
+    SurfaceInspector::maths::DetailedPlane<T> p (centroid, std::vector<T>(0), 0, 0, 0);
     T sum = 0.0;
     extractCommonPlaneComponents(coeff, latent, sum, p);
 
@@ -163,11 +156,11 @@ DetailedPlane<T> PlaneFitter::bestFittingDetailedPlanePCA(
 // ***  INNER FUNCTIONS  *** //
 // ************************* //
 template <typename T>
-void PlaneFitter::extractCommonPlaneComponents(
+void SurfaceInspector::maths::PlaneFitter::extractCommonPlaneComponents(
     arma::mat const &A,
     arma::vec const &v,
     T &sum,
-    Plane<T> &p
+    SurfaceInspector::maths::Plane<T> &p
 ){
     arma::vec _orthonormal = A.col(A.n_cols-1);
     for(size_t i = 0 ; i < _orthonormal.n_elem ; ++i){
@@ -180,16 +173,16 @@ void PlaneFitter::extractCommonPlaneComponents(
 }
 
 template <typename T>
-void PlaneFitter::extractDetailedPlaneComponents(
-    Mat<T> const &M,
+void SurfaceInspector::maths::PlaneFitter::extractDetailedPlaneComponents(
+    arma::Mat<T> const &M,
     arma::mat const &A,
     arma::vec const &v,
     T const &sum,
-    DetailedPlane<T> &p
+    SurfaceInspector::maths::DetailedPlane<T> &p
 ){
     // Prepare
-    vector<T> &orthonormal = p.orthonormal;
-    size_t n = v.n_elem;
+    std::vector<T> &orthonormal = p.orthonormal;
+    std::size_t n = v.n_elem;
 
     // Detailed plane descriptors
     p.sum = sum;
@@ -199,7 +192,7 @@ void PlaneFitter::extractDetailedPlaneComponents(
     T entropy = 0;
     for(size_t i = 0 ; i < n ; ++i) entropy += std::log(v[i])*v[i];
     p.entropy = -entropy;
-    p.verticality = Vector<T>::norm(vector<T>({
+    p.verticality = SurfaceInspector::maths::Vector<T>::norm(std::vector<T>({
         p.orthonormal[0], p.orthonormal[1]
     }));
     p.horizontality = std::fabs(orthonormal[2]);
@@ -208,8 +201,8 @@ void PlaneFitter::extractDetailedPlaneComponents(
     p.sphericity = v[n-1]/v[0];
 
     // Prepare further computations
-    size_t nPoints = M.n_rows;
-    size_t m = M.n_cols; // Elements per vector/point
+    std::size_t nPoints = M.n_rows;
+    std::size_t m = M.n_cols; // Elements per vector/point
     std::vector<T> ez(m);
     arma::rowvec _ez(m);
     for(size_t i = 0 ; i < m ; ++i){
@@ -223,9 +216,9 @@ void PlaneFitter::extractDetailedPlaneComponents(
     arma::vec _e1 = A.col(0);
     std::vector<T> e1(m);
     for(size_t i = 0 ; i < m ; ++i) e1[i] = _e1[i];
-    p.angularVerticality = vector<T>(2);
-    p.angularVerticality[0] = Vector<T>::acuteAngle(e1, ez);
-    p.angularVerticality[1] = Vector<T>::acuteAngle(orthonormal, ez);
+    p.angularVerticality = std::vector<T>(2);
+    p.angularVerticality[0] = SurfaceInspector::maths::Vector<T>::acuteAngle(e1, ez);
+    p.angularVerticality[1] = SurfaceInspector::maths::Vector<T>::acuteAngle(orthonormal, ez);
 
     // Vertical moments
     p.verticalMoments = std::vector<T>(2);

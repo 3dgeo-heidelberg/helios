@@ -12,7 +12,8 @@ class Primitive;
 /**
  * @brief Class representing a .obj loaded file
  */
-class WavefrontObj {
+class WavefrontObj
+{
 public:
   /**
    * @brief Vector containing pointers to the primitives of the obj

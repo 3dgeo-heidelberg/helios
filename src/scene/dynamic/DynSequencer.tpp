@@ -1,11 +1,7 @@
-#ifndef _DYN_SEQUENCER_H_
-
-#include <HeliosException.h>
-
 // ***  DYNAMIC SEQUENCING   *** //
 // ***************************** //
 template <typename T>
-vector<shared_ptr<T>> DynSequencer<T>::nextStep(){
+std::vector<std::shared_ptr<T>> DynSequencer<T>::nextStep(){
     // Check there is a sequence to operate over
     if(current == nullptr){
         throw HeliosException(
@@ -15,12 +11,12 @@ vector<shared_ptr<T>> DynSequencer<T>::nextStep(){
     }
 
     // Handle step
-    vector<shared_ptr<T>> sequence = current->nextStep();
+    std::vector<std::shared_ptr<T>> sequence = current->nextStep();
 
     // Prepare next step
     if(current->getIteration()>=current->getLoop() && current->getLoop()>0){
         // Advance to next sequence
-        string nextId = current->getNext();
+        std::string nextId = current->getNext();
         if(nextId.empty()){ // No sequences left
             current = nullptr;
         }
@@ -49,9 +45,9 @@ void DynSequencer<T>::release(){
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 template <typename T>
-void DynSequencer<T>::add(shared_ptr<DynSequence<T>> dynseq){
+void DynSequencer<T>::add(std::shared_ptr<DynSequence<T>> dynseq){
     // Insert on map
-    dynseqs.insert(std::pair<string, shared_ptr<DynSequence<T>>>(
+    dynseqs.insert(std::pair<std::string, std::shared_ptr<DynSequence<T>>>(
         dynseq->getId(), dynseq
     ));
 
@@ -63,9 +59,7 @@ void DynSequencer<T>::add(shared_ptr<DynSequence<T>> dynseq){
 }
 
 template <typename T>
-shared_ptr<DynSequence<T>> DynSequencer<T>::get(string const &id){
+std::shared_ptr<DynSequence<T>> DynSequencer<T>::get(std::string const &id){
     if(!has(id)) return nullptr;
     return dynseqs[id];
 }
-
-#endif

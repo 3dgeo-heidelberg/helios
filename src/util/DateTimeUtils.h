@@ -8,20 +8,21 @@
  * @brief Class providing util static methods for dealing with date and time
  *  operations
  */
-class DateTimeUtils{
+class DateTimeUtils
+{
 private:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    DateTimeUtils() = delete;
-    virtual ~DateTimeUtils() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  DateTimeUtils() = delete;
+  virtual ~DateTimeUtils() = default;
 
 public:
-    // ***  DATE and TIME UTILS  *** //
-    // ***************************** //
-    /**
-     * @brief Convert from "YYYY-MM-DD hh:mm:ss" string to milliseconds
-     * @param str Time "YYYY-MM-DD hh:mm:ss" string itself
-     * @return The datetime string converted to milliseconds
-     */
-    static long dateTimeStrToSeconds(std::string const str);
+  // ***  DATE and TIME UTILS  *** //
+  // ***************************** //
+  /**
+   * @brief Convert from "YYYY-MM-DD hh:mm:ss" string to milliseconds
+   * @param str Time "YYYY-MM-DD hh:mm:ss" string itself
+   * @return The datetime string converted to milliseconds
+   */
+  static long dateTimeStrToSeconds(std::string const str);
 };

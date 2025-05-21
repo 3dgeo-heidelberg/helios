@@ -3,8 +3,6 @@
 #include <filems/facade/FMSWriteFacade.h>
 #include <util/Yielder.h>
 
-using helios::filems::FMSWriteFacade;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -13,31 +11,31 @@ using helios::filems::FMSWriteFacade;
  * @tparam T The type of object handled by the yielder
  * @see helios::filems::FMSWriteFacade
  */
-template <typename T>
-class WriteYielder : public Yielder<T>{
+template<typename T>
+class WriteYielder : public Yielder<T>
+{
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The facade for writing operations
-     * @see filems::FMSWriteFacade
-     */
-    FMSWriteFacade &write;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The facade for writing operations
+   * @see filems::FMSWriteFacade
+   */
+  helios::filems::FMSWriteFacade& write;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for the abstract write yielder
-     * @see Yielder::Yielder
-     * @see WriteYielder::write
-     */
-    WriteYielder(
-        FMSWriteFacade &write,
-        size_t bufferSize=256
-    ) :
-        Yielder<T>(bufferSize),
-        write(write)
-    {}
-    virtual ~WriteYielder() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for the abstract write yielder
+   * @see Yielder::Yielder
+   * @see WriteYielder::write
+   */
+  WriteYielder(helios::filems::FMSWriteFacade& write,
+               std::size_t bufferSize = 256)
+    : Yielder<T>(bufferSize)
+    , write(write)
+  {
+  }
+  virtual ~WriteYielder() = default;
 };

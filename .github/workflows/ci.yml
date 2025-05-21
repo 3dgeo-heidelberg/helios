@@ -49,7 +49,6 @@ jobs:
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
-          conda-remove-defaults: true
 
       - name: Install Conda GCC
         if: runner.os == 'Linux'
@@ -64,26 +63,55 @@ jobs:
 
       # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
       # more efforts into investigating broken LAZ files written by Helios on MacOS.
-      - name: Run marked tests
-        if: runner.os != 'macOS' 
+
+      - name: Run tests (incl. regression tests)
+        if: runner.os == 'Windows'
+        run: |
+          python -m pytest --regression-tests
+
+      - name: Run tests (excl. regression tests)
+        if: runner.os == 'Linux'
         run: |
           python -m pytest
 
-      # TODO: Reenable this after porting the regression tests
-      # - name: Run tests (incl. regression tests)
-      #   if: runner.os == 'Windows'
-      #   run: |
-      #     python -m pytest --regression-tests
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always() && github.event.inputs.upload-outputs == 'true' && runner.os == 'Windows'
+        with:
+          name: test-results
+          path: pytest-output/*
+          retention-days: 1
 
-      # - name: Run tests (excl. regression tests)
-      #   if: runner.os == 'Linux'
-      #   run: |
-      #     python -m pytest
+  headercheck:
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}  
+  
+    runs-on: ubuntu-latest
+    name: Header sanity check
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v4
-      #   if: github.event.inputs.upload-outputs == 'true'
-      #   with:
-      #     name: test-results
-      #     path: output/*
-      #     retention-days: 1
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: "3.9"
+          miniconda-version: "latest"
+
+      - name: Install Conda GCC
+        run: |
+          conda install -y -c conda-forge gcc gxx
+
+      - name: Install Helios
+        run: |
+          mkdir build
+          cd build
+          cmake -DHELIOS_HEADERCHECK="ON" ..
+          make
