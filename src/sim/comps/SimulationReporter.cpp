@@ -5,10 +5,6 @@
 #include <memory>
 #include <sstream>
 
-using std::shared_ptr;
-using std::string;
-using std::stringstream;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 SimulationReporter::SimulationReporter(Simulation const& sim)
@@ -21,9 +17,9 @@ SimulationReporter::SimulationReporter(Simulation const& sim)
 void
 SimulationReporter::preStartReport() const
 {
-  stringstream ss;
+  std::stringstream ss;
   ss << "SIMULATION START\n";
-  string dmoReport = reportDynMovingObjects();
+  std::string dmoReport = reportDynMovingObjects();
   if (dmoReport != "")
     ss << dmoReport;
   logging::DEBUG(ss.str());
@@ -32,11 +28,11 @@ SimulationReporter::preStartReport() const
 void
 SimulationReporter::preFinishReport(double const seconds) const
 {
-  stringstream ss;
+  std::stringstream ss;
 
   // Report dynamic objects
   ss << "SIMULATION LOOP COMPLETED\n";
-  string dmoReport = reportDynMovingObjects();
+  std::string dmoReport = reportDynMovingObjects();
   if (dmoReport != "")
     ss << dmoReport;
   logging::DEBUG(ss.str());
@@ -54,14 +50,14 @@ void
 SimulationReporter::postFinishReport(double const seconds) const
 {
   // Report computation task including finish process
-  stringstream ss;
+  std::stringstream ss;
   ss << "Pulse computation tasks finished in " << seconds << " sec.";
   logging::TIME(ss.str());
 }
 
 // ***  UTIL METHODS  *** //
 // ********************** //
-string
+std::string
 SimulationReporter::reportDynMovingObjects() const
 {
   // Check that there are moving objects
@@ -70,7 +66,7 @@ SimulationReporter::reportDynMovingObjects() const
     return "";
 
   // Generate string report for moving objects
-  stringstream ss;
+  std::stringstream ss;
   ss << "Dynamic moving objects:\n";
   for (std::shared_ptr<ScenePart> sp : scene.parts) {
     if (sp->getType() != ScenePart::DYN_MOVING_OBJECT)

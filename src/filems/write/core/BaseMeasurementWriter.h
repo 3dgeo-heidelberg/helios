@@ -12,10 +12,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-using std::unordered_map;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -47,7 +43,7 @@ protected:
    * @brief The scanner that generates the measurements to be written
    * @see filems::MeasurementWriter::setScanner
    */
-  shared_ptr<Scanner> scanner = nullptr;
+  std::shared_ptr<Scanner> scanner = nullptr;
   /**
    * @brief The pointer to the shift vector to be applied to measurements
    * @see filems::MeasurementWriter::setScanner
@@ -58,7 +54,8 @@ protected:
    * @brief Map of writers. This map allows to reuse writers for legs grouped
    * in the same strip.
    */
-  unordered_map<string, shared_ptr<SyncFileWriter<WriteArgs...>>> writers{};
+  std::unordered_map<std::string, std::shared_ptr<SyncFileWriter<WriteArgs...>>>
+    writers{};
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -78,8 +75,8 @@ public:
    * @param lastLegInStrip Specify whether the last leg belonged to a strip
    *  (true) or not (false)
    */
-  virtual void configure(string const& parent,
-                         string const& prefix,
+  virtual void configure(std::string const& parent,
+                         std::string const& prefix,
                          bool const lastLegInStrip);
   /**
    * @brief Choose a type of file writer based on input flags
@@ -99,9 +96,9 @@ public:
    * @see SyncFileMeasurementWriterFactory::makeWriter
    * @see SyncFileMeasurementWriterFactory::makeVectorialWriter
    */
-  virtual shared_ptr<SyncFileWriter<WriteArgs...>> makeWriter(
+  virtual std::shared_ptr<SyncFileWriter<WriteArgs...>> makeWriter(
     WriterType const& type,
-    string const& path,
+    std::string const& path,
     bool const zipOutput,
     double const lasScale,
     glm::dvec3 shift,
@@ -123,12 +120,13 @@ public:
    * @brief Set path to output file
    * @param path New path to output file
    */
-  virtual void setOutputFilePath(string const& path, bool const lastLegInStrip);
+  virtual void setOutputFilePath(std::string const& path,
+                                 bool const lastLegInStrip);
   /**
    * @brief Obtain the scanner associated with the base measurement writer
    * @see filems::BaseMeasurementWriter::scanner
    */
-  inline shared_ptr<Scanner> getScanner() const { return scanner; }
+  inline std::shared_ptr<Scanner> getScanner() const { return scanner; }
   /**
    * @brief Associate a new scanner with the base measurement writer, which
    *  implies updating the shift vector to be the same than the one
@@ -136,7 +134,7 @@ public:
    * @see filems::BaseMeasurementWriter::scanner
    * @see filems::BaseMeasurementWriter::shift
    */
-  inline void setScanner(shared_ptr<Scanner> scanner)
+  inline void setScanner(std::shared_ptr<Scanner> scanner)
   {
     this->scanner = scanner;
     if (scanner != nullptr) {

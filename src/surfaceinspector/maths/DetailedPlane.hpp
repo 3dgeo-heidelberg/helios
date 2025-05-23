@@ -114,7 +114,7 @@ public:
    *
    * Where \f$e_{z}=(0, 0, 1)\f$ for the 3D case
    */
-  vector<T> angularVerticality;
+  std::vector<T> angularVerticality;
 
   /**
    * @brief Two vertical moments
@@ -130,7 +130,7 @@ public:
    * Where \f$e_{z}=(0, 0, 1)\f$ for the 3D case
    *
    */
-  vector<T> verticalMoments;
+  std::vector<T> verticalMoments;
 
   /**
    * @brief Absolute moments of order 1 and 2 for each eigen or singular
@@ -148,7 +148,7 @@ public:
    *
    * Where \f$e_{j}\f$ is the jth eigen or singular vector
    */
-  vector<T> absoluteMoments;
+  std::vector<T> absoluteMoments;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -161,8 +161,8 @@ public:
    *  scatter (plane attributes)
    * @see SurfaceInspector::maths::Plane
    */
-  DetailedPlane(vector<T> centroid,
-                vector<T> orthonormal,
+  DetailedPlane(std::vector<T> centroid,
+                std::vector<T> orthonormal,
                 T scatter = 0,
                 T curvature = 0)
     : Plane<T>(centroid, orthonormal, scatter, curvature) {};
@@ -172,8 +172,8 @@ public:
    * @see SurfaceInspector::maths::Plane
    * @see DetailedPlane::
    */
-  DetailedPlane(vector<T> centroid,
-                vector<T> orthonormal,
+  DetailedPlane(std::vector<T> centroid,
+                std::vector<T> orthonormal,
                 T scatter = 0,
                 T curvature = 0,
                 T sum = 0,
@@ -184,9 +184,9 @@ public:
                 T linearity = 0,
                 T planarity = 0,
                 T sphericity = 0,
-                vector<T> angularVerticality = vector<T>(0),
-                vector<T> verticalMoments = vector<T>(0),
-                vector<T> absoluteMoments = vector<T>(0))
+                std::vector<T> angularVerticality = std::vector<T>(0),
+                std::vector<T> verticalMoments = std::vector<T>(0),
+                std::vector<T> absoluteMoments = std::vector<T>(0))
     : Plane<T>(centroid, orthonormal, scatter, curvature)
     , sum(sum)
     , omnivariance(omnivariance)

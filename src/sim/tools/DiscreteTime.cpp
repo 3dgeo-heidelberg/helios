@@ -14,13 +14,13 @@ DiscreteTime::DiscreteTime(std::size_t const frequency,
 
 // ***  TRANSFORMS  *** //
 // ******************** //
-size_t
+std::size_t
 DiscreteTime::toDiscrete(double const time) const
 {
-  return (size_t)(time * freq);
+  return (std::size_t)(time * freq);
 }
 
-size_t
+std::size_t
 DiscreteTime::toCyclicDiscrete(double const time) const
 {
   return toDiscrete(time - std::floor(time));
@@ -34,13 +34,13 @@ DiscreteTime::toPeriodicDiscrete(double const time) const
 }
 
 double
-DiscreteTime::toContinuous(size_t const step) const
+DiscreteTime::toContinuous(std::size_t const step) const
 {
   return ((double)step) * period;
 }
 
 double
-DiscreteTime::toCyclicContinuous(size_t const step) const
+DiscreteTime::toCyclicContinuous(std::size_t const step) const
 {
   if (step < frequency)
     return toContinuous(step);

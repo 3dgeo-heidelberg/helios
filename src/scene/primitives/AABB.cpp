@@ -3,8 +3,6 @@
 
 #include <glm/gtx/string_cast.hpp>
 
-using namespace std;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 AABB::AABB(glm::dvec3 min, glm::dvec3 max)
@@ -49,16 +47,16 @@ AABB::getSize()
   return getMax() - getMin();
 }
 
-shared_ptr<AABB>
+std::shared_ptr<AABB>
 AABB::getForPrimitives(std::vector<Primitive*>& primitives)
 {
-  double minX = numeric_limits<double>::max();
-  double minY = numeric_limits<double>::max();
-  double minZ = numeric_limits<double>::max();
+  double minX = std::numeric_limits<double>::max();
+  double minY = std::numeric_limits<double>::max();
+  double minZ = std::numeric_limits<double>::max();
 
-  double maxX = numeric_limits<double>::lowest();
-  double maxY = numeric_limits<double>::lowest();
-  double maxZ = numeric_limits<double>::lowest();
+  double maxX = std::numeric_limits<double>::lowest();
+  double maxY = std::numeric_limits<double>::lowest();
+  double maxZ = std::numeric_limits<double>::lowest();
 
   for (Primitive* p : primitives) {
     Vertex* v = p->getFullVertices();
@@ -85,19 +83,19 @@ AABB::getForPrimitives(std::vector<Primitive*>& primitives)
   glm::dvec3 min = glm::dvec3(minX, minY, minZ);
   glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
 
-  return shared_ptr<AABB>(new AABB(min, max));
+  return std::shared_ptr<AABB>(new AABB(min, max));
 }
 
-shared_ptr<AABB>
-AABB::getForVertices(vector<Vertex>& verts)
+std::shared_ptr<AABB>
+AABB::getForVertices(std::vector<Vertex>& verts)
 {
-  double minX = numeric_limits<double>::max();
-  double minY = numeric_limits<double>::max();
-  double minZ = numeric_limits<double>::max();
+  double minX = std::numeric_limits<double>::max();
+  double minY = std::numeric_limits<double>::max();
+  double minZ = std::numeric_limits<double>::max();
 
-  double maxX = numeric_limits<double>::lowest();
-  double maxY = numeric_limits<double>::lowest();
-  double maxZ = numeric_limits<double>::lowest();
+  double maxX = std::numeric_limits<double>::lowest();
+  double maxY = std::numeric_limits<double>::lowest();
+  double maxZ = std::numeric_limits<double>::lowest();
 
   for (Vertex const& v : verts) {
     // Find minimum:
@@ -122,21 +120,21 @@ AABB::getForVertices(vector<Vertex>& verts)
     }
   }
 
-  return make_shared<AABB>(glm::dvec3(minX, minY, minZ),
-                           glm::dvec3(maxX, maxY, maxZ));
+  return std::make_shared<AABB>(glm::dvec3(minX, minY, minZ),
+                                glm::dvec3(maxX, maxY, maxZ));
 }
 
 std::shared_ptr<AABB>
 AABB::getForVertices(
   std::unordered_set<Vertex*, VertexKeyHash, VertexKeyEqual>& verts)
 {
-  double minX = numeric_limits<double>::max();
-  double minY = numeric_limits<double>::max();
-  double minZ = numeric_limits<double>::max();
+  double minX = std::numeric_limits<double>::max();
+  double minY = std::numeric_limits<double>::max();
+  double minZ = std::numeric_limits<double>::max();
 
-  double maxX = numeric_limits<double>::lowest();
-  double maxY = numeric_limits<double>::lowest();
-  double maxZ = numeric_limits<double>::lowest();
+  double maxX = std::numeric_limits<double>::lowest();
+  double maxY = std::numeric_limits<double>::lowest();
+  double maxZ = std::numeric_limits<double>::lowest();
 
   for (Vertex* const& v : verts) {
     // Find minimum:
@@ -164,10 +162,10 @@ AABB::getForVertices(
   glm::dvec3 min = glm::dvec3(minX, minY, minZ);
   glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
 
-  return shared_ptr<AABB>(new AABB(min, max));
+  return std::shared_ptr<AABB>(new AABB(min, max));
 }
 
-string
+std::string
 AABB::toString()
 {
   return "Min: " + glm::to_string(getMin()) +
@@ -210,6 +208,7 @@ AABB::getRayIntersection(const glm::dvec3& orig, const glm::dvec3& dir)
 
   return std::vector<double>{ tmin, tmax };
 }
+
 double
 AABB::getRayIntersectionDistance(const glm::dvec3& rayOrigin,
                                  const glm::dvec3& rayDir)

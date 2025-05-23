@@ -2,8 +2,6 @@
 
 #include <surfaceinspector/util/draggers/MinDragger.hpp>
 
-using SurfaceInspector::util::draggers::MinDragger;
-
 namespace SurfaceInspector {
 namespace util {
 namespace draggers {
@@ -27,8 +25,8 @@ public:
    * @param x The collection to drag over
    * @see SurfaceInspector::util::draggers::MinDragger::MinDragger(vector<E>)
    */
-  MaxDragger(vector<E> x)
-    : MinDragger<E>(x) {};
+  MaxDragger(std::vector<E> x)
+    : SurfaceInspector::util::draggers::MinDragger<E>(x) {};
 
   /**
    * @brief Default destructor

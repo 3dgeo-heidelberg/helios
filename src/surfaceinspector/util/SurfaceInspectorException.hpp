@@ -4,9 +4,6 @@
 #include <string>
 #include <surfaceinspector/util/Object.hpp>
 
-using std::runtime_error;
-using std::string;
-
 namespace SurfaceInspector {
 namespace util {
 
@@ -17,7 +14,7 @@ namespace util {
  * @brief Base class for surface inspector exceptions
  */
 class SurfaceInspectorException
-  : public runtime_error
+  : public std::runtime_error
   , Object
 {
 public:
@@ -28,7 +25,7 @@ public:
    * @param msg Surface inspector exception message
    */
   SurfaceInspectorException(std::string const msg = "")
-    : runtime_error(msg)
+    : std::runtime_error(msg)
   {
   }
   virtual ~SurfaceInspectorException() = default;

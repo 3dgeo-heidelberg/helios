@@ -10,12 +10,6 @@
 #include <scene/dynamic/DynObject.h>
 #include <sim/tools/VoidStepLoop.h>
 
-using std::deque;
-using std::make_shared;
-using std::shared_ptr;
-
-using rigidmotion::RigidMotionEngine;
-
 class KDGrove;
 
 /**
@@ -99,7 +93,7 @@ protected:
    *
    * @see DynMovingObject::normalMotionQueue
    */
-  deque<shared_ptr<DynMotion>> positionMotionQueue;
+  std::deque<std::shared_ptr<DynMotion>> positionMotionQueue;
   /**
    * @brief Queue of motions to be applied to the normal vector of each
    *  primitive
@@ -109,7 +103,7 @@ protected:
    *
    * @see DynMovingObject::positionMotionQueue
    */
-  deque<shared_ptr<DynMotion>> normalMotionQueue;
+  std::deque<std::shared_ptr<DynMotion>> normalMotionQueue;
   /**
    * @brief The dynamic motion engine to apply dynamic motions
    * @see rigidmotion::RigidMotionEngine
@@ -128,7 +122,7 @@ protected:
    *  KDGrove.
    * @see DynMovingObject::kdGroveObserver
    */
-  size_t groveSubjectId;
+  std::size_t groveSubjectId;
   /**
    * @brief Handle how many consecutive updates must elapse so the
    *  observer is notified.
@@ -171,7 +165,7 @@ public:
   /**
    * @see DynObject::DynObject(string const)
    */
-  DynMovingObject(string const id)
+  DynMovingObject(std::string const id)
     : DynObject(id)
     , kdGroveObserver(nullptr)
     , observerStepLoop(1, [&]() -> void { doObserverUpdate(); })
@@ -181,7 +175,7 @@ public:
   /**
    * @see DynObject::DynObject(vector<Primitive *> const &)
    */
-  DynMovingObject(vector<Primitive*> const& primitives)
+  DynMovingObject(std::vector<Primitive*> const& primitives)
     : DynObject(primitives)
     , kdGroveObserver(nullptr)
     , observerStepLoop(1, [&]() -> void { doObserverUpdate(); })
@@ -191,7 +185,8 @@ public:
   /**
    * @see DynObject::DynObject(string const, vector<Primitive *> const &)
    */
-  DynMovingObject(string const id, vector<Primitive*> const& primitives)
+  DynMovingObject(std::string const id,
+                  std::vector<Primitive*> const& primitives)
     : DynObject(id, primitives)
     , kdGroveObserver(nullptr)
     , observerStepLoop(1, [&]() -> void { doObserverUpdate(); })
@@ -265,7 +260,7 @@ protected:
     std::function<arma::mat()> matrixFromPrimitives,
     std::function<void(arma::mat const& X)> matrixToPrimitives,
     std::function<bool()> queueHasNext,
-    std::function<shared_ptr<DynMotion>()> queueNext);
+    std::function<std::shared_ptr<DynMotion>()> queueNext);
 
 public:
   // ***  MOTION QUEUES METHODS  *** //
@@ -274,7 +269,7 @@ public:
    * @brief Push given dynamic motion to the position motion queue
    * @param dm Dynamic motion to be pushed to the position motion queue
    */
-  inline void pushPositionMotion(shared_ptr<DynMotion> const dm)
+  inline void pushPositionMotion(std::shared_ptr<DynMotion> const dm)
   {
     positionMotionQueue.push_back(dm);
   }
@@ -285,7 +280,7 @@ public:
    *
    * @return First dynamic motion in the position motion queue
    */
-  inline shared_ptr<DynMotion> nextPositionMotion()
+  inline std::shared_ptr<DynMotion> nextPositionMotion()
   {
     return _next(positionMotionQueue);
   }
@@ -306,7 +301,7 @@ public:
    * @brief Push given dynamic motion to the normal motion queue
    * @param dm Dynamic motion to be pushed to the normal motion queue
    */
-  inline void pushNormalMotion(shared_ptr<DynMotion> const dm)
+  inline void pushNormalMotion(std::shared_ptr<DynMotion> const dm)
   {
     normalMotionQueue.push_back(dm);
   }
@@ -317,7 +312,7 @@ public:
    *
    * @return First dynamic motion in the normal motion queue
    */
-  inline shared_ptr<DynMotion> nextNormalMotion()
+  inline std::shared_ptr<DynMotion> nextNormalMotion()
   {
     return _next(normalMotionQueue);
   }
@@ -345,7 +340,8 @@ protected:
    * @param deck Queue to retrieve next from
    * @return First dynamic motion in the given queue
    */
-  shared_ptr<DynMotion> _next(deque<shared_ptr<DynMotion>>& deck);
+  std::shared_ptr<DynMotion> _next(
+    std::deque<std::shared_ptr<DynMotion>>& deck);
 
 public:
   // ***  GROVE SUBSCRIBER METHODS  *** //
@@ -355,7 +351,7 @@ public:
    * @param kdGroveObserver Grove to be registered as a observer
    * @see KDGroveSubject::registerObserverGrove
    */
-  void registerObserverGrove(shared_ptr<KDGrove> kdGroveObserver) override;
+  void registerObserverGrove(std::shared_ptr<KDGrove> kdGroveObserver) override;
   /**
    * @brief Unregister current grove observer
    * @see KDGroveSubject::unregisterObserverGrove

@@ -5,10 +5,6 @@
 #include <rigidmotion/RigidMotionEngine.h>
 #include <rigidmotion/RigidMotionR3Factory.h>
 
-using namespace arma;
-using rigidmotion::RigidMotionEngine;
-using rigidmotion::RigidMotionR3Factory;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -47,13 +43,13 @@ protected:
    *  engine
    * @see rigidmotion::RigidMotionEngine
    */
-  RigidMotionEngine rme;
+  rigidmotion::RigidMotionEngine rme;
   /**
    * @brief The factory for rigid motions in \f$\mathbb{R}^3\f$ of the
    *  dynamic motion engine
    * @see rigidmotion::RigidMotionR3Factory
    */
-  RigidMotionR3Factory rm3f;
+  rigidmotion::RigidMotionR3Factory rm3f;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -67,7 +63,7 @@ public:
    * @brief Construct a dynamic motion engine from given rigid motion engine
    * @param rme Rigid motion engine composing the dynamic motion engine
    */
-  DynMotionEngine(RigidMotionEngine const& rme)
+  DynMotionEngine(rigidmotion::RigidMotionEngine const& rme)
     : rme(rme)
   {
   }

@@ -108,8 +108,8 @@ public:
    * @return Built scene part if any, nullptr otherwise
    * @see XmlSceneLoader::loadfilter
    */
-  shared_ptr<ScenePart> loadFilters(tinyxml2::XMLElement* scenePartNode,
-                                    bool& holistic);
+  std::shared_ptr<ScenePart> loadFilters(tinyxml2::XMLElement* scenePartNode,
+                                         bool& holistic);
 
   /**
    * @brief Load a filter from a XML filter node.
@@ -131,7 +131,7 @@ public:
    * @param scenePart The scene part that is transformed by each swap.
    * @return Handler for the many swaps associated with the scene part.
    */
-  shared_ptr<SwapOnRepeatHandler> loadScenePartSwaps(
+  std::shared_ptr<SwapOnRepeatHandler> loadScenePartSwaps(
     tinyxml2::XMLElement* scenePartNode,
     ScenePart* scenePart);
 
@@ -149,7 +149,7 @@ public:
    */
   bool loadScenePartId(tinyxml2::XMLElement* scenePartNode,
                        int partIndex,
-                       shared_ptr<ScenePart> scenePart);
+                       std::shared_ptr<ScenePart> scenePart);
 
   /**
    * @brief Validate the given loaded scene part
@@ -158,7 +158,7 @@ public:
    * @param scenePart The scene part to be validated
    * @return True if the given ScenePart is valid, false otherwise
    */
-  bool validateScenePart(shared_ptr<ScenePart> scenePart,
+  bool validateScenePart(std::shared_ptr<ScenePart> scenePart,
                          tinyxml2::XMLElement* scenePartNode);
 
   /**
@@ -176,7 +176,7 @@ public:
    *  be opportunely updated
    * @see ScenePart::splitSubparts
    */
-  void digestScenePart(shared_ptr<ScenePart>& scenePart,
+  void digestScenePart(std::shared_ptr<ScenePart>& scenePart,
                        std::shared_ptr<StaticScene>& scene,
                        bool holistic,
                        bool splitPart,
@@ -191,7 +191,7 @@ public:
    * @see XmlSceneLoader::kdtSAHLossNodes
    * @see KDTreeFactory
    */
-  shared_ptr<KDTreeFactory> makeKDTreeFactory();
+  std::shared_ptr<KDTreeFactory> makeKDTreeFactory();
 
   /**
    * @brief Build the KDGrove factory from loader's KDTree factory
@@ -200,7 +200,7 @@ public:
    * @see XmlSceneLoader::makeKDTreeFactory
    * @see KDGroveFactory
    */
-  shared_ptr<KDGroveFactory> makeKDGroveFactory();
+  std::shared_ptr<KDGroveFactory> makeKDGroveFactory();
 
   // ***  DYNAMIC SCENE LOADING METHODS  *** //
   // *************************************** //
@@ -228,9 +228,9 @@ public:
    * @see DynMotion
    * @see XmlUtils::createDynMotionsVector
    */
-  shared_ptr<DynSequentiableMovingObject> loadDynMotions(
+  std::shared_ptr<DynSequentiableMovingObject> loadDynMotions(
     tinyxml2::XMLElement* scenePartNode,
-    shared_ptr<ScenePart> scenePart);
+    std::shared_ptr<ScenePart> scenePart);
 
   /**
    * @brief Build a dynamic scene based on given static scene.
@@ -243,7 +243,8 @@ public:
    * @see StaticScene
    * @see DynScene
    */
-  shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
+  std::shared_ptr<StaticScene> makeSceneDynamic(
+    std::shared_ptr<StaticScene> scene);
 
   /**
    * @brief Handle the loading of dynamic scene attributes
@@ -251,5 +252,5 @@ public:
    * @param scene Dynamic scene which attributes must be configured
    */
   void handleDynamicSceneAttributes(tinyxml2::XMLElement* sceneNode,
-                                    shared_ptr<DynScene> scene);
+                                    std::shared_ptr<DynScene> scene);
 };

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <Primitive.h>
 #include <SharedSubTask.h>
 #include <SharedTaskSequencer.h>
+
+#include <vector>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -22,17 +25,17 @@ protected:
   /**
    * @brief Vector of primitives inside given root node
    */
-  vector<Primitive*> const& primitives;
+  std::vector<Primitive*> const& primitives;
   /**
    * @brief Index of primitive (inclusive) at which the sub-task must start
    *  to iterate
    */
-  size_t const startPrimitive;
+  std::size_t const startPrimitive;
   /**
    * @brief Index of primitive (exclusive) at which the sub-task must end
    *  iterating
    */
-  size_t const endPrimitive;
+  std::size_t const endPrimitive;
   /**
    * @brief \f$x\f$ coordinate of min vertex
    */
@@ -79,9 +82,9 @@ public:
    */
   SimpleKDTreeComputeRootNodeBoundariesSubTask(
     std::shared_ptr<SharedTaskSequencer> ch,
-    vector<Primitive*> const& primitives,
-    size_t const startPrimitive,
-    size_t const endPrimitive,
+    std::vector<Primitive*> const& primitives,
+    std::size_t const startPrimitive,
+    std::size_t const endPrimitive,
     double& ax,
     double& ay,
     double& az,

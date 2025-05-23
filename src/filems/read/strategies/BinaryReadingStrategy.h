@@ -7,8 +7,6 @@
 namespace helios {
 namespace filems {
 
-using std::fstream;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -25,7 +23,7 @@ public:
    * @brief Default constructor for binary reading strategy
    * @see filems::SimpleReadingStrategy::SimpleReadingStrategy
    */
-  BinaryReadingStrategy(ifstream& ifs)
+  BinaryReadingStrategy(std::ifstream& ifs)
     : SimpleReadingStrategy<int>(ifs)
   {
   }

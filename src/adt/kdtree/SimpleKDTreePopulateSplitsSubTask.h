@@ -1,7 +1,10 @@
 #pragma once
 
+#include <Primitive.h>
 #include <SharedSubTask.h>
 #include <SharedTaskSequencer.h>
+
+#include <vector>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -22,7 +25,7 @@ protected:
   /**
    * @brief Primitives of node being splitted
    */
-  vector<Primitive*> const& primitives;
+  std::vector<Primitive*> const& primitives;
   /**
    * @brief Index of axis defining the split
    */
@@ -34,21 +37,21 @@ protected:
   /**
    * @brief Where primitives of left split must be stored
    */
-  vector<Primitive*>& leftPrimitives;
+  std::vector<Primitive*>& leftPrimitives;
   /**
    * @brief Where primitives of right split must be stored
    */
-  vector<Primitive*>& rightPrimitives;
+  std::vector<Primitive*>& rightPrimitives;
   /**
    * @brief Index of primitive (inclusive) at which the sub-task must start
    *  to iterate
    */
-  size_t const startPrimitive;
+  std::size_t const startPrimitive;
   /**
    * @brief Index of primitive (exclusive) at which the sub-task must end
    *  iterating
    */
-  size_t const endPrimitive;
+  std::size_t const endPrimitive;
   /**
    * @brief Function to digest a primitive when populating splits
    * @see SimpleKDTreeFactory::onPopulateSplitsDigestPrimitive
@@ -56,8 +59,8 @@ protected:
   std::function<void(Primitive* p,
                      int const splitAxis,
                      double const splitPos,
-                     vector<Primitive*>& leftPrimitives,
-                     vector<Primitive*>& rightPrimitives)>
+                     std::vector<Primitive*>& leftPrimitives,
+                     std::vector<Primitive*>& rightPrimitives)>
     onPopulateSplitsDigestPrimitive;
 
 public:
@@ -68,18 +71,18 @@ public:
    */
   SimpleKDTreePopulateSplitsSubTask(
     std::shared_ptr<SharedTaskSequencer> ch,
-    vector<Primitive*> const& primitives,
+    std::vector<Primitive*> const& primitives,
     int const splitAxis,
     double const splitPos,
-    vector<Primitive*>& leftPrimitives,
-    vector<Primitive*>& rightPrimitives,
+    std::vector<Primitive*>& leftPrimitives,
+    std::vector<Primitive*>& rightPrimitives,
     size_t const startPrimitive,
     size_t const endPrimitive,
     std::function<void(Primitive* p,
                        int const splitAxis,
                        double const splitPos,
-                       vector<Primitive*>& leftPrimitives,
-                       vector<Primitive*>& rightPrimitives)>
+                       std::vector<Primitive*>& leftPrimitives,
+                       std::vector<Primitive*>& rightPrimitives)>
       onPopulateSplitsDigestPrimitive)
     : SharedSubTask(ch)
     , primitives(primitives)

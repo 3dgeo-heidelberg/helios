@@ -8,9 +8,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -26,12 +23,12 @@ protected:
   /**
    * @brief Path to the file to be read
    */
-  string path;
+  std::string path;
   /**
    * @brief The reading strategy to be used by the file reader
    * @see filems::ReadingStrategy
    */
-  shared_ptr<ReadingStrategy<ReadType>> readingStrategy = nullptr;
+  std::shared_ptr<ReadingStrategy<ReadType>> readingStrategy = nullptr;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -40,7 +37,7 @@ public:
    * @brief Default constructor for file reader
    * @see filems::FileReader::path
    */
-  FileReader(string const& path)
+  FileReader(std::string const& path)
     : path(path)
   {
   }
@@ -70,13 +67,13 @@ public:
    * @return Path to the file to be read
    * @see filems::FileReader::path
    */
-  virtual string getPath() const { return path; };
+  virtual std::string getPath() const { return path; };
   /**
    * @brief Set the path to the file to be read
    * @param path Path to the file to be read
    * @see filems::FileReader::path
    */
-  virtual void setPath(string const& path) { this->path = path; }
+  virtual void setPath(std::string const& path) { this->path = path; }
 };
 
 }

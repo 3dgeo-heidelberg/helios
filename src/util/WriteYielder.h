@@ -3,8 +3,6 @@
 #include <filems/facade/FMSWriteFacade.h>
 #include <util/Yielder.h>
 
-using helios::filems::FMSWriteFacade;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -23,7 +21,7 @@ protected:
    * @brief The facade for writing operations
    * @see filems::FMSWriteFacade
    */
-  FMSWriteFacade& write;
+  helios::filems::FMSWriteFacade& write;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -33,7 +31,8 @@ public:
    * @see Yielder::Yielder
    * @see WriteYielder::write
    */
-  WriteYielder(FMSWriteFacade& write, size_t bufferSize = 256)
+  WriteYielder(helios::filems::FMSWriteFacade& write,
+               std::size_t bufferSize = 256)
     : Yielder<T>(bufferSize)
     , write(write)
   {

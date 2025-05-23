@@ -1,4 +1,5 @@
 #pragma once
+
 #include <maths/model/ModelArg.h>
 #include <scene/Material.h>
 #include <vector>

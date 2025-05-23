@@ -1,7 +1,5 @@
 #include <BasicStaticGrove.h>
 
-using std::shared_ptr;
-
 // ***  QUERY METHODS  *** //
 // *********************** //
 template <typename Tree>
@@ -43,7 +41,7 @@ Tree & BasicStaticGrove<Tree>::getTreeReference(
     return *trees[index];
 }
 template <typename Tree>
-shared_ptr<Tree> BasicStaticGrove<Tree>::getTreeShared(
+std::shared_ptr<Tree> BasicStaticGrove<Tree>::getTreeShared(
     size_t const index
 ) const{
     return trees[index];
@@ -78,9 +76,9 @@ Tree & BasicStaticGrove<Tree>::nextTreeReference() {
     return tree;
 }
 template <typename Tree>
-shared_ptr<Tree> BasicStaticGrove<Tree>::nextTreeShared() {
+std::shared_ptr<Tree> BasicStaticGrove<Tree>::nextTreeShared() {
     if(whileIter == getNumTrees()) whileIter = 0;
-    shared_ptr<Tree> tree = getTreeShared(whileIter);
+    std::shared_ptr<Tree> tree = getTreeShared(whileIter);
     ++whileIter;
     return tree;
 }

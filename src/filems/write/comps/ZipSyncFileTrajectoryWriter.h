@@ -4,11 +4,10 @@
 #include <filems/write/strategies/ZipTrajectoryWriteStrategy.h>
 
 #include <memory>
+#include <string>
 
 namespace helios {
 namespace filems {
-
-using std::make_shared;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -27,12 +26,12 @@ public:
    * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
    */
   explicit ZipSyncFileTrajectoryWriter(
-    string const& path,
+    std::string const& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
     : ZipSyncFileWriter<Trajectory const&>(path, compressionMode)
   {
     this->writeStrategy =
-      make_shared<ZipTrajectoryWriteStrategy>(this->ofs, *(this->oa));
+      std::make_shared<ZipTrajectoryWriteStrategy>(this->ofs, *(this->oa));
   }
   virtual ~ZipSyncFileTrajectoryWriter() = default;
 };

@@ -23,7 +23,7 @@ public:
   /**
    * @brief The index of the scanning device which generated the measurement
    */
-  size_t devIdx;
+  std::size_t devIdx;
   /**
    * @brief ID of hit object
    */

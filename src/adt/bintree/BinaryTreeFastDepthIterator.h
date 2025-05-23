@@ -3,10 +3,10 @@
 #include <IBinaryTreeNode.h>
 #include <ITreeIterator.h>
 
+#include <boost/serialization/base_object.hpp>
+
 #include <deque>
 #include <iterator>
-
-using std::deque;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -70,7 +70,7 @@ protected:
   /**
    * @brief Double ended queue used as a stack to handle nodes visiting
    */
-  deque<IBinaryTreeNode*> pendingNodes;
+  std::deque<IBinaryTreeNode*> pendingNodes;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

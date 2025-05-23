@@ -8,8 +8,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -43,26 +41,26 @@ public:
    * @param survey The survey to which the facade must be connected
    * @return Built FMS facade
    */
-  shared_ptr<FMSFacade> buildFacade(string const& outdir,
-                                    double const lasScale,
-                                    bool const lasOutput,
-                                    bool const las10,
-                                    bool const zipOutput,
-                                    bool const splitByChannel,
-                                    Survey& survey,
-                                    bool const updateSurvey = true);
+  std::shared_ptr<FMSFacade> buildFacade(std::string const& outdir,
+                                         double const lasScale,
+                                         bool const lasOutput,
+                                         bool const las10,
+                                         bool const zipOutput,
+                                         bool const splitByChannel,
+                                         Survey& survey,
+                                         bool const updateSurvey = true);
   /**
    * @brief Overload of buildFacade method that considers splitByChannel as
    *  false by default (mostly because of retrocompatibility)
    * @see FMSFacadeFactory::buildFacade
    */
-  inline shared_ptr<FMSFacade> buildFacade(string const& outdir,
-                                           double const lasScale,
-                                           bool const lasOutput,
-                                           bool const las10,
-                                           bool const zipOutput,
-                                           Survey& survey,
-                                           bool const updateSurvey = true)
+  inline std::shared_ptr<FMSFacade> buildFacade(std::string const& outdir,
+                                                double const lasScale,
+                                                bool const lasOutput,
+                                                bool const las10,
+                                                bool const zipOutput,
+                                                Survey& survey,
+                                                bool const updateSurvey = true)
   {
     return buildFacade(outdir,
                        lasScale,

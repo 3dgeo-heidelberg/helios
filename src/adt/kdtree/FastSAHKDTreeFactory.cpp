@@ -31,36 +31,36 @@ FastSAHKDTreeFactory::_clone(KDTreeFactory* kdtf) const
 double
 FastSAHKDTreeFactory::findSplitPositionBySAH(
   KDTreeNode* node,
-  vector<Primitive*>& primitives) const
+  std::vector<Primitive*>& primitives) const
 {
   return findSplitPositionByFastSAHRecipe(
     node,
     primitives,
-    [&](vector<Primitive*>& primitives,
+    [&](std::vector<Primitive*>& primitives,
         int const splitAxis,
         double const minp,
         double const deltap,
-        size_t const lossNodes,
-        size_t const lossCases,
-        vector<size_t>& cForward,
-        vector<size_t>& cBackward) -> void {
+        std::size_t const lossNodes,
+        std::size_t const lossCases,
+        std::vector<std::size_t>& cForward,
+        std::vector<std::size_t>& cBackward) -> void {
       // Count min and max vertices
-      vector<size_t> minCount(lossNodes, 0);
-      vector<size_t> maxCount(lossNodes, 0);
+      std::vector<std::size_t> minCount(lossNodes, 0);
+      std::vector<std::size_t> maxCount(lossNodes, 0);
       for (Primitive* q : primitives) {
         double const minq = q->getAABB()->getMin()[splitAxis];
         double const maxq = q->getAABB()->getMax()[splitAxis];
-        ++minCount[std::min<size_t>(
-          (size_t)((minq - minp) / deltap * lossNodes), lossNodes - 1)];
-        ++maxCount[std::min<size_t>(
-          (size_t)((maxq - minp) / deltap * lossNodes), lossNodes - 1)];
+        ++minCount[std::min<std::size_t>(
+          (std::size_t)((minq - minp) / deltap * lossNodes), lossNodes - 1)];
+        ++maxCount[std::min<std::size_t>(
+          (std::size_t)((maxq - minp) / deltap * lossNodes), lossNodes - 1)];
       }
 
       // Accumulate counts
-      for (size_t i = 0; i < lossNodes; ++i) {
+      for (std::size_t i = 0; i < lossNodes; ++i) {
         cForward[i + 1] = cForward[i] + minCount[i];
       }
-      for (size_t i = lossNodes; i > 0; --i) {
+      for (std::size_t i = lossNodes; i > 0; --i) {
         cBackward[i - 1] = cBackward[i] + maxCount[i - 1];
       }
     });
@@ -69,15 +69,15 @@ FastSAHKDTreeFactory::findSplitPositionBySAH(
 double
 FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
   KDTreeNode* node,
-  vector<Primitive*>& primitives,
-  std::function<void(vector<Primitive*>& primitives,
+  std::vector<Primitive*>& primitives,
+  std::function<void(std::vector<Primitive*>& primitives,
                      int const splitAxis,
                      double const minp,
                      double const deltap,
-                     size_t const lossNodes,
-                     size_t const lossCases,
-                     vector<size_t>& cForward,
-                     vector<size_t>& cBackward)> f_recount) const
+                     std::size_t const lossNodes,
+                     std::size_t const lossCases,
+                     std::vector<std::size_t>& cForward,
+                     std::vector<std::size_t>& cBackward)> f_recount) const
 {
   /*
    * Code below is commented because it might be necessary in the future.
@@ -101,9 +101,9 @@ FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
   double const minp = node->bound.getMin()[node->splitAxis];
   double const maxp = node->bound.getMax()[node->splitAxis];
   double const deltap = maxp - minp;
-  size_t const lossCases = lossNodes + 1;
-  vector<size_t> cForward(lossCases, 0);
-  vector<size_t> cBackward(lossCases, 0);
+  std::size_t const lossCases = lossNodes + 1;
+  std::vector<std::size_t> cForward(lossCases, 0);
+  std::vector<std::size_t> cBackward(lossCases, 0);
   f_recount(primitives,
             node->splitAxis,
             minp,

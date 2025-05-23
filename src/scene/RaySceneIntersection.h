@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Primitive.h"
-#include "PrintUtils.h"
+#include <Primitive.h>
+#include <PrintUtils.h>
+
 #include <ostream>
 
 /**

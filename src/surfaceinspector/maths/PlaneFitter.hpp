@@ -1,21 +1,12 @@
-#ifndef _SURFACEINSPECTOR_MATHS_PLANEFITTER_HPP_
-#define _SURFACEINSPECTOR_MATHS_PLANEFITTER_HPP_
-
-#include <vector>
-
-#include <armadillo>
+#pragma once
 
 #include <surfaceinspector/maths/DetailedPlane.hpp>
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/util/Object.hpp>
 
-using std::vector;
+#include <armadillo>
 
-using arma::Mat;
-
-using SurfaceInspector::maths::DetailedPlane;
-using SurfaceInspector::maths::Plane;
-using SurfaceInspector::util::Object;
+#include <vector>
 
 namespace SurfaceInspector {
 namespace maths {
@@ -26,7 +17,7 @@ namespace maths {
  *
  * @brief Handle plane fitting operations
  */
-class PlaneFitter : public Object
+class PlaneFitter : public SurfaceInspector::util::Object
 {
 public:
   // ***  STATIC FUNCTIONS  *** //
@@ -47,7 +38,7 @@ public:
    * @return Original centroid
    */
   template<typename T>
-  static vector<T> centerCoordinatesMatrix(Mat<T>& M);
+  static std::vector<T> centerCoordinatesMatrix(arma::Mat<T>& M);
 
   /**
    * @brief Translate M to origin transposing by center point
@@ -59,7 +50,8 @@ public:
    * @see PlaneFitter::centerCoordinatesMatrix(Mat<T> &M)
    */
   template<typename T>
-  static vector<T> translateToOrigin(Mat<T>& M, vector<T> center);
+  static std::vector<T> translateToOrigin(arma::Mat<T>& M,
+                                          std::vector<T> center);
 
   /**
    * @brief Compute the best fitting plane for given Matrix of coordinates
@@ -87,7 +79,7 @@ public:
    * @return Best fitting plane
    */
   template<typename T>
-  static Plane<T> bestFittingPlaneSVD(Mat<T>& M);
+  static Plane<T> bestFittingPlaneSVD(arma::Mat<T>& M);
   /**
    * @brief Compute the best fitting plane for given Matrix of coordinates
    *  through principal component analysis.
@@ -106,7 +98,7 @@ public:
    * @return Best fitting plane
    */
   template<typename T>
-  static Plane<T> bestFittingPlanePCA(Mat<T>& M);
+  static Plane<T> bestFittingPlanePCA(arma::Mat<T>& M);
 
   /**
    * @brief Compute the best fitting plane for given Matrix of covariances
@@ -116,7 +108,7 @@ public:
    * @return Best fitting plane
    */
   template<typename T>
-  static Plane<T> bestFittingPlaneFromCovariances(Mat<T>& M);
+  static Plane<T> bestFittingPlaneFromCovariances(arma::Mat<T>& M);
 
   /**
    * @brief Like bestFittingPlaneSVD but returning a DetailedPlane which
@@ -129,8 +121,8 @@ public:
    * @see SurfaceInspector::maths::DetailedPlane
    */
   template<typename T>
-  static DetailedPlane<T> bestFittingDetailedPlaneSVD(Mat<T>& M,
-                                                      vector<T> center);
+  static DetailedPlane<T> bestFittingDetailedPlaneSVD(arma::Mat<T>& M,
+                                                      std::vector<T> center);
   /**
    * @brief Like bestFittingPlanePCA but returning a DetailedPlane which
    *  provides more information than a simple Plane object
@@ -142,8 +134,8 @@ public:
    * @see SurfaceInspector::maths::DetailedPlane
    */
   template<typename T>
-  static DetailedPlane<T> bestFittingDetailedPlanePCA(Mat<T>& M,
-                                                      vector<T> center);
+  static DetailedPlane<T> bestFittingDetailedPlanePCA(arma::Mat<T>& M,
+                                                      std::vector<T> center);
 
 protected:
   // ***  INNER FUNCTIONS  *** //
@@ -174,7 +166,7 @@ protected:
    * @see PlaneFitter::extractCommonPlaneComponents
    */
   template<typename T>
-  static void extractDetailedPlaneComponents(Mat<T> const& M,
+  static void extractDetailedPlaneComponents(arma::Mat<T> const& M,
                                              arma::mat const& A,
                                              arma::vec const& v,
                                              T const& sum,
@@ -185,5 +177,3 @@ protected:
 }
 
 #include <surfaceinspector/maths/PlaneFitter.tpp>
-
-#endif

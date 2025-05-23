@@ -10,26 +10,23 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Common implementation for any vectorial measurement writer
  */
 class VectorialMeasurementWriter
-  : public BaseMeasurementWriter<vector<Measurement> const&, glm::dvec3 const&>
+  : public BaseMeasurementWriter<std::vector<Measurement> const&,
+                                 glm::dvec3 const&>
 {
 protected:
   // ***  USING  *** //
   // *************** //
-  using BaseMeasurementWriter<vector<Measurement> const&,
+  using BaseMeasurementWriter<std::vector<Measurement> const&,
                               glm::dvec3 const&>::scanner;
-  using BaseMeasurementWriter<vector<Measurement> const&,
+  using BaseMeasurementWriter<std::vector<Measurement> const&,
                               glm::dvec3 const&>::shift;
-  using BaseMeasurementWriter<vector<Measurement> const&,
+  using BaseMeasurementWriter<std::vector<Measurement> const&,
                               glm::dvec3 const&>::writers;
 
 public:
@@ -39,7 +36,8 @@ public:
    * @brief Default constructor for vectorial measurement writer
    */
   VectorialMeasurementWriter()
-    : BaseMeasurementWriter<vector<Measurement> const&, glm::dvec3 const&>()
+    : BaseMeasurementWriter<std::vector<Measurement> const&,
+                            glm::dvec3 const&>()
   {
   }
   virtual ~VectorialMeasurementWriter() = default;
@@ -50,14 +48,14 @@ public:
    * @brief Write a vector of measurements
    * @param measurements Vector of measurements to be written
    */
-  void writeMeasurements(vector<Measurement> const& measurements);
+  void writeMeasurements(std::vector<Measurement> const& measurements);
   /**
    * @brief Like filems::VectorialMeasurementWriter::writeMeasurements but
    *  faster because there is no validation
    * @see filems::VectorialMeasurementWriter::writeMeasurements
    */
   inline void writeMeasurementsUnsafe(
-    vector<Measurement> const& measurements) const
+    std::vector<Measurement> const& measurements) const
   {
     sfw->write(measurements, shift);
   }
@@ -65,9 +63,10 @@ public:
    * @brief Make a vectorial measurement SyncFileWriter
    * @see BaseMeasurementWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>>
+  std::shared_ptr<
+    SyncFileWriter<std::vector<Measurement> const&, glm::dvec3 const&>>
   makeWriter(WriterType const& type,
-             string const& path,
+             std::string const& path,
              bool const zipOutput,
              double const lasScale,
              glm::dvec3 shift,

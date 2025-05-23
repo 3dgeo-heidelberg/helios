@@ -8,9 +8,6 @@ class ScanningPulseProcess;
 #include <functional>
 #include <memory>
 
-using std::make_shared;
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -36,8 +33,8 @@ protected:
    *  if there is no dynamic object at all, then a FullWaveformPulseRunnable
    *  will be built.
    */
-  std::function<shared_ptr<PulseTask>(ScanningPulseProcess const&,
-                                      SimulatedPulse const&)>
+  std::function<std::shared_ptr<PulseTask>(ScanningPulseProcess const&,
+                                           SimulatedPulse const&)>
     _build;
 
 public:
@@ -58,8 +55,8 @@ public:
    * @return Built pulse task
    * @see PulseTask
    */
-  inline shared_ptr<PulseTask> build(ScanningPulseProcess const& spp,
-                                     SimulatedPulse const& sp) const
+  inline std::shared_ptr<PulseTask> build(ScanningPulseProcess const& spp,
+                                          SimulatedPulse const& sp) const
   {
     return _build(spp, sp);
   }
@@ -69,14 +66,14 @@ protected:
    * @brief Build a FullWaveformPulseRunnable from given arguments
    * @see PulseTaskFactory::build
    */
-  shared_ptr<PulseTask> buildFullWaveformPulseRunnable(
+  std::shared_ptr<PulseTask> buildFullWaveformPulseRunnable(
     ScanningPulseProcess const& spp,
     SimulatedPulse const& sp) const;
   /**
    * @brief Build a DynFullWaveformPulseRunnable from given arguments
    * @see PulseTaskFactory::build
    */
-  shared_ptr<PulseTask> buildDynFullWaveformPulseRunnable(
+  std::shared_ptr<PulseTask> buildDynFullWaveformPulseRunnable(
     ScanningPulseProcess const& spp,
     SimulatedPulse const& sp) const;
 

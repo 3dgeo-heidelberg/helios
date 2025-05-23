@@ -14,21 +14,18 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Common implementation for any vectorial pulse writer
  */
-class VectorialPulseWriter : public BasePulseWriter<vector<PulseRecord> const&>
+class VectorialPulseWriter
+  : public BasePulseWriter<std::vector<PulseRecord> const&>
 {
 protected:
   // ***  USING  *** //
   // *************** //
-  using BasePulseWriter<vector<PulseRecord> const&>::writers;
+  using BasePulseWriter<std::vector<PulseRecord> const&>::writers;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -37,7 +34,7 @@ public:
    * @brief Default constructor for vectorial pulse writer
    */
   VectorialPulseWriter()
-    : BasePulseWriter<vector<PulseRecord> const&>()
+    : BasePulseWriter<std::vector<PulseRecord> const&>()
   {
   }
   virtual ~VectorialPulseWriter() = default;
@@ -48,13 +45,13 @@ public:
    * @brief Writer a vector of pulses (represented by many vectors of the
    *  same dimensionality with one component per pulse).
    */
-  void writePulses(vector<PulseRecord> const& pulseRecords);
+  void writePulses(std::vector<PulseRecord> const& pulseRecords);
   /**
    * @brief Like filems::VectorialPulseWriter::writePulses but faster because
    *  there is no validation
    * @see filems::VectorialPulseWriter::writePulses
    */
-  inline void writePulsesUnsafe(vector<PulseRecord> const& pulseRecords)
+  inline void writePulsesUnsafe(std::vector<PulseRecord> const& pulseRecords)
   {
     sfw->write(pulseRecords);
   }
@@ -62,13 +59,13 @@ public:
    * @brief Make a vectorial pulse SyncFileWriter
    * @see BasePulseWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<std::vector<PulseRecord> const&>> makeWriter(
-    string const& path) const override
+  std::shared_ptr<SyncFileWriter<std::vector<PulseRecord> const&>> makeWriter(
+    std::string const& path) const override
   {
     if (isZipOutput()) {
-      return make_shared<ZipVectorialSyncFilePulseWriter>(path);
+      return std::make_shared<ZipVectorialSyncFilePulseWriter>(path);
     } else {
-      return make_shared<SimpleVectorialSyncFilePulseWriter>(path);
+      return std::make_shared<SimpleVectorialSyncFilePulseWriter>(path);
     }
   }
 };

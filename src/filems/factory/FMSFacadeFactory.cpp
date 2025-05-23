@@ -7,35 +7,28 @@
 #include <sstream>
 #include <string>
 
-using namespace helios::filems;
-
 namespace fs = boost::filesystem;
-
-using std::make_shared;
-using std::shared_ptr;
-using std::string;
-using std::stringstream;
 
 // ***  BUILD METHODS  *** //
 // *********************** //
-shared_ptr<FMSFacade>
-FMSFacadeFactory::buildFacade(string const& outdir,
-                              double const lasScale,
-                              bool const lasOutput,
-                              bool const las10,
-                              bool const zipOutput,
-                              bool const splitByChannel,
-                              Survey& survey,
-                              bool const updateSurvey)
+std::shared_ptr<helios::filems::FMSFacade>
+helios::filems::FMSFacadeFactory::buildFacade(std::string const& outdir,
+                                              double const lasScale,
+                                              bool const lasOutput,
+                                              bool const las10,
+                                              bool const zipOutput,
+                                              bool const splitByChannel,
+                                              Survey& survey,
+                                              bool const updateSurvey)
 {
   // Try to find a non-existent root directory
   time_t t = std::time(nullptr);
   struct tm* tm = std::localtime(&t);
   char const pathsep = (char)fs::path::preferred_separator;
-  stringstream ss;
+  std::stringstream ss;
   ss << outdir << pathsep << survey.name << pathsep
      << std::put_time(tm, "%Y-%m-%d_%H-%M-%S") << pathsep;
-  string rootDir = ss.str();
+  std::string rootDir = ss.str();
   bool rootDirExists = fs::exists(rootDir);
   for (size_t i = 0; i < 98 && rootDirExists; ++i) {
     ss.str("");
@@ -55,7 +48,7 @@ FMSFacadeFactory::buildFacade(string const& outdir,
   logging::INFO("Output directory: \"" + rootDir + "\"");
 
   // Create FMS facade
-  shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
+  std::shared_ptr<FMSFacade> fms = std::make_shared<FMSFacade>();
   // Assign facade to interested survey components, if requested
   if (updateSurvey) {
     survey.scanner->fms = fms;
@@ -65,7 +58,7 @@ FMSFacadeFactory::buildFacade(string const& outdir,
   }
 
   // Configure write facade
-  FMSWriteFacade& fmsWrite = fms->write;
+  helios::filems::FMSWriteFacade& fmsWrite = fms->write;
   fmsWrite.splitByChannel = splitByChannel;
   fmsWrite.outDir = outdir;
   fmsWrite.setRootDir(rootDir);
@@ -73,9 +66,10 @@ FMSFacadeFactory::buildFacade(string const& outdir,
   // Configure measurement writer
   if (survey.scanner->getNumDevices() > 1 && splitByChannel) {
     fmsWrite.setMeasurementWriter(
-      make_shared<MultiVectorialMeasurementWriter>());
+      std::make_shared<MultiVectorialMeasurementWriter>());
   } else {
-    fmsWrite.setMeasurementWriter(make_shared<VectorialMeasurementWriter>());
+    fmsWrite.setMeasurementWriter(
+      std::make_shared<VectorialMeasurementWriter>());
   }
   fmsWrite.getMeasurementWriter()->setScanner(survey.scanner);
   fmsWrite.setMeasurementWriterLasOutput(lasOutput);
@@ -84,16 +78,17 @@ FMSFacadeFactory::buildFacade(string const& outdir,
   fmsWrite.setMeasurementWriterLasScale(lasScale);
 
   // Configure trajectory writer
-  fmsWrite.setTrajectoryWriter(make_shared<TrajectoryWriter>());
+  fmsWrite.setTrajectoryWriter(std::make_shared<TrajectoryWriter>());
   // fmsWrite.setTrajectoryWriterZipOutput(zipOutput); // Zip if requested
   fmsWrite.setTrajectoryWriterZipOutput(false); // Never zip
 
   // Configure full waveform writer
-  fmsWrite.setFullWaveformWriter(make_shared<VectorialFullWaveformWriter>());
+  fmsWrite.setFullWaveformWriter(
+    std::make_shared<VectorialFullWaveformWriter>());
   fmsWrite.setFullWaveformWriterZipOutput(zipOutput);
 
   // Configure pulse writer
-  fmsWrite.setPulseWriter(make_shared<VectorialPulseWriter>());
+  fmsWrite.setPulseWriter(std::make_shared<VectorialPulseWriter>());
   fmsWrite.setPulseWriterZipOutput(zipOutput);
 
   // Return

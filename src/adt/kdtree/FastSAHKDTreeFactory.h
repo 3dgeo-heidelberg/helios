@@ -103,8 +103,9 @@ public:
    * @see SAHKDTreeFactory::findSplitPositionBySAH
    * @see SAHKDTreeFactory::defineSplit
    */
-  double findSplitPositionBySAH(KDTreeNode* node,
-                                vector<Primitive*>& primitives) const override;
+  double findSplitPositionBySAH(
+    KDTreeNode* node,
+    std::vector<Primitive*>& primitives) const override;
 
   /**
    * @brief The recipe for finding split position by Fast-SAH algorithm. It
@@ -125,13 +126,13 @@ public:
    */
   virtual double findSplitPositionByFastSAHRecipe(
     KDTreeNode* node,
-    vector<Primitive*>& primitives,
-    std::function<void(vector<Primitive*>& primitives,
+    std::vector<Primitive*>& primitives,
+    std::function<void(std::vector<Primitive*>& primitives,
                        int const splitAxis,
                        double const minp,
                        double const deltap,
-                       size_t const lossNodes,
-                       size_t const lossCases,
-                       vector<size_t>& cForward,
-                       vector<size_t>& cBackward)> f_recount) const;
+                       std::size_t const lossNodes,
+                       std::size_t const lossCases,
+                       std::vector<std::size_t>& cForward,
+                       std::vector<std::size_t>& cBackward)> f_recount) const;
 };

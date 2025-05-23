@@ -247,7 +247,7 @@ ScenePart::computeCentroid(bool const computeBound)
 
   // Build the bound
   if (computeBound) {
-    bound = make_shared<AABB>(xmin, ymin, zmin, xmax, ymax, zmax);
+    bound = std::make_shared<AABB>(xmin, ymin, zmin, xmax, ymax, zmax);
   }
 }
 

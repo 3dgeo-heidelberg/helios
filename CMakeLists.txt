@@ -38,7 +38,7 @@ cmake_policy(SET CMP0076 NEW)
 include(GNUInstallDirs)
 
 # Define the minimum C++ standard that is required
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # For Python bindings, we need to enable position-independent code
@@ -181,6 +181,10 @@ if(BUILD_PYTHON)
       _pyhelios
     DESTINATION .
   )
+endif()
+
+if(HELIOS_HEADERCHECK)
+  add_subdirectory(tests/headercheck)
 endif()
 
 include(FeatureSummary)

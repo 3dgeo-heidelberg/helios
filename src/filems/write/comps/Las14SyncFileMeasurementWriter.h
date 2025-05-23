@@ -7,8 +7,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Miguel Yermo García
  * @version 1.0
@@ -56,7 +54,7 @@ public:
    * @param compress Flag to activate/deactivate compression (las/laz format)
    * @see LasSyncFileWriter::createLasWriter
    */
-  void createLasWriter(string const& path, bool const compress) override
+  void createLasWriter(std::string const& path, bool const compress) override
   {
     // Craft header and point format for LAS_14 version
     lws.craft14();

@@ -5,8 +5,8 @@
 #include <surfaceinspector/maths/Scalar.hpp>
 
 #include <algorithm>
-
-using SurfaceInspector::maths::Scalar;
+#include <memory>
+#include <vector>
 
 namespace helios {
 namespace hpc {
@@ -172,7 +172,7 @@ public:
     int const initDepth = (int)std::ceil(std::log2(tIdx + 1)); // d_*
     RandomAccessIterator workA = begin;
     std::vector<RandomAccessIterator> workB(1, end);
-    vector<std::shared_ptr<
+    std::vector<std::shared_ptr<
       SM_ParallelMergeSortSubTask<RandomAccessIterator, Comparator>>>
       childrenTasks(0);
 
@@ -181,7 +181,8 @@ public:
       // Distribute workload to another thread if available
       size_t const k = 1 + depth - initDepth;
       size_t const rightIdx =
-        (Scalar<size_t>::pow2(k)) * tIdx + Scalar<size_t>::pow2(k - 1);
+        (SurfaceInspector::maths::Scalar<size_t>::pow2(k)) * tIdx +
+        SurfaceInspector::maths::Scalar<size_t>::pow2(k - 1);
       if (rightIdx < numThreads) {
         RandomAccessIterator workSplit =
           workA + std::distance(workA, workB[depth]) / 2;

@@ -8,11 +8,6 @@
 #include <mutex>
 #include <vector>
 
-using helios::filems::FMSWriteFacade;
-
-using std::size_t;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -35,7 +30,8 @@ public:
    * @see WriteYielder::write
    * @see Yielder::bufferSize
    */
-  PulseRecordYielder(FMSWriteFacade& write, size_t bufferSize = 256)
+  PulseRecordYielder(helios::filems::FMSWriteFacade& write,
+                     std::size_t bufferSize = 256)
     : WriteYielder<PulseRecord>(write, bufferSize)
   {
   }
@@ -49,7 +45,7 @@ public:
    * @param copy The temporal copy of pulse records buffer to be digested
    * @see WriteYielder
    */
-  void digest(vector<PulseRecord>& copy) override
+  void digest(std::vector<PulseRecord>& copy) override
   {
     write.writePulsesUnsafe(copy);
   }

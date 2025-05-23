@@ -66,6 +66,6 @@ public:
    * @see FastSAHKDTreeFactory::findSplitPositionBySAH
    */
   double GEOM_findSplitPositionBySAH(KDTreeNode* node,
-                                     vector<Primitive*>& primitives,
+                                     std::vector<Primitive*>& primitives,
                                      int assignedThreads) const override;
 };

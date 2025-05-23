@@ -13,9 +13,6 @@
 
 #include <memory>
 
-using std::make_shared;
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -36,7 +33,7 @@ private:
   /**
    * @brief Number of threads available in the system
    */
-  static size_t const sysThreads;
+  static std::size_t const sysThreads;
 
 public:
   // ***  STATIC MAKE METHODS  *** //
@@ -46,9 +43,9 @@ public:
    * @return Built simple KDTree factory
    * @see SimpleKDTreeFactory
    */
-  static inline shared_ptr<SimpleKDTreeFactory> makeSimple()
+  static inline std::shared_ptr<SimpleKDTreeFactory> makeSimple()
   {
-    return make_shared<SimpleKDTreeFactory>();
+    return std::make_shared<SimpleKDTreeFactory>();
   }
   /**
    * @brief Build a multi-thread simple KDTree factory
@@ -60,14 +57,14 @@ public:
    * @see SimpleKDTreeGeometricStrategy
    * @see MultiThreadKDTreeFactory
    */
-  static inline shared_ptr<MultiThreadKDTreeFactory> makeSimpleMultiThread(
-    size_t const kdtNodeJobs,
-    size_t const kdtGeomJobs)
+  static inline std::shared_ptr<MultiThreadKDTreeFactory> makeSimpleMultiThread(
+    std::size_t const kdtNodeJobs,
+    std::size_t const kdtGeomJobs)
   {
-    shared_ptr<SimpleKDTreeFactory> kdtf = makeSimple();
-    shared_ptr<SimpleKDTreeGeometricStrategy> gs =
-      make_shared<SimpleKDTreeGeometricStrategy>(*kdtf);
-    return make_shared<MultiThreadKDTreeFactory>(
+    std::shared_ptr<SimpleKDTreeFactory> kdtf = makeSimple();
+    std::shared_ptr<SimpleKDTreeGeometricStrategy> gs =
+      std::make_shared<SimpleKDTreeGeometricStrategy>(*kdtf);
+    return std::make_shared<MultiThreadKDTreeFactory>(
       kdtf, gs, kdtNodeJobs, kdtGeomJobs);
   }
   /**
@@ -76,8 +73,8 @@ public:
    *  number of threads for node-level parallelization
    * @see makeSimpleMultiThread(size_t const, size_t const)
    */
-  static inline shared_ptr<MultiThreadKDTreeFactory> makeSimpleMultiThread(
-    size_t const kdtNodeJobs)
+  static inline std::shared_ptr<MultiThreadKDTreeFactory> makeSimpleMultiThread(
+    std::size_t const kdtNodeJobs)
   {
     return makeSimpleMultiThread(kdtNodeJobs, kdtNodeJobs);
   }
@@ -88,7 +85,8 @@ public:
    * @see makeSimpleMultiThread(size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadKDTreeFactory> makeSimpleMultiThread()
+  static inline std::shared_ptr<MultiThreadKDTreeFactory>
+  makeSimpleMultiThread()
   {
     return makeSimpleMultiThread(sysThreads, sysThreads);
   }
@@ -100,10 +98,12 @@ public:
    * @return Built SAH KDTree factory
    * @see SAHKDTreeFactory
    */
-  static inline shared_ptr<SAHKDTreeFactory> makeSAH(size_t const lossNodes)
+  static inline std::shared_ptr<SAHKDTreeFactory> makeSAH(
+    std::size_t const lossNodes)
   {
-    return make_shared<SAHKDTreeFactory>(lossNodes);
+    return std::make_shared<SAHKDTreeFactory>(lossNodes);
   }
+
   /**
    * @brief Build a multi-thread SAH KDTree factory
    * @param kdtNodeJobs Number of threads for node-level parallelization
@@ -114,15 +114,15 @@ public:
    * @see SAHKDTreeGeometricStrategy
    * @see MultiThreadSAHKDTreeFactory
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread(
-    size_t const lossNodes,
-    size_t const kdtNodeJobs,
-    size_t const kdtGeomJobs)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread(
+    std::size_t const lossNodes,
+    std::size_t const kdtNodeJobs,
+    std::size_t const kdtGeomJobs)
   {
-    shared_ptr<SAHKDTreeFactory> kdtf = makeSAH(lossNodes);
-    shared_ptr<SAHKDTreeGeometricStrategy> gs =
-      make_shared<SAHKDTreeGeometricStrategy>(*kdtf);
-    return make_shared<MultiThreadSAHKDTreeFactory>(
+    std::shared_ptr<SAHKDTreeFactory> kdtf = makeSAH(lossNodes);
+    std::shared_ptr<SAHKDTreeGeometricStrategy> gs =
+      std::make_shared<SAHKDTreeGeometricStrategy>(*kdtf);
+    return std::make_shared<MultiThreadSAHKDTreeFactory>(
       kdtf, gs, kdtNodeJobs, kdtGeomJobs);
   }
   /**
@@ -131,9 +131,9 @@ public:
    *  number of threads for node-level parallelization
    * @see makeSAHMultiThread(size_t const, size_t const, size_t const)
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread(
-    size_t const lossNodes,
-    size_t const kdtNodeJobs)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread(
+    std::size_t const lossNodes,
+    std::size_t const kdtNodeJobs)
   {
     return makeSAHMultiThread(lossNodes, kdtNodeJobs, kdtNodeJobs);
   }
@@ -144,8 +144,8 @@ public:
    * @see makeSAHMultiThread(size_t const, size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread(
-    size_t const lossNodes)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread(
+    std::size_t const lossNodes)
   {
     return makeSAHMultiThread(lossNodes, sysThreads, sysThreads);
   }
@@ -155,7 +155,8 @@ public:
    * @see makeSAHMultiThread(size_t const, size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeSAHMultiThread()
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeSAHMultiThread()
   {
     return makeSAHMultiThread(21, sysThreads, sysThreads);
   }
@@ -167,10 +168,10 @@ public:
    * @return Built Axis SAH KDTree Factory
    * @see AxisSAHKDTreeFactory
    */
-  static inline shared_ptr<AxisSAHKDTreeFactory> makeAxisSAH(
-    size_t const lossNodes)
+  static inline std::shared_ptr<AxisSAHKDTreeFactory> makeAxisSAH(
+    std::size_t const lossNodes)
   {
-    return make_shared<AxisSAHKDTreeFactory>(lossNodes);
+    return std::make_shared<AxisSAHKDTreeFactory>(lossNodes);
   }
   /**
    * @brief Build a multi-thread axis SAH KDTree factory
@@ -182,15 +183,15 @@ public:
    * @see AxisSAHKDTreeGeometricStrategy
    * @see MultiThreadSAHKDTreeFactory
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeAxisSAHMultiThread(
-    size_t const lossNodes,
-    size_t const kdtNodeJobs,
-    size_t const kdtGeomJobs)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeAxisSAHMultiThread(std::size_t const lossNodes,
+                         std::size_t const kdtNodeJobs,
+                         std::size_t const kdtGeomJobs)
   {
-    shared_ptr<AxisSAHKDTreeFactory> kdtf = makeAxisSAH(lossNodes);
-    shared_ptr<AxisSAHKDTreeGeometricStrategy> gs =
-      make_shared<AxisSAHKDTreeGeometricStrategy>(*kdtf);
-    return make_shared<MultiThreadSAHKDTreeFactory>(
+    std::shared_ptr<AxisSAHKDTreeFactory> kdtf = makeAxisSAH(lossNodes);
+    std::shared_ptr<AxisSAHKDTreeGeometricStrategy> gs =
+      std::make_shared<AxisSAHKDTreeGeometricStrategy>(*kdtf);
+    return std::make_shared<MultiThreadSAHKDTreeFactory>(
       kdtf, gs, kdtNodeJobs, kdtGeomJobs);
   }
   /**
@@ -199,9 +200,9 @@ public:
    *  number of threads for node-level parallelization
    * @see makeAxisSAHMultiThread(size_t const, size_t const, size_t const)
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeAxisSAHMultiThread(
-    size_t const lossNodes,
-    size_t const kdtNodeJobs)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeAxisSAHMultiThread(std::size_t const lossNodes,
+                         std::size_t const kdtNodeJobs)
   {
     return makeAxisSAHMultiThread(lossNodes, kdtNodeJobs, kdtNodeJobs);
   }
@@ -212,8 +213,8 @@ public:
    * @see makeAxisSAHMultiThread(size_t const, size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeAxisSAHMultiThread(
-    size_t const lossNodes)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeAxisSAHMultiThread(std::size_t const lossNodes)
   {
     return makeAxisSAHMultiThread(lossNodes, sysThreads, sysThreads);
   }
@@ -223,7 +224,8 @@ public:
    * @see makeAxisSAHMultiThread(size_t const, size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeAxisSAHMultiThread()
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeAxisSAHMultiThread()
   {
     return makeAxisSAHMultiThread(21, sysThreads, sysThreads);
   }
@@ -235,10 +237,10 @@ public:
    * @return Built fast SAH KDTree factory
    * @see FastSAHKDTreeFactory
    */
-  static inline shared_ptr<FastSAHKDTreeFactory> makeFastSAH(
-    size_t const lossNodes)
+  static inline std::shared_ptr<FastSAHKDTreeFactory> makeFastSAH(
+    std::size_t const lossNodes)
   {
-    return make_shared<FastSAHKDTreeFactory>(lossNodes);
+    return std::make_shared<FastSAHKDTreeFactory>(lossNodes);
   }
   /**
    * @brief Build a multi-thread fast SAH KDTree factory
@@ -250,15 +252,15 @@ public:
    * @see FastSAHKDTreeGeometricStrategy
    * @see MultiThreadSAHKDTreeFactory
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeFastSAHMultiThread(
-    size_t const lossNodes,
-    size_t const kdtNodeJobs,
-    size_t const kdtGeomJobs)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeFastSAHMultiThread(std::size_t const lossNodes,
+                         std::size_t const kdtNodeJobs,
+                         std::size_t const kdtGeomJobs)
   {
-    shared_ptr<FastSAHKDTreeFactory> kdtf = makeFastSAH(lossNodes);
-    shared_ptr<FastSAHKDTreeGeometricStrategy> gs =
-      make_shared<FastSAHKDTreeGeometricStrategy>(*kdtf);
-    return make_shared<MultiThreadSAHKDTreeFactory>(
+    std::shared_ptr<FastSAHKDTreeFactory> kdtf = makeFastSAH(lossNodes);
+    std::shared_ptr<FastSAHKDTreeGeometricStrategy> gs =
+      std::make_shared<FastSAHKDTreeGeometricStrategy>(*kdtf);
+    return std::make_shared<MultiThreadSAHKDTreeFactory>(
       kdtf, gs, kdtNodeJobs, kdtGeomJobs);
   }
   /**
@@ -267,9 +269,9 @@ public:
    *  number of threads for node-level parallelization
    * @see makeFastSAHMultiThread(size_t const, size_t const, size_t const)
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeFastSAHMultiThread(
-    size_t const lossNodes,
-    size_t const kdtNodeJobs)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeFastSAHMultiThread(std::size_t const lossNodes,
+                         std::size_t const kdtNodeJobs)
   {
     return makeFastSAHMultiThread(lossNodes, kdtNodeJobs, kdtNodeJobs);
   }
@@ -280,8 +282,8 @@ public:
    * @see makeFastSAHMultiThread(size_t const, size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeFastSAHMultiThread(
-    size_t const lossNodes)
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeFastSAHMultiThread(std::size_t const lossNodes)
   {
     return makeFastSAHMultiThread(lossNodes, sysThreads, sysThreads);
   }
@@ -291,7 +293,8 @@ public:
    * @see makeFastSAHMultiThread(size_t const, size_t const, size_t const)
    * @see KDTreeFactoryMaker::sysThreads
    */
-  static inline shared_ptr<MultiThreadSAHKDTreeFactory> makeFastSAHMultiThread()
+  static inline std::shared_ptr<MultiThreadSAHKDTreeFactory>
+  makeFastSAHMultiThread()
   {
     return makeFastSAHMultiThread(32, sysThreads, sysThreads);
   }

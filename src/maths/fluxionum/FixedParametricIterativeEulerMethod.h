@@ -52,7 +52,7 @@ protected:
    *  i : t_{i} \in [a_{i}, a_{i+1})
    * \f]
    */
-  size_t i;
+  std::size_t i;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -71,7 +71,7 @@ public:
                                       arma::Col<B> const& y0,
                                       arma::Col<A> const& ta,
                                       arma::Mat<B> const& ya,
-                                      size_t const i = 0)
+                                      std::size_t const i = 0)
     : ParametricIterativeEulerMethod<A, B>(dydt, t0, y0)
     , ta(ta)
     , ya(ya)
@@ -124,12 +124,12 @@ public:
    * @brief Obtain the index identifying the current piece
    * @see fluxionum::FixedParametricIterativeEulerMethod::i
    */
-  inline size_t getCurrentPieceIndex() const { return i; }
+  inline std::size_t getCurrentPieceIndex() const { return i; }
   /**
    * @brief Set the index identifying the current piece
    * @see fluxionum::FixedParametricIterativeEulerMethod::i
    */
-  inline void setCurrentPieceIndex(size_t const i) { this->i = i; }
+  inline void setCurrentPieceIndex(std::size_t const i) { this->i = i; }
 };
 
 }

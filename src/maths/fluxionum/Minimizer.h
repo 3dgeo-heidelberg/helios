@@ -6,8 +6,6 @@
 
 namespace fluxionum {
 
-using std::function;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -52,7 +50,7 @@ protected:
   /**
    * @brief The function to be minimized
    */
-  function<OT(IT)> f;
+  std::function<OT(IT)> f;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -62,7 +60,7 @@ public:
    * @param f Function to be minimized
    * @see fluxionum::Minimizer::f<OT(IT)>
    */
-  Minimizer(function<OT(IT)> f)
+  Minimizer(std::function<OT(IT)> f)
     : f(f)
   {
   }
@@ -85,13 +83,13 @@ public:
    * @return Function to be minimized
    * @see fluxionum::Minimizer::f<OT(IT)>
    */
-  virtual function<OT(IT)> getF() const { return f; }
+  virtual std::function<OT(IT)> getF() const { return f; }
   /**
    * @brief Set the function to be minimized
    * @param f New function to be minimized
    * @see fluxionum::Minimizer::f<OT(IT)>
    */
-  virtual void setF(function<OT(IT)> f) { this->f = f; }
+  virtual void setF(std::function<OT(IT)> f) { this->f = f; }
 };
 
 }

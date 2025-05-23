@@ -2,9 +2,7 @@
 #include <rigidmotion/RigidMotionException.h>
 #include <sstream>
 
-using rigidmotion::RigidMotion;
-using rigidmotion::RigidMotionException;
-using std::stringstream;
+using namespace rigidmotion;
 
 // ***  CONSTANTS  *** //
 // ******************* //
@@ -31,7 +29,7 @@ RigidMotion::SuperType
 RigidMotion::findSuperType() const
 {
   size_t const n = getDimensionality();
-  size_t const r = rank(eye(n, n) - A, eps);
+  size_t const r = arma::rank(arma::eye(n, n) - A, eps);
   bool rankMismatchesDimensionality = false;
   if (n == 2) {
     if (r == 0)
@@ -54,14 +52,14 @@ RigidMotion::findSuperType() const
     else
       rankMismatchesDimensionality = true;
   } else {
-    stringstream ss;
+    std::stringstream ss;
     ss << "Rigid motion super type could not be determined because "
        << "unexpected dimensionality: " << n;
     throw RigidMotionException(ss.str());
   }
 
   if (rankMismatchesDimensionality) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "Rigid motion super type could not be determined because "
        << "unexpected rank " << r << " for dimensionality " << n;
     throw RigidMotionException(ss.str());
@@ -77,10 +75,10 @@ RigidMotion::findSuperType() const
 bool
 RigidMotion::hasFixedPoints() const
 {
-  size_t n = getDimensionality();
-  mat coef = (eye(n, n) - A);   // coef = I-A
-  mat sys = join_rows(coef, C); // sys = (I-A | C)
-  return rank(coef, eps) == rank(sys, eps);
+  std::size_t n = getDimensionality();
+  arma::mat coef = (arma::eye(n, n) - A);   // coef = I-A
+  arma::mat sys = arma::join_rows(coef, C); // sys = (I-A | C)
+  return arma::rank(coef, eps) == arma::rank(sys, eps);
 }
 
 RigidMotion::Type
@@ -126,9 +124,9 @@ RigidMotion::findType() const
   }
 }
 
-size_t
+std::size_t
 RigidMotion::findInvariantDimensionality() const
 {
-  size_t n = getDimensionality();
-  return n - rank(eye(n, n) - A, eps);
+  std::size_t n = getDimensionality();
+  return n - arma::rank(arma::eye(n, n) - A, eps);
 }

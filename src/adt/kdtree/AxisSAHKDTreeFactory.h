@@ -71,6 +71,6 @@ public:
    */
   void defineSplit(KDTreeNode* node,
                    KDTreeNode* parent,
-                   vector<Primitive*>& primitives,
+                   std::vector<Primitive*>& primitives,
                    int const depth) const override;
 };

@@ -4,10 +4,10 @@
 #include <ITreeIterator.h>
 #include <IterableTreeNode.h>
 
+#include <boost/serialization/base_object.hpp>
+
 #include <deque>
 #include <iterator>
-
-using std::deque;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -54,7 +54,7 @@ protected:
   /**
    * @brief Double ended queue used as a queue to handle nodes visiting
    */
-  deque<IterableTreeNode<IBinaryTreeNode>> pendingNodes;
+  std::deque<IterableTreeNode<IBinaryTreeNode>> pendingNodes;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

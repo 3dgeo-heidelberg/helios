@@ -4,7 +4,6 @@
 
 #include <mutex>
 
-
 /**
  * @brief Class providing the base for any logger
  */

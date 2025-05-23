@@ -2,6 +2,7 @@
 
 #include <BaseTest.h>
 #include <DetailedVoxel.h>
+#include <UniformNoiseSource.h>
 #include <maths/RayUtils.h>
 
 namespace HeliosTests {

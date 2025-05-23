@@ -9,10 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::ios_base;
-using std::string;
-using std::unique_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -38,7 +34,7 @@ protected:
   /**
    * @brief Binary output archive for each steam
    */
-  std::vector<unique_ptr<boost::archive::binary_oarchive>> oa;
+  std::vector<std::unique_ptr<boost::archive::binary_oarchive>> oa;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -53,12 +49,13 @@ public:
     std::vector<std::string> const& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
     : SimpleMultiSyncFileWriter<WriteArgs...>(path,
-                                              ios_base::out | ios_base::binary)
+                                              std::ios_base::out |
+                                                std::ios_base::binary)
     , compressedOut(path.size())
   {
     // Build and prepare each stream
-    size_t const nStreams = path.size();
-    for (size_t i = 0; i < nStreams; ++i) {
+    std::size_t const nStreams = path.size();
+    for (std::size_t i = 0; i < nStreams; ++i) {
       zp.emplace_back(boost::iostreams::zlib_params(compressionMode));
       compressedOut[i].push(boost::iostreams::zlib_compressor(zp[i]));
       compressedOut[i].push(ofs[i]);

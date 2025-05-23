@@ -1,11 +1,8 @@
-#ifndef _ITERATIVEMETHODHANDLER_H_
-#define _ITERATIVEMETHODHANDLER_H_
+#pragma once
 
-#include <functional>
+#include <boost/serialization/access.hpp>
 
 namespace fluxionum {
-
-using std::function;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -88,11 +85,11 @@ protected:
    *  means no maximum number of iterations while \f$>0\f$ sets a concrete
    *  maximum number of iterations for the iterative method
    */
-  size_t maxIters;
+  std::size_t maxIters;
   /**
    * @brief The current iteration of the iterative method
    */
-  size_t currentIter;
+  std::size_t currentIter;
   /**
    * @brief True to enable the usage of convergence criterion
    */
@@ -115,12 +112,12 @@ protected:
    *  maximum number of iterations without improvement for the patience based
    *  early stopping mechanism
    */
-  size_t patience;
+  std::size_t patience;
   /**
    * @brief Count of how many consecutive iterations without improvement have
    *  elapsed
    */
-  size_t patienceCount;
+  std::size_t patienceCount;
   /**
    * @brief The tolerance criterion \f$\epsilon\f$ to determine whether there
    *  have been an improvement or not
@@ -156,10 +153,10 @@ public:
    * @see fluxionum::IterativeMethodHandler::patienceEps
    * @see fluxionum::IterativeMethodHandler::patiencePreserveBest
    */
-  IterativeMethodHandler(size_t maxIters,
+  IterativeMethodHandler(std::size_t maxIters,
                          bool enableConvergenceCriterion = false,
                          ET convergenceEps = 0.000000001,
-                         size_t patience = 0,
+                         std::size_t patience = 0,
                          ET patienceEps = 0.000000001,
                          bool patiencePreserveBest = true)
     : maxIters(maxIters)
@@ -193,13 +190,13 @@ public:
    * @return Maximum number of iterations
    * @see fluxionum::IterativeMethodHandler::maxIters
    */
-  virtual inline size_t getMaxIters() const { return maxIters; }
+  virtual inline std::size_t getMaxIters() const { return maxIters; }
   /**
    * @brief Set the maximum number of iterations
    * @param maxIters New maximum number of iterations
    * @see fluxionum::IterativeMethodHandler::maxIters
    */
-  virtual inline void setMaxIters(size_t const maxIters)
+  virtual inline void setMaxIters(std::size_t const maxIters)
   {
     this->maxIters = maxIters;
   }
@@ -208,26 +205,29 @@ public:
    * @return Number of current iteration
    * @see fluxionum::IterativeMethodHandler::currentIter
    */
-  virtual inline size_t getCurrentIter() const { return currentIter; }
+  virtual inline std::size_t getCurrentIter() const { return currentIter; }
   /**
    * @brief Set the number of current iteration
    * @param iter New number of current iteration
    * @see fluxionum::IterativeMethodHandler::currentIter
    */
-  virtual inline void setCurrentIter(size_t const iter) { currentIter = iter; }
+  virtual inline void setCurrentIter(std::size_t const iter)
+  {
+    currentIter = iter;
+  }
 
   /**
    * @brief Obtain the patience of the iterative method
    * @return Patience of the iterative method
    * @see fluxionum::IterativeMethodHandler::patience
    */
-  virtual inline size_t getPatience() const { return patience; }
+  virtual inline std::size_t getPatience() const { return patience; }
   /**
    * @brief Set the patience of the iterative method
    * @param patience New patience of the iterative method
    * @see fluxionum::IterativeMethodHandler::patience
    */
-  virtual inline void setPatience(size_t const patience)
+  virtual inline void setPatience(std::size_t const patience)
   {
     this->patience = patience;
   }
@@ -236,13 +236,13 @@ public:
    * @return Number of consecutive iterations without improvement
    * @see fluxionum::IterativeMethodHandler::patienceCount
    */
-  virtual inline size_t getPatienceCount() const { return patienceCount; }
+  virtual inline std::size_t getPatienceCount() const { return patienceCount; }
   /**
    * @brief Set the number of consecutive iterations without improvement
    * @param count New number of consecutive iterations without improvement
    * @see fluxionum::IterativeMethodHandler::patienceCount
    */
-  virtual inline void setPatienceCount(size_t const count)
+  virtual inline void setPatienceCount(std::size_t const count)
   {
     patienceCount = count;
   }
@@ -317,6 +317,5 @@ public:
 };
 
 }
-#endif
 
 #include <IterativeMethodHandler.tpp>

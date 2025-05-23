@@ -11,9 +11,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -26,7 +23,7 @@ using std::vector;
  * @see filems::SimpleSyncFileFullWaveformWriter
  */
 class SimpleVectorialSyncFileFullWaveformWriter
-  : public SimpleSyncFileWriter<vector<FullWaveform> const&>
+  : public SimpleSyncFileWriter<std::vector<FullWaveform> const&>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -53,7 +50,7 @@ public:
     , dfwws(this->ofs)
   {
     this->writeStrategy =
-      make_shared<VectorialWriteStrategy<FullWaveform>>(dfwws);
+      std::make_shared<VectorialWriteStrategy<FullWaveform>>(dfwws);
   }
   virtual ~SimpleVectorialSyncFileFullWaveformWriter() = default;
 };

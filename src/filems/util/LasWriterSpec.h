@@ -3,8 +3,8 @@
 #include <helios_version.h>
 
 #include <glm/glm.hpp>
-#include <logging.hpp>
 #include <laswriter.hpp>
+#include <logging.hpp>
 
 #include <memory>
 #include <sstream>
@@ -12,8 +12,6 @@
 
 namespace helios {
 namespace filems {
-
-using std::string;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -142,7 +140,7 @@ public:
    * @see LasWriterSpec::minIntensity
    * @see LasWriterSpec::deltaIntensity
    */
-  explicit LasWriterSpec(const string& path,
+  explicit LasWriterSpec(const std::string& path,
                          double const scaleFactor = 0.0001,
                          glm::dvec3 const offset = glm::dvec3(0, 0, 0),
                          double const minIntensity = 0.0,
@@ -296,7 +294,8 @@ public:
    * @brief Build a LAS writer from this specification
    * @return Built LAS writer from current state of specification
    */
-  std::shared_ptr<LASwriter> makeWriter(std::string const& path, bool const compress)
+  std::shared_ptr<LASwriter> makeWriter(std::string const& path,
+                                        bool const compress)
   {
     // Create LAS writer from specification
     lwOpener.set_file_name(path.c_str());

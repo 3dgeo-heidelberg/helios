@@ -1,17 +1,11 @@
-#ifndef _SURFACEINSPECTOR_MATHS_STATISTICS_HPP_
-#define _SURFACEINSPECTOR_MATHS_STATISTICS_HPP_
-
-#include <vector>
-
-#include <armadillo>
+#pragma once
 
 #include <surfaceinspector/util/Object.hpp>
 #include <surfaceinspector/util/draggers/IDragger.hpp>
 
-using std::vector;
+#include <armadillo>
 
-using SurfaceInspector::util::Object;
-using SurfaceInspector::util::draggers::IDragger;
+#include <vector>
 
 namespace SurfaceInspector {
 namespace maths {
@@ -22,7 +16,7 @@ namespace maths {
  *
  * @brief Class providing common statistics operations
  */
-class Statistics : public Object
+class Statistics : public SurfaceInspector::util::Object
 {
 public:
   // ***  STATIC METHODS  *** //
@@ -34,7 +28,7 @@ public:
    * @return Mean of given values
    */
   template<typename T>
-  static T mean(vector<T> const& vals);
+  static T mean(std::vector<T> const& vals);
   /**
    * @brief Compute the variance of given values, which requires to
    *  previously compute the mean
@@ -43,7 +37,7 @@ public:
    * @return Variance of given values
    */
   template<typename T>
-  static T variance(vector<T> const& vals);
+  static T variance(std::vector<T> const& vals);
   /**
    * @brief Compute the variance of given values, considering provided mean
    * @tparam T Type of numerical variable
@@ -52,7 +46,7 @@ public:
    * @return Variance of given values
    */
   template<typename T>
-  static T variance(vector<T> const& vals, T const mean);
+  static T variance(std::vector<T> const& vals, T const mean);
   /**
    * @brief Compute the standard deviation of given values, which requires to
    *  previously compute the variance
@@ -61,7 +55,7 @@ public:
    * @return Standard deviation of given values
    */
   template<typename T>
-  static T stdev(vector<T> const& vals);
+  static T stdev(std::vector<T> const& vals);
   /**
    * @brief Compute the standard deviation of given values, considering
    *  provided mean
@@ -71,7 +65,7 @@ public:
    * @return Standard deviation of given values
    */
   template<typename T>
-  static T stdev(vector<T> const& vals, T const mean);
+  static T stdev(std::vector<T> const& vals, T const mean);
   /**
    * @brief Compute the standard deviation for given variance
    * @tparam T Type of numerical variable
@@ -99,8 +93,8 @@ public:
    * @return Covariance between X and Y
    */
   template<typename T>
-  static T covariance(vector<T> const& X,
-                      vector<T> const& Y,
+  static T covariance(std::vector<T> const& X,
+                      std::vector<T> const& Y,
                       bool besselCorrection = false);
 
   /**
@@ -122,8 +116,8 @@ public:
    * @return Covariance between X and Y
    */
   template<typename T>
-  static T covariance(vector<T> const& X,
-                      vector<T> const& Y,
+  static T covariance(std::vector<T> const& X,
+                      std::vector<T> const& Y,
                       T xMean,
                       T yMean,
                       bool besselCorrection = false);
@@ -149,7 +143,7 @@ public:
    * @return Covariance matrix
    */
   template<typename T>
-  static arma::Mat<T> covarianceMatrix(vector<vector<T>> dataset,
+  static arma::Mat<T> covarianceMatrix(std::vector<std::vector<T>> dataset,
                                        bool besselCorrection = false);
   /**
    * @brief Compute matrix of covariances
@@ -175,8 +169,8 @@ public:
    * @return Covariance matrix
    */
   template<typename T>
-  static arma::Mat<T> covarianceMatrix(vector<vector<T>> dataset,
-                                       vector<T> means,
+  static arma::Mat<T> covarianceMatrix(std::vector<std::vector<T>> dataset,
+                                       std::vector<T> means,
                                        bool besselCorrection = false);
 
   /**
@@ -189,7 +183,8 @@ public:
    * @return Vector containing obtained quantiles
    */
   template<typename T>
-  static vector<T> quantiles(arma::Col<T> data, size_t nQuantiles = 3);
+  static std::vector<T> quantiles(arma::Col<T> data,
+                                  std::size_t nQuantiles = 3);
 
   /**
    * @brief Like quantiles(armas::vec, size_t) function but receiving data as
@@ -197,7 +192,8 @@ public:
    * @see Statistics::quantiles(arma::vec, size_t)
    */
   template<typename T>
-  static vector<T> quantiles(vector<T> const& data, size_t nQuantiles = 3);
+  static std::vector<T> quantiles(std::vector<T> const& data,
+                                  std::size_t nQuantiles = 3);
 
   /**
    * @brief Remove those values which are considered outliers
@@ -220,9 +216,9 @@ public:
    * @return Amount of filtered values
    */
   template<typename T>
-  static size_t quantileFiltering(vector<T>& values,
-                                  size_t nQuantiles = 3,
-                                  double filterFactor = 1.5);
+  static std::size_t quantileFiltering(std::vector<T>& values,
+                                       std::size_t nQuantiles = 3,
+                                       double filterFactor = 1.5);
 
   /**
    * @brief Obtain the trustable minimum between all elements in given
@@ -274,21 +270,21 @@ public:
    * @see SurfaceInspector::maths::Statistics::findTrustableMax
    */
   template<typename T>
-  static bool findTrustableMin(vector<T> const& S,
-                               size_t const m,
+  static bool findTrustableMin(std::vector<T> const& S,
+                               std::size_t const m,
                                T const tau,
                                T& g,
-                               size_t* discardsCount = nullptr);
+                               std::size_t* discardsCount = nullptr);
   /**
    * @brief Like findTrustableMin but with maximum value instead of minimum
    * @see SurfaceInspector::maths::Statistics::findTrustableMin
    */
   template<typename T>
-  static bool findTrustableMax(vector<T> const& S,
-                               size_t const m,
+  static bool findTrustableMax(std::vector<T> const& S,
+                               std::size_t const m,
                                T const tau,
                                T& g,
-                               size_t* discardsCount = nullptr);
+                               std::size_t* discardsCount = nullptr);
 
   // ***  INNER METHODS  *** //
   // *********************** //
@@ -299,17 +295,17 @@ protected:
    * @see SurfaceInspector::maths::Statistics::findTrustableMax
    */
   template<typename T>
-  static bool _findTrustable(vector<T> const& S,
-                             size_t const m,
-                             T const tau,
-                             IDragger<double, vector<double>>& drg,
-                             T& g,
-                             size_t* discardsCount = nullptr);
+  static bool _findTrustable(
+    std::vector<T> const& S,
+    std::size_t const m,
+    T const tau,
+    SurfaceInspector::util::draggers::IDragger<double, std::vector<double>>&
+      drg,
+    T& g,
+    std::size_t* discardsCount = nullptr);
 };
 
 }
 }
 
 #include <surfaceinspector/maths/Statistics.tpp>
-
-#endif

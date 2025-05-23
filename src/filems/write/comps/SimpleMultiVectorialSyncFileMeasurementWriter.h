@@ -1,8 +1,9 @@
 #pragma once
 
-#include <filems/write/strategies/DirectMeasurementWriteStrategy.h>
-#include <filems/write/strategies/ZipMeasurementWriteStrategy.h>
 #include <filems/write/comps/SimpleMultiSyncFileWriter.h>
+#include <filems/write/strategies/DirectMeasurementWriteStrategy.h>
+#include <filems/write/strategies/VectorialWriteStrategy.h>
+#include <filems/write/strategies/ZipMeasurementWriteStrategy.h>
 
 #include <memory>
 #include <string>
@@ -19,7 +20,7 @@ namespace filems {
  *  multiple output streams
  */
 class SimpleMultiVectorialSyncFileMeasurementWriter
-  : public SimpleMultiSyncFileWriter<vector<Measurement> const&,
+  : public SimpleMultiSyncFileWriter<std::vector<Measurement> const&,
                                      glm::dvec3 const&>
 {
 protected:
@@ -30,7 +31,7 @@ protected:
    *  write strategies in a vectorial fashion
    *  ( filems::SimpleMultiSyncFileWriter::writeStrategy )
    */
-  vector<DirectMeasurementWriteStrategy> dmws;
+  std::vector<DirectMeasurementWriteStrategy> dmws;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -41,11 +42,10 @@ public:
    * @see filems::SimpleMultiSyncFileWriter::SimpleMultiSyncFileWriter
    */
   explicit SimpleMultiVectorialSyncFileMeasurementWriter(
-    vector<string> const& path,
+    std::vector<std::string> const& path,
     std::ios_base::openmode om = std::ios_base::app)
-    : SimpleMultiSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>(
-        path,
-        om)
+    : SimpleMultiSyncFileWriter<std::vector<Measurement> const&,
+                                glm::dvec3 const&>(path, om)
   {
     // Build measurement write strategies
     buildMeasurementWriteStrategies();
@@ -85,8 +85,8 @@ public:
     size_t const nStreams = path.size();
     for (size_t i = 0; i < nStreams; ++i) {
       writeStrategy.push_back(
-        make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(
-          dmws[i]));
+        std::make_shared<
+          VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(dmws[i]));
     }
   }
 
@@ -95,8 +95,8 @@ public:
   /**
    * @see MultiSyncFileWriter::indexFromWriteArgs
    */
-  size_t indexFromWriteArgs(vector<Measurement> const& measurements,
-                            glm::dvec3 const& offset) override
+  std::size_t indexFromWriteArgs(std::vector<Measurement> const& measurements,
+                                 glm::dvec3 const& offset) override
   {
     return measurements[0].devIdx;
   }

@@ -9,8 +9,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
-using namespace std;
-
 SpectralLibrary::SpectralLibrary(float wavelength_m,
                                  std::vector<std::string> assetsDir,
                                  const std::string spectra)
@@ -18,7 +16,7 @@ SpectralLibrary::SpectralLibrary(float wavelength_m,
   , spectra(spectra)
 {
 
-  reflectanceMap = map<string, float>();
+  reflectanceMap = std::map<string, float>();
   wavelength_um = wavelength_m * 1000000;
 }
 
@@ -38,17 +36,17 @@ void
 SpectralLibrary::readFileAster(fs::path path)
 {
   try {
-    ifstream ins(path.string(), ifstream::binary);
+    std::ifstream ins(path.string(), std::ifstream::binary);
     if (!ins.is_open()) {
 
       logging::ERR("failed to open " + path.string());
-      throw exception();
+      throw std::exception();
     }
     float wavelength = 0;
     float reflectance = 0;
     float prevWavelength = 0;
     float prevReflectance = 0;
-    string line;
+    std::string line;
 
     // Skip the header
     for (int i = 0; i < 26; i++) {
@@ -56,7 +54,7 @@ SpectralLibrary::readFileAster(fs::path path)
     }
     while (getline(ins, line)) {
 
-      vector<string> values;
+      std::vector<std::string> values;
       boost::split(values, line, boost::is_any_of("\t"));
       wavelength = boost::lexical_cast<float>(values.at(0));
       boost::trim_right(values.at(1));
@@ -75,12 +73,12 @@ SpectralLibrary::readFileAster(fs::path path)
     }
     ins.close();
 
-    string file = path.filename().string();
+    std::string file = path.filename().string();
     if (file.find_first_of(".") > 0) {
       file = file.substr(0, file.find_last_of("."));
     }
-    reflectanceMap.insert(std::pair<string, float>(file, reflectance));
-  } catch (exception& e) {
+    reflectanceMap.insert(std::pair<std::string, float>(file, reflectance));
+  } catch (std::exception& e) {
     logging::WARN("Error: readFileAster " + path.string() + "\n" +
                   "EXCEPTION: " + e.what());
   }
@@ -107,7 +105,7 @@ SpectralLibrary::readReflectances()
     return;
   }
 
-  stringstream ss;
+  std::stringstream ss;
   ss << reflectanceMap.size() << " materials found";
   logging::WARN(ss.str());
 }
@@ -115,7 +113,7 @@ SpectralLibrary::readReflectances()
 void
 SpectralLibrary::setReflectances(Scene* scene)
 {
-  set<string> matsMissing;
+  std::set<std::string> matsMissing;
 
   for (Primitive* prim : scene->primitives) {
     if (!isnan(prim->material->reflectance)) {

@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <logging.hpp>
-using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -55,18 +54,18 @@ KDTreeNode::swap(KDTreeNode& kdtn)
 // ***  OBJECT METHODS  *** //
 // ************************ //
 void
-KDTreeNode::writeObject(string path)
+KDTreeNode::writeObject(std::string path)
 {
-  stringstream ss;
+  std::stringstream ss;
   ss << "Writing " << path << "...";
   logging::INFO(ss.str());
   SerialIO::getInstance()->write<KDTreeNode>(path, this);
 }
 
 KDTreeNode*
-KDTreeNode::readObject(string path)
+KDTreeNode::readObject(std::string path)
 {
-  stringstream ss;
+  std::stringstream ss;
   ss << "Reading " << path << "...";
   logging::INFO(ss.str());
   return SerialIO::getInstance()->read<KDTreeNode>(path);

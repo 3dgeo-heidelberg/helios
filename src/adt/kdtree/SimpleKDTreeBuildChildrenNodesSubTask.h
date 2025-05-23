@@ -28,7 +28,7 @@ protected:
   /**
    * @brief Primitives of the node itself
    */
-  vector<Primitive*>& primitives;
+  std::vector<Primitive*>& primitives;
   /**
    * @brief Depth of current node
    */
@@ -46,7 +46,7 @@ protected:
    */
   std::function<KDTreeNode*(KDTreeNode*,
                             bool const,
-                            vector<Primitive*>&,
+                            std::vector<Primitive*>&,
                             int const,
                             int const)>
     buildRecursive;
@@ -60,13 +60,13 @@ public:
   SimpleKDTreeBuildChildrenNodesSubTask(
     std::shared_ptr<SharedTaskSequencer> ch,
     KDTreeNode* node,
-    vector<Primitive*>& primitives,
+    std::vector<Primitive*>& primitives,
     int const depth,
     int const index,
     std::function<void(LightKDTreeNode*& child, KDTreeNode* node)> setChild,
     std::function<KDTreeNode*(KDTreeNode*,
                               bool const,
-                              vector<Primitive*>&,
+                              std::vector<Primitive*>&,
                               int const,
                               int const)> buildRecursive)
     : SharedSubTask(ch)

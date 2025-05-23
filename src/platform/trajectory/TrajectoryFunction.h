@@ -2,6 +2,8 @@
 
 #include <fluxionum/Function.h>
 
+#include <armadillo>
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

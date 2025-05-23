@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/serialization/access.hpp>
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

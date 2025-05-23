@@ -6,8 +6,6 @@
 #include <memory>
 #include <vector>
 
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -29,7 +27,7 @@ protected:
    *
    * Task vector is denoted in the documentation as \f$\vec{T}\f$
    */
-  std::vector<shared_ptr<TaskType>> tasks;
+  std::vector<std::shared_ptr<TaskType>> tasks;
   /**
    * @brief Specify the maximum number of tasks before forcing a drop.
    *
@@ -37,7 +35,7 @@ protected:
    * If it is \f$m>0\f$, then forcing a drop will happen as soon as
    *  \f$\vert\vec{T}\vert = m\f$ is satisfied
    */
-  size_t maxTasks;
+  std::size_t maxTasks;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -47,7 +45,7 @@ public:
    * @param maxTasks Value to initialize maximum tasks limit
    * @see TaskDropper::maxTasks
    */
-  TaskDropper(size_t const maxTasks = 32)
+  TaskDropper(std::size_t const maxTasks = 32)
     : maxTasks(maxTasks)
   {
   }
@@ -60,7 +58,7 @@ public:
    * @param task Task to be added
    * @return True if dropper has dropped its tasks, false otherwise
    */
-  virtual inline bool add(shared_ptr<TaskType> task)
+  virtual inline bool add(std::shared_ptr<TaskType> task)
   {
     tasks.push_back(task);
     if (tasks.size() == maxTasks) {
@@ -76,7 +74,7 @@ public:
    * @return True if dropper has dropped its tasks, false otherwise
    * @see TaskDropper::add
    */
-  virtual inline bool add(shared_ptr<TaskType> task, TaskArgs... args)
+  virtual inline bool add(std::shared_ptr<TaskType> task, TaskArgs... args)
   {
     tasks.push_back(task);
     if (tasks.size() == maxTasks) {
@@ -95,7 +93,7 @@ public:
    * @see TaskDropper::drop(ThreadPoolType &)
    * @see ThreadPool
    */
-  virtual inline bool add(ThreadPoolType& pool, shared_ptr<TaskType> task)
+  virtual inline bool add(ThreadPoolType& pool, std::shared_ptr<TaskType> task)
   {
     tasks.push_back(task);
     if (tasks.size() == maxTasks) {
@@ -114,7 +112,8 @@ public:
    * @see TaskDropper::add(ThreadPoolType &, shared_ptr<TaskType>)
    * @see TaskDropper::tryDrop(ThreadPoolType &)
    */
-  virtual inline char tryAdd(ThreadPoolType& pool, shared_ptr<TaskType> task)
+  virtual inline char tryAdd(ThreadPoolType& pool,
+                             std::shared_ptr<TaskType> task)
   {
     tasks.push_back(task);
     if (tasks.size() == maxTasks) {
@@ -134,7 +133,7 @@ public:
    */
   virtual inline void drop()
   {
-    for (shared_ptr<TaskType> task : tasks)
+    for (std::shared_ptr<TaskType> task : tasks)
       doTask(*task);
     tasks.clear();
   }
@@ -148,7 +147,7 @@ public:
    */
   virtual inline void drop(TaskArgs... args)
   {
-    for (shared_ptr<TaskType> task : tasks)
+    for (std::shared_ptr<TaskType> task : tasks)
       doTask(*task, args...);
     tasks.clear();
   }
@@ -243,13 +242,13 @@ public:
    * @return Current maximum tasks limit
    * @see TaskDropper::maxTasks
    */
-  virtual inline size_t getMaxTasks() const { return maxTasks; }
+  virtual inline std::size_t getMaxTasks() const { return maxTasks; }
   /**
    * @brief Set new maximum tasks limit
    * @param maxTasks New maximum tasks limit
    * @see TaskDropper::maxTasks
    */
-  virtual inline void setMaxTasks(size_t const maxTasks)
+  virtual inline void setMaxTasks(std::size_t const maxTasks)
   {
     this->maxTasks = maxTasks;
   }
@@ -257,9 +256,9 @@ public:
    * @brief Pop a task from vector of tasks
    * @return Popped task from vector of tasks
    */
-  virtual inline shared_ptr<TaskType> popTask()
+  virtual inline std::shared_ptr<TaskType> popTask()
   {
-    shared_ptr<TaskType> task = tasks.back();
+    std::shared_ptr<TaskType> task = tasks.back();
     tasks.pop_back();
     return task;
   }

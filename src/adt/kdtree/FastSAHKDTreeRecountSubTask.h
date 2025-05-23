@@ -1,7 +1,11 @@
 #pragma once
 
+#include <AABB.h>
+#include <Primitive.h>
 #include <SharedSubTask.h>
 #include <SharedTaskSequencer.h>
+
+#include <vector>
 
 class FastSAHKDTreeRecountSubTask : public SharedSubTask
 {
@@ -24,27 +28,27 @@ protected:
   /**
    * @brief First primitive to be considered by the recount (inclusive)
    */
-  vector<Primitive*>::iterator beginPrimitive;
+  std::vector<Primitive*>::iterator beginPrimitive;
   /**
    * @brief Last primitive to be considered by the recount (exclusive)
    */
-  vector<Primitive*>::iterator endPrimitive;
+  std::vector<Primitive*>::iterator endPrimitive;
   /**
    * @brief How many bins use to cound
    */
-  size_t const lossNodes;
+  std::size_t const lossNodes;
   /**
    * @brief How many forward and backward count cases (it is, bins + 1)
    */
-  size_t const lossCases;
+  std::size_t const lossCases;
   /**
    * @brief Where forward count components must be stored
    */
-  vector<size_t>& cForward;
+  std::vector<std::size_t>& cForward;
   /**
    * @brief Where backward count components must be stored
    */
-  vector<size_t>& cBackward;
+  std::vector<std::size_t>& cBackward;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -57,12 +61,12 @@ public:
                               int const splitAxis,
                               double const minp,
                               double const deltap,
-                              vector<Primitive*>::iterator beginPrimitive,
-                              vector<Primitive*>::iterator endPrimitive,
-                              size_t const lossNodes,
-                              size_t const lossCases,
-                              vector<size_t>& cForward,
-                              vector<size_t>& cBackward)
+                              std::vector<Primitive*>::iterator beginPrimitive,
+                              std::vector<Primitive*>::iterator endPrimitive,
+                              std::size_t const lossNodes,
+                              std::size_t const lossCases,
+                              std::vector<std::size_t>& cForward,
+                              std::vector<std::size_t>& cBackward)
     : SharedSubTask(ch)
     , splitAxis(splitAxis)
     , minp(minp)
@@ -87,18 +91,18 @@ public:
   void run() override
   {
     // Count min and max vertices
-    vector<size_t> minCount(lossNodes, 0);
-    vector<size_t> maxCount(lossNodes, 0);
-    for (vector<Primitive*>::iterator currentPrimitive = beginPrimitive;
+    std::vector<std::size_t> minCount(lossNodes, 0);
+    std::vector<std::size_t> maxCount(lossNodes, 0);
+    for (std::vector<Primitive*>::iterator currentPrimitive = beginPrimitive;
          currentPrimitive < endPrimitive;
          ++currentPrimitive) {
       AABB* aabb = (*currentPrimitive)->getAABB();
       double const minq = aabb->getMin()[splitAxis];
       double const maxq = aabb->getMax()[splitAxis];
-      ++minCount[std::min<size_t>((size_t)((minq - minp) / deltap * lossNodes),
-                                  lossNodes - 1)];
-      ++maxCount[std::min<size_t>((size_t)((maxq - minp) / deltap * lossNodes),
-                                  lossNodes - 1)];
+      ++minCount[std::min<size_t>(
+        (std::size_t)((minq - minp) / deltap * lossNodes), lossNodes - 1)];
+      ++maxCount[std::min<size_t>(
+        (std::size_t)((maxq - minp) / deltap * lossNodes), lossNodes - 1)];
     }
 
     // Accumulate counts

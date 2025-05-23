@@ -5,11 +5,6 @@
 
 #include <vector>
 
-using SurfaceInspector::util::SurfaceInspectorException;
-using SurfaceInspector::util::draggers::IDragger;
-
-using std::vector;
-
 namespace SurfaceInspector {
 namespace util {
 namespace draggers {
@@ -24,7 +19,7 @@ namespace draggers {
  * @see SurfaceInspector::util::draggers::IDragger
  */
 template<typename E>
-class OptimizationDragger : public IDragger<E, vector<E>>
+class OptimizationDragger : public IDragger<E, std::vector<E>>
 {
 protected:
   // ***  ABSTRACT METHODS  *** //
@@ -60,7 +55,7 @@ public:
   {
     // Check there are more elements to drag
     if (!this->hasNext()) {
-      throw SurfaceInspectorException(
+      throw SurfaceInspector::util::SurfaceInspectorException(
         "Optimization dragger has no more elements to drag");
     }
 

@@ -7,10 +7,10 @@ using SurfaceInspector::maths::Scalar;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
-  shared_ptr<SimpleKDTreeFactory> const kdtf,
-  shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
-  size_t const numJobs,
-  size_t const geomJobs)
+  std::shared_ptr<SimpleKDTreeFactory> const kdtf,
+  std::shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
+  std::size_t const numJobs,
+  std::size_t const geomJobs)
   : SimpleKDTreeFactory()
   , kdtf(kdtf)
   , gs(gs)
@@ -26,7 +26,7 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
    */
   _buildRecursive = [&](KDTreeNode* parent,
                         bool const left,
-                        vector<Primitive*>& primitives,
+                        std::vector<Primitive*>& primitives,
                         int const depth,
                         int const index) -> KDTreeNode* {
     return this->buildRecursive(parent, left, primitives, depth, index);
@@ -39,10 +39,11 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 KDTreeFactory*
 MultiThreadKDTreeFactory::clone() const
 {
-  shared_ptr<SimpleKDTreeFactory> skdtf((SimpleKDTreeFactory*)kdtf->clone());
+  std::shared_ptr<SimpleKDTreeFactory> skdtf(
+    (SimpleKDTreeFactory*)kdtf->clone());
   MultiThreadKDTreeFactory* mtkdtf = new MultiThreadKDTreeFactory(
     skdtf,
-    shared_ptr<SimpleKDTreeGeometricStrategy>(gs->clone(skdtf.get())),
+    std::shared_ptr<SimpleKDTreeGeometricStrategy>(gs->clone(skdtf.get())),
     numJobs,
     geomJobs);
   _clone(mtkdtf);
@@ -61,7 +62,7 @@ MultiThreadKDTreeFactory::_clone(KDTreeFactory* kdtf) const
 // ******************************** //
 KDTreeNodeRoot*
 MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
-  vector<Primitive*>& primitives,
+  std::vector<Primitive*>& primitives,
   bool const computeStats,
   bool const reportStats)
 {
@@ -121,7 +122,7 @@ MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
 KDTreeNode*
 MultiThreadKDTreeFactory::buildRecursive(KDTreeNode* parent,
                                          bool const left,
-                                         vector<Primitive*>& primitives,
+                                         std::vector<Primitive*>& primitives,
                                          int const depth,
                                          int const index)
 {
@@ -137,7 +138,7 @@ KDTreeNode*
 MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
   KDTreeNode* parent,
   bool const left,
-  vector<Primitive*>& primitives,
+  std::vector<Primitive*>& primitives,
   int const depth,
   int const index)
 {
@@ -163,21 +164,21 @@ MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
     [&](KDTreeNode* node,
         KDTreeNode* parent,
         bool const left,
-        vector<Primitive*> const& primitives) -> void {
+        std::vector<Primitive*> const& primitives) -> void {
       gs->GEOM_computeNodeBoundaries(
         node, parent, left, primitives, assignedThreads);
     },
     [&](KDTreeNode* node,
         KDTreeNode* parent,
-        vector<Primitive*>& primitives,
+        std::vector<Primitive*>& primitives,
         int const depth) -> void {
       gs->GEOM_defineSplit(node, parent, primitives, depth, assignedThreads);
     },
-    [&](vector<Primitive*> const& primitives,
+    [&](std::vector<Primitive*> const& primitives,
         int const splitAxis,
         double const splitPos,
-        vector<Primitive*>& leftPrimitives,
-        vector<Primitive*>& rightPrimitives) -> void {
+        std::vector<Primitive*>& leftPrimitives,
+        std::vector<Primitive*>& rightPrimitives) -> void {
       gs->GEOM_populateSplits(primitives,
                               splitAxis,
                               splitPos,
@@ -187,11 +188,11 @@ MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
     },
     [&](KDTreeNode* node,
         KDTreeNode* parent,
-        vector<Primitive*> const& primitives,
+        std::vector<Primitive*> const& primitives,
         int const depth,
         int const index,
-        vector<Primitive*>& leftPrimitives,
-        vector<Primitive*>& rightPrimitives) -> void {
+        std::vector<Primitive*>& leftPrimitives,
+        std::vector<Primitive*>& rightPrimitives) -> void {
       buildChildrenGeometryLevel(node,
                                  parent,
                                  primitives,
@@ -207,11 +208,11 @@ void
 MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
   KDTreeNode* node,
   KDTreeNode* parent,
-  vector<Primitive*> const& primitives,
+  std::vector<Primitive*> const& primitives,
   int const depth,
   int const index,
-  vector<Primitive*>& leftPrimitives,
-  vector<Primitive*>& rightPrimitives,
+  std::vector<Primitive*>& leftPrimitives,
+  std::vector<Primitive*>& rightPrimitives,
   int const auxiliarThreads)
 {
   // Geometry-level building of children nodes
@@ -243,7 +244,7 @@ KDTreeNode*
 MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
   KDTreeNode* parent,
   bool const left,
-  vector<Primitive*>& primitives,
+  std::vector<Primitive*>& primitives,
   int const depth,
   int const index)
 {
@@ -254,7 +255,7 @@ MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
     posted = tpNode.try_run_md_task(
       [&](KDTreeNode* parent,
           bool const left,
-          vector<Primitive*>& primitives,
+          std::vector<Primitive*>& primitives,
           int const depth,
           int const index) -> void {
         if (left) {

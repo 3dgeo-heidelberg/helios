@@ -12,22 +12,18 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Common implementation for any vectorial full waveform writer
  */
 class VectorialFullWaveformWriter
-  : public BaseFullWaveformWriter<vector<FullWaveform> const&>
+  : public BaseFullWaveformWriter<std::vector<FullWaveform> const&>
 {
 protected:
   // ***  USING  *** //
   // *************** //
-  using BaseFullWaveformWriter<vector<FullWaveform> const&>::writers;
+  using BaseFullWaveformWriter<std::vector<FullWaveform> const&>::writers;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -36,7 +32,7 @@ public:
    * @brief Default constructor for vectorial full waveform writer
    */
   VectorialFullWaveformWriter()
-    : BaseFullWaveformWriter<vector<FullWaveform> const&>()
+    : BaseFullWaveformWriter<std::vector<FullWaveform> const&>()
   {
   }
   virtual ~VectorialFullWaveformWriter() = default;
@@ -45,16 +41,16 @@ public:
   // ************************* //
   /**
    * @brief Writer a vector of full waveforms
-   * @param fullWaveforms Vector of full waveforms to be written
+   * @param fullWaveForms Vector of full waveforms to be written
    */
-  void writeFullWaveforms(vector<FullWaveform> const& fullWaveforms);
+  void writeFullWaveforms(std::vector<FullWaveform> const& fullWaveForms);
   /**
    * @brief Like filems::VectorialFullWaveformWriter::writeFullWaveforms but
    *  faster because there is no validation
    * @see filems::VectorialFullWaveformWriter::writeFullWaveforms
    */
   inline void writeFullWaveformsUnsafe(
-    vector<FullWaveform> const& fullWaveforms) const
+    std::vector<FullWaveform> const& fullWaveforms) const
   {
     sfw->write(fullWaveforms);
   }
@@ -62,13 +58,13 @@ public:
    * @brief Make a vectorial full waveform SyncFileWriter
    * @see BaseFullWaveformWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<std::vector<FullWaveform> const&>> makeWriter(
-    string const& path) const override
+  std::shared_ptr<SyncFileWriter<std::vector<FullWaveform> const&>> makeWriter(
+    std::string const& path) const override
   {
     if (isZipOutput()) {
-      return make_shared<ZipVectorialSyncFileFullWaveformWriter>(path);
+      return std::make_shared<ZipVectorialSyncFileFullWaveformWriter>(path);
     } else
-      return make_shared<SimpleVectorialSyncFileFullWaveformWriter>(path);
+      return std::make_shared<SimpleVectorialSyncFileFullWaveformWriter>(path);
   }
 };
 

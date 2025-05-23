@@ -1,14 +1,9 @@
-#ifndef _SURFACEINSPECTOR_MATHS_VECTOR_HPP_
-#define _SURFACEINSPECTOR_MATHS_VECTOR_HPP_
-
-#include <vector>
+#pragma once
 
 #include <surfaceinspector/util/Object.hpp>
 #include <surfaceinspector/util/SurfaceInspectorException.hpp>
 
-using std::vector;
-
-using SurfaceInspector::util::Object;
+#include <vector>
 
 namespace SurfaceInspector {
 namespace maths {
@@ -21,7 +16,7 @@ namespace maths {
  * @brief Class providing vector operations
  */
 template<typename T>
-class Vector : public Object
+class Vector : public SurfaceInspector::util::Object
 {
 public:
   // ***  BASIC VECTOR OPERATIONS  *** //
@@ -30,13 +25,14 @@ public:
    * @brief Add two vectors
    * @return Vector from addition
    */
-  static vector<T> add(vector<T> const u, vector<T> const v);
+  static std::vector<T> add(std::vector<T> const u, std::vector<T> const v);
 
   /**
    * @brief Subtract two vectors
    * @return Vector from subtraction
    */
-  static inline vector<T> subtract(vector<T> const u, vector<T> const v)
+  static inline std::vector<T> subtract(std::vector<T> const u,
+                                        std::vector<T> const v)
   {
     return add(u, negate(v));
   }
@@ -45,42 +41,42 @@ public:
    * @brief Add the scalar to all elements in vector \f$\overline{u}\f$
    * @return Vector resulting from addition
    */
-  static vector<T> scalarAdd(vector<T> const u, T const scalar);
+  static std::vector<T> scalarAdd(std::vector<T> const u, T const scalar);
   /**
    * @brief Subtract the scalar to all elements in vector \f$\overline{u}\f$
    * @return Vector resulting from subtraction
    */
-  static vector<T> scalarSubtract(vector<T> const u, T const scalar);
+  static std::vector<T> scalarSubtract(std::vector<T> const u, T const scalar);
   /**
    * @brief Multiply all elements in vector \f$overline{u}\f$ by scalar
    * @return Vector resulting from multiplication
    */
-  static vector<T> scalarMultiply(vector<T> const u, T const scalar);
+  static std::vector<T> scalarMultiply(std::vector<T> const u, T const scalar);
   /**
    * @brief Divide all elements in vector \f$\overline{u}\f$ by scalar
    * @return Vector resulting from division
    */
-  static vector<T> scalarDivide(vector<T> const u, T const scalar);
+  static std::vector<T> scalarDivide(std::vector<T> const u, T const scalar);
   /**
    * @brief Like scalarAdd function but modifying given vector
    * @see Vector::scalarAdd
    */
-  static void scalarAddInPlace(vector<T>& u, T const scalar);
+  static void scalarAddInPlace(std::vector<T>& u, T const scalar);
   /**
    * @brief Like scalarSubtract function but modifying given vector
    * @see Vector::scalarSubtract
    */
-  static void scalarSubtractInPlace(vector<T>& u, T const scalar);
+  static void scalarSubtractInPlace(std::vector<T>& u, T const scalar);
   /**
    * @brief Like scalarMultiply function but modifying given vector
    * @see Vector::scalarMultiply
    */
-  static void scalarMultiplyInPlace(vector<T>& u, T const scalar);
+  static void scalarMultiplyInPlace(std::vector<T>& u, T const scalar);
   /**
    * @brief Like scalarDivide function but modifying given vector
    * @see Vector::scalarDivide
    */
-  static void scalarDivideInPlace(vector<T>& u, T const scalar);
+  static void scalarDivideInPlace(std::vector<T>& u, T const scalar);
   /**
    * @brief Compute the opposite of given vector \f$u\f$
    *
@@ -90,7 +86,7 @@ public:
    * @param u Vector to be negated
    * @return Negated \f$u\f$
    */
-  static vector<T> negate(vector<T> const u);
+  static std::vector<T> negate(std::vector<T> const u);
   /**
    * @brief Check if you vectors are equal or not.
    *
@@ -101,31 +97,31 @@ public:
    * @param v Second vector to compare with
    * @return True if vectors are exactly equal, false otherwise
    */
-  static bool equals(vector<T> const u, vector<T> const v);
+  static bool equals(std::vector<T> const u, std::vector<T> const v);
   /**
    * @brief Obtain the minimum value in given vector
    * @param u Vector which minimum value must be obtained
    * @return Minimum value from given vector
    */
-  static T min(vector<T> const& u);
+  static T min(std::vector<T> const& u);
   /**
    * @brief Obtain the maximum value in given vector
    * @param u Vector which maximum value must be obtained
    * @return Maximum value from given vector
    */
-  static T max(vector<T> const& u);
+  static T max(std::vector<T> const& u);
   /**
    * @brief Obtain the index of minimum value in given vector
    * @param u Vector which minimum value index must be obtained
    * @return Minimum value index from given vector
    */
-  static size_t argmin(vector<T> const& u);
+  static std::size_t argmin(std::vector<T> const& u);
   /**
    * @brief Obtain the index of maximum value in given vector
    * @param u Vector which maximum value index must be obtained
    * @return Maximum value index from given vector
    */
-  static size_t argmax(vector<T> const& u);
+  static std::size_t argmax(std::vector<T> const& u);
   /**
    * @brief Compute the midrange \f$\lambda\f$ for given vector
    *
@@ -136,7 +132,7 @@ public:
    * @param u Vector which midrange must be obtained
    * @return Midrange for given vector
    */
-  static T midrange(vector<T> const& u);
+  static T midrange(std::vector<T> const& u);
   /**
    * @brief Compute the dot product between vectors \f$\overline{u}\f$ and
    *  \f$\overline{v}\f$
@@ -150,7 +146,7 @@ public:
    * @param v Second vector
    * @return Dot product between \f$\overline{u}\f$ and \f$\overline{v}\f$
    */
-  static T dotProduct(vector<T> const u, vector<T> const v);
+  static T dotProduct(std::vector<T> const u, std::vector<T> const v);
   /**
    * @brief Compute the 3D cross product between vectors \f$\overline{u}\f$
    *  and \f$\overline{v}\f$
@@ -168,7 +164,8 @@ public:
    * @param v Second vector
    * @return Cross product between \f$\overline{u}\f$ and \f$\overline{v}\f$
    */
-  static vector<T> crossProduct3D(vector<T> const u, vector<T> const v);
+  static std::vector<T> crossProduct3D(std::vector<T> const u,
+                                       std::vector<T> const v);
   /**
    * @brief Compute the hadamard product between vectors \f$\overline{u}\f$
    *  and \f$\overline{v}\f$
@@ -183,7 +180,8 @@ public:
    * @return Hadamard product between \f$\overline{u}\f$ and
    *  \f$\overline{v}\f$
    */
-  static vector<T> hadamardProduct(vector<T> const u, vector<T> const v);
+  static std::vector<T> hadamardProduct(std::vector<T> const u,
+                                        std::vector<T> const v);
   /**
    * @brief Compute the square norm (magnitude) of vector \f$\overline{u}\f$
    *
@@ -194,11 +192,14 @@ public:
    * @param u Vector which square norm (magnitude) must be computed
    * @return Square norm (magnitude) of vector \f$\overline{u}\f$
    */
-  static T squareNorm(vector<T> const u);
+  static T squareNorm(std::vector<T> const u);
   /**
    * @see Vector::squareNorm
    */
-  static inline T squareMagnitude(vector<T> const u) { return normSquare(u); }
+  static inline T squareMagnitude(std::vector<T> const u)
+  {
+    return normSquare(u);
+  }
   /**
    * @brief Compute the norm (magnitude) of vector \f$\overline{u}\f$, which
    *  is the square root of its square norm
@@ -211,11 +212,11 @@ public:
    * @return Norm (magnitude) of vector \f$\overline{u}\f$
    * @see Vector::squareNorm
    */
-  static T norm(vector<T> const u);
+  static T norm(std::vector<T> const u);
   /**
    * @see Vector::norm
    */
-  static inline T magnitude(vector<T> const u) { return norm(u); }
+  static inline T magnitude(std::vector<T> const u) { return norm(u); }
   /**
    * @brief Normalize given vector \f$\overline{u}\f$, obtaining
    *  \f$\hat{u}\f$
@@ -228,26 +229,26 @@ public:
    * @param u Vector to be normalized
    * @return Normalized vector \f$\hat{u}\f$
    */
-  static vector<T> normalize(vector<T> const u);
+  static std::vector<T> normalize(std::vector<T> const u);
   /**
    * @brief Like Vector::normalize(vector<T> const) but providing a
    *  precomputed norm so it is not necessary to compute it. Hence, it is
    *  faster as it performs less operations
    * @see Vector::normalize(vector<T> const)
    */
-  static vector<T> normalize(vector<T> const u, T const norm);
+  static std::vector<T> normalize(std::vector<T> const u, T const norm);
   /**
    * @brief Like Vector::normalize(vector<T> const) but modifying given
    *  vector instead of creating new one
    * @see Vector::normalize(vector<T> const)
    */
-  static void normalizeInPlace(vector<T>& u);
+  static void normalizeInPlace(std::vector<T>& u);
   /**
    * @brief Like Vector::normalize(vector<T> const, T const) but modifying
    *  given vector instead of creating new one
    * @see Vector::normalize(vector<T> const, T const)
    */
-  static void normalizeInPlace(vector<T>& u, T const norm);
+  static void normalizeInPlace(std::vector<T>& u, T const norm);
   /**
    * @brief Compute the angle between two given vectors \f$overline{u}\f$
    *  and \f$\overline{v}\f$
@@ -266,8 +267,8 @@ public:
    *  otherwise
    * @return Angle between vectors \f$\overline{u}\f$ and \f$\overline{v}\f$
    */
-  static T angle(vector<T> const u,
-                 vector<T> const v,
+  static T angle(std::vector<T> const u,
+                 std::vector<T> const v,
                  bool alreadyNormalized = false);
   /**
    * @brief Compute the \f$\theta \leq \frac{\pi}{2}\f$ angle between two given
@@ -291,8 +292,8 @@ public:
    * @return \f$\theta \leq \frac{\pi}{2}\f$ angle between vectors
    *  \f$\overline{u}\f$ and \f$\overline{v}\f$
    */
-  static T acuteAngle(vector<T> const u,
-                      vector<T> const v,
+  static T acuteAngle(std::vector<T> const u,
+                      std::vector<T> const v,
                       bool alreadyNormalized = false);
   /**
    * @brief Compute the 2D angle coming from two first components of
@@ -301,7 +302,7 @@ public:
    * @return Angle of first two components of \f$\overline{u}\f$ in interval
    *  \f$[-\pi, +\pi]\f$
    */
-  static T toAngle2D(vector<T> const u);
+  static T toAngle2D(std::vector<T> const u);
 
   /**
    * @brief Find a orthogonal vector with respect to \f$v\f$
@@ -315,7 +316,7 @@ public:
    * @return Vector orthogonal to \f$v\f$
    * @see Vector::findOrthonormal(vector<T> const)
    */
-  static vector<T> findOrthogonal(vector<T> const v);
+  static std::vector<T> findOrthogonal(std::vector<T> const v);
 
   /**
    * @brief Like findOrthogonal(vector<T> const) but returning a normalized
@@ -324,7 +325,7 @@ public:
    * @see Vector::findOrthogonal(vector<T> const)
    * @see Vector::normalize
    */
-  static vector<T> findOrthonormal(vector<T> const v)
+  static std::vector<T> findOrthonormal(std::vector<T> const v)
   {
     return normalize(findOrthogonal(v));
   }
@@ -334,7 +335,8 @@ public:
    *  vectors instead of a single vector
    * @see Vector::findOrthonormal(vector<T> const)
    */
-  static vector<vector<T>> findOrthonormals(vector<vector<T>> const V);
+  static std::vector<std::vector<T>> findOrthonormals(
+    std::vector<std::vector<T>> const V);
 
   /**
    * @brief Compute normal vectors representing different rotations on 2D
@@ -356,14 +358,15 @@ public:
    *  complement is false) or (2 x depth) rotations on the circumference
    *  space (when complement is true)
    */
-  static vector<vector<T>> xyRotations(size_t const depth, bool complement);
+  static std::vector<std::vector<T>> xyRotations(size_t const depth,
+                                                 bool complement);
 
   /**
    * @brief Check if \f$\vec{v}\f$ is a null vector (all zero) or not
    * @param v Check to be checked for nullity
    * @return True if \f$\vec{v}\f$ is a null vector, false otherwise.
    */
-  static bool isNull(vector<T> const& v);
+  static bool isNull(std::vector<T> const& v);
 
   /**
    * @brief Project vector \f$v\f$ over vector \f$u\f$
@@ -377,7 +380,7 @@ public:
    * @param u Vector to project over it
    * @return Projection of v over u
    */
-  static vector<T> project(vector<T> const v, vector<T> const u);
+  static std::vector<T> project(std::vector<T> const v, std::vector<T> const u);
 
   /**
    * @brief Project vector \f$v\f$ over subspace \f$u\f$
@@ -397,7 +400,8 @@ public:
    * @param u Basis of the vector subspace to project over it
    * @return Projection of v over u
    */
-  static vector<T> project(vector<T> const v, vector<vector<T>> const u);
+  static std::vector<T> project(std::vector<T> const v,
+                                std::vector<std::vector<T>> const u);
   /**
    * @brief Compute \f$v\f$ as the discrete differences of vector \f$u\f$
    *
@@ -412,12 +416,10 @@ public:
    * @param u Vector to differentiate
    * @return \f$v\f$ vector as the discrete differences of vector \f$u\f$
    */
-  static vector<T> diff(vector<T> const u);
+  static std::vector<T> diff(std::vector<T> const u);
 };
 
 }
 }
 
 #include <surfaceinspector/maths/Vector.tpp>
-
-#endif

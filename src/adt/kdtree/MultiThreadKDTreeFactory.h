@@ -1,14 +1,12 @@
 #pragma once
 
-#include <KDTreeNode.h>
 #include <KDTreeFactoryThreadPool.h>
+#include <KDTreeNode.h>
 #include <SharedTaskSequencer.h>
 #include <SimpleKDTreeFactory.h>
 #include <SimpleKDTreeGeometricStrategy.h>
 
 #include <boost/thread.hpp>
-
-using std::shared_ptr;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -68,12 +66,12 @@ protected:
   /**
    * @brief The SimpleKDTreeFactory or derived to be used to build tree nodes
    */
-  shared_ptr<SimpleKDTreeFactory> kdtf;
+  std::shared_ptr<SimpleKDTreeFactory> kdtf;
   /**
    * @brief The SimpleKDTreeGeometricStrategy or derived to be used to handle
    *  geometry-level parallelization during multi-thread KDTree building
    */
-  shared_ptr<SimpleKDTreeGeometricStrategy> gs;
+  std::shared_ptr<SimpleKDTreeGeometricStrategy> gs;
   /**
    * @brief The thread pool to handle concurrency during recursive KDTree
    *  building at node-level
@@ -83,7 +81,7 @@ protected:
    * @brief The minimum number of primitives on a given split so a new
    *  task is started to handle them
    */
-  size_t minTaskPrimitives;
+  std::size_t minTaskPrimitives;
   /**
    * @brief The maximum geometry depth level \f$d^*\f$ as explained in the
    *  MultiThreadKDTreeFactory::buildRecursiveGeometryLevel
@@ -96,12 +94,12 @@ protected:
    * @brief The maximum number of jobs (threads/workers) that this factory
    *  is allowed to use.
    */
-  size_t numJobs;
+  std::size_t numJobs;
   /**
    * @brief The number of jobs (threads/workers) that this factory must use
    *  when building upper KDTree nodes (geometry-level parallelization)
    */
-  size_t geomJobs;
+  std::size_t geomJobs;
   /**
    * @brief All masters threads (except main thread) are handled by this
    *  shared task sequencer
@@ -116,13 +114,13 @@ protected:
    *
    * @see MultiThreadKDTreeFactory::maxGeometryDepth
    */
-  shared_ptr<SharedTaskSequencer> masters;
+  std::shared_ptr<SharedTaskSequencer> masters;
   /**
    * @brief How many geometry-level jobs have fully finished during current
    *  KDT building
    * @see MultiThreadKDTreeFactory::increaseFinishedGeomJobsCount
    */
-  size_t finishedGeomJobs;
+  std::size_t finishedGeomJobs;
   /**
    * @brief Mutex to handle concurrent access to counter of finished
    *  geometry-level jobs
@@ -141,10 +139,11 @@ public:
    * @brief MultiThreadKDTreeFactory default constructor
    * @param kdtf The factory to be used to build the KDTree
    */
-  MultiThreadKDTreeFactory(shared_ptr<SimpleKDTreeFactory> const kdtf,
-                           shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
-                           size_t const numJobs = 2,
-                           size_t const geomJobs = 2);
+  MultiThreadKDTreeFactory(
+    std::shared_ptr<SimpleKDTreeFactory> const kdtf,
+    std::shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
+    std::size_t const numJobs = 2,
+    std::size_t const geomJobs = 2);
   ~MultiThreadKDTreeFactory() override = default;
 
   // ***  CLONE  *** //
@@ -168,7 +167,7 @@ public:
    * @see KDTreeFactory::makeFromPrimitivesUnsafe
    */
   KDTreeNodeRoot* makeFromPrimitivesUnsafe(
-    vector<Primitive*>& primitives,
+    std::vector<Primitive*>& primitives,
     bool const computeStats = false,
     bool const reportStats = false) override;
 
@@ -208,7 +207,7 @@ protected:
    */
   KDTreeNode* buildRecursive(KDTreeNode* parent,
                              bool const left,
-                             vector<Primitive*>& primitives,
+                             std::vector<Primitive*>& primitives,
                              int const depth,
                              int const index) override;
   /**
@@ -302,7 +301,7 @@ protected:
    */
   KDTreeNode* buildRecursiveGeometryLevel(KDTreeNode* parent,
                                           bool const left,
-                                          vector<Primitive*>& primitives,
+                                          std::vector<Primitive*>& primitives,
                                           int const depth,
                                           int const index);
   /**
@@ -312,11 +311,11 @@ protected:
    */
   void buildChildrenGeometryLevel(KDTreeNode* node,
                                   KDTreeNode* parent,
-                                  vector<Primitive*> const& primitives,
+                                  std::vector<Primitive*> const& primitives,
                                   int const depth,
                                   int const index,
-                                  vector<Primitive*>& leftPrimitives,
-                                  vector<Primitive*>& rightPrimitives,
+                                  std::vector<Primitive*>& leftPrimitives,
+                                  std::vector<Primitive*>& rightPrimitives,
                                   int const auxiliarThreads);
   /**
    * @brief Recursively build a KDTree for given primitives using given
@@ -342,7 +341,7 @@ protected:
    */
   KDTreeNode* buildRecursiveNodeLevel(KDTreeNode* parent,
                                       bool const left,
-                                      vector<Primitive*>& primitives,
+                                      std::vector<Primitive*>& primitives,
                                       int const depth,
                                       int const index);
   /**
@@ -357,8 +356,9 @@ protected:
    * @brief Call the report KDTree stats method of decorated KDTree factory
    * @see SimpleKDTreeFactory::reportKDTreeStats
    */
-  void reportKDTreeStats(KDTreeNodeRoot* root,
-                         vector<Primitive*> const& primitives) const override
+  void reportKDTreeStats(
+    KDTreeNodeRoot* root,
+    std::vector<Primitive*> const& primitives) const override
   {
     kdtf->reportKDTreeStats(root, primitives);
   }
@@ -383,7 +383,7 @@ protected:
    *  way.
    * @see MultiThreadKDTreeFactory::finishedGeomJobs
    */
-  virtual inline void increaseFinishedGeomJobsCount(size_t const amount)
+  virtual inline void increaseFinishedGeomJobsCount(std::size_t const amount)
   {
     boost::unique_lock<boost::mutex> lock(finishedGeomJobsMutex);
     finishedGeomJobs += amount;
@@ -397,7 +397,7 @@ public:
    * @brief Obtain the SimpleKDTreeFactory used to build tree nodes
    * @return SimpleKDTreeFactory used to build tree nodes
    */
-  virtual inline shared_ptr<SimpleKDTreeFactory> getKdtf() const
+  virtual inline std::shared_ptr<SimpleKDTreeFactory> getKdtf() const
   {
     return kdtf;
   }
@@ -405,22 +405,25 @@ public:
    * @brief Obtain the pool size of the thread pool (num jobs)
    * @return Pool size of the thread pool (num jobs)
    */
-  virtual inline size_t getPoolSize() const { return tpNode.getPoolSize(); }
+  virtual inline std::size_t getPoolSize() const
+  {
+    return tpNode.getPoolSize();
+  }
   /**
    * @brief Obtain the number of threads for node-level parallelization
    * @return Number of threads for node-level parallelization
    */
-  virtual inline size_t getNumJobs() const { return numJobs; }
+  virtual inline std::size_t getNumJobs() const { return numJobs; }
   /**
    * @brief Obtain the number of threads for geometry-level parallelization
    * @return Number of threads for geometry-level parallelization
    */
-  virtual inline size_t getGeomJobs() const { return geomJobs; }
+  virtual inline std::size_t getGeomJobs() const { return geomJobs; }
   /**
    * @brief Obtain the geometric strategy
    * @return Geometric strategy
    */
-  virtual inline shared_ptr<SimpleKDTreeGeometricStrategy> getGS() const
+  virtual inline std::shared_ptr<SimpleKDTreeGeometricStrategy> getGS() const
   {
     return gs;
   }

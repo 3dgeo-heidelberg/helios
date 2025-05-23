@@ -64,24 +64,24 @@ public:
   {
   }
   /**
-   * @see DynMovingObject::DynMovingObject(string const)
+   * @see DynMovingObject::DynMovingObject(std::string const)
    */
-  DynSequentiableMovingObject(string const id)
+  DynSequentiableMovingObject(std::string const id)
     : DynMovingObject(id)
   {
   }
   /**
-   * @see DynMovingObject::DynMovingObject(vector<Primitive *> const &)
+   * @see DynMovingObject::DynMovingObject(std::vector<Primitive *> const &)
    */
-  DynSequentiableMovingObject(vector<Primitive*> const& primitives)
+  DynSequentiableMovingObject(std::vector<Primitive*> const& primitives)
     : DynMovingObject(primitives)
   {
   }
   /**
    * @see DynMovingObject(string const, vector<Primitive *> const &)
    */
-  DynSequentiableMovingObject(string const id,
-                              vector<Primitive*> const& primitives)
+  DynSequentiableMovingObject(std::string const id,
+                              std::vector<Primitive*> const& primitives)
     : DynMovingObject(id, primitives)
   {
   }
@@ -146,7 +146,7 @@ public:
    * @param dmSequence Dynamic motion sequence to be added
    * @see DynSequencer::add
    */
-  inline void addSequence(shared_ptr<DynSequence<DynMotion>> dmSequence)
+  inline void addSequence(std::shared_ptr<DynSequence<DynMotion>> dmSequence)
   {
     return dmSequencer.add(dmSequence);
   }
@@ -157,7 +157,7 @@ public:
    *  removed
    * @see DynSequencer::remove
    */
-  inline void removeSequence(string const& id)
+  inline void removeSequence(std::string const& id)
   {
     return dmSequencer.remove(id);
   }
@@ -169,7 +169,8 @@ public:
    *  otherwise
    * @see DynSequencer::get
    */
-  inline shared_ptr<DynSequence<DynMotion>> getSequence(string const& id)
+  inline std::shared_ptr<DynSequence<DynMotion>> getSequence(
+    std::string const& id)
   {
     return dmSequencer.get(id);
   }
@@ -182,7 +183,10 @@ public:
    *  given identifier, false otherwise
    * @see DynSequencer::has
    */
-  inline bool hasSequences(string const& id) { return dmSequencer.has(id); }
+  inline bool hasSequences(std::string const& id)
+  {
+    return dmSequencer.has(id);
+  }
   /**
    * @brief Remove all dynamic sequences of dynamic motions composing the
    *  dynamic sequencer

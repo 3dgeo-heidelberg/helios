@@ -11,8 +11,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -38,7 +36,7 @@ public:
     std::ios_base::openmode om = std::ios_base::app)
     : SimpleSyncFileWriter<PulseRecord const&>(path, om)
   {
-    this->writeStrategy = make_shared<DirectPulseWriteStrategy>(this->ofs);
+    this->writeStrategy = std::make_shared<DirectPulseWriteStrategy>(this->ofs);
   }
   virtual ~SimpleSyncFilePulseWriter() = default;
 };

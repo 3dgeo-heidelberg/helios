@@ -3,6 +3,8 @@
 #include <IBinaryTreeNode.h>
 #include <ITreeIterator.h>
 
+#include <boost/serialization/base_object.hpp>
+
 #include <deque>
 #include <iterator>
 
@@ -67,7 +69,7 @@ protected:
   /**
    * @brief Double ended queue used as a queue to handles nodes visiting
    */
-  deque<IBinaryTreeNode*> pendingNodes;
+  std::deque<IBinaryTreeNode*> pendingNodes;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

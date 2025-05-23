@@ -1,5 +1,7 @@
 #pragma once
+
 #include <maths/model/BaseEnergyModel.h>
+
 #include <vector>
 
 // ***  ARGUMENT CLASSES  *** //

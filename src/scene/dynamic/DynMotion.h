@@ -7,12 +7,6 @@
 #include <boost/serialization/void_cast.hpp>
 #include <memory>
 
-using namespace arma;
-using rigidmotion::RigidMotion;
-
-using std::make_shared;
-using std::shared_ptr;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -23,7 +17,7 @@ using std::shared_ptr;
  * @see DynMotion::selfMode
  * @see DynMotion::makeNormalCounterpart
  */
-class DynMotion : public RigidMotion
+class DynMotion : public rigidmotion::RigidMotion
 {
 private:
   // ***  SERIALIZATION  *** //
@@ -38,7 +32,8 @@ private:
   template<typename Archive>
   void serialize(Archive& ar, const unsigned int version)
   {
-    boost::serialization::void_cast_register<DynMotion, RigidMotion>();
+    boost::serialization::void_cast_register<DynMotion,
+                                             rigidmotion::RigidMotion>();
     ar& boost::serialization::base_object<RigidMotion>(*this);
     ar & selfMode;
     ar & normalMode;
@@ -101,8 +96,10 @@ public:
    * @see rigidmotion::RigidMotion
    * @see DynMotion::selfMode
    */
-  DynMotion(RigidMotion const& rm, bool selfMode = false, double autoCRS = 0.0)
-    : RigidMotion(rm)
+  DynMotion(rigidmotion::RigidMotion const& rm,
+            bool selfMode = false,
+            double autoCRS = 0.0)
+    : rigidmotion::RigidMotion(rm)
     , selfMode(selfMode)
     , autoCRS(autoCRS)
   {
@@ -114,8 +111,8 @@ public:
    * @param A Matrix representing the fixed origin transformation
    * @see rigidmotion::RigidMotion::RigidMotion(colvec const, mat const)
    */
-  DynMotion(colvec const& C, arma::mat const& A)
-    : RigidMotion(C, A)
+  DynMotion(arma::colvec const& C, arma::mat const& A)
+    : rigidmotion::RigidMotion(C, A)
   {
   }
   ~DynMotion() override = default;
@@ -169,9 +166,9 @@ public:
    *  instead of the raw object
    * @see DynMotion::makeNormalCounterpart
    */
-  virtual inline shared_ptr<DynMotion> makeNormalCounterpartPtr() const
+  virtual inline std::shared_ptr<DynMotion> makeNormalCounterpartPtr() const
   {
-    return make_shared<DynMotion>(makeNormalCounterpart());
+    return std::make_shared<DynMotion>(makeNormalCounterpart());
   }
 
   // ***  GETTERs and SETTERs  *** //

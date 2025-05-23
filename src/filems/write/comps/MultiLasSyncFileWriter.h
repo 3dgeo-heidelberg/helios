@@ -11,9 +11,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -30,11 +27,11 @@ protected:
   /**
    * @brief The specifications defining each LAS writer
    */
-  vector<LasWriterSpec> lws;
+  std::vector<LasWriterSpec> lws;
   /**
    * @brief The LASwriter used to write to each LAS file.
    */
-  vector<shared_ptr<LASwriter>> lw;
+  std::vector<std::shared_ptr<LASwriter>> lw;
   /**
    * @brief Flag used to control the sync writer status
    */
@@ -51,12 +48,12 @@ public:
   /**
    * @brief Constructor for Synchronous Multi LAS file writer
    */
-  explicit MultiLasSyncFileWriter(vector<string> const& path,
+  explicit MultiLasSyncFileWriter(std::vector<std::string> const& path,
                                   bool const compress,
-                                  vector<double> const& scaleFactor,
-                                  vector<glm::dvec3> const& offset,
-                                  vector<double> const& minIntensity,
-                                  vector<double> const& deltaIntensity,
+                                  std::vector<double> const& scaleFactor,
+                                  std::vector<glm::dvec3> const& offset,
+                                  std::vector<double> const& minIntensity,
+                                  std::vector<double> const& deltaIntensity,
                                   bool const createWriters = true)
     : MultiSyncFileWriter<WriteArgs...>(path)
     , finished(false)
@@ -83,12 +80,13 @@ public:
    * @param path Path for each file
    * @param compress Flag to activate/deactivate compression (las/laz format)
    */
-  void createLasWriters(vector<string> const& path, bool const compress)
+  void createLasWriters(std::vector<std::string> const& path,
+                        bool const compress)
   {
-    size_t const nWriters = path.size();
-    for (size_t i = 0; i < nWriters; ++i) { // For each i-th writer
+    std::size_t const nWriters = path.size();
+    for (std::size_t i = 0; i < nWriters; ++i) { // For each i-th writer
       // Extract path and writer spec
-      string const& path = this->path[i];
+      std::string const& path = this->path[i];
       LasWriterSpec& lws = this->lws[i];
       // Craft header and point format+
       craftSpec(lws);
@@ -123,10 +121,10 @@ public:
     if (finished)
       return; // Check whether finished or not
     // Finish each writer and its specification
-    size_t const nWriters = lw.size();
-    for (size_t i = 0; i < nWriters; ++i) {
+    std::size_t const nWriters = lw.size();
+    for (std::size_t i = 0; i < nWriters; ++i) {
       // Extract writer and specification
-      shared_ptr<LASwriter> lw = this->lw[i];
+      std::shared_ptr<LASwriter> lw = this->lw[i];
       LasWriterSpec& lws = this->lws[i];
       // Do finishing stuff
       lw->update_header(&lws.lwHeader, true); // Update the header

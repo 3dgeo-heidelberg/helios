@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <mutex>
+#include <vector>
 
 namespace helios {
 namespace filems {

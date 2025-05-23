@@ -3,9 +3,9 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-SparseVoxelGrid::SparseVoxelGrid(size_t const maxNVoxels)
+SparseVoxelGrid::SparseVoxelGrid(std::size_t const maxNVoxels)
   : IVoxelGrid(maxNVoxels)
-  , map(std::max((size_t)1, (size_t)std::sqrt(maxNVoxels)))
+  , map(std::max((std::size_t)1, (std::size_t)std::sqrt(maxNVoxels)))
 {
 }
 
@@ -18,13 +18,13 @@ SparseVoxelGrid::release()
 }
 
 bool
-SparseVoxelGrid::hasVoxel(size_t const key)
+SparseVoxelGrid::hasVoxel(std::size_t const key)
 {
   return map.find(key) != map.cend();
 }
 
 Voxel*
-SparseVoxelGrid::getVoxel(size_t const key)
+SparseVoxelGrid::getVoxel(std::size_t const key)
 {
   try {
     return map.at(key).voxel;
@@ -34,7 +34,7 @@ SparseVoxelGrid::getVoxel(size_t const key)
 }
 
 Voxel*
-SparseVoxelGrid::setVoxel(size_t const key,
+SparseVoxelGrid::setVoxel(std::size_t const key,
                           double const x,
                           double const y,
                           double const z,
@@ -47,7 +47,7 @@ SparseVoxelGrid::setVoxel(size_t const key,
 }
 
 void
-SparseVoxelGrid::deleteVoxel(size_t const key)
+SparseVoxelGrid::deleteVoxel(std::size_t const key)
 {
   VoxelGridCell& vgc = map.at(key);
   Voxel* voxel = vgc.voxel;
@@ -57,26 +57,26 @@ SparseVoxelGrid::deleteVoxel(size_t const key)
   vgc.voxel = nullptr;
 }
 
-Mat<double>*
-SparseVoxelGrid::getMatrix(size_t const key) const
+arma::Mat<double>*
+SparseVoxelGrid::getMatrix(std::size_t const key) const
 {
   return map.at(key).matrix;
 }
 
-Mat<double>&
-SparseVoxelGrid::getMatrixRef(size_t const key) const
+arma::Mat<double>&
+SparseVoxelGrid::getMatrixRef(std::size_t const key) const
 {
   return *getMatrix(key);
 }
 
-Mat<double> const&
-SparseVoxelGrid::getMatrixConstRef(size_t const key) const
+arma::Mat<double> const&
+SparseVoxelGrid::getMatrixConstRef(std::size_t const key) const
 {
   return *getMatrix(key);
 }
 
 void
-SparseVoxelGrid::setMatrix(size_t const key, Mat<double>* mat)
+SparseVoxelGrid::setMatrix(std::size_t const key, arma::Mat<double>* mat)
 {
   VoxelGridCell& vgc = map.at(key);
   if (vgc.matrix != nullptr)
@@ -85,13 +85,13 @@ SparseVoxelGrid::setMatrix(size_t const key, Mat<double>* mat)
 }
 
 void
-SparseVoxelGrid::setNextMatrixCol(size_t const key,
+SparseVoxelGrid::setNextMatrixCol(std::size_t const key,
                                   double const x,
                                   double const y,
                                   double const z)
 {
   VoxelGridCell& vgc = map.at(key);
-  size_t const startIdx = vgc.cursor * 3;
+  std::size_t const startIdx = vgc.cursor * 3;
   (*vgc.matrix)[startIdx] = x;
   (*vgc.matrix)[startIdx + 1] = y;
   (*vgc.matrix)[startIdx + 2] = z;
@@ -99,7 +99,7 @@ SparseVoxelGrid::setNextMatrixCol(size_t const key,
 }
 
 void
-SparseVoxelGrid::deleteMatrix(size_t const key)
+SparseVoxelGrid::deleteMatrix(std::size_t const key)
 {
   try {
     VoxelGridCell& vgc = map.at(key);
@@ -115,31 +115,31 @@ SparseVoxelGrid::deleteMatrices()
     deleteMatrix(i);
 }
 
-size_t
-SparseVoxelGrid::getCursor(size_t const key) const
+std::size_t
+SparseVoxelGrid::getCursor(std::size_t const key) const
 {
   return map.at(key).cursor;
 }
 
 void
-SparseVoxelGrid::setCursor(size_t const key, size_t const cursor)
+SparseVoxelGrid::setCursor(std::size_t const key, std::size_t const cursor)
 {
   map.at(key).cursor = cursor;
 }
 
 void
-SparseVoxelGrid::incrementCursor(size_t const key)
+SparseVoxelGrid::incrementCursor(std::size_t const key)
 {
   ++map.at(key).cursor;
 }
 
 double
-SparseVoxelGrid::getClosestPointDistance(size_t const key) const
+SparseVoxelGrid::getClosestPointDistance(std::size_t const key) const
 {
   return map.at(key).closestPointDistance;
 }
 void
-SparseVoxelGrid::setClosestPointDistance(size_t const key,
+SparseVoxelGrid::setClosestPointDistance(std::size_t const key,
                                          double const distance)
 {
   map.at(key).closestPointDistance = distance;
@@ -160,7 +160,7 @@ SparseVoxelGrid::whileLoopHasNext()
 }
 
 Voxel*
-SparseVoxelGrid::whileLoopNext(size_t* key)
+SparseVoxelGrid::whileLoopNext(std::size_t* key)
 {
   // Obtain current voxel
   Voxel* voxel = whileLoopIter->second.voxel;

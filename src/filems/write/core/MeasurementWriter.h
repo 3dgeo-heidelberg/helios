@@ -11,9 +11,6 @@
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -62,14 +59,14 @@ public:
    * @brief Make a single measurement SyncFileWriter
    * @see BaseMeasurementWriter::makeWriter
    */
-  shared_ptr<SyncFileWriter<Measurement const&, glm::dvec3 const&>> makeWriter(
-    WriterType const& type,
-    string const& path,
-    bool const zipOutput,
-    double const lasScale,
-    glm::dvec3 shift,
-    double const minIntensity,
-    double const deltaIntensity) const override
+  std::shared_ptr<SyncFileWriter<Measurement const&, glm::dvec3 const&>>
+  makeWriter(WriterType const& type,
+             std::string const& path,
+             bool const zipOutput,
+             double const lasScale,
+             glm::dvec3 shift,
+             double const minIntensity,
+             double const deltaIntensity) const override
   {
     return SyncFileMeasurementWriterFactory::makeWriter(
       type,      // Writer type

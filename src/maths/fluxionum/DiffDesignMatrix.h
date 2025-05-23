@@ -14,9 +14,6 @@
 
 namespace fluxionum {
 
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -224,7 +221,7 @@ protected:
    *
    * By default, it is "time"
    */
-  string timeName;
+  std::string timeName;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -235,8 +232,8 @@ public:
    *  there are no names
    */
   DiffDesignMatrix(
-    vector<string> const& columnNames = vector<string>(0),
-    string const timeName = "time",
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0),
+    std::string const timeName = "time",
     DiffDesignMatrixType diffType = DiffDesignMatrixType::UNKNOWN)
     : AbstractDesignMatrix<VarType>(columnNames)
     , diffType(diffType)
@@ -255,8 +252,8 @@ public:
   DiffDesignMatrix(
     arma::Col<TimeType> const& t,
     arma::Mat<VarType> const& A,
-    string const& timeName = "time",
-    vector<string> const& columnNames = vector<string>(0),
+    std::string const& timeName = "time",
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0),
     DiffDesignMatrixType diffType = DiffDesignMatrixType::UNKNOWN)
     : AbstractDesignMatrix<VarType>(columnNames)
     , diffType(diffType)
@@ -275,24 +272,24 @@ public:
    *  names are read from file at given path
    */
   DiffDesignMatrix(
-    string const& path,
-    string const& timeName = "time",
+    std::string const& path,
+    std::string const& timeName = "time",
     DiffDesignMatrixType diffType = DiffDesignMatrixType::UNKNOWN)
   {
     helios::filems::DesignMatrixReader<VarType> reader(path);
-    std::unordered_map<string, string> kv;
+    std::unordered_map<std::string, std::string> kv;
     DesignMatrix<VarType> const dm = reader.read(&kv);
-    size_t const tCol =
-      (size_t)std::strtoul(kv.at("TIME_COLUMN").c_str(), nullptr, 10);
+    std::size_t const tCol =
+      (std::size_t)std::strtoul(kv.at("TIME_COLUMN").c_str(), nullptr, 10);
     if (kv.find("DIFF_TYPE") != kv.end()) {
-      string diffTypeStr = kv.at("DIFF_TYPE");
-      string::iterator begin = diffTypeStr.begin();
-      string::iterator end = diffTypeStr.end();
+      std::string diffTypeStr = kv.at("DIFF_TYPE");
+      std::string::iterator begin = diffTypeStr.begin();
+      std::string::iterator end = diffTypeStr.end();
       std::function<bool(char const)> filter = [&](char const c) -> bool {
         return c == ' ' || c == '\t';
       };
       end = std::remove_if(diffTypeStr.begin(), diffTypeStr.end(), filter);
-      diffTypeStr = string(begin, end);
+      diffTypeStr = std::string(begin, end);
       if (diffTypeStr == "FORWARD_FINITE_DIFFERENCES") {
         diffType = DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES;
       } else if (diffTypeStr == "CENTRAL_FINITE_DIFFERENCES") {
@@ -380,9 +377,9 @@ public:
    * @return Reference to the element at \f$i\f$-th row and \f$j\f$-th
    *  column
    * @see fluxionum::DiffDesignMatrix::A
-   * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
+   * @see AbstractDesignMatrix::operator()(std::size_t const, std::size_t const)
    */
-  inline VarType& operator()(size_t const i, size_t const j) override
+  inline VarType& operator()(std::size_t const i, std::size_t const j) override
   {
     return A.at(i, j);
   }
@@ -394,7 +391,7 @@ public:
    * @return Reference to the \f$t_{i}\f$ component of the sorted time vector
    *  \f$\vec{t}\f$
    */
-  inline TimeType& operator[](size_t const i) { return t.at(i); }
+  inline TimeType& operator[](std::size_t const i) { return t.at(i); }
 
   // ***  METHODS  *** //
   // ***************** //
@@ -419,21 +416,21 @@ public:
    * @see fluxionum::DiffDesignMatrix::A
    * @see fluxionum::AbstractDesignMatrix::getNumRows
    */
-  inline size_t getNumRows() const override { return A.n_rows; }
+  inline std::size_t getNumRows() const override { return A.n_rows; }
   /**
    * @brief Obtain the number of columns of the DiffDesignMatrix \f$A\f$
    * @return The number of columns of the DiffDesignMatrix \f$A\f$
    * @see fluxionum::DiffDesignMatrix::A
    * @see fluxionum::AbstractDesignMatrix::getNumColumns
    */
-  inline size_t getNumColumns() const override { return A.n_cols; }
+  inline std::size_t getNumColumns() const override { return A.n_cols; }
   /**
    * @brief Obtain the number of elements of the DiffDesignMatrix \f$A\f$
    * @return The number of elements of the DiffDesignMatrix \f$A\f$
    * @see fluxionum::DiffDesignMatrix::A
    * @see fluxionum::AbstractDesignMatrix::getNumElements
    */
-  inline size_t getNumElements() const override { return A.n_elem; }
+  inline std::size_t getNumElements() const override { return A.n_elem; }
   /**
    * @brief Obtain the type of differential of the DiffDesignMatrix
    * @return The type of tdifferential of the DiffDesignMatrix
@@ -445,7 +442,7 @@ public:
    * @return The name of the time attribute
    * @see fluxionum::TemporalDesignMatrix::timeName
    */
-  inline string const& getTimeName() const { return timeName; }
+  inline std::string const& getTimeName() const { return timeName; }
   /**
    * @brief Obtain the sorted series of time values DiffDesignMatrix::t
    * @return The sorted series of time values DiffDesignMatrix::t

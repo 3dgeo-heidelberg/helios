@@ -145,18 +145,19 @@ SimulationPlayer::restartPlatform(Platform& p)
 }
 
 void
-SimulationPlayer::restartFileMS(FMSFacade& fms)
+SimulationPlayer::restartFileMS(helios::filems::FMSFacade& fms)
 {
   // Build new facade with updated output directory
-  std::shared_ptr<FMSFacade> newFacade =
-    FMSFacadeFactory().buildFacade(fms.write.getOutDir(),
-                                   fms.write.getMeasurementWriterLasScale(),
-                                   fms.write.isMeasurementWriterLasOutput(),
-                                   fms.write.isMeasurementWriterLas10(),
-                                   fms.write.isMeasurementWriterZipOutput(),
-                                   fms.write.isSplitByChannel(),
-                                   *static_cast<SurveyPlayback&>(sim).mSurvey,
-                                   false);
+  std::shared_ptr<helios::filems::FMSFacade> newFacade =
+    helios::filems::FMSFacadeFactory().buildFacade(
+      fms.write.getOutDir(),
+      fms.write.getMeasurementWriterLasScale(),
+      fms.write.isMeasurementWriterLasOutput(),
+      fms.write.isMeasurementWriterLas10(),
+      fms.write.isMeasurementWriterZipOutput(),
+      fms.write.isSplitByChannel(),
+      *static_cast<SurveyPlayback&>(sim).mSurvey,
+      false);
   // Replace writer of current facade with writer from new facade
   fms.write = newFacade->write;
 }

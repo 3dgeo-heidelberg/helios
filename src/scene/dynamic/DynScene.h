@@ -8,9 +8,6 @@
 #include <scene/dynamic/DynObject.h>
 #include <sim/tools/NonVoidStepLoop.h>
 
-using std::shared_ptr;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -82,7 +79,7 @@ protected:
   /**
    * @brief Dynamic objects composing the scene
    */
-  vector<shared_ptr<DynObject>> dynObjs;
+  std::vector<std::shared_ptr<DynObject>> dynObjs;
   /**
    * @brief Vector of flags controlling whether a dynamic object has been
    *  updated after last step (true) or not.
@@ -91,7 +88,7 @@ protected:
    *  on last step, if it is false then it means the i-th dynamic object
    *  has NOT been updated on last step.
    */
-  vector<bool> updated;
+  std::vector<bool> updated;
   /**
    * @brief The step loop for the dynamic scene
    * @see StepLoop
@@ -258,7 +255,7 @@ public:
    * @param dynobj Dynamic object to be appended to the scene
    * @see DynObject
    */
-  inline void appendDynObject(shared_ptr<DynObject> dynobj)
+  inline void appendDynObject(std::shared_ptr<DynObject> dynobj)
   {
     dynObjs.push_back(dynobj);
     updated.push_back(true);
@@ -268,7 +265,7 @@ public:
    * @param index Index of dynamic object to be obtained
    * @return Dynamic object at given index
    */
-  inline shared_ptr<DynObject> getDynObject(size_t const index)
+  inline std::shared_ptr<DynObject> getDynObject(std::size_t const index)
   {
     return dynObjs[index];
   }
@@ -277,7 +274,8 @@ public:
    * @param index Index of dynamic object to be setted
    * @param dynobj New dynamic object
    */
-  inline void setDynObject(size_t const index, shared_ptr<DynObject> dynobj)
+  inline void setDynObject(std::size_t const index,
+                           std::shared_ptr<DynObject> dynobj)
   {
     dynObjs[index] = dynobj;
     updated[index] = true;
@@ -286,7 +284,7 @@ public:
    * @brief Remove dynamic object at given index
    * @param index Index of dynamic object to be removed
    */
-  inline void removeDynObject(size_t const index)
+  inline void removeDynObject(std::size_t const index)
   {
     dynObjs.erase(dynObjs.begin() + index);
     updated.erase(updated.begin() + index);
@@ -299,7 +297,7 @@ public:
    * @brief Obtain the number of dynamic objects in the scene
    * @return Number of dynamic objects in the scene
    */
-  inline size_t numDynObjects() { return dynObjs.size(); }
+  inline std::size_t numDynObjects() { return dynObjs.size(); }
   /**
    * @brief Check whether the dynamic object at given index has been updated
    *  on last step (true) or not (false)
@@ -307,7 +305,7 @@ public:
    * @return True if dynamic object at given index has been updated on last
    *  step, false otherwise
    */
-  inline bool isDynObjectUpdated(size_t const index) const
+  inline bool isDynObjectUpdated(std::size_t const index) const
   {
     return updated[index];
   }

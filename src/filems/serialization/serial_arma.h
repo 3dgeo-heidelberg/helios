@@ -1,6 +1,7 @@
 #pragma once
 
 #include <armadillo>
+#include <boost/serialization/split_free.hpp>
 
 namespace boost {
 namespace serialization {

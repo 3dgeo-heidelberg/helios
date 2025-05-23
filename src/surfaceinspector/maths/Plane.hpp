@@ -5,11 +5,6 @@
 #include <armadillo>
 
 #include <surfaceinspector/util/Object.hpp>
-
-using std::vector;
-
-using SurfaceInspector::util::Object;
-
 namespace SurfaceInspector {
 namespace maths {
 
@@ -20,7 +15,7 @@ namespace maths {
  * @tparam T Type of number
  */
 template<typename T>
-class Plane : public Object
+class Plane : public SurfaceInspector::util::Object
 {
 public:
   // ***  ATTRIBUTES  *** //
@@ -28,11 +23,11 @@ public:
   /**
    * @brief Coordinates for plane centroid
    */
-  vector<T> centroid;
+  std::vector<T> centroid;
   /**
    * @brief Plane orthonormal vector
    */
-  vector<T> orthonormal;
+  std::vector<T> orthonormal;
   /**
    * @brief When the plane has been obtained through fitting to a sample,
    *  scatter will quantify variation with respect to elements in the sample
@@ -72,8 +67,8 @@ public:
    * @see Plane::scatter
    * @see Plane::curvature
    */
-  Plane(vector<T> centroid,
-        vector<T> orthonormal,
+  Plane(std::vector<T> centroid,
+        std::vector<T> orthonormal,
         T scatter = 0,
         T curvature = 0)
     : centroid(centroid)

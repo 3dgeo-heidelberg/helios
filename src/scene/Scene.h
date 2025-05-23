@@ -155,7 +155,8 @@ public:
    * @brief Scene default constructor
    */
   Scene()
-    : kdgf(make_shared<KDGroveFactory>(make_shared<SimpleKDTreeFactory>()))
+    : kdgf(std::make_shared<KDGroveFactory>(
+        std::make_shared<SimpleKDTreeFactory>()))
   {
   }
   ~Scene() override
@@ -224,7 +225,7 @@ public:
    * @see Scene::getIntersection(dvec3 const, dvec3 const, bool const)
    */
   std::shared_ptr<RaySceneIntersection> getIntersection(
-    vector<double> const& tMinMax,
+    std::vector<double> const& tMinMax,
     glm::dvec3 const& rayOrigin,
     glm::dvec3 const& rayDir,
     bool const groundOnly) const;
@@ -362,9 +363,9 @@ public:
    */
   glm::dvec3 findForceOnGroundQ(int const searchDepth,
                                 glm::dvec3 const minzv,
-                                vector<Vertex*>& vertices,
-                                vector<double> const& o,
-                                vector<double> const& v);
+                                std::vector<Vertex*>& vertices,
+                                std::vector<double> const& o,
+                                std::vector<double> const& v);
 
   /**
    * @brief Build the KDGrove for the scene, overwriting previous one if any.

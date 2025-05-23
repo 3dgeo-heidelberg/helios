@@ -31,7 +31,7 @@ AxisSAHKDTreeFactory::_clone(KDTreeFactory* kdtf) const
 void
 AxisSAHKDTreeFactory::defineSplit(KDTreeNode* node,
                                   KDTreeNode* parent,
-                                  vector<Primitive*>& primitives,
+                                  std::vector<Primitive*>& primitives,
                                   int const depth) const
 {
   // Initial as best

@@ -11,9 +11,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -26,7 +23,7 @@ using std::vector;
  * @see filems::ZipSyncFileFullWaveformWriter
  */
 class ZipVectorialSyncFileFullWaveformWriter
-  : public ZipSyncFileWriter<vector<FullWaveform> const&>
+  : public ZipSyncFileWriter<std::vector<FullWaveform> const&>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -47,13 +44,13 @@ public:
    * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
    */
   explicit ZipVectorialSyncFileFullWaveformWriter(
-    const string& path,
+    const std::string& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
-    : ZipSyncFileWriter<vector<FullWaveform> const&>(path, compressionMode)
+    : ZipSyncFileWriter<std::vector<FullWaveform> const&>(path, compressionMode)
     , zfwws(this->ofs, *(this->oa))
   {
     this->writeStrategy =
-      make_shared<VectorialWriteStrategy<FullWaveform>>(zfwws);
+      std::make_shared<VectorialWriteStrategy<FullWaveform>>(zfwws);
   }
   virtual ~ZipVectorialSyncFileFullWaveformWriter() = default;
 };

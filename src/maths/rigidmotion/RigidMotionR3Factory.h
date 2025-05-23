@@ -6,8 +6,6 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/void_cast.hpp>
 
-using namespace arma;
-
 namespace rigidmotion {
 
 /**
@@ -84,7 +82,7 @@ public:
    *  \f$\mathbb{R}^{3}\f$
    * @see rigidmotion::RigidMotionFactory::makeTranslation
    */
-  RigidMotion makeTranslation(colvec const shift) const override;
+  RigidMotion makeTranslation(arma::colvec const shift) const override;
   /**
    * @brief Implementation of reflection rigid motion in \f$\mathbb{R}^{3}\f$
    *
@@ -131,7 +129,7 @@ public:
    * @return Reflection rigid motion in \f$\mathbb{R}^{3}\f$
    * @see rigidmotion::RigidMotionR3Factory::canonicalReflection
    */
-  virtual RigidMotion makeReflection(colvec const ortho) const;
+  virtual RigidMotion makeReflection(arma::colvec const ortho) const;
   /**
    * @brief Fast implementation of a reflection rigid motion in
    *  \f$\mathbb{R}^{3}\f$
@@ -146,9 +144,10 @@ public:
    *
    * @param orthonormal Orthonormal vector defining the reflection plane
    * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
-   * @see makeReflectionFast(colvec const, colvec const, colvec const)
+   * @see makeReflectionFast(arma::colvec const, arma::colvec const,
+   * arma::colvec const)
    */
-  virtual RigidMotion makeReflectionFast(colvec const orthonormal) const;
+  virtual RigidMotion makeReflectionFast(arma::colvec const orthonormal) const;
   /**
    * @brief Fast implementation of a reflection rigid motion in
    *  \f$\mathbb{R}^{3}\f$
@@ -157,24 +156,24 @@ public:
    *  vectors are given as a set of orthonormal vectors. Otherwise,
    *  output might lead to unexpected behaviors.
    *
-   * This function is faster that makeReflectionFast(colvec const) but
+   * This function is faster that makeReflectionFast(arma::colvec const) but
    *  its input must satisfy more requirements.
    *
    * @param u Orthonormal vector defining the reflection plane
    * @param alpha First normal vector contained in the reflection plane
    * @param beta Second normal vector contained in the reflection plane
-   * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
-   * @see makeReflectionFast(colvec const)
+   * @see rigidmotion::RigidMotionR3Factory::makeReflection(arma::colvec const)
+   * @see makeReflectionFast(arma::colvec const)
    */
-  virtual RigidMotion makeReflectionFast(colvec const u,
-                                         colvec const alpha,
-                                         colvec const beta) const;
+  virtual RigidMotion makeReflectionFast(arma::colvec const u,
+                                         arma::colvec const alpha,
+                                         arma::colvec const beta) const;
   /**
    * @brief Implementation of a reflection rigid motion over a plane with
    *  \f$x\f$-axis as orthonormal.
    * @return Reflection rigid motion over \f$x=0\f$ plane in
    *  \f$\mathbb{R}^{3}\f$
-   * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
+   * @see rigidmotion::RigidMotionR3Factory::makeReflection(arma::colvec const)
    */
   virtual RigidMotion makeReflectionX() const;
   /**
@@ -182,7 +181,7 @@ public:
    *  \f$y\f$-axis as orthonormal.
    * @return Reflection rigid motion over \f$y=0\f$ plane in
    *  \f$\mathbb{R}^{3}\f$
-   * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
+   * @see rigidmotion::RigidMotionR3Factory::makeReflection(arma::colvec const)
    */
   virtual RigidMotion makeReflectionY() const;
   /**
@@ -190,7 +189,7 @@ public:
    *  \f$z\f$-axis as orthonormal.
    * @return Reflection rigid motion over \f$z=0\f$ plane in
    *  \f$\mathbb{R}^{3}\f$
-   * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
+   * @see rigidmotion::RigidMotionR3Factory::makeReflection(arma::colvec const)
    */
   virtual RigidMotion makeReflectionZ() const;
   /**
@@ -199,12 +198,12 @@ public:
    *
    * Let \f$\vec{u}\f$ be the orthogonal vector defining the reflection plane
    *  so a reflection can be performed as documented in the
-   *  makeReflection(colvec const) method. If \f$\vec{v}\f$ is a vector
+   *  makeReflection(arma::colvec const) method. If \f$\vec{v}\f$ is a vector
    *  contained in the reflection plane, which means
    *  \f$\left\langle\vec{u},\vec{v}\right\rangle = 0\f$ must be satisfied.
    *  Then the affine application for the glide reflection can be expressed
    *  as \f$Y = \vec{v} + BJB^{-1}X\f$ where \f$B\f$ is the basis matrix
-   *  as explained in makeReflection(colvec const).
+   *  as explained in makeReflection(arma::colvec const).
    *
    * @param ortho Orthogonal vector defining the reflection plane
    * @param shift The translation vector. It must be orthogonal with respect
@@ -212,10 +211,10 @@ public:
    *
    * @return Glide reflection (glide plane) rigid motion in
    *  \f$\mathbb{R}^{3}\f$
-   * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
+   * @see rigidmotion::RigidMotionR3Factory::makeReflection(arma::colvec const)
    */
-  virtual RigidMotion makeGlideReflection(colvec const ortho,
-                                          colvec const shift) const;
+  virtual RigidMotion makeGlideReflection(arma::colvec const ortho,
+                                          arma::colvec const shift) const;
   /**
    * @brief Fast implementation of a reflection rigid motion in
    *  \f$\mathbb{R}^{3}\f$
@@ -225,15 +224,15 @@ public:
    *  unexpected behaviors.
    *
    * Also, restrictions with respect to shift vector must be satisfied as for
-   *  the makeGlideReflection(colvec const, colvec const) method.
+   *  the makeGlideReflection(arma::colvec const, arma::colvec const) method.
    *
    * @param orthonormal Orthonormal vector defining the reflection plane
    * @param shift Translation/glide vector. Must be orthogonal with respect
    *  to plane orthonormal vector
-   * @see makeGlideReflection(colvec const, colvec const)
+   * @see makeGlideReflection(arma::colvec const, arma::colvec const)
    */
-  virtual RigidMotion makeGlideReflectionFast(colvec const orthonormal,
-                                              colvec const shift) const;
+  virtual RigidMotion makeGlideReflectionFast(arma::colvec const orthonormal,
+                                              arma::colvec const shift) const;
   /**
    * @brief Implementation of rotation rigid motion over an arbitrary axis
    *  in \f$\mathbb{R}^{3}\f$
@@ -262,7 +261,8 @@ public:
    * @param theta The rotation angle
    * @return Rotation rigid motion in \f$\mathbb{R}^{3}\f$
    */
-  virtual RigidMotion makeRotation(colvec const axis, double const theta) const;
+  virtual RigidMotion makeRotation(arma::colvec const axis,
+                                   double const theta) const;
   /**
    * @brief Fast implementation of a rotation rigid motion in
    *  \f$\mathbb{R}^{3}\f$
@@ -273,9 +273,9 @@ public:
    *
    * @param axis Normalized rotation axis
    * @param theta Rotation angle
-   * @see RigidMotionR3Factory::makeRotation(colvec const, double const)
+   * @see RigidMotionR3Factory::makeRotation(arma::colvec const, double const)
    */
-  virtual RigidMotion makeRotationFast(colvec const axis,
+  virtual RigidMotion makeRotationFast(arma::colvec const axis,
                                        double const theta) const;
   /**
    * @brief Implementation of a rotation rigid motion over the \f$x\f$-axis.
@@ -314,9 +314,9 @@ public:
    * @param glide How many glide apply in the direction of rotation axis
    *  afther the rotation
    * @return Helical rigid motion in \f$\mathbb{R}^{3}\f$
-   * @see RigidMotionR3Factory::makeRotation(colvec const, double const)
+   * @see RigidMotionR3Factory::makeRotation(arma::colvec const, double const)
    */
-  virtual RigidMotion makeHelical(colvec const axis,
+  virtual RigidMotion makeHelical(arma::colvec const axis,
                                   double const theta,
                                   double const glide) const;
   /**
@@ -331,9 +331,9 @@ public:
    * @param theta Rotation angle
    * @param glide How many glide apply in the direction of rotation axis
    *  after the rotation
-   * @see makeHelical(colvec const, double const, double const)
+   * @see makeHelical(arma::colvec const, double const, double const)
    */
-  virtual RigidMotion makeHelicalFast(colvec const axis,
+  virtual RigidMotion makeHelicalFast(arma::colvec const axis,
                                       double const theta,
                                       double const glide) const;
   /**
@@ -390,11 +390,12 @@ public:
    *  symmetry/reflection plane
    * @param theta Rotation angle
    * @return Rotational symmetry rigid motion in \f$\mathbb{R}^{3}\f$
-   * @see RigidMotionR3Factory::makeRotation(colvec const, double const)
-   * @see RigidMotionR3Factory::makeReflection(colvec const)
-   * @see makeRotationalSymmetry(colvec const, double const, colvec const)
+   * @see RigidMotionR3Factory::makeRotation(arma::colvec const, double const)
+   * @see RigidMotionR3Factory::makeReflection(arma::colvec const)
+   * @see makeRotationalSymmetry(arma::colvec const, double const, arma::colvec
+   * const)
    */
-  virtual RigidMotion makeRotationalSymmetry(colvec const axis,
+  virtual RigidMotion makeRotationalSymmetry(arma::colvec const axis,
                                              double const theta) const;
   /**
    * @brief Fast implementation of a rotational symmetry rigid motion in
@@ -407,9 +408,9 @@ public:
    * @param axis Normalized rotation axis which is also the orthonormal
    *  vector for the symmetry/reflection plane
    * @param theta Rotation angle
-   * @see makeRotationalSymmetry(colvec const, double const)
+   * @see makeRotationalSymmetry(arma::colvec const, double const)
    */
-  virtual RigidMotion makeRotationalSymmetryFast(colvec const axis,
+  virtual RigidMotion makeRotationalSymmetryFast(arma::colvec const axis,
                                                  double const theta) const;
   /**
    * @brief Implementation of rotational symmetry rigid motion over an
@@ -427,11 +428,12 @@ public:
    * @param theta Rotation angle
    * @param center The center of rotational symmetry where the rotation
    *  axis and the reflection plane intersect
-   * @see makeRotationalSymmetry(colvec const, double const)
+   * @see makeRotationalSymmetry(arma::colvec const, double const, arma::colvec
+   * const)
    */
-  virtual RigidMotion makeRotationalSymmetry(colvec const axis,
+  virtual RigidMotion makeRotationalSymmetry(arma::colvec const axis,
                                              double const theta,
-                                             colvec const center) const;
+                                             arma::colvec const center) const;
   /**
    * @brief Fast implementation of a rotational symmetry rigid motion in
    *  \f$\mathbb{R}^{3}\f$
@@ -445,11 +447,13 @@ public:
    * @param theta Rotation angle
    * @param center The center of rotational symmetry where the rotation
    *  axis and the reflection plane intersect
-   * @see makeRotationalSymmetry(colvec const, double const, colvec const)
+   * @see makeRotationalSymmetry(arma::colvec const, double const, arma::colvec
+   * const)
    */
-  virtual RigidMotion makeRotationalSymmetryFast(colvec const axis,
-                                                 double const theta,
-                                                 colvec const center) const;
+  virtual RigidMotion makeRotationalSymmetryFast(
+    arma::colvec const axis,
+    double const theta,
+    arma::colvec const center) const;
   /**
    * @brief Implementation of a rotational symmetry over the \f$x\f$-axis
    * @param theta Rotation angle

@@ -1,14 +1,11 @@
-#ifndef _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
-#define _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
+#pragma once
 
 #include <vector>
 
+#include <boost/serialization/access.hpp>
+
 #include <surfaceinspector/maths/functions/GaussianFunction.hpp>
 #include <surfaceinspector/util/Object.hpp>
-
-using std::vector;
-using SurfaceInspector::maths::functions::GaussianFunction;
-using SurfaceInspector::util::Object;
 
 namespace SurfaceInspector {
 namespace maths {
@@ -21,7 +18,7 @@ namespace maths {
  * @brief Class for representation and handling of 1D histograms
  */
 template<typename T>
-class Histogram : public Object
+class Histogram : public SurfaceInspector::util::Object
 {
 private:
   // ***  SERIALIZATION  *** //
@@ -48,11 +45,11 @@ public:
   /**
    * @brief The number of elements considered to build the histogram
    */
-  size_t m;
+  std::size_t m;
   /**
    * @brief The number of bins
    */
-  size_t n;
+  std::size_t n;
 
   /**
    * @brief The minimum value on data used to build the histogram
@@ -81,30 +78,30 @@ public:
    *
    * \f$c_i = k\f$ means there are k elements in the i-th bin
    */
-  vector<size_t> c;
+  std::vector<std::size_t> c;
   /**
    * @brief The relative frequency for each bin
    */
-  vector<double> r;
+  std::vector<double> r;
   /**
    * @brief The density for each bin corresponding to the unitary area
    *  version of the histogram
    * @see Histogram::computeDensity
    */
-  vector<double> d;
+  std::vector<double> d;
 
   /**
    * @brief The start value for each bin
    *
    * \f$a_i = x\f$ means x is the start value for i-th bin
    */
-  vector<T> a;
+  std::vector<T> a;
   /**
-   * @briet The end value for each bin
+   * @brief The end value for each bin
    *
    * \f$b_i = x\f$ means y is the end value for i-th bin
    */
-  vector<T> b;
+  std::vector<T> b;
 
   // *** CONSTRUCTION / DESTRUCTION  *** //
   // *********************************** //
@@ -118,8 +115,8 @@ public:
    * @param density Compute the density if true. Skip its computation if
    *  false
    */
-  Histogram(vector<T> x,
-            size_t n = 256,
+  Histogram(std::vector<T> x,
+            std::size_t n = 256,
             bool relative = true,
             bool density = true);
   /**
@@ -137,8 +134,8 @@ public:
    */
   Histogram(T xmin,
             T xmax,
-            vector<T> x,
-            size_t n = 256,
+            std::vector<T> x,
+            std::size_t n = 256,
             bool relative = true,
             bool density = true);
   /**
@@ -154,7 +151,7 @@ public:
    *  available.
    * @see SurfaceInspector::maths::functions::GaussianFunction
    */
-  GaussianFunction<T> estimateGaussian();
+  SurfaceInspector::maths::functions::GaussianFunction<T> estimateGaussian();
   /**
    * @brief Obtain the cut point (value) \f$\tau\f$ so approximately
    *  \f$100p \%\f$ of the elements are greater than it.
@@ -178,7 +175,7 @@ public:
    * @param end The exclusive end index of absolute cumsum \f$\beta\f$
    * @return Absoulte cumsum in index interval \f$[\alpha, \beta)\f$
    */
-  size_t absCumsum(size_t const start, size_t const end);
+  std::size_t absCumsum(std::size_t const start, std::size_t const end);
   /**
    * @brief Like absCumsum(size_t const, size_t const) but for the entire
    *  histogram
@@ -193,7 +190,7 @@ private:
    * @brief Extract min and max values from vector of values
    * @param x The vector of values
    */
-  void extractMinMax(vector<T> const& x);
+  void extractMinMax(std::vector<T> const& x);
 
   /**
    * @brief Compute the \f$[a, b]\f$ interval for each bin
@@ -218,7 +215,7 @@ private:
    *
    * @param x the Vector of values
    */
-  void recount(vector<T> const& x);
+  void recount(std::vector<T> const& x);
   /**
    * @brief Compute the relative frequencies for each bin
    *
@@ -255,5 +252,3 @@ private:
 }
 
 #include <surfaceinspector/maths/Histogram.tpp>
-
-#endif

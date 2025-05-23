@@ -4,6 +4,8 @@
 #include <scanner/detector/FullWaveform.h>
 
 #include <fstream>
+#include <iomanip>
+#include <iterator>
 #include <sstream>
 #include <vector>
 

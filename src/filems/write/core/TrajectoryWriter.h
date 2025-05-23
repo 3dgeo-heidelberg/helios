@@ -13,10 +13,6 @@ namespace fs = boost::filesystem;
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::shared_ptr;
-using std::string;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -41,7 +37,7 @@ public:
    * @param parent Path to output directory for trajectory files
    * @param prefix Prefix for the name of the output file
    */
-  void configure(string const& parent, string const& prefix);
+  void configure(std::string const& parent, std::string const& prefix);
   /**
    * @brief Write a trajectory point
    * @param t Trajectory point to be written
@@ -65,7 +61,7 @@ public:
    * @see filems::TrajectoryWriter::sfw
    */
   inline void setSyncFileWriter(
-    shared_ptr<SyncFileWriter<Trajectory const&>> sfw)
+    std::shared_ptr<SyncFileWriter<Trajectory const&>> sfw)
   {
     this->sfw = sfw;
   }
@@ -73,7 +69,8 @@ public:
    * @brief Get the synchronous file writer used to write trajectories
    * @see filems::TrajectoryWriter::sfw
    */
-  inline shared_ptr<SyncFileWriter<Trajectory const&>> getSyncFileWriter() const
+  inline std::shared_ptr<SyncFileWriter<Trajectory const&>> getSyncFileWriter()
+    const
   {
     return sfw;
   }
@@ -81,7 +78,7 @@ public:
    * @brief Set path to output file
    * @param path New path to output file
    */
-  void setOutputFilePath(string const& path);
+  void setOutputFilePath(std::string const& path);
   /**
    * @brief Get the path to the output file
    * @return The path to the output file
@@ -94,7 +91,7 @@ public:
   /**
    * @see filems::TrajectoryWriter::getOutputFilePath
    */
-  inline string getOutputPath() const { return sfw->getPath(); }
+  inline std::string getOutputPath() const { return sfw->getPath(); }
 };
 
 }

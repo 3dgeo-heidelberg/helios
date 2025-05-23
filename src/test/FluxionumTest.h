@@ -1,5 +1,6 @@
 #pragma once
 
+#include <BaseTest.h>
 #include <fluxionum/ClosestLesserSampleFunction.h>
 #include <fluxionum/DesignMatrix.h>
 #include <fluxionum/DiffDesignMatrix.h>

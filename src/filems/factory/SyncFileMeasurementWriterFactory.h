@@ -39,11 +39,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-using std::shared_ptr;
-using std::string;
-using std::stringstream;
-
 // ** Types of writers ** //
 
 /** @enum WriterType
@@ -82,9 +77,9 @@ public:
    * @see LasSyncFileWriter::minIntensity
    * @see LasSyncFileWriter::deltaIntensity
    */
-  static shared_ptr<SyncFileWriter<Measurement const&, glm::dvec3 const&>>
+  static std::shared_ptr<SyncFileWriter<Measurement const&, glm::dvec3 const&>>
   makeWriter(WriterType const type,
-             const string& path,
+             const std::string& path,
              bool const compress = false,
              double const scaleFactor = 0.0001,
              glm::dvec3 const offset = glm::dvec3(0, 0, 0),
@@ -93,7 +88,7 @@ public:
   {
     switch (type) {
       case las10Type:
-        return make_shared<LasSyncFileMeasurementWriter>(
+        return std::make_shared<LasSyncFileMeasurementWriter>(
           path,          // Output path
           compress,      // Zip flag
           scaleFactor,   // Scale factor
@@ -102,7 +97,7 @@ public:
           deltaIntensity // Delta intensity
         );
       case las14Type:
-        return make_shared<Las14SyncFileMeasurementWriter>(
+        return std::make_shared<Las14SyncFileMeasurementWriter>(
           path,          // Output path
           compress,      // Zip flag
           scaleFactor,   // Scale factor
@@ -111,13 +106,13 @@ public:
           deltaIntensity // Delta intensity
         );
       case zipType:
-        return make_shared<ZipSyncFileMeasurementWriter>(path);
+        return std::make_shared<ZipSyncFileMeasurementWriter>(path);
       case simpleType:
-        return make_shared<SimpleSyncFileMeasurementWriter>(path);
+        return std::make_shared<SimpleSyncFileMeasurementWriter>(path);
     }
 
     // Handle unexpected type
-    stringstream ss;
+    std::stringstream ss;
     ss << "SyncFileMeasurementWriterFactory::makeWriter received an "
        << "unexpected type: (" << type << ")";
     throw HeliosException(ss.str());
@@ -134,10 +129,10 @@ public:
    * @see LasSyncFileWriter::minIntensity
    * @see LasSyncFileWriter::deltaIntensity
    */
-  static shared_ptr<
-    SyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>>
+  static std::shared_ptr<
+    SyncFileWriter<std::vector<Measurement> const&, glm::dvec3 const&>>
   makeVectorialWriter(WriterType const type,
-                      const string& path,
+                      const std::string& path,
                       bool const compress = false,
                       double const scaleFactor = 0.0001,
                       glm::dvec3 const offset = glm::dvec3(0, 0, 0),
@@ -146,7 +141,7 @@ public:
   {
     switch (type) {
       case las10Type:
-        return make_shared<LasVectorialSyncFileMeasurementWriter>(
+        return std::make_shared<LasVectorialSyncFileMeasurementWriter>(
           path,          // Output path
           compress,      // Zip flag
           scaleFactor,   // Scale factor
@@ -155,7 +150,7 @@ public:
           deltaIntensity // Delta intensity
         );
       case las14Type:
-        return make_shared<Las14VectorialSyncFileMeasurementWriter>(
+        return std::make_shared<Las14VectorialSyncFileMeasurementWriter>(
           path,          // Output path
           compress,      // Zip flag
           scaleFactor,   // Scale factor
@@ -164,13 +159,13 @@ public:
           deltaIntensity // Delta intensity
         );
       case zipType:
-        return make_shared<ZipVectorialSyncFileMeasurementWriter>(path);
+        return std::make_shared<ZipVectorialSyncFileMeasurementWriter>(path);
       case simpleType:
-        return make_shared<SimpleVectorialSyncFileMeasurementWriter>(path);
+        return std::make_shared<SimpleVectorialSyncFileMeasurementWriter>(path);
     }
 
     // Handle unexpected type
-    stringstream ss;
+    std::stringstream ss;
     ss << "SyncFileMeasurementWriterFactory::makeVectorialWriter received an "
        << "unexpected type: (" << type << ")";
     throw HeliosException(ss.str());
@@ -187,19 +182,19 @@ public:
    * @see LasSyncFileWriter::minIntensity
    * @see LasSyncFileWriter::deltaIntensity
    */
-  static shared_ptr<
-    SyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>>
+  static std::shared_ptr<
+    SyncFileWriter<std::vector<Measurement> const&, glm::dvec3 const&>>
   makeMultiVectorialWriter(WriterType const type,
-                           vector<string> const& path,
+                           std::vector<std::string> const& path,
                            bool const compress,
-                           vector<double> const& scaleFactor,
-                           vector<glm::dvec3> const& offset,
-                           vector<double> const& minIntensity,
-                           vector<double> const& deltaIntensity)
+                           std::vector<double> const& scaleFactor,
+                           std::vector<glm::dvec3> const& offset,
+                           std::vector<double> const& minIntensity,
+                           std::vector<double> const& deltaIntensity)
   {
     switch (type) {
       case las10Type:
-        return make_shared<LasMultiVectorialSyncFileMeasurementWriter>(
+        return std::make_shared<LasMultiVectorialSyncFileMeasurementWriter>(
           path,          // Output path
           compress,      // Zip flag
           scaleFactor,   // Scale factor
@@ -208,7 +203,7 @@ public:
           deltaIntensity // Delta intensity
         );
       case las14Type:
-        return make_shared<Las14MultiVectorialSyncFileMeasurementWriter>(
+        return std::make_shared<Las14MultiVectorialSyncFileMeasurementWriter>(
           path,          // Output path
           compress,      // Zip flag
           scaleFactor,   // Scale factor
@@ -217,13 +212,15 @@ public:
           deltaIntensity // Delta intensity
         );
       case zipType:
-        return make_shared<ZipMultiVectorialSyncFileMeasurementWriter>(path);
+        return std::make_shared<ZipMultiVectorialSyncFileMeasurementWriter>(
+          path);
       case simpleType:
-        return make_shared<SimpleMultiVectorialSyncFileMeasurementWriter>(path);
+        return std::make_shared<SimpleMultiVectorialSyncFileMeasurementWriter>(
+          path);
     }
 
     // Handle unexpected type
-    stringstream ss;
+    std::stringstream ss;
     ss << "SyncFileMeasurementWriterFactory::makeMultiVectorialWriter "
        << "received an unexpected type: (" << type << ")";
     throw HeliosException(ss.str());

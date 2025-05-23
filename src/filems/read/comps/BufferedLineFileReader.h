@@ -35,7 +35,7 @@ public:
   /**
    * @brief Default constructor for buffered line file reader
    */
-  BufferedLineFileReader(string const& path,
+  BufferedLineFileReader(std::string const& path,
                          std::ios_base::openmode openMode = std::ios_base::in,
                          long const maxCharsPerLine = 8192,
                          size_t const bufferSize = 100000)
@@ -67,7 +67,7 @@ protected:
   virtual void makeBufferedStrategy()
   {
     readingStrategy =
-      make_shared<BufferedReadingStrategy<string>>(lrs, bufferSize);
+      std::make_shared<BufferedReadingStrategy<std::string>>(lrs, bufferSize);
   }
 
 public:

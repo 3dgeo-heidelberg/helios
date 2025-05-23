@@ -8,9 +8,6 @@
 
 namespace fluxionum {
 
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -33,7 +30,7 @@ protected:
    *  empty vector when no column names are specified or a vector with
    *  as many names as columns (in the same order)
    */
-  vector<string> columnNames;
+  std::vector<std::string> columnNames;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -43,7 +40,8 @@ public:
    * @param columnNames Either the name for each column or an empty vector
    *  if there are no names
    */
-  AbstractDesignMatrix(vector<string> const& columnNames = vector<string>(0))
+  AbstractDesignMatrix(
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : columnNames(columnNames)
   {
   }
@@ -57,9 +55,10 @@ public:
    * @return The index of the column which names matches given one. If none,
    *  then a fluxionum::FluxionumException will be thrown
    */
-  inline size_t translateColumnNameToIndex(string const& columnName) const
+  inline std::size_t translateColumnNameToIndex(
+    std::string const& columnName) const
   {
-    for (size_t i = 0; i < columnNames.size(); ++i) {
+    for (std::size_t i = 0; i < columnNames.size(); ++i) {
       if (columnNames[i] == columnName)
         return i;
     }
@@ -80,7 +79,7 @@ public:
    * @return Reference to the element at \f$i\f$-th row and \f$j\f$-th
    *  column
    */
-  virtual T& operator()(size_t const i, size_t const j) = 0;
+  virtual T& operator()(std::size_t const i, std::size_t const j) = 0;
   /**
    * @brief Like the
    *  AbstractDesignMatrix::operator()(size_t const, size_t const)
@@ -88,7 +87,7 @@ public:
    * @param columnName The name of the column of the element being accessed
    * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
    */
-  inline T& operator()(size_t const i, string const columnName)
+  inline T& operator()(std::size_t const i, std::string const columnName)
   {
     return operator()(i, translateColumnNameToIndex(columnName));
   }
@@ -108,7 +107,7 @@ public:
    * @return The name of the \f$j\f$-th column
    * @see fluxionum::AbstractDesignMatrix::columnNames
    */
-  inline string const& getColumnName(size_t const j) const
+  inline std::string const& getColumnName(std::size_t const j) const
   {
     return columnNames[j];
   }
@@ -118,7 +117,7 @@ public:
    * @param columnName New name for the \f$j\f$-th column
    * @see fluxionum::AbstractDesignMatrix::columnNames
    */
-  inline void setColumnName(size_t const j, string const& columnName)
+  inline void setColumnName(std::size_t const j, std::string const& columnName)
   {
     columnNames[j] = columnName;
   }
@@ -127,13 +126,16 @@ public:
    * @return Constant/read reference to the column names
    * @see fluxionum::AbstractDesignMatrix::columnNames
    */
-  inline vector<string> const& getColumnNames() const { return columnNames; }
+  inline std::vector<std::string> const& getColumnNames() const
+  {
+    return columnNames;
+  }
   /**
    * @brief Obtain a constant/read reference to the column names
    * @param columnNames The new column names for the AbstractDesignMatrix
    * @see fluxionum::AbstractDesignMatrix::columnNames
    */
-  inline void setColumnNames(vector<string> const& columnNames)
+  inline void setColumnNames(std::vector<std::string> const& columnNames)
   {
     this->columnNames = columnNames;
   }
@@ -141,17 +143,17 @@ public:
    * @brief Obtain the number of rows of the AbstractDesignMatrix
    * @return The number of rows of the AbstractDesignMatrix
    */
-  virtual inline size_t getNumRows() const = 0;
+  virtual inline std::size_t getNumRows() const = 0;
   /**
    * @brief Obtain the number of columns of the AbstractDesignMatrix
    * @return The number of columns of the AbstractDesignMatrix
    */
-  virtual inline size_t getNumColumns() const = 0;
+  virtual inline std::size_t getNumColumns() const = 0;
   /**
    * @brief Obtain the number of elements of the AbstractDesignMatrix
    * @return The number of elements of the AbstractDesignMatrix
    */
-  virtual inline size_t getNumElements() const = 0;
+  virtual inline std::size_t getNumElements() const = 0;
 };
 
 }

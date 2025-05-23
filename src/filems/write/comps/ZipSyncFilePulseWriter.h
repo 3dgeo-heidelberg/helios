@@ -9,8 +9,6 @@
 namespace helios {
 namespace filems {
 
-using std::make_shared;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -30,12 +28,12 @@ public:
    * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
    */
   explicit ZipSyncFilePulseWriter(
-    string const& path,
+    std::string const& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
     : ZipSyncFileWriter<PulseRecord const&>(path, compressionMode)
   {
     this->writeStrategy =
-      make_shared<ZipPulseWriteStrategy>(this->ofs, *(this->oa));
+      std::make_shared<ZipPulseWriteStrategy>(this->ofs, *(this->oa));
   }
   virtual ~ZipSyncFilePulseWriter() = default;
 };

@@ -6,8 +6,6 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/void_cast.hpp>
 
-using namespace arma;
-
 namespace rigidmotion {
 
 /**
@@ -62,7 +60,7 @@ public:
    *  \f$\mathbb{R}^{2}\f$
    * @see rigidmotion::RigidMotionFactory::makeTranslation
    */
-  RigidMotion makeTranslation(colvec const shift) const override;
+  RigidMotion makeTranslation(arma::colvec const shift) const override;
   /**
    * @brief Implementation of reflection rigid motion in \f$\mathbb{R}^{2}\f$
    *
@@ -80,7 +78,7 @@ public:
    * @param axis Reflection axis
    * @return Reflection rigid motion in \f$\mathbb{R}^{2}\f$
    */
-  virtual RigidMotion makeReflection(colvec const axis) const;
+  virtual RigidMotion makeReflection(arma::colvec const axis) const;
   /**
    * @brief As makeReflection method but receiving \f$\theta\f$ as the angle
    *  between reflection axis and \f$e_1\f$ instead of the reflection axis
@@ -108,9 +106,9 @@ public:
    * @param glide How many glide apply in the direction of reflection axis
    *  afther the reflection
    * @return Glide reflection rigid motion
-   * @see rigidmotion::RigidMotionR2Factory::makeReflection(colvec)
+   * @see rigidmotion::RigidMotionR2Factory::makeReflection(arma::colvec)
    */
-  virtual RigidMotion makeGlideReflection(colvec const axis,
+  virtual RigidMotion makeGlideReflection(arma::colvec const axis,
                                           double const glide) const;
   /**
    * @brief As makeGlideReflection method but receiving \f$\theta\f$ as the
@@ -157,7 +155,7 @@ public:
    * @return Rotation rigid motion in \f$\mathbb{R}^{2}\f$
    */
   virtual RigidMotion makeRotation(double const theta,
-                                   colvec const center) const;
+                                   arma::colvec const center) const;
 };
 
 }

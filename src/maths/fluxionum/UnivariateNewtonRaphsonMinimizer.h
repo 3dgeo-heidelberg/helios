@@ -1,5 +1,4 @@
-#ifndef _UNIVARIATENEWTONRAHPSONMINIMIZER_H_
-#define _UNIVARIATENEWTONRAHPSONMINIMIZER_H_
+#pragma once
 
 #include <DiffMinimizer.h>
 #include <IterativeMethodHandler.h>
@@ -62,8 +61,8 @@ public:
    * @param df First and second derivatives of the function to be minimized
    * @see fluxionum::DiffMinimizer::DiffMinimizer
    */
-  UnivariateNewtonRaphsonMinimizer(function<OT(IT)> f,
-                                   vector<function<OT(IT)>> df)
+  UnivariateNewtonRaphsonMinimizer(std::function<OT(IT)> f,
+                                   std::vector<std::function<OT(IT)>> df)
     : DiffMinimizer<IT, OT>(f, df)
     , imh(IterativeMethodHandler<IT, OT>(1000,
                                          false,
@@ -80,10 +79,10 @@ public:
    * @param d2f Second derivative of the function to be minimized
    * @see fluxionum::DiffMinimizer::DiffMinimizer
    */
-  UnivariateNewtonRaphsonMinimizer(function<OT(IT)> f,
-                                   function<OT(IT)> df,
-                                   function<OT(IT)> d2f)
-    : DiffMinimizer<IT, OT>(f, vector<function<OT(IT)>>({ df, d2f }))
+  UnivariateNewtonRaphsonMinimizer(std::function<OT(IT)> f,
+                                   std::function<OT(IT)> df,
+                                   std::function<OT(IT)> d2f)
+    : DiffMinimizer<IT, OT>(f, std::vector<std::function<OT(IT)>>({ df, d2f }))
     , imh(IterativeMethodHandler<IT, OT>(1000,
                                          false,
                                          0.000000001,
@@ -129,6 +128,5 @@ public:
 };
 
 }
-#endif
 
 #include <UnivariateNewtonRaphsonMinimizer.tpp>

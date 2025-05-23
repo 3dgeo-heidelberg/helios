@@ -8,10 +8,6 @@
 #include <fstream>
 #include <string>
 
-using arma::Mat;
-using std::ifstream;
-using std::string;
-
 /**
  * @brief Import point cloud files abstracting them to a set of voxels
  */
@@ -68,18 +64,18 @@ private:
    * @brief How many voxels normals could not be safely estimated because
    * there was not enough data inside the voxel.
    */
-  size_t unsafeNormalEstimations = 0;
+  std::size_t unsafeNormalEstimations = 0;
   /**
    * @brief How many points were discarded because they were expected to
    * have a correct normal but they did not.
    * @see XYZPointCloudFileLoader::correctNormal
    */
-  size_t discardedPointsByNormal = 0;
+  std::size_t discardedPointsByNormal = 0;
 
   /**
    * @brief The number of points in the point cloud
    */
-  size_t n;
+  std::size_t n;
   /**
    * @brief Minimum X coordinate considering all points
    */
@@ -108,20 +104,20 @@ private:
   /**
    * @brief Number of partitions along x-axis
    */
-  size_t nx;
+  std::size_t nx;
   /**
    * @brief Number of partitions along y-axis
    */
-  size_t ny;
+  std::size_t ny;
   /**
    * @brief Number of partitions along z-axis
    */
-  size_t nz;
+  std::size_t nz;
   /**
    * @brief Product \f$ny \cdot nz\f$. Stored in a variable because of
    * its recurrent usage.
    */
-  size_t nynz;
+  std::size_t nynz;
 
   /**
    * @brief Coefficient (\f$K_{x}\f$) to compute \f$I\f$ voxel index for a
@@ -163,17 +159,17 @@ private:
    * @brief Total size of full voxels grid
    * @see XYZPointCloudFileLoader::voxels
    */
-  size_t maxNVoxels;
+  std::size_t maxNVoxels;
   /**
    * @brief How many batches are necessary to estimate normals
    */
-  size_t numBatches;
+  std::size_t numBatches;
 
   /**
    * @brief Used to correctly report number of voxels for each part
    * when reading multiple files at once (i.e. efilepath is given)
    */
-  size_t lastNumVoxels;
+  std::size_t lastNumVoxels;
 
   // ***  MAIN PARSING METHODS  *** //
   // ****************************** //
@@ -189,7 +185,7 @@ private:
    * @param filePathString Path to the input file
    * @param ifs Stream used to read from input file
    */
-  void firstPass(string const& filePathString, ifstream& ifs);
+  void firstPass(std::string const& filePathString, std::ifstream& ifs);
   /**
    * @brief Second pass where the input file is read as many times as needed
    * to build necessary voxels
@@ -197,9 +193,9 @@ private:
    * @param matName Name of the material to be used for voxels
    * @param ifs Stream used to read from input file
    */
-  void secondPass(string const& filePathString,
-                  string const& matName,
-                  ifstream& ifs);
+  void secondPass(std::string const& filePathString,
+                  std::string const& matName,
+                  std::ifstream& ifs);
   /**
    * @brief Load the material for each primitive in a cyclic fashion.
    * It is, if \f$m\f$ materials are given then the \f$i\f$-th voxel
@@ -224,10 +220,10 @@ private:
    * means normal estimation will be performed through multiple runs over
    * the input file
    */
-  void fillVoxelsGrid(ifstream& ifs,
+  void fillVoxelsGrid(std::ifstream& ifs,
                       int estimateNormals,
                       double halfVoxelSize,
-                      string const& filePathString);
+                      std::string const& filePathString);
   /**
    * @brief Correct normal if necessary. Only non valid normals will be
    * corrected
@@ -263,19 +259,19 @@ private:
    *  specified
    * @see XYZPointCloudFileLoader::postProcess
    */
-  void warnAboutPotentialErrors(string const& filePathString);
+  void warnAboutPotentialErrors(std::string const& filePathString);
 
   /**
    * @brief Post process already filled voxels grid
    * @param estimateNormals Used to specify if normals must be estimated (>0)
    * or not (0)
    */
-  void postProcess(string const& matName, int estimateNormals);
+  void postProcess(std::string const& matName, int estimateNormals);
   /**
    * @brief Estimate voxels normal as the orthonormal of best fitting plane
    * for points inside voxel
    */
-  void estimateNormals(ifstream& ifs);
+  void estimateNormals(std::ifstream& ifs);
   /**
    * @brief Estimate voxels normals in batch mode, which implies reading
    * input file as many times as specified by numBatches variable.
@@ -284,7 +280,7 @@ private:
    * @see XYZPointCloudFileLoader::estimateNormals
    * @see XYZPointCloudFileLoader::numBatches
    */
-  void estimateNormalsBatch(ifstream& ifs);
+  void estimateNormalsBatch(std::ifstream& ifs);
   /**
    * @brief Assists estimateNormals function. Normals for filled matrices
    * are computed at this function
@@ -292,7 +288,7 @@ private:
    * @param start Specifies the start index in the voxel grid
    * @param end Specified the end index in the voxel grid
    */
-  void _estimateNormals(size_t start, size_t end);
+  void _estimateNormals(std::size_t start, std::size_t end);
   /**
    * @brief Compose the scene part considering voxels at voxels grid
    */
@@ -305,12 +301,12 @@ private:
    * @param[out] K Used to output K index (z axis)
    * @return Voxel-grid index
    */
-  size_t indexFromCoordinates(double x,
-                              double y,
-                              double z,
-                              size_t& I,
-                              size_t& J,
-                              size_t& K);
+  std::size_t indexFromCoordinates(double x,
+                                   double y,
+                                   double z,
+                                   std::size_t& I,
+                                   std::size_t& J,
+                                   std::size_t& K);
 
   // ***  STATIC METHODS  *** //
   // ************************ //
@@ -319,12 +315,12 @@ private:
    * @param line Line to be checked
    * @return True if line is a comment, false otherwise
    */
-  static bool isLineComment(string const& line);
+  static bool isLineComment(std::string const& line);
   /**
    * @brief Reset given input file stream so it points to file start
    * @param ifs Input file stream to be resetted.
    */
-  static void restartInputFileStream(ifstream& ifs);
+  static void restartInputFileStream(std::ifstream& ifs);
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

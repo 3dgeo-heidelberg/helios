@@ -18,11 +18,6 @@ namespace filems {
 
 class FMSFacadeFactory;
 
-using std::list;
-using std::shared_ptr;
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -39,26 +34,26 @@ protected:
    * @brief The vectorial writer for measurements
    * @see filems::VectorialMeasurementWriter
    */
-  shared_ptr<VectorialMeasurementWriter> mw = nullptr;
+  std::shared_ptr<VectorialMeasurementWriter> mw = nullptr;
   /**
    * @brief The writer for trajectories
    * @see filems::TrajectoryWriter
    */
-  shared_ptr<TrajectoryWriter> tw = nullptr;
+  std::shared_ptr<TrajectoryWriter> tw = nullptr;
   /**
    * @brief The writer for full waveform
    * @see filems::VectorialFullWaveformWriter
    */
-  shared_ptr<VectorialFullWaveformWriter> fww = nullptr;
+  std::shared_ptr<VectorialFullWaveformWriter> fww = nullptr;
   /**
    * @brief The writer for pulses
    * @see filems::VectorialPulseWriter
    */
-  shared_ptr<VectorialPulseWriter> pw = nullptr;
+  std::shared_ptr<VectorialPulseWriter> pw = nullptr;
   /**
    * @brief The root directory for output files.
    */
-  string rootDir = "./";
+  std::string rootDir = "./";
 
   /**
    * @brief Whether the write facade has been configured to split the
@@ -79,7 +74,7 @@ protected:
    * @see helios::filems::FMSWriteFacade::rootDir
    * @see helios::filems::FMSWriteFacade::buildFacade
    */
-  string outDir;
+  std::string outDir;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -105,7 +100,7 @@ public:
    * @param lastLegInStrip Specify whether the last leg belonged to a strip
    *  (true) or not (false)
    */
-  void configure(string const& prefix,
+  void configure(std::string const& prefix,
                  bool const computeWaveform,
                  bool const writePulse,
                  bool const lastLegInStrip);
@@ -113,13 +108,16 @@ public:
    * @brief Obtain the root directory of the write facade
    * @see filems::FMSWriteFacade::rootDir
    */
-  inline string getRootDir() const { return rootDir; }
+  inline std::string getRootDir() const { return rootDir; }
   /**
    * @brief Set the root directory of the write facade
    * @param rootDir The new root directory for the write facade
    * @see filems::FMSWriteFacade:rootDir
    */
-  inline void setRootDir(string const& rootDir) { this->rootDir = rootDir; }
+  inline void setRootDir(std::string const& rootDir)
+  {
+    this->rootDir = rootDir;
+  }
   /**
    * @brief Check whether the output is split by channel.
    * @see filems::FMSWriteFacade::splitByChannel
@@ -130,7 +128,7 @@ public:
    *  root directory.
    * @see filems::FMSWriteFacade::outDir
    */
-  inline string getOutDir() const { return outDir; }
+  inline std::string getOutDir() const { return outDir; }
 
   // ***  FACADE MEASUREMENT WRITE METHODS  *** //
   // ****************************************** //
@@ -139,7 +137,8 @@ public:
    * @return The measurement writer of the write facade
    * @see FMSWriteFacade::mw
    */
-  inline shared_ptr<VectorialMeasurementWriter> getMeasurementWriter() const
+  inline std::shared_ptr<VectorialMeasurementWriter> getMeasurementWriter()
+    const
   {
     return this->mw;
   }
@@ -148,7 +147,8 @@ public:
    * @param mw New measurement writer for the write facade
    * @see FMSWriteFacade::mw
    */
-  inline void setMeasurementWriter(shared_ptr<VectorialMeasurementWriter> mw)
+  inline void setMeasurementWriter(
+    std::shared_ptr<VectorialMeasurementWriter> mw)
   {
     this->mw = mw;
   }
@@ -159,19 +159,19 @@ public:
    * @see FMSWriteFacade::mw
    */
   void validateMeasurementWriter(
-    string const& callerName = "FMSWriteFacade::validateMeasurementWriter",
-    string const& errorMsg = "could not access MeasurementWriter") const;
+    std::string const& callerName = "FMSWriteFacade::validateMeasurementWriter",
+    std::string const& errorMsg = "could not access MeasurementWriter") const;
   /**
    * @bsee VectorialMeasurementWritter::writeMeasurements
    */
-  void writeMeasurements(vector<Measurement> const& measurements);
+  void writeMeasurements(std::vector<Measurement> const& measurements);
   /**
    * @brief Write the vector of measurements without validations (it is
    *  faster than its non unsafe counterpart)
    * @see VectorialMeasurementWritter::writeMeasurementsUnsafe
    */
   inline void writeMeasurementsUnsafe(
-    vector<Measurement> const& measurements) const
+    std::vector<Measurement> const& measurements) const
   {
     mw->writeMeasurementsUnsafe(measurements);
   }
@@ -232,7 +232,7 @@ public:
    * @return The trajectory writer of the write facade
    * @see FMSWriteFacade::tw
    */
-  inline shared_ptr<TrajectoryWriter> getTrajectoryWriter() const
+  inline std::shared_ptr<TrajectoryWriter> getTrajectoryWriter() const
   {
     return this->tw;
   }
@@ -241,7 +241,7 @@ public:
    * @param tw New trajectory writer for the write facade
    * @see FMSWriteFacade::tw
    */
-  inline void setTrajectoryWriter(shared_ptr<TrajectoryWriter> tw)
+  inline void setTrajectoryWriter(std::shared_ptr<TrajectoryWriter> tw)
   {
     this->tw = tw;
   }
@@ -252,8 +252,8 @@ public:
    * @see FMSWriteFacade::tw
    */
   void validateTrajectoryWriter(
-    string const& callerName = "FMSWriteFacade::validateTrajectoryWriter",
-    string const& errorMsg = "could not accesss TrajectoryWriter") const;
+    std::string const& callerName = "FMSWriteFacade::validateTrajectoryWriter",
+    std::string const& errorMsg = "could not accesss TrajectoryWriter") const;
   /**
    * @see TrajectoryWriter::writeTrajectory
    */
@@ -295,7 +295,8 @@ public:
    * @return The full waveform writer of the write facade
    * @see FMSWriteFacade::fww
    */
-  inline shared_ptr<VectorialFullWaveformWriter> getFullWaveformWriter() const
+  inline std::shared_ptr<VectorialFullWaveformWriter> getFullWaveformWriter()
+    const
   {
     return this->fww;
   }
@@ -304,7 +305,8 @@ public:
    * @param fww New full waveform writer for the write facade
    * @see FMSWriteFacade::fww
    */
-  inline void setFullWaveformWriter(shared_ptr<VectorialFullWaveformWriter> fww)
+  inline void setFullWaveformWriter(
+    std::shared_ptr<VectorialFullWaveformWriter> fww)
   {
     this->fww = fww;
   }
@@ -315,19 +317,20 @@ public:
    * @see FMSWriteFacade::fww
    */
   void validateFullWaveformWriter(
-    string const& callerName = "FMSWriteFacade::validateFullWaveformWriter",
-    string const& errorMsg = "could not access FullWaveformWriter") const;
+    std::string const& callerName =
+      "FMSWriteFacade::validateFullWaveformWriter",
+    std::string const& errorMsg = "could not access FullWaveformWriter") const;
   /**
    * @see VectorialFullWaveformWritter::writeFullWaveforms
    */
-  void writeFullWaveforms(vector<FullWaveform> const& fullWaveforms);
+  void writeFullWaveforms(std::vector<FullWaveform> const& fullWaveforms);
   /**
    * @brief Write the full waveform without validations (it is faster than
    *  its non unsafe counterpart)
    * @see VectorialFullWaveformWriter::writeFullWaveformsUnsafe
    */
   inline void writeFullWaveformsUnsafe(
-    vector<FullWaveform> const& fullWaveforms) const
+    std::vector<FullWaveform> const& fullWaveforms) const
   {
     fww->writeFullWaveformsUnsafe(fullWaveforms);
   }
@@ -351,7 +354,7 @@ public:
    * @return The pulse writer of the write facade
    * @see FMSWriteFacade::pw
    */
-  inline shared_ptr<VectorialPulseWriter> getPulseWriter() const
+  inline std::shared_ptr<VectorialPulseWriter> getPulseWriter() const
   {
     return this->pw;
   }
@@ -360,7 +363,7 @@ public:
    * @param pw New pulse writer for the write facade
    * @see FMSWriteFacade::pw
    */
-  inline void setPulseWriter(shared_ptr<VectorialPulseWriter> pw)
+  inline void setPulseWriter(std::shared_ptr<VectorialPulseWriter> pw)
   {
     this->pw = pw;
   }
@@ -371,18 +374,19 @@ public:
    * @see FMSWriteFacade::pw
    */
   void validatePulseWriter(
-    string const& callerName = "FMSWriteFacade::validateWriteFacade",
-    string const& errorMsg = "could not access PulseWriter") const;
+    std::string const& callerName = "FMSWriteFacade::validateWriteFacade",
+    std::string const& errorMsg = "could not access PulseWriter") const;
   /**
    * @see VectorialPulseWriter::writePulses
    */
-  void writePulses(vector<PulseRecord> const& pulses);
+  void writePulses(std::vector<PulseRecord> const& pulses);
   /**
    * @brief Write the pulses without validations (it is faster than its non
    *  unsafe counterpart)
    * @see VectorialPulseWriter::writePulsesUnsafe
    */
-  inline void writePulsesUnsafe(vector<PulseRecord> const& pulseRecords) const
+  inline void writePulsesUnsafe(
+    std::vector<PulseRecord> const& pulseRecords) const
   {
     pw->writePulsesUnsafe(pulseRecords);
   }

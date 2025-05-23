@@ -10,11 +10,6 @@
 
 namespace fluxionum {
 
-using namespace helios::filems;
-
-using std::string;
-using std::vector;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -61,7 +56,8 @@ public:
    * @param columnNames Either the name for each column or an empty vector
    *  if there are no names
    */
-  DesignMatrix(vector<string> const& columnNames = vector<string>(0))
+  DesignMatrix(
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : AbstractDesignMatrix<T>(columnNames)
   {
   }
@@ -71,8 +67,9 @@ public:
    * @param columnNames Either the name for each column or an empty vector
    *  if there are no names
    */
-  DesignMatrix(arma::Mat<T> const& X,
-               vector<string> const& columnNames = vector<string>(0))
+  DesignMatrix(
+    arma::Mat<T> const& X,
+    std::vector<std::string> const& columnNames = std::vector<std::string>(0))
     : AbstractDesignMatrix<T>(columnNames)
     , X(X)
   {
@@ -83,7 +80,7 @@ public:
    * @param columnNames The default column names to be used if no column
    *  names are read from file at given path
    */
-  DesignMatrix(string const& path, string const& sep = ",")
+  DesignMatrix(std::string const& path, std::string const& sep = ",")
     : AbstractDesignMatrix<T>()
   {
     helios::filems::DesignMatrixReader<T> reader(path, sep);
@@ -102,7 +99,7 @@ public:
    * @see fluxionum::DesignMatrix::X
    * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
    */
-  inline T& operator()(size_t const i, size_t const j) override
+  inline T& operator()(std::size_t const i, std::size_t const j) override
   {
     return X.at(i, j);
   }
@@ -124,15 +121,15 @@ public:
   /**
    * @see DesignMatrix::swapColumns(arma::uvec const &)
    */
-  inline void swapColumns(vector<long unsigned int> const& indices)
+  inline void swapColumns(std::vector<long unsigned int> const& indices)
   {
     return swapColumns(
-      vector<unsigned long long>(indices.begin(), indices.end()));
+      std::vector<unsigned long long>(indices.begin(), indices.end()));
   }
   /**
    * @see DesignMatrix::swapColumns(arma::uvec const &)
    */
-  inline void swapColumns(vector<unsigned long long> const& indices)
+  inline void swapColumns(std::vector<unsigned long long> const& indices)
   {
     return swapColumns(arma::uvec(indices));
   }
@@ -152,15 +149,15 @@ public:
   /**
    * @see DesignMatrix::dropColumns(arma::uvec const &)
    */
-  inline void dropColumns(vector<long unsigned int> const& indices)
+  inline void dropColumns(std::vector<long unsigned int> const& indices)
   {
     return dropColumns(
-      vector<unsigned long long>(indices.begin(), indices.end()));
+      std::vector<unsigned long long>(indices.begin(), indices.end()));
   }
   /**
    * @see DesignMatrix::dropColumns(arma::uvec const &)
    */
-  inline void dropColumns(vector<unsigned long long> const& indices)
+  inline void dropColumns(std::vector<unsigned long long> const& indices)
   {
     return dropColumns(arma::uvec(indices));
   }
@@ -180,14 +177,15 @@ public:
   /**
    * @see DesignMatrix::dropRows(arma::uvec const &)
    */
-  inline void dropRows(vector<long unsigned int> const& indices)
+  inline void dropRows(std::vector<long unsigned int> const& indices)
   {
-    return dropRows(vector<unsigned long long>(indices.begin(), indices.end()));
+    return dropRows(
+      std::vector<unsigned long long>(indices.begin(), indices.end()));
   }
   /**
    * @see DesignMatrix::dropRows(arma::uvec const &)
    */
-  inline void dropRows(vector<unsigned long long> const& indices)
+  inline void dropRows(std::vector<unsigned long long> const& indices)
   {
     return dropRows(arma::uvec(indices));
   }
@@ -209,7 +207,7 @@ public:
    * @param colIdx The index (\f$j\f$) of the column to be modified
    * @param x The value to be added to each element of given column
    */
-  inline void addToColumn(size_t const colIdx, T const x)
+  inline void addToColumn(std::size_t const colIdx, T const x)
   {
     X.col(colIdx) += x;
   }
@@ -239,28 +237,28 @@ public:
    * @see fluxionum::DesignMatrix::X
    * @see fluxionum::AbstractDesignMatrix::getNumRows
    */
-  inline size_t getNumRows() const override { return X.n_rows; }
+  inline std::size_t getNumRows() const override { return X.n_rows; }
   /**
    * @brief Obtain the number of columns of the DesignMatrix \f$X\f$
    * @return The number of columns of the DesignMatrix \f$X\f$
    * @see fluxionum::DesignMatrix::X
    * @see fluxionum::AbstractDesignMatrix::getNumColumns
    */
-  inline size_t getNumColumns() const override { return X.n_cols; }
+  inline std::size_t getNumColumns() const override { return X.n_cols; }
   /**
    * @brief Obtain the number of elements of the DesignMatrix \f$X\f$
    * @return The number of elements of the DesignMatrix \f$X\f$
    * @see fluxionum::DesignMatrix::X
    * @see fluxionum::AbstractDesignMatrix::getNumElements
    */
-  inline size_t getNumElements() const override { return X.n_elem; }
+  inline std::size_t getNumElements() const override { return X.n_elem; }
   /**
    * @brief Obtain the \f$i\f$-th row of the DesignMatrix \f$X\f$
    * @param i Index of the row to be obtained
    * @return The \f$i\f$-th row of the DesignMatrix \f$X\f$
    * @see fluxionum::DesignMatrix::X
    */
-  inline arma::subview_row<T> const getRow(size_t const i) const
+  inline arma::subview_row<T> const getRow(std::size_t const i) const
   {
     return X.row(i);
   }
@@ -269,14 +267,17 @@ public:
    *  value instead of a view-like reference
    * @see fluxionum::DesignMatrix::getRow(size_t const)
    */
-  inline arma::Row<T> getRowCopy(size_t const i) const { return getRow(i); }
+  inline arma::Row<T> getRowCopy(std::size_t const i) const
+  {
+    return getRow(i);
+  }
   /**
    * @brief Obtain the \f$j\f$-th column of the DesignMatrix \f$X\f$
    * @param j Index of the column to be obtained
    * @return The \f$j\f$-th column of the DesignMatrix \f$X\f$X
    * @see fluxionum::DesignMatrix::X
    */
-  inline arma::subview_col<T> const getColumn(size_t const j) const
+  inline arma::subview_col<T> const getColumn(std::size_t const j) const
   {
     return X.col(j);
   }
@@ -285,7 +286,7 @@ public:
    *  by value instead of a view-like reference
    * @see fluxionum::DesignMatrix::getColumn(size_t const)
    */
-  inline arma::Col<T> getColumnCopy(size_t const j) const
+  inline arma::Col<T> getColumnCopy(std::size_t const j) const
   {
     return getColumn(j);
   }
@@ -295,7 +296,8 @@ public:
    * @param columnName The name of the column to be obtained
    * @see fluxionum::DesignMatrix::getColumn(size_t const)
    */
-  inline arma::subview_col<T> const getColumn(string const& columnName) const
+  inline arma::subview_col<T> const getColumn(
+    std::string const& columnName) const
   {
     return getColumn(translateColumnNameToIndex(columnName));
   }
@@ -304,7 +306,7 @@ public:
    *  by value instead of a view-like reference
    * @see fluxionum::DesignMatrix::getColumn(string const &)
    */
-  inline arma::Col<T> getColumnCopy(string const& columnName) const
+  inline arma::Col<T> getColumnCopy(std::string const& columnName) const
   {
     return getColumn(columnName);
   }
@@ -314,7 +316,7 @@ public:
    * @param col New values for the column to be setted
    * @see fluxionum::DesignMatrix::X
    */
-  inline void setColumn(size_t const j, arma::Col<T> const& col)
+  inline void setColumn(std::size_t const j, arma::Col<T> const& col)
   {
     X.col(j) = col;
   }

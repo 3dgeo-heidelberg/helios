@@ -13,9 +13,6 @@ namespace fs = boost::filesystem;
 namespace helios {
 namespace filems {
 
-using std::shared_ptr;
-using std::string;
-
 /**
  * @brief Alberto M. Esmoris Pena
  * @version 1.0
@@ -32,7 +29,7 @@ protected:
    * @brief Synchronous file writer
    * @see filems::SyncFileWriter
    */
-  shared_ptr<SyncFileWriter<WriteArgs...>> sfw = nullptr;
+  std::shared_ptr<SyncFileWriter<WriteArgs...>> sfw = nullptr;
 
   /**
    * @brief Flag specifying if detector output must be written in LAS
@@ -94,7 +91,7 @@ public:
   /**
    * @see filems::HeliosWriter::getOutputFilePath
    */
-  virtual string getOutputPath() const { return sfw->getPath(); }
+  virtual std::string getOutputPath() const { return sfw->getPath(); }
 
   /**
    * @brief Get the LAS output flag

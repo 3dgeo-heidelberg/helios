@@ -4,10 +4,6 @@
 
 #include <vector>
 
-using SurfaceInspector::util::Object;
-
-using std::vector;
-
 namespace SurfaceInspector {
 namespace maths {
 namespace permuters {
@@ -22,7 +18,7 @@ namespace permuters {
  * @tparam T Type of data to permute
  */
 template<typename T>
-class IPermuter : Object
+class IPermuter : SurfaceInspector::util::Object
 {
 public:
   // ***  INTERFACE  *** //
@@ -49,7 +45,7 @@ public:
    * @see IPermuter::start
    * @see IPermuter::get
    */
-  virtual vector<T> next() = 0;
+  virtual std::vector<T> next() = 0;
   /**
    * @brief Obtain the current permutation
    *
@@ -58,16 +54,16 @@ public:
    * @code
    * IPermuter<T> permuter = ...;
    * permuter.start();
-   * vector<T> permA = permuter.next();
-   * vector<T> permB = permuter.get();
-   * vector<T> permC = permuter.next();
+   * std::vector<T> permA = permuter.next();
+   * std::vector<T> permB = permuter.get();
+   * std::vector<T> permC = permuter.next();
    * @endcode
    *
    * @return Current permutation
    * @see IPermuter::start
    * @see IPermuter::next
    */
-  virtual vector<T> get() = 0;
+  virtual std::vector<T> get() = 0;
 };
 
 }

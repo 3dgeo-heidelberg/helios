@@ -1,6 +1,9 @@
 #pragma once
 
+#include <Measurement.h>
 #include <filems/write/comps/ZipMultiSyncFileWriter.h>
+#include <filems/write/strategies/VectorialWriteStrategy.h>
+#include <filems/write/strategies/ZipMeasurementWriteStrategy.h>
 
 #include <memory>
 #include <vector>
@@ -20,7 +23,8 @@ namespace filems {
  * @see filems::ZipSyncFileMeasurementWriter
  */
 class ZipMultiVectorialSyncFileMeasurementWriter
-  : public ZipMultiSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>
+  : public ZipMultiSyncFileWriter<std::vector<Measurement> const&,
+                                  glm::dvec3 const&>
 {
 protected:
   // ***  ATTRIBUTES  *** //
@@ -41,11 +45,10 @@ public:
    * @see filems::ZipMultiSyncFileWriter::ZipMultiSyncFileWriter
    */
   explicit ZipMultiVectorialSyncFileMeasurementWriter(
-    vector<string> const& path,
+    std::vector<std::string> const& path,
     int compressionMode = boost::iostreams::zlib::best_compression)
-    : ZipMultiSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>(
-        path,
-        compressionMode)
+    : ZipMultiSyncFileWriter<std::vector<Measurement> const&,
+                             glm::dvec3 const&>(path, compressionMode)
   {
     // Build measurement write strategies
     buildMeasurementWriteStrategies();
@@ -67,8 +70,8 @@ public:
   void buildMeasurementWriteStrategies()
   {
     // Build measurement write strategies
-    size_t const nStreams = path.size();
-    for (size_t i = 0; i < nStreams; ++i) {
+    std::size_t const nStreams = path.size();
+    for (std::size_t i = 0; i < nStreams; ++i) {
       zmws.emplace_back(this->ofs[i], *(this->oa[i]));
     }
   }
@@ -82,11 +85,11 @@ public:
   void buildVectorialWriteStrategies()
   {
     // Build vectorial write strategies
-    size_t const nStreams = path.size();
-    for (size_t i = 0; i < nStreams; ++i) {
+    std::size_t const nStreams = path.size();
+    for (std::size_t i = 0; i < nStreams; ++i) {
       this->writeStrategy.push_back(
-        make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(
-          zmws[i]));
+        std::make_shared<
+          VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(zmws[i]));
     }
   }
 
@@ -95,8 +98,8 @@ public:
   /**
    * @see MultiSyncFileWriter::indexFromWriteArgs
    */
-  size_t indexFromWriteArgs(vector<Measurement> const& measurements,
-                            glm::dvec3 const& offset) override
+  std::size_t indexFromWriteArgs(std::vector<Measurement> const& measurements,
+                                 glm::dvec3 const& offset) override
   {
     return measurements[0].devIdx;
   }

@@ -7,10 +7,6 @@
 #include <cstdlib>
 #include <mutex>
 
-using helios::filems::FMSWriteFacade;
-
-using std::size_t;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -33,7 +29,8 @@ public:
    * @see WriteYielder::write
    * @see Yielder::bufferSize
    */
-  PointcloudYielder(FMSWriteFacade& write, size_t bufferSize = 256)
+  PointcloudYielder(helios::filems::FMSWriteFacade& write,
+                    std::size_t bufferSize = 256)
     : WriteYielder<Measurement>(write, bufferSize)
   {
   }
@@ -47,7 +44,7 @@ public:
    * @param copy The temporal copy of measurements buffer to be digested
    * @see WriteYielder
    */
-  void digest(vector<Measurement>& copy) override
+  void digest(std::vector<Measurement>& copy) override
   {
     if (!copy.empty())
       write.writeMeasurementsUnsafe(copy);

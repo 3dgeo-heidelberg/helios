@@ -1,5 +1,11 @@
 #pragma once
 
+#include <Measurement.h>
+#include <Trajectory.h>
+
+#include <string>
+#include <vector>
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

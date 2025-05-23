@@ -1,5 +1,7 @@
 #pragma once
 
+#include <armadillo>
+
 #include <assetloading/geometryfilter/IVoxelGrid.h>
 
 /**
@@ -25,7 +27,7 @@ protected:
   /**
    * @brief Used internally to track the current iteration of the while loop.
    */
-  size_t whileLoopIter;
+  std::size_t whileLoopIter;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -34,7 +36,7 @@ public:
    * @brief Constructor for a dense voxel grid.
    * @see IVoxelGrid::IVoxelGrid
    */
-  DenseVoxelGrid(size_t const maxNVoxels);
+  DenseVoxelGrid(std::size_t const maxNVoxels);
   virtual ~DenseVoxelGrid() { release(); }
 
   // ***  VOXEL GRID INTERFACE  *** //
@@ -47,15 +49,15 @@ public:
   /**
    * @see IVoxelGrid::hasVoxel
    */
-  bool hasVoxel(size_t const key) override;
+  bool hasVoxel(std::size_t const key) override;
   /**
    * @see IVoxelGrid::getVoxel
    */
-  Voxel* getVoxel(size_t const key) override;
+  Voxel* getVoxel(std::size_t const key) override;
   /**
    * @see IVoxelGrid::setVoxel
    */
-  Voxel* setVoxel(size_t const key,
+  Voxel* setVoxel(std::size_t const key,
                   double const x,
                   double const y,
                   double const z,
@@ -63,35 +65,36 @@ public:
   /**
    * @see IVoxelGrid::deleteVoxel
    */
-  void deleteVoxel(size_t const key) override;
+  void deleteVoxel(std::size_t const key) override;
 
   /**
    * @see IVoxelGrid::getMatrix
    */
-  Mat<double>* getMatrix(size_t const key) const override;
+  arma::Mat<double>* getMatrix(std::size_t const key) const override;
   /**
    * @see IVoxelGrid::getMatrixRef
    */
-  Mat<double>& getMatrixRef(size_t const key) const override;
+  arma::Mat<double>& getMatrixRef(std::size_t const key) const override;
   /**
    * @see IVoxelGrid::getMatrixConstRef
    */
-  Mat<double> const& getMatrixConstRef(size_t const key) const override;
+  arma::Mat<double> const& getMatrixConstRef(
+    std::size_t const key) const override;
   /**
    * @see IVoxelGrid::setMatrix
    */
-  void setMatrix(size_t const key, Mat<double>* mat) override;
+  void setMatrix(std::size_t const key, arma::Mat<double>* mat) override;
   /**
    * @see IVoxelGrid::setNextMatrixCol
    */
-  void setNextMatrixCol(size_t const key,
+  void setNextMatrixCol(std::size_t const key,
                         double const x,
                         double const y,
                         double const z) override;
   /**
    * @see IVoxelGrid::deleteMatrix
    */
-  void deleteMatrix(size_t const key) override;
+  void deleteMatrix(std::size_t const key) override;
   /**
    * @see IVoxelGrid::deleteMatrices
    */
@@ -100,24 +103,24 @@ public:
   /**
    * @see IVoxelGrid::getCursor
    */
-  size_t getCursor(size_t const key) const override;
+  std::size_t getCursor(std::size_t const key) const override;
   /**
    * @see IVoxelGrid::setCursor
    */
-  void setCursor(size_t const key, size_t const cursor) override;
+  void setCursor(std::size_t const key, std::size_t const cursor) override;
   /**
    * @see IVoxelGrid::incrementCursor
    */
-  void incrementCursor(size_t const key) override;
+  void incrementCursor(std::size_t const key) override;
 
   /**
    * @see IVoxelGird::getClosestPointDistance
    */
-  double getClosestPointDistance(size_t const key) const override;
+  double getClosestPointDistance(std::size_t const key) const override;
   /**
    * @see IVoxelGrid::setClosestPointDistance
    */
-  void setClosestPointDistance(size_t const key,
+  void setClosestPointDistance(std::size_t const key,
                                double const distance) override;
 
   // ***   WHILE INTERFACE   *** //
@@ -133,5 +136,5 @@ public:
   /**
    * @see IVoxelGrid::whileLoopNext
    */
-  Voxel* whileLoopNext(size_t* key = nullptr) override;
+  Voxel* whileLoopNext(std::size_t* key = nullptr) override;
 };

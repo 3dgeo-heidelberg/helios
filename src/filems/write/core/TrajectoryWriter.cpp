@@ -4,17 +4,15 @@
 
 #include <sstream>
 
-using namespace helios::filems;
-
-using std::make_shared;
-using std::stringstream;
+namespace helios::filems {
 
 // ***   M E T H O D S   *** //
 // ************************* //
 void
-TrajectoryWriter::configure(string const& parent, string const& prefix)
+TrajectoryWriter::configure(std::string const& parent,
+                            std::string const& prefix)
 {
-  stringstream ss;
+  std::stringstream ss;
   ss.str("");
   ss << parent << prefix << "_trajectory";
   if (isZipOutput())
@@ -23,6 +21,7 @@ TrajectoryWriter::configure(string const& parent, string const& prefix)
     ss << ".txt";
   setOutputFilePath(ss.str());
 }
+
 void
 TrajectoryWriter::writeTrajectory(Trajectory const& t)
 {
@@ -32,14 +31,16 @@ TrajectoryWriter::writeTrajectory(Trajectory const& t)
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 void
-TrajectoryWriter::setOutputFilePath(string const& path)
+TrajectoryWriter::setOutputFilePath(std::string const& path)
 {
   if (zipOutput) {
-    setSyncFileWriter(make_shared<ZipSyncFileTrajectoryWriter>(path));
+    setSyncFileWriter(std::make_shared<ZipSyncFileTrajectoryWriter>(path));
   } else if (lasOutput) {
     throw HeliosException(
       "TrajectoryWriter cannot export output in LAS format");
   } else {
-    setSyncFileWriter(make_shared<SimpleSyncFileTrajectoryWriter>(path));
+    setSyncFileWriter(std::make_shared<SimpleSyncFileTrajectoryWriter>(path));
   }
+}
+
 }
