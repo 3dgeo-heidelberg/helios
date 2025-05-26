@@ -13,22 +13,25 @@
  * @see SwapOnRepeatHandler
  * @see SwapOnRepeatHandler::doSwap
  */
-class NullGeometryFilter : public AbstractGeometryFilter{
+class NullGeometryFilter : public AbstractGeometryFilter
+{
 public:
-    // ***  CONSTRUCTION  *** //
-    // ********************** //
-    /**
-     * @brief Constructor for Null geometry filter
-     * @param sp The scene part whose discard flag will be enabled.
-     * @see AbstractGeometryFilter::AbstractGeometryFilter(ScenePart *)
-     */
-    NullGeometryFilter(ScenePart *sp) : AbstractGeometryFilter(sp) {}
+  // ***  CONSTRUCTION  *** //
+  // ********************** //
+  /**
+   * @brief Constructor for Null geometry filter
+   * @param sp The scene part whose discard flag will be enabled.
+   * @see AbstractGeometryFilter::AbstractGeometryFilter(ScenePart *)
+   */
+  NullGeometryFilter(ScenePart* sp)
+    : AbstractGeometryFilter(sp)
+  {
+  }
 
-    // ***  MAIN METHODS  *** //
-    // ********************** //
-    /**
-     * @see AbstractGeometryFilter::run
-     */
-    ScenePart *run() override;
-
+  // ***  MAIN METHODS  *** //
+  // ********************** //
+  /**
+   * @see AbstractGeometryFilter::run
+   */
+  ScenePart* run() override;
 };

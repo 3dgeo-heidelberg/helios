@@ -1,6 +1,7 @@
 #pragma once
 
-namespace SurfaceInspector { namespace util {
+namespace SurfaceInspector {
+namespace util {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -9,6 +10,8 @@ namespace SurfaceInspector { namespace util {
  * @brief Class representing an object. All surface inspector classes must
  *  extend Object
  */
-class Object {};
+class Object
+{};
 
-}}
+}
+}

@@ -1,18 +1,13 @@
-#include <BaseMeasurementWriter.h>
-
-using std::stringstream;
-using std::ofstream;
-
 // ***   M E T H O D S   *** //
 // ************************* //
 template <typename ... WriteArgs>
 void BaseMeasurementWriter<WriteArgs ...>::configure(
-    string const &parent,
-    string const &prefix,
+    std::string const &parent,
+    std::string const &prefix,
     bool const lastLegInStrip
 ){
     // Prepare
-    stringstream ss;
+    std::stringstream ss;
     ss << parent << prefix;
     if(this->isLasOutput()){
         if(isZipOutput()) ss << "_points.laz";
@@ -23,7 +18,7 @@ void BaseMeasurementWriter<WriteArgs ...>::configure(
     std::string const outpath = ss.str();
 
     // Log for debug level
-    stringstream ss2;
+    std::stringstream ss2;
     ss2     << "Parent path for base measurement writer: \""
             << parent << "\"\n"
             << "Prefix for base measurement writer: \""
@@ -46,11 +41,11 @@ WriterType BaseMeasurementWriter<WriteArgs ...>::chooseWriterType() const {
 
 template <typename ... WriteArgs>
 void BaseMeasurementWriter<WriteArgs ...>::clearPointcloudFile(){
-    string outputPath = getOutputPath();
+    std::string outputPath = getOutputPath();
     logging::INFO("Clearing point cloud: \""+outputPath+"\"");
-    ofstream ofs;
+    std::ofstream ofs;
     try{
-        ofs.open(outputPath, ofstream::out | ofstream::trunc);
+        ofs.open(outputPath, std::ofstream::out | std::ofstream::trunc);
     }
     catch(std::exception &ex){
         logging::ERR(ex.what());
@@ -63,15 +58,15 @@ void BaseMeasurementWriter<WriteArgs ...>::clearPointcloudFile(){
 template <typename ... WriteArgs>
 void BaseMeasurementWriter<WriteArgs ...>::finish(){
     // Call parent finish method that finishes current writer
-    shared_ptr<SyncFileWriter<WriteArgs ...>> current = sfw;
+    std::shared_ptr<SyncFileWriter<WriteArgs ...>> current = sfw;
     HeliosWriter<WriteArgs ...>::finish();
 
     // Finish remaining writers
-    typename unordered_map<
-        string, shared_ptr<SyncFileWriter<WriteArgs ...>>
+    typename std::unordered_map<
+        std::string, std::shared_ptr<SyncFileWriter<WriteArgs ...>>
     >::iterator it;
     for(it = writers.begin() ; it != writers.end(); ++it){
-        shared_ptr<SyncFileWriter<WriteArgs ...>> w = it->second;
+        std::shared_ptr<SyncFileWriter<WriteArgs ...>> w = it->second;
         if(w!=current) w->finish();
     }
 }
@@ -83,7 +78,7 @@ void BaseMeasurementWriter<WriteArgs ...>::finish(){
 // writing to the output file!
 template <typename ... WriteArgs>
 void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
-    string const &path,
+    std::string const &path,
     bool const lastLegInStrip
 ){
     logging::WARN("outputFilePath=" + path);

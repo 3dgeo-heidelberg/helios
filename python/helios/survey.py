@@ -9,6 +9,7 @@ from helios.settings import (
     OutputSettings,
     compose_execution_settings,
     compose_output_settings,
+    apply_log_writing,
 )
 from helios.utils import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, validate_xml_file
@@ -46,6 +47,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Update the settings to use
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
+
+        # Update logs settings
+        apply_log_writing(execution_settings)
+        execution_settings.verbosity.apply()
 
         # Throw if there are still unknown parameters left
         if parameters:

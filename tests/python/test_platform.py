@@ -3,6 +3,7 @@ from helios.survey import *
 
 import math
 
+
 def test_preinstantiated_platforms():
     assert isinstance(sr22(), Platform)
     assert isinstance(quadcopter(), Platform)
@@ -20,7 +21,10 @@ def test_preinstantiated_platforms():
 def test_platform_settings_mls():
     survey = Survey.from_xml("data/surveys/toyblocks/mls_toyblocks.xml")
 
-    platform_settings = PlatformSettings(x=10, y = 0,)
+    platform_settings = PlatformSettings(
+        x=10,
+        y=0,
+    )
     scanner_settings = ScannerSettings(pulse_frequency=1000)
     platform_settings.force_on_ground(survey.scene)
     survey.add_leg(
@@ -28,19 +32,24 @@ def test_platform_settings_mls():
         scanner_settings=scanner_settings,
     )
 
-    assert math.isclose(platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2])
+    assert math.isclose(
+        platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2]
+    )
+
 
 def test_platform_settings_tls():
     survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
 
-    platform_settings = PlatformSettings(x=10, y = 0,)
+    platform_settings = PlatformSettings(
+        x=10,
+        y=0,
+    )
 
     platform_settings.force_on_ground(survey.scene)
     survey.add_leg(
         platform_settings=platform_settings,
     )
 
-    assert math.isclose(platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2])
-                          
-
-
+    assert math.isclose(
+        platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2]
+    )

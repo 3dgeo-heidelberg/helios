@@ -1,12 +1,6 @@
-#ifndef _SURFACEINSPECTOR_UTIL_DRAGGERS_MIN_DRAGGER_HPP_
-#include <surfaceinspector/util/draggers/MinDragger.hpp>
-#endif
-
-using SurfaceInspector::util::draggers::MinDragger;
-
 // ***  INITIALIZATION  *** //
 // ************************ //
-template <typename E> void MinDragger<E>::initialize(){
+template <typename E> void SurfaceInspector::util::draggers::MinDragger<E>::initialize(){
     a = 0;
     b = x.size()-1;
     c = 0;
@@ -16,15 +10,15 @@ template <typename E> void MinDragger<E>::initialize(){
 
 // ***  INNER METHODS  *** //
 // *********************** //
-template <typename E> void MinDragger<E>::partialSort(){
+template <typename E> void SurfaceInspector::util::draggers::MinDragger<E>::partialSort(){
     // Prepare variables
     E alpha = x[a];  // alpha = xmin
     E beta = alpha;  // beta = xmax
     E xi;
-    size_t alphaIdx = a, betaIdx = a;
+    std::size_t alphaIdx = a, betaIdx = a;
 
     // Find alpha and beta
-    for(size_t i = a+1 ; i <= b ; ++i){
+    for(std::size_t i = a+1 ; i <= b ; ++i){
         xi = x[i];
         if(xi < alpha){
             alpha = xi;
@@ -52,7 +46,7 @@ template <typename E> void MinDragger<E>::partialSort(){
 
 // ***  OPTIMIZATION DRAGGER METHODS  *** //
 // ************************************** //
-template <typename E> void MinDragger<E>::update(){
+template <typename E> void SurfaceInspector::util::draggers::MinDragger<E>::update(){
     if(!initialized) initialize(); // First time, initialize
     else{ // After first time
         if(a<b){ // Update (a,b) indices and partial sort if necessary
@@ -64,5 +58,3 @@ template <typename E> void MinDragger<E>::update(){
         ++c; // Update index of current element
     }
 }
-
-

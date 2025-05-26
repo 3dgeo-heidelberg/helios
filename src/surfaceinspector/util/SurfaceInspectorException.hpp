@@ -1,13 +1,11 @@
 #pragma once
 
-#include <string>
 #include <stdexcept>
+#include <string>
 #include <surfaceinspector/util/Object.hpp>
 
-using std::string;
-using std::runtime_error;
-
-namespace SurfaceInspector { namespace util{
+namespace SurfaceInspector {
+namespace util {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -15,16 +13,23 @@ namespace SurfaceInspector { namespace util{
  *
  * @brief Base class for surface inspector exceptions
  */
-class SurfaceInspectorException : public runtime_error, Object {
+class SurfaceInspectorException
+  : public std::runtime_error
+  , Object
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Surface inspector exception constructor
-     * @param msg Surface inspector exception message
-     */
-    SurfaceInspectorException(std::string const msg = ""):runtime_error(msg){}
-    virtual ~SurfaceInspectorException() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Surface inspector exception constructor
+   * @param msg Surface inspector exception message
+   */
+  SurfaceInspectorException(std::string const msg = "")
+    : std::runtime_error(msg)
+  {
+  }
+  virtual ~SurfaceInspectorException() = default;
 };
 
-}}
+}
+}

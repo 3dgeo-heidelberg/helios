@@ -1,7 +1,3 @@
-# We currently omit C++ sources from pre-commit (by not specifying e.g. a clang-format
-# hook), because it would involve rewriting the entire code base. Can be discussed at a
-# dev meeting though.
-
 repos:
 - repo: https://github.com/psf/black
   rev: 24.10.0
@@ -29,13 +25,6 @@ repos:
   # GitHub Actions Workflow linter
   - id: actionlint
 
-- repo: https://github.com/kynan/nbstripout
-  rev: 0.8.1
-  hooks:
-  # Make sure that Jupyter notebooks under version control have their outputs stripped before committing
-  - id: nbstripout
-    files: .ipynb
-
 - repo: https://github.com/citation-file-format/cffconvert
   rev: main
   hooks:
@@ -47,3 +36,12 @@ repos:
   hooks:
   # Validate the contents of pyproject.toml
   - id: validate-pyproject
+
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v20.1.4
+  hooks:
+  # Format C/C++/Objective-C code with clang-format
+  - id: clang-format
+    args:
+      - --style=Mozilla
+    types_or: [c++]

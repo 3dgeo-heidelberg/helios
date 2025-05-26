@@ -12,6 +12,8 @@ from enum import IntEnum
 from pydantic import PositiveInt
 from typing import Optional
 from logging import ERROR, DEBUG, INFO, WARNING
+from datetime import datetime
+import os
 
 import _helios
 import sys
@@ -36,6 +38,22 @@ class LogVerbosity(IntEnum):
     VERBOSE = 0b111100
     VERY_VERBOSE = 0b111111
 
+    def apply(self) -> None:
+        """Call the corresponding C++ logging-level setter."""
+        match self:
+            case LogVerbosity.SILENT:
+                _helios.logging_silent()
+            case LogVerbosity.QUIET:
+                _helios.logging_quiet()
+            case LogVerbosity.TIME:
+                _helios.logging_time()
+            case LogVerbosity.DEFAULT:
+                _helios.logging_default()
+            case LogVerbosity.VERBOSE:
+                _helios.logging_verbose()
+            case LogVerbosity.VERY_VERBOSE:
+                _helios.logging_very_verbose()
+
 
 class KDTreeFactoryType(IntEnum):
     SIMPLE = 1
@@ -59,8 +77,8 @@ class ForceOnGroundStrategy(IntEnum):
     NONE = 0
     LEAST_COMPLEX = 1
     MOST_COMPLEX = -1
-    
-    
+
+
 class ExecutionSettings(Model, UpdateableMixin):
     parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
     num_threads: ThreadCount = None
@@ -68,7 +86,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     warehouse_factor: PositiveInt = 4
     log_file: bool = False
     log_file_only: bool = False
-    verbosity: LogVerbosity = LogVerbosity.DEFAULT
+    verbosity: LogVerbosity = LogVerbosity.QUIET
     factory_type: KDTreeFactoryType = KDTreeFactoryType.SAH_APPROXIMATION
     kdt_num_threads: ThreadCount = None
     kdt_geom_num_threads: ThreadCount = None
@@ -130,6 +148,9 @@ def set_execution_settings(
 
     # Update the global settings with the provided parameters
     _global_execution_settings.update_from_dict(parameters)
+
+    _global_execution_settings.verbosity.apply()
+    apply_log_writing(_global_execution_settings)
 
 
 def set_output_settings(output_settings: Optional[OutputSettings] = None, **parameters):
@@ -212,3 +233,28 @@ def compose_output_settings(
     """
 
     return _compose_settings((local_settings, _global_output_settings), parameters)
+
+
+def apply_log_writing(execution_settings: ExecutionSettings):
+    """Apply the chosen log writing mode to c++ part"""
+    config: dict[str, str] = {}
+
+    if execution_settings.log_file_only or execution_settings.log_file:
+        log_dir = "output/logs"
+        os.makedirs(log_dir, exist_ok=True)
+        file_log = os.path.join(
+            log_dir, f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+        )
+        config["file_name"] = file_log
+
+    if execution_settings.log_file_only:
+        config["type"] = "file"
+    elif execution_settings.log_file:
+        config["type"] = "full"
+    else:
+        config["type"] = "std_out"
+
+    if config["type"] in {"file", "full"} and "file_name" not in config:
+        raise ValueError(f"Logger type '{config['type']}' requires a file_name")
+
+    _helios.configure_logging(config)

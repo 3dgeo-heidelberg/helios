@@ -5,7 +5,7 @@
 #include <visualhelios/adapters/VHDynObjectAdapter.h>
 #include <visualhelios/adapters/VHStaticObjectXYZAdapter.h>
 
-namespace visualhelios{
+namespace visualhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -16,24 +16,25 @@ namespace visualhelios{
  *
  * @see visualhelios::VHDynObjectAdapter
  */
-class VHDynObjectXYZAdapter :
-    public VHStaticObjectXYZAdapter,
-    public VHDynObjectAdapter
+class VHDynObjectXYZAdapter
+  : public VHStaticObjectXYZAdapter
+  , public VHDynObjectAdapter
 {
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Constructor for the visual Helios dynamic object adapter
-     *  providing XYZ visualization
-     * @see visualhelios::VHDynObjectAdapter::VHDynObjectAdapter(DynObject &)
-     */
-    VHDynObjectXYZAdapter(DynObject &dynObj) :
-        VHStaticObjectAdapter(static_cast<ScenePart &>(dynObj)),
-        VHStaticObjectXYZAdapter(static_cast<ScenePart &>(dynObj)),
-        VHDynObjectAdapter(dynObj)
-    {}
-    virtual ~VHDynObjectXYZAdapter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Constructor for the visual Helios dynamic object adapter
+   *  providing XYZ visualization
+   * @see visualhelios::VHDynObjectAdapter::VHDynObjectAdapter(DynObject &)
+   */
+  VHDynObjectXYZAdapter(DynObject& dynObj)
+    : VHStaticObjectAdapter(static_cast<ScenePart&>(dynObj))
+    , VHStaticObjectXYZAdapter(static_cast<ScenePart&>(dynObj))
+    , VHDynObjectAdapter(dynObj)
+  {
+  }
+  virtual ~VHDynObjectXYZAdapter() = default;
 };
 
 }

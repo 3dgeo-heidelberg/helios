@@ -1,29 +1,31 @@
 #pragma once
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief The facade for FMS serialization
  */
-class FMSSerializationFacade{
+class FMSSerializationFacade
+{
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for FMS serialization facade
-     */
-    FMSSerializationFacade() = default;
-    virtual ~FMSSerializationFacade() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for FMS serialization facade
+   */
+  FMSSerializationFacade() = default;
+  virtual ~FMSSerializationFacade() = default;
 
-    // ***  SERIALIZATION FACADE METHODS  *** //
-    // ************************************** //
-
+  // ***  SERIALIZATION FACADE METHODS  *** //
+  // ************************************** //
 };
 
-}}
+}
+}

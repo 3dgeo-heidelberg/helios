@@ -1,7 +1,7 @@
 #pragma once
 
-#include <logging_common.hpp>
 #include <logger.hpp>
+#include <logging_common.hpp>
 
 /**
  * @brief Assist factory to create loggers (that derive from 'logger')
@@ -11,6 +11,4 @@
  * This way it is possible to make custom logger that sends log messages
  * to who knows where
  */
-using logger_creator = logger *(*)(const logging_config_t&);
-
-
+using logger_creator = logger* (*)(const logging_config_t&);
