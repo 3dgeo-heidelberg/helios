@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Literal, Optional
+from helios.scene import StaticScene
 from helios.utils import get_asset_directories
 from helios.validation import (
     AssetPath,
@@ -7,6 +7,8 @@ from helios.validation import (
     validate_xml_file,
 )
 from pydantic import Field, validate_call
+from typing import Annotated, Any, Literal, Optional
+
 import numpy as np
 
 import _helios
@@ -45,6 +47,20 @@ class TrajectorySettings(PlatformSettingsBase, cpp_class=_helios.TrajectorySetti
 
 
 class PlatformSettings(PlatformSettingsBase):
+    x: float = 0
+    y: float = 0
+    z: float = 0
+
+    def force_on_ground(self, scene: StaticScene):
+        """
+        Move waypoint z coordinate to ground level
+        """
+
+        ground_point = scene._cpp_object.ground_point_at((self.x, self.y, self.z))
+        self.z = ground_point[2]
+
+
+class StaticPlatformSettings(PlatformSettingsBase):
     x: float = 0
     y: float = 0
     z: float = 0

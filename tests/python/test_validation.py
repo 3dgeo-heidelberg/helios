@@ -410,6 +410,17 @@ def test_created_directory_annotation(tmp_path):
     assert (tmp_path / "nonexistent").exists()
 
 
+def test_multiassetpath(assetdir):
+    assert (b := assetdir / "b" / "bb" / "other.obj").exists()
+
+    @validate_call
+    def from_obj(obj_file: MultiAssetPath):
+        return obj_file
+
+    # tmp_dir has different parents, because it gets called from different functions
+    assert b.parts[-4:] == from_obj("root/b/*/*.obj")[0].parts[-4:]
+
+
 def test_angle_annotation():
     class Obj(Model):
         angle: Angle
@@ -494,3 +505,24 @@ def test_timeinterval_annotation():
 
     with pytest.raises(ValueError):
         Obj(timeinterval="-1 s")
+
+
+def test_is_iterable_annotation():
+    from helios.validation import _is_iterable_annotation
+
+    assert _is_iterable_annotation(bool) == False
+    assert _is_iterable_annotation(str) == False
+    assert _is_iterable_annotation(Union[int, str]) == False
+    assert _is_iterable_annotation(list[int]) == True
+    assert _is_iterable_annotation(tuple[int]) == True
+
+
+def test_is_iterable_of_model_annotation():
+    from helios.validation import _is_iterable_of_model_annotation
+
+    class Obj(Model):
+        pass
+
+    assert _is_iterable_of_model_annotation(Union[int, str]) == False
+    assert _is_iterable_of_model_annotation(list[int]) == False
+    assert _is_iterable_of_model_annotation(list[Obj]) == True

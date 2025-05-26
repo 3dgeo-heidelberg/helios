@@ -4,22 +4,25 @@ from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
     ExecutionSettings,
+    FullWaveformSettings,
     OutputFormat,
     OutputSettings,
     compose_execution_settings,
     compose_output_settings,
+    apply_log_writing,
 )
 from helios.utils import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
+from numpydantic import NDArray
 from pathlib import Path
 from pydantic import Field, validate_call
-from numpydantic import NDArray
-
 from typing import Annotated, Optional
+
 import numpy as np
 import tempfile
+import laspy
 
 import _helios
 
@@ -31,6 +34,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     legs: list[Leg] = []
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
+    full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
     trajectory: Optional[NDArray] = None
 
     @validate_call
@@ -47,44 +51,44 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
-        # Throw an error for unsupported output formats
-        if output_settings.format == OutputFormat.LASPY:
-            raise NotImplementedError(
-                "LASPY output format is not yet supported, see https://github.com/3dgeo-heidelberg/helios/issues/561"
-            )
+        # Update logs settings
+        apply_log_writing(execution_settings)
+        execution_settings.verbosity.apply()
+
+        # Throw if there are still unknown parameters left
+        if parameters:
+            raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
-        if output_settings.format == OutputFormat.NPY:
-            # TODO: Implement approach where we don't need to write to disk
-            las_output, zip_output = False, False
-            temp_dir_obj = tempfile.TemporaryDirectory()
+        # Set the fullwave form settings on the scanner
+        self.scanner._cpp_object.apply_settings_FWF(
+            self.full_waveform_settings._to_cpp()
+        )
 
-            fms = _helios.FMSFacadeFactory().build_facade(
-                temp_dir_obj.name,
-                1.0,
-                las_output,
-                False,
-                zip_output,
-                False,
-                self._cpp_object,
-            )
+        if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
+            las_output, zip_output, export_to_file = False, False, False
+            fms = None
 
         else:
             # Make the given output path absolute
             output = Path(output_settings.output_dir).absolute()
-
+            export_to_file = True
             # Determine boolean flags for the output
             las_output, zip_output = {
                 "laz": (True, True),
                 "las": (True, False),
                 "xyz": (False, False),
             }.get(output_settings.format)
+
+            self.scanner._cpp_object.write_waveform = output_settings.write_waveform
+            self.scanner._cpp_object.write_pulse = output_settings.write_pulse
+
             fms = _helios.FMSFacadeFactory().build_facade(
                 str(output),
-                1.0,
+                output_settings.las_scale,
                 las_output,
                 False,
                 zip_output,
@@ -105,67 +109,63 @@ class Survey(Model, cpp_class=_helios.Survey):
         pulse_thread_pool = ptpf.make_pulse_thread_pool()
         playback = _helios.SurveyPlayback(
             self._cpp_object,
-            fms,
             execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
             str(self.gps_time.timestamp()),
             True,
-            True,
+            export_to_file,
+            execution_settings.discard_shutdown,
+            fms,
         )
         playback.callback_frequency = 0
 
+        self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
+        self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.cycle_measurements_mutex = None
-        self.scanner._cpp_object.cycle_measurements = []
-        self.scanner._cpp_object.cycle_trajectories = []
-        self.scanner._cpp_object.all_measurements = []
-        self.scanner._cpp_object.all_trajectories = []
-        self.scanner._cpp_object.all_output_paths = []
-
+        self.scanner._cpp_object.all_measurements = np.empty((0,), dtype=meas_dtype)
+        self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.all_output_paths = np.empty((0,))
+        self.scanner._cpp_object.all_measurements_mutex = None
         # Start simulating the survey
         playback.start()
 
-        if output_settings.format == OutputFormat.NPY:
+        if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
+            # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
             measurements = self.scanner._cpp_object.all_measurements
             num_measurements = len(measurements)
 
-            data_mes = np.empty(num_measurements, dtype=meas_dtype)
-
-            for i, measurement in enumerate(measurements):
-                data_mes[i] = (
-                    measurement.dev_id,
-                    measurement.dev_idx,
-                    measurement.hit_object_id,
-                    tuple(measurement.position),
-                    tuple(measurement.beam_direction),
-                    tuple(measurement.beam_origin),
-                    measurement.distance,
-                    measurement.intensity,
-                    measurement.echo_width,
-                    measurement.return_number,
-                    measurement.pulse_return_number,
-                    measurement.fullwave_index,
-                    measurement.classification,
-                    measurement.gps_time,
-                )
-
             trajectories = self.scanner._cpp_object.all_trajectories
-            num_trajectories = len(trajectories)
+            if output_settings.format == OutputFormat.NPY:
+                return measurements, trajectories
 
-            data_traj = np.empty(num_trajectories, dtype=traj_dtype)
-
-            for i, trajectory in enumerate(trajectories):
-                data_traj[i] = (
-                    trajectory.gps_time,
-                    tuple(trajectory.position),
-                    trajectory.roll,
-                    trajectory.pitch,
-                    trajectory.yaw,
+            if output_settings.format == OutputFormat.LASPY:
+                header = laspy.LasHeader(version="1.4", point_format=6)
+                header.add_extra_dims(
+                    [
+                        laspy.ExtraBytesParams("echo_width", "f8"),
+                        laspy.ExtraBytesParams("fullwaveIndex", "i4"),
+                        # laspy.ExtraBytesParams("hitObjectId", "U50"),
+                    ]
                 )
+                header.generating_software = "HELIOS++"
 
-            temp_dir_obj.cleanup()
+                las = laspy.LasData(header)
+                las.synthetic = np.ones_like(las.synthetic)
 
-            return data_mes, data_traj
+                las.x = measurements["position"][:, 0]
+                las.y = measurements["position"][:, 1]
+                las.z = measurements["position"][:, 2]
+                las.intensity = measurements["intensity"]
+                las.return_number = measurements["return_number"]
+                las.number_of_returns = measurements["number_of_returns"]
+                las.gps_time = measurements["gps_time"]
+                las.classification = measurements["classification"]
+                las.echo_width = measurements["echo_width"]
+                las.fullwaveIndex = measurements["fullwave_index"]
+                # las.hitObjectId = data_mes["hit_object_id"]
+
+                return las, trajectories
 
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
@@ -265,7 +265,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
         return cls._from_cpp(_cpp_survey)

@@ -1,6 +1,7 @@
-# ruff: noqa
 from helios.platforms import *
-from numpy.lib.recfunctions import unstructured_to_structured
+from helios.survey import *
+
+import math
 
 
 def test_preinstantiated_platforms():
@@ -17,13 +18,38 @@ def test_preinstantiated_platforms():
     assert isinstance(tripod(), Platform)
 
 
-def test_platform_defaults():
-    Platform()
-    sps = StaticPlatformSettings()
-    dps = DynamicPlatformSettings()
-    pd = Platform(platform_settings=dps)
-    ps = Platform(platform_settings=sps)
+def test_platform_settings_mls():
+    survey = Survey.from_xml("data/surveys/toyblocks/mls_toyblocks.xml")
+
+    platform_settings = PlatformSettings(
+        x=10,
+        y=0,
+    )
+    scanner_settings = ScannerSettings(pulse_frequency=1000)
+    platform_settings.force_on_ground(survey.scene)
+    survey.add_leg(
+        platform_settings=platform_settings,
+        scanner_settings=scanner_settings,
+    )
+
+    assert math.isclose(
+        platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2]
+    )
 
 
-def test_platform_printable():
-    str(Platform())
+def test_platform_settings_tls():
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+
+    platform_settings = PlatformSettings(
+        x=10,
+        y=0,
+    )
+
+    platform_settings.force_on_ground(survey.scene)
+    survey.add_leg(
+        platform_settings=platform_settings,
+    )
+
+    assert math.isclose(
+        platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2]
+    )

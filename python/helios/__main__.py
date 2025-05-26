@@ -192,6 +192,11 @@ from helios.utils import add_asset_directory, set_rng_seed
         "By default: XML specifications are considered "
     ),
 )
+@optgroup.option(
+    "--dryrun",
+    is_flag=True,
+    help="Do not run any calculations. Only validates inputs and exits.",
+)
 @optgroup.group("KDTree")
 @optgroup.option(
     "--kdt",
@@ -280,7 +285,6 @@ def cli(**kw):
 
     # TODO:
     # The following parameters are defined but not yet implemented:
-    # * silent
     # * disableLegNoise
     # * disablePlatformNoise
     # * noSceneWriting
@@ -337,8 +341,10 @@ def cli(**kw):
     if gps := kw.get("gpsstarttime"):
         survey.gps_time = gps
 
+    if kw.get("dryrun"):
+        return
     survey.run(execution_settings=execution_settings, output_settings=output_settings)
 
 
 if __name__ == "__main__":
-    raise cli()
+    cli()

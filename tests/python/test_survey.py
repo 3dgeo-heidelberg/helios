@@ -43,6 +43,8 @@ def test_survey_run_numpy_output(survey):
 
     assert points.shape[0] == 200
     assert trajectory.shape[0] == 101
+    assert points.dtype == meas_dtype
+    assert trajectory.dtype == traj_dtype
 
 
 def test_survey_run_las_output(survey, tmp_path):
@@ -82,8 +84,11 @@ def test_survey_run_xyz_output(survey, tmp_path):
 
 
 def test_survey_run_laspy_output(survey):
-    with pytest.raises(NotImplementedError):
-        survey.run(format=OutputFormat.LASPY)
+    las, traj = survey.run(format=OutputFormat.LASPY)
+
+    assert len(las.points) == 200
+    assert all(las.return_number == np.ones_like(las.return_number))
+    assert traj.shape == (101,)
 
 
 def test_set_gpstime(survey):
@@ -98,6 +103,30 @@ def test_set_gpstime(survey):
 
     assert np.all(points["gps_time"] > 0)
     assert np.all(points["gps_time"] < 1)
+
+
+def test_survey_run_unknown_parameters(survey):
+    with pytest.raises(ValueError):
+        survey.run(unknown_parameter=12)
+
+
+def test_survey_run_trajectory_for_all_scanner_types():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    survey.legs[0].scanner_settings.trajectory_time_interval = 0.1
+    points, trajectory = survey.run()
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
+
+
+def test_full_waveform_settings_effect():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    points1, _ = survey.run(format=OutputFormat.NPY)
+
+    survey.full_waveform_settings.beam_sample_quality = 5
+    points2, _ = survey.run(format=OutputFormat.NPY)
+
+    # A higher beam sample quality should result in more points
+    assert points1.shape[0] < points2.shape[0]
 
 
 def test_load_csv_traj(survey):
