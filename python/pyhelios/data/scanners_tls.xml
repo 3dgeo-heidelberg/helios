@@ -6,17 +6,16 @@
 
 	<!-- ##### BEGIN RIEGL VZ-400 ##### -->	
 	<scanner 	id 							= "riegl_vz400"
-				name			  			= "RIEGL VZ-400"
+				name						= "RIEGL VZ-400"
 				accuracy_m					= "0.005"
 			 	beamDivergence_rad 			= "0.0003"
 				headRotatePerSecMax_deg		= "60"
-				
 				optics						= "rotating"
 				pulseFreqs_Hz				= "100000,300000"
 				pulseLength_ns	 			= "5"
 				rangeMin_m					= "1.5"
-				scanAngleMax_deg   			= "120"
-				scanAngleEffectiveMax_deg   = "50"
+				scanAngleMax_deg			= "120"
+				scanAngleEffectiveMax_deg	= "50"
 				scanFreqMin_Hz				= "3"
 				scanFreqMax_Hz				= "120">
 		
@@ -37,13 +36,13 @@
 				accuracy_m					= "0.008"
 			 	beamDivergence_rad 			= "0.0003"
 			 	headRotatePerSecMax_deg		= "60"
-				name			  			= "RIEGL VZ-1000"
+				name						= "RIEGL VZ-1000"
 				optics						= "rotating"
 				pulseFreqs_Hz				= "70000,100000,150000,300000"
-				pulseLength_ns	 			= "4"
+				pulseLength_ns				= "4"
 				rangeMin_m					= "2.5"
-				scanAngleMax_deg   			= "120"
-				scanAngleEffectiveMax_deg   = "50"
+				scanAngleMax_deg			= "120"
+				scanAngleEffectiveMax_deg	= "50"
 				scanFreqMin_Hz				= "3"
 				scanFreqMax_Hz				= "120"
 	>
@@ -106,16 +105,16 @@
 	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
 	<scanner 	id 							= "livox_mid-70"
 				accuracy_m					= "0.02"
-				beamDivergence_rad 			= "0.0027"
-				name			  			= "Livox Mid-70"
+				beamDivergence_rad			= "0.0027"
+				name						= "Livox Mid-70"
 				optics						= "risley"
 				pulseFreqs_Hz				= "100000"
 				pulseLength_ns	 			= "4"
 				rangeMin_m					= "2"
-				scanAngleMax_deg   			= "35"
-				scanAngleEffectiveMax_deg   = "35"
-				rotorFreq1_Hz					= "7294"
-				rotorFreq2_Hz					= "-4664"
+				scanAngleMax_deg			= "35"
+				scanAngleEffectiveMax_deg	= "35"
+				rotorFreq1_Hz				= "7294"
+				rotorFreq2_Hz				= "-4664"
 				wavelength_nm				= "905"
 	>
 				
@@ -137,18 +136,18 @@
 	<scanner 	id 						= "vlp16"
 			accuracy_m					= "0.03"
 			beamDivergence_rad 			= "0.0007"
-			name			  			= "Velodyne VLP-16"
+			name						= "Velodyne VLP-16"
 			optics						= "rotating"
 			pulseFreqs_Hz				= "18750"
-			pulseLength_ns	 			= "5"
+			pulseLength_ns				= "5"
 			rangeMin_m					= "0.09144"
 			rangeMax_m					= "100"
-			scanAngleMax_deg   			= "1"
+			scanAngleMax_deg			= "1"
 			scanAngleEffectiveMax_deg	= "1"
 			scanFreqMin_Hz				= "0"
 			scanFreqMax_Hz				= "0"
 			wavelength_nm				= "905"
-			maxNOR					  = "2"
+			maxNOR						= "2"
 			headRotatePerSecMax_deg		= "7200"
 	>
 		<headRotateAxis x="0" y="1" z="0"/>
@@ -156,82 +155,82 @@
 		<channels>
 			<channel id="0">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-15" />					
+					<rot axis="x" angle_deg="-15" />
 				</beamOrigin>
 			</channel>
 			<channel id="1">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="1" />					
+					<rot axis="x" angle_deg="1" />
 				</beamOrigin>
 			</channel>
 			<channel id="2">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-13" />					
+					<rot axis="x" angle_deg="-13" />
 				</beamOrigin>
 			</channel>
 			<channel id="3">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="3" />					
+					<rot axis="x" angle_deg="3" />
 				</beamOrigin>
 			</channel>
 			<channel id="4">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-11" />					
+					<rot axis="x" angle_deg="-11" />
 				</beamOrigin>
 			</channel>
 			<channel id="5">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="5" />					
+					<rot axis="x" angle_deg="5" />
 				</beamOrigin>
 			</channel>
 			<channel id="6">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-9" />					
+					<rot axis="x" angle_deg="-9" />
 				</beamOrigin>
 			</channel>
 			<channel id="7">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="7" />					
+					<rot axis="x" angle_deg="7" />
 				</beamOrigin>
 			</channel>
 			<channel id="8">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-7" />					
+					<rot axis="x" angle_deg="-7" />
 				</beamOrigin>
 			</channel>
 			<channel id="9">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="9" />					
+					<rot axis="x" angle_deg="9" />
 				</beamOrigin>
 			</channel>
 			<channel id="10">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-5" />					
+					<rot axis="x" angle_deg="-5" />
 				</beamOrigin>
 			</channel>
 			<channel id="11">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="11" />					
+					<rot axis="x" angle_deg="11" />
 				</beamOrigin>
 			</channel>
 			<channel id="12">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-3" />					
+					<rot axis="x" angle_deg="-3" />
 				</beamOrigin>
 			</channel>
 			<channel id="13">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="13" />					
+					<rot axis="x" angle_deg="13" />
 				</beamOrigin>
 			</channel>
 			<channel id="14">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-1" />					
+					<rot axis="x" angle_deg="-1" />
 				</beamOrigin>
 			</channel>
 			<channel id="15">
 				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="15" />					
+					<rot axis="x" angle_deg="15" />
 				</beamOrigin>
 			</channel>
 		</channels>
@@ -243,19 +242,19 @@
 
 	<scanner 	id 						= "velodyne_hdl-64e"
 			accuracy_m					= "0.02"
-			beamDivergence_rad 			= "0.0007"
-			name			  			= "Velodyne HDL-64E"
+			beamDivergence_rad			= "0.0007"
+			name						= "Velodyne HDL-64E"
 			optics						= "rotating"
 			pulseFreqs_Hz				= "20312"
 			pulseLength_ns	 			= "5"
 			rangeMin_m					= "0.9144"
 			rangeMax_m					= "120"
-			scanAngleMax_deg   			= "1"
+			scanAngleMax_deg			= "1"
 			scanAngleEffectiveMax_deg	= "1"
 			scanFreqMin_Hz				= "0"
 			scanFreqMax_Hz				= "0"
 			wavelength_nm				= "905"
-			maxNOR					  = "1"
+			maxNOR						= "1"
 			headRotatePerSecMax_deg		= "5250"
 	>
 
@@ -596,14 +595,14 @@
 	<!-- ##### BEGIN Tractor scanner ##### -->
 	<scanner 	id 							= "tractorscanner"
 				accuracy_m					= "0"
-				beamDivergence_rad 			= "0.00035"
-				name			  			= "Tractor Scanner"
+				beamDivergence_rad			= "0.00035"
+				name						= "Tractor Scanner"
 				optics						= "oscillating"
 				pulseFreqs_Hz				= "1000,50000,100000,200000"
-				pulseLength_ns	 			= "4"
+				pulseLength_ns				= "4"
 				rangeMin_m					= "0"
-				scanAngleMax_deg   			= "30"
-				scanAngleEffectiveMax_deg   = "50"
+				scanAngleMax_deg			= "30"
+				scanAngleEffectiveMax_deg	= "50"
 				scanFreqMin_Hz				= "100"
 				scanFreqMax_Hz				= "50"
 	>
@@ -613,15 +612,15 @@
 	
 	<!-- ##### BEGIN Panoramic scanner ##### -->	
 	<scanner 	id 							= "panoscanner"
-				name			  			= "PANO"
+				name						= "PANO"
 				accuracy_m					= "0.005"
 			 	beamDivergence_rad 			= "0.0003"
 				headRotatePerSecMax_deg		= "500"
 				optics						= "rotating"
 				pulseFreqs_Hz				= "100000,300000"
-				pulseLength_ns	 			= "5"
+				pulseLength_ns				= "5"
 				rangeMin_m					= "0.01"
-				scanAngleMax_deg   			= "180"
+				scanAngleMax_deg			= "180"
 				scanAngleEffectiveMax_deg   = "150"
 				scanFreqMin_Hz				= "0"
 				scanFreqMax_Hz				= "12000"
