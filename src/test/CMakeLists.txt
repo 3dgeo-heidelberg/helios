@@ -19,4 +19,5 @@ target_sources(
   "CatchVoxelParsingTest.cpp"
   "CatchHPCTest.cpp"
   "CatchEnergyModelsTest.cpp"
+  "CatchAssetLoadingTest.cpp"
 )
