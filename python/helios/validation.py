@@ -102,18 +102,44 @@ def _is_iterable_of_model_annotation(a):
     return issubclass(args[0], Model)
 
 
+def get_all_annotations(cls):
+    """Collect __annotations__ from cls and all its bases (excluding `object`)."""
+    anns: dict[str, type] = {}
+    for base in reversed(cls.__mro__):
+        if base is object:
+            continue
+        anns.update(getattr(base, "__annotations__", {}))
+    return anns
+
+
+def get_all_defaults(cls, dct):
+    """Collect default values for fields from cls and all its bases (excluding `object`)."""
+    defaults = {}
+    for base in reversed(cls.mro()[:-1]):
+        if base is object:
+            continue
+        base_defaults = getattr(base, "_defaults", None)
+        if isinstance(base_defaults, dict):
+            defaults.update(base_defaults)
+
+    for field, _ in dct.get("__annotations__", {}).items():
+        if field in dct:
+            val = dct[field]
+            if not isinstance(val, property):
+                defaults[field] = val
+
+    return defaults
+
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
         cls = super().__new__(cls, name, bases, dct, **kwargs)
 
+        annotations = get_all_annotations(cls)
         # Determine fields that should be properties
-        defaults = {}
-
-        for base in reversed(cls.mro()[:-1]):
-            for key, value in list(base.__dict__.items()):
-                if key in inspect.get_annotations(cls):
-                    defaults[key] = value
+        defaults = get_all_defaults(cls, dct)
+        setattr(cls, "_defaults", defaults)
 
         # Creation of properties need to be wrapped in a function to accommodate
         # a semantic weirdness of Python: If you define a function inside a loop,
@@ -181,14 +207,14 @@ class ValidatedModelMetaClass(type):
             return property().getter(_getter).setter(_setter)
 
         # Make fields properties
-        for field, annot in inspect.get_annotations(cls).items():
+        for field, annot in annotations.items():
             setattr(cls, field, _make_property(field, annot))
 
         # Create an __init__ for the class
         def __init__(self, *args, **instance_kwargs):
             # Iterate the fields in exactly the given order. When using a different order,
             # we risk that properties are instantiated in an incorrect order.
-            for i, field in enumerate(inspect.get_annotations(cls).keys()):
+            for i, field in enumerate(annotations):
                 # Check whether we find this among positional arguments
                 if i < len(args):
                     setattr(self, field, args[i])
@@ -200,8 +226,8 @@ class ValidatedModelMetaClass(type):
                     continue
 
                 # Use the provided default
-                if field in defaults:
-                    setattr(self, field, defaults[field])
+                if field in cls._defaults:
+                    setattr(self, field, cls._defaults[field])
                     continue
 
                 # Raise an error if this was required and not we reached this point
@@ -262,7 +288,7 @@ class Model(metaclass=ValidatedModelMetaClass):
     @classmethod
     def _from_cpp(cls, value):
         params = {}
-        for field, annot in inspect.get_annotations(cls).items():
+        for field, annot in get_all_annotations(cls).items():
             if hasattr(value, field):
                 cpp_value = getattr(value, field)
                 if not _is_iterable_annotation(annot):
@@ -314,7 +340,7 @@ class Model(metaclass=ValidatedModelMetaClass):
             cpp_object = self._cpp_object.clone()
 
         properties = {
-            f: getattr(self, f) for f in inspect.get_annotations(self.__class__).keys()
+            f: getattr(self, f) for f in get_all_annotations(self.__class__).keys()
         }
 
         return self.__class__(_cpp_object=cpp_object, **properties)
@@ -340,6 +366,6 @@ class UpdateableMixin:
             raise ValueError("update_from_object can only be called on Model objects")
 
         parameters = {}
-        for field in inspect.get_annotations(self.__class__).keys():
+        for field in get_all_annotations(self.__class__).keys():
             parameters[field] = getattr(other, field)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)
