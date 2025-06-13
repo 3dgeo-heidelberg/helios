@@ -20,4 +20,5 @@ target_sources(
   "CatchHPCTest.cpp"
   "CatchEnergyModelsTest.cpp"
   "CatchAssetLoadingTest.cpp"
+  "CatchExprTreeTest.cpp"
 )
