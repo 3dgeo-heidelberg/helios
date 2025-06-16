@@ -42,7 +42,7 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     // Validate DesignMatrix
     auto validateDesignMatrix = [] (
         DesignMatrix<double> &dm,
-        vector<string> const &colNames,
+        std::vector<std::string> const &colNames,
         arma::Mat<double> const &X
     ) -> bool {
         size_t const nRows = dm.getNumRows();
@@ -66,8 +66,8 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     // Validate TemporalDesignMatrix
     auto validateTemporalDesignMatrix = [&](
         TemporalDesignMatrix<double, double> &tdm,
-        string const &timeName,
-        vector<string> const &colNames,
+        std::string const &timeName,
+        std::vector<std::string> const &colNames,
         arma::Col<double> const &t,
         arma::Mat<double> const &X
     ) -> bool {
@@ -83,9 +83,9 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     // Validate IndexedDesignMatrix
     auto validateIndexedDesignMatrix = [&](
         IndexedDesignMatrix<int, double> &idm,
-        string const &indexName,
-        vector<string> const &colNames,
-        vector<int> const &ids,
+        std::string const &indexName,
+        std::vector<std::string> const &colNames,
+        std::vector<int> const &ids,
         arma::Mat<double> const &X
     ) -> bool {
         if(!validateDesignMatrix(idm, colNames, X)) return false;
@@ -99,21 +99,21 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     };
 
     // Basic design matrices
-    std::vector<string> colNamesR2({"x", "y"});
+    std::vector<std::string> colNamesR2({"x", "y"});
     arma::Mat<double> X1 = arma::randn(5, 2);
     DesignMatrix<double> dm1(X1, colNamesR2);
     REQUIRE(validateDesignMatrix(dm1, colNamesR2, X1));
     DesignMatrix<double> dm2(colNamesR2);
     REQUIRE(validateDesignMatrix(dm2, colNamesR2, arma::Mat<double>()));
     DesignMatrix<double> dm3;
-    REQUIRE(validateDesignMatrix(dm3, vector<string>(0), arma::Mat<double>()));
+    REQUIRE(validateDesignMatrix(dm3, std::vector<std::string>(0), arma::Mat<double>()));
     DesignMatrix<double> dm4(dm1);
     REQUIRE(validateDesignMatrix(dm4, colNamesR2, X1));
     dm4 = dm1;
     REQUIRE(validateDesignMatrix(dm4, colNamesR2, X1));
 
     // Temporal design matrices
-    std::vector<string> colNamesR2t({"x", "y", "t"});
+    std::vector<std::string> colNamesR2t({"x", "y", "t"});
     arma::Col<double> t1 = arma::randn(5, 1);
     arma::Mat<double> X2 = arma::randn(5, 3);
     TemporalDesignMatrix<double, double> tdm1(X1, t1, "time", colNamesR2);
@@ -146,7 +146,7 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     IndexedDesignMatrix<int, double> idm5(X2, 2, "idx", colNamesR2);
     REQUIRE(validateIndexedDesignMatrix(
         idm5, "idx", colNamesR2,
-        vector<int>({
+        std::vector<int>({
             (int)X2(0, 2),
             (int)X2(1, 2),
             (int)X2(2, 2),
@@ -157,7 +157,7 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     ));
 
     // Design matrix from file
-    std::vector<string> hf1({"x", "y", "z"}); // Header
+    std::vector<std::string> hf1({"x", "y", "z"}); // Header
     arma::Mat<double> Xf1( // Matrix
         "0 0 0;"
         "0 0.1 0;"
@@ -174,7 +174,7 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     REQUIRE(validateDesignMatrix(dmf1, hf1, Xf1));
     std::string const dmf2Path = testDir + "design_matrix_nonheader.txt";
     DesignMatrix<double> dmf2(dmf2Path);
-    REQUIRE(validateDesignMatrix(dmf2, vector<string>(0), Xf1));
+    REQUIRE(validateDesignMatrix(dmf2, std::vector<std::string>(0), Xf1));
 
     // Temporal design matrix from file
     std::vector<string> htf1({"x", "y"}); // Header
@@ -196,11 +196,11 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     std::string const tdmf2Path = testDir + "temporal_design_matrix_nonheader.txt";
     TemporalDesignMatrix<double, double> tdmf2(tdmf2Path);
     REQUIRE(validateTemporalDesignMatrix(
-        tdmf2, "time", vector<string>(0), ttf1, Xtf1
+        tdmf2, "time", std::vector<std::string>(0), ttf1, Xtf1
     ));
 
     // Indexed design matrix from file
-    std::vector<string> hif1({"x", "y"}); // Header
+    std::vector<std::string> hif1({"x", "y"}); // Header
     arma::Mat<double> Xif1(  // Matrix
         "0 0;"
         "0 0.1;"
@@ -219,7 +219,7 @@ TEST_CASE("Fluxionum: Design Matrix Building") {
     std::string const idmf2Path = testDir + "indexed_design_matrix_nonheader.txt";
     IndexedDesignMatrix<int, double> idmf2(idmf2Path);
     REQUIRE(validateIndexedDesignMatrix(
-        idmf2, "index", vector<string>(0), iif1, Xif1
+        idmf2, "index", std::vector<std::string>(0), iif1, Xif1
     ));
 }
 
@@ -285,7 +285,7 @@ TEST_CASE("Fluxionum: Design Matrix Methods") {
             "0.2 0.3 0.4;"
             "0.3 0.4 0.5;"
         ),
-        vector<int>({1, 3, 5})
+        std::vector<int>({1, 3, 5})
     );
     IndexedDesignMatrix<int, double> idm2(
         arma::Mat<double>(
@@ -293,7 +293,7 @@ TEST_CASE("Fluxionum: Design Matrix Methods") {
             "0.5 0.6 0.7;"
             "0.7 0.8 0.9;"
         ),
-        vector<int>({6, 8, 10})
+        std::vector<int>({6, 8, 10})
     );
 
     // Validate mergeInPlace
@@ -331,7 +331,7 @@ TEST_CASE("Fluxionum: Design Matrix Methods") {
         "0.5 0.6 0.7;"
         "0.7 0.8 0.9;"
     );
-    vector<int> ei({1, 3, 5, 6, 8, 10});
+    std::vector<int> ei({1, 3, 5, 6, 8, 10});
     REQUIRE_FALSE(arma::any(arma::vectorise(arma::abs(idm.getX()-em)) > eps));
     for(size_t i = 0 ; i < ei.size() ; ++i){
         REQUIRE(std::fabs(ei[i]-idm.getIndices()[i]) <= eps);
@@ -389,8 +389,8 @@ TEST_CASE("Fluxionum: Diff Design Matrix") {
     // Validate DiffDesignMatrix
     auto validateDiffDesignMatrix = [] (
         DiffDesignMatrix<double, double> &ddm,
-        string const &timeName,
-        vector<string> const &colNames,
+        std::string const &timeName,
+        std::vector<std::string> const &colNames,
         arma::Col<double> const &t,
         arma::Mat<double> const &A,
         DiffDesignMatrixType diffType
@@ -436,11 +436,11 @@ TEST_CASE("Fluxionum: Diff Design Matrix") {
         "0.1 0.2;"
         "0.1 0.4;"
     );
-    std::vector<string> EcolNames1({"f1", "f2"});
+    std::vector<std::string> EcolNames1({"f1", "f2"});
     std::string EtimeName1 = "t";
     std::string EtimeName2 = "time";
 
-    std::vector<string> colNames1({"t", "f1", "f2"});
+    std::vector<std::string> colNames1({"t", "f1", "f2"});
     arma::Mat<double> X1 = arma::Mat<double>(
         "-3 -0.3 0.9;"
         "-2 -0.2 0.4;"
@@ -483,11 +483,11 @@ TEST_CASE("Fluxionum: Diff Design Matrix") {
         DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
     ));
     REQUIRE(validateDiffDesignMatrix(
-        ddm2, EtimeName2, vector<string>(0), Et1, EA1,
+        ddm2, EtimeName2, std::vector<std::string>(0), Et1, EA1,
         DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
     ));
     REQUIRE(validateDiffDesignMatrix(
-        ddm3, EtimeName2, vector<string>(0), Et3, EA3,
+        ddm3, EtimeName2, std::vector<std::string>(0), Et3, EA3,
         DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES
     ));
 
@@ -501,7 +501,7 @@ TEST_CASE("Fluxionum: Diff Design Matrix") {
     std::string const ddmf2Path = testDir + "diff_design_matrix_nonheader.txt";
     DiffDesignMatrix<double, double> ddmf2(ddmf2Path);
     REQUIRE(validateDiffDesignMatrix(
-        ddmf2, EtimeName2, vector<string>(0), Et3, EA3,
+        ddmf2, EtimeName2, std::vector<std::string>(0), Et3, EA3,
         DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES
     ));
 }
