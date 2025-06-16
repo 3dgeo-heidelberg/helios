@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 24.10.0
+  rev: 25.1.0
   hooks:
   # Run Black - the uncompromising Python code formatter (Jupyter version)
   - id: black-jupyter
@@ -18,7 +18,7 @@ repos:
   - id: mixed-line-ending
 
 - repo: https://github.com/rhysd/actionlint
-  rev: v1.7.6
+  rev: v1.7.7
   hooks:
   # GitHub Actions Workflow linter
   - id: actionlint
@@ -30,13 +30,13 @@ repos:
   - id: validate-cff
 
 - repo: https://github.com/abravalheri/validate-pyproject
-  rev: v0.23
+  rev: v0.24.1
   hooks:
   # Validate the contents of pyproject.toml
   - id: validate-pyproject
 
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v20.1.4
+  rev: v20.1.6
   hooks:
   # Format C/C++/Objective-C code with clang-format
   - id: clang-format
