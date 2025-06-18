@@ -1,7 +1,4 @@
 #include <catch2/catch_test_macros.hpp>
-#undef WARN
-#undef INFO
-#include "logging.hpp"
 
 #include <string>
 #include <LadLut.h>
@@ -80,3 +77,4 @@ TEST_CASE("LadLut: Look-up table and transformation tests") {
     // Interpolate 3
     g = ladlut->interpolate(u3[0], u3[1], u3[2]);
     REQUIRE(std::fabs(g - g3) <= eps);
+}
