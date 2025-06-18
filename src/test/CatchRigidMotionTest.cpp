@@ -1,7 +1,4 @@
 #include <catch2/catch_test_macros.hpp>
-#undef WARN
-#undef INFO
-#include "logging.hpp"
 
 #include <MathConstants.h>
 #include <maths/rigidmotion/RigidMotionException.h>
