@@ -1,7 +1,4 @@
 #include <catch2/catch_test_macros.hpp>
-#undef WARN
-#undef INFO
-#include "logging.hpp"
 
 #include <PlaneFitter.h>
 
@@ -85,7 +82,8 @@ TEST_CASE("PlaneFitter: Best fitting plane orthogonal normal") {
         PlaneFitter::bestFittingPlaneOrthoNormal(M);
     for(size_t i = 0 ; i < bfpOrthoNormal.size() ; i++){
         double diff = expectedBfpOrthoNormal[i] - bfpOrthoNormal[i];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
     }
 
     // Create point cloud 2 as Matrix 2
@@ -116,6 +114,7 @@ TEST_CASE("PlaneFitter: Best fitting plane orthogonal normal") {
         PlaneFitter::bestFittingPlaneOrthoNormal(M2);
     for(size_t i = 0 ; i < bfpOrthoNormal2.size() ; i++){
         double diff = expectedBfpOrthoNormal2[i] - bfpOrthoNormal2[i];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
     }
 }
