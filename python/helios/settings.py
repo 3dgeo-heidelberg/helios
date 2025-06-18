@@ -86,7 +86,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     warehouse_factor: PositiveInt = 4
     log_file: bool = False
     log_file_only: bool = False
-    verbosity: LogVerbosity = LogVerbosity.QUIET
+    verbosity: LogVerbosity = LogVerbosity.SILENT
     factory_type: KDTreeFactoryType = KDTreeFactoryType.SAH_APPROXIMATION
     kdt_num_threads: ThreadCount = None
     kdt_geom_num_threads: ThreadCount = None
