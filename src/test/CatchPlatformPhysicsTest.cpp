@@ -21,7 +21,8 @@ TEST_CASE("Platform physics test") {
             hp.getRollPitchYaw(newRoll, pitch, yaw);
             if(newRoll < 0.0) newRoll += PI_2;
             double diff = newRoll - angle;
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -36,7 +37,8 @@ TEST_CASE("Platform physics test") {
             hp.rotate(0.0, angle, 0.0);
             hp.getRollPitchYaw(roll, newPitch, yaw);
             double diff = newPitch - angle;
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -52,7 +54,8 @@ TEST_CASE("Platform physics test") {
             hp.getRollPitchYaw(roll, pitch, newYaw);
             if(newYaw < 0.0) newYaw += PI_2;
             double diff = newYaw - angle;
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -70,8 +73,10 @@ TEST_CASE("Platform physics test") {
             if(newRoll < 0.0) newRoll += PI_2;
             double diff1 = newRoll - angle1;
             double diff2 = newPitch - angle2;
-            REQUIRE(diff1 >= -eps && diff1 <= eps);
-            REQUIRE(diff2 >= -eps && diff2 <= eps);
+            REQUIRE(diff1 >= -eps);
+            REQUIRE(diff1 <= eps);
+            REQUIRE(diff2 >= -eps);
+            REQUIRE(diff2 <= eps);
         }
     }
 
@@ -90,8 +95,10 @@ TEST_CASE("Platform physics test") {
             if(newYaw < 0.0) newYaw += PI_2;
             double diff1 = newRoll - angle1;
             double diff2 = newYaw - angle2;
-            REQUIRE(diff1 >= -eps && diff1 <= eps);
-            REQUIRE(diff2 >= -eps && diff2 <= eps);
+            REQUIRE(diff1 >= -eps);
+            REQUIRE(diff1 <= eps);
+            REQUIRE(diff2 >= -eps);
+            REQUIRE(diff2 <= eps);
         }
     }
 
@@ -109,8 +116,10 @@ TEST_CASE("Platform physics test") {
             if(newYaw < 0.0) newYaw += PI_2;
             double diff1 = newPitch - angle1;
             double diff2 = newYaw - angle2;
-            REQUIRE(diff1 >= -eps && diff1 <= eps);
-            REQUIRE(diff2 >= -eps && diff2 <= eps);
+            REQUIRE(diff1 >= -eps);
+            REQUIRE(diff1 <= eps);
+            REQUIRE(diff2 >= -eps);
+            REQUIRE(diff2 <= eps);
         }
     }
 
@@ -131,9 +140,12 @@ TEST_CASE("Platform physics test") {
             double diff1 = newRoll - angle1;
             double diff2 = newPitch - angle2;
             double diff3 = newYaw - (angle3+PI_2);
-            REQUIRE(diff1 >= -eps && diff1 <= eps);
-            REQUIRE(diff2 >= -eps && diff2 <= eps);
-            REQUIRE(diff3 >= -eps && diff3 <= eps);
+            REQUIRE(diff1 >= -eps);
+            REQUIRE(diff1 <= eps);
+            REQUIRE(diff2 >= -eps);
+            REQUIRE(diff2 <= eps);
+            REQUIRE(diff3 >= -eps);
+            REQUIRE(diff3 <= eps);
         }
     }
 }
