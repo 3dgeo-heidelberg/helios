@@ -1,7 +1,4 @@
 #include <catch2/catch_test_macros.hpp>
-#undef WARN
-#undef INFO
-#include "logging.hpp"
 
 #include <noise/RandomnessGenerator.h>
 
@@ -15,7 +12,8 @@ TEST_CASE("Randomness generation test") {
         rg1.computeUniformRealDistribution(0.0, 1.0);
         for(size_t i = 0 ; i < 5 ; i++){
             diff = rg1.uniformRealDistributionNext() - expectedURD1[i];
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -25,7 +23,8 @@ TEST_CASE("Randomness generation test") {
         rg2.computeUniformRealDistribution(-1.0, 1.0);
         for(size_t i = 0 ; i < 5 ; i++){
             diff = rg2.uniformRealDistributionNext() - expectedURD2[i];
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -43,7 +42,8 @@ TEST_CASE("Randomness generation test") {
         RandomnessGenerator<double> rg4("256");
         for(size_t i = 0 ; i < 5 ; i++){
             diff = rg4.uniformRealDistributionNext() - expectedURD4[i];
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -53,7 +53,8 @@ TEST_CASE("Randomness generation test") {
         rg5.computeUniformRealDistribution(0.0, 100.0);
         for(size_t i = 0 ; i < 5 ; i++){
             diff = rg5.uniformRealDistributionNext() - expectedURD5[i];
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -63,7 +64,8 @@ TEST_CASE("Randomness generation test") {
         rg6.computeUniformRealDistribution(-100.0, 50.0);
         for(size_t i = 0 ; i < 5 ; i++){
             diff = rg6.uniformRealDistributionNext() - expectedURD6[i];
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -72,7 +74,8 @@ TEST_CASE("Randomness generation test") {
         RandomnessGenerator<double> rg7(1337);
         for(size_t i = 0 ; i < 5 ; i++){
             diff = rg7.normalDistributionNext() - expectedND1[i];
-            REQUIRE(diff >= -eps && diff <= eps);
+            REQUIRE(diff >= -eps);
+            REQUIRE(diff <= eps);
         }
     }
 
@@ -80,22 +83,28 @@ TEST_CASE("Randomness generation test") {
         double expectedURD8[] = {0.803428, 0.150989, 0.527522, 0.995869, 0.119111, 0.214838};
         RandomnessGenerator<double> rg8(999);
         diff = rg8.uniformRealDistributionNext() - expectedURD8[0];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
         RandomnessGenerator<double> rg8c(rg8);
         diff = rg8c.uniformRealDistributionNext() - expectedURD8[1];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
         rg8 = rg8c;
         diff = rg8.uniformRealDistributionNext() - expectedURD8[2];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
         rg8c = std::move(rg8);
         diff = rg8c.uniformRealDistributionNext() - expectedURD8[3];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
         RandomnessGenerator<double> rg8m(std::move(rg8c));
         diff = rg8m.uniformRealDistributionNext() - expectedURD8[4];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
         std::swap(rg8, rg8m);
         diff = rg8.uniformRealDistributionNext() - expectedURD8[5];
-        REQUIRE(diff >= -eps && diff <= eps);
+        REQUIRE(diff >= -eps);
+        REQUIRE(diff <= eps);
     }
 
     SECTION("DEFAULT_RG behavior") {
