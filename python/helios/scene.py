@@ -276,13 +276,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
     scene_parts: Tuple[ScenePart, ...] = ()
-    
+
     def add_scene_part(self, scene_part: ScenePart):
         """Add a scene part to the scene."""
         self._pre_set("scene_parts", scene_part)
         self.scene_parts = self.scene_parts + (scene_part,)
         self._post_set("scene_parts")
-        
+
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):
