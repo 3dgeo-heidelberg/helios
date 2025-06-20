@@ -178,6 +178,6 @@ def test_invalid_leg_adding():
 
     survey.add_leg(new_leg)
     assert len(survey.legs) == 7
-    
+
     with pytest.raises(AttributeError, match="object has no attribute 'append'"):
         survey.append(new_leg)
