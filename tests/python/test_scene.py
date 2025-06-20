@@ -57,8 +57,8 @@ def test_sceneparts_from_obj_wildcard():
 
 
 def test_scenepart_from_obj_yisup():
-    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
-    scene = StaticScene(scene_parts=[box], up_axis="y")
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="y")
+    scene = StaticScene(scene_parts=[box])
     scene._finalize()
 
 
@@ -362,3 +362,36 @@ def test_classification_scenepart():
     meas, _ = survey.run()
 
     assert np.any(meas["classification"] == 1)
+
+
+def test_add_scene_part():
+    """
+    Test that a scene part can be added to an existing scene.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert len(scene.scene_parts) == 5
+
+    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene.add_scene_part(new_part)
+
+    assert len(scene.scene_parts) == 6
+    assert len(scene._cpp_object.scene_parts) == 6
+    assert new_part in scene.scene_parts
+
+
+def test_add_scene_part_invalid():
+    """
+    Test that adding a duplicate of scene_part raises an error. As well as usage of append method.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene2 = StaticScene()
+    assert len(scene.scene_parts) == 5
+
+    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene.add_scene_part(new_part)
+
+    with pytest.raises(ValueError, match="already used by another instance"):
+        scene2.add_scene_part(new_part)
+
+    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
+        scene.append(new_part)
