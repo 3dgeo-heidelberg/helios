@@ -277,3 +277,67 @@ readSceneFromBinary(const std::string& filename)
 
   return scene;
 }
+
+void makeSceneShift(std::shared_ptr<Survey> survey,
+                    bool legNoiseDisabled,
+                    bool legRandomOffset,
+                    double legRandomOffsetMean,
+                    double legRandomOffsetStdev)
+{
+  glm::dvec3 shift = survey->scanner->platform->scene->getShift();
+  // Prepare normal distribution if necessary
+  RandomnessGenerator<double> rg(*DEFAULT_RG);
+  if (legRandomOffset && !legNoiseDisabled) {
+    rg.computeNormalDistribution(
+        legRandomOffsetMean,
+        legRandomOffsetStdev);
+  }
+
+  // Apply scene shift to interpolated trajectory, if any
+  try {
+    std::shared_ptr<InterpolatedMovingPlatformEgg> pe =
+      std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
+        survey->scanner->platform);
+    if (pe != nullptr) {
+      size_t xIdx = 3, yIdx = 4, zIdx = 5;
+      if (pe->scope ==
+          InterpolatedMovingPlatform::InterpolationScope::POSITION) {
+        xIdx = 0;
+        yIdx = 1;
+        zIdx = 2;
+      }
+      pe->tdm->addToColumn(xIdx, -shift.x);
+      pe->tdm->addToColumn(yIdx, -shift.y);
+      pe->tdm->addToColumn(zIdx, -shift.z);
+    }
+  } catch (...) {
+  }
+  // Apply scene shift to each leg
+  for (std::shared_ptr<Leg> leg : survey->legs) {
+
+    // Shift platform settings, if any
+    if (leg->mPlatformSettings != nullptr) {
+    //  std::cout<< "Full check of PlatformSettings b4 and after shift"<<std::endl;
+    //  std::cout << leg->mPlatformSettings->toString() << std::endl;
+      glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
+      leg->mPlatformSettings->setPosition(platformPos - shift);
+
+      // If specified, move waypoint z coordinate to ground level
+      if (leg->mPlatformSettings->onGround) {
+        glm::dvec3 pos = leg->mPlatformSettings->getPosition();
+        glm::dvec3 ground =
+          survey->scanner->platform->scene->getGroundPointAt(pos);
+        leg->mPlatformSettings->setPosition(glm::dvec3(pos.x, pos.y, ground.z));
+      }
+
+      // Noise -> add a random offset in x,y,z to the measurements
+      if (legRandomOffset && !legNoiseDisabled) {
+        leg->mPlatformSettings->setPosition(
+          leg->mPlatformSettings->getPosition() +
+          glm::dvec3(rg.normalDistributionNext(),
+                     rg.normalDistributionNext(),
+                     rg.normalDistributionNext()));
+      }
+    }
+  }
+}

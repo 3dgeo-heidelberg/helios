@@ -43,8 +43,7 @@ readPlatformFromXml(std::string platformPath,
 
 std::shared_ptr<Scene>
 readSceneFromXml(std::string filePath,
-                 std::vector<std::string> assetsPath,
-                 bool legNoiseDisabled)
+                 std::vector<std::string> assetsPath)
 {
   bool rebuildScene = false;
   tinyxml2::XMLDocument doc;

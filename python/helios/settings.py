@@ -9,7 +9,7 @@ from helios.validation import (
 )
 
 from enum import IntEnum
-from pydantic import PositiveInt
+from pydantic import PositiveInt, BaseModel
 from typing import Optional
 from logging import ERROR, DEBUG, INFO, WARNING
 from datetime import datetime
@@ -119,6 +119,13 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
         fwf.max_fullwave_range = self.max_fullwave_range * 1e9
 
         return fwf
+
+
+class SceneShiftSettings(BaseModel):
+    leg_noise_disabled: bool = False
+    leg_random_offset: bool = False
+    leg_random_offset_mean: float = 0.0
+    leg_random_offset_stdev: float = 0.1
 
 
 # Storage for global settings
