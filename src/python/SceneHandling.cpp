@@ -278,19 +278,18 @@ readSceneFromBinary(const std::string& filename)
   return scene;
 }
 
-void makeSceneShift(std::shared_ptr<Survey> survey,
-                    bool legNoiseDisabled,
-                    bool legRandomOffset,
-                    double legRandomOffsetMean,
-                    double legRandomOffsetStdev)
+void
+makeSceneShift(std::shared_ptr<Survey> survey,
+               bool legNoiseDisabled,
+               bool legRandomOffset,
+               double legRandomOffsetMean,
+               double legRandomOffsetStdev)
 {
   glm::dvec3 shift = survey->scanner->platform->scene->getShift();
   // Prepare normal distribution if necessary
   RandomnessGenerator<double> rg(*DEFAULT_RG);
   if (legRandomOffset && !legNoiseDisabled) {
-    rg.computeNormalDistribution(
-        legRandomOffsetMean,
-        legRandomOffsetStdev);
+    rg.computeNormalDistribution(legRandomOffsetMean, legRandomOffsetStdev);
   }
 
   // Apply scene shift to interpolated trajectory, if any
@@ -317,8 +316,9 @@ void makeSceneShift(std::shared_ptr<Survey> survey,
 
     // Shift platform settings, if any
     if (leg->mPlatformSettings != nullptr) {
-    //  std::cout<< "Full check of PlatformSettings b4 and after shift"<<std::endl;
-    //  std::cout << leg->mPlatformSettings->toString() << std::endl;
+      //  std::cout<< "Full check of PlatformSettings b4 and after
+      //  shift"<<std::endl; std::cout << leg->mPlatformSettings->toString() <<
+      //  std::endl;
       glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
       leg->mPlatformSettings->setPosition(platformPos - shift);
 

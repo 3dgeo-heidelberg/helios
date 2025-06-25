@@ -3119,11 +3119,12 @@ PYBIND11_MODULE(_helios, m)
   m.def("translate_scene_part", &translateScenePart);
   m.def("write_scene_to_binary", &writeSceneToBinary);
   m.def("read_scene_from_binary", &readSceneFromBinary);
-  m.def("make_scene_shift", &makeSceneShift,
-    py::arg("survey"),
-    py::arg("leg_noise_disabled") = false,
-    py::arg("leg_random_offset") = false,
-    py::arg("leg_random_offset_mean") = 0.0,
-    py::arg("leg_random_offset_stdev") = 0.1);
+  m.def("make_scene_shift",
+        &makeSceneShift,
+        py::arg("survey"),
+        py::arg("leg_noise_disabled") = false,
+        py::arg("leg_random_offset") = false,
+        py::arg("leg_random_offset_mean") = 0.0,
+        py::arg("leg_random_offset_stdev") = 0.1);
 }
 }

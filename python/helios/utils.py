@@ -261,10 +261,10 @@ def apply_scene_shift(survey: "Survey") -> None:
     If this survey was not loaded from XML, apply `make_scene_shift` once.
     Subsequent calls are no-ops.
     """
-   
+
     if getattr(survey, "_scene_shift_done", False):
         return
-    
+
     settings = survey.scene_shift_settings
     _helios.make_scene_shift(
         survey._cpp_object,
