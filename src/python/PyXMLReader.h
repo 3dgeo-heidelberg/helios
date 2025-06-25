@@ -21,8 +21,7 @@ readPlatformFromXml(std::string platformPath,
                     std::string platformId);
 
 std::shared_ptr<Scene>
-readSceneFromXml(std::string filePath,
-                 std::vector<std::string> assetsPath);
+readSceneFromXml(std::string filePath, std::vector<std::string> assetsPath);
 
 std::shared_ptr<ScenePart>
 readScenePartFromXml(std::string filePath,
