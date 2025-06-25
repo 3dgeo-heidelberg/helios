@@ -2,13 +2,16 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Union, Sequence, TypeVar, List
+from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
 from numpydantic import NDArray, Shape
-
 
 import importlib_resources as resources
 import numpy as np
 import os
+
+if TYPE_CHECKING:
+    # only for static type checkers, never at runtime
+    from helios.survey import Survey
 
 import _helios
 
@@ -246,6 +249,31 @@ def detect_separator(file_path: Path) -> str:
                 )
 
     raise ValueError(f"Could not detect separator in file: {file_path}")
+
+
+def is_xml_loaded(obj) -> bool:
+    """Return True if the object was constructed via from_xml or _from_cpp."""
+    return getattr(obj, "_is_loaded_from_xml", False)
+
+
+def apply_scene_shift(survey: "Survey") -> None:
+    """
+    If this survey was not loaded from XML, apply `make_scene_shift` once.
+    Subsequent calls are no-ops.
+    """
+   
+    if getattr(survey, "_scene_shift_done", False):
+        return
+    
+    settings = survey.scene_shift_settings
+    _helios.make_scene_shift(
+        survey._cpp_object,
+        leg_noise_disabled=settings.leg_noise_disabled,
+        leg_random_offset=settings.leg_random_offset,
+        leg_random_offset_mean=settings.leg_random_offset_mean,
+        leg_random_offset_stdev=settings.leg_random_offset_stdev,
+    )
+    setattr(survey, "_scene_shift_done", True)
 
 
 meas_dtype = np.dtype(

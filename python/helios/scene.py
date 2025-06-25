@@ -332,6 +332,6 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
         _cpp_scene = _helios.read_scene_from_xml(
-            str(scene_file), [str(p) for p in get_asset_directories()], True
+            str(scene_file), [str(p) for p in get_asset_directories()]
         )
         return cls._from_cpp(_cpp_scene)
