@@ -12,7 +12,13 @@ from helios.settings import (
     compose_output_settings,
     apply_log_writing,
 )
-from helios.utils import get_asset_directories, meas_dtype, traj_dtype, apply_scene_shift, is_xml_loaded
+from helios.utils import (
+    get_asset_directories,
+    meas_dtype,
+    traj_dtype,
+    apply_scene_shift,
+    is_xml_loaded,
+)
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
@@ -63,7 +69,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
-        
+
         # Apply shift once and only if the survey is not loaded from XML
         if not is_xml_loaded(self):
             apply_scene_shift(self)
