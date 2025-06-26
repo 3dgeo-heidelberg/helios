@@ -274,7 +274,9 @@ class Model(metaclass=ValidatedModelMetaClass):
                         cpp_value = [args[0]._from_cpp(v) for v in cpp_value]
                 params[field] = cpp_value
 
-        return cls(_cpp_object=value, **params)
+        instance = cls(_cpp_object=value, **params)
+        setattr(instance, "_is_loaded_from_xml", True)
+        return instance
 
     def _enforce_uniqueness_across_instances(self, field, value):
         """Enforce uniqueness of a field across all instances of a class"""
