@@ -6,5 +6,5 @@ import _helios
 
 
 class Leg(Model, cpp_class=_helios.Leg):
-    platform_settings: PlatformSettingsBase = PlatformSettings()
-    scanner_settings: ScannerSettingsBase = ScannerSettings()
+    platform_settings: PlatformSettingsBase
+    scanner_settings: ScannerSettingsBase
