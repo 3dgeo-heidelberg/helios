@@ -1,10 +1,20 @@
-from helios.settings import ExecutionSettings, compose_execution_settings
+from helios.settings import (
+    ExecutionSettings,
+    compose_execution_settings,
+    ForceOnGroundStrategy,
+)
 from helios.utils import get_asset_directories, detect_separator
-from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
+from helios.validation import Angle, AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
-from pydantic import PositiveFloat, NonNegativeFloat, NonNegativeInt, validate_call
-from typing import Literal, Optional
+from pydantic import (
+    PositiveFloat,
+    PositiveInt,
+    NonNegativeFloat,
+    NonNegativeInt,
+    validate_call,
+)
+from typing import Literal, Optional, Union
 
 import numpy as np
 
@@ -12,14 +22,21 @@ import _helios
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
+    force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
+        ForceOnGroundStrategy.NONE
+    )
+    is_ground: bool = False
+    classification: int = 0
+
     @validate_call
     def rotate(
         self,
         quaternion: Optional[NDArray[Shape["4"], np.float64]] = None,
         axis: Optional[NDArray[Shape["3"], np.float64]] = None,
-        angle: Optional[float] = None,
-        origin: Optional[NDArray[Shape["3"], np.float64]] = None,
-        image: Optional[NDArray[Shape["3"], np.float64]] = None,
+        angle: Optional[Angle] = None,
+        from_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        to_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        rotation_center: Optional[NDArray[Shape["3"], np.float64]] = None,
     ):
         """Rotate the scene part.
 
@@ -27,6 +44,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         * A quaternion
         * An axis and an angle
         * An origin and an image vector
+
+        Optionally, you may specify a rotation center. If omitted the origin
+        of the coordinate system of the scene part will be used.
         """
 
         # The rotation object that we want to construct
@@ -50,21 +70,29 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             rot = _helios.Rotation(axis, angle)
 
         # Handle construction via two vectors
-        if origin is not None or image is not None:
+        if from_axis is not None or to_axis is not None:
             if rot is not None:
                 raise ValueError("Too many rotation parameters specified")
-            if origin is None:
+            if from_axis is None:
                 raise ValueError("Origin must be specified when image is specified")
-            if image is None:
+            if to_axis is None:
                 raise ValueError("Image must be specified when origin is specified")
 
-            rot = _helios.Rotation(origin, image)
+            rot = _helios.Rotation(from_axis, to_axis)
 
         if rot is None:
             raise ValueError("No rotation parameters specified")
 
+        # Maybe shift by the rotation center
+        if rotation_center is not None:
+            self.translate(-rotation_center)
+
         # Perform the actual rotation
         _helios.rotate_scene_part(self._cpp_object, rot)
+
+        # Undo the shift by the rotation center
+        if rotation_center is not None:
+            self.translate(rotation_center)
 
         return self
 
@@ -107,7 +135,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         return cls._from_cpp(_cpp_part)
-    
 
     @classmethod
     @validate_call
@@ -118,7 +145,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-
     @classmethod
     @validate_call
     def from_objs(cls, obj_files: MultiAssetPath, up_axis: Literal["y", "z"] = "z"):
@@ -128,8 +154,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Supports '**' for matching multiple directories.
         """
         return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
-    
-    
+
     @classmethod
     @validate_call
     def from_tiffs(cls, tiff_files: MultiAssetPath):
@@ -139,17 +164,18 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Supports '**' for matching multiple directories.
         """
         return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
-    
 
     @classmethod
     @validate_call
     def from_xyz(
         cls,
-        xyz_file: AssetPath, 
+        xyz_file: AssetPath,
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
-        max_color_value: NonNegativeFloat = 0.0, 
-        default_normal: NDArray[Shape["3"], np.float64] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
         sparse: bool = False,
         estimate_normals: bool = False,
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
@@ -157,7 +183,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         snap_neighbor_normal: bool = False,
     ):
         """Load the scene part from an XYZ file."""
-        
+
         if separator is None:
             separator = detect_separator(xyz_file)
 
@@ -180,7 +206,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         return cls._from_cpp(_cpp_part)
-    
 
     @classmethod
     @validate_call
@@ -190,7 +215,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: NonNegativeFloat = 0.0,
-        default_normal: NDArray[Shape["3"], np.float64] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
         sparse: bool = False,
         estimate_normals: bool = False,
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
@@ -203,12 +230,20 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Each parameters hould be a single shared value for all files.
         """
         return [
-            ScenePart.from_xyz(xyz, voxel_size, separator, max_color_value, default_normal, 
-                               sparse, estimate_normals, normals_file_columns, 
-                               rgb_file_columns, snap_neighbor_normal)
+            ScenePart.from_xyz(
+                xyz,
+                voxel_size,
+                separator,
+                max_color_value,
+                default_normal,
+                sparse,
+                estimate_normals,
+                normals_file_columns,
+                rgb_file_columns,
+                snap_neighbor_normal,
+            )
             for xyz in xyz_files
-            ]
-    
+        ]
 
     @classmethod
     @validate_call
@@ -223,7 +258,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Load the scene part from a VOX file."""
 
         if intersection_mode == "fixed" and intersection_argument is not None:
-            raise ValueError("'intersection_argument' must not be provided when 'intersection_mode' is 'fixed'.")
+            raise ValueError(
+                "'intersection_argument' must not be provided when 'intersection_mode' is 'fixed'."
+            )
 
         _cpp_part = _helios.read_vox_scene_part(
             str(vox_file),
@@ -231,7 +268,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             intersection_mode,
             intersection_argument if intersection_argument is not None else 0.0,
             random_shift,
-            ladlut_path if ladlut_path is not None else ""
+            ladlut_path if ladlut_path is not None else "",
         )
 
         return cls._from_cpp(_cpp_part)
@@ -251,7 +288,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             )
             _helios.finalize_static_scene(
                 self._cpp_object,
-                execution_settings.parallelization,
+                execution_settings.factory_type,
                 execution_settings.kdt_num_threads,
                 execution_settings.kdt_geom_num_threads,
                 execution_settings.sah_nodes,
@@ -275,12 +312,21 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
     @classmethod
     @validate_call
+    def from_binary(cls, filename: AssetPath):
+        _cpp_scene = _helios.read_scene_from_binary(str(filename))
+        return cls._from_cpp(_cpp_scene)
+
+    def to_binary(self, filename: AssetPath, is_dyn_scene: bool = False):
+        _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
+
+    @classmethod
+    @validate_call
     def from_xml(cls, scene_file: AssetPath):
 
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
         _cpp_scene = _helios.read_scene_from_xml(
-            str(scene_file), [str(p) for p in get_asset_directories()], True, True
+            str(scene_file), [str(p) for p in get_asset_directories()], True
         )
         return cls._from_cpp(_cpp_scene)

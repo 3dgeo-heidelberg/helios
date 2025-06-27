@@ -2,20 +2,23 @@
 
 #include <sstream>
 
-
-std::string getHeliosVersion(){
-    return HELIOS_VERSION;
+std::string
+getHeliosVersion()
+{
+  return HELIOS_VERSION;
 }
 
-std::string getHeliosFullVersion(){
-    std::stringstream ss;
-    ss << "Helios v" << getHeliosVersion() << " [" << HELIOS_BUILD_TYPE;
+std::string
+getHeliosFullVersion()
+{
+  std::stringstream ss;
+  ss << "Helios v" << getHeliosVersion() << " [" << HELIOS_BUILD_TYPE;
 #ifdef DATA_ANALYTICS
-    ss << " DAmode";
+  ss << " DAmode";
 #endif
 #ifdef PCL_BINDING
-    ss << " PCL";
+  ss << " PCL";
 #endif
-    ss << "]";
-    return ss.str();
+  ss << "]";
+  return ss.str();
 }

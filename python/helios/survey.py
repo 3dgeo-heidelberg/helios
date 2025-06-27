@@ -4,10 +4,12 @@ from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
     ExecutionSettings,
+    FullWaveformSettings,
     OutputFormat,
     OutputSettings,
     compose_execution_settings,
     compose_output_settings,
+    apply_log_writing,
 )
 from helios.utils import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, validate_xml_file
@@ -31,6 +33,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     legs: list[Leg] = []
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
+    full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
 
     @validate_call
     def run(
@@ -46,6 +49,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
+        # Update logs settings
+        apply_log_writing(execution_settings)
+        execution_settings.verbosity.apply()
+
         # Throw if there are still unknown parameters left
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
@@ -53,6 +60,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
+
+        # Set the fullwave form settings on the scanner
+        self.scanner._cpp_object.apply_settings_FWF(
+            self.full_waveform_settings._to_cpp()
+        )
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False
@@ -68,9 +80,13 @@ class Survey(Model, cpp_class=_helios.Survey):
                 "las": (True, False),
                 "xyz": (False, False),
             }.get(output_settings.format)
+
+            self.scanner._cpp_object.write_waveform = output_settings.write_waveform
+            self.scanner._cpp_object.write_pulse = output_settings.write_pulse
+
             fms = _helios.FMSFacadeFactory().build_facade(
                 str(output),
-                1.0,
+                output_settings.las_scale,
                 las_output,
                 False,
                 zip_output,
@@ -195,7 +211,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
         return cls._from_cpp(_cpp_survey)

@@ -223,21 +223,28 @@ def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters
 
     return result
 
+
 @validate_call
 def detect_separator(file_path: Path) -> str:
     """Detect the separator used in an XYZ file."""
     possible_separators = [" ", ",", "\t", ";"]
     if not file_path.exists() or not file_path.is_file():
         raise ValueError(f"File not found: {file_path}")
-    
+
     separator_counts = {sep: 0 for sep in possible_separators}
     with file_path.open("r", encoding="utf-8") as f:
         for line in f:
             stripped_line = line.strip()
-   
-            if stripped_line and not stripped_line.startswith("//") and not stripped_line.startswith("#"):
-                return next((sep for sep in possible_separators if sep in stripped_line), " ")
-   
+
+            if (
+                stripped_line
+                and not stripped_line.startswith("//")
+                and not stripped_line.startswith("#")
+            ):
+                return next(
+                    (sep for sep in possible_separators if sep in stripped_line), " "
+                )
+
     raise ValueError(f"Could not detect separator in file: {file_path}")
 
 

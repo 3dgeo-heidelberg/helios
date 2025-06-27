@@ -2,20 +2,22 @@
 
 // ***  NORMALS UTILS  *** //
 // *********************** //
-bool DynMotion::checkModifiesNormal() const{
-    RigidMotion::SuperType stype = findSuperType();
-    return
-        stype == RigidMotion::SuperType::R2_REFLECTION ||
-        stype == RigidMotion::SuperType::R2_ROTATION ||
-        stype == RigidMotion::SuperType::R3_REFLECTION ||
-        stype == RigidMotion::SuperType::R3_ROTATION ||
-        stype == RigidMotion::SuperType::R3_ROTATIONAL_SYMMETRY
-    ;
+bool
+DynMotion::checkModifiesNormal() const
+{
+  rigidmotion::RigidMotion::SuperType stype = findSuperType();
+  return stype == rigidmotion::RigidMotion::SuperType::R2_REFLECTION ||
+         stype == rigidmotion::RigidMotion::SuperType::R2_ROTATION ||
+         stype == rigidmotion::RigidMotion::SuperType::R3_REFLECTION ||
+         stype == rigidmotion::RigidMotion::SuperType::R3_ROTATION ||
+         stype == rigidmotion::RigidMotion::SuperType::R3_ROTATIONAL_SYMMETRY;
 }
 
-DynMotion DynMotion::makeNormalCounterpart() const{
-    DynMotion dm(zeros(getDimensionality()), getA());
-    dm.setNormalMode(true);
-    dm.setSelfMode(selfMode);
-    return dm;
+DynMotion
+DynMotion::makeNormalCounterpart() const
+{
+  DynMotion dm(arma::zeros(getDimensionality()), getA());
+  dm.setNormalMode(true);
+  dm.setSelfMode(selfMode);
+  return dm;
 }

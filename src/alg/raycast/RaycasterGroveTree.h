@@ -18,19 +18,19 @@
  * @see BasicDynGrove
  * @see KDGrove
  */
-template <typename Subject>
-class RaycasterGroveTree : Raycaster{
+template<typename Subject>
+class RaycasterGroveTree : Raycaster
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    ~RaycasterGroveTree() override = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  ~RaycasterGroveTree() override = default;
 
-
-    // ***  GROVE DYNAMIC TREE METHODS  *** //
-    // ************************************ //
-    /**
-     * @brief Method to handle callbacks from updated subjects
-     * @param s The updated subject
-     */
-    virtual void update(Subject &s) = 0;
+  // ***  GROVE DYNAMIC TREE METHODS  *** //
+  // ************************************ //
+  /**
+   * @brief Method to handle callbacks from updated subjects
+   * @param s The updated subject
+   */
+  virtual void update(Subject& s) = 0;
 };

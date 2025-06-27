@@ -10,6 +10,8 @@ from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene, ScenePart
 from helios.settings import (
     ExecutionSettings,
+    FullWaveformSettings,
+    KDTreeFactoryType,
     LogVerbosity,
     OutputSettings,
     ParallelizationStrategy,

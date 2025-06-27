@@ -505,3 +505,24 @@ def test_timeinterval_annotation():
 
     with pytest.raises(ValueError):
         Obj(timeinterval="-1 s")
+
+
+def test_is_iterable_annotation():
+    from helios.validation import _is_iterable_annotation
+
+    assert _is_iterable_annotation(bool) == False
+    assert _is_iterable_annotation(str) == False
+    assert _is_iterable_annotation(Union[int, str]) == False
+    assert _is_iterable_annotation(list[int]) == True
+    assert _is_iterable_annotation(tuple[int]) == True
+
+
+def test_is_iterable_of_model_annotation():
+    from helios.validation import _is_iterable_of_model_annotation
+
+    class Obj(Model):
+        pass
+
+    assert _is_iterable_of_model_annotation(Union[int, str]) == False
+    assert _is_iterable_of_model_annotation(list[int]) == False
+    assert _is_iterable_of_model_annotation(list[Obj]) == True

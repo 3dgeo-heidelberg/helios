@@ -6,7 +6,8 @@
  * @brief Obtain current Helios++ version
  * @return Current Helios++ version
  */
-std::string getHeliosVersion();
+std::string
+getHeliosVersion();
 
 /**
  * @brief Obtain the current HELIOS++ version together with extra information
@@ -14,4 +15,5 @@ std::string getHeliosVersion();
  *  the PCL binding, and the type of linkage for Boost.
  * @return The current HELIOS++ version together with extra information
  */
-std::string getHeliosFullVersion();
+std::string
+getHeliosFullVersion();
