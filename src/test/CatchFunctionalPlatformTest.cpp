@@ -10,7 +10,7 @@ TEST_CASE( "Functional platform test ") {
     std::function<void(void)> simulationFunction = [] (void) -> void {};
     SimulationStepLoop stepLoop(simulationFunction);
     stepLoop.setFrequency(simFreq);
-    TemporalDesignMatrix<double, double> tdm(
+    fluxionum::TemporalDesignMatrix<double, double> tdm(
         arma::Mat<double>(
             "0.0  -6  -2   0;"
             "0.2  -4   2   0;"
@@ -26,7 +26,7 @@ TEST_CASE( "Functional platform test ") {
         "t",
         vector<string>({"t", "x", "y", "z"})
     );
-    DiffDesignMatrix<double, double> ddm = tdm.toDiffDesignMatrix();
+    fluxionum::DiffDesignMatrix<double, double> ddm = tdm.toDiffDesignMatrix();
     InterpolatedMovingPlatform imp(
         stepLoop,
         tdm,
