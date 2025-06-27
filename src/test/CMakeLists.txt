@@ -30,5 +30,7 @@ target_sources(
   "CatchRayIntersectionTest.cpp"
   "CatchRigidMotionTest.cpp"
   "CatchScenePartSplitTest.cpp"
+  "CatchSerializationTest.cpp"
+  "CatchSurveyCopyTest.cpp"
   "CatchVoxelParsingTest.cpp"
 )
