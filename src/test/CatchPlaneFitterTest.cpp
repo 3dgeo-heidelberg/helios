@@ -6,7 +6,7 @@ TEST_CASE("PlaneFitter: Best fitting plane orthogonal normal") {
     double eps = 0.00001; // Decimal precision to validate results
 
     // Create point cloud as Matrix
-    Mat<double> M(3, 64);
+    arma::Mat<double> M(3, 64);
     M[0] = -1.0;	                M[1] = -0.5;	                M[2] = -0.2590347239999257;
     M[3] = -0.9523809523809523;		M[4] = -0.35714285714285715;	M[5] = -0.2026780697596828;
     M[6] = -0.9047619047619048;		M[7] = -0.2142857142857143;		M[8] = -0.13139036416092098;
@@ -87,7 +87,7 @@ TEST_CASE("PlaneFitter: Best fitting plane orthogonal normal") {
     }
 
     // Create point cloud 2 as Matrix 2
-    Mat<double> M2(3, 16);
+    arma::Mat<double> M2(3, 16);
     M2[0] = 5.7;        M2[1] = 5.7;        M2[2] = 2.3;
     M2[3] = 5.6;        M2[4] = 5.7;        M2[5] = 2.3;
     M2[6] = 5.6;        M2[7] = 5.6;        M2[8] = 2.3;
