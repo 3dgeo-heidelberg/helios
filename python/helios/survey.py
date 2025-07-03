@@ -71,7 +71,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Apply shift once and only if the survey is not loaded from XML
         if not is_xml_loaded(self):
             apply_scene_shift(self, execution_settings)
-          
+
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
