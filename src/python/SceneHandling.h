@@ -69,6 +69,12 @@ writeSceneToBinary(const std::string& writePath,
 std::shared_ptr<Scene>
 readSceneFromBinary(const std::string& readPath);
 
+void findNonDefaultScannerSettings(
+  std::shared_ptr<ScannerSettings> base,
+  std::shared_ptr<ScannerSettings> ref,
+  std::string const defaultTemplateId,
+  std::unordered_set<std::string>& fields);
+
 void
 makeSceneShift(std::shared_ptr<Survey> survey,
                bool legNoiseDisabled = false,

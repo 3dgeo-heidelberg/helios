@@ -1,5 +1,5 @@
-from helios.platforms import Platform
-from helios.scanner import Scanner
+from helios.platforms import Platform, tripod, sr22, DynamicPlatformSettings
+from helios.scanner import Scanner, livox_mid100, vlp16
 from helios.scene import StaticScene
 from helios.survey import *
 
