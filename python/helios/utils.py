@@ -12,6 +12,8 @@ import os
 if TYPE_CHECKING:
     # only for static type checkers, never at runtime
     from helios.survey import Survey
+    from helios.scene import StaticScene
+    from helios.settings import ExecutionSettings
 
 import _helios
 
@@ -256,7 +258,8 @@ def is_xml_loaded(obj) -> bool:
     return getattr(obj, "_is_loaded_from_xml", False)
 
 
-def apply_scene_shift(survey: "Survey") -> None:
+def apply_scene_shift(survey: "Survey",
+                      execution_settings: "ExecutionSettings") -> None:
     """
     If this survey was not loaded from XML, apply `make_scene_shift` once.
     Subsequent calls are no-ops.
@@ -264,6 +267,9 @@ def apply_scene_shift(survey: "Survey") -> None:
 
     if getattr(survey, "_scene_shift_done", False):
         return
+
+    if not is_xml_loaded(survey.scene):
+        survey.scene._finalize(execution_settings)
 
     settings = survey.scene_shift_settings
     _helios.make_scene_shift(
