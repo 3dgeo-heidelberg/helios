@@ -68,12 +68,12 @@ class Survey(Model, cpp_class=_helios.Survey):
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
-        # Ensure that the scene has been finalized
-        self.scene._finalize(execution_settings)
-
         # Apply shift once and only if the survey is not loaded from XML
         if not is_xml_loaded(self):
-            apply_scene_shift(self)
+            apply_scene_shift(self, execution_settings)
+          
+        # Ensure that the scene has been finalized
+        self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # Set the fullwave form settings on the scanner
@@ -146,7 +146,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
             measurements = self.scanner._cpp_object.all_measurements
-            num_measurements = len(measurements)
 
             trajectories = self.scanner._cpp_object.all_trajectories
             if output_settings.format == OutputFormat.NPY:
