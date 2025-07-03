@@ -278,11 +278,11 @@ readSceneFromBinary(const std::string& filename)
   return scene;
 }
 
-void findNonDefaultScannerSettings(
-  std::shared_ptr<ScannerSettings> base,
-  std::shared_ptr<ScannerSettings> ref,
-  std::string const defaultTemplateId,
-  std::unordered_set<std::string>& fields)
+void
+findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
+                              std::shared_ptr<ScannerSettings> ref,
+                              std::string const defaultTemplateId,
+                              std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)
     fields.insert("baseTemplate");
@@ -314,11 +314,12 @@ void findNonDefaultScannerSettings(
     fields.insert("horizontalResolution_rad");
 }
 
-void makeSceneShift(std::shared_ptr<Survey> survey,
-                    bool legNoiseDisabled,
-                    bool legRandomOffset,
-                    double legRandomOffsetMean,
-                    double legRandomOffsetStdev)
+void
+makeSceneShift(std::shared_ptr<Survey> survey,
+               bool legNoiseDisabled,
+               bool legRandomOffset,
+               double legRandomOffsetMean,
+               double legRandomOffsetStdev)
 {
   glm::dvec3 shift = survey->scanner->platform->scene->getShift();
   // Prepare normal distribution if necessary
@@ -373,13 +374,17 @@ void makeSceneShift(std::shared_ptr<Survey> survey,
     }
 
     if (leg->mScannerSettings != nullptr) {
-      std::shared_ptr<ScannerSettings> default_settings = std::make_shared<ScannerSettings>();
-      std::shared_ptr<ScannerSettings> currentSettings = survey->scanner->retrieveCurrentSettings();
+      std::shared_ptr<ScannerSettings> default_settings =
+        std::make_shared<ScannerSettings>();
+      std::shared_ptr<ScannerSettings> currentSettings =
+        survey->scanner->retrieveCurrentSettings();
       std::unordered_set<std::string> scannerFields;
-      findNonDefaultScannerSettings(
-        leg->mScannerSettings, default_settings, default_settings->id, scannerFields);
-        leg->mScannerSettings = currentSettings->cherryPick(
-          leg->mScannerSettings, scannerFields); 
+      findNonDefaultScannerSettings(leg->mScannerSettings,
+                                    default_settings,
+                                    default_settings->id,
+                                    scannerFields);
+      leg->mScannerSettings =
+        currentSettings->cherryPick(leg->mScannerSettings, scannerFields);
     }
-}
+  }
 }
