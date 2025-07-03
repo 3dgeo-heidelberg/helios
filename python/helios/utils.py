@@ -258,8 +258,9 @@ def is_xml_loaded(obj) -> bool:
     return getattr(obj, "_is_loaded_from_xml", False)
 
 
-def apply_scene_shift(survey: "Survey",
-                      execution_settings: "ExecutionSettings") -> None:
+def apply_scene_shift(
+    survey: "Survey", execution_settings: "ExecutionSettings"
+) -> None:
     """
     If this survey was not loaded from XML, apply `make_scene_shift` once.
     Subsequent calls are no-ops.
