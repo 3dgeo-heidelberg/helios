@@ -51,6 +51,31 @@
 	</scanner>
 	<!-- ##### END RIEGL VZ-1000 ##### -->
 
+    <!-- ##### BEGIN RIEGL VZ-600i ##### -->    
+    <scanner     id                           = "riegl_vz600i"
+                name                          = "RIEGL VZ-600i"
+                accuracy_m                    = "0.005"
+                 beamDivergence_rad           = "0.00035"
+                headRotatePerSecMax_deg       = "360"
+                optics                        = "rotating"
+                pulseFreqs_Hz                 = "140000,600000,1200000,2200000"
+                pulseLength_ns                = "5"
+                rangeMin_m                    = "0.5"
+                scanAngleMax_deg              = "52.5"
+                scanAngleEffectiveMax_deg     = "52.5"
+                scanFreqMin_Hz                = "4"
+                scanFreqMax_Hz                = "420">
+        
+        <FWFSettings beamSampleQuality="3"/>    
+        <beamOrigin x="0" y="0" z="0.2">
+            <rot axis="y" angle_deg="0" />
+            <rot axis="z" angle_deg="0" />
+            <rot axis="x" angle_deg="0" />
+        </beamOrigin>
+        <headRotateAxis x="0" y="0" z="1"/>
+        
+    </scanner>
+    <!-- ##### END RIEGL VZ-600i ##### -->
 
     <!--######## BEGIN RIEGL VQ-450 ####### -->
 	<scanner 
@@ -74,8 +99,6 @@
 		<headRotateAxis x="0" y="0" z="1" />
 	</scanner>
     
-
-	
 	<!--######## END RIEGL VQ-450 ####### -->
 
 
@@ -128,7 +151,7 @@
             maxNOR                      = "2"
 			headRotatePerSecMax_deg		= "7200"
 	>
-				
+		<headRotateAxis x="0" y="1" z="0"/>
 		<FWFSettings beamSampleQuality="3"/>	<!-- set to one for fast simulations -->
 		<channels>
 			<channel id="0">
