@@ -277,3 +277,114 @@ readSceneFromBinary(const std::string& filename)
 
   return scene;
 }
+
+void
+findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
+                              std::shared_ptr<ScannerSettings> ref,
+                              std::string const defaultTemplateId,
+                              std::unordered_set<std::string>& fields)
+{
+  if (ref->id != defaultTemplateId)
+    fields.insert("baseTemplate");
+  if (base->active != ref->active)
+    fields.insert("active");
+  if (base->headRotatePerSec_rad != ref->headRotatePerSec_rad)
+    fields.insert("headRotatePerSec_rad");
+  if (base->headRotateStart_rad != ref->headRotateStart_rad)
+    fields.insert("headRotateStart_rad");
+  if (base->headRotateStop_rad != ref->headRotateStop_rad)
+    fields.insert("headRotateStop_rad");
+  if (base->pulseFreq_Hz != ref->pulseFreq_Hz)
+    fields.insert("pulseFreq_Hz");
+  if (base->scanAngle_rad != ref->scanAngle_rad)
+    fields.insert("scanAngle_rad");
+  if (base->verticalAngleMin_rad != ref->verticalAngleMin_rad)
+    fields.insert("verticalAngleMin_rad");
+  if (base->verticalAngleMax_rad != ref->verticalAngleMax_rad)
+    fields.insert("verticalAngleMax_rad");
+  if (base->scanFreq_Hz != ref->scanFreq_Hz)
+    fields.insert("scanFreq_Hz");
+  if (base->beamDivAngle != ref->beamDivAngle)
+    fields.insert("beamDivAngle");
+  if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
+    fields.insert("trajectoryTimeInterval");
+  if (base->verticalResolution_rad != ref->verticalResolution_rad)
+    fields.insert("verticalResolution_rad");
+  if (base->horizontalResolution_rad != ref->horizontalResolution_rad)
+    fields.insert("horizontalResolution_rad");
+}
+
+void
+makeSceneShift(std::shared_ptr<Survey> survey,
+               bool legNoiseDisabled,
+               bool legRandomOffset,
+               double legRandomOffsetMean,
+               double legRandomOffsetStdev)
+{
+  glm::dvec3 shift = survey->scanner->platform->scene->getShift();
+  // Prepare normal distribution if necessary
+  RandomnessGenerator<double> rg(*DEFAULT_RG);
+  if (legRandomOffset && !legNoiseDisabled) {
+    rg.computeNormalDistribution(legRandomOffsetMean, legRandomOffsetStdev);
+  }
+
+  // Apply scene shift to interpolated trajectory, if any
+  try {
+    std::shared_ptr<InterpolatedMovingPlatformEgg> pe =
+      std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
+        survey->scanner->platform);
+    if (pe != nullptr) {
+      size_t xIdx = 3, yIdx = 4, zIdx = 5;
+      if (pe->scope ==
+          InterpolatedMovingPlatform::InterpolationScope::POSITION) {
+        xIdx = 0;
+        yIdx = 1;
+        zIdx = 2;
+      }
+      pe->tdm->addToColumn(xIdx, -shift.x);
+      pe->tdm->addToColumn(yIdx, -shift.y);
+      pe->tdm->addToColumn(zIdx, -shift.z);
+    }
+  } catch (...) {
+  }
+  // Apply scene shift to each leg
+  for (std::shared_ptr<Leg> leg : survey->legs) {
+
+    // Shift platform settings, if any
+    if (leg->mPlatformSettings != nullptr) {
+      glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
+      leg->mPlatformSettings->setPosition(platformPos - shift);
+
+      // If specified, move waypoint z coordinate to ground level
+      if (leg->mPlatformSettings->onGround) {
+        glm::dvec3 pos = leg->mPlatformSettings->getPosition();
+        glm::dvec3 ground =
+          survey->scanner->platform->scene->getGroundPointAt(pos);
+        leg->mPlatformSettings->setPosition(glm::dvec3(pos.x, pos.y, ground.z));
+      }
+
+      // Noise -> add a random offset in x,y,z to the measurements
+      if (legRandomOffset && !legNoiseDisabled) {
+        leg->mPlatformSettings->setPosition(
+          leg->mPlatformSettings->getPosition() +
+          glm::dvec3(rg.normalDistributionNext(),
+                     rg.normalDistributionNext(),
+                     rg.normalDistributionNext()));
+      }
+    }
+
+    if (leg->mScannerSettings != nullptr) {
+      std::shared_ptr<ScannerSettings> default_settings =
+        std::make_shared<ScannerSettings>();
+      std::shared_ptr<ScannerSettings> currentSettings =
+        survey->scanner->retrieveCurrentSettings();
+      std::unordered_set<std::string> scannerFields;
+      findNonDefaultScannerSettings(leg->mScannerSettings,
+                                    default_settings,
+                                    default_settings->id,
+                                    scannerFields);
+      leg->mScannerSettings =
+        currentSettings->cherryPick(leg->mScannerSettings, scannerFields);
+    }
+  }
+}

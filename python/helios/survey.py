@@ -7,11 +7,18 @@ from helios.settings import (
     FullWaveformSettings,
     OutputFormat,
     OutputSettings,
+    SceneShiftSettings,
     compose_execution_settings,
     compose_output_settings,
     apply_log_writing,
 )
-from helios.utils import get_asset_directories, meas_dtype, traj_dtype
+from helios.utils import (
+    get_asset_directories,
+    meas_dtype,
+    traj_dtype,
+    apply_scene_shift,
+    is_xml_loaded,
+)
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
@@ -36,6 +43,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
     trajectory: Optional[NDArray] = None
+    scene_shift_settings: SceneShiftSettings = SceneShiftSettings()
 
     @validate_call
     def run(
@@ -58,6 +66,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Throw if there are still unknown parameters left
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
+
+        # Apply shift once and only if the survey is not loaded from XML
+        if not is_xml_loaded(self):
+            apply_scene_shift(self, execution_settings)
 
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
@@ -133,7 +145,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
             measurements = self.scanner._cpp_object.all_measurements
-            num_measurements = len(measurements)
 
             trajectories = self.scanner._cpp_object.all_trajectories
             if output_settings.format == OutputFormat.NPY:
