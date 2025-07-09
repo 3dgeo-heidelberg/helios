@@ -211,11 +211,9 @@ class Survey(Model, cpp_class=_helios.Survey):
             "pitch": pitchIndex,
             "yaw": yawIndex,
         }
-        traj = np.loadtxt(csv, dtype=traj_csv_dtype, delimiter=trajectory_separator)
-
-        # reorder columns
-        columns = sorted(list(indices.keys()), key=lambda k: indices[k])
-        traj = traj[columns]
+        usecols = [indices[name] for name in traj_csv_dtype.names]
+        traj = np.loadtxt(csv, dtype=traj_csv_dtype, delimiter=trajectory_separator,
+                            usecols=usecols)
 
         self.trajectory = traj
         # TODO: decide on traj structure, flat or nested
