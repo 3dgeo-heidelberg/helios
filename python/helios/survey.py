@@ -212,8 +212,9 @@ class Survey(Model, cpp_class=_helios.Survey):
             "yaw": yawIndex,
         }
         usecols = [indices[name] for name in traj_csv_dtype.names]
-        traj = np.loadtxt(csv, dtype=traj_csv_dtype, delimiter=trajectory_separator,
-                            usecols=usecols)
+        traj = np.loadtxt(
+            csv, dtype=traj_csv_dtype, delimiter=trajectory_separator, usecols=usecols
+        )
 
         self.trajectory = traj
         # TODO: decide on traj structure, flat or nested
