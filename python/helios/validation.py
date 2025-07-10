@@ -233,6 +233,11 @@ class ValidatedModelMetaClass(type):
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
 
+            instance_kwargs.pop("_cpp_object", None)
+            invalid_fields = set(instance_kwargs) - set(annotations)
+            if invalid_fields:
+                raise ValueError(f"Invalid fields passed: {', '.join(invalid_fields)}")
+
         setattr(cls, "__init__", __init__)
 
         return cls

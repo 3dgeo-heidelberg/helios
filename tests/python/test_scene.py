@@ -57,8 +57,8 @@ def test_sceneparts_from_obj_wildcard():
 
 
 def test_scenepart_from_obj_yisup():
-    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
-    scene = StaticScene(scene_parts=[box], up_axis="y")
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="y")
+    scene = StaticScene(scene_parts=[box])
     scene._finalize()
 
 
