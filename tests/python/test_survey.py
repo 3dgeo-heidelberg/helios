@@ -163,3 +163,21 @@ def test_traj_from_np(survey):
     assert survey.trajectory.shape == (10,)
     assert survey.trajectory["x"].shape == (10,)
     assert len(survey.trajectory[0]) == 7
+
+
+def test_invalid_leg_adding():
+    """
+    Test that adding a leg via the `append` method raises an error.
+    """
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    new_leg = Leg(
+        platform_settings=PlatformSettings(),
+        scanner_settings=ScannerSettings(),
+    )
+    assert len(survey.legs) == 6
+
+    survey.add_leg(new_leg)
+    assert len(survey.legs) == 7
+
+    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
+        survey.append(new_leg)

@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from numpydantic import NDArray
 from pathlib import Path
 from pydantic import Field, validate_call
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Tuple
 
 import numpy as np
 import tempfile
@@ -31,7 +31,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     scanner: Scanner
     platform: Platform
     scene: StaticScene
-    legs: list[Leg] = []
+    legs: Tuple[Leg, ...] = ()
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
@@ -264,7 +264,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # By using assignment instead of append,
         # we ensure that the property is validated
-        self.legs = self.legs + [leg]
+        self.legs = self.legs + (leg,)
 
     @classmethod
     @validate_call
