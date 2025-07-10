@@ -234,15 +234,25 @@ class Survey(Model, cpp_class=_helios.Survey):
         from the provided settings.
         """
 
-        # We construct a leg if none was provided
-        if leg is None:
-            leg = Leg()
-
+        copy_platform_settings = PlatformSettings()
+        copy_scanner_settings = ScannerSettings()
         # Set the parameters given as scanner + platform settings
         if platform_settings is not None:
-            leg.platform_settings.update_from_object(platform_settings)
+            copy_platform_settings.update_from_object(platform_settings)
         if scanner_settings is not None:
-            leg.scanner_settings.update_from_object(scanner_settings)
+            copy_scanner_settings.update_from_object(scanner_settings)
+
+        # We construct a leg if none was provided
+        if leg is None:
+            leg = Leg(
+                platform_settings=copy_platform_settings,
+                scanner_settings=copy_scanner_settings,
+            )
+        else:
+            if platform_settings is not None:
+                leg.platform_settings.update_from_object(copy_platform_settings)
+            if scanner_settings is not None:
+                leg.scanner_settings.update_from_object(copy_scanner_settings)
 
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
