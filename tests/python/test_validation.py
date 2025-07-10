@@ -542,3 +542,11 @@ def test_model_hierarchy():
     assert z.x == 10
     assert z.y == 20
     assert z.z == 30
+
+
+def test_model_instantiated_with_invalid_fields():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = 41
+
+    with pytest.raises(ValueError):
+        Obj(unknown_field=100)
