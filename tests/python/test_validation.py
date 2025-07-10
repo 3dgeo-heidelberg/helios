@@ -526,3 +526,19 @@ def test_is_iterable_of_model_annotation():
     assert _is_iterable_of_model_annotation(Union[int, str]) == False
     assert _is_iterable_of_model_annotation(list[int]) == False
     assert _is_iterable_of_model_annotation(list[Obj]) == True
+
+
+def test_model_hierarchy():
+    class X(Model):
+        x: int = 1
+
+    class Y(X):
+        y: int = 2
+
+    class Z(Y):
+        z: int = 3
+
+    z = Z(x=10, y=20, z=30)
+    assert z.x == 10
+    assert z.y == 20
+    assert z.z == 30
