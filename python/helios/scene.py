@@ -14,7 +14,7 @@ from pydantic import (
     NonNegativeInt,
     validate_call,
 )
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, Tuple
 
 import numpy as np
 
@@ -275,7 +275,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
-    scene_parts: list[ScenePart] = []
+    scene_parts: Tuple[ScenePart, ...] = ()
+
+    def add_scene_part(self, scene_part: ScenePart):
+        """Add a scene part to the scene."""
+
+        self.scene_parts = self.scene_parts + (scene_part,)
 
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
