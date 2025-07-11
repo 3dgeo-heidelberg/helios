@@ -5,12 +5,6 @@ target_include_directories(
 )
 
 target_sources(
-  helios
-  PUBLIC
-  "Tests.cpp"
-)
-
-target_sources(
   helios_test
   PUBLIC
   "CatchTests.cpp"

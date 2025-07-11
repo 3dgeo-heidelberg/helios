@@ -23,12 +23,6 @@ namespace fs = boost::filesystem;
 
 // ***  DECLARATIONS  *** //
 // ********************** //
-/**
- * @brief Run HELIOS++ tests
- * @param testDir Path to the directory containing test data
- */
-void
-doTests(std::string const& testDir);
 
 // LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
 bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
@@ -66,8 +60,9 @@ main(int argc, char** argv)
     std::string demoAssetsPath = ap.parseDemoAssetsPath();
     // Test execution branch
     if (ap.parseTestRequest()) {
-      doTests(ap.parseTestDir());
+      logging::ERR("Running HELIOS++ tests via --test is deprecated. Run the test executable helios_test instead.");
       done = true;
+      return EXIT_FAILURE;
     }
 #ifdef PCL_BINDING
     // Demo execution branch
