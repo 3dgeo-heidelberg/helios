@@ -60,7 +60,7 @@ main(int argc, char** argv)
     std::string demoAssetsPath = ap.parseDemoAssetsPath();
     // Test execution branch
     if (ap.parseTestRequest()) {
-      logging::ERR("Running HELIOS++ tests via --test is deprecated. Run the test executable helios_test instead.");
+      std::cout << "Running HELIOS++ tests via --test is deprecated. Run the test executable helios_test instead." << std::endl;
       done = true;
       return EXIT_FAILURE;
     }
