@@ -4,6 +4,10 @@
 #undef INFO
 #include "logging.hpp"
 
+bool    logging::LOGGING_SHOW_TRACE,    logging::LOGGING_SHOW_DEBUG,
+        logging::LOGGING_SHOW_INFO,     logging::LOGGING_SHOW_TIME,
+        logging::LOGGING_SHOW_WARN,     logging::LOGGING_SHOW_ERR;
+
 #include <assetloading/XmlUtils.h>
 #include <assetloading/XmlSceneLoader.h>
 #include <assetloading/XmlAssetsLoader.h>
