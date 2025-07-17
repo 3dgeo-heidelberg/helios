@@ -18,6 +18,7 @@
 #include <platform/PlatformSettings.h>
 #include <platform/SimplePhysicsPlatform.h>
 #include <platform/trajectory/TrajectorySettings.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
 #include <scanner/FWFSettings.h>
 #include <scanner/Measurement.h>
 #include <scanner/Scanner.h>
@@ -120,6 +121,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/SceneHandling.h>
 #include <python/SimulationWrap.h>
 #include <python/utils.h>
+#include <python/InterpolatedPlatformPreparation.h>
 #include <sim/comps/ScanningStrip.h>
 #include <sim/core/Simulation.h>
 
@@ -847,7 +849,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("scanner_settings", &Leg::mScannerSettings)
     .def_readwrite("platform_settings", &Leg::mPlatformSettings)
     .def_readwrite("trajectory_settings", &Leg::mTrajectorySettings)
-
     .def_property("length", &Leg::getLength, &Leg::setLength)
     .def_property("serial_id", &Leg::getSerialId, &Leg::setSerialId)
     .def_property("strip", &Leg::getStrip, &Leg::setStrip)
@@ -1397,6 +1398,12 @@ PYBIND11_MODULE(_helios, m)
     .def("compute_non_smooth_slowdown_dist",
          &HelicopterPlatform::computeNonSmoothSlowdownDist)
     .def("clone", &HelicopterPlatform::clone);
+
+  py::class_<InterpolatedMovingPlatformEgg,
+             MovingPlatform,
+             std::shared_ptr<InterpolatedMovingPlatformEgg>>
+    interpolated_egg(m, "InterpolatedMovingPlatformEgg");
+  interpolated_egg.def(py::init<>());
 
   py::class_<SwapOnRepeatHandler, std::shared_ptr<SwapOnRepeatHandler>>
     swap_on_repeat_handler(m, "SwapOnRepeatHandler");
@@ -3126,5 +3133,6 @@ PYBIND11_MODULE(_helios, m)
         py::arg("leg_random_offset") = false,
         py::arg("leg_random_offset_mean") = 0.0,
         py::arg("leg_random_offset_stdev") = 0.1);
+  m.def("load_interpolated_platform", &load_interpolated_platform); 
 }
 }
