@@ -27,7 +27,7 @@ def find_playback_dir(survey_path, playback):
         )
     last_run_dir = sorted(
         list((playback / survey_name).glob("*")),
-        key=lambda f: f.stat().st_birthtime,
+        key=lambda f: f.stat().st_ctime,
         reverse=True,
     )[0]
     return last_run_dir
