@@ -8,6 +8,7 @@ from helios.validation import (
 )
 from pydantic import Field, validate_call
 from typing import Annotated, Any, Literal, Optional
+from numpydantic import NDArray
 
 import numpy as np
 
@@ -24,14 +25,67 @@ class Printable:
 traj_csv_dtype = np.dtype(
     [
         ("t", "f8"),
-        ("x", "f8"),
-        ("y", "f8"),
-        ("z", "f8"),
         ("roll", "f8"),
         ("pitch", "f8"),
         ("yaw", "f8"),
+        ("x", "f8"),
+        ("y", "f8"),
+        ("z", "f8"),
     ]
 )
+
+
+def load_traj_csv(
+    csv: AssetPath,
+    tIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 0,
+    rollIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 1,
+    pitchIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 2,
+    yawIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 3,
+    xIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 4,
+    yIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 5,
+    zIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 6,
+    trajectory_separator: Annotated[
+        str, Field(strict=True, min_length=1, max_length=1)
+    ] = ",",
+    rpy_in_radians: bool = False,
+):
+    """Load a csv trajectory from a file.
+
+    The parameters define how the csv is parsed.
+    All the ..Index parameters define the column order of the csv.
+
+
+    Args:
+        csv: File path to csv to load.
+        tIndex: Column number of time field
+        xIndex: Column number of x coordinates
+        yIndex: Column number of y coordinates
+        zIndex: Column number of z coordinates
+        rollIndex: Column number of roll
+        pitchIndex: Column number of pitch
+        yawIndex: Column number of yaw
+        trajectory_separator: Char which separates columns.
+    """
+
+    indices = {
+        "t": tIndex,
+        "x": xIndex,
+        "y": yIndex,
+        "z": zIndex,
+        "roll": rollIndex,
+        "pitch": pitchIndex,
+        "yaw": yawIndex,
+    }
+    
+    usecols = [indices[name] for name in traj_csv_dtype.names]
+    traj = np.loadtxt(csv, dtype=traj_csv_dtype, delimiter=trajectory_separator, usecols=usecols)
+    if not rpy_in_radians:
+        traj["roll"] = np.radians(traj["roll"])
+        traj["pitch"] = np.radians(traj["pitch"])
+        traj["yaw"] = np.radians(traj["yaw"])
+
+    # TODO: decide on traj structure, flat or nested
+    return traj
 
 
 class PlatformSettingsBase(
@@ -93,6 +147,29 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         platform = cls._from_cpp(_cpp_platform)
         platform._is_loaded_from_xml = True
         return platform
+
+    @classmethod
+    @validate_call
+    def load_interpolate_platform(
+        cls,
+        trajectory: NDArray,
+        platform_file: AssetPath,
+        platform_id: str = "",
+        interpolation_method: Literal["CANONICAL", "ARINC 705"] = "ARINC 705",
+        sync_gps_time: bool = False
+    ):
+        """Load a platform from an XML file with interpolation enabled."""
+        
+        # Validate the XML
+        validate_xml_file(platform_file, "xsd/platform.xsd")
+        
+        _cpp_platform = _helios.read_platform_from_xml(
+            str(platform_file), [str(p) for p in get_asset_directories()], platform_id
+        )
+
+        _cpp_interpolated_platform = _helios.load_interpolated_platform(_cpp_platform, trajectory, interpolation_method, sync_gps_time)
+        cppplatform = cls._from_cpp(_cpp_interpolated_platform)
+        return cppplatform
 
 
 #

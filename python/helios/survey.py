@@ -1,5 +1,5 @@
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings, traj_csv_dtype
+from helios.platforms import Platform, PlatformSettings, traj_csv_dtype, TrajectorySettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
@@ -26,7 +26,6 @@ from pathlib import Path
 from pydantic import Field, validate_call
 from typing import Annotated, Optional, Tuple
 
-from typing import Annotated, Optional
 import numpy as np
 import tempfile
 import laspy
@@ -235,6 +234,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         leg: Optional[Leg] = None,
         platform_settings: Optional[PlatformSettings] = None,
         scanner_settings: Optional[ScannerSettings] = None,
+        trajectory_settings: Optional[TrajectorySettings] = None,
         **parameters,
     ):
         """Add a new leg to the survey.
@@ -250,19 +250,27 @@ class Survey(Model, cpp_class=_helios.Survey):
             copy_platform_settings.update_from_object(platform_settings)
         if scanner_settings is not None:
             copy_scanner_settings.update_from_object(scanner_settings)
-
+        
+        if trajectory_settings is not None:
+            copy_trajectory_settings = TrajectorySettings()
+            copy_trajectory_settings.update_from_object(trajectory_settings)
+        else:
+            copy_trajectory_settings = None
+       
         # We construct a leg if none was provided
         if leg is None:
             leg = Leg(
                 platform_settings=copy_platform_settings,
                 scanner_settings=copy_scanner_settings,
+                trajectory_settings=copy_trajectory_settings,
             )
         else:
             if platform_settings is not None:
                 leg.platform_settings.update_from_object(copy_platform_settings)
             if scanner_settings is not None:
                 leg.scanner_settings.update_from_object(copy_scanner_settings)
-
+            if trajectory_settings is not None:
+                leg.trajectory_settings.update_from_object(copy_trajectory_settings)
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)

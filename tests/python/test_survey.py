@@ -1,6 +1,7 @@
 from helios.platforms import Platform, DynamicPlatformSettings
 from helios.scanner import Scanner
 from helios.scene import StaticScene
+from helios.settings import ExecutionSettings
 from helios.survey import *
 
 import laspy
@@ -340,3 +341,40 @@ def test_survey_als_multi_scan_not_from_xml(airplane, multi_als_scanner):
     m, t = survey.run(format=OutputFormat.NPY)
     assert m.shape[0] > 0
     assert t.shape[0] > 0
+
+def test_run_interpolated_survey():
+    execution_settings = ExecutionSettings(
+        num_threads=1,
+    )
+
+    scanner_settings1 = ScannerSettings(is_active=True, pulse_frequency=180000, scan_frequency=100, scan_angle= 0,
+                                        trajectory_time_interval=0.01)
+ 
+    trajectory_settings1 = TrajectorySettings(start_time=0, end_time=5)
+
+    scanner_settings2 = ScannerSettings(is_active=True, pulse_frequency=180000, scan_frequency=100, scan_angle= 0,
+                                            trajectory_time_interval=0.01)
+   
+    trajectory_settings2 = TrajectorySettings(start_time=5, end_time=10, teleport_to_start=True)
+    trajectory = load_traj_csv(
+        csv="data/trajectories/flyandrotate.trj",
+        xIndex=4,
+        yIndex=5,
+        zIndex=6,
+        rollIndex=1,
+        pitchIndex=2,
+        yawIndex=3,
+    )
+    scene = StaticScene.from_xml("data/scenes/demo/box_scene.xml")
+    platform = Platform.load_interpolate_platform(trajectory=trajectory, platform_file="data/platforms.xml", platform_id="sr22", interpolation_method="ARINC 705", sync_gps_time=False)
+    scanner = riegl_lms_q560()
+    survey1 = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey1.add_leg(scanner_settings=scanner_settings1, trajectory_settings=trajectory_settings1)
+    survey1.add_leg(scanner_settings=scanner_settings2, trajectory_settings=trajectory_settings2)
+    m1, t1 = survey1.run(execution_settings=execution_settings)
+
+    surv2 = Survey.from_xml("data/surveys/demo/box_survey_interp.xml")
+    m2, t2 = surv2.run(execution_settings=execution_settings)
+
+    assert np.allclose(m1["position"][0], m2["position"][0], rtol=1e-1, atol=1e-1)
+    assert np.allclose(t1["position"][0], t2["position"][0], rtol=1e-1, atol=1e-1)
