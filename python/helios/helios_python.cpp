@@ -12,13 +12,13 @@
 #include <assetloading/ScenePart.h>
 #include <platform/GroundVehiclePlatform.h>
 #include <platform/HelicopterPlatform.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
 #include <platform/LinearPathPlatform.h>
 #include <platform/MovingPlatform.h>
 #include <platform/Platform.h>
 #include <platform/PlatformSettings.h>
 #include <platform/SimplePhysicsPlatform.h>
 #include <platform/trajectory/TrajectorySettings.h>
-#include <platform/InterpolatedMovingPlatformEgg.h>
 #include <scanner/FWFSettings.h>
 #include <scanner/Measurement.h>
 #include <scanner/Scanner.h>
@@ -109,6 +109,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/AbstractDetectorWrap.h>
 #include <python/EnergyModelWrap.h>
 #include <python/GLMTypeCaster.h>
+#include <python/InterpolatedPlatformPreparation.h>
 #include <python/KDTreeFactoryWrapper.h>
 #include <python/NoiseSourceWrap.h>
 #include <python/NumpyArrayConversion.h>
@@ -121,7 +122,6 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/SceneHandling.h>
 #include <python/SimulationWrap.h>
 #include <python/utils.h>
-#include <python/InterpolatedPlatformPreparation.h>
 #include <sim/comps/ScanningStrip.h>
 #include <sim/core/Simulation.h>
 
@@ -849,7 +849,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("scanner_settings", &Leg::mScannerSettings)
     .def_readwrite("platform_settings", &Leg::mPlatformSettings)
     .def_readwrite("trajectory_settings", &Leg::mTrajectorySettings)
-
     .def_property("length", &Leg::getLength, &Leg::setLength)
     .def_property("serial_id", &Leg::getSerialId, &Leg::setSerialId)
     .def_property("strip", &Leg::getStrip, &Leg::setStrip)

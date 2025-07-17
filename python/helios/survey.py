@@ -1,5 +1,10 @@
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings, traj_csv_dtype, TrajectorySettings
+from helios.platforms import (
+    Platform,
+    PlatformSettings,
+    traj_csv_dtype,
+    TrajectorySettings,
+)
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
@@ -250,13 +255,13 @@ class Survey(Model, cpp_class=_helios.Survey):
             copy_platform_settings.update_from_object(platform_settings)
         if scanner_settings is not None:
             copy_scanner_settings.update_from_object(scanner_settings)
-        
+
         if trajectory_settings is not None:
             copy_trajectory_settings = TrajectorySettings()
             copy_trajectory_settings.update_from_object(trajectory_settings)
         else:
             copy_trajectory_settings = None
-       
+
         # We construct a leg if none was provided
         if leg is None:
             leg = Leg(

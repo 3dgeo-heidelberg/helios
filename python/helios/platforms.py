@@ -76,9 +76,11 @@ def load_traj_csv(
         "pitch": pitchIndex,
         "yaw": yawIndex,
     }
-    
+
     usecols = [indices[name] for name in traj_csv_dtype.names]
-    traj = np.loadtxt(csv, dtype=traj_csv_dtype, delimiter=trajectory_separator, usecols=usecols)
+    traj = np.loadtxt(
+        csv, dtype=traj_csv_dtype, delimiter=trajectory_separator, usecols=usecols
+    )
     if not rpy_in_radians:
         traj["roll"] = np.radians(traj["roll"])
         traj["pitch"] = np.radians(traj["pitch"])
@@ -156,18 +158,20 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         platform_file: AssetPath,
         platform_id: str = "",
         interpolation_method: Literal["CANONICAL", "ARINC 705"] = "ARINC 705",
-        sync_gps_time: bool = False
+        sync_gps_time: bool = False,
     ):
         """Load a platform from an XML file with interpolation enabled."""
-        
+
         # Validate the XML
         validate_xml_file(platform_file, "xsd/platform.xsd")
-        
+
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
 
-        _cpp_interpolated_platform = _helios.load_interpolated_platform(_cpp_platform, trajectory, interpolation_method, sync_gps_time)
+        _cpp_interpolated_platform = _helios.load_interpolated_platform(
+            _cpp_platform, trajectory, interpolation_method, sync_gps_time
+        )
         cppplatform = cls._from_cpp(_cpp_interpolated_platform)
         return cppplatform
 

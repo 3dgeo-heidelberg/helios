@@ -77,9 +77,10 @@ def test_load_csv_traj_reordering():
     )
     assert trajectory.shape == (51,)
     t = np.void(
-        [(3.7, -1.04719755, 1.04719755, 5.77180384, 13.002584, 1.122905, 400.)], dtype=traj_csv_dtype
+        [(3.7, -1.04719755, 1.04719755, 5.77180384, 13.002584, 1.122905, 400.0)],
+        dtype=traj_csv_dtype,
     )
-    assert all([np.isclose(a,b) for a, b in zip(trajectory[0], t[0])])
+    assert all([np.isclose(a, b) for a, b in zip(trajectory[0], t[0])])
     assert trajectory.dtype.names == (
         "t",
         "roll",
@@ -108,7 +109,7 @@ def test_load_interpolate_platform_invalid_id():
             platform_file="data/platforms.xml",
             platform_id="blah",
         )
-    
+
 
 def test_load_interpolate_platform():
     trajectory = load_traj_csv(
@@ -132,7 +133,7 @@ def test_load_interpolate_platform():
 
 def test_load_interpolate_platform_wrong_trajectory_shape():
     trajectory = np.zeros((2, 7), dtype=traj_csv_dtype)
-    with pytest.raises(RuntimeError): 
+    with pytest.raises(RuntimeError):
         Platform.load_interpolate_platform(
             trajectory=trajectory,
             platform_file="data/platforms.xml",
