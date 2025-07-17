@@ -12,6 +12,7 @@
 #include <assetloading/ScenePart.h>
 #include <platform/GroundVehiclePlatform.h>
 #include <platform/HelicopterPlatform.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
 #include <platform/LinearPathPlatform.h>
 #include <platform/MovingPlatform.h>
 #include <platform/Platform.h>
@@ -108,6 +109,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/AbstractDetectorWrap.h>
 #include <python/EnergyModelWrap.h>
 #include <python/GLMTypeCaster.h>
+#include <python/InterpolatedPlatformPreparation.h>
 #include <python/KDTreeFactoryWrapper.h>
 #include <python/NoiseSourceWrap.h>
 #include <python/NumpyArrayConversion.h>
@@ -847,7 +849,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("scanner_settings", &Leg::mScannerSettings)
     .def_readwrite("platform_settings", &Leg::mPlatformSettings)
     .def_readwrite("trajectory_settings", &Leg::mTrajectorySettings)
-
     .def_property("length", &Leg::getLength, &Leg::setLength)
     .def_property("serial_id", &Leg::getSerialId, &Leg::setSerialId)
     .def_property("strip", &Leg::getStrip, &Leg::setStrip)
@@ -1397,6 +1398,12 @@ PYBIND11_MODULE(_helios, m)
     .def("compute_non_smooth_slowdown_dist",
          &HelicopterPlatform::computeNonSmoothSlowdownDist)
     .def("clone", &HelicopterPlatform::clone);
+
+  py::class_<InterpolatedMovingPlatformEgg,
+             MovingPlatform,
+             std::shared_ptr<InterpolatedMovingPlatformEgg>>
+    interpolated_egg(m, "InterpolatedMovingPlatformEgg");
+  interpolated_egg.def(py::init<>());
 
   py::class_<SwapOnRepeatHandler, std::shared_ptr<SwapOnRepeatHandler>>
     swap_on_repeat_handler(m, "SwapOnRepeatHandler");
@@ -3119,5 +3126,13 @@ PYBIND11_MODULE(_helios, m)
   m.def("translate_scene_part", &translateScenePart);
   m.def("write_scene_to_binary", &writeSceneToBinary);
   m.def("read_scene_from_binary", &readSceneFromBinary);
+  m.def("make_scene_shift",
+        &makeSceneShift,
+        py::arg("survey"),
+        py::arg("leg_noise_disabled") = false,
+        py::arg("leg_random_offset") = false,
+        py::arg("leg_random_offset_mean") = 0.0,
+        py::arg("leg_random_offset_stdev") = 0.1);
+  m.def("load_interpolated_platform", &load_interpolated_platform);
 }
 }

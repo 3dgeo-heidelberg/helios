@@ -550,3 +550,46 @@ def test_model_instantiated_with_invalid_fields():
 
     with pytest.raises(ValueError):
         Obj(unknown_field=100)
+
+
+def test_is_optional():
+    from helios.validation import _is_optional
+
+    assert _is_optional(Optional[int])
+    assert _is_optional(Union[str, None])
+    assert not _is_optional(int)
+    assert not _is_optional(Union[int, str])
+
+
+def test_inner_optional_type():
+    from helios.validation import _inner_optional_type
+    from helios.survey import Survey
+
+    assert _inner_optional_type(Optional[int]) is int
+    assert _inner_optional_type(Union[Survey, None]) is Survey
+
+
+def test_getter_remembers_python_none_over_cpp_default1():
+    class Obj(Model, cpp_class=MockCppObject):
+        foo: Optional[int] = None
+
+    obj = Obj()
+    obj._cpp_object.foo = 123
+    assert obj.foo is None
+
+
+def test_getter_reflects_cpp_change_for_nonoptional():
+    class Obj(Model, cpp_class=MockCppObject):
+        bar: int = 10
+
+    obj = Obj()
+    obj._cpp_object.bar = 99
+    assert obj.bar == 99
+
+
+def test_init_optional_without_default():
+    class Obj(Model, cpp_class=MockCppObject):
+        x: Optional[int] = None
+
+    o = Obj()
+    assert o.x is None
