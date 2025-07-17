@@ -4,9 +4,149 @@
 
 #include "AbstractBeamDeflector.h"
 
+#include "maths/Directions.h"
 #include "maths/MathConverter.h"
 
 #include <glm/glm.hpp>
+
+#include <vector>
+
+/**
+ * @brief Struct representing a prism in the Risley beam deflector
+ * This struct encapsulates the properties of a prism, including its angle,
+ * refractive index, and rotation speed.
+ */
+struct Prism
+{
+  double angle_rad;     // Inclination angle
+  double sin_angle_rad; // Sine of the inclination angle
+  double cos_angle_rad; // Cosine of the inclination angle
+  bool inclinedOnLeft;  // true: left side inclined, false: right side inclined
+  double refractive_index;   // Refraction index of prism
+  double rotation_speed_rad; // Angular velocity around z
+
+  /**
+   * @brief Get the surface normal vector for the first surface of the prism
+   * @param time The time at which to evaluate the surface normal
+   * @return The surface normal vector
+   */
+  glm::dvec3 getSurfaceNormal1(double time) const
+  {
+    double angle = rotation_speed_rad * time;
+    if (inclinedOnLeft) {
+      return glm::normalize(glm::dvec3(sin(angle) * sin_angle_rad,
+                                       -cos_angle_rad,
+                                       cos(angle) * sin_angle_rad));
+    } else {
+      return -Directions::forward;
+    }
+  }
+
+  /**
+   * @brief Get the surface normal vector for the second surface of the prism
+   * @param time The time at which to evaluate the surface normal
+   * @return The surface normal vector
+   */
+  glm::dvec3 getSurfaceNormal2(double time) const
+  {
+    double angle = rotation_speed_rad * time;
+    if (inclinedOnLeft) {
+      return -Directions::forward;
+    } else {
+      return glm::normalize(glm::dvec3(-sin(angle) * sin_angle_rad,
+                                       -cos_angle_rad,
+                                       -cos(angle) * sin_angle_rad));
+    }
+  }
+
+  /**
+   * @brief Computes the refracted beam direction using Snell's law.
+   *
+   * Given an incident beam direction and a surface normal, this function
+   * calculates the direction of the refracted beam at the interface between
+   * two media with different refractive indices.
+   *
+   * @param incidentBeamDirection Incident beam direction (unit vector,
+   * glm::dvec3).
+   * @param surfaceNormal Surface normal vector pointing out of the interface
+   * (unit vector, glm::dvec3).
+   * @param refractiveIdxA Refractive index of the medium the beam is coming
+   * from.
+   * @param refractiveIdxB Refractive index of the medium the beam is entering.
+   * @param refracted Output parameter: the refracted beam direction
+   * (glm::dvec3).
+   *
+   * @return true if refraction occurs, false if there is total internal
+   * reflection.
+   *
+   * @note The input vectors `incidentBeamDirection` and `surfaceNormal` are
+   * expected to be normalized.
+   */
+  bool refractBeam(const glm::dvec3& incidentBeamDirection,
+                   const glm::dvec3& surfaceNormal,
+                   double refractiveIdxA,
+                   double refractiveIdxB,
+                   glm::dvec3& refracted) const
+  {
+    double cos_delta_i = glm::dot(incidentBeamDirection, -surfaceNormal);
+    double sin2_delta_r = (refractiveIdxA / refractiveIdxB) *
+                          (refractiveIdxA / refractiveIdxB) *
+                          (1.0 - cos_delta_i * cos_delta_i);
+    if (sin2_delta_r > 1.0)
+      return false; // total internal reflection
+
+    double cos_delta_r = sqrt(1.0 - sin2_delta_r);
+    refracted = glm::normalize(
+      (refractiveIdxA / refractiveIdxB) * incidentBeamDirection +
+      (refractiveIdxA / refractiveIdxB * cos_delta_i - cos_delta_r) *
+        surfaceNormal);
+    return true;
+  }
+
+  /**
+   * @brief Refracts the beam through both surfaces of the prism.
+   *
+   * This function applies Snell's law to refract the incident beam direction
+   * through both surfaces of the prism, returning the final refracted beam
+   * direction.
+   *
+   * @param incidentBeamDirection The direction of the incident beam (unit
+   * vector, glm::dvec3).
+   * @param time The current simulation time.
+   * @param refrIndex_air Refractive index of air.
+   * @param refracted Output parameter: the final refracted beam direction
+   * (glm::dvec3).
+   *
+   * @return true if refraction through both surfaces is successful, false if
+   * there is total internal reflection at any surface.
+   */
+  bool refractPrism(const glm::dvec3& incidentBeamDirection,
+                    double time,
+                    double refrIndex_air,
+                    glm::dvec3& refracted) const
+  {
+    // Refract through the first surface
+    glm::dvec3 surfaceNormal1 = getSurfaceNormal1(time);
+    glm::dvec3 afterFirst;
+    if (!refractBeam(incidentBeamDirection,
+                     surfaceNormal1,
+                     refrIndex_air,
+                     refractive_index,
+                     afterFirst))
+      return false;
+
+    // Refract through the second surface
+    glm::dvec3 surfaceNormal2 = getSurfaceNormal2(time);
+    if (!refractBeam(afterFirst,
+                     surfaceNormal2,
+                     refractive_index,
+                     refrIndex_air,
+                     refracted))
+      return false;
+
+    return true;
+  }
+};
 
 /**
  * @brief Class representing a Risley-prism beam deflector based on three
@@ -29,24 +169,25 @@ public:
    * @brief Scan Angle (defined as the half angle)
    */
   double scanAngle = 0;
-  double rotorSpeed_rad_1 = 0;
-  double rotorSpeed_rad_2 = 0;
-  double rotorSpeed_rad_3 = 0;
-  double prism1_angle_rad = 0;
-  double prism2_angle_rad = 0;
-  double prism3_angle_rad = 0;
-  double prism1_thickness_base = 0;
-  double prism2_thickness_base = 0;
-  double prism3_thickness_base = 0;
-  double prism1_radius = 0;
-  double prism2_radius = 0;
-  double prism3_radius = 0;
-  double distance_prism1_2 = 0;
-  double distance_prism2_3 = 0;
-  double refrIndex_prism1 = 0;
-  double refrIndex_prism2 = 0;
-  double refrIndex_prism3 = 0;
+
+  /**
+   * @brief Refractive index of air
+   */
   double refrIndex_air = 0;
+
+  /**
+   * @brief List of prisms in the Risley beam deflector
+   * Each prism has its own properties such as angle, refractive index, and
+   * rotation speed.
+   */
+  std::vector<Prism> prisms;
+
+  /**
+   * @brief Incident beam direction
+   * This is the initial direction of the beam before it interacts with the
+   * prisms.
+   */
+  glm::dvec3 incidentBeam;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -57,52 +198,15 @@ public:
    *  double, double, double)
    */
   RisleyBeamDeflector(double scanAngleMax_rad,
-                      double rotorFreq_Hz_1,
-                      double rotorFreq_Hz_2,
-                      double rotorFreq_Hz_3,
-                      double prism1_angle_deg,
-                      double prism2_angle_deg,
-                      double prism3_angle_deg,
-                      double prism1_thickness_base,
-                      double prism2_thickness_base,
-                      double prism3_thickness_base,
-                      double prism1_radius,
-                      double prism2_radius,
-                      double prism3_radius,
-                      double distance_prism1_2,
-                      double distance_prism2_3,
-                      double refrIndex_prism1,
-                      double refrIndex_prism2,
-                      double refrIndex_prism3,
-                      double refrIndex_air)
+                      const std::vector<Prism>& prisms,
+                      double refrIndex_air,
+                      glm::dvec3 incidentBeam = Directions::forward)
     : AbstractBeamDeflector(scanAngleMax_rad, 0, 0)
+    , prisms(prisms)
+    , refrIndex_air(refrIndex_air)
+    , incidentBeam(incidentBeam)
   {
     this->scanAngle = scanAngleMax_rad;
-    this->rotorSpeed_rad_1 = rotorFreq_Hz_1 * 0.5 / M_PI;
-    this->rotorSpeed_rad_2 = rotorFreq_Hz_2 * 0.5 / M_PI;
-    this->rotorSpeed_rad_3 = rotorFreq_Hz_3 * 0.5 / M_PI;
-
-    this->prism1_angle_rad = MathConverter::degreesToRadians(prism1_angle_deg);
-    this->prism2_angle_rad = MathConverter::degreesToRadians(prism2_angle_deg);
-    this->prism3_angle_rad = MathConverter::degreesToRadians(prism3_angle_deg);
-
-    this->prism1_thickness_base = prism1_thickness_base;
-    this->prism2_thickness_base = prism2_thickness_base;
-    this->prism3_thickness_base = prism3_thickness_base;
-
-    this->prism1_radius = prism1_radius;
-    this->prism2_radius = prism2_radius;
-    this->prism3_radius = prism3_radius;
-
-    this->distance_prism1_2 = distance_prism1_2;
-    this->distance_prism2_3 = distance_prism2_3;
-
-    this->refrIndex_prism1 = refrIndex_prism1;
-    this->refrIndex_prism2 = refrIndex_prism2;
-    this->refrIndex_prism3 = refrIndex_prism3;
-    this->refrIndex_air = refrIndex_air;
-
-    initializeGeometry();
   }
   std::shared_ptr<AbstractBeamDeflector> clone() override;
   void _clone(std::shared_ptr<AbstractBeamDeflector> abd) override;
@@ -132,78 +236,4 @@ public:
    * @see AbstractBeamDeflector::setScanFreq_Hz
    */
   void setScanFreq_Hz(double scanFreq_Hz) override;
-
-private:
-  // Incident beam
-  glm::dvec3 originalBeam = glm::dvec3(0.0, 0.0, 1.0);
-
-  // Point on incident beam
-  glm::dvec3 pointOnOriginalBeam;
-
-  // Points on all surfaces on z-axis
-  glm::dvec3 Prism1Point1ZAxis, Prism1Point2ZAxis;
-  glm::dvec3 Prism2Point1ZAxis, Prism2Point2ZAxis;
-  glm::dvec3 Prism3Point1ZAxis, Prism3Point2ZAxis;
-
-  // Static prism normal vectors (vertical side)
-  glm::dvec3 Prism1NormalVector2 = glm::dvec3(0.0, 0.0, -1.0);
-  glm::dvec3 Prism2NormalVector1 = glm::dvec3(0.0, 0.0, -1.0);
-  glm::dvec3 Prism3NormalVector2 = glm::dvec3(0.0, 0.0, -1.0);
-
-  void initializeGeometry();
-
-  /**
-   * @brief Computes the intersection point between a line and a plane in 3D.
-   *
-   * Given a line defined by a point and direction vector, and a plane defined
-   * by a point and normal vector, this function computes the intersection point
-   * (if it exists) where the line crosses the plane.
-   *
-   * @param pointOnLine A point on the line (glm::dvec3).
-   * @param lineDirection The direction vector of the line (glm::dvec3).
-   * @param pointOnPlane A point on the plane (glm::dvec3).
-   * @param normalPlane The normal vector of the plane (glm::dvec3).
-   * @param intersection Output parameter: the intersection point (glm::dvec3).
-   *
-   * @return true if the line intersects the plane (not parallel), false
-   * otherwise.
-   *
-   * @note The function does not check if the intersection point lies within a
-   * bounded surface. It assumes the line is infinite in both directions and the
-   * plane is infinite.
-   */
-  bool intersectLinePlane(const glm::dvec3& pointOnLine,
-                          const glm::dvec3& lineDirection,
-                          const glm::dvec3& pointOnPlane,
-                          const glm::dvec3& normalPlane,
-                          glm::dvec3& intersection);
-
-  /**
-   * @brief Computes the refracted beam direction using Snell's law.
-   *
-   * Given an incident beam direction and a surface normal, this function
-   * calculates the direction of the refracted beam at the interface between
-   * two media with different refractive indices.
-   *
-   * @param incidentBeamDirection Incident beam direction (unit vector,
-   * glm::dvec3).
-   * @param surfaceNormal Surface normal vector pointing out of the interface
-   * (unit vector, glm::dvec3).
-   * @param refractiveIdxA Refractive index of the medium the beam is coming
-   * from.
-   * @param refractiveIdxB Refractive index of the medium the beam is entering.
-   * @param refracted Output parameter: the refracted beam direction
-   * (glm::dvec3).
-   *
-   * @return true if refraction occurs, false if there is total internal
-   * reflection.
-   *
-   * @note The input vectors `incidentBeamDirection` and `surfaceNormal` are
-   * expected to be normalized.
-   */
-  static bool refractBeam(const glm::dvec3& incidentBeamDirection,
-                          const glm::dvec3& surfaceNormal,
-                          double refractiveIdxA,
-                          double refractiveIdxB,
-                          glm::dvec3& refracted);
 };

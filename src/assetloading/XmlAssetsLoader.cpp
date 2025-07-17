@@ -8,6 +8,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <sstream>
+#include <vector>
 
 #include <glm/gtx/norm.hpp>
 
@@ -34,6 +35,8 @@ namespace fs = boost::filesystem;
 #include "RisleyBeamDeflector.h"
 #include <scanner/EvalScannerHead.h>
 #include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+
+#include "maths/MathConverter.h"
 
 #include "WavefrontObjCache.h"
 #include "XmlAssetsLoader.h"
@@ -948,67 +951,71 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
                                                      scanAngleEffectiveMax_rad);
     }
   } else if (str_opticsType == "risley") {
-    double rotorFreq_1_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "double", 0.));
+    std::vector<Prism> prisms;
+
+    double rotorFreq_1_Hz = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "rotorFreq1_Hz", "double", 121.56666666666666));
     double rotorFreq_2_Hz = boost::get<double>(XmlUtils::getAttribute(
       scannerNode, "rotorFreq2_Hz", "double", -77.73333333));
-    double rotorFreq_3_Hz = boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "rotorFreq3_Hz", "double", 121.56666666666666));
+    double rotorFreq_3_Hz = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "rotorFreq3_Hz", "double", 0.));
 
     double prism1_angle_deg = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "prism1_angle_deg", "double", 0.0));
+      XmlUtils::getAttribute(scannerNode, "prism1_angle_deg", "double", -18.0));
     double prism2_angle_deg = boost::get<double>(
       XmlUtils::getAttribute(scannerNode, "prism2_angle_deg", "double", 18.0));
     double prism3_angle_deg = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "prism3_angle_deg", "double", 18.0));
-
-    double prism1_thickness = boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "prism1_thickness_mm", "double", 0.0));
-    double prism2_thickness = boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "prism2_thickness_mm", "double", 1.0));
-    double prism3_thickness = boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "prism3_thickness_mm", "double", 1.0));
-
-    double prism1_radius = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "prism1_radius_mm", "double", 10.0));
-    double prism2_radius = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "prism2_radius_mm", "double", 10.0));
-    double prism3_radius = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "prism3_radius_mm", "double", 10.0));
-
-    double distance_1_2 = boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "distance_prism1_2_mm", "double", 0.0));
-    double distance_2_3 = boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "distance_prism2_3_mm", "double", 2.0));
+      XmlUtils::getAttribute(scannerNode, "prism3_angle_deg", "double", 0.0));
 
     double refr_prism1 = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "refrIndex_prism1", "double", 1.0));
+      XmlUtils::getAttribute(scannerNode, "refrIndex_prism1", "double", 1.51));
     double refr_prism2 = boost::get<double>(
       XmlUtils::getAttribute(scannerNode, "refrIndex_prism2", "double", 1.51));
     double refr_prism3 = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "refrIndex_prism3", "double", 1.51));
+      XmlUtils::getAttribute(scannerNode, "refrIndex_prism3", "double", 1.0));
     double refr_air = boost::get<double>(
       XmlUtils::getAttribute(scannerNode, "refrIndex_air", "double", 1.0));
 
-    beamDeflector = std::make_shared<RisleyBeamDeflector>(scanAngleMax_rad,
-                                                          rotorFreq_1_Hz,
-                                                          rotorFreq_2_Hz,
-                                                          rotorFreq_3_Hz,
-                                                          prism1_angle_deg,
-                                                          prism2_angle_deg,
-                                                          prism3_angle_deg,
-                                                          prism1_thickness,
-                                                          prism2_thickness,
-                                                          prism3_thickness,
-                                                          prism1_radius,
-                                                          prism2_radius,
-                                                          prism3_radius,
-                                                          distance_1_2,
-                                                          distance_2_3,
-                                                          refr_prism1,
-                                                          refr_prism2,
-                                                          refr_prism3,
-                                                          refr_air);
+    const double epsilon = 1e-6;
+
+    if (std::abs(prism1_angle_deg) > epsilon) {
+      bool inclinedOnLeft1 = prism1_angle_deg > 0.0;
+      double angle1_rad =
+        MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
+      prisms.push_back(Prism{ angle1_rad,
+                              sin(angle1_rad),
+                              cos(angle1_rad),
+                              inclinedOnLeft1,
+                              refr_prism1,
+                              rotorFreq_1_Hz * 2.0 * M_PI });
+    }
+
+    if (std::abs(prism2_angle_deg) > epsilon) {
+      bool inclinedOnLeft2 = prism2_angle_deg > 0.0;
+      double angle2_rad =
+        MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
+      prisms.push_back(Prism{ angle2_rad,
+                              sin(angle2_rad),
+                              cos(angle2_rad),
+                              inclinedOnLeft2,
+                              refr_prism2,
+                              rotorFreq_2_Hz * 2.0 * M_PI });
+    }
+
+    if (std::abs(prism3_angle_deg) > epsilon) {
+      bool inclinedOnLeft3 = prism3_angle_deg > 0.0;
+      double angle3_rad =
+        MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
+      prisms.push_back(Prism{ angle3_rad,
+                              sin(angle3_rad),
+                              cos(angle3_rad),
+                              inclinedOnLeft3,
+                              refr_prism3,
+                              rotorFreq_3_Hz * 2.0 * M_PI });
+    }
+
+    beamDeflector =
+      std::make_shared<RisleyBeamDeflector>(scanAngleMax_rad, prisms, refr_air);
   }
 
   if (beamDeflector == nullptr) {
@@ -1440,135 +1447,149 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       if (optics == "risley") {
         std::shared_ptr<RisleyBeamDeflector> rbd =
           std::static_pointer_cast<RisleyBeamDeflector>(_deflec);
-        if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
-          rbd->rotorSpeed_rad_1 = (boost::get<double>(XmlUtils::getAttribute(
-                                    chan, "rotorFreq1_Hz", "double", 0.0))) /
-                                  PI_2;
+
+        // Incident beam
+        tinyxml2::XMLElement* ibNode = chan->FirstChildElement("incidentBeam");
+        if (ibNode != nullptr) {
+          try {
+            glm::dvec3 ib = XmlUtils::createVec3dFromXml(ibNode, "");
+            rbd->incidentBeam = glm::normalize(ib);
+          } catch (HeliosException& hex) {
+            std::stringstream ss;
+            ss << "Failed to parse <incidentBeam> in channel " << idx
+               << ".\nEXCEPTION:\n"
+               << hex.what();
+            logging::WARN(ss.str());
+          }
         }
-        if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
-          rbd->rotorSpeed_rad_2 = (boost::get<double>(XmlUtils::getAttribute(
-                                    chan, "rotorFreq2_Hz", "double", 7294.0))) /
-                                  PI_2;
+
+        // Prism 1
+        if (rbd->prisms.size() >= 1) {
+          if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
+            rbd->prisms[0].rotation_speed_rad =
+              boost::get<double>(
+                XmlUtils::getAttribute(chan, "rotorFreq1_Hz", "double", 0.0)) *
+              2.0 * M_PI;
+          }
+          if (XmlUtils::hasAttribute(chan, "prism1_angle_deg")) {
+            double angle = boost::get<double>(
+              XmlUtils::getAttribute(chan, "prism1_angle_deg", "double", 0.0));
+            double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
+            rbd->prisms[0].angle_rad = angle_rad;
+            rbd->prisms[0].sin_angle_rad = sin(angle_rad);
+            rbd->prisms[0].cos_angle_rad = cos(angle_rad);
+            rbd->prisms[0].inclinedOnLeft = angle > 0.0;
+          }
+          if (XmlUtils::hasAttribute(chan, "refrIndex_prism1")) {
+            rbd->prisms[0].refractive_index = boost::get<double>(
+              XmlUtils::getAttribute(chan, "refrIndex_prism1", "double", 0.0));
+          }
         }
-        if (XmlUtils::hasAttribute(chan, "rotorFreq3_Hz")) {
-          rbd->rotorSpeed_rad_3 =
-            (boost::get<double>(XmlUtils::getAttribute(
-              chan, "rotorFreq3_Hz", "double", -4664.0))) /
-            PI_2;
+
+        // Prism 2
+        if (rbd->prisms.size() >= 2) {
+          if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
+            rbd->prisms[1].rotation_speed_rad =
+              boost::get<double>(
+                XmlUtils::getAttribute(chan, "rotorFreq2_Hz", "double", 0.0)) *
+              2.0 * M_PI;
+          }
+          if (XmlUtils::hasAttribute(chan, "prism2_angle_deg")) {
+            double angle = boost::get<double>(
+              XmlUtils::getAttribute(chan, "prism2_angle_deg", "double", 0.0));
+            double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
+            rbd->prisms[1].angle_rad = angle_rad;
+            rbd->prisms[1].sin_angle_rad = sin(angle_rad);
+            rbd->prisms[1].cos_angle_rad = cos(angle_rad);
+            rbd->prisms[1].inclinedOnLeft = angle > 0.0;
+          }
+          if (XmlUtils::hasAttribute(chan, "refrIndex_prism2")) {
+            rbd->prisms[1].refractive_index = boost::get<double>(
+              XmlUtils::getAttribute(chan, "refrIndex_prism2", "double", 0.0));
+          }
         }
-        if (XmlUtils::hasAttribute(chan, "prism1_angle_deg")) {
-          rbd->prism1_angle_rad = MathConverter::radiansToDegrees(
-            (boost::get<double>(XmlUtils::getAttribute(
-              chan, "prism1_angle_deg", "double", 0.0))));
+
+        // Prism 3
+        if (rbd->prisms.size() >= 3) {
+          if (XmlUtils::hasAttribute(chan, "rotorFreq3_Hz")) {
+            rbd->prisms[2].rotation_speed_rad =
+              boost::get<double>(
+                XmlUtils::getAttribute(chan, "rotorFreq3_Hz", "double", 0.0)) *
+              2.0 * M_PI;
+          }
+          if (XmlUtils::hasAttribute(chan, "prism3_angle_deg")) {
+            double angle = boost::get<double>(
+              XmlUtils::getAttribute(chan, "prism3_angle_deg", "double", 0.0));
+            double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
+            rbd->prisms[2].angle_rad = angle_rad;
+            rbd->prisms[2].sin_angle_rad = sin(angle_rad);
+            rbd->prisms[2].cos_angle_rad = cos(angle_rad);
+            rbd->prisms[2].inclinedOnLeft = angle > 0.0;
+          }
+          if (XmlUtils::hasAttribute(chan, "refrIndex_prism3")) {
+            rbd->prisms[2].refractive_index = boost::get<double>(
+              XmlUtils::getAttribute(chan, "refrIndex_prism3", "double", 0.0));
+          }
         }
-        if (XmlUtils::hasAttribute(chan, "prism2_angle_deg")) {
-          rbd->prism2_angle_rad = MathConverter::radiansToDegrees(
-            (boost::get<double>(XmlUtils::getAttribute(
-              chan, "prism2_angle_deg", "double", 0.0))));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism3_angle_deg")) {
-          rbd->prism3_angle_rad = MathConverter::radiansToDegrees(
-            (boost::get<double>(XmlUtils::getAttribute(
-              chan, "prism3_angle_deg", "double", 0.0))));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism1_thickness")) {
-          rbd->prism1_thickness_base = boost::get<double>(
-            XmlUtils::getAttribute(chan, "prism1_thickness", "double", 0.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism2_thickness")) {
-          rbd->prism2_thickness_base = boost::get<double>(
-            XmlUtils::getAttribute(chan, "prism2_thickness", "double", 4.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism3_thickness")) {
-          rbd->prism3_thickness_base = boost::get<double>(
-            XmlUtils::getAttribute(chan, "prism3_thickness", "double", 4.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism1_radius")) {
-          rbd->prism1_radius = boost::get<double>(
-            XmlUtils::getAttribute(chan, "prism1_radius", "double", 0.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism2_radius")) {
-          rbd->prism2_radius = boost::get<double>(
-            XmlUtils::getAttribute(chan, "prism2_radius", "double", 2.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "prism3_radius")) {
-          rbd->prism3_radius = boost::get<double>(
-            XmlUtils::getAttribute(chan, "prism3_radius", "double", 2.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "distance_prism1_2")) {
-          rbd->distance_prism1_2 = boost::get<double>(
-            XmlUtils::getAttribute(chan, "distance_prism1_2", "double", 0.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "distance_prism2_3")) {
-          rbd->distance_prism2_3 = boost::get<double>(
-            XmlUtils::getAttribute(chan, "distance_prism2_3", "double", 3.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "refrIndex_prism1")) {
-          rbd->refrIndex_prism1 = boost::get<double>(
-            XmlUtils::getAttribute(chan, "refrIndex_prism1", "double", 1.0));
-        }
-        if (XmlUtils::hasAttribute(chan, "refrIndex_prism2")) {
-          rbd->refrIndex_prism2 = boost::get<double>(
-            XmlUtils::getAttribute(chan, "refrIndex_prism2", "double", 1.5));
-        }
-        if (XmlUtils::hasAttribute(chan, "refrIndex_prism3")) {
-          rbd->refrIndex_prism3 = boost::get<double>(
-            XmlUtils::getAttribute(chan, "refrIndex_prism3", "double", 1.5));
+
+        if (XmlUtils::hasAttribute(chan, "refrIndex_air")) {
+          rbd->refrIndex_air = boost::get<double>(
+            XmlUtils::getAttribute(chan, "refrIndex_air", "double", 0.0));
         }
       }
     }
+    // Check detector related attributes
+    std::shared_ptr<AbstractDetector> _detec = detec->clone();
+    _detec->cfg_device_accuracy_m = boost::get<double>(XmlUtils::getAttribute(
+      chan, "accuracy_m", "double", _detec->cfg_device_accuracy_m));
+    _detec->cfg_device_rangeMin_m = boost::get<double>(XmlUtils::getAttribute(
+      chan, "rangeMin_m", "double", _detec->cfg_device_rangeMin_m));
+    _detec->cfg_device_rangeMax_m = boost::get<double>(XmlUtils::getAttribute(
+      chan, "rangeMax_m", "double", _detec->cfg_device_rangeMax_m));
+    scanner->setDetector(_detec, idx);
+    // Check scanner head related attributes
+    std::shared_ptr<ScannerHead> _scanHead =
+      std::make_shared<ScannerHead>(*scanHead);
+    _scanHead->setRotatePerSecMax(
+      MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
+        chan,
+        "headRotatePerSecMax_deg",
+        "double",
+        MathConverter::radiansToDegrees(_scanHead->getRotatePerSecMax())))));
+    tinyxml2::XMLElement* hraNode = chan->FirstChildElement("headRotateAxis");
+    if (hraNode != nullptr) {
+      glm::dvec3 shra = XmlUtils::createVec3dFromXml(
+        chan->FirstChildElement("headRotateAxis"), "");
+      _scanHead->cfg_device_rotateAxis = shra;
+    }
+    scanner->setScannerHead(_scanHead, idx);
+    // Check general attributes
+    scanner->setBeamDivergence(
+      boost::get<double>(XmlUtils::getAttribute(
+        chan, "beamDivergence_rad", "double", scanner->getBeamDivergence(idx))),
+      idx);
+    scanner->setPulseLength_ns(
+      boost::get<double>(XmlUtils::getAttribute(
+        chan, "pulseLength_ns", "double", scanner->getPulseLength_ns(idx))),
+      idx);
+    if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
+      scanner->setWavelength(boost::get<int>(XmlUtils::getAttribute(
+                               chan, "wavelength_nm", "int", 1064)) *
+                               1e-9,
+                             idx);
+    }
+    scanner->setMaxNOR(
+      boost::get<int>(XmlUtils::getAttribute(chan, "maxNOR", "int", 0)), idx);
+    scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
+                                    chan,
+                                    "receivedEnergyMin_W",
+                                    "double",
+                                    scanner->getReceivedEnergyMin(idx))),
+                                  idx);
+    // Next channel, if any
+    chan = chan->NextSiblingElement("channel");
+    ++idx;
   }
-  // Check detector related attributes
-  std::shared_ptr<AbstractDetector> _detec = detec->clone();
-  _detec->cfg_device_accuracy_m = boost::get<double>(XmlUtils::getAttribute(
-    chan, "accuracy_m", "double", _detec->cfg_device_accuracy_m));
-  _detec->cfg_device_rangeMin_m = boost::get<double>(XmlUtils::getAttribute(
-    chan, "rangeMin_m", "double", _detec->cfg_device_rangeMin_m));
-  _detec->cfg_device_rangeMax_m = boost::get<double>(XmlUtils::getAttribute(
-    chan, "rangeMax_m", "double", _detec->cfg_device_rangeMax_m));
-  scanner->setDetector(_detec, idx);
-  // Check scanner head related attributes
-  std::shared_ptr<ScannerHead> _scanHead =
-    std::make_shared<ScannerHead>(*scanHead);
-  _scanHead->setRotatePerSecMax(
-    MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
-      chan,
-      "headRotatePerSecMax_deg",
-      "double",
-      MathConverter::radiansToDegrees(_scanHead->getRotatePerSecMax())))));
-  tinyxml2::XMLElement* hraNode = chan->FirstChildElement("headRotateAxis");
-  if (hraNode != nullptr) {
-    glm::dvec3 shra = XmlUtils::createVec3dFromXml(
-      chan->FirstChildElement("headRotateAxis"), "");
-    _scanHead->cfg_device_rotateAxis = shra;
-  }
-  scanner->setScannerHead(_scanHead, idx);
-  // Check general attributes
-  scanner->setBeamDivergence(
-    boost::get<double>(XmlUtils::getAttribute(
-      chan, "beamDivergence_rad", "double", scanner->getBeamDivergence(idx))),
-    idx);
-  scanner->setPulseLength_ns(
-    boost::get<double>(XmlUtils::getAttribute(
-      chan, "pulseLength_ns", "double", scanner->getPulseLength_ns(idx))),
-    idx);
-  if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
-    scanner->setWavelength(boost::get<int>(XmlUtils::getAttribute(
-                             chan, "wavelength_nm", "int", 1064)) *
-                             1e-9,
-                           idx);
-  }
-  scanner->setMaxNOR(
-    boost::get<int>(XmlUtils::getAttribute(chan, "maxNOR", "int", 0)), idx);
-  scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
-                                  chan,
-                                  "receivedEnergyMin_W",
-                                  "double",
-                                  scanner->getReceivedEnergyMin(idx))),
-                                idx);
-  // Next channel, if any
-  chan = chan->NextSiblingElement("channel");
-  ++idx;
 }
 
 // ***  GETTERS and SETTERS  *** //
