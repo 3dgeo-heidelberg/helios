@@ -1,5 +1,10 @@
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings, traj_csv_dtype, TrajectorySettings
+from helios.platforms import (
+    Platform,
+    PlatformSettings,
+    traj_csv_dtype,
+    TrajectorySettings,
+)
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
@@ -181,7 +186,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
-
     def add_leg(
         self,
         leg: Optional[Leg] = None,
@@ -203,13 +207,13 @@ class Survey(Model, cpp_class=_helios.Survey):
             copy_platform_settings.update_from_object(platform_settings)
         if scanner_settings is not None:
             copy_scanner_settings.update_from_object(scanner_settings)
-        
+
         if trajectory_settings is not None:
             copy_trajectory_settings = TrajectorySettings()
             copy_trajectory_settings.update_from_object(trajectory_settings)
         else:
             copy_trajectory_settings = None
-       
+
         # We construct a leg if none was provided
         if leg is None:
             leg = Leg(
@@ -243,10 +247,14 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # Validate the XML
         validate_xml_file(survey_file, "xsd/survey.xsd")
-        leg_noise_disabled = cls._defaults.get("scene_shift_settings").leg_noise_disabled
+        leg_noise_disabled = cls._defaults.get(
+            "scene_shift_settings"
+        ).leg_noise_disabled
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], leg_noise_disabled
+            str(survey_file),
+            [str(p) for p in get_asset_directories()],
+            leg_noise_disabled,
         )
 
         return cls._from_cpp(_cpp_survey)

@@ -161,7 +161,7 @@ class ValidatedModelMetaClass(type):
             def _getter(self):
                 if _is_optional(a) and hasattr(self, f"_{f}"):
                     return getattr(self, f"_{f}")
-                
+
                 # If the property is backed by a C++ object, we first check for
                 # potential updates for the Python object
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
@@ -170,7 +170,7 @@ class ValidatedModelMetaClass(type):
                     if _is_optional(a):
                         T = _inner_optional_type(a)
                         if value is None:
-                           wrapped = None
+                            wrapped = None
                         elif hasattr(T, "_from_cpp"):
                             wrapped = T._from_cpp(value)
                         else:
@@ -257,7 +257,9 @@ class ValidatedModelMetaClass(type):
                         continue
 
                     # Make a deepcopy if it's a known mutable type
-                    if isinstance(default_value, (list, dict, set)) or hasattr(default_value, "__deepcopy__"):
+                    if isinstance(default_value, (list, dict, set)) or hasattr(
+                        default_value, "__deepcopy__"
+                    ):
                         default_value = deepcopy(default_value)
 
                     setattr(self, field, default_value)
@@ -332,7 +334,9 @@ class Model(metaclass=ValidatedModelMetaClass):
                 cpp_value = getattr(value, field)
                 if _is_optional(annot):
                     T = _inner_optional_type(annot)
-                    params[field] = None if cpp_value is None else T._from_cpp(cpp_value)
+                    params[field] = (
+                        None if cpp_value is None else T._from_cpp(cpp_value)
+                    )
                     continue
 
                 if not _is_iterable_annotation(annot):

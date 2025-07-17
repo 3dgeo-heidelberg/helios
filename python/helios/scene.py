@@ -3,7 +3,10 @@ from helios.settings import (
     compose_execution_settings,
     ForceOnGroundStrategy,
 )
-from helios.utils import get_asset_directories, detect_separator#, is_scene_finalized, set_scene_finalized
+from helios.utils import (
+    get_asset_directories,
+    detect_separator,
+)  # , is_scene_finalized, set_scene_finalized
 from helios.validation import Angle, AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
@@ -276,13 +279,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
     scene_parts: Tuple[ScenePart, ...] = ()
-    
+
     def add_scene_part(self, scene_part: ScenePart):
         """Add a scene part to the scene."""
         self._pre_set("scene_parts", scene_part)
         self.scene_parts = self.scene_parts + (scene_part,)
         self._post_set("scene_parts")
-        
+
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):

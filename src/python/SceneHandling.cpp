@@ -7,8 +7,6 @@
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
 
-
-
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
 #include <logging.hpp>
@@ -321,11 +319,10 @@ findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
     fields.insert("horizontalResolution_rad");
 }
 
-void makeInterpolatedShift(
-  Survey & survey,
-  InterpolatedMovingPlatformEgg & ip,
-  glm::dvec3 shift
-  )
+void
+makeInterpolatedShift(Survey& survey,
+                      InterpolatedMovingPlatformEgg& ip,
+                      glm::dvec3 shift)
 {
   size_t xi = ip.tdm->translateColumnNameToIndex("x");
   size_t yi = ip.tdm->translateColumnNameToIndex("y");
@@ -339,9 +336,10 @@ void makeInterpolatedShift(
       fluxionum::DiffDesignMatrixInterpolator::
         makeParametricLinearPiecesFunction(*ip.ddm, *ip.tdm));
   } catch (std::exception& ex) {
-    throw HeliosException("Failed to create trajectory interpolator: " + std::string(ex.what()));
+    throw HeliosException("Failed to create trajectory interpolator: " +
+                          std::string(ex.what()));
   }
-  
+
   size_t original = survey.legs.size();
   for (size_t i = 0; i < original; ++i) {
     auto& leg = *survey.legs[i];
@@ -355,10 +353,9 @@ void makeInterpolatedShift(
     if (leg.mTrajectorySettings->hasStartTime()) {
       leg.mTrajectorySettings->tStart -= ip.startTime;
       xStart = (*trajInterp)(leg.mTrajectorySettings->tStart);
-    }
-    else {
-        xStart = (*trajInterp)(0);
-        leg.mTrajectorySettings->tStart = ip.tdm->getTimeVector().front();
+    } else {
+      xStart = (*trajInterp)(0);
+      leg.mTrajectorySettings->tStart = ip.tdm->getTimeVector().front();
     }
     leg.mPlatformSettings->x = xStart[xi];
     leg.mPlatformSettings->y = xStart[yi];
@@ -369,13 +366,11 @@ void makeInterpolatedShift(
     if (leg.mTrajectorySettings->hasEndTime()) {
       leg.mTrajectorySettings->tEnd -= ip.startTime;
       xEnd = (*trajInterp)(leg.mTrajectorySettings->tEnd);
+    } else {
+      xEnd = (*trajInterp)(arma::max(ip.tdm->getTimeVector()));
+      leg.mTrajectorySettings->tEnd = ip.tdm->getTimeVector().back();
     }
-    else {
-        xEnd = (*trajInterp)( arma::max(ip.tdm->getTimeVector()) );
-        leg.mTrajectorySettings->tEnd =
-          ip.tdm->getTimeVector().back();
-    }
-    
+
     // Insert stop leg
     auto stopLeg = std::make_shared<Leg>(leg);
     stopLeg->mScannerSettings =
@@ -387,9 +382,10 @@ void makeInterpolatedShift(
     stopLeg->mPlatformSettings->y = xEnd[yi];
     stopLeg->mPlatformSettings->z = xEnd[zi];
     stopLeg->mTrajectorySettings = std::make_shared<TrajectorySettings>();
-    //survey.legs.push_back(stopLeg);
+    // survey.legs.push_back(stopLeg);
     survey.legs.insert(survey.legs.begin() + i + 1, stopLeg);
-    ++i; ++original;
+    ++i;
+    ++original;
     // Insert teleport to start leg (after stop leg), if requested
     if (leg.mTrajectorySettings->teleportToStart) {
       auto startLeg = std::make_shared<Leg>(*stopLeg);
@@ -398,18 +394,19 @@ void makeInterpolatedShift(
       startLeg->mPlatformSettings->z = leg.mPlatformSettings->z;
       startLeg->mTrajectorySettings->teleportToStart = true;
       leg.mTrajectorySettings->teleportToStart = false;
-      survey.legs.insert( survey.legs.begin() + (i - 1), startLeg );
-      ++i; ++original;
+      survey.legs.insert(survey.legs.begin() + (i - 1), startLeg);
+      ++i;
+      ++original;
     }
   }
-
 }
 
-void makeSceneShift(Survey & survey,
-                    bool legNoiseDisabled,
-                    bool legRandomOffset,
-                    double legRandomOffsetMean,
-                    double legRandomOffsetStdev)
+void
+makeSceneShift(Survey& survey,
+               bool legNoiseDisabled,
+               bool legRandomOffset,
+               double legRandomOffsetMean,
+               double legRandomOffsetStdev)
 {
   glm::dvec3 shift = survey.scanner->platform->scene->getShift();
   // Prepare normal distribution if necessary
@@ -419,11 +416,11 @@ void makeSceneShift(Survey & survey,
   }
   // Apply changes to interpolated charachteristics, if any
   if (auto ip = std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
-    survey.scanner->platform)){
+        survey.scanner->platform)) {
     makeInterpolatedShift(survey, *ip, shift);
   }
   // Apply scene shift to each leg
-  size_t n0 = survey.legs.size();  
+  size_t n0 = survey.legs.size();
   for (size_t i = 0; i < n0; ++i) {
     auto& leg = *survey.legs[i];
     // Shift platform settings, if any
@@ -432,29 +429,31 @@ void makeSceneShift(Survey & survey,
       platformPos -= shift;
       // If specified, move waypoint z coordinate to ground level
       if (leg.mPlatformSettings->onGround) {
-        auto groundZ = survey.scanner->platform
-                          ->scene->getGroundPointAt(platformPos).z;
+        auto groundZ =
+          survey.scanner->platform->scene->getGroundPointAt(platformPos).z;
         platformPos.z = groundZ;
       }
 
       // Noise -> add a random offset in x,y,z to the measurements
       if (legRandomOffset && !legNoiseDisabled) {
         platformPos += glm::dvec3(rg.normalDistributionNext(),
-                          rg.normalDistributionNext(),
-                          rg.normalDistributionNext());
+                                  rg.normalDistributionNext(),
+                                  rg.normalDistributionNext());
       }
       leg.mPlatformSettings->setPosition(platformPos);
     }
 
     if (leg.mScannerSettings) {
-      std::shared_ptr<ScannerSettings> default_settings = std::make_shared<ScannerSettings>();
-      auto currentSettings =
-                survey.scanner->retrieveCurrentSettings();
+      std::shared_ptr<ScannerSettings> default_settings =
+        std::make_shared<ScannerSettings>();
+      auto currentSettings = survey.scanner->retrieveCurrentSettings();
       std::unordered_set<std::string> scannerFields;
-      findNonDefaultScannerSettings(
-        leg.mScannerSettings, default_settings, default_settings->id, scannerFields);
-        leg.mScannerSettings = currentSettings->cherryPick(
-          leg.mScannerSettings, scannerFields); 
+      findNonDefaultScannerSettings(leg.mScannerSettings,
+                                    default_settings,
+                                    default_settings->id,
+                                    scannerFields);
+      leg.mScannerSettings =
+        currentSettings->cherryPick(leg.mScannerSettings, scannerFields);
     }
   }
 }
