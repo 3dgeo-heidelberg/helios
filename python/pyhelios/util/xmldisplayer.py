@@ -27,7 +27,9 @@ def find_playback_dir(survey_path, helios_root=None):
     root = tree.getroot()
     survey_name = root.find("survey").attrib["name"]
     if not (playback / survey_name).is_dir():
-        raise FileNotFoundError(f"Could not locate output directory: {playback / survey_name}")
+        raise FileNotFoundError(
+            f"Could not locate output directory: {playback / survey_name}"
+        )
     last_run_dir = sorted(
         list((playback / survey_name).glob("*")),
         key=lambda f: f.stat().st_birthtime,
