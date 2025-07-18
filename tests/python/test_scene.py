@@ -395,3 +395,33 @@ def test_add_scene_part_invalid():
 
     with pytest.raises(AttributeError, match="object has no attribute 'append'"):
         scene.append(new_part)
+
+
+def test_scenepart_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    assert is_xml_loaded(part)
+
+    part2 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox",
+        intersection_mode="scaled",
+        intersection_argument=0.5,
+    )
+    assert not is_xml_loaded(part2)
+    part3 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    assert not is_xml_loaded(part3)
+    part4 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+    )
+    assert not is_xml_loaded(part4)
+    part5 = ScenePart.from_tiff("data/sceneparts/tiff/dem_hd.tif")
+    assert not is_xml_loaded(part5)
+
+
+def test_scene_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert is_xml_loaded(scene)

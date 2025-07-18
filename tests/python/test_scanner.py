@@ -28,3 +28,9 @@ def test_preinstantiated_scanners():
     assert isinstance(velodyne_hdl_64e(), Scanner)
     assert isinstance(tractor_scanner(), Scanner)
     assert isinstance(pano_scanner(), Scanner)
+
+
+def test_scanneer_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+    scanner = Scanner.from_xml("data/scanners_als.xml", scanner_id="leica_als50")
+    assert is_xml_loaded(scanner)

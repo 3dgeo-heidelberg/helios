@@ -90,8 +90,9 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
-        cppplatform = cls._from_cpp(_cpp_platform)
-        return cppplatform
+        platform = cls._from_cpp(_cpp_platform)
+        platform._is_loaded_from_xml = True
+        return platform
 
 
 #

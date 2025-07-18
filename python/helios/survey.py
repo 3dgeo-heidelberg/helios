@@ -290,7 +290,9 @@ class Survey(Model, cpp_class=_helios.Survey):
             str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
-        return cls._from_cpp(_cpp_survey)
+        survey = cls._from_cpp(_cpp_survey)
+        survey._is_loaded_from_xml = True
+        return survey
 
     def _pre_set(self, field, value):
         if field == "scanner":
