@@ -185,5 +185,6 @@ def test_invalid_leg_adding():
 
 def test_survey_flag_from_xml_set():
     from helios.utils import is_xml_loaded
+
     survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
     assert is_xml_loaded(survey)

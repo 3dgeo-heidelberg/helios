@@ -58,5 +58,6 @@ def test_platform_settings_tls():
 
 def test_platform_flag_from_xml_set():
     from helios.utils import is_xml_loaded
+
     platform = Platform.from_xml("data/platforms.xml", platform_id="sr22")
     assert is_xml_loaded(platform)

@@ -399,6 +399,7 @@ def test_add_scene_part_invalid():
 
 def test_scenepart_flag_from_xml_set():
     from helios.utils import is_xml_loaded
+
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
     assert is_xml_loaded(part)
 
@@ -423,5 +424,6 @@ def test_scenepart_flag_from_xml_set():
 
 def test_scene_flag_from_xml_set():
     from helios.utils import is_xml_loaded
+
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene)
