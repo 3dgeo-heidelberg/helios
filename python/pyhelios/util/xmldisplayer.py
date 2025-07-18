@@ -20,13 +20,16 @@ def display_xml(path, item=None):
 def find_playback_dir(survey_path, helios_root=None):
     if not helios_root:
         helios_root = os.getcwd()
+    if not Path(survey_path).is_absolute():
+        survey_path = Path(helios_root) / survey_path
     playback = Path(helios_root) / "output"
-    with open(Path(helios_root) / survey_path, "r") as sf:
-        for line in sf:
-            if "<survey name" in line:
-                survey_name = line.split('name="')[1].split('"')[0]
+    tree = ET.parse(survey_path)
+    root = tree.getroot()
+    survey_name = root.find("survey").attrib["name"]
     if not (playback / survey_name).is_dir():
-        raise FileNotFoundError("Could not locate output directory")
+        raise FileNotFoundError(
+            f"Could not locate output directory: {playback / survey_name}"
+        )
     last_run_dir = sorted(
         list((playback / survey_name).glob("*")),
         key=lambda f: f.stat().st_ctime,

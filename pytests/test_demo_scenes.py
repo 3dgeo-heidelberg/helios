@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 import fnmatch
+import xml.etree.ElementTree as ET
 
 import pyhelios
 from . import pcloud_utils as pcu
@@ -17,10 +18,9 @@ except ImportError:
 
 
 def find_playback_dir(survey_path, playback):
-    with open(survey_path, "r") as sf:
-        for line in sf:
-            if "<survey name" in line:
-                survey_name = line.split('name="')[1].split('"')[0]
+    tree = ET.parse(Path(survey_path))
+    root = tree.getroot()
+    survey_name = root.find("survey").attrib["name"]
     if not (playback / survey_name).is_dir():
         raise FileNotFoundError(
             f"Could not locate output directory: {playback / survey_name}"
