@@ -23,7 +23,7 @@ def find_playback_dir(survey_path, helios_root=None):
     if not Path(survey_path).is_absolute():
         survey_path = Path(helios_root) / survey_path
     playback = Path(helios_root) / "output"
-    tree = ET.parse(Path(helios_root) / survey_path)
+    tree = ET.parse(survey_path)
     root = tree.getroot()
     survey_name = root.find("survey").attrib["name"]
     if not (playback / survey_name).is_dir():
