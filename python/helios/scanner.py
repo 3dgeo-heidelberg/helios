@@ -76,7 +76,9 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         _cpp_scanner = _helios.read_scanner_from_xml(
             str(scanner_file), [str(p) for p in get_asset_directories()], scanner_id
         )
-        return cls._from_cpp(_cpp_scanner)
+        scanner = cls._from_cpp(_cpp_scanner)
+        scanner._is_loaded_from_xml = True
+        return scanner
 
 
 #
