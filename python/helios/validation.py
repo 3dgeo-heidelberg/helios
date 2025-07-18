@@ -141,6 +141,15 @@ def get_all_defaults(cls, dct):
     return defaults
 
 
+def _is_optional(t: Type) -> bool:
+    origin = get_origin(t)
+    return origin is Union and type(None) in get_args(t)
+
+
+def _inner_optional_type(t: Type) -> Type:
+    return next(arg for arg in get_args(t) if arg is not type(None))
+
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
@@ -248,8 +257,8 @@ class ValidatedModelMetaClass(type):
                 if field in instance_kwargs:
                     setattr(self, field, instance_kwargs[field])
                     continue
+                
 
-                # Use the provided default
                 if field in cls._defaults:
                     default_value = cls._defaults[field]
                     if default_value is None and _is_optional(annotations[field]):
@@ -267,7 +276,7 @@ class ValidatedModelMetaClass(type):
 
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
-
+                
             instance_kwargs.pop("_cpp_object", None)
             invalid_fields = set(instance_kwargs) - set(annotations)
             if invalid_fields:

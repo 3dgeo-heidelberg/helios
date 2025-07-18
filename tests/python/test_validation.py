@@ -577,12 +577,13 @@ def test_inner_optional_type():
 
 def test_init_optional():
     from helios.platforms import Platform
+
     class Obj(Model, cpp_class=MockCppObject):
         x: Optional[int]
-    
+
     class Obj2(Model, cpp_class=MockCppObject):
         x: Optional[Platform]
-    
+
     class Obj3(Model, cpp_class=MockCppObject):
         x: Optional[Platform] = None
 
@@ -614,6 +615,7 @@ def test_constructor_wraps_optional_model_and_defaults_to_none():
 
     assert not hasattr(p1._cpp_object, "someobj") or p1._cpp_object.someobj is None
 
+
 def test_constructor_wraps_passed_in_optional_model_to_cpp():
     class CheckedObj1(Model, cpp_class=SomeCppObject):
         pass
@@ -628,7 +630,6 @@ def test_constructor_wraps_passed_in_optional_model_to_cpp():
     c1 = CheckedObj1()
     c2 = CheckedObj2()
 
-   
     p2 = Parent(constobj=c1, someobj=c2)
     assert p2.constobj is c1
     assert p2.someobj is c2
