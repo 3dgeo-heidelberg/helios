@@ -170,7 +170,7 @@ class ValidatedModelMetaClass(type):
                     if _is_optional(a):
                         T = _inner_optional_type(a)
                         if value is None:
-                            wrapped = None
+                           wrapped = None
                         elif hasattr(T, "_from_cpp"):
                             wrapped = T._from_cpp(value)
                         else:
@@ -263,7 +263,6 @@ class ValidatedModelMetaClass(type):
                         default_value = deepcopy(default_value)
 
                     setattr(self, field, default_value)
-                    # setattr(self, field, cls._defaults[field])
                     continue
 
                 # Raise an error if this was required and not we reached this point
