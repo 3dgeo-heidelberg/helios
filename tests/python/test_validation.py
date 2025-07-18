@@ -6,11 +6,16 @@ import numpy as np
 import pytest
 
 
+class SomeCppObject:
+    x = 33
+
+
 class MockCppObject:
     someint = 41
     somestr = "Foobar2"
     somebool = False
     somevec = [0, 1]
+    someobj = None
 
     def clone(self):
         return copy.deepcopy(self)
@@ -550,3 +555,111 @@ def test_model_instantiated_with_invalid_fields():
 
     with pytest.raises(ValueError):
         Obj(unknown_field=100)
+
+
+def test_is_optional():
+    from helios.validation import _is_optional
+
+    assert _is_optional(Optional[int])
+    assert _is_optional(Union[str, None])
+    assert not _is_optional(int)
+    assert not _is_optional(Union[int, str])
+    assert _is_optional(Optional[DerivedMockCppObject])
+
+
+def test_inner_optional_type():
+    from helios.validation import _inner_optional_type
+    from helios.survey import Survey
+
+    assert _inner_optional_type(Optional[int]) is int
+    assert _inner_optional_type(Union[Survey, None]) is Survey
+
+
+def test_init_optional():
+    from helios.platforms import Platform
+    class Obj(Model, cpp_class=MockCppObject):
+        x: Optional[int]
+    
+    class Obj2(Model, cpp_class=MockCppObject):
+        x: Optional[Platform]
+    
+    class Obj3(Model, cpp_class=MockCppObject):
+        x: Optional[Platform] = None
+
+    with pytest.raises(ValueError):
+        o = Obj()
+
+    o = Obj2()
+    assert o.x is None
+
+    o = Obj3()
+    assert o.x is None
+
+
+def test_constructor_wraps_optional_model_and_defaults_to_none():
+    class CheckedObj1(Model, cpp_class=SomeCppObject):
+        pass
+
+    class CheckedObj2(Model, cpp_class=SomeCppObject):
+        pass
+
+    class Parent(Model, cpp_class=MockCppObject):
+        constobj: CheckedObj1
+        someobj: Optional[CheckedObj2]
+
+    c1 = CheckedObj1()
+    p1 = Parent(constobj=c1)
+    assert p1.constobj is c1
+    assert p1.someobj is None
+
+    assert not hasattr(p1._cpp_object, "someobj") or p1._cpp_object.someobj is None
+
+def test_constructor_wraps_passed_in_optional_model_to_cpp():
+    class CheckedObj1(Model, cpp_class=SomeCppObject):
+        pass
+
+    class CheckedObj2(Model, cpp_class=SomeCppObject):
+        pass
+
+    class Parent(Model, cpp_class=MockCppObject):
+        constobj: CheckedObj1
+        someobj: Optional[CheckedObj2]
+
+    c1 = CheckedObj1()
+    c2 = CheckedObj2()
+
+   
+    p2 = Parent(constobj=c1, someobj=c2)
+    assert p2.constobj is c1
+    assert p2.someobj is c2
+
+    assert p2._cpp_object.someobj is c2._cpp_object
+
+
+def test_from_cpp_wraps_optional_model_correctly():
+    class CheckedObj(Model, cpp_class=SomeCppObject):
+        pass
+
+    class Parent(Model, cpp_class=MockCppObject):
+        maybe: Optional[CheckedObj]
+
+    cpp = MockCppObject()
+    cpp.maybe = SomeCppObject()
+    inst = Parent._from_cpp(cpp)
+
+    assert isinstance(inst.maybe, CheckedObj)
+    assert inst.maybe._cpp_object is cpp.maybe
+
+
+def test_from_cpp_leaves_optional_model_none_when_cpp_none():
+    class CheckedObj(Model, cpp_class=SomeCppObject):
+        pass
+
+    class Parent(Model, cpp_class=MockCppObject):
+        maybe: Optional[CheckedObj]
+
+    cpp = MockCppObject()
+    cpp.maybe = None
+    inst = Parent._from_cpp(cpp)
+
+    assert inst.maybe is None

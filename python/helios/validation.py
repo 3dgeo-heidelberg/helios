@@ -15,6 +15,7 @@ import multiprocessing
 import os
 import xmlschema
 
+from copy import deepcopy
 
 # The global registry of physical units used in Helios++. Currently there
 # are no custom units, so we go with Pint's default registry.
@@ -131,6 +132,14 @@ def get_all_defaults(cls, dct):
     return defaults
 
 
+def _is_optional(t: Type) -> bool:
+    origin = get_origin(t)
+    return origin is Union and type(None) in get_args(t)
+
+
+def _inner_optional_type(t: Type) -> Type:
+    return next(arg for arg in get_args(t) if arg is not type(None))
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
@@ -149,10 +158,24 @@ class ValidatedModelMetaClass(type):
         # then be captured correctly by the function.
         def _make_property(f, a):
             def _getter(self):
+                if _is_optional(a) and hasattr(self, f"_{f}"):
+                    return getattr(self, f"_{f}")
+                
                 # If the property is backed by a C++ object, we first check for
                 # potential updates for the Python object
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
                     value = getattr(self._cpp_object, f)
+
+                    if _is_optional(a):
+                        T = _inner_optional_type(a)
+                        if value is None:
+                           wrapped = None
+                        elif hasattr(T, "_from_cpp"):
+                            wrapped = T._from_cpp(value)
+                        else:
+                            wrapped = value
+                        setattr(self, f"_{f}", wrapped)
+                        return wrapped
 
                     # Determine whether this is of type Iterable[Model]
                     if _is_iterable_of_model_annotation(a):
@@ -174,8 +197,8 @@ class ValidatedModelMetaClass(type):
                     else:
                         if hasattr(a, "_cpp_class"):
                             getattr(self, f"_{f}")._cpp_object = value
-                        else:
-                            setattr(self, f"_{f}", value)
+                            return getattr(self, f"_{f}")
+                        return value
 
                 # Otherwise, we take the property from a variable with a prefixed underscore
                 return getattr(self, f"_{f}")
@@ -224,15 +247,23 @@ class ValidatedModelMetaClass(type):
                 if field in instance_kwargs:
                     setattr(self, field, instance_kwargs[field])
                     continue
+                
 
-                # Use the provided default
                 if field in cls._defaults:
-                    setattr(self, field, cls._defaults[field])
+                    default_value = cls._defaults[field]
+                    if isinstance(default_value, (list, dict, set)) or hasattr(default_value, "__deepcopy__"):
+                        default_value = deepcopy(default_value)
+                    setattr(self, field, default_value)
                     continue
 
+                if _is_optional(annotations[field]):
+                    if hasattr(_inner_optional_type(annotations[field]), "_cpp_class"):
+                        setattr(self, field, None)
+                        continue
+ 
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
-
+                
             instance_kwargs.pop("_cpp_object", None)
             invalid_fields = set(instance_kwargs) - set(annotations)
             if invalid_fields:
@@ -296,6 +327,11 @@ class Model(metaclass=ValidatedModelMetaClass):
         for field, annot in get_all_annotations(cls).items():
             if hasattr(value, field):
                 cpp_value = getattr(value, field)
+                if _is_optional(annot):
+                    T = _inner_optional_type(annot)
+                    params[field] = None if cpp_value is None else T._from_cpp(cpp_value)
+                    continue
+
                 if not _is_iterable_annotation(annot):
                     if hasattr(annot, "_from_cpp"):
                         cpp_value = annot._from_cpp(cpp_value)
