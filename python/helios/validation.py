@@ -140,6 +140,7 @@ def _is_optional(t: Type) -> bool:
 def _inner_optional_type(t: Type) -> Type:
     return next(arg for arg in get_args(t) if arg is not type(None))
 
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
@@ -160,7 +161,7 @@ class ValidatedModelMetaClass(type):
             def _getter(self):
                 if _is_optional(a) and hasattr(self, f"_{f}"):
                     return getattr(self, f"_{f}")
-                
+
                 # If the property is backed by a C++ object, we first check for
                 # potential updates for the Python object
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
@@ -169,7 +170,7 @@ class ValidatedModelMetaClass(type):
                     if _is_optional(a):
                         T = _inner_optional_type(a)
                         if value is None:
-                           wrapped = None
+                            wrapped = None
                         elif hasattr(T, "_from_cpp"):
                             wrapped = T._from_cpp(value)
                         else:
@@ -247,11 +248,12 @@ class ValidatedModelMetaClass(type):
                 if field in instance_kwargs:
                     setattr(self, field, instance_kwargs[field])
                     continue
-                
 
                 if field in cls._defaults:
                     default_value = cls._defaults[field]
-                    if isinstance(default_value, (list, dict, set)) or hasattr(default_value, "__deepcopy__"):
+                    if isinstance(default_value, (list, dict, set)) or hasattr(
+                        default_value, "__deepcopy__"
+                    ):
                         default_value = deepcopy(default_value)
                     setattr(self, field, default_value)
                     continue
@@ -260,10 +262,10 @@ class ValidatedModelMetaClass(type):
                     if hasattr(_inner_optional_type(annotations[field]), "_cpp_class"):
                         setattr(self, field, None)
                         continue
- 
+
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
-                
+
             instance_kwargs.pop("_cpp_object", None)
             invalid_fields = set(instance_kwargs) - set(annotations)
             if invalid_fields:
@@ -329,7 +331,9 @@ class Model(metaclass=ValidatedModelMetaClass):
                 cpp_value = getattr(value, field)
                 if _is_optional(annot):
                     T = _inner_optional_type(annot)
-                    params[field] = None if cpp_value is None else T._from_cpp(cpp_value)
+                    params[field] = (
+                        None if cpp_value is None else T._from_cpp(cpp_value)
+                    )
                     continue
 
                 if not _is_iterable_annotation(annot):
