@@ -417,13 +417,15 @@ AssetLoadingTest::testScannerLoading()
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
-                  ->rotorSpeed_rad_1 -
+                  ->prisms[0]
+                  .rotation_speed_rad -
                 1160.876155 // Hz / (2 pi)
                 ) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
-                  ->rotorSpeed_rad_2 +
+                  ->prisms[1]
+                  .rotation_speed_rad +
                 742.298655 // Hz / (2 pi)
                 ) > eps)
     return false;
@@ -507,22 +509,26 @@ AssetLoadingTest::testScannerLoading()
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))
-                  ->rotorSpeed_rad_1 -
+                  ->prisms[0]
+                  .rotation_speed_rad -
                 1114.084602) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(1))
-                  ->rotorSpeed_rad_1 -
+                  ->prisms[0]
+                  .rotation_speed_rad -
                 1160.876155) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))
-                  ->rotorSpeed_rad_2 +
+                  ->prisms[1]
+                  .rotation_speed_rad +
                 636.6197724) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(1))
-                  ->rotorSpeed_rad_2 +
+                  ->prisms[1]
+                  .rotation_speed_rad +
                 742.298655) > eps)
     return false;
   if (std::fabs(scanner->getWavelength(0) - 905e-9) > eps)

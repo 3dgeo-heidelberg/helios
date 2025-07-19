@@ -8,6 +8,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <sstream>
+#include <vector>
 
 #include <glm/gtx/norm.hpp>
 
@@ -34,6 +35,8 @@ namespace fs = boost::filesystem;
 #include "RisleyBeamDeflector.h"
 #include <scanner/EvalScannerHead.h>
 #include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+
+#include "maths/MathConverter.h"
 
 #include "WavefrontObjCache.h"
 #include "XmlAssetsLoader.h"
@@ -948,12 +951,71 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
                                                      scanAngleEffectiveMax_rad);
     }
   } else if (str_opticsType == "risley") {
-    int rotorFreq_1_Hz = boost::get<int>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
-    int rotorFreq_2_Hz = boost::get<int>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
-    beamDeflector = std::make_shared<RisleyBeamDeflector>(
-      scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz);
+    std::vector<Prism> prisms;
+
+    double rotorFreq_1_Hz = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "rotorFreq1_Hz", "double", 121.56666666666666));
+    double rotorFreq_2_Hz = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "rotorFreq2_Hz", "double", -77.73333333));
+    double rotorFreq_3_Hz = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "rotorFreq3_Hz", "double", 0.));
+
+    double prism1_angle_deg = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "prism1_angle_deg", "double", -18.0));
+    double prism2_angle_deg = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "prism2_angle_deg", "double", 18.0));
+    double prism3_angle_deg = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "prism3_angle_deg", "double", 0.0));
+
+    double refr_prism1 = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "refrIndex_prism1", "double", 1.51));
+    double refr_prism2 = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "refrIndex_prism2", "double", 1.51));
+    double refr_prism3 = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "refrIndex_prism3", "double", 1.0));
+    double refr_air = boost::get<double>(
+      XmlUtils::getAttribute(scannerNode, "refrIndex_air", "double", 1.0));
+
+    const double epsilon = 1e-6;
+
+    if (std::abs(prism1_angle_deg) > epsilon) {
+      bool inclinedOnLeft1 = prism1_angle_deg > 0.0;
+      double angle1_rad =
+        MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
+      prisms.push_back(Prism{ angle1_rad,
+                              sin(angle1_rad),
+                              cos(angle1_rad),
+                              inclinedOnLeft1,
+                              refr_prism1,
+                              rotorFreq_1_Hz * 2.0 * M_PI });
+    }
+
+    if (std::abs(prism2_angle_deg) > epsilon) {
+      bool inclinedOnLeft2 = prism2_angle_deg > 0.0;
+      double angle2_rad =
+        MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
+      prisms.push_back(Prism{ angle2_rad,
+                              sin(angle2_rad),
+                              cos(angle2_rad),
+                              inclinedOnLeft2,
+                              refr_prism2,
+                              rotorFreq_2_Hz * 2.0 * M_PI });
+    }
+
+    if (std::abs(prism3_angle_deg) > epsilon) {
+      bool inclinedOnLeft3 = prism3_angle_deg > 0.0;
+      double angle3_rad =
+        MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
+      prisms.push_back(Prism{ angle3_rad,
+                              sin(angle3_rad),
+                              cos(angle3_rad),
+                              inclinedOnLeft3,
+                              refr_prism3,
+                              rotorFreq_3_Hz * 2.0 * M_PI });
+    }
+
+    beamDeflector =
+      std::make_shared<RisleyBeamDeflector>(scanAngleMax_rad, prisms, refr_air);
   }
 
   if (beamDeflector == nullptr) {
@@ -1385,17 +1447,94 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       if (optics == "risley") {
         std::shared_ptr<RisleyBeamDeflector> rbd =
           std::static_pointer_cast<RisleyBeamDeflector>(_deflec);
-        if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
-          rbd->rotorSpeed_rad_1 =
-            ((double)boost::get<int>(
-              XmlUtils::getAttribute(chan, "rotorFreq1_Hz", "int", 7294))) /
-            PI_2;
+
+        // Incident beam
+        tinyxml2::XMLElement* ibNode = chan->FirstChildElement("incidentBeam");
+        if (ibNode != nullptr) {
+          try {
+            glm::dvec3 ib = XmlUtils::createVec3dFromXml(ibNode, "");
+            rbd->incidentBeam = glm::normalize(ib);
+          } catch (HeliosException& hex) {
+            std::stringstream ss;
+            ss << "Failed to parse <incidentBeam> in channel " << idx
+               << ".\nEXCEPTION:\n"
+               << hex.what();
+            logging::WARN(ss.str());
+          }
         }
-        if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
-          rbd->rotorSpeed_rad_2 =
-            ((double)boost::get<int>(
-              XmlUtils::getAttribute(chan, "rotorFreq2_Hz", "int", -4664))) /
-            PI_2;
+
+        // Prism 1
+        if (rbd->prisms.size() >= 1) {
+          if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
+            rbd->prisms[0].rotation_speed_rad =
+              boost::get<double>(
+                XmlUtils::getAttribute(chan, "rotorFreq1_Hz", "double", 0.0)) *
+              2.0 * M_PI;
+          }
+          if (XmlUtils::hasAttribute(chan, "prism1_angle_deg")) {
+            double angle = boost::get<double>(
+              XmlUtils::getAttribute(chan, "prism1_angle_deg", "double", 0.0));
+            double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
+            rbd->prisms[0].angle_rad = angle_rad;
+            rbd->prisms[0].sin_angle_rad = sin(angle_rad);
+            rbd->prisms[0].cos_angle_rad = cos(angle_rad);
+            rbd->prisms[0].inclinedOnLeft = angle > 0.0;
+          }
+          if (XmlUtils::hasAttribute(chan, "refrIndex_prism1")) {
+            rbd->prisms[0].refractive_index = boost::get<double>(
+              XmlUtils::getAttribute(chan, "refrIndex_prism1", "double", 0.0));
+          }
+        }
+
+        // Prism 2
+        if (rbd->prisms.size() >= 2) {
+          if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
+            rbd->prisms[1].rotation_speed_rad =
+              boost::get<double>(
+                XmlUtils::getAttribute(chan, "rotorFreq2_Hz", "double", 0.0)) *
+              2.0 * M_PI;
+          }
+          if (XmlUtils::hasAttribute(chan, "prism2_angle_deg")) {
+            double angle = boost::get<double>(
+              XmlUtils::getAttribute(chan, "prism2_angle_deg", "double", 0.0));
+            double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
+            rbd->prisms[1].angle_rad = angle_rad;
+            rbd->prisms[1].sin_angle_rad = sin(angle_rad);
+            rbd->prisms[1].cos_angle_rad = cos(angle_rad);
+            rbd->prisms[1].inclinedOnLeft = angle > 0.0;
+          }
+          if (XmlUtils::hasAttribute(chan, "refrIndex_prism2")) {
+            rbd->prisms[1].refractive_index = boost::get<double>(
+              XmlUtils::getAttribute(chan, "refrIndex_prism2", "double", 0.0));
+          }
+        }
+
+        // Prism 3
+        if (rbd->prisms.size() >= 3) {
+          if (XmlUtils::hasAttribute(chan, "rotorFreq3_Hz")) {
+            rbd->prisms[2].rotation_speed_rad =
+              boost::get<double>(
+                XmlUtils::getAttribute(chan, "rotorFreq3_Hz", "double", 0.0)) *
+              2.0 * M_PI;
+          }
+          if (XmlUtils::hasAttribute(chan, "prism3_angle_deg")) {
+            double angle = boost::get<double>(
+              XmlUtils::getAttribute(chan, "prism3_angle_deg", "double", 0.0));
+            double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
+            rbd->prisms[2].angle_rad = angle_rad;
+            rbd->prisms[2].sin_angle_rad = sin(angle_rad);
+            rbd->prisms[2].cos_angle_rad = cos(angle_rad);
+            rbd->prisms[2].inclinedOnLeft = angle > 0.0;
+          }
+          if (XmlUtils::hasAttribute(chan, "refrIndex_prism3")) {
+            rbd->prisms[2].refractive_index = boost::get<double>(
+              XmlUtils::getAttribute(chan, "refrIndex_prism3", "double", 0.0));
+          }
+        }
+
+        if (XmlUtils::hasAttribute(chan, "refrIndex_air")) {
+          rbd->refrIndex_air = boost::get<double>(
+            XmlUtils::getAttribute(chan, "refrIndex_air", "double", 0.0));
         }
       }
     }
