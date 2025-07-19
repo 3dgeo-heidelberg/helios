@@ -118,10 +118,15 @@
 				rangeMin_m					= "2"
 				scanAngleMax_deg   			= "35"
 				scanAngleEffectiveMax_deg   = "35"
-				rotorFreq1_Hz				= "7294"
-				rotorFreq2_Hz				= "-4664"
 				wavelength_nm				= "905"
 				maxNOR						= "1"
+				rotorFreq1_Hz				= "-77.733333333"
+				rotorFreq2_Hz				= "121.566666666"
+				prism1_angle_deg			= "-18.0"
+				prism2_angle_deg			= "18.0"
+				refrIndex_prism1			= "1.5095"
+				refrIndex_prism2			= "1.5095"
+				refrIndex_air				= "1.0"
 	>
 		<FWFSettings beamSampleQuality="3"/>
 		<beamOrigin x="0" y="0" z="0">
@@ -143,9 +148,14 @@
 				pulseLength_ns="4"
 				rangeMin_m="2"
 				scanAngleMax_deg="35"
-				rotorFreq1_Hz = "7294"
-				rotorFreq2_Hz = "-4664"
 				wavelength_nm="905"
+				rotorFreq1_Hz="-77.733333333"
+				rotorFreq2_Hz="121.566666666"
+				prism1_angle_deg="-18.0"
+				prism2_angle_deg="18.0"
+				refrIndex_prism1="1.5095"
+				refrIndex_prism2="1.5095"
+				refrIndex_air="1.0"
 	>
 		<FWFSettings beamSampleQuality="4"/>
 		<headRotateAxis x="0" y="1" z="0" />
@@ -191,9 +201,14 @@
 		         rangeMin_m="2"
 		         scanAngleMax_deg="35"
 		         scanAngleEffectiveMax_deg = "35"
-		         rotorFreq1_Hz = "7294"
-		         rotorFreq2_Hz = "-4664"
-		         wavelength_nm="905">
+		         wavelength_nm="905"
+				 rotorFreq1_Hz="-77.733333333"
+				 rotorFreq2_Hz="121.566666666"
+				 prism1_angle_deg="-18.0"
+				 prism2_angle_deg="18.0"
+				 refrIndex_prism1="1.5095"
+				 refrIndex_prism2="1.5095"
+				 refrIndex_air="1.0">
 			<beamOrigin x="0" y="0" z="0">
 			  <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
 			</beamOrigin>
@@ -209,9 +224,14 @@
 		         rangeMin_m="2"
 		         scanAngleMax_deg="35"
 		         scanAngleEffectiveMax_deg = "35"
-		         rotorFreq1_Hz = "7294"
-		         rotorFreq2_Hz = "-4664"
-		         wavelength_nm="905">
+		         wavelength_nm="905"
+				 rotorFreq1_Hz="-77.733333333"
+				 rotorFreq2_Hz="121.566666666"
+				 prism1_angle_deg="-18.0"
+				 prism2_angle_deg="18.0"
+				 refrIndex_prism1="1.5095"
+				 refrIndex_prism2="1.5095"
+				 refrIndex_air="1.0">
 			<FWFSettings beamSampleQuality="3"/>
 		      <beamOrigin x="0" y="0" z="0">
 		          <!-- central cone -->
@@ -227,9 +247,14 @@
 		         rangeMin_m="2"
 		         scanAngleMax_deg="35"
 		         scanAngleEffectiveMax_deg = "35"
-		         rotorFreq1_Hz = "7294"
-		         rotorFreq2_Hz = "-4664"
-		         wavelength_nm="905">
+		         wavelength_nm="905"
+				 rotorFreq1_Hz="-77.733333333"
+				 rotorFreq2_Hz="121.566666666"
+				 prism1_angle_deg="-18.0"
+				 prism2_angle_deg="18.0"
+				 refrIndex_prism1="1.5095"
+				 refrIndex_prism2="1.5095"
+				 refrIndex_air="1.0">
 			<FWFSettings beamSampleQuality="3"/>
 			<beamOrigin x="0" y="0" z="0">
 			  <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
