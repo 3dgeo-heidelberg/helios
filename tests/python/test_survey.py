@@ -153,6 +153,15 @@ def test_load_csv_traj_reordering(survey):
         [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_csv_dtype
     )
     assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
+    assert survey.trajectory.dtype.names == (
+        "t",
+        "x",
+        "y",
+        "z",
+        "roll",
+        "pitch",
+        "yaw",
+    ), f"Expected names: ('t', 'x', 'y', 'z', 'roll', 'pitch', 'yaw'), got {survey.trajectory.dtype.names}"
 
 
 def test_traj_from_np(survey):
