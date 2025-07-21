@@ -1,4 +1,4 @@
-from helios.platforms import Platform
+from helios.platforms import Platform, DynamicPlatformSettings
 from helios.scanner import Scanner
 from helios.scene import StaticScene
 from helios.survey import *
@@ -271,7 +271,7 @@ def test_traj_from_np(survey):
     assert len(survey.trajectory[0]) == 7
 
 
-def test_survey_tls_multi_scan_not_from_xml():
+def test_survey_tls_multi_scan_not_from_xml(tripod, multi_tls_scanner):
     scanner_settings = ScannerSettings(
         pulse_frequency=18750,
         scan_frequency=0,
@@ -281,9 +281,7 @@ def test_survey_tls_multi_scan_not_from_xml():
     )
     platform_settings = PlatformSettings(x=0, y=0, z=0)
     scene = StaticScene.from_xml("data/scenes/demo/box_scene.xml")
-    scanner = vlp16()
-    platform = tripod()
-    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey = Survey(scanner=multi_tls_scanner, platform=tripod, scene=scene)
     survey.add_leg(
         platform_settings=platform_settings, scanner_settings=scanner_settings
     )
@@ -292,11 +290,9 @@ def test_survey_tls_multi_scan_not_from_xml():
     assert t.shape[0] > 0
 
 
-def test_survey_als_multi_scan_not_from_xml():
+def test_survey_als_multi_scan_not_from_xml(airplane, multi_als_scanner):
     scene = StaticScene.from_xml("data/scenes/toyblocks/light_toyblocks_scene.xml")
-    scanner = livox_mid100()
-    platform = sr22()
-    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey = Survey(scanner=multi_als_scanner, platform=airplane, scene=scene)
 
     scanner_settings1 = ScannerSettings(
         pulse_frequency=10000,
