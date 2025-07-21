@@ -400,12 +400,13 @@ makeInterpolatedShift(Survey& survey,
   }
 }
 
-void makeSceneShift(Survey & survey)
+void
+makeSceneShift(Survey& survey)
 {
   glm::dvec3 shift = survey.scanner->platform->scene->getShift();
   // Apply changes to interpolated charachteristics, if any
   if (auto ip = std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
-    survey.scanner->platform)){
+        survey.scanner->platform)) {
     makeInterpolatedShift(survey, *ip, shift);
   }
   // Apply scene shift to each leg

@@ -76,4 +76,4 @@ findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
                               std::unordered_set<std::string>& fields);
 
 void
-makeSceneShift(Survey & survey);
+makeSceneShift(Survey& survey);
