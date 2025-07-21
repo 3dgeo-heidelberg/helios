@@ -184,56 +184,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
-    def load_traj_csv(
-        self,
-        csv: AssetPath,
-        tIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 0,
-        xIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 1,
-        yIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 2,
-        zIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 3,
-        rollIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 4,
-        pitchIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 5,
-        yawIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 6,
-        trajectory_separator: Annotated[
-            str, Field(strict=True, min_length=1, max_length=1)
-        ] = ",",
-    ):
-        """Load a csv trajectory into this survey.
-
-        The parameters define how the csv is parsed.
-        All the ..Index parameters define the column order of the csv.
-
-
-        Args:
-            csv: File path to csv to load.
-            tIndex: Column number of time field
-            xIndex: Column number of x coordinates
-            yIndex: Column number of y coordinates
-            zIndex: Column number of z coordinates
-            rollIndex: Column number of roll
-            pitchIndex: Column number of pitch
-            yawIndex: Column number of yaw
-            trajectory_separator: Char which separates columns.
-        """
-
-        indices = {
-            "t": tIndex,
-            "x": xIndex,
-            "y": yIndex,
-            "z": zIndex,
-            "roll": rollIndex,
-            "pitch": pitchIndex,
-            "yaw": yawIndex,
-        }
-        usecols = [indices[name] for name in traj_csv_dtype.names]
-        traj = np.loadtxt(
-            csv, dtype=traj_csv_dtype, delimiter=trajectory_separator, usecols=usecols
-        )
-
-        self.trajectory = traj
-        # TODO: decide on traj structure, flat or nested
-        return self
-
     def add_leg(
         self,
         leg: Optional[Leg] = None,

@@ -1,5 +1,5 @@
 from helios.platforms import Platform, DynamicPlatformSettings, load_traj_csv
-from helios.scanner import Scanner
+from helios.scanner import Scanner, riegl_lms_q560
 from helios.scene import StaticScene
 from helios.settings import ExecutionSettings
 from helios.survey import *
@@ -130,41 +130,6 @@ def test_full_waveform_settings_effect():
     assert points1.shape[0] < points2.shape[0]
 
 
-def test_load_csv_traj(survey):
-    survey.load_traj_csv(csv="data/trajectories/cycloid.trj")
-    assert survey.trajectory.shape == (51,)
-    t = np.void(
-        [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_csv_dtype
-    )
-    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
-
-
-def test_load_csv_traj_reordering(survey):
-    survey.load_traj_csv(
-        csv="data/trajectories/cycloid.trj",
-        xIndex=4,
-        yIndex=5,
-        zIndex=6,
-        rollIndex=1,
-        pitchIndex=2,
-        yawIndex=3,
-    )
-    assert survey.trajectory.shape == (51,)
-    t = np.void(
-        [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_csv_dtype
-    )
-    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
-    assert survey.trajectory.dtype.names == (
-        "t",
-        "x",
-        "y",
-        "z",
-        "roll",
-        "pitch",
-        "yaw",
-    ), f"Expected names: ('t', 'x', 'y', 'z', 'roll', 'pitch', 'yaw'), got {survey.trajectory.dtype.names}"
-
-
 def test_traj_from_np(survey):
     traj = np.arange((70)).reshape((10, 7))
     traj = unstructured_to_structured(traj, dtype=traj_csv_dtype)
@@ -198,78 +163,6 @@ def test_survey_flag_from_xml_set():
 
     survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
     assert is_xml_loaded(survey)
-
-
-def test_load_csv_traj(survey):
-    survey.load_traj_csv(csv="data/trajectories/cycloid.trj")
-    assert survey.trajectory.shape == (51,)
-    t = np.void(
-        [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_csv_dtype
-    )
-    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
-
-
-def test_load_csv_traj_reordering(survey):
-    survey.load_traj_csv(
-        csv="data/trajectories/cycloid.trj",
-        xIndex=4,
-        yIndex=5,
-        zIndex=6,
-        rollIndex=1,
-        pitchIndex=2,
-        yawIndex=3,
-    )
-    assert survey.trajectory.shape == (51,)
-    t = np.void(
-        [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_csv_dtype
-    )
-    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
-
-
-def test_traj_from_np(survey):
-    traj = np.arange((70)).reshape((10, 7))
-    traj = unstructured_to_structured(traj, dtype=traj_csv_dtype)
-
-    survey.trajectory = traj
-    assert survey.trajectory.shape == (10,)
-    assert survey.trajectory["x"].shape == (10,)
-    assert len(survey.trajectory[0]) == 7
-
-
-def test_load_csv_traj(survey):
-    survey.load_traj_csv(csv="data/trajectories/cycloid.trj")
-    assert survey.trajectory.shape == (51,)
-    t = np.void(
-        [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_csv_dtype
-    )
-    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
-
-
-def test_load_csv_traj_reordering(survey):
-    survey.load_traj_csv(
-        csv="data/trajectories/cycloid.trj",
-        xIndex=4,
-        yIndex=5,
-        zIndex=6,
-        rollIndex=1,
-        pitchIndex=2,
-        yawIndex=3,
-    )
-    assert survey.trajectory.shape == (51,)
-    t = np.void(
-        [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_csv_dtype
-    )
-    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
-
-
-def test_traj_from_np(survey):
-    traj = np.arange((70)).reshape((10, 7))
-    traj = unstructured_to_structured(traj, dtype=traj_csv_dtype)
-
-    survey.trajectory = traj
-    assert survey.trajectory.shape == (10,)
-    assert survey.trajectory["x"].shape == (10,)
-    assert len(survey.trajectory[0]) == 7
 
 
 def test_survey_tls_multi_scan_not_from_xml(tripod, multi_tls_scanner):
@@ -343,7 +236,7 @@ def test_survey_als_multi_scan_not_from_xml(airplane, multi_als_scanner):
     assert t.shape[0] > 0
 
 
-def test_run_interpolated_survey():
+def test_run_interpolated_survey(multi_als_scanner):
     execution_settings = ExecutionSettings(
         num_threads=1,
     )

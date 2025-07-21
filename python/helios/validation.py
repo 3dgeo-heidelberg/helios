@@ -179,7 +179,7 @@ class ValidatedModelMetaClass(type):
                     if _is_optional(a):
                         T = _inner_optional_type(a)
                         if value is None:
-                           wrapped = None
+                            wrapped = None
                         elif hasattr(T, "_from_cpp"):
                             wrapped = T._from_cpp(value)
                         else:
@@ -257,7 +257,6 @@ class ValidatedModelMetaClass(type):
                 if field in instance_kwargs:
                     setattr(self, field, instance_kwargs[field])
                     continue
-                
 
                 if field in cls._defaults:
                     default_value = cls._defaults[field]
@@ -274,9 +273,14 @@ class ValidatedModelMetaClass(type):
                     setattr(self, field, default_value)
                     continue
 
+                if _is_optional(annotations[field]):
+                    if hasattr(_inner_optional_type(annotations[field]), "_cpp_class"):
+                        setattr(self, field, None)
+                        continue
+
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
-                
+
             instance_kwargs.pop("_cpp_object", None)
             invalid_fields = set(instance_kwargs) - set(annotations)
             if invalid_fields:
