@@ -5,6 +5,7 @@ from pydantic import validate_call
 from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
 from numpydantic import NDArray, Shape
 
+
 import importlib_resources as resources
 import numpy as np
 import os

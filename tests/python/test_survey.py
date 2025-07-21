@@ -188,3 +188,150 @@ def test_survey_flag_from_xml_set():
 
     survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
     assert is_xml_loaded(survey)
+
+
+def test_load_csv_traj(survey):
+    survey.load_traj_csv(csv="data/trajectories/cycloid.trj")
+    assert survey.trajectory.shape == (51,)
+    t = np.void(
+        [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_csv_dtype
+    )
+    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
+
+
+def test_load_csv_traj_reordering(survey):
+    survey.load_traj_csv(
+        csv="data/trajectories/cycloid.trj",
+        xIndex=4,
+        yIndex=5,
+        zIndex=6,
+        rollIndex=1,
+        pitchIndex=2,
+        yawIndex=3,
+    )
+    assert survey.trajectory.shape == (51,)
+    t = np.void(
+        [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_csv_dtype
+    )
+    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
+
+
+def test_traj_from_np(survey):
+    traj = np.arange((70)).reshape((10, 7))
+    traj = unstructured_to_structured(traj, dtype=traj_csv_dtype)
+
+    survey.trajectory = traj
+    assert survey.trajectory.shape == (10,)
+    assert survey.trajectory["x"].shape == (10,)
+    assert len(survey.trajectory[0]) == 7
+
+
+def test_load_csv_traj(survey):
+    survey.load_traj_csv(csv="data/trajectories/cycloid.trj")
+    assert survey.trajectory.shape == (51,)
+    t = np.void(
+        [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_csv_dtype
+    )
+    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
+
+
+def test_load_csv_traj_reordering(survey):
+    survey.load_traj_csv(
+        csv="data/trajectories/cycloid.trj",
+        xIndex=4,
+        yIndex=5,
+        zIndex=6,
+        rollIndex=1,
+        pitchIndex=2,
+        yawIndex=3,
+    )
+    assert survey.trajectory.shape == (51,)
+    t = np.void(
+        [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_csv_dtype
+    )
+    assert all([a == b for a, b in zip(survey.trajectory[0], t[0])])
+
+
+def test_traj_from_np(survey):
+    traj = np.arange((70)).reshape((10, 7))
+    traj = unstructured_to_structured(traj, dtype=traj_csv_dtype)
+
+    survey.trajectory = traj
+    assert survey.trajectory.shape == (10,)
+    assert survey.trajectory["x"].shape == (10,)
+    assert len(survey.trajectory[0]) == 7
+
+
+def test_survey_tls_multi_scan_not_from_xml():
+    scanner_settings = ScannerSettings(
+        pulse_frequency=18750,
+        scan_frequency=0,
+        head_rotation=3600,
+        rotation_start_angle=0,
+        rotation_stop_angle=3600,
+    )
+    platform_settings = PlatformSettings(x=0, y=0, z=0)
+    scene = StaticScene.from_xml("data/scenes/demo/box_scene.xml")
+    scanner = vlp16()
+    platform = tripod()
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey.add_leg(
+        platform_settings=platform_settings, scanner_settings=scanner_settings
+    )
+    m, t = survey.run(format=OutputFormat.NPY)
+    assert m.shape[0] > 0
+    assert t.shape[0] > 0
+
+
+def test_survey_als_multi_scan_not_from_xml():
+    scene = StaticScene.from_xml("data/scenes/toyblocks/light_toyblocks_scene.xml")
+    scanner = livox_mid100()
+    platform = sr22()
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    scanner_settings1 = ScannerSettings(
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings1 = DynamicPlatformSettings(x=-30, y=-50, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings1, scanner_settings=scanner_settings1
+    )
+    scanner_settings2 = ScannerSettings(
+        is_active=False,
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings2 = DynamicPlatformSettings(x=70, y=-50, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings2, scanner_settings=scanner_settings2
+    )
+    scanner_settings3 = ScannerSettings(
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings3 = DynamicPlatformSettings(x=70, y=0, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings3, scanner_settings=scanner_settings3
+    )
+    scanner_settings4 = ScannerSettings(
+        is_active=False,
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings4 = DynamicPlatformSettings(x=-30, y=0, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings4, scanner_settings=scanner_settings4
+    )
+
+    m, t = survey.run(format=OutputFormat.NPY)
+    assert m.shape[0] > 0
+    assert t.shape[0] > 0
