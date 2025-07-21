@@ -150,9 +150,13 @@ struct Prism
 
 /**
  * @brief Class representing a Risley-prism beam deflector based on three
- * independently rotating prisms according to Anhu Li, Xingsheng Liu, and
- * Wansong Sun, "Forward and inverse solutions for three-element Risley prism
- * beam scanners," Opt. Express 25, 7677-7688 (2017), DOI: 10.1364/OE.25.007677
+ * independently rotating prisms according to A. Li, X. Liu, and
+ * W. Sun, "Forward and inverse solutions for three-element Risley prism
+ * beam scanners," Opt. Express 25, 7677-7688 (2017), DOI: 10.1364/OE.25.007677,
+ * or C. Qin, Y. Wang, W. Cai, H. Zhang, Z. Xiao, "Closed form analytical
+ * solution and scan pattern shaping theory of three-element Risley prism for
+ * LiDAR systems", Opt. Comm. 570, 130915 (2024),
+ * DOI: 10.1016/j.optcom.2024.130915
  */
 class RisleyBeamDeflector : public AbstractBeamDeflector
 {

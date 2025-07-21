@@ -108,26 +108,26 @@
 
 	<!-- ##### LIVOX Mid-70 -->
 	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	
-	<scanner 	id 							= "livox_mid-70"
-				accuracy_m					= "0.02"
-			 	beamDivergence_rad 			= "0.004887"	
-				name              			= "Livox Mid-70"
-				optics            			= "risley"
-				pulseFreqs_Hz				= "100000"
-				pulseLength_ns     			= "4"
-				rangeMin_m					= "2"
-				scanAngleMax_deg   			= "35"
-				scanAngleEffectiveMax_deg   = "35"
-				wavelength_nm				= "905"
-				maxNOR						= "1"
-				rotorFreq1_Hz				= "-77.733333333"
-				rotorFreq2_Hz				= "121.566666666"
-				prism1_angle_deg			= "-18.0"
-				prism2_angle_deg			= "18.0"
-				refrIndex_prism1			= "1.5095"
-				refrIndex_prism2			= "1.5095"
-				refrIndex_air				= "1.0"
-	>
+	<scanner	id 												= "livox_mid-70"
+						accuracy_m								= "0.02"
+						beamDivergence_rad 				= "0.004887"	
+						name              				= "Livox Mid-70"
+						optics            				= "risley"
+						pulseFreqs_Hz							= "100000"
+						pulseLength_ns     				= "4"
+						rangeMin_m								= "2"
+						scanAngleMax_deg   				= "35"
+						scanAngleEffectiveMax_deg	= "35"
+						wavelength_nm							= "905"
+						maxNOR										= "1"
+						rotorFreq1_Hz							= "-77.733333333"
+						rotorFreq2_Hz							= "121.566666666"
+						angle1_deg								= "-18.0"
+						angle2_deg								= "18.0"
+						refrIndex1								= "1.5095"
+						refrIndex2								= "1.5095"
+						refrIndex_air							= "1.0"
+			>
 		<FWFSettings beamSampleQuality="3"/>
 		<beamOrigin x="0" y="0" z="0">
 			<rot axis="x" angle_deg="90" />			
@@ -139,30 +139,29 @@
 
 
 	<!-- ##### LIVOX Mid-100 models ##### -->
-	<scanner 	id="livox-mid-100"
-				accuracy_m="0.02"
-				beamDivergence_rad="0.0027"
-				name="livox-mid-100"
-				optics="risley"
-				pulseFreqs_Hz="50000"
-				pulseLength_ns="4"
-				rangeMin_m="2"
-				scanAngleMax_deg="35"
-				wavelength_nm="905"
-				rotorFreq1_Hz="-77.733333333"
-				rotorFreq2_Hz="121.566666666"
-				prism1_angle_deg="-18.0"
-				prism2_angle_deg="18.0"
-				refrIndex_prism1="1.5095"
-				refrIndex_prism2="1.5095"
-				refrIndex_air="1.0"
-	>
+	<scanner	id									= "livox-mid-100"
+						accuracy_m					= "0.02"
+						beamDivergence_rad	= "0.0027"
+						name								= "livox-mid-100"
+						optics							= "risley"
+						pulseFreqs_Hz				= "50000"
+						pulseLength_ns			= "4"
+						rangeMin_m					= "2"
+						scanAngleMax_deg		= "35"
+						wavelength_nm				= "905"
+						rotorFreq1_Hz				= "-77.733333333"
+						rotorFreq2_Hz				= "121.566666666"
+						angle1_deg					= "-18.0"
+						angle2_deg					= "18.0"
+						refrIndex1					= "1.5095"
+						refrIndex2					= "1.5095"
+						refrIndex_air				= "1.0">
 		<FWFSettings beamSampleQuality="4"/>
 		<headRotateAxis x="0" y="1" z="0" />
 		<channels>
 			<channel 	id="0"
-						rotorFreq1_Hz = "7000"
-						rotorFreq2_Hz = "-4000"
+						rotorFreq1_Hz = "-77.733333333"
+						rotorFreq2_Hz = "121.566666666"
 			>
 				<FWFSettings beamSampleQuality="2"/>	
 				<beamOrigin x="0" y="0" z="0.1">
@@ -191,70 +190,70 @@
 		</channels>
 	</scanner>
 
-	<scanner id="livox-mid-100a"
-		         accuracy_m="0.02"
-		         beamDivergence_rad="0.0027"
-		         name="livox-mid-100"
-		         optics="risley"
-		         pulseFreqs_Hz="50000"
-		         pulseLength_ns="4"
-		         rangeMin_m="2"
-		         scanAngleMax_deg="35"
-		         scanAngleEffectiveMax_deg = "35"
-		         wavelength_nm="905"
-				 rotorFreq1_Hz="-77.733333333"
-				 rotorFreq2_Hz="121.566666666"
-				 prism1_angle_deg="-18.0"
-				 prism2_angle_deg="18.0"
-				 refrIndex_prism1="1.5095"
-				 refrIndex_prism2="1.5095"
-				 refrIndex_air="1.0">
+	<scanner	id												= "livox-mid-100a"
+						accuracy_m								= "0.02"
+						beamDivergence_rad				= "0.0027"
+						name											= "livox-mid-100"
+						optics										= "risley"
+						pulseFreqs_Hz							= "50000"
+						pulseLength_ns						= "4"
+						rangeMin_m								= "2"
+						scanAngleMax_deg					= "35"
+						scanAngleEffectiveMax_deg	= "35"
+						wavelength_nm							= "905"
+						rotorFreq1_Hz							= "-77.733333333"
+						rotorFreq2_Hz							= "121.566666666"
+						angle1_deg								= "-18.0"
+						angle2_deg								= "18.0"
+						refrIndex1								= "1.5095"
+						refrIndex2								= "1.5095"
+						refrIndex_air							= "1.0">
 			<beamOrigin x="0" y="0" z="0">
 			  <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
 			</beamOrigin>
 		    <FWFSettings beamSampleQuality="3"/>
     </scanner>
-	<scanner id="livox-mid-100b"
-		         accuracy_m="0.02"
-		         beamDivergence_rad="0.0027"
-		         name="livox-mid-100"
-		         optics="risley"
-		         pulseFreqs_Hz="50000"
-		         pulseLength_ns="4"
-		         rangeMin_m="2"
-		         scanAngleMax_deg="35"
-		         scanAngleEffectiveMax_deg = "35"
-		         wavelength_nm="905"
-				 rotorFreq1_Hz="-77.733333333"
-				 rotorFreq2_Hz="121.566666666"
-				 prism1_angle_deg="-18.0"
-				 prism2_angle_deg="18.0"
-				 refrIndex_prism1="1.5095"
-				 refrIndex_prism2="1.5095"
-				 refrIndex_air="1.0">
+	<scanner	id												= "livox-mid-100b"
+						accuracy_m								= "0.02"
+						beamDivergence_rad				= "0.0027"
+						name											= "livox-mid-100"
+						optics										= "risley"
+						pulseFreqs_Hz							= "50000"
+						pulseLength_ns						= "4"
+						rangeMin_m								= "2"
+						scanAngleMax_deg					= "35"
+						scanAngleEffectiveMax_deg	= "35"
+						wavelength_nm							= "905"
+						rotorFreq1_Hz							= "-77.733333333"
+						rotorFreq2_Hz							= "121.566666666"
+						angle1_deg								= "-18.0"
+						angle2_deg								= "18.0"
+						refrIndex1								= "1.5095"
+						refrIndex2								= "1.5095"
+						refrIndex_air							= "1.0">
 			<FWFSettings beamSampleQuality="3"/>
 		      <beamOrigin x="0" y="0" z="0">
 		          <!-- central cone -->
 		      </beamOrigin>
     </scanner>
-	<scanner id="livox-mid-100c"
-		         accuracy_m="0.02"
-		         beamDivergence_rad="0.0027"
-		         name="livox-mid-100"
-		         optics="risley"
-		         pulseFreqs_Hz="50000"
-		         pulseLength_ns="4"
-		         rangeMin_m="2"
-		         scanAngleMax_deg="35"
-		         scanAngleEffectiveMax_deg = "35"
-		         wavelength_nm="905"
-				 rotorFreq1_Hz="-77.733333333"
-				 rotorFreq2_Hz="121.566666666"
-				 prism1_angle_deg="-18.0"
-				 prism2_angle_deg="18.0"
-				 refrIndex_prism1="1.5095"
-				 refrIndex_prism2="1.5095"
-				 refrIndex_air="1.0">
+	<scanner	id												= "livox-mid-100c"
+						accuracy_m								= "0.02"
+						beamDivergence_rad				= "0.0027"
+						name											= "livox-mid-100"
+						optics										= "risley"
+						pulseFreqs_Hz							= "50000"
+						pulseLength_ns						= "4"
+						rangeMin_m								= "2"
+						scanAngleMax_deg					= "35"
+						scanAngleEffectiveMax_deg	= "35"
+						wavelength_nm							= "905"
+						rotorFreq1_Hz							= "-77.733333333"
+						rotorFreq2_Hz							= "121.566666666"
+						angle1_deg								= "-18.0"
+						angle2_deg								= "18.0"
+						refrIndex1								= "1.5095"
+						refrIndex2								= "1.5095"
+						refrIndex_air							= "1.0">
 			<FWFSettings beamSampleQuality="3"/>
 			<beamOrigin x="0" y="0" z="0">
 			  <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->

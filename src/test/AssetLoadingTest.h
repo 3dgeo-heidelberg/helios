@@ -418,16 +418,16 @@ AssetLoadingTest::testScannerLoading()
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
                   ->prisms[0]
-                  .rotation_speed_rad -
-                1160.876155 // Hz / (2 pi)
-                ) > eps)
+                  .rotation_speed_rad +
+                488.4129379) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
                   ->prisms[1]
-                  .rotation_speed_rad +
-                742.298655 // Hz / (2 pi)
-                ) > eps)
+                  .rotation_speed_rad -
+                763.8258938) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(scanner->getWavelength() - 905e-9) > eps)
     return false;
@@ -510,26 +510,28 @@ AssetLoadingTest::testScannerLoading()
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))
                   ->prisms[0]
-                  .rotation_speed_rad -
-                1114.084602) > eps)
+                  .rotation_speed_rad +
+                488.4129379) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(1))
                   ->prisms[0]
-                  .rotation_speed_rad -
-                1160.876155) > eps)
+                  .rotation_speed_rad +
+                488.4129379) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))
                   ->prisms[1]
-                  .rotation_speed_rad +
-                636.6197724) > eps)
+                  .rotation_speed_rad -
+                763.8258938) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(1))
                   ->prisms[1]
-                  .rotation_speed_rad +
-                742.298655) > eps)
+                  .rotation_speed_rad -
+                763.8258938) > eps)
     return false;
   if (std::fabs(scanner->getWavelength(0) - 905e-9) > eps)
     return false;
