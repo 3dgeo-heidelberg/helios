@@ -1034,7 +1034,7 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("is_yaw_angle_specified",
                    &PlatformSettings::yawAtDepartureSpecified)
     .def_readwrite("yaw_angle", &PlatformSettings::yawAtDeparture)
-    .def_readwrite("is_on_ground", &PlatformSettings::onGround)
+    .def_readwrite("force_on_ground", &PlatformSettings::onGround)
     .def_readwrite("is_stop_and_turn", &PlatformSettings::stopAndTurn)
     .def_readwrite("is_smooth_turn", &PlatformSettings::smoothTurn)
     .def_readwrite("is_slowdown_enabled", &PlatformSettings::slowdownEnabled)
@@ -1182,7 +1182,7 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("dmax", &Platform::dmax)
     .def_readwrite("is_orientation_on_leg_init",
                    &Platform::mSetOrientationOnLegInit)
-    .def_readwrite("is_on_ground", &Platform::onGround)
+    .def_readwrite("force_on_ground", &Platform::onGround)
     .def_readwrite("is_stop_and_turn", &Platform::stopAndTurn)
     .def_readwrite("settings_speed_m_s", &Platform::cfg_settings_movePerSec_m)
     .def_readwrite("is_slowdown_enabled", &Platform::slowdownEnabled)
@@ -3119,5 +3119,6 @@ PYBIND11_MODULE(_helios, m)
   m.def("translate_scene_part", &translateScenePart);
   m.def("write_scene_to_binary", &writeSceneToBinary);
   m.def("read_scene_from_binary", &readSceneFromBinary);
+  m.def("make_scene_shift", &makeSceneShift);
 }
 }

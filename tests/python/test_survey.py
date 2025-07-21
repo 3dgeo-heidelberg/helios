@@ -181,3 +181,10 @@ def test_invalid_leg_adding():
 
     with pytest.raises(AttributeError, match="object has no attribute 'append'"):
         survey.append(new_leg)
+
+
+def test_survey_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    assert is_xml_loaded(survey)

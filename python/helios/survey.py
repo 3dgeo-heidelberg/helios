@@ -11,7 +11,13 @@ from helios.settings import (
     compose_output_settings,
     apply_log_writing,
 )
-from helios.utils import get_asset_directories, meas_dtype, traj_dtype
+from helios.utils import (
+    get_asset_directories,
+    meas_dtype,
+    traj_dtype,
+    apply_scene_shift,
+    is_xml_loaded,
+)
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
@@ -20,6 +26,7 @@ from pathlib import Path
 from pydantic import Field, validate_call
 from typing import Annotated, Optional, Tuple
 
+from typing import Annotated, Optional
 import numpy as np
 import tempfile
 import laspy
@@ -58,6 +65,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Throw if there are still unknown parameters left
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
+
+        # Apply shift once and only if the survey is not loaded from XML
+        if not is_xml_loaded(self):
+            apply_scene_shift(self, execution_settings)
 
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
@@ -133,7 +144,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
             measurements = self.scanner._cpp_object.all_measurements
-            num_measurements = len(measurements)
 
             trajectories = self.scanner._cpp_object.all_trajectories
             if output_settings.format == OutputFormat.NPY:
@@ -278,7 +288,9 @@ class Survey(Model, cpp_class=_helios.Survey):
             str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
-        return cls._from_cpp(_cpp_survey)
+        survey = cls._from_cpp(_cpp_survey)
+        survey._is_loaded_from_xml = True
+        return survey
 
     def _pre_set(self, field, value):
         if field == "scanner":

@@ -1,6 +1,8 @@
 #pragma once
 #include <Rotation.h>
 #include <StaticScene.h>
+#include <Survey.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
 
 #include <memory>
 #include <string>
@@ -66,3 +68,6 @@ writeSceneToBinary(const std::string& writePath,
 
 std::shared_ptr<Scene>
 readSceneFromBinary(const std::string& readPath);
+
+void
+makeSceneShift(std::shared_ptr<Survey> survey);

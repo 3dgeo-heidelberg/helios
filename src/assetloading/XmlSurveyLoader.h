@@ -202,6 +202,5 @@ protected:
                                                        std::vector<std::string>,
                                                        std::string);
   friend std::shared_ptr<Scene> readSceneFromXml(std::string,
-                                                 std::vector<std::string>,
-                                                 bool);
+                                                 std::vector<std::string>);
 };

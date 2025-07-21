@@ -53,3 +53,10 @@ def test_platform_settings_tls():
     assert math.isclose(
         platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2]
     )
+
+
+def test_platform_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    platform = Platform.from_xml("data/platforms.xml", platform_id="sr22")
+    assert is_xml_loaded(platform)

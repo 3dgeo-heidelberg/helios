@@ -9,7 +9,7 @@ from helios.validation import (
 )
 
 from enum import IntEnum
-from pydantic import PositiveInt
+from pydantic import PositiveInt, BaseModel
 from typing import Optional
 from logging import ERROR, DEBUG, INFO, WARNING
 from datetime import datetime
