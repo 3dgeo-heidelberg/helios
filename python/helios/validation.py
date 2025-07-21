@@ -15,6 +15,7 @@ import multiprocessing
 import os
 import xmlschema
 
+from copy import deepcopy
 
 # The global registry of physical units used in Helios++. Currently there
 # are no custom units, so we go with Pint's default registry.
@@ -102,18 +103,62 @@ def _is_iterable_of_model_annotation(a):
     return issubclass(args[0], Model)
 
 
+def _is_optional(t: Type) -> bool:
+    origin = get_origin(t)
+    return origin is Union and type(None) in get_args(t)
+
+
+def _inner_optional_type(t: Type) -> Type:
+    return next(arg for arg in get_args(t) if arg is not type(None))
+
+
+def get_all_annotations(cls):
+    """Collect __annotations__ from cls and all its bases (excluding `object`)."""
+    anns: dict[str, type] = {}
+    for base in reversed(cls.__mro__):
+        if base is object:
+            continue
+        anns.update(getattr(base, "__annotations__", {}))
+    return anns
+
+
+def get_all_defaults(cls, dct):
+    """Collect default values for fields from cls and all its bases (excluding `object`)."""
+    defaults = {}
+    for base in reversed(cls.mro()[:-1]):
+        if base is object:
+            continue
+        base_defaults = getattr(base, "_defaults", None)
+        if isinstance(base_defaults, dict):
+            defaults.update(base_defaults)
+
+    for field, _ in dct.get("__annotations__", {}).items():
+        if field in dct:
+            val = dct[field]
+            if not isinstance(val, property):
+                defaults[field] = val
+
+    return defaults
+
+
+def _is_optional(t: Type) -> bool:
+    origin = get_origin(t)
+    return origin is Union and type(None) in get_args(t)
+
+
+def _inner_optional_type(t: Type) -> Type:
+    return next(arg for arg in get_args(t) if arg is not type(None))
+
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
         cls = super().__new__(cls, name, bases, dct, **kwargs)
 
+        annotations = get_all_annotations(cls)
         # Determine fields that should be properties
-        defaults = {}
-
-        for base in reversed(cls.mro()[:-1]):
-            for key, value in list(base.__dict__.items()):
-                if key in inspect.get_annotations(cls):
-                    defaults[key] = value
+        defaults = get_all_defaults(cls, dct)
+        setattr(cls, "_defaults", defaults)
 
         # Creation of properties need to be wrapped in a function to accommodate
         # a semantic weirdness of Python: If you define a function inside a loop,
@@ -123,10 +168,24 @@ class ValidatedModelMetaClass(type):
         # then be captured correctly by the function.
         def _make_property(f, a):
             def _getter(self):
+                if _is_optional(a) and hasattr(self, f"_{f}"):
+                    return getattr(self, f"_{f}")
+
                 # If the property is backed by a C++ object, we first check for
                 # potential updates for the Python object
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
                     value = getattr(self._cpp_object, f)
+
+                    if _is_optional(a):
+                        T = _inner_optional_type(a)
+                        if value is None:
+                            wrapped = None
+                        elif hasattr(T, "_from_cpp"):
+                            wrapped = T._from_cpp(value)
+                        else:
+                            wrapped = value
+                        setattr(self, f"_{f}", wrapped)
+                        return wrapped
 
                     # Determine whether this is of type Iterable[Model]
                     if _is_iterable_of_model_annotation(a):
@@ -148,8 +207,8 @@ class ValidatedModelMetaClass(type):
                     else:
                         if hasattr(a, "_cpp_class"):
                             getattr(self, f"_{f}")._cpp_object = value
-                        else:
-                            setattr(self, f"_{f}", value)
+                            return getattr(self, f"_{f}")
+                        return value
 
                 # Otherwise, we take the property from a variable with a prefixed underscore
                 return getattr(self, f"_{f}")
@@ -181,14 +240,14 @@ class ValidatedModelMetaClass(type):
             return property().getter(_getter).setter(_setter)
 
         # Make fields properties
-        for field, annot in inspect.get_annotations(cls).items():
+        for field, annot in annotations.items():
             setattr(cls, field, _make_property(field, annot))
 
         # Create an __init__ for the class
         def __init__(self, *args, **instance_kwargs):
             # Iterate the fields in exactly the given order. When using a different order,
             # we risk that properties are instantiated in an incorrect order.
-            for i, field in enumerate(inspect.get_annotations(cls).keys()):
+            for i, field in enumerate(annotations):
                 # Check whether we find this among positional arguments
                 if i < len(args):
                     setattr(self, field, args[i])
@@ -199,13 +258,33 @@ class ValidatedModelMetaClass(type):
                     setattr(self, field, instance_kwargs[field])
                     continue
 
-                # Use the provided default
-                if field in defaults:
-                    setattr(self, field, defaults[field])
+                if field in cls._defaults:
+                    default_value = cls._defaults[field]
+                    if default_value is None and _is_optional(annotations[field]):
+                        setattr(self, field, None)
+                        continue
+
+                    # Make a deepcopy if it's a known mutable type
+                    if isinstance(default_value, (list, dict, set)) or hasattr(
+                        default_value, "__deepcopy__"
+                    ):
+                        default_value = deepcopy(default_value)
+
+                    setattr(self, field, default_value)
                     continue
+
+                if _is_optional(annotations[field]):
+                    if hasattr(_inner_optional_type(annotations[field]), "_cpp_class"):
+                        setattr(self, field, None)
+                        continue
 
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
+
+            instance_kwargs.pop("_cpp_object", None)
+            invalid_fields = set(instance_kwargs) - set(annotations)
+            if invalid_fields:
+                raise ValueError(f"Invalid fields passed: {', '.join(invalid_fields)}")
 
         setattr(cls, "__init__", __init__)
 
@@ -262,9 +341,16 @@ class Model(metaclass=ValidatedModelMetaClass):
     @classmethod
     def _from_cpp(cls, value):
         params = {}
-        for field, annot in inspect.get_annotations(cls).items():
+        for field, annot in get_all_annotations(cls).items():
             if hasattr(value, field):
                 cpp_value = getattr(value, field)
+                if _is_optional(annot):
+                    T = _inner_optional_type(annot)
+                    params[field] = (
+                        None if cpp_value is None else T._from_cpp(cpp_value)
+                    )
+                    continue
+
                 if not _is_iterable_annotation(annot):
                     if hasattr(annot, "_from_cpp"):
                         cpp_value = annot._from_cpp(cpp_value)
@@ -314,7 +400,7 @@ class Model(metaclass=ValidatedModelMetaClass):
             cpp_object = self._cpp_object.clone()
 
         properties = {
-            f: getattr(self, f) for f in inspect.get_annotations(self.__class__).keys()
+            f: getattr(self, f) for f in get_all_annotations(self.__class__).keys()
         }
 
         return self.__class__(_cpp_object=cpp_object, **properties)
@@ -340,6 +426,6 @@ class UpdateableMixin:
             raise ValueError("update_from_object can only be called on Model objects")
 
         parameters = {}
-        for field in inspect.get_annotations(self.__class__).keys():
+        for field in get_all_annotations(self.__class__).keys():
             parameters[field] = getattr(other, field)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)

@@ -7,6 +7,11 @@
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
 
+#include <fluxionum/DiffDesignMatrixInterpolator.h>
+#include <fluxionum/ParametricLinearPiecesFunction.h>
+#include <logging.hpp>
+#include <platform/InterpolatedMovingPlatformEgg.h>
+
 std::shared_ptr<KDTreeFactory>
 makeKDTreeFactory(int kdtFactoryType,
                   int kdtNumJobs,
@@ -276,4 +281,161 @@ readSceneFromBinary(const std::string& filename)
   delete ssw;
 
   return scene;
+}
+
+void
+findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
+                              std::shared_ptr<ScannerSettings> ref,
+                              std::string const defaultTemplateId,
+                              std::unordered_set<std::string>& fields)
+{
+  if (ref->id != defaultTemplateId)
+    fields.insert("baseTemplate");
+  if (base->active != ref->active)
+    fields.insert("active");
+  if (base->headRotatePerSec_rad != ref->headRotatePerSec_rad)
+    fields.insert("headRotatePerSec_rad");
+  if (base->headRotateStart_rad != ref->headRotateStart_rad)
+    fields.insert("headRotateStart_rad");
+  if (base->headRotateStop_rad != ref->headRotateStop_rad)
+    fields.insert("headRotateStop_rad");
+  if (base->pulseFreq_Hz != ref->pulseFreq_Hz)
+    fields.insert("pulseFreq_Hz");
+  if (base->scanAngle_rad != ref->scanAngle_rad)
+    fields.insert("scanAngle_rad");
+  if (base->verticalAngleMin_rad != ref->verticalAngleMin_rad)
+    fields.insert("verticalAngleMin_rad");
+  if (base->verticalAngleMax_rad != ref->verticalAngleMax_rad)
+    fields.insert("verticalAngleMax_rad");
+  if (base->scanFreq_Hz != ref->scanFreq_Hz)
+    fields.insert("scanFreq_Hz");
+  if (base->beamDivAngle != ref->beamDivAngle)
+    fields.insert("beamDivAngle");
+  if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
+    fields.insert("trajectoryTimeInterval");
+  if (base->verticalResolution_rad != ref->verticalResolution_rad)
+    fields.insert("verticalResolution_rad");
+  if (base->horizontalResolution_rad != ref->horizontalResolution_rad)
+    fields.insert("horizontalResolution_rad");
+}
+
+void
+makeInterpolatedShift(Survey& survey,
+                      InterpolatedMovingPlatformEgg& ip,
+                      glm::dvec3 shift)
+{
+  size_t xi = ip.tdm->translateColumnNameToIndex("x");
+  size_t yi = ip.tdm->translateColumnNameToIndex("y");
+  size_t zi = ip.tdm->translateColumnNameToIndex("z");
+  // Obtain trajectory interpolator, if any
+  std::shared_ptr<fluxionum::ParametricLinearPiecesFunction<double, double>>
+    trajInterp = nullptr;
+  try {
+    trajInterp = std::make_shared<
+      fluxionum::ParametricLinearPiecesFunction<double, double>>(
+      fluxionum::DiffDesignMatrixInterpolator::
+        makeParametricLinearPiecesFunction(*ip.ddm, *ip.tdm));
+  } catch (std::exception& ex) {
+    throw HeliosException("Failed to create trajectory interpolator: " +
+                          std::string(ex.what()));
+  }
+
+  size_t original = survey.legs.size();
+  for (size_t i = 0; i < original; ++i) {
+    auto& leg = *survey.legs[i];
+    if (!leg.mTrajectorySettings) {
+      throw HeliosException("Leg " + std::to_string(i) +
+                            " does not have trajectory settings, "
+                            "cannot apply scene shift.");
+    }
+    // Configure start
+    arma::Col<double> xStart;
+    if (leg.mTrajectorySettings->hasStartTime()) {
+      leg.mTrajectorySettings->tStart -= ip.startTime;
+      xStart = (*trajInterp)(leg.mTrajectorySettings->tStart);
+    } else {
+      xStart = (*trajInterp)(0);
+      leg.mTrajectorySettings->tStart = ip.tdm->getTimeVector().front();
+    }
+    leg.mPlatformSettings->x = xStart[xi];
+    leg.mPlatformSettings->y = xStart[yi];
+    leg.mPlatformSettings->z = xStart[zi];
+
+    // Configure end
+    arma::Col<double> xEnd;
+    if (leg.mTrajectorySettings->hasEndTime()) {
+      leg.mTrajectorySettings->tEnd -= ip.startTime;
+      xEnd = (*trajInterp)(leg.mTrajectorySettings->tEnd);
+    } else {
+      xEnd = (*trajInterp)(arma::max(ip.tdm->getTimeVector()));
+      leg.mTrajectorySettings->tEnd = ip.tdm->getTimeVector().back();
+    }
+
+    // Insert stop leg
+    auto stopLeg = std::make_shared<Leg>(leg);
+    stopLeg->mScannerSettings =
+      std::make_shared<ScannerSettings>(*leg.mScannerSettings);
+    stopLeg->mScannerSettings->active = false;
+    stopLeg->mPlatformSettings =
+      std::make_shared<PlatformSettings>(*leg.mPlatformSettings);
+    stopLeg->mPlatformSettings->x = xEnd[xi];
+    stopLeg->mPlatformSettings->y = xEnd[yi];
+    stopLeg->mPlatformSettings->z = xEnd[zi];
+    stopLeg->mTrajectorySettings = std::make_shared<TrajectorySettings>();
+    survey.legs.insert(survey.legs.begin() + i + 1, stopLeg);
+    ++i;
+    ++original;
+    // Insert teleport to start leg (after stop leg), if requested
+    if (leg.mTrajectorySettings->teleportToStart) {
+      auto startLeg = std::make_shared<Leg>(*stopLeg);
+      startLeg->mPlatformSettings->x = leg.mPlatformSettings->x;
+      startLeg->mPlatformSettings->y = leg.mPlatformSettings->y;
+      startLeg->mPlatformSettings->z = leg.mPlatformSettings->z;
+      startLeg->mTrajectorySettings->teleportToStart = true;
+      leg.mTrajectorySettings->teleportToStart = false;
+      survey.legs.insert(survey.legs.begin() + (i - 1), startLeg);
+      ++i;
+      ++original;
+    }
+  }
+}
+
+void
+makeSceneShift(Survey& survey)
+{
+  glm::dvec3 shift = survey.scanner->platform->scene->getShift();
+  // Apply changes to interpolated charachteristics, if any
+  if (auto ip = std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
+        survey.scanner->platform)) {
+    makeInterpolatedShift(survey, *ip, shift);
+  }
+  // Apply scene shift to each leg
+  size_t n0 = survey.legs.size();
+  for (size_t i = 0; i < n0; ++i) {
+    auto& leg = *survey.legs[i];
+    // Shift platform settings, if any
+    if (leg.mPlatformSettings) {
+      glm::dvec3 platformPos = leg.mPlatformSettings->getPosition();
+      platformPos -= shift;
+      // If specified, move waypoint z coordinate to ground level
+      if (leg.mPlatformSettings->onGround) {
+        auto groundZ =
+          survey.scanner->platform->scene->getGroundPointAt(platformPos).z;
+        platformPos.z = groundZ;
+      }
+    }
+
+    if (leg.mScannerSettings) {
+      std::shared_ptr<ScannerSettings> default_settings =
+        std::make_shared<ScannerSettings>();
+      auto currentSettings = survey.scanner->retrieveCurrentSettings();
+      std::unordered_set<std::string> scannerFields;
+      findNonDefaultScannerSettings(leg.mScannerSettings,
+                                    default_settings,
+                                    default_settings->id,
+                                    scannerFields);
+      leg.mScannerSettings =
+        currentSettings->cherryPick(leg.mScannerSettings, scannerFields);
+    }
+  }
 }

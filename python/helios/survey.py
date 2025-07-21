@@ -1,5 +1,10 @@
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings
+from helios.platforms import (
+    Platform,
+    PlatformSettings,
+    traj_csv_dtype,
+    TrajectorySettings,
+)
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
@@ -11,13 +16,20 @@ from helios.settings import (
     compose_output_settings,
     apply_log_writing,
 )
-from helios.utils import get_asset_directories, meas_dtype, traj_dtype
+from helios.utils import (
+    get_asset_directories,
+    meas_dtype,
+    traj_dtype,
+    apply_scene_shift,
+    is_xml_loaded,
+)
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
+from numpydantic import NDArray
 from pathlib import Path
-from pydantic import validate_call
-from typing import Optional
+from pydantic import Field, validate_call
+from typing import Annotated, Optional, Tuple
 
 import numpy as np
 import tempfile
@@ -30,10 +42,11 @@ class Survey(Model, cpp_class=_helios.Survey):
     scanner: Scanner
     platform: Platform
     scene: StaticScene
-    legs: list[Leg] = []
+    legs: Tuple[Leg, ...] = ()
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
+    trajectory: Optional[NDArray] = None
 
     @validate_call
     def run(
@@ -56,6 +69,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Throw if there are still unknown parameters left
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
+
+        # Apply shift once and only if the survey is not loaded from XML
+        if not is_xml_loaded(self):
+            apply_scene_shift(self, execution_settings)
 
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
@@ -169,9 +186,10 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     def add_leg(
         self,
-        leg: Leg = None,
+        leg: Optional[Leg] = None,
         platform_settings: Optional[PlatformSettings] = None,
         scanner_settings: Optional[ScannerSettings] = None,
+        trajectory_settings: Optional[TrajectorySettings] = None,
         **parameters,
     ):
         """Add a new leg to the survey.
@@ -180,16 +198,34 @@ class Survey(Model, cpp_class=_helios.Survey):
         from the provided settings.
         """
 
-        # We construct a leg if none was provided
-        if leg is None:
-            leg = Leg()
-
+        copy_platform_settings = PlatformSettings()
+        copy_scanner_settings = ScannerSettings()
         # Set the parameters given as scanner + platform settings
         if platform_settings is not None:
-            leg.platform_settings.update_from_object(platform_settings)
+            copy_platform_settings.update_from_object(platform_settings)
         if scanner_settings is not None:
-            leg.scanner_settings.update_from_object(scanner_settings)
+            copy_scanner_settings.update_from_object(scanner_settings)
 
+        if trajectory_settings is not None:
+            copy_trajectory_settings = TrajectorySettings()
+            copy_trajectory_settings.update_from_object(trajectory_settings)
+        else:
+            copy_trajectory_settings = None
+
+        # We construct a leg if none was provided
+        if leg is None:
+            leg = Leg(
+                platform_settings=copy_platform_settings,
+                scanner_settings=copy_scanner_settings,
+                trajectory_settings=copy_trajectory_settings,
+            )
+        else:
+            if platform_settings is not None:
+                leg.platform_settings.update_from_object(copy_platform_settings)
+            if scanner_settings is not None:
+                leg.scanner_settings.update_from_object(copy_scanner_settings)
+            if trajectory_settings is not None:
+                leg.trajectory_settings.update_from_object(copy_trajectory_settings)
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
@@ -200,7 +236,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # By using assignment instead of append,
         # we ensure that the property is validated
-        self.legs = self.legs + [leg]
+        self.legs = self.legs + (leg,)
 
     @classmethod
     @validate_call
@@ -214,7 +250,9 @@ class Survey(Model, cpp_class=_helios.Survey):
             str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
-        return cls._from_cpp(_cpp_survey)
+        survey = cls._from_cpp(_cpp_survey)
+        survey._is_loaded_from_xml = True
+        return survey
 
     def _pre_set(self, field, value):
         if field == "scanner":

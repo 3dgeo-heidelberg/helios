@@ -31,7 +31,7 @@ class ScannerSettings(ScannerSettingsBase):
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
     scan_frequency: Frequency = 200
-    beam_divergence_angle: Angle = 0.0003 * units.rad
+    beam_divergence_angle: Angle = 0.003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Length = 0
     horizontal_resolution: Length = 0
@@ -76,7 +76,9 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         _cpp_scanner = _helios.read_scanner_from_xml(
             str(scanner_file), [str(p) for p in get_asset_directories()], scanner_id
         )
-        return cls._from_cpp(_cpp_scanner)
+        scanner = cls._from_cpp(_cpp_scanner)
+        scanner._is_loaded_from_xml = True
+        return scanner
 
 
 #
