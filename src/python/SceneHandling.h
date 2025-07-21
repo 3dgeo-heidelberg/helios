@@ -70,8 +70,4 @@ std::shared_ptr<Scene>
 readSceneFromBinary(const std::string& readPath);
 
 void
-makeSceneShift(std::shared_ptr<Survey> survey,
-               bool legNoiseDisabled = false,
-               bool legRandomOffset = false,
-               double legRandomOffsetMean = 0.0,
-               double legRandomOffsetStdev = 0.1);
+makeSceneShift(std::shared_ptr<Survey> survey);

@@ -7,7 +7,6 @@ from helios.settings import (
     FullWaveformSettings,
     OutputFormat,
     OutputSettings,
-    SceneShiftSettings,
     compose_execution_settings,
     compose_output_settings,
     apply_log_writing,
@@ -44,7 +43,6 @@ class Survey(Model, cpp_class=_helios.Survey):
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
     trajectory: Optional[NDArray] = None
-    scene_shift_settings: SceneShiftSettings = SceneShiftSettings()
 
     @validate_call
     def run(

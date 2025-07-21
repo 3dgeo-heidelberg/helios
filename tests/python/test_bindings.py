@@ -605,7 +605,7 @@ def create_and_modify_leg_with_platform_and_scanner_settings():
     platform_settings.z = 3.0
     platform_settings.yaw_angle = 45.0
     platform_settings.is_yaw_angle_specified = True
-    platform_settings.is_on_ground = True
+    platform_settings.force_on_ground = True
     platform_settings.is_stop_and_turn = False
     platform_settings.is_smooth_turn = True
     platform_settings.is_slowdown_enabled = False
@@ -661,7 +661,7 @@ def test_leg_and_scanner_settings():
     assert platform_settings.z == 3.0
     assert platform_settings.yaw_angle == 45.0
     assert platform_settings.is_yaw_angle_specified is True
-    assert platform_settings.is_on_ground is True
+    assert platform_settings.force_on_ground is True
     assert platform_settings.is_stop_and_turn is False
     assert platform_settings.is_smooth_turn is True
     assert platform_settings.is_slowdown_enabled is False
@@ -820,8 +820,8 @@ def test_platform_properties():
     platform.is_orientation_on_leg_init = True
     assert platform.is_orientation_on_leg_init == True
 
-    platform.is_on_ground = True
-    assert platform.is_on_ground == True
+    platform.force_on_ground = True
+    assert platform.force_on_ground == True
 
     platform.is_stop_and_turn = True
     assert platform.is_stop_and_turn == True

@@ -121,13 +121,6 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
         return fwf
 
 
-class SceneShiftSettings(BaseModel):
-    leg_noise_disabled: bool = False
-    leg_random_offset: bool = False
-    leg_random_offset_mean: float = 0.0
-    leg_random_offset_stdev: float = 0.1
-
-
 # Storage for global settings
 _global_execution_settings: ExecutionSettings = ExecutionSettings()
 _global_output_settings: OutputSettings = OutputSettings()
