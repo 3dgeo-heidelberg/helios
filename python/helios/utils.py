@@ -272,7 +272,9 @@ def apply_scene_shift(
     if not is_xml_loaded(survey.scene):
         survey.scene._finalize(execution_settings)
 
-    _helios.make_scene_shift(survey._cpp_object,)
+    _helios.make_scene_shift(
+        survey._cpp_object,
+    )
     setattr(survey, "_scene_shift_done", True)
 
 
