@@ -86,7 +86,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     warehouse_factor: PositiveInt = 4
     log_file: bool = False
     log_file_only: bool = False
-    verbosity: LogVerbosity = LogVerbosity.QUIET
+    verbosity: LogVerbosity = LogVerbosity.SILENT
     factory_type: KDTreeFactoryType = KDTreeFactoryType.SAH_APPROXIMATION
     kdt_num_threads: ThreadCount = None
     kdt_geom_num_threads: ThreadCount = None
@@ -119,13 +119,6 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
         fwf.max_fullwave_range = self.max_fullwave_range * 1e9
 
         return fwf
-
-
-class SceneShiftSettings(BaseModel):
-    leg_noise_disabled: bool = False
-    leg_random_offset: bool = False
-    leg_random_offset_mean: float = 0.0
-    leg_random_offset_stdev: float = 0.1
 
 
 # Storage for global settings

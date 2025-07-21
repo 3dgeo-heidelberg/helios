@@ -1,5 +1,5 @@
-from helios.platforms import Platform, tripod, sr22, DynamicPlatformSettings
-from helios.scanner import Scanner, livox_mid100, vlp16
+from helios.platforms import Platform
+from helios.scanner import Scanner
 from helios.scene import StaticScene
 from helios.survey import *
 
@@ -163,6 +163,31 @@ def test_traj_from_np(survey):
     assert survey.trajectory.shape == (10,)
     assert survey.trajectory["x"].shape == (10,)
     assert len(survey.trajectory[0]) == 7
+
+
+def test_invalid_leg_adding():
+    """
+    Test that adding a leg via the `append` method raises an error.
+    """
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    new_leg = Leg(
+        platform_settings=PlatformSettings(),
+        scanner_settings=ScannerSettings(),
+    )
+    assert len(survey.legs) == 6
+
+    survey.add_leg(new_leg)
+    assert len(survey.legs) == 7
+
+    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
+        survey.append(new_leg)
+
+
+def test_survey_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    assert is_xml_loaded(survey)
 
 
 def test_load_csv_traj(survey):

@@ -14,7 +14,7 @@ from pydantic import (
     NonNegativeInt,
     validate_call,
 )
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, Tuple
 
 import numpy as np
 
@@ -120,7 +120,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         _cpp_scene_part = _helios.read_scene_part_from_xml(
             str(scene_part_file), [str(p) for p in get_asset_directories()], id
         )
-        return cls._from_cpp(_cpp_scene_part)
+        scene_part = cls._from_cpp(_cpp_scene_part)
+        scene_part._is_loaded_from_xml = True
+        return scene_part
 
     @classmethod
     @validate_call
@@ -275,7 +277,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
-    scene_parts: list[ScenePart] = []
+    scene_parts: Tuple[ScenePart, ...] = ()
+
+    def add_scene_part(self, scene_part: ScenePart):
+        """Add a scene part to the scene."""
+
+        self.scene_parts = self.scene_parts + (scene_part,)
 
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
@@ -329,4 +336,6 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         _cpp_scene = _helios.read_scene_from_xml(
             str(scene_file), [str(p) for p in get_asset_directories()]
         )
-        return cls._from_cpp(_cpp_scene)
+        scene = cls._from_cpp(_cpp_scene)
+        scene._is_loaded_from_xml = True
+        return scene

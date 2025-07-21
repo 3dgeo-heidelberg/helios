@@ -57,8 +57,8 @@ def test_sceneparts_from_obj_wildcard():
 
 
 def test_scenepart_from_obj_yisup():
-    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
-    scene = StaticScene(scene_parts=[box], up_axis="y")
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="y")
+    scene = StaticScene(scene_parts=[box])
     scene._finalize()
 
 
@@ -362,3 +362,68 @@ def test_classification_scenepart():
     meas, _ = survey.run()
 
     assert np.any(meas["classification"] == 1)
+
+
+def test_add_scene_part():
+    """
+    Test that a scene part can be added to an existing scene.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert len(scene.scene_parts) == 5
+
+    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene.add_scene_part(new_part)
+
+    assert len(scene.scene_parts) == 6
+    assert len(scene._cpp_object.scene_parts) == 6
+    assert new_part in scene.scene_parts
+
+
+def test_add_scene_part_invalid():
+    """
+    Test that adding a duplicate of scene_part raises an error. As well as usage of append method.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene2 = StaticScene()
+    assert len(scene.scene_parts) == 5
+
+    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene.add_scene_part(new_part)
+
+    with pytest.raises(ValueError, match="already used by another instance"):
+        scene2.add_scene_part(new_part)
+
+    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
+        scene.append(new_part)
+
+
+def test_scenepart_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    assert is_xml_loaded(part)
+
+    part2 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox",
+        intersection_mode="scaled",
+        intersection_argument=0.5,
+    )
+    assert not is_xml_loaded(part2)
+    part3 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    assert not is_xml_loaded(part3)
+    part4 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+    )
+    assert not is_xml_loaded(part4)
+    part5 = ScenePart.from_tiff("data/sceneparts/tiff/dem_hd.tif")
+    assert not is_xml_loaded(part5)
+
+
+def test_scene_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert is_xml_loaded(scene)

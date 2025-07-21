@@ -5,6 +5,7 @@ from pydantic import validate_call
 from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
 from numpydantic import NDArray, Shape
 
+
 import importlib_resources as resources
 import numpy as np
 import os
@@ -272,13 +273,8 @@ def apply_scene_shift(
     if not is_xml_loaded(survey.scene):
         survey.scene._finalize(execution_settings)
 
-    settings = survey.scene_shift_settings
     _helios.make_scene_shift(
         survey._cpp_object,
-        leg_noise_disabled=settings.leg_noise_disabled,
-        leg_random_offset=settings.leg_random_offset,
-        leg_random_offset_mean=settings.leg_random_offset_mean,
-        leg_random_offset_stdev=settings.leg_random_offset_stdev,
     )
     setattr(survey, "_scene_shift_done", True)
 
