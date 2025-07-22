@@ -2,13 +2,16 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 using namespace std;
 
+#include <glm/glm.hpp>
 #define _USE_MATH_DEFINES
 #include <logging.hpp>
 #include <math.h>
 
 #include "maths/Directions.h"
+#include "maths/MathConverter.h"
 
 using Base = std::shared_ptr<AbstractBeamDeflector>;
 
@@ -17,9 +20,8 @@ Base
 RisleyBeamDeflector::clone()
 {
   Base ombd = std::make_shared<RisleyBeamDeflector>(
-    RisleyBeamDeflector(cfg_device_scanAngleMax_rad,
-                        cfg_device_scanFreqMax_Hz,
-                        cfg_device_scanFreqMin_Hz));
+    cfg_device_scanAngleMax_rad, prisms, refrIndex_air);
+
   _clone(ombd);
   return ombd;
 }
@@ -28,9 +30,6 @@ RisleyBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
 {
   AbstractBeamDeflector::_clone(abd);
   RisleyBeamDeflector* ombd = (RisleyBeamDeflector*)abd.get();
-  ombd->scanAngle = scanAngle;
-  ombd->rotorSpeed_rad_1 = rotorSpeed_rad_1;
-  ombd->rotorSpeed_rad_2 = rotorSpeed_rad_2;
 }
 
 void
@@ -48,21 +47,21 @@ RisleyBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
 void
 RisleyBeamDeflector::doSimStep()
 {
-
   // time integration
   time += deltaT;
 
-  // calculate the absolute angle
+  // Start with incident beam
+  glm::dvec3 beam = incidentBeam;
 
-  double xFOV = cos(time * rotorSpeed_rad_1) + cos(time * rotorSpeed_rad_2);
-  double yFOV = -sin(time * rotorSpeed_rad_1) - sin(time * rotorSpeed_rad_2);
+  for (const Prism& prism : prisms) {
+    glm::dvec3 beamRefracted;
+    if (!prism.refractPrism(beam, time, refrIndex_air, beamRefracted))
+      return;
 
-  double phi = -xFOV / 2.0 * scanAngle;
-  double eta = -yFOV / 2.0 * scanAngle;
+    beam = beamRefracted;
+  }
 
-  // Rotate to current position:
-  this->cached_emitterRelativeAttitude =
-    Rotation(RotationOrder::ZXY, phi, eta, 0);
+  this->cached_emitterRelativeAttitude = Rotation(Directions::forward, beam);
 }
 
 void
