@@ -260,5 +260,61 @@
 			</beamOrigin>
     </scanner>
 
+	<!-- ######## END LIVOX Mid-100 models ####### -->
+
+	<!--######## BEGIN DJI Zenmuse L2 ####### -->
+	<scanner	id 												= "dji-zenmuse-l2"
+						accuracy_m								= "0.02"
+						beamDivergence_rad 				= "0.0027"
+						name              				= "DJI Zenmuse L2"
+						optics            				= "risley"
+						pulseFreqs_Hz							= "240000"
+						pulseLength_ns     				= "4"
+						rangeMin_m								= "2"
+						scanAngleMax_deg   				= "35"
+						scanAngleEffectiveMax_deg = "35"
+						wavelength_nm							= "905"
+						rotorFreq1_Hz							= "10.5283"
+						rotorFreq2_Hz							= "-51.6546"
+						rotorFreq3_Hz							= "10.52833"
+						angle1_deg								= "-27.65251"
+						angle2_deg								= "29.64349"
+						angle3_deg								= "2.78088"
+						refrIndex1								= "1.51"
+						refrIndex2								= "1.51"
+						refrIndex3								= "1.51"
+						refrIndex_air							= "1.0"
+	>
+				
+		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0" z="0">
+			<rot axis="z" angle_deg="-90" />
+		</beamOrigin>
+
+		<headRotateAxis x="1" y="0" z="0" />
+
+        <channels>
+            <channel id="0">
+                <incidentBeam x="-0.02687759" y="0.99963873" z="0" />
+            </channel>
+            <channel id="1">
+                <incidentBeam x="-0.01613028" y="0.9998699" z="0" />
+            </channel>
+            <channel id="2">
+                <incidentBeam x="-0.00537738" y="0.99998554" z="0" />
+            </channel>
+            <channel id="3">
+                <incidentBeam x="0.00537738" y="0.99998554" z="0" />
+            </channel>
+            <channel id="4">
+                <incidentBeam x="0.01613028" y="0.9998699" z="0" />
+            </channel>
+            <channel id="5">
+                <incidentBeam x="0.02687759" y="0.99963873" z="0" />
+            </channel>
+        </channels>
+	</scanner>
+
+	<!--######## END DJI Zenmuse L2 ####### -->
 
 </document>

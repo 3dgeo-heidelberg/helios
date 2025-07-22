@@ -476,13 +476,12 @@
 	<!-- ##### END LIVOX Mid-100 ##### -->
 
 	<!--######## BEGIN DJI Zenmuse L2 (REPETITIVE) ####### -->
-	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
 	<scanner	id 												= "dji-zenmuse-l2-repetitive"
 						accuracy_m								= "0.02"
 						beamDivergence_rad 				= "0.0027"
 						name              				= "DJI Zenmuse L2 (repetitive)"
 						optics            				= "risley"
-						pulseFreqs_Hz							= "24000"
+						pulseFreqs_Hz							= "240000"
 						pulseLength_ns     				= "4"
 						rangeMin_m								= "2"
 						scanAngleMax_deg   				= "35"
@@ -532,13 +531,12 @@
 	<!--######## END DJI Zenmuse L2 (REPETITIVE) ####### -->
 
 	<!--######## BEGIN DJI Zenmuse L2 (NON-REPETITIVE) ####### -->
-	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
 	<scanner	id 												= "dji-zenmuse-l2-non-repetitive"
 						accuracy_m								= "0.02"
 						beamDivergence_rad 				= "0.0027"
 						name              				= "DJI Zenmuse L2 (non-repetitive)"
 						optics            				= "risley"
-						pulseFreqs_Hz							= "24000"
+						pulseFreqs_Hz							= "240000"
 						pulseLength_ns     				= "4"
 						rangeMin_m								= "2"
 						scanAngleMax_deg   				= "35"
