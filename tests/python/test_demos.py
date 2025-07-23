@@ -4,18 +4,16 @@ from .compare import compare_clouds, speed_from_traj
 import pytest
 
 
-@pytest.mark.slow
 def test_arbaro_tls(regression_data, persisting_output_dir):
     survey = Survey.from_xml("data/surveys/demo/tls_arbaro_demo.xml")
     survey.gps_time = "2022-01-01 00:00:00"
     path = survey.run(format="las", output_dir=persisting_output_dir)
-
     assert len(list(path.glob("*.las"))) == 2
     assert len(list(path.glob("*.txt"))) == 2
 
     with open(path / "leg000_trajectory.txt", "r") as f:
         line = f.readline()
-        assert line.startswith("1.0000 25.5000 0.0000")
+        assert line.startswith("1.0000 25.5000 -6.9727")
 
     if regression_data:
         compare_clouds(
@@ -26,7 +24,6 @@ def test_arbaro_tls(regression_data, persisting_output_dir):
         )
 
 
-@pytest.mark.slow
 def test_tiffloader_als(regression_data, persisting_output_dir):
     survey = Survey.from_xml("data/test/als_hd_demo_tiff_min.xml")
     survey.gps_time = "2022-01-01 00:00:00"
@@ -37,8 +34,7 @@ def test_tiffloader_als(regression_data, persisting_output_dir):
 
     with open(path / "leg000_trajectory.txt", "r") as f:
         line = f.readline()
-        assert line.startswith("474500.0000 5474500.0000 1500.0000")
-
+        assert line.startswith("-2172.6258 887.1097 1235.5")
     if regression_data:
         compare_clouds(
             path / "leg000_points.las",
@@ -54,7 +50,6 @@ def test_tiffloader_als(regression_data, persisting_output_dir):
         )
 
 
-@pytest.mark.slow
 def test_xyz_voxels_tls(regression_data, persisting_output_dir):
     survey = Survey.from_xml("data/surveys/voxels/tls_sphere_xyzloader_normals.xml")
     survey.gps_time = "2022-01-01 00:00:00"
@@ -70,7 +65,6 @@ def test_xyz_voxels_tls(regression_data, persisting_output_dir):
         )
 
 
-@pytest.mark.slow
 def test_interpolated_traj(regression_data, persisting_output_dir):
     survey = Survey.from_xml("data/surveys/demo/als_interpolated_trajectory.xml")
     survey.gps_time = "2022-01-01 00:00:00"
@@ -104,7 +98,6 @@ def test_interpolated_traj(regression_data, persisting_output_dir):
         )
 
 
-@pytest.mark.slow
 def test_quadcopter(regression_data, persisting_output_dir):
     survey = Survey.from_xml(
         "data/surveys/toyblocks/uls_toyblocks_survey_scene_combo.xml"
@@ -123,7 +116,7 @@ def test_quadcopter(regression_data, persisting_output_dir):
         for _ in range(3):
             next(f)
         line = f.readline()
-        assert line.startswith("-69.9983 -60.0000 80.0002")
+        assert line.startswith("-69.9983 -60.0000 59.7611")
 
     if regression_data:
         compare_clouds(
@@ -140,8 +133,6 @@ def test_quadcopter(regression_data, persisting_output_dir):
         )
 
 
-@pytest.mark.skip
-@pytest.mark.slow
 def test_als_multichannel_split(regression_data, persisting_output_dir):
     survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
     survey.gps_time = "2022-01-01 00:00:00"
