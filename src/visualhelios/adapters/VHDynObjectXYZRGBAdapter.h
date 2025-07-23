@@ -5,7 +5,7 @@
 #include <visualhelios/adapters/VHDynObjectAdapter.h>
 #include <visualhelios/adapters/VHStaticObjectXYZRGBAdapter.h>
 
-namespace visualhelios{
+namespace visualhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -14,25 +14,25 @@ namespace visualhelios{
  * @brief Class providing concrete implementation of a VHDynObjectAdapter for
  *  a simple XYZ visualization with RGB color
  */
-class VHDynObjectXYZRGBAdapter :
-    public VHStaticObjectXYZRGBAdapter,
-    public VHDynObjectAdapter
+class VHDynObjectXYZRGBAdapter
+  : public VHStaticObjectXYZRGBAdapter
+  , public VHDynObjectAdapter
 {
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Constructor for the visual Helios dynamic object adapter
-     *  providing XYZ visualization with RGB color
-     * @see visualhelios::VHDynObjectAdapter::VHDynObjectAdapter(DynObject &)
-     */
-    VHDynObjectXYZRGBAdapter(DynObject &dynObj) :
-        VHStaticObjectAdapter(static_cast<ScenePart &>(dynObj)),
-        VHStaticObjectXYZRGBAdapter(static_cast<ScenePart &>(dynObj)),
-        VHDynObjectAdapter(dynObj)
-    {}
-    virtual ~VHDynObjectXYZRGBAdapter() = default;
-
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Constructor for the visual Helios dynamic object adapter
+   *  providing XYZ visualization with RGB color
+   * @see visualhelios::VHDynObjectAdapter::VHDynObjectAdapter(DynObject &)
+   */
+  VHDynObjectXYZRGBAdapter(DynObject& dynObj)
+    : VHStaticObjectAdapter(static_cast<ScenePart&>(dynObj))
+    , VHStaticObjectXYZRGBAdapter(static_cast<ScenePart&>(dynObj))
+    , VHDynObjectAdapter(dynObj)
+  {
+  }
+  virtual ~VHDynObjectXYZRGBAdapter() = default;
 };
 
 }

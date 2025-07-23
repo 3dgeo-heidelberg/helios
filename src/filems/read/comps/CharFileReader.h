@@ -5,10 +5,8 @@
 
 #include <memory>
 
-namespace helios { namespace filems{
-
-using std::make_shared;
-using std::ios_base;
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -17,36 +15,40 @@ using std::ios_base;
  * @see filems::SimpleFileReader
  * @see filems::CharReadingStrategy
  */
-class CharFileReader : public SimpleFileReader<char>{
+class CharFileReader : public SimpleFileReader<char>
+{
 protected:
-    // ***  USING  *** //
-    // *************** //
-    using SimpleFileReader<int>::readingStrategy;
+  // ***  USING  *** //
+  // *************** //
+  using SimpleFileReader<char>::readingStrategy;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for binary file reader
-     * @see filems::SimpleFileReader::SimpleFileReader
-     */
-    CharFileReader(
-        string const &path,
-        ios_base::openmode openMode = ios_base::in
-    ) :
-        SimpleFileReader<char>(path, in)
-    {makeStrategy();}
-    virtual ~CharFileReader() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for binary file reader
+   * @see filems::SimpleFileReader::SimpleFileReader
+   */
+  CharFileReader(std::string const& path,
+                 std::ios_base::openmode openMode = std::ios_base::in)
+    : SimpleFileReader<char>(path, std::ios_base::in)
+  {
+    makeStrategy();
+  }
+  virtual ~CharFileReader() = default;
 
 protected:
-    // ***  INNER METHODS  *** //
-    // *********************** //
-    /**
-     * @brief Build a char reading strategy for the char file reader
-     * @see FileReader::makeStrategy
-     */
-    void makeStrategy() override
-    {readingStrategy = make_shared<CharReadingStrategy>(ifs);}
+  // ***  INNER METHODS  *** //
+  // *********************** //
+  /**
+   * @brief Build a char reading strategy for the char file reader
+   * @see FileReader::makeStrategy
+   */
+  void makeStrategy() override
+  {
+    readingStrategy = std::make_shared<CharReadingStrategy>(ifs);
+  }
 };
 
-}}
+}
+}

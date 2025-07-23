@@ -4,9 +4,8 @@
 
 #include <fstream>
 
-namespace helios { namespace filems{
-
-using std::fstream;
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -15,35 +14,35 @@ using std::fstream;
  *  stream
  * @see filems::SimpleReadingStrategy
  */
-class CharReadingStrategy : public SimpleReadingStrategy<char> {
+class CharReadingStrategy : public SimpleReadingStrategy<char>
+{
 protected:
-    // ***  USING  *** //
-    // *************** //
-    using SimpleReadingStrategy<char>::ifs;
+  // ***  USING  *** //
+  // *************** //
+  using SimpleReadingStrategy<char>::ifs;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for char reading strategy
-     * @see filems::SimpleReadingStrategy::SimpleReadingStrategy
-     */
-    CharReadingStrategy(ifstream &ifs) :
-        SimpleReadingStrategy<char>(ifs)
-    {}
-    virtual ~CharReadingStrategy() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for char reading strategy
+   * @see filems::SimpleReadingStrategy::SimpleReadingStrategy
+   */
+  CharReadingStrategy(std::ifstream& ifs)
+    : SimpleReadingStrategy<char>(ifs)
+  {
+  }
+  virtual ~CharReadingStrategy() = default;
 
-    // ***  READING STRATEGY METHODS  *** //
-    // ********************************** //
-    /**
-     * @brief Read character from text file
-     * @return Either what has been read from input file or EOF if end of file
-     *  was reached
-     */
-    char read() override{
-        return ifs.get();
-    };
-
+  // ***  READING STRATEGY METHODS  *** //
+  // ********************************** //
+  /**
+   * @brief Read character from text file
+   * @return Either what has been read from input file or EOF if end of file
+   *  was reached
+   */
+  char read() override { return ifs.get(); };
 };
 
-}}
+}
+}

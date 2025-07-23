@@ -1,21 +1,35 @@
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings
+from helios.platforms import (
+    Platform,
+    PlatformSettings,
+    traj_csv_dtype,
+    TrajectorySettings,
+)
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
     ExecutionSettings,
+    FullWaveformSettings,
     OutputFormat,
     OutputSettings,
     compose_execution_settings,
     compose_output_settings,
+    apply_log_writing,
 )
-from helios.utils import get_asset_directories, meas_dtype, traj_dtype
+from helios.utils import (
+    get_asset_directories,
+    meas_dtype,
+    traj_dtype,
+    apply_scene_shift,
+    is_xml_loaded,
+)
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
+from numpydantic import NDArray
 from pathlib import Path
-from pydantic import validate_call
-from typing import Optional
+from pydantic import Field, validate_call
+from typing import Annotated, Optional, Tuple
 
 import numpy as np
 import tempfile
@@ -28,9 +42,11 @@ class Survey(Model, cpp_class=_helios.Survey):
     scanner: Scanner
     platform: Platform
     scene: StaticScene
-    legs: list[Leg] = []
+    legs: Tuple[Leg, ...] = ()
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
+    full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
+    trajectory: Optional[NDArray] = None
 
     @validate_call
     def run(
@@ -46,38 +62,48 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
+        # Update logs settings
+        apply_log_writing(execution_settings)
+        execution_settings.verbosity.apply()
+
+        # Throw if there are still unknown parameters left
+        if parameters:
+            raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
+
+        # Apply shift once and only if the survey is not loaded from XML
+        if not is_xml_loaded(self):
+            apply_scene_shift(self, execution_settings)
+
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
-        if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
-            # TODO: Implement approach where we don't need to write to disk
-            las_output, zip_output = False, False
-            temp_dir_obj = tempfile.TemporaryDirectory()
+        # Set the fullwave form settings on the scanner
+        self.scanner._cpp_object.apply_settings_FWF(
+            self.full_waveform_settings._to_cpp()
+        )
 
-            fms = _helios.FMSFacadeFactory().build_facade(
-                temp_dir_obj.name,
-                1.0,
-                las_output,
-                False,
-                zip_output,
-                False,
-                self._cpp_object,
-            )
+        if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
+            las_output, zip_output, export_to_file = False, False, False
+            fms = None
 
         else:
             # Make the given output path absolute
             output = Path(output_settings.output_dir).absolute()
-
+            export_to_file = True
             # Determine boolean flags for the output
             las_output, zip_output = {
                 "laz": (True, True),
                 "las": (True, False),
                 "xyz": (False, False),
             }.get(output_settings.format)
+
+            self.scanner._cpp_object.write_waveform = output_settings.write_waveform
+            self.scanner._cpp_object.write_pulse = output_settings.write_pulse
+
             fms = _helios.FMSFacadeFactory().build_facade(
                 str(output),
-                1.0,
+                output_settings.las_scale,
                 las_output,
                 False,
                 zip_output,
@@ -98,31 +124,32 @@ class Survey(Model, cpp_class=_helios.Survey):
         pulse_thread_pool = ptpf.make_pulse_thread_pool()
         playback = _helios.SurveyPlayback(
             self._cpp_object,
-            fms,
             execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
             str(self.gps_time.timestamp()),
             True,
-            True,
+            export_to_file,
+            execution_settings.discard_shutdown,
+            fms,
         )
         playback.callback_frequency = 0
 
-        self.scanner._cpp_object.cycle_measurements_mutex = None
         self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.cycle_measurements_mutex = None
         self.scanner._cpp_object.all_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.all_output_paths = np.empty((0,))
+        self.scanner._cpp_object.all_measurements_mutex = None
         # Start simulating the survey
         playback.start()
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
+            # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
             measurements = self.scanner._cpp_object.all_measurements
 
             trajectories = self.scanner._cpp_object.all_trajectories
-            temp_dir_obj.cleanup()
-
             if output_settings.format == OutputFormat.NPY:
                 return measurements, trajectories
 
@@ -145,7 +172,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                 las.z = measurements["position"][:, 2]
                 las.intensity = measurements["intensity"]
                 las.return_number = measurements["return_number"]
-                las.number_of_returns = measurements["pulse_return_number"]
+                las.number_of_returns = measurements["number_of_returns"]
                 las.gps_time = measurements["gps_time"]
                 las.classification = measurements["classification"]
                 las.echo_width = measurements["echo_width"]
@@ -159,9 +186,10 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     def add_leg(
         self,
-        leg: Leg = None,
+        leg: Optional[Leg] = None,
         platform_settings: Optional[PlatformSettings] = None,
         scanner_settings: Optional[ScannerSettings] = None,
+        trajectory_settings: Optional[TrajectorySettings] = None,
         **parameters,
     ):
         """Add a new leg to the survey.
@@ -170,16 +198,34 @@ class Survey(Model, cpp_class=_helios.Survey):
         from the provided settings.
         """
 
-        # We construct a leg if none was provided
-        if leg is None:
-            leg = Leg()
-
+        copy_platform_settings = PlatformSettings()
+        copy_scanner_settings = ScannerSettings()
         # Set the parameters given as scanner + platform settings
         if platform_settings is not None:
-            leg.platform_settings.update_from_object(platform_settings)
+            copy_platform_settings.update_from_object(platform_settings)
         if scanner_settings is not None:
-            leg.scanner_settings.update_from_object(scanner_settings)
+            copy_scanner_settings.update_from_object(scanner_settings)
 
+        if trajectory_settings is not None:
+            copy_trajectory_settings = TrajectorySettings()
+            copy_trajectory_settings.update_from_object(trajectory_settings)
+        else:
+            copy_trajectory_settings = None
+
+        # We construct a leg if none was provided
+        if leg is None:
+            leg = Leg(
+                platform_settings=copy_platform_settings,
+                scanner_settings=copy_scanner_settings,
+                trajectory_settings=copy_trajectory_settings,
+            )
+        else:
+            if platform_settings is not None:
+                leg.platform_settings.update_from_object(copy_platform_settings)
+            if scanner_settings is not None:
+                leg.scanner_settings.update_from_object(copy_scanner_settings)
+            if trajectory_settings is not None:
+                leg.trajectory_settings.update_from_object(copy_trajectory_settings)
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
@@ -190,7 +236,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # By using assignment instead of append,
         # we ensure that the property is validated
-        self.legs = self.legs + [leg]
+        self.legs = self.legs + (leg,)
 
     @classmethod
     @validate_call
@@ -201,10 +247,12 @@ class Survey(Model, cpp_class=_helios.Survey):
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
-        return cls._from_cpp(_cpp_survey)
+        survey = cls._from_cpp(_cpp_survey)
+        survey._is_loaded_from_xml = True
+        return survey
 
     def _pre_set(self, field, value):
         if field == "scanner":

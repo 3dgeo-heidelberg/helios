@@ -8,7 +8,8 @@
 
 // *** CONSTRUCTION / DESTRUCTION *** //
 // ********************************** //
-WavefrontObj::~WavefrontObj() {
+WavefrontObj::~WavefrontObj()
+{
   for (size_t i = 0; i < primitives.size(); i++) {
     delete primitives[i];
     primitives[i] = nullptr;

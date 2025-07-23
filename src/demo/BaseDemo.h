@@ -19,40 +19,43 @@ using std::string;
  * NOTICE in order for a demo to be runnable it must override the run method
  * to implement the demo behavior
  */
-class BaseDemo{
+class BaseDemo
+{
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The name for the demo
-     */
-    string const name;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The name for the demo
+   */
+  string const name;
+
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Base demo constructor
-     * @param name Name for the demo
-     */
-    BaseDemo(string const name) : name(name) {};
-    virtual ~BaseDemo() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Base demo constructor
+   * @param name Name for the demo
+   */
+  BaseDemo(string const name)
+    : name(name) {};
+  virtual ~BaseDemo() = default;
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    /**
-     * @brief Obtain the demo name
-     * @return Demo name
-     */
-    string getName() {return name;}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  /**
+   * @brief Obtain the demo name
+   * @return Demo name
+   */
+  string getName() { return name; }
 
-    // ***  R U N  *** //
-    // *************** //
-    /**
-     * @brief Run the demo itself
-     *
-     * Only demos implementing a run method will be runnable
-     */
-    virtual void run() = 0;
+  // ***  R U N  *** //
+  // *************** //
+  /**
+   * @brief Run the demo itself
+   *
+   * Only demos implementing a run method will be runnable
+   */
+  virtual void run() = 0;
 };
 }
 #endif

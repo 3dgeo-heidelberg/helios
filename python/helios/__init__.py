@@ -10,6 +10,8 @@ from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene, ScenePart
 from helios.settings import (
     ExecutionSettings,
+    FullWaveformSettings,
+    KDTreeFactoryType,
     LogVerbosity,
     OutputSettings,
     ParallelizationStrategy,
@@ -19,3 +21,4 @@ from helios.settings import (
 from helios.survey import Survey
 from helios.utils import add_asset_directory, combine_parameters
 from helios.validation import units
+from _helios import HeliosException

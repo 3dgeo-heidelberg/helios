@@ -5,10 +5,8 @@
 
 #include <memory>
 
-namespace helios { namespace filems{
-
-using std::make_shared;
-using std::ios_base;
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -16,36 +14,40 @@ using std::ios_base;
  * @brief Class for byte by byte reading of binary files
  * @see filems::SimpleFileReader
  */
-class BinaryFileReader : public SimpleFileReader<int>{
+class BinaryFileReader : public SimpleFileReader<int>
+{
 protected:
-    // ***  USING  *** //
-    // *************** //
-    using SimpleFileReader<int>::readingStrategy;
+  // ***  USING  *** //
+  // *************** //
+  using SimpleFileReader<int>::readingStrategy;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for binary file reader
-     * @see filems::SimpleFileReader::SimpleFileReader
-     */
-    BinaryFileReader(
-        string const &path,
-        ios_base::openmode openMode = ios_base::in
-    ) :
-        SimpleFileReader<int>(path, in)
-    {makeStrategy();}
-    virtual ~BinaryFileReader() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for binary file reader
+   * @see filems::SimpleFileReader::SimpleFileReader
+   */
+  BinaryFileReader(std::string const& path,
+                   std::ios_base::openmode openMode = std::ios_base::in)
+    : SimpleFileReader<int>(path, std::ios_base::in)
+  {
+    makeStrategy();
+  }
+  virtual ~BinaryFileReader() = default;
 
 protected:
-    // ***  INNER METHODS  *** //
-    // *********************** //
-    /**
-     * @brief Build a binary reading strategy for the binary file reader
-     * @see FileReader::makeStrategy
-     */
-    void makeStrategy() override
-    {readingStrategy = make_shared<BinaryReadingStrategy>(ifs);}
+  // ***  INNER METHODS  *** //
+  // *********************** //
+  /**
+   * @brief Build a binary reading strategy for the binary file reader
+   * @see FileReader::makeStrategy
+   */
+  void makeStrategy() override
+  {
+    readingStrategy = std::make_shared<BinaryReadingStrategy>(ifs);
+  }
 };
 
-}}
+}
+}

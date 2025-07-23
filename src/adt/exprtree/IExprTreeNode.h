@@ -15,20 +15,21 @@
  *  tree
  * @see IBinaryTreeNode
  */
-template <typename InputType, typename OutputType>
-class IExprTreeNode : public IBinaryTreeNode {
+template<typename InputType, typename OutputType>
+class IExprTreeNode : public IBinaryTreeNode
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    ~IExprTreeNode() override = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  ~IExprTreeNode() override = default;
 
-    // ***  EXPRESSION TREE NODE INTERFACE *** //
-    // *************************************** //
-    /**
-     * @brief Evaluate the given node. In doing so, children nodes will be
-     *  evaluated if necessary.
-     * @param x The variable \f$x\f$ for the evaluation of the expression tree
-     * @return Result obtained after evaluating the node
-     */
-    virtual OutputType eval(InputType const x) const = 0;
+  // ***  EXPRESSION TREE NODE INTERFACE *** //
+  // *************************************** //
+  /**
+   * @brief Evaluate the given node. In doing so, children nodes will be
+   *  evaluated if necessary.
+   * @param x The variable \f$x\f$ for the evaluation of the expression tree
+   * @return Result obtained after evaluating the node
+   */
+  virtual OutputType eval(InputType const x) const = 0;
 };

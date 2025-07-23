@@ -1,11 +1,9 @@
 #pragma once
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 namespace fluxionum {
-
-using std::runtime_error;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -13,16 +11,20 @@ using std::runtime_error;
  *
  * @brief Base class for fluxionum exceptions
  */
-class FluxionumException : public runtime_error{
+class FluxionumException : public std::runtime_error
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Fluxionum exception constructor
-     * @param msg Fluxionum exception message
-     */
-    FluxionumException(std::string const msg = "") : runtime_error(msg) {}
-    virtual ~FluxionumException() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Fluxionum exception constructor
+   * @param msg Fluxionum exception message
+   */
+  FluxionumException(std::string const msg = "")
+    : std::runtime_error(msg)
+  {
+  }
+  virtual ~FluxionumException() = default;
 };
 
 }

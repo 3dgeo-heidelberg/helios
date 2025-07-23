@@ -7,57 +7,57 @@
 /**
  * @brief Base class for all assets
  */
-class Asset {
-    // ***  SERIALIZATION  *** //
-    // *********************** //
+class Asset
+{
+  // ***  SERIALIZATION  *** //
+  // *********************** //
 private:
-	friend class boost::serialization::access;
-	/**
-	 * @brief Serialize an Asset to a stream of bytes
-	 * @tparam Archive Type of rendering
-	 * @param ar Specific rendering for the stream of bytes
-	 * @param version Version number for the Asset
-	 */
-	template<class Archive>
-	void serialize(Archive &ar, const unsigned int version)	{
-		ar & id;
-		ar & name;
-		ar & sourceFilePath;
-	}
+  friend class boost::serialization::access;
+  /**
+   * @brief Serialize an Asset to a stream of bytes
+   * @tparam Archive Type of rendering
+   * @param ar Specific rendering for the stream of bytes
+   * @param version Version number for the Asset
+   */
+  template<class Archive>
+  void serialize(Archive& ar, const unsigned int version)
+  {
+    ar & id;
+    ar & name;
+    ar & sourceFilePath;
+  }
 
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief Asset identifier
-     */
-	std::string id = "";
-	/**
-	 * @brief Asset name
-	 */
-	std::string name = "Unnamed Asset";
-	/**
-	 * @brief Path to asset file
-	 */
-	std::string sourceFilePath = "";
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief Asset identifier
+   */
+  std::string id = "";
+  /**
+   * @brief Asset name
+   */
+  std::string name = "Unnamed Asset";
+  /**
+   * @brief Path to asset file
+   */
+  std::string sourceFilePath = "";
 
-	// ***  CONSTRUCTION / DESTRUCTION  *** //
-	// ************************************ //
-	virtual ~Asset() {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  virtual ~Asset() {}
 
-	// ***  GETTERS and SETTERS  *** //
-	// ***************************** //
-	/**
-	 * @brief Obtain asset location string
-	 * @return Asset location string
-	 */
-	std::string getLocationString() {
-		return sourceFilePath + "#" + id;
-	}
-	/**
-	 * @brief Check whether the asset is an EggAsset or not
-	 * @return True if the asset is an EggAsset, false otherwise
-	 * @see EggAsset
-	 */
-	virtual bool isEgg() const {return false;}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  /**
+   * @brief Obtain asset location string
+   * @return Asset location string
+   */
+  std::string getLocationString() { return sourceFilePath + "#" + id; }
+  /**
+   * @brief Check whether the asset is an EggAsset or not
+   * @return True if the asset is an EggAsset, false otherwise
+   * @see EggAsset
+   */
+  virtual bool isEgg() const { return false; }
 };

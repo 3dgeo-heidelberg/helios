@@ -49,7 +49,6 @@ jobs:
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
-          conda-remove-defaults: true
 
       - name: Install Conda GCC
         if: runner.os == 'Linux'
@@ -64,8 +63,8 @@ jobs:
 
       # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
       # more efforts into investigating broken LAZ files written by Helios on MacOS.
-      - name: Run marked tests
-        if: runner.os != 'macOS' 
+      - name: Run tests (excl. regression tests)
+        if: runner.os != 'macOS'
         run: |
           python -m pytest
 

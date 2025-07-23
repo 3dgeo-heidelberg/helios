@@ -1,29 +1,16 @@
-#ifndef _SURFACEINSPECTOR_MATHS_SINGULARCONTEXTCOMPUTER_HPP_
-#include <surfaceinspector/maths/SingularContextComputer.hpp>
-#endif
-
-#include <surfaceinspector/maths/Vector.hpp>
 #include <surfaceinspector/maths/Histogram.hpp>
-#include <surfaceinspector/util/SurfaceInspectorException.hpp>
-
-using arma::mat;
-using arma::vec;
-using arma::uvec;
-
-using SurfaceInspector::maths::Vector;
-using SurfaceInspector::maths::Histogram;
-using SurfaceInspector::maths::SingularContextComputer;
+#include <surfaceinspector/maths/Vector.hpp>
 
 // ***  INITIALIZE  *** //
 // ******************** //
 template <typename T>
-void SingularContextComputer<T>::init(
+void SurfaceInspector::maths::SingularContextComputer<T>::init(
     bool normalize,
     bool center,
-    size_t aWorst,
-    size_t aBest,
-    size_t bWorst,
-    size_t bBest
+    std::size_t aWorst,
+    std::size_t aBest,
+    std::size_t bWorst,
+    std::size_t bBest
 ){
     this->normalizeFlag = normalize;
     this->centerFlag = center;
@@ -38,7 +25,7 @@ void SingularContextComputer<T>::init(
 // ***  MAIN FUNCTIONS  *** //
 // ************************ //
 template <typename T>
-SingularContextDescriptors<T> SingularContextComputer<T>::describe(Mat<T> &M)
+SurfaceInspector::maths::SingularContextDescriptors<T> SurfaceInspector::maths::SingularContextComputer<T>::describe(arma::Mat<T> &M)
 const {
     // Preprocess matrix
     if(normalizeFlag) (this->*normalize)(M);
@@ -49,15 +36,15 @@ const {
     arma::vec s;
     arma::mat V;
     if(!arma::svd_econ(U, s, V, M, "right", "std")){
-        throw SurfaceInspectorException(
+        throw SurfaceInspector::util::SurfaceInspectorException(
             "Failed to apply singular value decomposition at "
             "SingularContextComputer<T>::describe(Mat<T> &M)"
         );
     }
 
     // Extract min and max singular values and singular vectors
-    SingularContextDescriptors<T> scd;
-    size_t r = s.n_elem;
+    SurfaceInspector::maths::SingularContextDescriptors<T> scd;
+    std::size_t r = s.n_elem;
     scd.minSingularValue = s[r-1];
     scd.maxSingularValue = s[0];
 
@@ -102,58 +89,59 @@ const {
 // ***  AUXILIAR FUNCTIONS  *** //
 // **************************** //
 template <typename T>
-vector<size_t> SingularContextComputer<T>::alpha(
-    vec const &v,
-    size_t const a
+std::vector<size_t> SurfaceInspector::maths::SingularContextComputer<T>::alpha(
+    arma::vec const &v,
+    std::size_t const a
 ) const {
-    vector<size_t> alpha(0);
-    uvec vSorted = arma::sort_index(v, "ascend");
-    for(size_t i = 0 ; i < a ; ++i){
+    std::vector<size_t> alpha(0);
+    arma::uvec vSorted = arma::sort_index(v, "ascend");
+    for(std::size_t i = 0 ; i < a ; ++i){
         alpha.push_back(vSorted.at(i));
     }
     return alpha;
 }
+
 template <typename T>
-vector<size_t> SingularContextComputer<T>::beta(
-    vec const &v,
-    size_t const b
+std::vector<size_t> SurfaceInspector::maths::SingularContextComputer<T>::beta(
+    arma::vec const &v,
+    std::size_t const b
 ) const {
-    vector<size_t> beta(0);
-    uvec vSorted = arma::sort_index(v, "descend");
-    for(size_t i = 0 ; i < b ; ++i){
+    std::vector<size_t> beta(0);
+    arma::uvec vSorted = arma::sort_index(v, "descend");
+    for(std::size_t i = 0 ; i < b ; ++i){
         beta.push_back(vSorted.at(i));
     }
     return beta;
 }
 
 template <typename T>
-vector<T> SingularContextComputer<T>::extractComponents(
-    vec const &v, vector<size_t> indices
+std::vector<T> SurfaceInspector::maths::SingularContextComputer<T>::extractComponents(
+    arma::vec const &v, std::vector<size_t> indices
 ) const {
-    size_t m = indices.size();
-    vector<T> w(m);
-    for(size_t i = 0 ; i < m ; ++i) w[i] = v.at(indices[i]);
+    std::size_t m = indices.size();
+    std::vector<T> w(m);
+    for(std::size_t i = 0 ; i < m ; ++i) w[i] = v.at(indices[i]);
     return w;
 }
 
 // ***  NORMALIZATION  *** //
 // *********************** //
 template <typename T>
-void SingularContextComputer<T>::configureNorm(
-    vector<T> const &a,
-    vector<T> const &b
+void SurfaceInspector::maths::SingularContextComputer<T>::configureNorm(
+    std::vector<T> const &a,
+    std::vector<T> const &b
 ){
     aNorm = a;
     bNorm = b;
     deltaNorm = Vector<T>::subtract(b, a);
 }
 template <typename T>
-void SingularContextComputer<T>::configureNorm(vector<vector<T>> const &X){
-    size_t m = X.size();
-    vector<T> a(0);
-    vector<T> b(0);
-    for(size_t i = 0 ; i < m ; ++i){
-        Histogram<T> hist(X[i], 256, true, false);
+void SurfaceInspector::maths::SingularContextComputer<T>::configureNorm(std::vector<std::vector<T>> const &X){
+    std::size_t m = X.size();
+    std::vector<T> a(0);
+    std::vector<T> b(0);
+    for(std::size_t i = 0 ; i < m ; ++i){
+        SurfaceInspector::maths::Histogram<T> hist(X[i], 256, true, false);
         a.push_back(hist.findCutPoint(0.05));
         b.push_back(hist.findCutPoint(0.95));
     }
@@ -161,11 +149,11 @@ void SingularContextComputer<T>::configureNorm(vector<vector<T>> const &X){
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeDefault(Mat<T> &M) const{
-    size_t n = M.n_cols;
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeDefault(arma::Mat<T> &M) const{
+    std::size_t n = M.n_cols;
     T xmin, xmax, xdelta;
     arma::vec col;
-    for(size_t i = 0 ; i < n ; ++i){
+    for(std::size_t i = 0 ; i < n ; ++i){
         col = M.col(i);
         xmin = col.min();
         xmax = col.max();
@@ -175,16 +163,16 @@ void SingularContextComputer<T>::normalizeDefault(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeRGB(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeRGB(arma::Mat<T> &M) const{
     arma::vec col;
-    for(size_t i = 0 ; i < 3 ; ++i){
+    for(std::size_t i = 0 ; i < 3 ; ++i){
         col = M.col(i);
         M.col(i) = col / 255.0;
     }
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeHSO(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeHSO(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Horizontality
     // Nothing to do because it is already normalized in [0, 1]
@@ -199,7 +187,7 @@ void SingularContextComputer<T>::normalizeHSO(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeHLI(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeHLI(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Horizontality
     // Nothing to do because it is already normalized in [0, 1]
@@ -214,7 +202,7 @@ void SingularContextComputer<T>::normalizeHLI(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeLP(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeLP(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Linearity
     col = M.col(0);
@@ -227,7 +215,7 @@ void SingularContextComputer<T>::normalizeLP(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeGdCd(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeGdCd(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Ground distance
     col = M.col(0);
@@ -239,7 +227,7 @@ void SingularContextComputer<T>::normalizeGdCd(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeGdCdI(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeGdCdI(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Ground distance
     col = M.col(0);
@@ -255,7 +243,7 @@ void SingularContextComputer<T>::normalizeGdCdI(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeHV(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeHV(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize horizontality
     col = M.col(0);
@@ -267,7 +255,7 @@ void SingularContextComputer<T>::normalizeHV(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeSO(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeSO(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Sum
     col = M.col(0);
@@ -279,7 +267,7 @@ void SingularContextComputer<T>::normalizeSO(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeLC(Mat<T> &M) const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeLC(arma::Mat<T> &M) const{
     arma::colvec col;
     // Normalize Linearity
     col = M.col(0);
@@ -291,7 +279,7 @@ void SingularContextComputer<T>::normalizeLC(Mat<T> &M) const{
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeVC(Mat<T> &M) const {
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeVC(arma::Mat<T> &M) const {
     arma::colvec col;
     // Normalize Verticality
     col = M.col(0);
@@ -303,7 +291,7 @@ void SingularContextComputer<T>::normalizeVC(Mat<T> &M) const {
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizePC(Mat<T> &M) const {
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizePC(arma::Mat<T> &M) const {
     arma::colvec col;
     // Normalize Planarity
     col = M.col(0);
@@ -315,7 +303,7 @@ void SingularContextComputer<T>::normalizePC(Mat<T> &M) const {
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeVR(Mat<T> &M) const {
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeVR(arma::Mat<T> &M) const {
     arma::colvec col;
     // Normalize Verticality
     col = M.col(0);
@@ -327,7 +315,7 @@ void SingularContextComputer<T>::normalizeVR(Mat<T> &M) const {
 }
 
 template <typename T>
-void SingularContextComputer<T>::normalizeCone(Mat<T> &M)const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeCone(arma::Mat<T> &M)const{
     // Normalize X
     M.col(0) = arma::pow(M.col(0) - arma::mean(M.col(0)), 2);
 
@@ -337,8 +325,9 @@ void SingularContextComputer<T>::normalizeCone(Mat<T> &M)const{
     // Normalize Z
     M.col(2) = -arma::pow(M.col(2) - arma::mean(M.col(2)), 2);
 }
+
 template <typename T>
-void SingularContextComputer<T>::normalizeHyperbolicParaboloid(Mat<T> &M)const{
+void SurfaceInspector::maths::SingularContextComputer<T>::normalizeHyperbolicParaboloid(arma::Mat<T> &M)const{
     // Normalize X
     M.col(0) = arma::pow(M.col(0) - arma::mean(M.col(0)), 2);
 
@@ -352,13 +341,13 @@ void SingularContextComputer<T>::normalizeHyperbolicParaboloid(Mat<T> &M)const{
 // ***  CENTERING  *** //
 // ******************* //
 template <typename T>
-void SingularContextComputer<T>::centerDefault(Mat<T> &M) const {
+void SurfaceInspector::maths::SingularContextComputer<T>::centerDefault(arma::Mat<T> &M) const {
     // Computer centroid
-    size_t n = M.n_cols;
+    std::size_t n = M.n_cols;
     T m = (T) M.n_rows;
     T mu;
     arma::vec col;
-    for(size_t i = 0 ; i < n ; ++i){
+    for(std::size_t i = 0 ; i < n ; ++i){
         col = M.col(i);
         mu = arma::sum(col) / m;
         M.col(i) = col - mu;

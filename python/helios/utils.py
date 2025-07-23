@@ -2,14 +2,21 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Union
+from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
+from numpydantic import NDArray, Shape
+
 
 import importlib_resources as resources
 import numpy as np
 import os
 
-import _helios
+if TYPE_CHECKING:
+    # only for static type checkers, never at runtime
+    from helios.survey import Survey
+    from helios.scene import StaticScene
+    from helios.settings import ExecutionSettings
 
+import _helios
 
 # The list of user provided directories that will be searched for assets.
 _custom_asset_directories = []
@@ -223,11 +230,59 @@ def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters
     return result
 
 
+@validate_call
+def detect_separator(file_path: Path) -> str:
+    """Detect the separator used in an XYZ file."""
+    possible_separators = [" ", ",", "\t", ";"]
+    if not file_path.exists() or not file_path.is_file():
+        raise ValueError(f"File not found: {file_path}")
+
+    separator_counts = {sep: 0 for sep in possible_separators}
+    with file_path.open("r", encoding="utf-8") as f:
+        for line in f:
+            stripped_line = line.strip()
+
+            if (
+                stripped_line
+                and not stripped_line.startswith("//")
+                and not stripped_line.startswith("#")
+            ):
+                return next(
+                    (sep for sep in possible_separators if sep in stripped_line), " "
+                )
+
+    raise ValueError(f"Could not detect separator in file: {file_path}")
+
+
+def is_xml_loaded(obj) -> bool:
+    """Return True if the object was constructed via from_xml or _from_cpp."""
+    return getattr(obj, "_is_loaded_from_xml", False)
+
+
+def apply_scene_shift(
+    survey: "Survey", execution_settings: "ExecutionSettings"
+) -> None:
+    """
+    If this survey was not loaded from XML, apply `make_scene_shift` once.
+    Subsequent calls are no-ops.
+    """
+
+    if getattr(survey, "_scene_shift_done", False):
+        return
+
+    if not is_xml_loaded(survey.scene):
+        survey.scene._finalize(execution_settings)
+
+    _helios.make_scene_shift(
+        survey._cpp_object,
+    )
+    setattr(survey, "_scene_shift_done", True)
+
+
 meas_dtype = np.dtype(
     [
-        ("dev_id", "U50"),
-        ("dev_idx", "u8"),
-        ("hit_object_id", "U50"),
+        ("channel_id", "u8"),
+        ("hit_object_id", "i4"),
         ("position", "3f8"),
         ("beam_direction", "3f8"),
         ("beam_origin", "3f8"),
@@ -235,7 +290,7 @@ meas_dtype = np.dtype(
         ("intensity", "f8"),
         ("echo_width", "f8"),
         ("return_number", "i4"),
-        ("pulse_return_number", "i4"),
+        ("number_of_returns", "i4"),
         ("fullwave_index", "i4"),
         ("classification", "i4"),
         ("gps_time", "f8"),

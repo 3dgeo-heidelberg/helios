@@ -9,8 +9,8 @@
  *  tutorial:
  * https://www.boost.org/doc/libs/1_76_0/libs/serialization/doc/index.html
  */
-#include <serial_glm.h>
-#include <serial_arma.h>
-#include <serial_primitives.h>
-#include <serial_dynamic.h>
 #include <serial_adt.h>
+#include <serial_arma.h>
+#include <serial_dynamic.h>
+#include <serial_glm.h>
+#include <serial_primitives.h>

@@ -228,7 +228,7 @@
 	</scanner>
 	<!-- ##### END RIEGL VUX-1HA22 ##### -->
 	
-	<!-- ##### BEGIN RIEGL LMS VQ-880-G II ##### -->
+	<!-- ##### BEGIN RIEGL LMS VQ-880-G II (Green Channel)##### -->
 	<!-- Note regarding pulseLength_ns (2020-04 KA/LW):
 		the value is not taken from a datasheet or literature, as it is not known/reported,
 		but should be a suitable value regarding the vertical dead zone;
@@ -238,30 +238,58 @@
 
 	<scanner 	id 						= "riegl_vq-880g"
 			accuracy_m					= "0.025"
-			beamDivergence_rad 			= "0.0003"
-			name              			= "RIEGL VQ-880-G"
+			beamDivergence_rad 			= "0.0007"
+			name              			= "RIEGL VQ-880-G II (Green Channel)"
 			optics            			= "conic"
+			pulseFreqs_Hz				= "200000,400000,550000,700000"
+			pulseLength_ns     			= "2"
+			rangeMin_m					= "10"
+			maxNOR						= "9"
+			scanAngleMax_deg   			= "20"
+			scanAngleEffectiveMax_deg	= "20"
+			scanFreqMin_Hz				= "30"
+			scanFreqMax_Hz				= "80"
+			wavelength_nm				= "532"
+	>
+		<beamOrigin x="0" y="0.0" z="-0.286">
+			<rot axis="x" angle_deg="0" />
+			<rot axis="z" angle_deg="0" />
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
+
+	<!-- ##### BEGIN RIEGL LMS VQ-880-G II (Infrared Channel) ##### -->
+	<!-- Note regarding pulseLength_ns (2020-04 KA/LW):
+		the value is not taken from a datasheet or literature, as it is not known/reported,
+		but should be a suitable value regarding the vertical dead zone;
+		Note (2025-05 HW):
+		Scan pattern specified as "curved parallel lines", this is currently not supported by HELIOS
+	-->
+
+	<scanner 	id 						= "riegl_vq-880g-infrared"
+			accuracy_m					= "0.025"
+			beamDivergence_rad 			= "0.0007"
+			name              			= "RIEGL VQ-880-GII (Infrared Channel)"
+			optics            			= "rotating"
 			pulseFreqs_Hz				= "150000,300000,600000,900000"
 			pulseLength_ns     			= "2"
 			rangeMin_m					= "10"
-			scanAngleMax_deg   			= "20"
+			scanAngleMax_deg   			= "64"
 			scanAngleEffectiveMax_deg	= "20"
 			scanFreqMin_Hz				= "28"
 			scanFreqMax_Hz				= "200"
 			wavelength_nm				= "1064"
 	>
-				
-		<beamOrigin x="0" y="0.085" z="0.06">			
+		<beamOrigin x="0" y="0.1355" z="-0.286">
 			<rot axis="x" angle_deg="0" />
 			<rot axis="z" angle_deg="0" />
 		</beamOrigin>
 		<headRotateAxis x="0" y="0" z="1"/>
-
 	</scanner>
 	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
 
-	
-	
+
 	<!-- ##### BEGIN RIEGL VQ-1560i - Combined ##### -->
 
 	<scanner 	id 						= "riegl_vq-1560i"
@@ -271,22 +299,21 @@
 			optics            			= "rotating"
 			pulseFreqs_Hz				= "150000,250000,350000,500000,700000,1000000,2000000"
 			pulseLength_ns     			= "4"
-			rangeMin_m					= "0.0100"
+			rangeMin_m					= "100"
 			scanAngleMax_deg   			= "45"
 			scanAngleEffectiveMax_deg	= "30"
 			scanFreqMin_Hz				= "40"
 			scanFreqMax_Hz				= "600"
-			wavelength_nm				= "532"
 	>
 				
 		<FWFSettings beamSampleQuality="3"/>	
 		<channels>
-			<channel id="0">
+			<channel id="0" wavelength_nm = "532">
 				<beamOrigin x="0" y="0.0" z="0.0">				
 					<rot axis="y" angle_deg="14" />					
 				</beamOrigin>
 			</channel>
-			<channel id="1">
+			<channel id="1" wavelength_nm = "1064">
 				<beamOrigin x="0" y="0.0" z="0.0">					
 					<rot axis="y" angle_deg="-14" />					
 				</beamOrigin>

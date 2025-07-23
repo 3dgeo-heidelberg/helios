@@ -3,14 +3,11 @@
 #include <filems/write/comps/LasMultiVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/MultiLasSyncFileWriter.h>
 
-#include <vector>
 #include <memory>
+#include <vector>
 
-namespace helios { namespace filems{
-
-using std::vector;
-using std::shared_ptr;
-using std::make_shared;
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -24,72 +21,68 @@ using std::make_shared;
  * @see Measurement
  * @see LasSyncFileMeasurementWriter
  */
-class Las14MultiVectorialSyncFileMeasurementWriter :
-    public LasMultiVectorialSyncFileMeasurementWriter
+class Las14MultiVectorialSyncFileMeasurementWriter
+  : public LasMultiVectorialSyncFileMeasurementWriter
 {
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The measurement write strategies that are wrapped by the main
-     *  write strategies in a vectorial fashion
-     */
-    vector<LasMeasurementWriteStrategy> lmws;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The measurement write strategies that are wrapped by the main
+   *  write strategies in a vectorial fashion
+   */
+  std::vector<LasMeasurementWriteStrategy> lmws;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief LAS-1.4 multi-vecctorial synchronous file measurement vector
-     *  writer
-     * @see filems::MultiLasSyncFileWriter::MultiLasSyncFileWriter
-     */
-    explicit Las14MultiVectorialSyncFileMeasurementWriter(
-        vector<std::string> const &path,
-        bool const compress,
-        vector<double> const &scaleFactor,
-        vector<glm::dvec3> const &offset,
-        vector<double> const &minIntensity,
-        vector<double> const &deltaIntensity,
-        bool const createWriter = true
-    ) :
-        LasMultiVectorialSyncFileMeasurementWriter(
-            path,
-            compress,
-            scaleFactor,
-            offset,
-            minIntensity,
-            deltaIntensity,
-            false
-        )
-    {
-        // If construct must create the writers
-        if(createWriter){
-            // Create each LASWriter
-            createLasWriters(path, compress);
-        }
-        // Build measurement write strategies
-        buildMeasurementWriteStrategies();
-        // Build vectorial write strategies
-        // WARNING : It must be done after building the measurement write
-        // strategies to be wrapped by the vectorial strategy. If the vector
-        // of measurement strategies is modified, then the references in the
-        // vectorial strategy objects will be inconsistent.
-        buildVectorialWriteStrategies();
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief LAS-1.4 multi-vecctorial synchronous file measurement vector
+   *  writer
+   * @see filems::MultiLasSyncFileWriter::MultiLasSyncFileWriter
+   */
+  explicit Las14MultiVectorialSyncFileMeasurementWriter(
+    std::vector<std::string> const& path,
+    bool const compress,
+    std::vector<double> const& scaleFactor,
+    std::vector<glm::dvec3> const& offset,
+    std::vector<double> const& minIntensity,
+    std::vector<double> const& deltaIntensity,
+    bool const createWriter = true)
+    : LasMultiVectorialSyncFileMeasurementWriter(path,
+                                                 compress,
+                                                 scaleFactor,
+                                                 offset,
+                                                 minIntensity,
+                                                 deltaIntensity,
+                                                 false)
+  {
+    // If construct must create the writers
+    if (createWriter) {
+      // Create each LASWriter
+      createLasWriters(path, compress);
     }
-    virtual ~Las14MultiVectorialSyncFileMeasurementWriter() = default;
+    // Build measurement write strategies
+    buildMeasurementWriteStrategies();
+    // Build vectorial write strategies
+    // WARNING : It must be done after building the measurement write
+    // strategies to be wrapped by the vectorial strategy. If the vector
+    // of measurement strategies is modified, then the references in the
+    // vectorial strategy objects will be inconsistent.
+    buildVectorialWriteStrategies();
+  }
+  virtual ~Las14MultiVectorialSyncFileMeasurementWriter() = default;
 
-
-    // ***  CREATE WRITER  *** //
-    // *********************** //
-    /**
-     * @brief Assist the MultiLasSyncFileWriter::createLasWriters method by
-     *  crafting the given specification using the 1.4 version
-     * @param lws The LAS write specification to be crafted according to 1.4
-     *  version
-     */
-    void craftSpec(LasWriterSpec &lws) override {lws.craft14();};
+  // ***  CREATE WRITER  *** //
+  // *********************** //
+  /**
+   * @brief Assist the MultiLasSyncFileWriter::createLasWriters method by
+   *  crafting the given specification using the 1.4 version
+   * @param lws The LAS write specification to be crafted according to 1.4
+   *  version
+   */
+  void craftSpec(LasWriterSpec& lws) override { lws.craft14(); };
 };
 
-
-}}
+}
+}
