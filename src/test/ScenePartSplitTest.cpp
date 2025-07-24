@@ -1,46 +1,14 @@
-#pragma once
+#include <catch2/catch_test_macros.hpp>
 
-#include "BaseTest.h"
 #include <ScenePart.h>
 #include <Triangle.h>
 
 #include <vector>
 
-using std::vector;
-
-namespace HeliosTests {
-
-/**
- * @author Alberto M. Esmoris Pena
- * @version 1.0
- * @brief Scene part split test
- */
-class ScenePartSplitTest : public BaseTest
-{
-public:
-  // ***  CONSTRUCTOR  *** //
-  // ********************* //
-  /**
-   * @brief Scene part split test constructor
-   */
-  ScenePartSplitTest()
-    : BaseTest("Scene part split test")
-  {
-  }
-
-  // ***  R U N  *** //
-  // *************** //
-  /**
-   * @see BaseTest::run
-   */
-  bool run() override;
-};
-
-bool
-ScenePartSplitTest::run()
+TEST_CASE("ScenePart: Split subparts")
 {
   // Build primitives
-  vector<Primitive*> prims;
+  std::vector<Primitive*> prims;
   for (size_t i = 0; i < 32; ++i) {
     Vertex v0, v1, v2;
     v0.pos = glm::dvec3(-1.0, -1.0, 0.0);
@@ -67,17 +35,15 @@ ScenePartSplitTest::run()
   // Validate scene part splits
   for (int i = 0; i < 32; ++i) {
     int partIdx = std::atoi(prims[i]->part->mId.c_str());
-    if (partIdx != (i / 4)) { // On test failed
+
+    if (partIdx != i / 4) { // On test failed
       for (Primitive* prim : prims)
         delete prim;
-      return false;
+      FAIL();
     }
   }
 
   // Delete primitives
   for (Primitive* prim : prims)
     delete prim;
-
-  return true;
-};
 }

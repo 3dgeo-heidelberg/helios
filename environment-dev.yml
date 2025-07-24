@@ -40,3 +40,4 @@ dependencies:
   - pooch
   - ninja
   - pytest-cov
+  - catch2

@@ -1,45 +1,13 @@
-#pragma once
+#include <catch2/catch_test_macros.hpp>
 
-#include "BaseTest.h"
 #include <PlaneFitter.h>
 
-using namespace arma;
-
-namespace HeliosTests {
-
-/**
- * @author Alberto M. Esmoris Pena
- * @version 1.0
- * @brief Test plane fitter operations
- */
-class PlaneFitterTest : public BaseTest
-{
-public:
-  // ***  CONSTRUCTOR  *** //
-  // ********************* //
-  /**
-   * @brief Plane fitter test constructor
-   */
-  PlaneFitterTest()
-    : BaseTest("Plane fitter test")
-  {
-  }
-
-  // ***  R U N  *** //
-  // *************** //
-  /**
-   * @see BaseTest::run
-   */
-  bool run() override;
-};
-
-bool
-PlaneFitterTest::run()
+TEST_CASE("PlaneFitter: Best fitting plane orthogonal normal")
 {
   double eps = 0.00001; // Decimal precision to validate results
 
   // Create point cloud as Matrix
-  Mat<double> M(3, 64);
+  arma::Mat<double> M(3, 64);
   M[0] = -1.0;
   M[1] = -0.5;
   M[2] = -0.2590347239999257;
@@ -242,12 +210,12 @@ PlaneFitterTest::run()
     PlaneFitter::bestFittingPlaneOrthoNormal(M);
   for (size_t i = 0; i < bfpOrthoNormal.size(); i++) {
     double diff = expectedBfpOrthoNormal[i] - bfpOrthoNormal[i];
-    if (diff < -eps || diff > eps)
-      return false;
+    REQUIRE(diff >= -eps);
+    REQUIRE(diff <= eps);
   }
 
   // Create point cloud 2 as Matrix 2
-  Mat<double> M2(3, 16);
+  arma::Mat<double> M2(3, 16);
   M2[0] = 5.7;
   M2[1] = 5.7;
   M2[2] = 2.3;
@@ -302,13 +270,9 @@ PlaneFitterTest::run()
   // Test best fitting plane orthogonal normal computation
   std::vector<double> bfpOrthoNormal2 =
     PlaneFitter::bestFittingPlaneOrthoNormal(M2);
-  for (size_t i = 0; i < bfpOrthoNormal.size(); i++) {
+  for (size_t i = 0; i < bfpOrthoNormal2.size(); i++) {
     double diff = expectedBfpOrthoNormal2[i] - bfpOrthoNormal2[i];
-    if (diff < -eps || diff > eps)
-      return false;
+    REQUIRE(diff >= -eps);
+    REQUIRE(diff <= eps);
   }
-
-  return true;
 }
-
-};
