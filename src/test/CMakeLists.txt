@@ -7,7 +7,6 @@ target_include_directories(
 target_sources(
   helios_test
   PUBLIC
-  "CatchPreconditions.cpp"
   "CatchAssetLoadingTest.cpp"
   "CatchDiscreteTimeTest.cpp"
   "CatchEnergyModelsTest.cpp"
