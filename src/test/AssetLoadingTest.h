@@ -412,9 +412,6 @@ AssetLoadingTest::testScannerLoading()
     return false;
   if (scanner->getDetector()->cfg_device_rangeMin_m != 2)
     return false;
-  if (std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
-    return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
                   ->prisms[0]
@@ -474,9 +471,6 @@ AssetLoadingTest::testScannerLoading()
   if (scanner->getPulseLength_ns() != 4)
     return false;
   if (scanner->getDetector()->cfg_device_rangeMin_m != 2)
-    return false;
-  if (std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
@@ -564,15 +558,6 @@ AssetLoadingTest::testScannerLoading()
   if (scanner->getDetector(1)->cfg_device_rangeMin_m != 2)
     return false;
   if (scanner->getDetector(2)->cfg_device_rangeMin_m != 2)
-    return false;
-  if (std::fabs(scanner->getBeamDeflector(0)->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
-    return false;
-  if (std::fabs(scanner->getBeamDeflector(1)->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
-    return false;
-  if (std::fabs(scanner->getBeamDeflector(2)->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))

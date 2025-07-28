@@ -170,11 +170,6 @@ public:
   double time = 0;
 
   /**
-   * @brief Scan Angle (defined as the half angle)
-   */
-  double scanAngle = 0;
-
-  /**
    * @brief Refractive index of air
    */
   double refrIndex_air = 0;
@@ -201,17 +196,16 @@ public:
    * @see AbstractBeamDeflector::AbstractBeamDeflector(
    *  double, double, double)
    */
-  RisleyBeamDeflector(double scanAngleMax_rad,
-                      const std::vector<Prism>& prisms,
+  RisleyBeamDeflector(const std::vector<Prism>& prisms,
                       double refrIndex_air,
                       glm::dvec3 incidentBeam = Directions::forward)
-    : AbstractBeamDeflector(scanAngleMax_rad, 0, 0)
+    : AbstractBeamDeflector(0, 0, 0)
     , prisms(prisms)
     , refrIndex_air(refrIndex_air)
     , incidentBeam(incidentBeam)
   {
-    this->scanAngle = scanAngleMax_rad;
   }
+
   std::shared_ptr<AbstractBeamDeflector> clone() override;
   void _clone(std::shared_ptr<AbstractBeamDeflector> abd) override;
 
@@ -229,15 +223,4 @@ public:
    * @see AbstractBeamDeflector::getOpticsType
    */
   std::string getOpticsType() const override { return "RISLEY"; }
-
-  // ***  GETTERS and SETTERS  *** //
-  // ***************************** //
-  /**
-   * @see AbstractBeamDeflector::setScanAngle_rad
-   */
-  void setScanAngle_rad(double scanAngle_rad) override;
-  /**
-   * @see AbstractBeamDeflector::setScanFreq_Hz
-   */
-  void setScanFreq_Hz(double scanFreq_Hz) override;
 };

@@ -1014,8 +1014,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
                               rotorFreq_3_Hz * 2.0 * M_PI });
     }
 
-    beamDeflector =
-      std::make_shared<RisleyBeamDeflector>(scanAngleMax_rad, prisms, refr_air);
+    beamDeflector = std::make_shared<RisleyBeamDeflector>(prisms, refr_air);
   }
 
   if (beamDeflector == nullptr) {
