@@ -2,623 +2,652 @@
 
 <document>
 
-	<!-- ############### BEGIN Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
+  <!-- ############### BEGIN Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
 
-	<!-- ##### BEGIN RIEGL VZ-400 ##### -->	
-	<scanner 	id 							= "riegl_vz400"
-				name              			= "RIEGL VZ-400"
-				accuracy_m					= "0.005"
-			 	beamDivergence_rad 			= "0.0003"
-				headRotatePerSecMax_deg		= "60"
-				
-				optics            			= "rotating"
-				pulseFreqs_Hz				= "100000,300000"
-				pulseLength_ns     			= "5"
-				rangeMin_m					= "1.5"
-				scanAngleMax_deg   			= "120"
-				scanAngleEffectiveMax_deg   = "50"
-				scanFreqMin_Hz				= "3"
-				scanFreqMax_Hz				= "120">
-		
-		<FWFSettings beamSampleQuality="3"/>	
-		<beamOrigin x="0" y="0" z="0.2">
-			<rot axis="y" angle_deg="0" />
-			<rot axis="z" angle_deg="0" />
-			<rot axis="x" angle_deg="0" />
-		</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1"/>
-		
-	</scanner>
-	<!-- ##### END RIEGL VZ-400 ##### -->
+  <!-- ##### BEGIN RIEGL VZ-400 ##### -->
+  <scanner  id                         = "riegl_vz400"
+            name                       = "RIEGL VZ-400"
+            accuracy_m                 = "0.005"
+            beamDivergence_rad         = "0.0003"
+            headRotatePerSecMax_deg    = "60"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "100000,300000"
+            pulseLength_ns             = "5"
+            rangeMin_m                 = "1.5"
+            scanAngleMax_deg           = "120"
+            scanAngleEffectiveMax_deg  = "50"
+            scanFreqMin_Hz             = "3"
+            scanFreqMax_Hz             = "120">
+
+    <FWFSettings beamSampleQuality="3"/>
+    <beamOrigin x="0" y="0" z="0.2">
+      <rot axis="y" angle_deg="0" />
+      <rot axis="z" angle_deg="0" />
+      <rot axis="x" angle_deg="0" />
+    </beamOrigin>
+    <headRotateAxis x="0" y="0" z="1"/>
+
+  </scanner>
+  <!-- ##### END RIEGL VZ-400 ##### -->
 
 
-	<!-- ##### BEGIN RIEGL VZ-1000 ##### -->
-	<scanner 	id 							= "riegl_vz1000"
-				accuracy_m					= "0.008"
-			 	beamDivergence_rad 			= "0.0003"
-			 	headRotatePerSecMax_deg		= "60"
-				name              			= "RIEGL VZ-1000"
-				optics            			= "rotating"
-				pulseFreqs_Hz				= "70000,100000,150000,300000"
-				pulseLength_ns     			= "4"
-				rangeMin_m					= "2.5"
-				scanAngleMax_deg   			= "120"
-				scanAngleEffectiveMax_deg   = "50"
-				scanFreqMin_Hz				= "3"
-				scanFreqMax_Hz				= "120"
-	>
-		<FWFSettings beamSampleQuality="3"/>
-	</scanner>
-	<!-- ##### END RIEGL VZ-1000 ##### -->
+  <!-- ##### BEGIN RIEGL VZ-1000 ##### -->
+  <scanner  id                         = "riegl_vz1000"
+            accuracy_m                 = "0.008"
+            beamDivergence_rad         = "0.0003"
+            headRotatePerSecMax_deg    = "60"
+            name                       = "RIEGL VZ-1000"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "70000,100000,150000,300000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "2.5"
+            scanAngleMax_deg           = "120"
+            scanAngleEffectiveMax_deg  = "50"
+            scanFreqMin_Hz             = "3"
+            scanFreqMax_Hz             = "120">
+
+    <FWFSettings beamSampleQuality="3"/>
+  </scanner>
+  <!-- ##### END RIEGL VZ-1000 ##### -->
 
 
     <!--######## BEGIN RIEGL VQ-450 ####### -->
-	<scanner 
-        	id="riegl_vq-450" 
-       		accuracy_m="0.008"
-			beamDivergence_rad="0.0003" 
-        	name="RIEGL VQ-450" optics="rotating"
-			pulseFreqs_Hz="150000,200000,300000,380000,550000,550000"
-			pulseLength_ns="4" 
-        	rangeMin_m="1.5" 
-        	scanAngleMax_deg="360"
-			scanAngleEffectiveMax_deg="360" 
-        	scanFreqMin_Hz="10" 
-        	scanFreqMax_Hz="200">
+  <scanner  id                         = "riegl_vq-450"
+            accuracy_m                 = "0.008"
+            beamDivergence_rad         = "0.0003"
+            name                       = "RIEGL VQ-450"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "150000,200000,300000,380000,550000,550000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "1.5"
+            scanAngleMax_deg           = "360"
+            scanAngleEffectiveMax_deg  = "360"
+            scanFreqMin_Hz             = "10"
+            scanFreqMax_Hz             = "200">
 
-		<FWFSettings beamSampleQuality="3"/>
-		<beamOrigin x="0" y="0.14" z="0.126">
-			<rot axis="x" angle_deg="90" />
-			<rot axis="z" angle_deg="90" />
-		</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1" />
-	</scanner>
-    
-
-	
-	<!--######## END RIEGL VQ-450 ####### -->
+    <FWFSettings beamSampleQuality="3"/>
+    <beamOrigin x="0" y="0.14" z="0.126">
+      <rot axis="x" angle_deg="90" />
+      <rot axis="z" angle_deg="90" />
+    </beamOrigin>
+    <headRotateAxis x="0" y="0" z="1" />
+  </scanner>
 
 
-	<!--######## BEGIN LIVOX Mid 70 ####### -->
-	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
-	<scanner 	id 												= "livox_mid-70"
-						accuracy_m								= "0.02"
-						beamDivergence_rad 				= "0.0027"
-						name              				= "Livox Mid-70"
-						optics            				= "risley"
-						pulseFreqs_Hz							= "100000"
-						pulseLength_ns     				= "4"
-						rangeMin_m								= "2"
-						scanAngleMax_deg   				= "35"
-						scanAngleEffectiveMax_deg	= "35"
-						wavelength_nm							= "905"
-						rotorFreq1_Hz							= "-77.733333333"
-						rotorFreq2_Hz							= "121.566666666"
-						angle1_deg								= "-18.0"
-						angle2_deg								= "18.0"
-						refrIndex1								= "1.5095"
-						refrIndex2								= "1.5095"
-						refrIndex_air							= "1.0"
-	>
-				
-		<FWFSettings beamSampleQuality="3"/>
-		<beamOrigin x="0" y="0" z="0">
 
-			<rot axis="z" angle_deg="-90" />
-		</beamOrigin>
-
-		<headRotateAxis x="1" y="0" z="0" />
-	</scanner>
-
-	<!--######## END LIVOX Mid-70 ####### -->
+  <!--######## END RIEGL VQ-450 ####### -->
 
 
-	<!-- ##### BEGIN Velodyne VLP-16 ("Puck") ##### -->
-	<!-- for the angles and corrections, see https://www.amtechs.co.jp/product/VLP-16-Puck.pdf) -->
+  <!--######## BEGIN LIVOX Mid 40 ####### -->
+  <!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
+  <scanner  id                         = "livox_mid-40"
+            accuracy_m                 = "0.02"
+            beamDivergence_rad         = "0.0027"
+            name                       = "Livox Mid-40"
+            optics                     = "risley"
+            pulseFreqs_Hz              = "100000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "2"
+            scanAngleMax_deg           = "19.2"
+            scanAngleEffectiveMax_deg  = "19.2"
+            wavelength_nm              = "905"
+            rotorFreq1_Hz              = "-77.733333333"
+            rotorFreq2_Hz              = "121.566666666"
+            angle1_deg                 = "-30.0"
+            angle2_deg                 = "30.0"
+            refrIndex1                 = "1.5095"
+            refrIndex2                 = "1.5095"
+            refrIndex_air              = "1.0">
 
-	<scanner 	id 						= "vlp16"
-			accuracy_m					= "0.03"
-			beamDivergence_rad 			= "0.0007"
-			name              			= "Velodyne VLP-16"
-			optics            			= "rotating"
-			pulseFreqs_Hz				= "18750"
-			pulseLength_ns     			= "5"
-			rangeMin_m					= "0.09144"
-			rangeMax_m					= "100"
-			scanAngleMax_deg   			= "1"
-			scanAngleEffectiveMax_deg	= "1"
-			scanFreqMin_Hz				= "0"
-			scanFreqMax_Hz				= "0"
-			wavelength_nm				= "905"
-            maxNOR                      = "2"
-			headRotatePerSecMax_deg		= "7200"
-	>
-				
-		<FWFSettings beamSampleQuality="3"/>	<!-- set to one for fast simulations -->
-		<channels>
-			<channel id="0">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-15" />					
-				</beamOrigin>
-			</channel>
-			<channel id="1">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="1" />					
-				</beamOrigin>
-			</channel>
-			<channel id="2">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-13" />					
-				</beamOrigin>
-			</channel>
-			<channel id="3">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="3" />					
-				</beamOrigin>
-			</channel>
-			<channel id="4">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-11" />					
-				</beamOrigin>
-			</channel>
-			<channel id="5">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="5" />					
-				</beamOrigin>
-			</channel>
-			<channel id="6">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-9" />					
-				</beamOrigin>
-			</channel>
-			<channel id="7">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="7" />					
-				</beamOrigin>
-			</channel>
-			<channel id="8">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-7" />					
-				</beamOrigin>
-			</channel>
-			<channel id="9">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="9" />					
-				</beamOrigin>
-			</channel>
-			<channel id="10">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-5" />					
-				</beamOrigin>
-			</channel>
-			<channel id="11">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="11" />					
-				</beamOrigin>
-			</channel>
-			<channel id="12">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-3" />					
-				</beamOrigin>
-			</channel>
-			<channel id="13">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="13" />					
-				</beamOrigin>
-			</channel>
-			<channel id="14">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-1" />					
-				</beamOrigin>
-			</channel>
-			<channel id="15">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="15" />					
-				</beamOrigin>
-			</channel>
-		</channels>
+    <FWFSettings beamSampleQuality="3"/>
+    <beamOrigin x="0" y="0" z="0">
 
-	</scanner>
-	<!-- ##### END Velodyne VLP-16 ("Puck") ##### -->
+      <rot axis="z" angle_deg="-90" />
+    </beamOrigin>
 
-	<!-- ##### BEGIN Velodyne HDL-64E ##### -->
+    <headRotateAxis x="1" y="0" z="0" />
+  </scanner>
 
-	<scanner 	id 						= "velodyne_hdl-64e"
-			accuracy_m					= "0.02"
-			beamDivergence_rad 			= "0.0007"
-			name              			= "Velodyne HDL-64E"
-			optics            			= "rotating"
-			pulseFreqs_Hz				= "20312"
-			pulseLength_ns     			= "5"
-			rangeMin_m					= "0.9144"
-			rangeMax_m					= "120"
-			scanAngleMax_deg   			= "1"
-			scanAngleEffectiveMax_deg	= "1"
-			scanFreqMin_Hz				= "0"
-			scanFreqMax_Hz				= "0"
-			wavelength_nm				= "905"
-            maxNOR                      = "1"
-			headRotatePerSecMax_deg		= "5250"
-	>
+  <!--######## END LIVOX Mid-40 ####### -->
 
-		<FWFSettings beamSampleQuality="1"/>	<!-- set to one for fast simulations -->
-		<channels>
-			<channel id="0">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-24.8" />
-				</beamOrigin>
-			</channel>
+
+  <!--######## BEGIN LIVOX Mid 70 ####### -->
+  <!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
+  <scanner  id                         = "livox_mid-70"
+            accuracy_m                 = "0.02"
+            beamDivergence_rad         = "0.0027"
+            name                       = "Livox Mid-70"
+            optics                     = "risley"
+            pulseFreqs_Hz              = "100000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "2"
+            scanAngleMax_deg           = "35"
+            scanAngleEffectiveMax_deg  = "35"
+            wavelength_nm              = "905"
+            rotorFreq1_Hz              = "-77.733333333"
+            rotorFreq2_Hz              = "121.566666666"
+            angle1_deg                 = "-18.0"
+            angle2_deg                 = "18.0"
+            refrIndex1                 = "1.5095"
+            refrIndex2                 = "1.5095"
+            refrIndex_air              = "1.0">
+
+    <FWFSettings beamSampleQuality="3"/>
+    <beamOrigin x="0" y="0" z="0">
+
+      <rot axis="z" angle_deg="-90" />
+    </beamOrigin>
+
+    <headRotateAxis x="1" y="0" z="0" />
+  </scanner>
+
+  <!--######## END LIVOX Mid-70 ####### -->
+
+
+  <!-- ##### BEGIN Velodyne VLP-16 ("Puck") ##### -->
+  <!-- for the angles and corrections, see https://www.amtechs.co.jp/product/VLP-16-Puck.pdf) -->
+
+  <scanner  id                         = "vlp16"
+            accuracy_m                 = "0.03"
+            beamDivergence_rad         = "0.0007"
+            name                       = "Velodyne VLP-16"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "18750"
+            pulseLength_ns             = "5"
+            rangeMin_m                 = "0.09144"
+            rangeMax_m                 = "100"
+            scanAngleMax_deg           = "1"
+            scanAngleEffectiveMax_deg  = "1"
+            scanFreqMin_Hz             = "0"
+            scanFreqMax_Hz             = "0"
+            wavelength_nm              = "905"
+            maxNOR                     = "2"
+      headRotatePerSecMax_deg          = "7200">
+
+    <FWFSettings beamSampleQuality="3"/>  <!-- set to one for fast simulations -->
+    <channels>
+      <channel id="0">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-15" />
+        </beamOrigin>
+      </channel>
+      <channel id="1">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="1" />
+        </beamOrigin>
+      </channel>
+      <channel id="2">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-13" />
+        </beamOrigin>
+      </channel>
+      <channel id="3">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="3" />
+        </beamOrigin>
+      </channel>
+      <channel id="4">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-11" />
+        </beamOrigin>
+      </channel>
+      <channel id="5">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="5" />
+        </beamOrigin>
+      </channel>
+      <channel id="6">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-9" />
+        </beamOrigin>
+      </channel>
+      <channel id="7">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="7" />
+        </beamOrigin>
+      </channel>
+      <channel id="8">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-7" />
+        </beamOrigin>
+      </channel>
+      <channel id="9">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="9" />
+        </beamOrigin>
+      </channel>
+      <channel id="10">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-5" />
+        </beamOrigin>
+      </channel>
+      <channel id="11">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="11" />
+        </beamOrigin>
+      </channel>
+      <channel id="12">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-3" />
+        </beamOrigin>
+      </channel>
+      <channel id="13">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="13" />
+        </beamOrigin>
+      </channel>
+      <channel id="14">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-1" />
+        </beamOrigin>
+      </channel>
+      <channel id="15">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="15" />
+        </beamOrigin>
+      </channel>
+    </channels>
+
+  </scanner>
+  <!-- ##### END Velodyne VLP-16 ("Puck") ##### -->
+
+  <!-- ##### BEGIN Velodyne HDL-64E ##### -->
+
+  <scanner  id                         = "velodyne_hdl-64e"
+            accuracy_m                 = "0.02"
+            beamDivergence_rad         = "0.0007"
+            name                       = "Velodyne HDL-64E"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "20312"
+            pulseLength_ns             = "5"
+            rangeMin_m                 = "0.9144"
+            rangeMax_m                 = "120"
+            scanAngleMax_deg           = "1"
+            scanAngleEffectiveMax_deg  = "1"
+            scanFreqMin_Hz             = "0"
+            scanFreqMax_Hz             = "0"
+            wavelength_nm              = "905"
+            maxNOR                     = "1"
+            headRotatePerSecMax_deg    = "5250">
+
+    <FWFSettings beamSampleQuality="1"/>  <!-- set to one for fast simulations -->
+    <channels>
+      <channel id="0">
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-24.8" />
+        </beamOrigin>
+      </channel>
             <channel id="1">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-24.375" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-24.375" />
+        </beamOrigin>
+      </channel>
             <channel id="2">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-23.949" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-23.949" />
+        </beamOrigin>
+      </channel>
             <channel id="3">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-23.524" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-23.524" />
+        </beamOrigin>
+      </channel>
             <channel id="4">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-23.098" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-23.098" />
+        </beamOrigin>
+      </channel>
             <channel id="5">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-22.673" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-22.673" />
+        </beamOrigin>
+      </channel>
             <channel id="6">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-22.248" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-22.248" />
+        </beamOrigin>
+      </channel>
             <channel id="7">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-21.822" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-21.822" />
+        </beamOrigin>
+      </channel>
             <channel id="8">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-21.397" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-21.397" />
+        </beamOrigin>
+      </channel>
             <channel id="9">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-20.971" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-20.971" />
+        </beamOrigin>
+      </channel>
             <channel id="10">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-20.546" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-20.546" />
+        </beamOrigin>
+      </channel>
             <channel id="11">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-20.121" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-20.121" />
+        </beamOrigin>
+      </channel>
             <channel id="12">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-19.695" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-19.695" />
+        </beamOrigin>
+      </channel>
             <channel id="13">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-19.27" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-19.27" />
+        </beamOrigin>
+      </channel>
             <channel id="14">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-18.844" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-18.844" />
+        </beamOrigin>
+      </channel>
             <channel id="15">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-18.419" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-18.419" />
+        </beamOrigin>
+      </channel>
             <channel id="16">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-17.994" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-17.994" />
+        </beamOrigin>
+      </channel>
             <channel id="17">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-17.568" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-17.568" />
+        </beamOrigin>
+      </channel>
             <channel id="18">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-17.143" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-17.143" />
+        </beamOrigin>
+      </channel>
             <channel id="19">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-16.717" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-16.717" />
+        </beamOrigin>
+      </channel>
             <channel id="20">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-16.292" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-16.292" />
+        </beamOrigin>
+      </channel>
             <channel id="21">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-15.867" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-15.867" />
+        </beamOrigin>
+      </channel>
             <channel id="22">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-15.441" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-15.441" />
+        </beamOrigin>
+      </channel>
             <channel id="23">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-15.016" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-15.016" />
+        </beamOrigin>
+      </channel>
             <channel id="24">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-14.59" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-14.59" />
+        </beamOrigin>
+      </channel>
             <channel id="25">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-14.165" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-14.165" />
+        </beamOrigin>
+      </channel>
             <channel id="26">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-13.74" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-13.74" />
+        </beamOrigin>
+      </channel>
             <channel id="27">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-13.314" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-13.314" />
+        </beamOrigin>
+      </channel>
             <channel id="28">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-12.889" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-12.889" />
+        </beamOrigin>
+      </channel>
             <channel id="29">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-12.463" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-12.463" />
+        </beamOrigin>
+      </channel>
             <channel id="30">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-12.038" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-12.038" />
+        </beamOrigin>
+      </channel>
             <channel id="31">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-11.613" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-11.613" />
+        </beamOrigin>
+      </channel>
             <channel id="32">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-11.187" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-11.187" />
+        </beamOrigin>
+      </channel>
             <channel id="33">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-10.762" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-10.762" />
+        </beamOrigin>
+      </channel>
             <channel id="34">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-10.337" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-10.337" />
+        </beamOrigin>
+      </channel>
             <channel id="35">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-9.9111" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-9.9111" />
+        </beamOrigin>
+      </channel>
             <channel id="36">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-9.4857" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-9.4857" />
+        </beamOrigin>
+      </channel>
             <channel id="37">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-9.0603" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-9.0603" />
+        </beamOrigin>
+      </channel>
             <channel id="38">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-8.6349" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-8.6349" />
+        </beamOrigin>
+      </channel>
             <channel id="39">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-8.2095" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-8.2095" />
+        </beamOrigin>
+      </channel>
             <channel id="40">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-7.7841" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-7.7841" />
+        </beamOrigin>
+      </channel>
             <channel id="41">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-7.3587" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-7.3587" />
+        </beamOrigin>
+      </channel>
             <channel id="42">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-6.9333" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-6.9333" />
+        </beamOrigin>
+      </channel>
             <channel id="43">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-6.5079" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-6.5079" />
+        </beamOrigin>
+      </channel>
             <channel id="44">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-6.0825" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-6.0825" />
+        </beamOrigin>
+      </channel>
             <channel id="45">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-5.6571" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-5.6571" />
+        </beamOrigin>
+      </channel>
             <channel id="46">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-5.2317" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-5.2317" />
+        </beamOrigin>
+      </channel>
             <channel id="47">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-4.8063" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-4.8063" />
+        </beamOrigin>
+      </channel>
             <channel id="48">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-4.381" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-4.381" />
+        </beamOrigin>
+      </channel>
             <channel id="49">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-3.9556" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-3.9556" />
+        </beamOrigin>
+      </channel>
             <channel id="50">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-3.5302" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-3.5302" />
+        </beamOrigin>
+      </channel>
             <channel id="51">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-3.1048" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-3.1048" />
+        </beamOrigin>
+      </channel>
             <channel id="52">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-2.6794" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-2.6794" />
+        </beamOrigin>
+      </channel>
             <channel id="53">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-2.254" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-2.254" />
+        </beamOrigin>
+      </channel>
             <channel id="54">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-1.8286" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-1.8286" />
+        </beamOrigin>
+      </channel>
             <channel id="55">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-1.4032" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-1.4032" />
+        </beamOrigin>
+      </channel>
             <channel id="56">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-0.97778" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-0.97778" />
+        </beamOrigin>
+      </channel>
             <channel id="57">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-0.55238" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-0.55238" />
+        </beamOrigin>
+      </channel>
             <channel id="58">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="-0.12698" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="-0.12698" />
+        </beamOrigin>
+      </channel>
             <channel id="59">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="0.29841" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="0.29841" />
+        </beamOrigin>
+      </channel>
             <channel id="60">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="0.72381" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="0.72381" />
+        </beamOrigin>
+      </channel>
             <channel id="61">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="1.1492" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="1.1492" />
+        </beamOrigin>
+      </channel>
             <channel id="62">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="1.5746" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="1.5746" />
+        </beamOrigin>
+      </channel>
             <channel id="63">
-				<beamOrigin x="0" y="0" z="0">
-					<rot axis="x" angle_deg="2.0" />
-				</beamOrigin>
-			</channel>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="x" angle_deg="2.0" />
+        </beamOrigin>
+      </channel>
         </channels>
 
-	</scanner>
-	<!-- ##### END Velodyne HDL-64E ##### -->
+  </scanner>
+  <!-- ##### END Velodyne HDL-64E ##### -->
 
 
-	<!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
+  <!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
 
 
-	<!-- ############### BEGIN "Fantasy" Scanners ############### -->
+  <!-- ############### BEGIN "Fantasy" Scanners ############### -->
 
 
-	<!-- ##### BEGIN Tractor scanner ##### -->
-	<scanner 	id 							= "tractorscanner"
-				accuracy_m					= "0"
-				beamDivergence_rad 			= "0.00035"
-				name              			= "Tractor Scanner"
-				optics            			= "oscillating"
-				pulseFreqs_Hz				= "1000,50000,100000,200000"
-				pulseLength_ns     			= "4"
-				rangeMin_m					= "0"
-				scanAngleMax_deg   			= "30"
-				scanAngleEffectiveMax_deg   = "50"
-				scanFreqMin_Hz				= "100"
-				scanFreqMax_Hz				= "50"
-	>
-		<FWFSettings beamSampleQuality="3"/>
-	</scanner>
-	<!-- ##### END Tractor scanner ##### -->
-	
-	<!-- ##### BEGIN Panoramic scanner ##### -->	
-	<scanner 	id 							= "panoscanner"
-				name              			= "PANO"
-				accuracy_m					= "0.005"
-			 	beamDivergence_rad 			= "0.0003"
-				headRotatePerSecMax_deg		= "500"
-				optics            			= "rotating"
-				pulseFreqs_Hz				= "100000,300000"
-				pulseLength_ns     			= "5"
-				rangeMin_m					= "0.01"
-				scanAngleMax_deg   			= "180"
-				scanAngleEffectiveMax_deg   = "150"
-				scanFreqMin_Hz				= "0"
-				scanFreqMax_Hz				= "12000"
-	>
-		<FWFSettings beamSampleQuality="3"/>	
-		<beamOrigin x="0" y="0" z="0.2">
-			<rot axis="y" angle_deg="0" />
-			<rot axis="z" angle_deg="0" />
-			<rot axis="x" angle_deg="90" />
-		</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1"/>
-	</scanner>
-	<!-- ##### END Panoramic scanner ##### -->
+  <!-- ##### BEGIN Tractor scanner ##### -->
+  <scanner id                         = "tractorscanner"
+           accuracy_m                 = "0"
+           beamDivergence_rad         = "0.00035"
+           name                       = "Tractor Scanner"
+           optics                     = "oscillating"
+           pulseFreqs_Hz              = "1000,50000,100000,200000"
+           pulseLength_ns             = "4"
+           rangeMin_m                 = "0"
+           scanAngleMax_deg           = "30"
+           scanAngleEffectiveMax_deg  = "50"
+           scanFreqMin_Hz             = "100"
+           scanFreqMax_Hz             = "50">
 
-	<!-- ############### END "Fantasy" Scanners ############### -->
+    <FWFSettings beamSampleQuality="3"/>
+  </scanner>
+  <!-- ##### END Tractor scanner ##### -->
+
+  <!-- ##### BEGIN Panoramic scanner ##### -->
+  <scanner  id                         = "panoscanner"
+            name                       = "PANO"
+            accuracy_m                 = "0.005"
+            beamDivergence_rad         = "0.0003"
+            headRotatePerSecMax_deg    = "500"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "100000,300000"
+            pulseLength_ns             = "5"
+            rangeMin_m                 = "0.01"
+            scanAngleMax_deg           = "180"
+            scanAngleEffectiveMax_deg  = "150"
+            scanFreqMin_Hz             = "0"
+            scanFreqMax_Hz             = "12000">
+
+    <FWFSettings beamSampleQuality="3"/>
+    <beamOrigin x="0" y="0" z="0.2">
+      <rot axis="y" angle_deg="0" />
+      <rot axis="z" angle_deg="0" />
+      <rot axis="x" angle_deg="90" />
+    </beamOrigin>
+    <headRotateAxis x="0" y="0" z="1"/>
+  </scanner>
+  <!-- ##### END Panoramic scanner ##### -->
+
+  <!-- ############### END "Fantasy" Scanners ############### -->
 
 
 </document>
