@@ -53,7 +53,7 @@ jobs:
 
       - name: Run C++ test suite
         run: |
-          ./build/helios++ --test
+          ./build/helios_test
 
       - name: Run PyTest test suite
         run: |
