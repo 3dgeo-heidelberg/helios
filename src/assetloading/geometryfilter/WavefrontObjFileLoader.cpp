@@ -53,8 +53,7 @@ WavefrontObjFileLoader::run()
     ss << "Failed to read 'up'-axis from scene XML file.\n"
        << "Assuming 'z' axis points upwards for scene part \"" << filePathString
        << "\".\n"
-       << "Set up axis explicitly to silence this warning.\n"
-       << "C++ Exception: " << e.what();
+       << "Set up axis explicitly to silence this warning.\n";
     logging::INFO(ss.str());
   }
   // ######### END Read up axis ###########
