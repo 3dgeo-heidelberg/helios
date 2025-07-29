@@ -1017,7 +1017,7 @@ XmlAssetsLoader::createScannerHeadFromXml(tinyxml2::XMLElement* scannerNode)
                                                { { "THETA", "t" } });
       double const zeroSinThreshold_deg =
         boost::get<double>(XmlUtils::getAttribute(
-          headErrorNode, "zeroSinThreshold_deg", "double", 0.0));
+          headErrorNode, "zeroSinThreshold_deg", "double", 0));
       return std::make_shared<EvalScannerHead>(
         headRotateAxis,
         headRotatePerSecMax_rad,
