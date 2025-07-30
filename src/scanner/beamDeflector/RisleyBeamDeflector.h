@@ -1,15 +1,15 @@
 #pragma once
 
-#include <string>
-
 #include "AbstractBeamDeflector.h"
 
-#include "maths/Directions.h"
-#include "maths/MathConverter.h"
+#include <cmath>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include <glm/glm.hpp>
 
-#include <vector>
+#include "maths/Directions.h"
 
 /**
  * @brief Struct representing a prism in the Risley beam deflector

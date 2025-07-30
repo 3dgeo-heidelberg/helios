@@ -1,17 +1,10 @@
 #include "RisleyBeamDeflector.h"
 
-#include <iostream>
-#include <sstream>
-#include <string>
-using namespace std;
+#include <memory>
 
 #include <glm/glm.hpp>
-#define _USE_MATH_DEFINES
-#include <logging.hpp>
-#include <math.h>
 
 #include "maths/Directions.h"
-#include "maths/MathConverter.h"
 
 using Base = std::shared_ptr<AbstractBeamDeflector>;
 
