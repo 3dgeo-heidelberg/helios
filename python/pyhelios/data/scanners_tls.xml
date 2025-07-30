@@ -158,7 +158,7 @@
             scanFreqMax_Hz             = "0"
             wavelength_nm              = "905"
             maxNOR                     = "2"
-      headRotatePerSecMax_deg          = "7200">
+            headRotatePerSecMax_deg    = "7200">
 
     <FWFSettings beamSampleQuality="3"/>  <!-- set to one for fast simulations -->
     <channels>
