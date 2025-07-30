@@ -2,7 +2,7 @@
 
 #include <HeliosException.h>
 #include <SimpleThreadPool.h>
-
+#include <boost/asio/post.hpp>
 /**
  * @verison 1.0
  * @brief Abstract class extending basic thread pool implementation to provide
@@ -88,11 +88,11 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    this->io_service_.post(
-      boost::bind(&ResThreadPool<TaskArgs...>::wrap_res_task,
-                  this,
-                  boost::function<void(TaskArgs...)>(task),
-                  resourceIdx));
+    boost::asio::post(this->io_context_,
+                      boost::bind(&ResThreadPool<TaskArgs...>::wrap_res_task,
+                                  this,
+                                  boost::function<void(TaskArgs...)>(task),
+                                  resourceIdx));
   }
 
   /**
@@ -124,11 +124,11 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    this->io_service_.post(
-      boost::bind(&ResThreadPool<TaskArgs...>::wrap_res_task,
-                  this,
-                  boost::function<void(TaskArgs...)>(task),
-                  resourceIdx));
+    boost::asio::post(this->io_context_,
+                      boost::bind(&ResThreadPool<TaskArgs...>::wrap_res_task,
+                                  this,
+                                  boost::function<void(TaskArgs...)>(task),
+                                  resourceIdx));
     return true;
   }
 

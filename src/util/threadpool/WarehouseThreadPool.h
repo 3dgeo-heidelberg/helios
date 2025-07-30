@@ -18,7 +18,7 @@ template<typename Task>
 class WarehouseThreadPool : public ThreadPool
 {
 protected:
-  using ThreadPool::io_service_;
+  using ThreadPool::io_context_;
   using ThreadPool::pool_size;
   //  ***  ATTRIBUTES  *** //
   // ********************* //
@@ -136,7 +136,8 @@ public:
     // Start threads
     workersCount = pool_size;
     for (std::size_t tid = 0; tid < pool_size; ++tid) {
-      io_service_.post(boost::bind(&WarehouseThreadPool::_start, this, tid));
+      boost::asio::post(io_context_,
+                        boost::bind(&WarehouseThreadPool::_start, this, tid));
     }
   }
 

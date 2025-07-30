@@ -2,7 +2,7 @@
 
 #include <HeliosException.h>
 #include <SimpleThreadPool.h>
-
+#include <boost/asio/post.hpp>
 #include <unordered_map>
 
 /**
@@ -53,7 +53,8 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    this->io_service_.post(
+    boost::asio::post(
+      this->io_context_,
       boost::bind(&MDThreadPool<MDType, TaskArgs...>::wrap_md_task,
                   this,
                   boost::function<void(TaskArgs...)>(task),
@@ -88,7 +89,8 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    this->io_service_.post(
+    boost::asio::post(
+      this->io_context_,
       boost::bind(&MDThreadPool<MDType, TaskArgs...>::wrap_md_task,
                   this,
                   boost::function<void(TaskArgs...)>(task),
@@ -105,7 +107,7 @@ public:
     while (getPendingTasks() > 0) {
       this->cond_.wait(lock);
     }
-    this->work_.reset();       // Allow works to finish normally
+    this->work_guard_.reset(); // Allow works to finish normally
     this->threads_.join_all(); // Wait for all threads to finish
   }
 

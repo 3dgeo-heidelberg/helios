@@ -67,6 +67,11 @@ jobs:
         if: runner.os != 'macOS'
         run: |
           python -m pytest
+      
+      - name: Run tests (incl. regression tests)
+        if: runner.os == 'Windows'
+        run: |
+          python -m pytest --regression-tests
 
   headercheck:
     defaults:
