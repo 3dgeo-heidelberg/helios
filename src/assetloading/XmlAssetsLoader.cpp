@@ -982,36 +982,24 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
       bool inclinedOnLeft1 = prism1_angle_deg > 0.0;
       double angle1_rad =
         MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
-      prisms.push_back(Prism{ angle1_rad,
-                              sin(angle1_rad),
-                              cos(angle1_rad),
-                              inclinedOnLeft1,
-                              refr_prism1,
-                              rotorFreq_1_Hz * 2.0 * M_PI });
+      prisms.emplace_back(
+        angle1_rad, inclinedOnLeft1, refr_prism1, rotorFreq_1_Hz * 2.0 * M_PI);
     }
 
     if (std::abs(prism2_angle_deg) > epsilon) {
       bool inclinedOnLeft2 = prism2_angle_deg > 0.0;
       double angle2_rad =
         MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
-      prisms.push_back(Prism{ angle2_rad,
-                              sin(angle2_rad),
-                              cos(angle2_rad),
-                              inclinedOnLeft2,
-                              refr_prism2,
-                              rotorFreq_2_Hz * 2.0 * M_PI });
+      prisms.emplace_back(
+        angle2_rad, inclinedOnLeft2, refr_prism2, rotorFreq_2_Hz * 2.0 * M_PI);
     }
 
     if (std::abs(prism3_angle_deg) > epsilon) {
       bool inclinedOnLeft3 = prism3_angle_deg > 0.0;
       double angle3_rad =
         MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
-      prisms.push_back(Prism{ angle3_rad,
-                              sin(angle3_rad),
-                              cos(angle3_rad),
-                              inclinedOnLeft3,
-                              refr_prism3,
-                              rotorFreq_3_Hz * 2.0 * M_PI });
+      prisms.emplace_back(
+        angle3_rad, inclinedOnLeft3, refr_prism3, rotorFreq_3_Hz * 2.0 * M_PI);
     }
 
     beamDeflector = std::make_shared<RisleyBeamDeflector>(prisms, refr_air);

@@ -18,12 +18,35 @@
  */
 struct Prism
 {
-  double angle_rad;     // Inclination angle
-  double sin_angle_rad; // Sine of the inclination angle
-  double cos_angle_rad; // Cosine of the inclination angle
-  bool inclinedOnLeft;  // true: left side inclined, false: right side inclined
-  double refractive_index;   // Refraction index of prism
-  double rotation_speed_rad; // Angular velocity around z
+  double angle_rad;        // Inclination angle
+  double sin_angle_rad;    // Sine of the inclination angle
+  double cos_angle_rad;    // Cosine of the inclination angle
+  bool inclinedOnLeft;     // true: beam-facing side inclined, false: other side
+                           // inclined
+  double refractive_index; // Refraction index of prism
+  double rotation_speed_rad; // Angular velocity around axis
+
+  /**
+   * @brief Constructor for Prism
+   * @param angle_rad_ The angle of the prism in radians
+   * @param inclined_on_left Whether the beam-facing side is inclined to the
+   * left
+   * @param refr_index The refractive index of the prism
+   * @param rotation_speed_rad_ The rotation speed of the prism in radians per
+   * second
+   */
+  Prism(double angle_rad_,
+        bool inclined_on_left,
+        double refr_index,
+        double rotation_speed_rad_)
+    : angle_rad(angle_rad_)
+    , sin_angle_rad(std::sin(angle_rad_))
+    , cos_angle_rad(std::cos(angle_rad_))
+    , inclinedOnLeft(inclined_on_left)
+    , refractive_index(refr_index)
+    , rotation_speed_rad(rotation_speed_rad_)
+  {
+  }
 
   /**
    * @brief Get the surface normal vector for the first surface of the prism
