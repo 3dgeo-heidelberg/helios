@@ -94,6 +94,51 @@ struct stringVisitor : public boost::static_visitor<std::string>
   }
 };
 
+/**
+ * @brief Helper struct to get the type name of the ObjectT variants which are retrieved from XML
+ */
+
+template<typename T>
+struct typenameHelper
+{
+  static std::string name() 
+  {
+    throw std::runtime_error("Unsupported type for typenameHelper");
+  }
+};
+
+/** Specializations for supported types */
+
+template<>
+struct typenameHelper<bool>
+{
+  static std::string name() { return "bool"; }
+};
+
+template<>
+struct typenameHelper<int>
+{
+  static std::string name() { return "int"; }
+};
+
+template<>
+struct typenameHelper<float>
+{
+  static std::string name() { return "float"; }
+};
+
+template<>
+struct typenameHelper<double>
+{
+  static std::string name() { return "double"; }
+};
+
+template<>
+struct typenameHelper<std::string>
+{
+  static std::string name() { return "string"; }
+};
+
 // "C/C++, unfortunately, does not have a sgn function in its standard library,
 // however this is defined in the Boost library."
 /**
