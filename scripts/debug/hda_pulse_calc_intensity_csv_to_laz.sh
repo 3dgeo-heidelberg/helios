@@ -49,5 +49,3 @@ ${TXT2LAS} -i "$1" \
     -add_attribute 2 'captured' 'captured' \
     -add_attribute 10 'emitted power' \
     -o "$2"
-
-

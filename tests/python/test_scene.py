@@ -1,8 +1,15 @@
 from helios.scene import *
+from helios.settings import *
+from helios.survey import *
+from helios.settings import *
+from helios.survey import *
 
+import os
 import math
 import numpy as np
 import pytest
+
+from helios import HeliosException
 
 
 def test_construct_scene_from_xml():
@@ -50,14 +57,107 @@ def test_sceneparts_from_obj_wildcard():
 
 
 def test_scenepart_from_obj_yisup():
-    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
-    scene = StaticScene(scene_parts=[box], up_axis="y")
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="y")
+    scene = StaticScene(scene_parts=[box])
     scene._finalize()
 
 
 def test_scenepart_from_obj_wrong_axis_argument():
     with pytest.raises(ValueError):
         ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="x")
+
+
+def test_scenepart_from_tiff():
+    scene_part = ScenePart.from_tiff("data/sceneparts/tiff/dem_hd.tif")
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+def test_scenepart_from_tiffs():
+    scene_parts = ScenePart.from_tiffs("data/test/*.tif")
+    assert len(scene_parts) == 2
+
+
+def test_scenepart_from_xyz():
+    scene_part1 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+
+    scene_part2 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000_sepcomma.xyz",
+        separator=",",
+        voxel_size=1.0,
+        max_color_value=255.0,
+    )
+
+    scene_part3 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+    )
+
+    scene_part4 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        voxel_size=1.0,
+        default_normal=[0.0, 0.0, 1.0],
+        sparse=True,
+    )
+
+    assert len(scene_part1._cpp_object.primitives) > 0
+    assert len(scene_part2._cpp_object.primitives) > 0
+    assert len(scene_part3._cpp_object.primitives) > 0
+    assert len(scene_part4._cpp_object.primitives) > 0
+
+
+def test_scenepart_from_xyzs():
+    scene_parts1 = ScenePart.from_xyzs(
+        "data/sceneparts/pointclouds/*.xyz", voxel_size=1.0
+    )
+
+    scene_parts2 = ScenePart.from_xyzs(
+        "data/sceneparts/pointclouds/*.xyz",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+
+    assert len(scene_parts1) > 2
+    assert len(scene_parts2) > 2
+
+    with pytest.raises(HeliosException, match="separator mismatch"):
+        ScenePart.from_xyzs(
+            "data/sceneparts/pointclouds/*.xyz",
+            voxel_size=1.0,
+            separator=",",
+        )
+
+
+def test_scenepart_from_vox():
+    scene_parts1 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed"
+    )
+    scene_parts2 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox",
+        intersection_mode="scaled",
+        intersection_argument=0.5,
+    )
+    scene_parts3 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled"
+    )
+
+    assert len(scene_parts1._cpp_object.primitives) > 0
+    assert len(scene_parts2._cpp_object.primitives) > 0
+    assert len(scene_parts3._cpp_object.primitives) > 0
+
+    with pytest.raises(ValueError):
+        ScenePart.from_vox(
+            "data/sceneparts/syssifoss/F_BR08_08_crown_250.vox",
+            intersection_mode="fixed",
+            intersection_argument=0.1,
+        )
 
 
 def get_bbox(part):
@@ -99,7 +199,7 @@ def test_rotate_scenepart_two_vectors(box_f):
     box1 = box_f()
     box2 = box_f()
 
-    box2.rotate(origin=np.array([0, 1.0, 0]), image=np.array([0.0, 1.0, 1.0]))
+    box2.rotate(from_axis=np.array([0, 1.0, 0]), to_axis=np.array([0.0, 1.0, 1.0]))
 
     check_rotation(box1, box2)
 
@@ -114,10 +214,10 @@ def test_rotate_scenepart_too_many_parameters(box):
         box.rotate(quaternion=[1.0, 0, 0, 0], axis=[1.0, 0, 0])
 
     with pytest.raises(ValueError):
-        box.rotate(quaternion=[1.0, 0, 0, 0], origin=[1.0, 0, 0])
+        box.rotate(quaternion=[1.0, 0, 0, 0], from_axis=[1.0, 0, 0])
 
     with pytest.raises(ValueError):
-        box.rotate(axis=[1.0, 0, 0], angle=0.0, origin=[0, 0, 0])
+        box.rotate(axis=[1.0, 0, 0], angle=0.0, from_axis=[0, 0, 0])
 
 
 def test_rotate_scenepart_missing_parameters(box):
@@ -128,10 +228,22 @@ def test_rotate_scenepart_missing_parameters(box):
         box.rotate(angle=0.0)
 
     with pytest.raises(ValueError):
-        box.rotate(origin=[0.0, 0.0, 0.0])
+        box.rotate(from_axis=[0.0, 0.0, 0.0])
 
     with pytest.raises(ValueError):
-        box.rotate(image=[1.0, 0, 0])
+        box.rotate(to_axis=[1.0, 0, 0])
+
+
+def test_rotate_scenepart_rotation_center(box_f):
+    box1 = box_f()
+    box2 = box_f()
+
+    box1.rotate(angle="180 deg", axis=[0, 0, 1.0], rotation_center=[100.0, 0.0, 0.0])
+    box2.translate([200.0, 0.0, 0.0])
+    bbox1 = get_bbox(box1)
+    bbox2 = get_bbox(box2)
+
+    assert np.allclose(bbox1, bbox2)
 
 
 def test_scale_scenepart(box_f):
@@ -158,3 +270,160 @@ def test_transform_scenepart(box_f):
     bbox2 = get_bbox(box2)
 
     assert np.allclose(bbox1 + offset, bbox2)
+
+
+def test_scene_binary():
+    survey1 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    survey1.scene.to_binary("data/scenes/toyblocks/toyblocks1.scene")
+    points1, _ = survey1.run()
+
+    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    survey2.scene = StaticScene.from_binary("data/scenes/toyblocks/toyblocks1.scene")
+
+    points2, _ = survey2.run()
+    os.remove("data/scenes/toyblocks/toyblocks1.scene")
+    assert len(points1) == len(points2)
+
+
+def test_ground_plane():
+    """
+    Test the force_on_groundfunctionality of the ScenePart class.
+    This test verifies that scene parts are correctly adjusted vertically to the ground plane
+    depending on their force_on_ground flag.
+
+    Here, the following is tested:
+    - Scene parts with not NONE force_on_ground value will have their z-coordinate translated
+      to the ground plane's z-coordinate after finalization.
+    - Scene parts with force_on_ground = NONE will not be vertically adjusted.
+    - Scene parts with optional positive int value for force_on_ground will specify
+      the number of search steps to be performed.
+    """
+
+    sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp1.force_on_ground = ForceOnGroundStrategy.LEAST_COMPLEX
+
+    sp2 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp2.force_on_ground = ForceOnGroundStrategy.NONE
+
+    sp3 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    sp3.scale(70)
+
+    sp4 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp4.force_on_ground = 5
+
+    scene = StaticScene(scene_parts=[sp1, sp2, sp3, sp4])
+    scene._finalize()
+
+    assert np.isclose(
+        sp1._cpp_object.all_vertices[0].position[2],
+        sp3._cpp_object.all_vertices[0].position[2],
+    )
+    assert not np.isclose(
+        sp2._cpp_object.all_vertices[0].position[2],
+        sp3._cpp_object.all_vertices[0].position[2],
+    )
+    assert np.isclose(
+        sp4._cpp_object.all_vertices[0].position[2],
+        sp3._cpp_object.all_vertices[0].position[2],
+    )
+
+
+def test_is_ground():
+    """
+    Test the effect of the is_ground flag on the Z-coordinate adjustment of a scene part.
+    If is_ground is set to False for the ground plane, indicating that there are no valid ground scene parts in the scene,
+    any other scene part should not be adjusted or aligned to the ground plane.
+    """
+
+    sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp1.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+
+    sp2 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    sp2.scale(70)
+    sp2.is_ground = False
+
+    scene = StaticScene(scene_parts=[sp1, sp2])
+    scene._finalize()
+
+    assert not np.isclose(
+        sp1._cpp_object.all_vertices[0].position[2],
+        sp2._cpp_object.all_vertices[0].position[2],
+    )
+
+
+def test_classification_scenepart():
+    """
+    Test that the classification of a scene part can be set correctly and be used during run of Survey
+    """
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    survey.scene.scene_parts[0].classification = 1
+    assert survey.scene.scene_parts[0]._cpp_object.classification == 1
+
+    meas, _ = survey.run()
+
+    assert np.any(meas["classification"] == 1)
+
+
+def test_add_scene_part():
+    """
+    Test that a scene part can be added to an existing scene.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert len(scene.scene_parts) == 5
+
+    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene.add_scene_part(new_part)
+
+    assert len(scene.scene_parts) == 6
+    assert len(scene._cpp_object.scene_parts) == 6
+    assert new_part in scene.scene_parts
+
+
+def test_add_scene_part_invalid():
+    """
+    Test that adding a duplicate of scene_part raises an error. As well as usage of append method.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene2 = StaticScene()
+    assert len(scene.scene_parts) == 5
+
+    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene.add_scene_part(new_part)
+
+    with pytest.raises(ValueError, match="already used by another instance"):
+        scene2.add_scene_part(new_part)
+
+    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
+        scene.append(new_part)
+
+
+def test_scenepart_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    assert is_xml_loaded(part)
+
+    part2 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox",
+        intersection_mode="scaled",
+        intersection_argument=0.5,
+    )
+    assert not is_xml_loaded(part2)
+    part3 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    assert not is_xml_loaded(part3)
+    part4 = ScenePart.from_xyz(
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+    )
+    assert not is_xml_loaded(part4)
+    part5 = ScenePart.from_tiff("data/sceneparts/tiff/dem_hd.tif")
+    assert not is_xml_loaded(part5)
+
+
+def test_scene_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert is_xml_loaded(scene)

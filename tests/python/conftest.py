@@ -175,3 +175,36 @@ def assetdir(tmp_path):
     c1.touch()
 
     return tmp_path
+
+
+def pytest_addoption(parser):
+    # Add an option to also run slow tests which are omitted by default
+    parser.addoption(
+        "--slow", action="store_true", default=False, help="run slow tests"
+    )
+
+    # Add an option for running regression tests. This is useful to e.g.
+    # restrict the regression testing bit to the platform on which we have
+    # regression data available.
+    parser.addoption(
+        "--regression-tests",
+        action="store_true",
+        default=False,
+        help="run regression tests",
+    )
+
+    # Add an option to keep the output of the demo regression tests in
+    # the pytest-output folder
+    parser.addoption(
+        "--keep-output",
+        action="store_true",
+        default=False,
+        help="keep output of demo tests",
+    )
+
+
+def pytest_runtest_setup(item):
+    if "slow" in item.keywords and not (
+        item.config.getoption("--slow") or item.config.getoption("--regression-tests")
+    ):
+        pytest.skip("need --slow option to run")

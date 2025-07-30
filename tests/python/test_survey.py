@@ -1,9 +1,11 @@
-from helios.platforms import Platform
-from helios.scanner import Scanner
+from helios.platforms import Platform, DynamicPlatformSettings, load_traj_csv
+from helios.scanner import Scanner, riegl_lms_q560
 from helios.scene import StaticScene
+from helios.settings import ExecutionSettings
 from helios.survey import *
 
 import laspy
+from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
 
 
@@ -102,3 +104,193 @@ def test_set_gpstime(survey):
 
     assert np.all(points["gps_time"] > 0)
     assert np.all(points["gps_time"] < 1)
+
+
+def test_survey_run_unknown_parameters(survey):
+    with pytest.raises(ValueError):
+        survey.run(unknown_parameter=12)
+
+
+def test_survey_run_trajectory_for_all_scanner_types():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    survey.legs[0].scanner_settings.trajectory_time_interval = 0.1
+    points, trajectory = survey.run()
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
+
+
+def test_full_waveform_settings_effect():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    points1, _ = survey.run(format=OutputFormat.NPY)
+
+    survey.full_waveform_settings.beam_sample_quality = 5
+    points2, _ = survey.run(format=OutputFormat.NPY)
+
+    # A higher beam sample quality should result in more points
+    assert points1.shape[0] < points2.shape[0]
+
+
+def test_traj_from_np(survey):
+    traj = np.arange((70)).reshape((10, 7))
+    traj = unstructured_to_structured(traj, dtype=traj_csv_dtype)
+
+    survey.trajectory = traj
+    assert survey.trajectory.shape == (10,)
+    assert survey.trajectory["x"].shape == (10,)
+    assert len(survey.trajectory[0]) == 7
+
+
+def test_invalid_leg_adding():
+    """
+    Test that adding a leg via the `append` method raises an error.
+    """
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    new_leg = Leg(
+        platform_settings=PlatformSettings(),
+        scanner_settings=ScannerSettings(),
+    )
+    assert len(survey.legs) == 6
+
+    survey.add_leg(new_leg)
+    assert len(survey.legs) == 7
+
+    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
+        survey.append(new_leg)
+
+
+def test_survey_flag_from_xml_set():
+    from helios.utils import is_xml_loaded
+
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    assert is_xml_loaded(survey)
+
+
+def test_survey_tls_multi_scan_not_from_xml(tripod, multi_tls_scanner):
+    scanner_settings = ScannerSettings(
+        pulse_frequency=18750,
+        scan_frequency=0,
+        head_rotation=3600,
+        rotation_start_angle=0,
+        rotation_stop_angle=3600,
+    )
+    platform_settings = PlatformSettings(x=0, y=0, z=0)
+    scene = StaticScene.from_xml("data/scenes/demo/box_scene.xml")
+    survey = Survey(scanner=multi_tls_scanner, platform=tripod, scene=scene)
+    survey.add_leg(
+        platform_settings=platform_settings, scanner_settings=scanner_settings
+    )
+    m, t = survey.run(format=OutputFormat.NPY)
+    assert m.shape[0] > 0
+    assert t.shape[0] > 0
+
+
+def test_survey_als_multi_scan_not_from_xml(airplane, multi_als_scanner):
+    scene = StaticScene.from_xml("data/scenes/toyblocks/light_toyblocks_scene.xml")
+    survey = Survey(scanner=multi_als_scanner, platform=airplane, scene=scene)
+
+    scanner_settings1 = ScannerSettings(
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings1 = DynamicPlatformSettings(x=-30, y=-50, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings1, scanner_settings=scanner_settings1
+    )
+    scanner_settings2 = ScannerSettings(
+        is_active=False,
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings2 = DynamicPlatformSettings(x=70, y=-50, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings2, scanner_settings=scanner_settings2
+    )
+    scanner_settings3 = ScannerSettings(
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings3 = DynamicPlatformSettings(x=70, y=0, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings3, scanner_settings=scanner_settings3
+    )
+    scanner_settings4 = ScannerSettings(
+        is_active=False,
+        pulse_frequency=10000,
+        scan_angle="20 deg",
+        scan_frequency=100,
+        trajectory_time_interval=0.01,
+    )
+    platform_settings4 = DynamicPlatformSettings(x=-30, y=0, z=100, speed_m_s=30)
+    survey.add_leg(
+        platform_settings=platform_settings4, scanner_settings=scanner_settings4
+    )
+
+    m, t = survey.run(format=OutputFormat.NPY)
+    assert m.shape[0] > 0
+    assert t.shape[0] > 0
+
+
+def test_run_interpolated_survey(multi_als_scanner):
+    execution_settings = ExecutionSettings(
+        num_threads=1,
+    )
+
+    scanner_settings1 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=180000,
+        scan_frequency=100,
+        scan_angle=0,
+        trajectory_time_interval=0.01,
+    )
+
+    trajectory_settings1 = TrajectorySettings(start_time=0, end_time=5)
+
+    scanner_settings2 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=180000,
+        scan_frequency=100,
+        scan_angle=0,
+        trajectory_time_interval=0.01,
+    )
+
+    trajectory_settings2 = TrajectorySettings(
+        start_time=5, end_time=10, teleport_to_start=True
+    )
+    trajectory = load_traj_csv(
+        csv="data/trajectories/flyandrotate.trj",
+        xIndex=4,
+        yIndex=5,
+        zIndex=6,
+        rollIndex=1,
+        pitchIndex=2,
+        yawIndex=3,
+    )
+    scene = StaticScene.from_xml("data/scenes/demo/box_scene.xml")
+    platform = Platform.load_interpolate_platform(
+        trajectory=trajectory,
+        platform_file="data/platforms.xml",
+        platform_id="sr22",
+        interpolation_method="ARINC 705",
+        sync_gps_time=False,
+    )
+    scanner = riegl_lms_q560()
+    survey1 = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey1.add_leg(
+        scanner_settings=scanner_settings1, trajectory_settings=trajectory_settings1
+    )
+    survey1.add_leg(
+        scanner_settings=scanner_settings2, trajectory_settings=trajectory_settings2
+    )
+    m1, t1 = survey1.run(execution_settings=execution_settings)
+
+    surv2 = Survey.from_xml("data/surveys/demo/box_survey_interp.xml")
+    m2, t2 = surv2.run(execution_settings=execution_settings)
+
+    assert np.allclose(m1["position"][0], m2["position"][0], rtol=1e-1, atol=1e-1)
+    assert np.allclose(t1["position"][0], t2["position"][0], rtol=1e-1, atol=1e-1)

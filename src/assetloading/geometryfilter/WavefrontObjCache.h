@@ -5,20 +5,21 @@
 #ifndef HELIOS_WAVEFRONTOBJCACHE_H
 #define HELIOS_WAVEFRONTOBJCACHE_H
 
-#include <string>
 #include "WavefrontObj.h"
 #include <list>
+#include <string>
 #include <unordered_map>
 
 typedef std::string key_type;
-typedef WavefrontObj *value_type;
+typedef WavefrontObj* value_type;
 typedef std::list<key_type> list_type;
 typedef typename list_type::iterator list_iterator;
 typedef std::unordered_map<key_type, std::pair<value_type, list_iterator>>
-    map_type;
+  map_type;
 typedef typename map_type::iterator map_iterator;
 
-class WavefrontObjCache {
+class WavefrontObjCache
+{
 
 public:
   /**
@@ -45,21 +46,21 @@ public:
    * @param key Key of the value to be checked
    * @return True if the value exists, False otherwise
    */
-  bool contains(const std::string &key);
+  bool contains(const std::string& key);
 
   /**
    * @brief Inserts an element in the cache
    * @param key Key of the value used in future searches
    * @param value Element to be stored
    */
-  void insert(const std::string &key, WavefrontObj * value);
+  void insert(const std::string& key, WavefrontObj* value);
 
   /**
    * @brief Returns a cache element by its key, if exists.
    * @param key Key used to look for an element stored in the cache
    * @return The element if found, nullptr otherwise
    */
-  WavefrontObj * get(const std::string &key);
+  WavefrontObj* get(const std::string& key);
 
   /**
    * @brief Removes the last element in the list to make room to a new one.
@@ -71,7 +72,7 @@ public:
    * @brief Get an instance of the cache (Singleton Pattern)
    * @return Instance of the cache itself ready to be used.
    */
-  static WavefrontObjCache &getInstance();
+  static WavefrontObjCache& getInstance();
 
 private:
   map_type m_map;

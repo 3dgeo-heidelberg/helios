@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fluxionum{
+namespace fluxionum {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -23,36 +23,36 @@ namespace fluxionum{
  * @tparam B The range of the function
  * @see Topology, James Munkres, second edition PEARSON (pages 13 and 14)
  */
-template <typename A, typename B>
-class Function{
+template<typename A, typename B>
+class Function
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @bried Function default constructor
-     */
-    Function() = default;
-    virtual ~Function() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @bried Function default constructor
+   */
+  Function() = default;
+  virtual ~Function() = default;
 
-    // ***  FUNCTION METHODS  *** //
-    // ************************** //
-    /**
-     * @brief Evaluate the function \f$f(x)=y\f$
-     * @param x The input from the domain: \f$x \in A\f$
-     * @return The output from the range: \f$y \in B\f$
-     */
-    virtual B eval(A const &x) = 0;
+  // ***  FUNCTION METHODS  *** //
+  // ************************** //
+  /**
+   * @brief Evaluate the function \f$f(x)=y\f$
+   * @param x The input from the domain: \f$x \in A\f$
+   * @return The output from the range: \f$y \in B\f$
+   */
+  virtual B eval(A const& x) = 0;
 
-    // ***  FUNCTION OPERATORS  *** //
-    // **************************** //
-    /**
-     * @brief Evaluate the function \f$f(x)=y\f$
-     * @param x The input from the domain: \f$x \in A\f$
-     * @return The output from the range: \f$y \in B\f$
-     * @see fluxionum::Function::eval
-     */
-    inline B operator()(A const &x) {return eval(x);}
-
+  // ***  FUNCTION OPERATORS  *** //
+  // **************************** //
+  /**
+   * @brief Evaluate the function \f$f(x)=y\f$
+   * @param x The input from the domain: \f$x \in A\f$
+   * @return The output from the range: \f$y \in B\f$
+   * @see fluxionum::Function::eval
+   */
+  inline B operator()(A const& x) { return eval(x); }
 };
 
 }

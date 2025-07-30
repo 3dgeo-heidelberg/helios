@@ -1,5 +1,7 @@
 from helios.settings import *
 
+from pathlib import Path
+
 
 def test_execution_settings_defaults():
     settings = ExecutionSettings()
@@ -11,7 +13,7 @@ def test_execution_settings_defaults():
     assert settings.warehouse_factor == 4
     assert not settings.log_file
     assert not settings.log_file_only
-    assert settings.verbosity == LogVerbosity.DEFAULT
+    assert settings.verbosity == LogVerbosity.SILENT
     assert settings.factory_type == KDTreeFactoryType.SAH_APPROXIMATION
     assert isinstance(settings.kdt_num_threads, int)
     assert settings.kdt_num_threads >= 1
@@ -73,3 +75,27 @@ def test_set_output_settings(reset_global_state):
     set_output_settings(write_pulse=True)
     assert compose_output_settings().format == OutputFormat.XYZ
     assert compose_output_settings().write_pulse == True
+
+
+def test_full_waveform_settings_defaults():
+    settings = FullWaveformSettings()
+
+    assert settings.bin_size == 2.5e-10
+    assert settings.beam_sample_quality == 3
+    assert settings.win_size == 1e-9
+    assert settings.max_fullwave_range == 0.0
+
+
+def test_convert_full_waveform_settings_to_cpp():
+    settings = FullWaveformSettings(
+        bin_size=1.0 * units.ns,
+        beam_sample_quality=4,
+        win_size=2.0 * units.ns,
+        max_fullwave_range=10.0 * units.ns,
+    )
+    cpp_settings = settings._to_cpp()
+
+    assert cpp_settings.bin_size == 1.0
+    assert cpp_settings.beam_sample_quality == 4
+    assert cpp_settings.win_size == 2.0
+    assert cpp_settings.max_fullwave_range == 10.0

@@ -5,17 +5,17 @@
 #include <scene/primitives/Triangle.h>
 #include <visualhelios/adapters/VHDynObjectXYZAdapter.h>
 
-#include <vector>
 #include <memory>
-#include <pcl/common/common_headers.h>
 #include <pcl/PolygonMesh.h>
+#include <pcl/common/common_headers.h>
+#include <vector>
 
-namespace HeliosDemos{
+namespace HeliosDemos {
 
 using visualhelios::VHDynObjectXYZAdapter;
 
-using std::vector;
 using std::shared_ptr;
+using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -25,52 +25,55 @@ using std::shared_ptr;
  * This demo implements the rendering of simple objects performing different
  *  motions
  */
-class SimplePrimitivesDemo : public BaseDemo{
+class SimplePrimitivesDemo : public BaseDemo
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple primitives demo constructor
-     */
-    SimplePrimitivesDemo() : BaseDemo("Simple primitives demo"){}
-    virtual ~SimplePrimitivesDemo() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple primitives demo constructor
+   */
+  SimplePrimitivesDemo()
+    : BaseDemo("Simple primitives demo")
+  {
+  }
+  virtual ~SimplePrimitivesDemo() = default;
 
-    // ***  R U N  *** //
-    // *************** //
-    /**
-     * @see BaseDemo::run
-     */
-    void run() override;
+  // ***  R U N  *** //
+  // *************** //
+  /**
+   * @see BaseDemo::run
+   */
+  void run() override;
 
-    // ***  U T I L  *** //
-    // ***************** //
-    /**
-     * @brief Build the dynamic object representing the mobile structure
-     * @return Dynamic object representing the mobile structure
-     */
-    shared_ptr<DynObject> buildMobileStructure();
-    /**
-     * @brief Build the dynamic object representing the fixed structure
-     * @return Dynamic object representing the fixed structure
-     */
-    shared_ptr<DynObject> buildFixedStructure();
-    /**
-     * @brief Build the dynamic object representing the helical structure
-     * @return Dynamic object representing the helical structure
-     */
-    shared_ptr<DynObject> buildHelicalStructure();
-    /**
-     * @brief Build the dynamic object representing the static structure
-     * @return Dynamic object representing the static structure
-     */
-    shared_ptr<DynObject> buildStaticStructure();
-    /**
-     * @brief Build the dynamic object representing the ground structure
-     * @return Dynamic object representing the ground structure
-     */
-    shared_ptr<DynObject> buildGroundStructure();
+  // ***  U T I L  *** //
+  // ***************** //
+  /**
+   * @brief Build the dynamic object representing the mobile structure
+   * @return Dynamic object representing the mobile structure
+   */
+  shared_ptr<DynObject> buildMobileStructure();
+  /**
+   * @brief Build the dynamic object representing the fixed structure
+   * @return Dynamic object representing the fixed structure
+   */
+  shared_ptr<DynObject> buildFixedStructure();
+  /**
+   * @brief Build the dynamic object representing the helical structure
+   * @return Dynamic object representing the helical structure
+   */
+  shared_ptr<DynObject> buildHelicalStructure();
+  /**
+   * @brief Build the dynamic object representing the static structure
+   * @return Dynamic object representing the static structure
+   */
+  shared_ptr<DynObject> buildStaticStructure();
+  /**
+   * @brief Build the dynamic object representing the ground structure
+   * @return Dynamic object representing the ground structure
+   */
+  shared_ptr<DynObject> buildGroundStructure();
 };
-
 
 }
 #endif
