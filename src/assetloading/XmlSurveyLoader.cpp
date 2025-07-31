@@ -127,8 +127,8 @@ XmlSurveyLoader::createLegFromXML(
   leg->setSerialId(lastLegSerialId);
 
   // Strip ID
-  std::string stripId = boost::get<std::string>(XmlUtils::getAttribute(
-    legNode, "stripId", "string", ScanningStrip::NULL_STRIP_ID));
+  std::string stripId = XmlUtils::getAttributeCast<std::string>(
+    legNode, "stripId", ScanningStrip::NULL_STRIP_ID);
   if (stripId != ScanningStrip::NULL_STRIP_ID) { // Handle strip
     std::shared_ptr<ScanningStrip> strip = nullptr;
     if (strips.find(stripId) != strips.end())
@@ -260,17 +260,17 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
                                 std::shared_ptr<Survey> survey)
 {
   // Load survey fields
-  survey->name = boost::get<string>(
-    XmlUtils::getAttribute(surveyNode, "name", "string", xmlDocFilename));
+  survey->name =
+    XmlUtils::getAttributeCast<std::string>(surveyNode, "name", xmlDocFilename);
   survey->sourceFilePath = xmlDocFilePath;
   // Load scanner
-  std::string scannerAssetLocation = boost::get<std::string>(
-    XmlUtils::getAttribute(surveyNode, "scanner", "string", std::string("")));
+  std::string scannerAssetLocation = XmlUtils::getAttributeCast<std::string>(
+    surveyNode, "scanner", std::string(""));
   survey->scanner = std::dynamic_pointer_cast<Scanner>(
     getAssetByLocation("scanner", scannerAssetLocation));
   // Load platform
-  std::string platformAssetLocation = boost::get<std::string>(
-    XmlUtils::getAttribute(surveyNode, "platform", "string", std::string("")));
+  std::string platformAssetLocation = XmlUtils::getAttributeCast<std::string>(
+    surveyNode, "platform", std::string(""));
   survey->scanner->platform = std::dynamic_pointer_cast<Platform>(
     getAssetByLocation("platform", platformAssetLocation));
   // Load fullwave form
@@ -281,11 +281,10 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
                               std::make_shared<FWFSettings>(FWFSettings(
                                 survey->scanner->getFWFSettings()))));
   // Read number of runs
-  survey->numRuns =
-    boost::get<int>(XmlUtils::getAttribute(surveyNode, "numRuns", "int", 1));
+  survey->numRuns = XmlUtils::getAttributeCast<int>(surveyNode, "numRuns", 1);
   // Load initial simulation speed factor
-  double speed = boost::get<double>(
-    XmlUtils::getAttribute(surveyNode, "simSpeed", "double", 1.0));
+  double speed =
+    XmlUtils::getAttributeCast<double>(surveyNode, "simSpeed", 1.0);
   if (speed <= 0) {
     std::stringstream ss;
     ss << "XMLSurveyLoader::loadSurveyCore "
@@ -308,12 +307,12 @@ XmlSurveyLoader::handleCoreOverloading(tinyxml2::XMLElement* surveyNode,
   tinyxml2::XMLElement* dsNode =
     surveyNode->FirstChildElement("detectorSettings");
   if (dsNode != nullptr) { // If a detector overload is specified, apply it
-    detector.cfg_device_accuracy_m = boost::get<double>(XmlUtils::getAttribute(
-      dsNode, "accuracy_m", "double", detector.cfg_device_accuracy_m));
-    detector.cfg_device_rangeMin_m = boost::get<double>(XmlUtils::getAttribute(
-      dsNode, "rangeMin_m", "double", detector.cfg_device_rangeMin_m));
-    detector.cfg_device_rangeMax_m = boost::get<double>(XmlUtils::getAttribute(
-      dsNode, "rangeMax_m", "double", detector.cfg_device_rangeMax_m));
+    detector.cfg_device_accuracy_m = XmlUtils::getAttributeCast<double>(
+      dsNode, "accuracy_m", detector.cfg_device_accuracy_m);
+    detector.cfg_device_rangeMin_m = XmlUtils::getAttributeCast<double>(
+      dsNode, "rangeMin_m", detector.cfg_device_rangeMin_m);
+    detector.cfg_device_rangeMax_m = XmlUtils::getAttributeCast<double>(
+      dsNode, "rangeMax_m", detector.cfg_device_rangeMax_m);
     if (XmlUtils::hasAttribute(dsNode, "distanceMeasurementError")) {
       char const* expr = dsNode->Attribute("distanceMeasurementError");
       std::string exprStr(expr);
@@ -509,8 +508,8 @@ XmlSurveyLoader::configureDefaultRandomnessGenerator(
 {
   // Handle seed for deafult randomness generator
   if (!DEFAULT_RG_MODIFIED_FLAG) {
-    string seed = boost::get<string>(
-      XmlUtils::getAttribute(surveyNode, "seed", "string", string("AUTO")));
+    string seed =
+      XmlUtils::getAttributeCast<string>(surveyNode, "seed", string("AUTO"));
     if (seed != "AUTO") {
       stringstream ss;
       ss << "survey seed: " << seed;
