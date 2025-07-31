@@ -318,7 +318,7 @@
   <!-- ##### END RIEGL VQ-1560i - Combined ##### -->
 
   <!-- ##### LIVOX Mid-70 -->
-  <!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
+  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°) -->
   <scanner  id                         = "livox_mid-70"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.004887"
@@ -331,8 +331,8 @@
             maxNOR                     = "1"
             rotorFreq1_Hz              = "-77.733333333"
             rotorFreq2_Hz              = "121.566666666"
-            angle1_deg                 = "-18.0"
-            angle2_deg                 = "18.0"
+            angle1_deg                 = "-29.7"
+            angle2_deg                 = "29.7"
             refrIndex1                 = "1.5095"
             refrIndex2                 = "1.5095"
             refrIndex_air              = "1.0">
@@ -353,7 +353,7 @@
             beamDivergence_rad         = "0.0027"
             name                       = "livox-mid-100"
             optics                     = "risley"
-            pulseFreqs_Hz              = "50000"
+            pulseFreqs_Hz              = "100000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2"
             wavelength_nm              = "905"
@@ -394,7 +394,7 @@
             beamDivergence_rad         = "0.0027"
             name                       = "Livox Mid-100"
             optics                     = "risley"
-            pulseFreqs_Hz              = "50000"
+            pulseFreqs_Hz              = "100000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2"
             wavelength_nm              = "905"
@@ -416,7 +416,7 @@
             beamDivergence_rad         = "0.0027"
             name                       = "Livox Mid-100"
             optics                     = "risley"
-            pulseFreqs_Hz              = "50000"
+            pulseFreqs_Hz              = "100000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2"
             wavelength_nm              = "905"
@@ -438,7 +438,7 @@
             beamDivergence_rad         = "0.0027"
             name                       = "Livox Mid-100"
             optics                     = "risley"
-            pulseFreqs_Hz              = "50000"
+            pulseFreqs_Hz              = "100000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2"
             wavelength_nm              = "905"
