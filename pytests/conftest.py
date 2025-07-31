@@ -5,8 +5,8 @@ import pytest
 import shutil
 
 
-TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2025-02-05/data.tar.gz"
-TEST_DATA_CHECKSUM = "581b9f13ab3dcaf0422a8ab6069ba4534db276c75c098da23dd8ed264a5e7cee"
+TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2025-07-31/data.tar.gz"
+TEST_DATA_CHECKSUM = "9b5ddcdb401b3c9b8b6e5b9bef22ead199d765b465997966d7faa0570087730d"
 
 
 @pytest.fixture
