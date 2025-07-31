@@ -107,10 +107,10 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
   }
 
   // Read "asset" properties:
-  result->id = boost::get<std::string>(
-    XmlUtils::getAttribute(assetNode, "id", "string", std::string("")));
-  result->name = boost::get<std::string>(XmlUtils::getAttribute(
-    assetNode, "name", "string", "Unnamed " + type + " asset"));
+  result->id =
+    XmlUtils::getAttributeCast<std::string>(assetNode, "id", std::string(""));
+  result->name = XmlUtils::getAttributeCast<std::string>(
+    assetNode, "name", "Unnamed " + type + " asset");
 
   // Store source file path for possible later XML export:
   result->sourceFilePath = xmlDocFilePath;
@@ -305,32 +305,24 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
 
   // Overload settings themselves
   settings->baseTemplate = template1;
-  settings->x = boost::get<double>(XmlUtils::getAttribute(
-    node, "x", "double", template1->x, defaultPlatformSettingsMsg));
-  settings->y = boost::get<double>(XmlUtils::getAttribute(
-    node, "y", "double", template1->y, defaultPlatformSettingsMsg));
-  settings->z = boost::get<double>(XmlUtils::getAttribute(
-    node, "z", "double", template1->z, defaultPlatformSettingsMsg));
+  settings->x = XmlUtils::getAttributeCast<double>(
+    node, "x", template1->x, defaultPlatformSettingsMsg);
+  settings->y = XmlUtils::getAttributeCast<double>(
+    node, "y", template1->y, defaultPlatformSettingsMsg);
+  settings->z = XmlUtils::getAttributeCast<double>(
+    node, "z", template1->z, defaultPlatformSettingsMsg);
 
   // Read if platform should be put on ground, ignoring z coordinate:
-  settings->onGround = boost::get<bool>(XmlUtils::getAttribute(
-    node, "onGround", "bool", template1->onGround, defaultPlatformSettingsMsg));
+  settings->onGround = XmlUtils::getAttributeCast<bool>(
+    node, "onGround", template1->onGround, defaultPlatformSettingsMsg);
 
   // Read if platform must use stop and turn mechanics or not
-  settings->stopAndTurn =
-    boost::get<bool>(XmlUtils::getAttribute(node,
-                                            "stopAndTurn",
-                                            "bool",
-                                            template1->stopAndTurn,
-                                            defaultPlatformSettingsMsg));
+  settings->stopAndTurn = XmlUtils::getAttributeCast<bool>(
+    node, "stopAndTurn", template1->stopAndTurn, defaultPlatformSettingsMsg);
 
   // Read if platform must use smooth turn mechanics or not
-  settings->smoothTurn =
-    boost::get<bool>(XmlUtils::getAttribute(node,
-                                            "smoothTurn",
-                                            "bool",
-                                            template1->smoothTurn,
-                                            defaultPlatformSettingsMsg));
+  settings->smoothTurn = XmlUtils::getAttributeCast<bool>(
+    node, "smoothTurn", template1->smoothTurn, defaultPlatformSettingsMsg);
 
   if (settings->stopAndTurn && settings->smoothTurn) {
     logging::INFO("Both stopAndTurn and smoothTurn have been set to true. "
@@ -340,28 +332,22 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
 
   // Read if platform must be able to slowdown (true) or not (false)
   settings->slowdownEnabled =
-    boost::get<bool>(XmlUtils::getAttribute(node,
-                                            "slowdownEnabled",
-                                            "bool",
-                                            template1->slowdownEnabled,
-                                            defaultPlatformSettingsMsg));
+    XmlUtils::getAttributeCast<bool>(node,
+                                     "slowdownEnabled",
+                                     template1->slowdownEnabled,
+                                     defaultPlatformSettingsMsg);
 
   // Read platform speed:
-  settings->movePerSec_m =
-    boost::get<double>(XmlUtils::getAttribute(node,
-                                              "movePerSec_m",
-                                              "double",
-                                              template1->movePerSec_m,
-                                              defaultPlatformSettingsMsg));
+  settings->movePerSec_m = XmlUtils::getAttributeCast<double>(
+    node, "movePerSec_m", template1->movePerSec_m, defaultPlatformSettingsMsg);
 
   if (node->FindAttribute("yawAtDeparture_deg") != nullptr) {
     settings->yawAtDepartureSpecified = true;
     settings->yawAtDeparture = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "yawAtDeparture_deg",
-                                                "double",
-                                                template1->yawAtDeparture,
-                                                defaultPlatformSettingsMsg)));
+      XmlUtils::getAttributeCast<double>(node,
+                                         "yawAtDeparture_deg",
+                                         template1->yawAtDeparture,
+                                         defaultPlatformSettingsMsg));
   }
 
   // Track non default values if requested
@@ -514,8 +500,8 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
     // Obtain platform settings
     tinyxml2::XMLElement* ps = leg->FirstChildElement("platformSettings");
     // Obtain trajectory column separator
-    string sep = boost::get<string>(XmlUtils::getAttribute(
-      ps, "trajectory_separator", "string", string(",")));
+    string sep = XmlUtils::getAttributeCast<string>(
+      ps, "trajectory_seperator", string(","));
     // Handle trajectory itself
     string const trajectoryPath = ps->Attribute("trajectory");
     bool const alreadyLoaded =
@@ -716,8 +702,8 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
   // Configure scanner mount
   // Algorithm to take ScannerMount from platforms ---
   // Check basePlatform was given
-  string basePlatformLocation = boost::get<string>(
-    XmlUtils::getAttribute(survey, "basePlatform", "string", string("")));
+  string basePlatformLocation =
+    XmlUtils::getAttributeCast<string>(survey, "basePlatform", string(""));
   if (basePlatformLocation.size() > 0) { // If so, ScannerMount from base plat.
     std::shared_ptr<Platform> bp = std::dynamic_pointer_cast<Platform>(
       getAssetByLocation("platform", basePlatformLocation));
@@ -773,8 +759,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // ############ END Read emitter position and orientation ############
 
   // ########## BEGIN Read supported pulse frequencies ############
-  std::string pulseFreqsString = boost::get<std::string>(XmlUtils::getAttribute(
-    scannerNode, "pulseFreqs_Hz", "string", std::string("")));
+  std::string pulseFreqsString = XmlUtils::getAttributeCast<std::string>(
+    scannerNode, "pulseFreqs_Hz", std::string(""));
   std::list<int> pulseFreqs = std::list<int>();
 
   std::vector<std::string> freqs;
@@ -795,24 +781,24 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // --- END : Read range error
 
   // ########### BEGIN Read all the rest #############
-  double beamDiv_rad = boost::get<double>(XmlUtils::getAttribute(
-    scannerNode, "beamDivergence_rad", "double", 0.0003));
-  double pulseLength_ns = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "pulseLength_ns", "double", 4.0));
-  std::string id = boost::get<std::string>(XmlUtils::getAttribute(
-    scannerNode, "id", "string", std::string("Default")));
-  double avgPower = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "averagePower_w", "double", 4.0));
-  double beamQuality = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "beamQualityFactor", "double", 1.0));
-  double efficiency = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "opticalEfficiency", "double", 0.99));
-  double receiverDiameter = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "receiverDiameter_m", "double", 0.15));
-  double visibility = boost::get<double>(XmlUtils::getAttribute(
-    scannerNode, "atmosphericVisibility_km", "double", 23.0));
-  int wavelength = boost::get<int>(
-    XmlUtils::getAttribute(scannerNode, "wavelength_nm", "int", 1064));
+  double beamDiv_rad = XmlUtils::getAttributeCast<double>(
+    scannerNode, "beamDivergence_rad", 0.0003);
+  double pulseLength_ns =
+    XmlUtils::getAttributeCast<double>(scannerNode, "pulseLength_ns", 4.0);
+  std::string id = XmlUtils::getAttributeCast<std::string>(
+    scannerNode, "id", std::string("Default"));
+  double avgPower =
+    XmlUtils::getAttributeCast<double>(scannerNode, "averagePower_w", 4.0);
+  double beamQuality =
+    XmlUtils::getAttributeCast<double>(scannerNode, "beamQualityFactor", 1.0);
+  double efficiency =
+    XmlUtils::getAttributeCast<double>(scannerNode, "opticalEfficiency", 0.99);
+  double receiverDiameter =
+    XmlUtils::getAttributeCast<double>(scannerNode, "receiverDiameter_m", 0.15);
+  double visibility = XmlUtils::getAttributeCast<double>(
+    scannerNode, "atmosphericVisibility_km", 23.0);
+  int wavelength =
+    XmlUtils::getAttributeCast<int>(scannerNode, "wavelength_nm", 1064);
   // ########### END Read all the rest #############
 
   // Check multi scanner
@@ -840,8 +826,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                visibility,
                                wavelength * 1e-9,
                                rangeErrExpr);
-    baseScanDev.setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "receivedEnergyMin_W", "double", 0.0001)));
+    baseScanDev.setReceivedEnergyMin(XmlUtils::getAttributeCast<double>(
+      scannerNode, "receivedEnergyMin_W", 0.0001));
     std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
     scanner =
       std::make_shared<MultiScanner>(std::move(scanDevs), id, pulseFreqs);
@@ -871,7 +857,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               rangeErrExpr);
     // Parse max number of returns per pulse
     scanner->setMaxNOR(
-      boost::get<int>(XmlUtils::getAttribute(scannerNode, "maxNOR", "int", 0)));
+      XmlUtils::getAttributeCast<int>(scannerNode, "maxNOR", 0));
     // Parse beam deflector
     scanner->setBeamDeflector(createBeamDeflectorFromXml(scannerNode));
     // Parse detector
@@ -884,8 +870,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
     scanner->applySettingsFWF(*createFWFSettingsFromXml(
       scannerNode->FirstChildElement("FWFSettings"), settings));
     // Parse minimum received energy threshold
-    scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "receivedEnergyMin_W", "double", 0.0001)));
+    scanner->setReceivedEnergyMin(XmlUtils::getAttributeCast<double>(
+      scannerNode, "receivedEnergyMin_W", 0.0001));
   }
   // Return built scanner
   return scanner;
@@ -898,30 +884,30 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
   std::shared_ptr<AbstractBeamDeflector> beamDeflector = nullptr;
   // Parse beam deflector
   std::string str_opticsType = scannerNode->Attribute("optics");
-  double scanFreqMax_Hz = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
-  double scanFreqMin_Hz = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
-  double scanAngleMax_rad = MathConverter::degreesToRadians(boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "scanAngleMax_deg", "double", 0.0)));
+  double scanFreqMax_Hz =
+    XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMax_Hz", 0.0);
+  double scanFreqMin_Hz =
+    XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMin_Hz", 0.0);
+  double scanAngleMax_rad = MathConverter::degreesToRadians(
+    XmlUtils::getAttributeCast<double>(scannerNode, "scanAngleMax_deg", 0.0));
   // Build beam deflector
   if (str_opticsType == "oscillating") {
-    int scanProduct = boost::get<int>(
-      XmlUtils::getAttribute(scannerNode, "scanProduct", "int", 1000000));
+    int scanProduct =
+      XmlUtils::getAttributeCast<int>(scannerNode, "scanProduct", 1000000);
     beamDeflector = std::make_shared<OscillatingMirrorBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct);
   } else if (str_opticsType == "conic") {
     beamDeflector = std::make_shared<ConicBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz);
   } else if (str_opticsType == "line") {
-    int numFibers = boost::get<int>(
-      XmlUtils::getAttribute(scannerNode, "numFibers", "int", 1));
+    int numFibers =
+      XmlUtils::getAttributeCast<int>(scannerNode, "numFibers", 1);
     beamDeflector = std::make_shared<FiberArrayBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers);
   } else if (str_opticsType == "rotating") {
     double scanAngleEffectiveMax_rad =
-      MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
-        scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0)));
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        scannerNode, "scanAngleEffectiveMax_deg", 0.0));
     tinyxml2::XMLElement* deflectionErrorNode =
       scannerNode->FirstChildElement("deflectionError");
     if (deflectionErrorNode != nullptr) { // Build evaluable beam deflector
@@ -948,10 +934,10 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
                                                      scanAngleEffectiveMax_rad);
     }
   } else if (str_opticsType == "risley") {
-    int rotorFreq_1_Hz = boost::get<int>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
-    int rotorFreq_2_Hz = boost::get<int>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
+    int rotorFreq_1_Hz =
+      XmlUtils::getAttributeCast<int>(scannerNode, "rotorFreq1_Hz", 7294);
+    int rotorFreq_2_Hz =
+      XmlUtils::getAttributeCast<int>(scannerNode, "rotorFreq2_Hz", -4664);
     beamDeflector = std::make_shared<RisleyBeamDeflector>(
       scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz);
   }
@@ -971,12 +957,12 @@ std::shared_ptr<AbstractDetector>
 XmlAssetsLoader::createDetectorFromXml(tinyxml2::XMLElement* scannerNode,
                                        std::shared_ptr<Scanner> scanner)
 {
-  double const rangeMin_m = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
-  double const rangeMax_m = boost::get<double>(XmlUtils::getAttribute(
-    scannerNode, "rangeMax_m", "double", std::numeric_limits<double>::max()));
-  double const accuracy_m = boost::get<double>(
-    XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
+  double const rangeMin_m =
+    XmlUtils::getAttributeCast<double>(scannerNode, "rangeMin_m", 0.0);
+  double const rangeMax_m = XmlUtils::getAttributeCast<double>(
+    scannerNode, "rangeMax_m", std::numeric_limits<double>::max());
+  double const accuracy_m =
+    XmlUtils::getAttributeCast<double>(scannerNode, "accuracy_m", 0.0);
   return std::make_shared<FullWaveformPulseDetector>(
     scanner, accuracy_m, rangeMin_m, rangeMax_m);
 }
@@ -1000,8 +986,8 @@ XmlAssetsLoader::createScannerHeadFromXml(tinyxml2::XMLElement* scannerNode)
     logging::WARN(ss.str());
   }
   double headRotatePerSecMax_rad =
-    MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
-      scannerNode, "headRotatePerSecMax_deg", "double", 0.0)));
+    MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+      scannerNode, "headRotatePerSecMax_deg", 0.0));
   tinyxml2::XMLElement* headErrorNode =
     scannerNode->FirstChildElement("headError");
   if (headErrorNode != nullptr) { // Build evaluable scanner head
@@ -1015,9 +1001,8 @@ XmlAssetsLoader::createScannerHeadFromXml(tinyxml2::XMLElement* scannerNode)
       std::shared_ptr<UnivarExprTreeNode<double>> horizAngErrExpr =
         XmlUtils::createUnivarExprTree<double>(headErrorNode,
                                                { { "THETA", "t" } });
-      double const zeroSinThreshold_deg =
-        boost::get<double>(XmlUtils::getAttribute(
-          headErrorNode, "zeroSinThreshold_deg", "double", 0));
+      double const zeroSinThreshold_deg = XmlUtils::getAttributeCast<double>(
+        headErrorNode, "zeroSinThreshold_deg", 0.0);
       return std::make_shared<EvalScannerHead>(
         headRotateAxis,
         headRotatePerSecMax_rad,
@@ -1077,31 +1062,25 @@ XmlAssetsLoader::createScannerSettingsFromXml(
 
   // Ovearload settings themselves
   settings->baseTemplate = template1;
-  settings->active = boost::get<bool>(XmlUtils::getAttribute(
-    node, "active", "bool", template1->active, defaultScannerSettingsMsg));
+  settings->active = XmlUtils::getAttributeCast<bool>(
+    node, "active", template1->active, defaultScannerSettingsMsg);
   if (XmlUtils::hasAttribute(node, "headRotatePerSec_deg")) {
-    settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "headRotatePerSec_deg",
-                                                "double",
-                                                0.0,
-                                                defaultScannerSettingsMsg)));
+    settings->headRotatePerSec_rad =
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "headRotatePerSec_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->headRotatePerSec_rad = template1->headRotatePerSec_rad;
   if (XmlUtils::hasAttribute(node, "headRotateStart_deg")) {
-    settings->headRotateStart_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "headRotateStart_deg",
-                                                "double",
-                                                0.0,
-                                                defaultScannerSettingsMsg)));
+    settings->headRotateStart_rad =
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "headRotateStart_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->headRotateStart_rad = template1->headRotateStart_rad;
 
   if (XmlUtils::hasAttribute(node, "headRotateStop_deg")) {
     double hrStop_rad =
-      MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
-        node, "headRotateStop_deg", "double", 0.0, defaultScannerSettingsMsg)));
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "headRotateStop_deg", 0.0, defaultScannerSettingsMsg));
 
     // Make sure that rotation stop angle is larger than rotation start angle if
     // rotation speed is positive:
@@ -1127,74 +1106,50 @@ XmlAssetsLoader::createScannerSettingsFromXml(
     settings->headRotateStop_rad = hrStop_rad;
   } else
     settings->headRotateStop_rad = template1->headRotateStop_rad;
-  settings->pulseFreq_Hz =
-    boost::get<int>(XmlUtils::getAttribute(node,
-                                           "pulseFreq_hz",
-                                           "int",
-                                           template1->pulseFreq_Hz,
-                                           defaultScannerSettingsMsg));
+  settings->pulseFreq_Hz = XmlUtils::getAttributeCast<int>(
+    node, "pulseFreq_hz", template1->pulseFreq_Hz, defaultScannerSettingsMsg);
   if (XmlUtils::hasAttribute(node, "scanAngle_deg")) {
     settings->scanAngle_rad =
-      MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
-        node, "scanAngle_deg", "double", 0.0, defaultScannerSettingsMsg)));
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "scanAngle_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->scanAngle_rad = template1->scanAngle_rad;
   if (XmlUtils::hasAttribute(node, "verticalAngleMin_deg")) {
-    settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "verticalAngleMin_deg",
-                                                "double",
-                                                NAN,
-                                                defaultScannerSettingsMsg)));
+    settings->verticalAngleMin_rad =
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "verticalAngleMin_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->verticalAngleMin_rad = template1->verticalAngleMin_rad;
   if (XmlUtils::hasAttribute(node, "verticalAngleMax_deg")) {
-    settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "verticalAngleMax_deg",
-                                                "double",
-                                                NAN,
-                                                defaultScannerSettingsMsg)));
+    settings->verticalAngleMax_rad =
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "verticalAngleMax_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
-  settings->scanFreq_Hz =
-    boost::get<double>(XmlUtils::getAttribute(node,
-                                              "scanFreq_hz",
-                                              "double",
-                                              template1->scanFreq_Hz,
-                                              defaultScannerSettingsMsg));
-
+  settings->scanFreq_Hz = XmlUtils::getAttributeCast<double>(
+    node, "scanFreq_hz", template1->scanFreq_Hz, defaultScannerSettingsMsg);
   settings->beamDivAngle =
-    boost::get<double>(XmlUtils::getAttribute(node,
-                                              "beamDivergence_rad",
-                                              "double",
-                                              template1->beamDivAngle,
-                                              defaultScannerSettingsMsg));
-
+    XmlUtils::getAttributeCast<double>(node,
+                                       "beamDivergence_rad",
+                                       template1->beamDivAngle,
+                                       defaultScannerSettingsMsg);
   settings->trajectoryTimeInterval =
-    boost::get<double>(XmlUtils::getAttribute(node,
-                                              "trajectoryTimeInterval_s",
-                                              "double",
-                                              template1->trajectoryTimeInterval,
-                                              defaultScannerSettingsMsg));
+    XmlUtils::getAttributeCast<double>(node,
+                                       "trajectoryTimeInterval_s",
+                                       template1->trajectoryTimeInterval,
+                                       defaultScannerSettingsMsg);
 
   // Parse alternative spec. based on vertical and horizontal resolutions
   if (XmlUtils::hasAttribute(node, "verticalResolution_deg")) {
-    settings->verticalResolution_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "verticalResolution_deg",
-                                                "double",
-                                                0.0,
-                                                defaultScannerSettingsMsg)));
+    settings->verticalResolution_rad =
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "verticalResolution_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->verticalResolution_rad = template1->verticalResolution_rad;
   if (XmlUtils::hasAttribute(node, "horizontalResolution_deg")) {
-    settings->horizontalResolution_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(node,
-                                                "horizontalResolution_deg",
-                                                "double",
-                                                0.0,
-                                                defaultScannerSettingsMsg)));
+    settings->horizontalResolution_rad =
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+        node, "horizontalResolution_deg", 0.0, defaultScannerSettingsMsg));
   } else
     settings->horizontalResolution_rad = template1->horizontalResolution_rad;
 
@@ -1218,17 +1173,17 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
   }
   // Given FWFSettings
   if (node != nullptr) {
-    settings->binSize_ns = boost::get<double>(XmlUtils::getAttribute(
-      node, "binSize_ns", "double", settings->binSize_ns));
+    settings->binSize_ns = XmlUtils::getAttributeCast<double>(
+      node, "binSize_ns", settings->binSize_ns);
     settings->winSize_ns = settings->pulseLength_ns / 4.0; // By default
-    settings->beamSampleQuality = boost::get<int>(XmlUtils::getAttribute(
-      node, "beamSampleQuality", "int", settings->beamSampleQuality));
-    settings->winSize_ns = boost::get<double>(XmlUtils::getAttribute(
-      node, "winSize_ns", "double", settings->winSize_ns));
-    settings->maxFullwaveRange_ns = boost::get<double>(XmlUtils::getAttribute(
-      node, "maxFullwaveRange_ns", "double", settings->maxFullwaveRange_ns));
-    settings->apertureDiameter = boost::get<double>(XmlUtils::getAttribute(
-      node, "apertureDiameter_m", "double", settings->apertureDiameter));
+    settings->beamSampleQuality = XmlUtils::getAttributeCast<int>(
+      node, "beamSampleQuality", settings->beamSampleQuality);
+    settings->winSize_ns = XmlUtils::getAttributeCast<double>(
+      node, "winSize_ns", settings->winSize_ns);
+    settings->maxFullwaveRange_ns = XmlUtils::getAttributeCast<double>(
+      node, "maxFullwaveRange_ns", settings->maxFullwaveRange_ns);
+    settings->apertureDiameter = XmlUtils::getAttributeCast<double>(
+      node, "apertureDiameter_m", settings->apertureDiameter);
   }
 
   return settings;
@@ -1273,8 +1228,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
   while (chan != nullptr) { // Update i-th device with i-th channel
     // Set id
     scanner->setDeviceIndex(idx, idx);
-    std::string const deviceId = boost::get<std::string>(XmlUtils::getAttribute(
-      chan, "id", "string", std::to_string(idx), "DeviceID"));
+    std::string const deviceId = XmlUtils::getAttributeCast<std::string>(
+      chan, "id", std::to_string(idx), "DeviceID");
     scanner->setDeviceId(deviceId, idx);
     // Check beam update
     elem = chan->FirstChildElement("beamOrigin");
@@ -1340,83 +1295,73 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       std::shared_ptr<AbstractBeamDeflector> _deflec =
         scanner->getBeamDeflector(idx);
       // Common beam deflector updates
-      _deflec->cfg_device_scanFreqMin_Hz = boost::get<double>(
-        XmlUtils::getAttribute(chan,
-                               "scanFreqMin_Hz",
-                               "double",
-                               _deflec->cfg_device_scanFreqMin_Hz));
-      _deflec->cfg_device_scanFreqMax_Hz = boost::get<double>(
-        XmlUtils::getAttribute(chan,
-                               "scanFreqMax_Hz",
-                               "double",
-                               _deflec->cfg_device_scanFreqMax_Hz));
+      _deflec->cfg_device_scanFreqMin_Hz = XmlUtils::getAttributeCast<double>(
+        chan, "scanFreqMin_Hz", _deflec->cfg_device_scanFreqMin_Hz);
+      _deflec->cfg_device_scanFreqMax_Hz = XmlUtils::getAttributeCast<double>(
+        chan, "scanFreqMax_Hz", _deflec->cfg_device_scanFreqMax_Hz);
       if (XmlUtils::hasAttribute(chan, "scanAngleMax_deg")) {
-        _deflec->cfg_device_scanAngleMax_rad = boost::get<double>(
-          XmlUtils::getAttribute(chan, "scanAngleMax_deg", "double", 0.0));
+        _deflec->cfg_device_scanAngleMax_rad =
+          XmlUtils::getAttributeCast<double>(chan, "scanAngleMax_deg", 0.0);
       }
       // Oscillating mirror beam deflector updates
       if (optics == "oscillating") {
         std::shared_ptr<OscillatingMirrorBeamDeflector> ombd =
           std::static_pointer_cast<OscillatingMirrorBeamDeflector>(_deflec);
-        ombd->cfg_device_scanProduct = boost::get<int>(XmlUtils::getAttribute(
-          chan, "scanProduct", "int", ombd->cfg_device_scanProduct));
+        ombd->cfg_device_scanProduct = XmlUtils::getAttributeCast<int>(
+          chan, "scanProduct", ombd->cfg_device_scanProduct);
       }
       // Conic beam deflector updates (NONE)
       // Fiber array beam deflector updates
       if (optics == "line") {
         std::shared_ptr<FiberArrayBeamDeflector> fabd =
           std::static_pointer_cast<FiberArrayBeamDeflector>(_deflec);
-        fabd->setNumFibers(boost::get<int>(XmlUtils::getAttribute(
-          scannerNode, "numFibers", "int", fabd->getNumFibers())));
+        fabd->setNumFibers(XmlUtils::getAttributeCast<int>(
+          scannerNode, "numFibers", fabd->getNumFibers()));
       }
       // Polygon mirror beam deflector updates
       if (optics == "rotating") {
         std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
           std::static_pointer_cast<PolygonMirrorBeamDeflector>(_deflec);
         pmbd->cfg_device_scanAngleMax_rad =
-          MathConverter::degreesToRadians(boost::get<double>(
-            XmlUtils::getAttribute(chan,
-                                   "scanAngleEffectiveMax_deg",
-                                   "double",
-                                   MathConverter::radiansToDegrees(
-                                     pmbd->cfg_device_scanAngleMax_rad))));
+          MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+            chan,
+            "scanAngleEffectiveMax_deg",
+            MathConverter::radiansToDegrees(
+              pmbd->cfg_device_scanAngleMax_rad)));
       }
       // Risley beam deflector updates
       if (optics == "risley") {
         std::shared_ptr<RisleyBeamDeflector> rbd =
           std::static_pointer_cast<RisleyBeamDeflector>(_deflec);
         if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
-          rbd->rotorSpeed_rad_1 =
-            ((double)boost::get<int>(
-              XmlUtils::getAttribute(chan, "rotorFreq1_Hz", "int", 7294))) /
-            PI_2;
+          rbd->rotorSpeed_rad_1 = ((double)XmlUtils::getAttributeCast<int>(
+                                    chan, "rotorFreq1_Hz", 7294)) /
+                                  PI_2;
         }
         if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
-          rbd->rotorSpeed_rad_2 =
-            ((double)boost::get<int>(
-              XmlUtils::getAttribute(chan, "rotorFreq2_Hz", "int", -4664))) /
-            PI_2;
+          rbd->rotorSpeed_rad_2 = ((double)XmlUtils::getAttributeCast<int>(
+                                    chan, "rotorFreq2_Hz", -4664)) /
+                                  PI_2;
         }
       }
     }
     // Check detector related attributes
     std::shared_ptr<AbstractDetector> _detec = detec->clone();
-    _detec->cfg_device_accuracy_m = boost::get<double>(XmlUtils::getAttribute(
-      chan, "accuracy_m", "double", _detec->cfg_device_accuracy_m));
-    _detec->cfg_device_rangeMin_m = boost::get<double>(XmlUtils::getAttribute(
-      chan, "rangeMin_m", "double", _detec->cfg_device_rangeMin_m));
-    _detec->cfg_device_rangeMax_m = boost::get<double>(XmlUtils::getAttribute(
-      chan, "rangeMax_m", "double", _detec->cfg_device_rangeMax_m));
+    _detec->cfg_device_accuracy_m = XmlUtils::getAttributeCast<double>(
+      chan, "accuracy_m", _detec->cfg_device_accuracy_m);
+    _detec->cfg_device_rangeMin_m = XmlUtils::getAttributeCast<double>(
+      chan, "rangeMin_m", _detec->cfg_device_rangeMin_m);
+    _detec->cfg_device_rangeMax_m = XmlUtils::getAttributeCast<double>(
+      chan, "rangeMax_m", _detec->cfg_device_rangeMax_m);
     scanner->setDetector(_detec, idx);
     // Check scanner head related attributes
     std::shared_ptr<ScannerHead> _scanHead =
       std::make_shared<ScannerHead>(*scanHead);
     _scanHead->setRotatePerSecMax(
-      MathConverter::degreesToRadians(boost::get<double>(XmlUtils::getAttribute(
+      MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
         chan,
         "headRotatePerSecMax_deg",
-        "double",
-        MathConverter::radiansToDegrees(_scanHead->getRotatePerSecMax())))));
+        MathConverter::radiansToDegrees(_scanHead->getRotatePerSecMax()))));
     tinyxml2::XMLElement* hraNode = chan->FirstChildElement("headRotateAxis");
     if (hraNode != nullptr) {
       glm::dvec3 shra = XmlUtils::createVec3dFromXml(
@@ -1425,28 +1370,20 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
     }
     scanner->setScannerHead(_scanHead, idx);
     // Check general attributes
-    scanner->setBeamDivergence(
-      boost::get<double>(XmlUtils::getAttribute(
-        chan, "beamDivergence_rad", "double", scanner->getBeamDivergence(idx))),
-      idx);
-    scanner->setPulseLength_ns(
-      boost::get<double>(XmlUtils::getAttribute(
-        chan, "pulseLength_ns", "double", scanner->getPulseLength_ns(idx))),
-      idx);
+    scanner->setBeamDivergence(XmlUtils::getAttributeCast<double>(
+      chan, "beamDivergence_rad", scanner->getBeamDivergence(idx)));
+    scanner->setPulseLength_ns(XmlUtils::getAttributeCast<double>(
+      chan, "pulseLength_ns", scanner->getPulseLength_ns(idx)));
     if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
-      scanner->setWavelength(boost::get<int>(XmlUtils::getAttribute(
-                               chan, "wavelength_nm", "int", 1064)) *
-                               1e-9,
-                             idx);
+      scanner->setWavelength(
+        (XmlUtils::getAttributeCast<int>(chan, "wavelength_nm", 1064)) * 1e-9,
+        idx);
     }
-    scanner->setMaxNOR(
-      boost::get<int>(XmlUtils::getAttribute(chan, "maxNOR", "int", 0)), idx);
-    scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
-                                    chan,
-                                    "receivedEnergyMin_W",
-                                    "double",
-                                    scanner->getReceivedEnergyMin(idx))),
-                                  idx);
+    scanner->setMaxNOR(XmlUtils::getAttributeCast<int>(chan, "maxNOR", 0), idx);
+    scanner->setReceivedEnergyMin(
+      XmlUtils::getAttributeCast<double>(
+        chan, "receivedEnergyMin_W", scanner->getReceivedEnergyMin(idx)),
+      idx);
     // Next channel, if any
     chan = chan->NextSiblingElement("channel");
     ++idx;
