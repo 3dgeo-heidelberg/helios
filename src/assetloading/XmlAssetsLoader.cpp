@@ -885,7 +885,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
   // Parse beam deflector
   std::string str_opticsType = scannerNode->Attribute("optics");
   double scanFreqMax_Hz =
-    XmlUtils::getAttributeCast<double>(scannerNode, "scaanFreqMax_Hz", 0.0);
+    XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMax_Hz", 0.0);
   double scanFreqMin_Hz =
     XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMin_Hz", 0.0);
   double scanAngleMax_rad = MathConverter::degreesToRadians(
@@ -1107,7 +1107,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   } else
     settings->headRotateStop_rad = template1->headRotateStop_rad;
   settings->pulseFreq_Hz = XmlUtils::getAttributeCast<int>(
-    node, "pulseFreq_hz", 100000.0, defaultScannerSettingsMsg);
+    node, "pulseFreq_hz", template1->pulseFreq_Hz, defaultScannerSettingsMsg);
   if (XmlUtils::hasAttribute(node, "scanAngle_deg")) {
     settings->scanAngle_rad =
       MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
