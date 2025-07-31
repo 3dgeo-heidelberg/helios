@@ -86,11 +86,25 @@ public:
     ObjectT defaultVal,
     std::string const defaultMsg = "Using default value for attribute");
 
+  /**
+   * @brief Obtain attribute from XML with a given type
+   * @param element XML element (node) where the attribute must be taken from
+   * @param attrName Name of the attribute to be obtained
+   * @param defaultVal Default value to be used in case attribute was not
+   * found
+   * @return Obtained attribute or default value if attribute was not found,
+   * cast to the template type
+   */
   template<typename T>
-  static T getAttributeFixed(tinyxml2::XMLElement* element, std::string attrName, T defaultValue, std::string const defaultMsg)
+  static T getAttributeCast(
+    tinyxml2::XMLElement* element,
+    std::string attrName,
+    T defaultValue,
+    std::string const defaultMsg = "Using default value for attribute")
   {
     std::string type = typenameHelper<T>::name();
-    return boost::get<T>(XmlUtils::getAttribute(element, attrName, type, defaultValue, defaultMsg));
+    return boost::get<T>(XmlUtils::getAttribute(
+      element, attrName, type, defaultValue, defaultMsg));
   }
 
   /**
