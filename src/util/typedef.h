@@ -95,13 +95,14 @@ struct stringVisitor : public boost::static_visitor<std::string>
 };
 
 /**
- * @brief Helper struct to get the type name of the ObjectT variants which are retrieved from XML
+ * @brief Helper struct to get the type name of the ObjectT variants which are
+ * retrieved from XML
  */
 
 template<typename T>
 struct typenameHelper
 {
-  static std::string name() 
+  static std::string name()
   {
     throw std::runtime_error("Unsupported type for typenameHelper");
   }
