@@ -479,11 +479,6 @@
             refrIndex_air              = "1.0">
 
     <FWFSettings beamSampleQuality="3"/>
-    <beamOrigin x="0" y="0" z="0">
-      <rot axis="z" angle_deg="-90" />
-    </beamOrigin>
-
-    <headRotateAxis x="1" y="0" z="0" />
 
         <channels>
             <channel id="0">
@@ -531,11 +526,6 @@
             refrIndex_air              = "1.0">
 
     <FWFSettings beamSampleQuality="3"/>
-    <beamOrigin x="0" y="0" z="0">
-      <rot axis="z" angle_deg="-90" />
-    </beamOrigin>
-
-    <headRotateAxis x="1" y="0" z="0" />
 
         <channels>
             <channel id="0">

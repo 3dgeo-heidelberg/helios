@@ -122,7 +122,6 @@
 
     <FWFSettings beamSampleQuality="3"/>
     <beamOrigin x="0" y="0" z="0">
-
       <rot axis="z" angle_deg="-90" />
     </beamOrigin>
 
@@ -153,7 +152,6 @@
 
     <FWFSettings beamSampleQuality="3"/>
     <beamOrigin x="0" y="0" z="0">
-
       <rot axis="z" angle_deg="-90" />
     </beamOrigin>
 
