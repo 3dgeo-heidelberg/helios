@@ -141,6 +141,7 @@ if(BUILD_TESTING)
   add_executable(helios_test)
   add_test(NAME helios_test COMMAND helios_test)
   target_link_libraries(helios_test PRIVATE helios Catch2::Catch2WithMain)
+  set_tests_properties(helios_test PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
 
 # Add the HelIOS++ executable
