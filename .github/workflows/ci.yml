@@ -63,7 +63,7 @@ jobs:
 
       - name: Run C++ test suite
         run: |
-          ./build/helios_test
+          ctest --output-on-failure --test-dir build
 
       # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
       # more efforts into investigating broken LAZ files written by Helios on MacOS.
