@@ -261,7 +261,7 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
 {
   // Load survey fields
   survey->name =
-    XmlUtils::getAttributeCast<std::string>(surveyNode, "name", xmlDocFilename);
+    XmlUtils::getAttributeCast<string>(surveyNode, "name", xmlDocFilename);
   survey->sourceFilePath = xmlDocFilePath;
   // Load scanner
   std::string scannerAssetLocation = XmlUtils::getAttributeCast<std::string>(
