@@ -152,7 +152,7 @@ add_executable(helios++)
 
 # Ensure Windows-specific compile options for the executable
 if(MSVC)
-  target_compile_options(helios PUBLIC /bigobj)
+  target_compile_options(helios++ PUBLIC /bigobj)
 endif()
 
 target_link_libraries(helios++ PRIVATE helios)
