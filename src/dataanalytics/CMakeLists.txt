@@ -1,5 +1,5 @@
 if(HELIOS_DATA_ANALYTICS)
-  target_include_directores(
+  target_include_directories(
     helios
     PUBLIC
     "."
