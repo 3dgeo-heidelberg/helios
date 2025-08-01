@@ -1,76 +1,17 @@
-#pragma once
-
-#include "BaseTest.h"
+#include <catch2/catch_test_macros.hpp>
+#undef WARN
+#undef INFO
+#include "logging.hpp"
 #include <platform/InterpolatedMovingPlatform.h>
 
-namespace HeliosTests {
-
-/**
- * @author Alberto M. Esmoris Pena
- * @version 1.0
- * @brief Functional platform test
- *
- * This test checks that function based platforms, such as the
- *  InterpolatedMovingPlatform, work properly
- *
- * @see InterpolatedMovingPlatform
- */
-class FunctionalPlatformTest : public BaseTest
+TEST_CASE("Functional platform test ")
 {
-public:
-  /**
-   * @brief Decimal precision for validation purposes
-   */
   double eps = 0.0001; // Decimal precision for validation purposes
-
-  // ***  CONSTRUCTOR  *** //
-  // ********************* //
-  /**
-   * @brief Functional platform test constructor
-   */
-  FunctionalPlatformTest()
-    : BaseTest("Functional platform test")
-  {
-  }
-  virtual ~FunctionalPlatformTest() = default;
-
-  // ***  R U N  *** //
-  // *************** //
-  /**
-   * @see BaseTest::run
-   */
-  bool run() override;
-
-  // ***  SUB-TESTS  *** //
-  // ******************* //
-  /**
-   * @brief Test the InterpolatingMovingPlatform
-   * @return True if it worked as expected, false otherwise
-   */
-  bool testInterpolatedMovingPlatform();
-};
-
-// ***  R U N  *** //
-// *************** //
-bool
-FunctionalPlatformTest::run()
-{
-  if (!testInterpolatedMovingPlatform())
-    return false;
-  return true;
-}
-
-// ***  SUB-TESTS  *** //
-// ******************* //
-bool
-FunctionalPlatformTest::testInterpolatedMovingPlatform()
-{
-  // Prepare what is necessary to build the InterpolatedMovingPlatform
   int simFreq = 10;
   std::function<void(void)> simulationFunction = [](void) -> void {};
   SimulationStepLoop stepLoop(simulationFunction);
   stepLoop.setFrequency(simFreq);
-  TemporalDesignMatrix<double, double> tdm(
+  fluxionum::TemporalDesignMatrix<double, double> tdm(
     arma::Mat<double>("0.0  -6  -2   0;"
                       "0.2  -4   2   0;"
                       "0.3  -3   3   0;"
@@ -83,7 +24,7 @@ FunctionalPlatformTest::testInterpolatedMovingPlatform()
     0,
     "t",
     vector<string>({ "t", "x", "y", "z" }));
-  DiffDesignMatrix<double, double> ddm = tdm.toDiffDesignMatrix();
+  fluxionum::DiffDesignMatrix<double, double> ddm = tdm.toDiffDesignMatrix();
   InterpolatedMovingPlatform imp(
     stepLoop,
     tdm,
@@ -110,20 +51,14 @@ FunctionalPlatformTest::testInterpolatedMovingPlatform()
   );
   for (size_t i = 0; i < impE.n_rows; ++i) {
     imp.doSimStep(simFreq);
-    if (std::fabs(stepLoop.getCurrentTime() - ((double)i) / 10.0) > eps)
-      return false;
+    REQUIRE(std::fabs(stepLoop.getCurrentTime() - ((double)i) / 10.0) <= eps);
+
     glm::dvec3 _impPos = imp.getPosition();
     arma::Col<double> impPos(3);
     impPos[0] = _impPos.x;
     impPos[1] = _impPos.y;
     impPos[2] = _impPos.z;
-    if (arma::any((impPos - impE.row(i).as_col()) > eps))
-      return false;
+    REQUIRE(arma::all((impPos - impE.row(i).as_col()) <= eps));
     stepLoop.nextStep();
   }
-
-  // Return true on success
-  return true;
-}
-
 }
