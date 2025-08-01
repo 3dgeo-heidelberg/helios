@@ -26,8 +26,12 @@ helios::filems::FMSFacadeFactory::buildFacade(std::string const& outdir,
   struct tm* tm = std::localtime(&t);
   char const pathsep = (char)fs::path::preferred_separator;
   std::stringstream ss;
-  ss << outdir << pathsep << survey.name << pathsep
-     << std::put_time(tm, "%Y-%m-%d_%H-%M-%S") << pathsep;
+  ss << outdir;
+  if (!outdir.empty() && outdir.back() != pathsep)
+    ss << pathsep;
+  if (!survey.name.empty())
+    ss << survey.name << pathsep;
+  ss << std::put_time(tm, "%Y-%m-%d_%H-%M-%S") << pathsep;
   std::string rootDir = ss.str();
   bool rootDirExists = fs::exists(rootDir);
   for (size_t i = 0; i < 98 && rootDirExists; ++i) {
