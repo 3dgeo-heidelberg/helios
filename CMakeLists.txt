@@ -143,6 +143,8 @@ if(BUILD_TESTING)
   add_test(NAME helios_test COMMAND helios_test)
   if(MSVC OR WIN32)
     target_compile_options(helios_test PUBLIC /bigobj)
+    target_compile_options(helios_test PUBLIC /MDd) # Use dynamic debug runtime for Debug builds
+    target_compile_definitions(helios_test PUBLIC _ITERATOR_DEBUG_LEVEL=2)
   endif()
   target_link_libraries(helios_test PRIVATE helios Catch2::Catch2WithMain)
   set_tests_properties(helios_test PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
