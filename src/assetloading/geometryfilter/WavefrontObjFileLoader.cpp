@@ -326,8 +326,8 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
           materials.insert(mats.begin(), mats.end());
         }
 
-        // Read material specification
-        else if (lineParts[0] == "usemtl") {
+        // Read material specification (line should have two parts)
+        else if (lineParts[0] == "usemtl" && lineParts.size() >= 2) {
           currentMat = lineParts[1];
         }
 
