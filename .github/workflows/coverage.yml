@@ -53,7 +53,7 @@ jobs:
 
       - name: Run C++ test suite
         run: |
-          ctest --output-on-failure --test-dir build
+          ctest --output-on-failure --test-dir build -C Debug
 
       - name: Run PyTest test suite
         run: |
