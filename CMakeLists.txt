@@ -141,22 +141,12 @@ if(BUILD_TESTING)
   find_package(Catch2 3 REQUIRED)
   add_executable(helios_test)
   add_test(NAME helios_test COMMAND helios_test)
-  if(MSVC OR WIN32)
-    target_compile_options(helios_test PUBLIC /bigobj)
-    target_compile_options(helios_test PUBLIC /MDd) # Use dynamic debug runtime for Debug builds
-    target_compile_definitions(helios_test PUBLIC _ITERATOR_DEBUG_LEVEL=2)
-  endif()
   target_link_libraries(helios_test PRIVATE helios Catch2::Catch2WithMain)
   set_tests_properties(helios_test PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
 
 # Add the HelIOS++ executable
 add_executable(helios++)
-
-# Ensure Windows-specific compile options for the executable
-if(MSVC OR WIN32)
-  target_compile_options(helios++ PUBLIC /bigobj)
-endif()
 
 target_link_libraries(helios++ PRIVATE helios)
 
