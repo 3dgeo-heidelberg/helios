@@ -33,14 +33,15 @@ protected:
    * @brief Instance of boost input/output service for asynchronous data
    *  processing
    */
-  boost::asio::io_service io_service_;
+  boost::asio::io_context io_context_;
   /**
    * @brief Instance of work guard to report the io service when it has
    *  pending tasks
-   * @see ThreadPool::io_service_
+   * @see ThreadPool::io_context_
    */
-  boost::asio::executor_work_guard<boost::asio::io_service::executor_type>
-    work_;
+  using work_guard_type =
+    boost::asio::executor_work_guard<boost::asio::io_context::executor_type>;
+  work_guard_type work_guard_;
   /**
    * @brief Size of thread pool (number of threads)
    */
@@ -62,22 +63,22 @@ public:
    * @see ThreadPool::pool_size
    */
   explicit ThreadPool(std::size_t const _pool_size)
-    : work_(boost::asio::make_work_guard(io_service_))
+    : work_guard_(boost::asio::make_work_guard(io_context_))
     , pool_size(_pool_size)
     , finished(false)
   {
     // Create threads
     for (std::size_t i = 0; i < pool_size; ++i) {
       threads_.create_thread([&]() -> boost::asio::io_context::count_type {
-        return io_service_.run();
+        return io_context_.run();
       });
     }
   }
 
   virtual ~ThreadPool()
   {
-    // Force all threads to return from io_service::run().
-    io_service_.stop();
+    // Force all threads to return from io_context_::run().
+    io_context_.stop();
 
     // Suppress all exceptions.
     if (!finished) {
