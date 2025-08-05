@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ThreadPool.h>
-
+#include <boost/asio/post.hpp>
 /**
  * @version 1.0
  * @brief Abstract class providing implementation of a simple thread pool which
@@ -12,7 +12,7 @@ template<typename... TaskArgs>
 class SimpleThreadPool : public ThreadPool
 {
 protected:
-  using ThreadPool::io_service_;
+  using ThreadPool::io_context_;
   using ThreadPool::pool_size;
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -68,9 +68,10 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    io_service_.post(boost::bind(&SimpleThreadPool::wrap_task,
-                                 this,
-                                 boost::function<void(TaskArgs...)>(task)));
+    boost::asio::post(io_context_,
+                      boost::bind(&SimpleThreadPool::wrap_task,
+                                  this,
+                                  boost::function<void(TaskArgs...)>(task)));
   }
 
   /**
