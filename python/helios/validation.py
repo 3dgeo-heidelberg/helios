@@ -103,15 +103,6 @@ def _is_iterable_of_model_annotation(a):
     return issubclass(args[0], Model)
 
 
-def _is_optional(t: Type) -> bool:
-    origin = get_origin(t)
-    return origin is Union and type(None) in get_args(t)
-
-
-def _inner_optional_type(t: Type) -> Type:
-    return next(arg for arg in get_args(t) if arg is not type(None))
-
-
 def get_all_annotations(cls):
     """Collect __annotations__ from cls and all its bases (excluding `object`)."""
     anns: dict[str, type] = {}
