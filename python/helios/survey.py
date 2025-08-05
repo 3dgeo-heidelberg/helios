@@ -83,6 +83,10 @@ class Survey(Model, cpp_class=_helios.Survey):
             self.full_waveform_settings._to_cpp()
         )
 
+        # we need to add serial IDs to the legs for proper process of writing into the file
+        for i, leg in enumerate(self.legs):
+            leg._cpp_object.serial_id = i
+
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False
             fms = None

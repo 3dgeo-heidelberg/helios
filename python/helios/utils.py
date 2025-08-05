@@ -267,10 +267,6 @@ def apply_scene_shift(
     Subsequent calls are no-ops.
     """
 
-    # we need to add serial IDs to the legs for proper process of writing into the file
-    for i, leg in enumerate(survey.legs):
-        leg._cpp_object.serial_id = i
-
     if getattr(survey, "_scene_shift_done", False):
         return
 
