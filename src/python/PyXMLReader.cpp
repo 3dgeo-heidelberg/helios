@@ -72,6 +72,36 @@ readSceneFromXml(std::string filePath, std::vector<std::string> assetsPath)
       xmlSurveyLoader.sceneLoader.kdtSAHLossNodes = 32;
       return xmlSurveyLoader.loadScene(sceneString, rebuildScene);
     } else if (elementName == "scene") {
+      std::string sceneBase = filePath;
+      const std::string xmlExt = ".xml";
+      if (sceneBase.size() >= xmlExt.size() &&
+          sceneBase.compare(
+            sceneBase.size() - xmlExt.size(), xmlExt.size(), xmlExt) == 0) {
+        sceneBase.resize(sceneBase.size() - xmlExt.size());
+      }
+
+      fs::path objPath = sceneBase + ".scene";
+      fs::path xmlPath = sceneBase + ".xml";
+      if (objPath.is_relative()) {
+        for (auto const& assetsDir : assetsPath) {
+          fs::path candObj = fs::path(assetsDir) / objPath;
+          fs::path candXml = fs::path(assetsDir) / xmlPath;
+          if (fs::exists(candObj)) {
+            objPath = candObj;
+            xmlPath = candXml;
+            break;
+          }
+        }
+      }
+
+      if (fs::is_regular_file(objPath) &&
+          fs::last_write_time(objPath) > fs::last_write_time(xmlPath)) {
+        SerialSceneWrapper* ssw =
+          SerialSceneWrapper::readScene(objPath.string());
+        auto scene = std::shared_ptr<Scene>(ssw->getScene());
+        delete ssw;
+        return scene;
+      }
       // Load the scene directly from a scene node
       XmlSceneLoader xmlSceneLoader(assetsPath);
 
