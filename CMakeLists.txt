@@ -124,6 +124,7 @@ target_compile_definitions(helios
 # Ensure Windows-specific compile options
 if(WIN32 OR MSVC)
   target_compile_definitions(helios PUBLIC WIN32_LEAN_AND_MEAN _OS_WINDOWS_)
+  target_compile_options(helios PUBLIC /bigobj)
 endif()
 
 # Enable data analytics code if requested
@@ -132,6 +133,16 @@ if(HELIOS_DATA_ANALYTICS)
 endif()
 if(HELIOS_BUDDING_METRICS)
   target_compile_definitions(helios PUBLIC BUDDING_METRICS=ON)
+endif()
+
+# Create test suite
+include(CTest)
+if(BUILD_TESTING)
+  find_package(Catch2 3 REQUIRED)
+  add_executable(helios_test)
+  add_test(NAME helios_test COMMAND helios_test)
+  target_link_libraries(helios_test PRIVATE helios Catch2::Catch2WithMain)
+  set_tests_properties(helios_test PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
 
 # Add the HelIOS++ executable
@@ -144,7 +155,7 @@ if(BUILD_PYTHON)
   include_directories(${CMAKE_SOURCE_DIR}/src/python)
   pybind11_add_module(_helios MODULE python/helios/helios_python.cpp)
   if(MSVC)
-    target_compile_options(_helios PRIVATE /bigobj)
+    target_compile_options(_helios PUBLIC /bigobj)
   endif()
   target_link_libraries(_helios PUBLIC helios pybind11::module)
   install(TARGETS _helios DESTINATION .)

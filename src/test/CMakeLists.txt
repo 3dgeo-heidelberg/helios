@@ -5,7 +5,25 @@ target_include_directories(
 )
 
 target_sources(
-  helios
-  PRIVATE
-  "Tests.cpp"
+  helios_test
+  PUBLIC
+  "AssetLoadingTest.cpp"
+  "DiscreteTimeTest.cpp"
+  "EnergyModelsTest.cpp"
+  "ExprTreeTest.cpp"
+  "FluxionumTest.cpp"
+  "FunctionalPlatformTest.cpp"
+  "GroveTest.cpp"
+  "HPCTest.cpp"
+  "LadLutTest.cpp"
+  "NoiseTest.cpp"
+  "PlaneFitterTest.cpp"
+  "PlatformPhysicsTest.cpp"
+  "RandomTest.cpp"
+  "RayIntersectionTest.cpp"
+  "RigidMotionTest.cpp"
+  "ScenePartSplitTest.cpp"
+  "SerializationTest.cpp"
+  "SurveyCopyTest.cpp"
+  "VoxelParsingTest.cpp"
 )

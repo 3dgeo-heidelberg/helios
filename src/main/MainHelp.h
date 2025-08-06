@@ -20,7 +20,8 @@ printMainHelp()
 
     << "\t\t--version : Show the full version of HELIOS++\n\n"
 
-    << "\t\t--test : Run tests to check helios++ behaves as expected\n\n"
+    << "\t\t--test : Deprecated. Run the testing executable helios_test "
+       "instead\n\n"
 
     << "\t\t--unzip <input_path> <output_path>\n"
     << "\t\t\tDecompress the file at input path and write it decompressed "
