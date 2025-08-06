@@ -234,9 +234,11 @@ def test_survey_als_multi_scan_not_from_xml(airplane, multi_als_scanner):
     m, t = survey.run(format=OutputFormat.NPY)
     assert m.shape[0] > 0
     assert t.shape[0] > 0
+    # Add this test to check that serial id is specified correctly
+    assert survey.legs[0]._cpp_object.serial_id == 0
 
 
-def test_run_interpolated_survey(multi_als_scanner):
+def test_run_interpolated_survey():
     execution_settings = ExecutionSettings(
         num_threads=1,
     )
