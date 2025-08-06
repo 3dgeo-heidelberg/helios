@@ -75,7 +75,9 @@ class Survey(Model, cpp_class=_helios.Survey):
             apply_scene_shift(self, execution_settings)
 
         # Ensure that the scene has been finalized
-        self.scene._finalize(execution_settings)
+        if not is_xml_loaded(self) and not is_xml_loaded(self.scene):
+            self.scene._finalize(execution_settings)
+
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # Set the fullwave form settings on the scanner
@@ -202,8 +204,16 @@ class Survey(Model, cpp_class=_helios.Survey):
         from the provided settings.
         """
 
-        copy_platform_settings = PlatformSettings()
-        copy_scanner_settings = ScannerSettings()
+        copy_platform_settings = (
+            platform_settings.__class__()
+            if platform_settings is not None
+            else PlatformSettings()
+        )
+        copy_scanner_settings = (
+            scanner_settings.__class__()
+            if scanner_settings is not None
+            else ScannerSettings()
+        )
         # Set the parameters given as scanner + platform settings
         if platform_settings is not None:
             copy_platform_settings.update_from_object(platform_settings)
@@ -233,7 +243,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
-
         # If there are parameters left, we raise an error
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
