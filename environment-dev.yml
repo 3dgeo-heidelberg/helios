@@ -13,7 +13,7 @@ dependencies:
   - lapack
   - laspy
   - lastools
-  - libboost-devel==1.86.0
+  - libboost-devel
   - libgdal
   - matplotlib-base
   - numpydantic
