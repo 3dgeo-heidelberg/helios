@@ -73,11 +73,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Apply shift once and only if the survey is not loaded from XML
         if not is_xml_loaded(self):
             apply_scene_shift(self, execution_settings)
-        
+
         # Ensure that the scene has been finalized
         if not is_xml_loaded(self):
             self.scene._finalize(execution_settings)
-        
+
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # Set the fullwave form settings on the scanner
@@ -190,7 +190,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
-
     def add_leg(
         self,
         leg: Optional[Leg] = None,
@@ -206,11 +205,13 @@ class Survey(Model, cpp_class=_helios.Survey):
         """
 
         copy_platform_settings = (
-            platform_settings.__class__() if platform_settings is not None
+            platform_settings.__class__()
+            if platform_settings is not None
             else PlatformSettings()
         )
         copy_scanner_settings = (
-            scanner_settings.__class__() if scanner_settings is not None
+            scanner_settings.__class__()
+            if scanner_settings is not None
             else ScannerSettings()
         )
         # Set the parameters given as scanner + platform settings
