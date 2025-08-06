@@ -9,8 +9,8 @@ dependencies:
   - importlib_resources
   - lapack
   - lastools
-  - libboost-python-devel==1.86.0
-  - libboost-devel==1.86.0
+  - libboost-python-devel
+  - libboost-devel
   - libgdal
   - matplotlib-base
   - pip
