@@ -53,8 +53,7 @@ WavefrontObjFileLoader::run()
     ss << "Failed to read 'up'-axis from scene XML file.\n"
        << "Assuming 'z' axis points upwards for scene part \"" << filePathString
        << "\".\n"
-       << "Set up axis explicitly to silence this warning.\n"
-       << "C++ Exception: " << e.what();
+       << "Set up axis explicitly to silence this warning.\n";
     logging::INFO(ss.str());
   }
   // ######### END Read up axis ###########
@@ -327,8 +326,8 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
           materials.insert(mats.begin(), mats.end());
         }
 
-        // Read material specification
-        else if (lineParts[0] == "usemtl") {
+        // Read material specification (line should have two parts)
+        else if (lineParts[0] == "usemtl" && lineParts.size() >= 2) {
           currentMat = lineParts[1];
         }
 
