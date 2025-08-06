@@ -953,28 +953,28 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
   } else if (str_opticsType == "risley") {
     std::vector<Prism> prisms;
 
-    double rotorFreq_1_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "double", 0.));
-    double rotorFreq_2_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "double", 0.));
-    double rotorFreq_3_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "rotorFreq3_Hz", "double", 0.));
+    double rotorFreq_1_Hz =
+      XmlUtils::getAttributeCast<double>(scannerNode, "rotorFreq1_Hz", 0.);
+    double rotorFreq_2_Hz =
+      XmlUtils::getAttributeCast<double>(scannerNode, "rotorFreq2_Hz", 0.);
+    double rotorFreq_3_Hz =
+      XmlUtils::getAttributeCast<double>(scannerNode, "rotorFreq3_Hz", 0.);
 
-    double prism1_angle_deg = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "angle1_deg", "double", 0.0));
-    double prism2_angle_deg = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "angle2_deg", "double", 0.0));
-    double prism3_angle_deg = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "angle3_deg", "double", 0.0));
+    double prism1_angle_deg =
+      XmlUtils::getAttributeCast<double>(scannerNode, "angle1_deg", 0.0);
+    double prism2_angle_deg =
+      XmlUtils::getAttributeCast<double>(scannerNode, "angle2_deg", 0.0);
+    double prism3_angle_deg =
+      XmlUtils::getAttributeCast<double>(scannerNode, "angle3_deg", 0.0);
 
-    double refr_prism1 = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "refrIndex1", "double", 1.0));
-    double refr_prism2 = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "refrIndex2", "double", 1.0));
-    double refr_prism3 = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "refrIndex3", "double", 1.0));
-    double refr_air = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "refrIndex_air", "double", 1.0));
+    double refr_prism1 =
+      XmlUtils::getAttributeCast<double>(scannerNode, "refrIndex1", 1.0);
+    double refr_prism2 =
+      XmlUtils::getAttributeCast<double>(scannerNode, "refrIndex2", 1.0);
+    double refr_prism3 =
+      XmlUtils::getAttributeCast<double>(scannerNode, "refrIndex3", 1.0);
+    double refr_air =
+      XmlUtils::getAttributeCast<double>(scannerNode, "refrIndex_air", 1.0);
 
     const double epsilon = 1e-6;
 
@@ -1454,13 +1454,12 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         if (rbd->prisms.size() >= 1) {
           if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
             rbd->prisms[0].rotation_speed_rad =
-              boost::get<double>(
-                XmlUtils::getAttribute(chan, "rotorFreq1_Hz", "double", 0.0)) *
+              XmlUtils::getAttributeCast<double>(chan, "rotorFreq1_Hz", 0.0) *
               2.0 * M_PI;
           }
           if (XmlUtils::hasAttribute(chan, "angle1_deg")) {
-            double angle = boost::get<double>(
-              XmlUtils::getAttribute(chan, "angle1_deg", "double", 0.0));
+            double angle =
+              XmlUtils::getAttributeCast<double>(chan, "angle1_deg", 0.0);
             double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
             rbd->prisms[0].angle_rad = angle_rad;
             rbd->prisms[0].sin_angle_rad = sin(angle_rad);
@@ -1468,8 +1467,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
             rbd->prisms[0].inclinedOnLeft = angle > 0.0;
           }
           if (XmlUtils::hasAttribute(chan, "refrIndex1")) {
-            rbd->prisms[0].refractive_index = boost::get<double>(
-              XmlUtils::getAttribute(chan, "refrIndex1", "double", 0.0));
+            rbd->prisms[0].refractive_index =
+              XmlUtils::getAttributeCast<double>(chan, "refrIndex1", 0.0);
           }
         }
 
@@ -1477,13 +1476,12 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         if (rbd->prisms.size() >= 2) {
           if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
             rbd->prisms[1].rotation_speed_rad =
-              boost::get<double>(
-                XmlUtils::getAttribute(chan, "rotorFreq2_Hz", "double", 0.0)) *
+              XmlUtils::getAttributeCast<double>(chan, "rotorFreq2_Hz", 0.0) *
               2.0 * M_PI;
           }
           if (XmlUtils::hasAttribute(chan, "angle2_deg")) {
-            double angle = boost::get<double>(
-              XmlUtils::getAttribute(chan, "angle2_deg", "double", 0.0));
+            double angle =
+              XmlUtils::getAttributeCast<double>(chan, "angle2_deg", 0.0);
             double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
             rbd->prisms[1].angle_rad = angle_rad;
             rbd->prisms[1].sin_angle_rad = sin(angle_rad);
@@ -1491,8 +1489,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
             rbd->prisms[1].inclinedOnLeft = angle > 0.0;
           }
           if (XmlUtils::hasAttribute(chan, "refrIndex2")) {
-            rbd->prisms[1].refractive_index = boost::get<double>(
-              XmlUtils::getAttribute(chan, "refrIndex2", "double", 0.0));
+            rbd->prisms[1].refractive_index =
+              XmlUtils::getAttributeCast<double>(chan, "refrIndex2", 0.0);
           }
         }
 
@@ -1500,13 +1498,12 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         if (rbd->prisms.size() >= 3) {
           if (XmlUtils::hasAttribute(chan, "rotorFreq3_Hz")) {
             rbd->prisms[2].rotation_speed_rad =
-              boost::get<double>(
-                XmlUtils::getAttribute(chan, "rotorFreq3_Hz", "double", 0.0)) *
+              XmlUtils::getAttributeCast<double>(chan, "rotorFreq3_Hz", 0.0) *
               2.0 * M_PI;
           }
           if (XmlUtils::hasAttribute(chan, "angle3_deg")) {
-            double angle = boost::get<double>(
-              XmlUtils::getAttribute(chan, "angle3_deg", "double", 0.0));
+            double angle =
+              XmlUtils::getAttributeCast<double>(chan, "angle3_deg", 0.0);
             double angle_rad = std::abs(MathConverter::degreesToRadians(angle));
             rbd->prisms[2].angle_rad = angle_rad;
             rbd->prisms[2].sin_angle_rad = sin(angle_rad);
@@ -1514,14 +1511,14 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
             rbd->prisms[2].inclinedOnLeft = angle > 0.0;
           }
           if (XmlUtils::hasAttribute(chan, "refrIndex3")) {
-            rbd->prisms[2].refractive_index = boost::get<double>(
-              XmlUtils::getAttribute(chan, "refrIndex3", "double", 0.0));
+            rbd->prisms[2].refractive_index =
+              XmlUtils::getAttributeCast<double>(chan, "refrIndex3", 0.0);
           }
         }
 
         if (XmlUtils::hasAttribute(chan, "refrIndex_air")) {
-          rbd->refrIndex_air = boost::get<double>(
-            XmlUtils::getAttribute(chan, "refrIndex_air", "double", 0.0));
+          rbd->refrIndex_air =
+            XmlUtils::getAttributeCast<double>(chan, "refrIndex_air", 0.0);
         }
       }
     }
