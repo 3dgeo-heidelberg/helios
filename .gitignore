@@ -20,6 +20,7 @@ gdaldll/*
 tags
 mswin/
 valgrind.xml
+.vscode
 
 # Ignore vim stuff
 *.swp

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <glm/glm.hpp>
+
 #include "ScannerSettings.h"
 
 #include "maths/Rotation.h"

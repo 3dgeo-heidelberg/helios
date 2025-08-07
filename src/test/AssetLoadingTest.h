@@ -412,20 +412,19 @@ AssetLoadingTest::testScannerLoading()
     return false;
   if (scanner->getDetector()->cfg_device_rangeMin_m != 2)
     return false;
-  if (std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
+  if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                  scanner->getBeamDeflector())
+                  ->prisms[0]
+                  .rotation_speed_rad +
+                488.4129379) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector())
-                  ->rotorSpeed_rad_1 -
-                1160.876155 // Hz / (2 pi)
-                ) > eps)
-    return false;
-  if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
-                  scanner->getBeamDeflector())
-                  ->rotorSpeed_rad_2 +
-                742.298655 // Hz / (2 pi)
-                ) > eps)
+                  ->prisms[1]
+                  .rotation_speed_rad -
+                763.8258938) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(scanner->getWavelength() - 905e-9) > eps)
     return false;
@@ -442,6 +441,70 @@ AssetLoadingTest::testScannerLoading()
       std::fabs(eatt.getQ1() + 0.5) > eps ||
       std::fabs(eatt.getQ2() + 0.5) > eps ||
       std::fabs(eatt.getQ3() + 0.5) > eps)
+    return false;
+  eraxis = scanner->getScannerHead()->cfg_device_rotateAxis;
+  if (eraxis[0] != 1 || eraxis[1] != 0 || eraxis[2] != 0)
+    return false;
+  // Load and validate DJI Zenmuse L2
+  scanner = std::static_pointer_cast<Scanner>(
+    loader.getAssetById("scanner", "dji-zenmuse-l2", nullptr));
+  if (std::dynamic_pointer_cast<SingleScanner>(scanner) != nullptr)
+    return false;
+  if (std::dynamic_pointer_cast<MultiScanner>(scanner) == nullptr)
+    return false;
+  if (scanner->getScannerId() != "dji-zenmuse-l2")
+    return false;
+  if (scanner->getDetector()->cfg_device_accuracy_m != 0.02)
+    return false;
+  if (scanner->getBeamDivergence() != 0.0027)
+    return false;
+  if (scanner->name != "DJI Zenmuse L2")
+    return false;
+  if (std::dynamic_pointer_cast<RisleyBeamDeflector>(
+        scanner->getBeamDeflector()) == nullptr)
+    return false;
+  pfs = scanner->getSupportedPulseFreqs_Hz();
+  if (pfs.size() != 1)
+    return false;
+  if (pfs.front() != 240000)
+    return false;
+  if (scanner->getPulseLength_ns() != 4)
+    return false;
+  if (scanner->getDetector()->cfg_device_rangeMin_m != 2)
+    return false;
+  if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                  scanner->getBeamDeflector())
+                  ->prisms[0]
+                  .rotation_speed_rad -
+                66.15126) // Hz / (2 pi)
+      > eps)
+    return false;
+  if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                  scanner->getBeamDeflector())
+                  ->prisms[1]
+                  .rotation_speed_rad +
+                324.55542) // Hz / (2 pi)
+      > eps)
+    return false;
+  if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                  scanner->getBeamDeflector())
+                  ->prisms[2]
+                  .rotation_speed_rad -
+                66.15145) // Hz / (2 pi)
+      > eps)
+    return false;
+  if (std::fabs(scanner->getWavelength() - 905e-9) > eps)
+    return false;
+  if (scanner->getFWFSettings().beamSampleQuality != 3)
+    return false;
+  epdiff = scanner->getHeadRelativeEmitterPosition();
+  if (std::fabs(epdiff[0]) > eps || std::fabs(epdiff[1]) > eps ||
+      std::fabs(epdiff[2]) > eps)
+    return false;
+  eatt = scanner->getHeadRelativeEmitterAttitude();
+  if (std::fabs(eatt.getQ0() - 0.707107) > eps ||
+      std::fabs(eatt.getQ1()) > eps || std::fabs(eatt.getQ2()) > eps ||
+      std::fabs(eatt.getQ3() - 0.707107) > eps)
     return false;
   eraxis = scanner->getScannerHead()->cfg_device_rotateAxis;
   if (eraxis[0] != 1 || eraxis[1] != 0 || eraxis[2] != 0)
@@ -496,34 +559,31 @@ AssetLoadingTest::testScannerLoading()
     return false;
   if (scanner->getDetector(2)->cfg_device_rangeMin_m != 2)
     return false;
-  if (std::fabs(scanner->getBeamDeflector(0)->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
-    return false;
-  if (std::fabs(scanner->getBeamDeflector(1)->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
-    return false;
-  if (std::fabs(scanner->getBeamDeflector(2)->cfg_device_scanAngleMax_rad -
-                0.6108652) > eps)
-    return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))
-                  ->rotorSpeed_rad_1 -
-                1114.084602) > eps)
+                  ->prisms[0]
+                  .rotation_speed_rad +
+                488.4129379) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(1))
-                  ->rotorSpeed_rad_1 -
-                1160.876155) > eps)
+                  ->prisms[0]
+                  .rotation_speed_rad +
+                488.4129379) // Hz / (2 pi)
+      > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(0))
-                  ->rotorSpeed_rad_2 +
-                636.6197724) > eps)
+                  ->prisms[1]
+                  .rotation_speed_rad -
+                763.8258938) > eps)
     return false;
   if (std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                   scanner->getBeamDeflector(1))
-                  ->rotorSpeed_rad_2 +
-                742.298655) > eps)
+                  ->prisms[1]
+                  .rotation_speed_rad -
+                763.8258938) > eps)
     return false;
   if (std::fabs(scanner->getWavelength(0) - 905e-9) > eps)
     return false;
