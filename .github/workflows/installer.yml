@@ -9,7 +9,7 @@ on:
         # It would be nice to somehow extract this from the actual
         # latest version of Helios, but that would require a Python
         # script to perform `conda repoquery search helios --json` etc.
-        default: '2.0.1'
+        default: '2.1.0'
 
 jobs:
   build-installer:
