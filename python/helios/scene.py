@@ -320,9 +320,9 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             self._enforce_uniqueness_across_instances(field, value)
 
     def _post_set(self, field):
-        # When the Scene changes, we want to invalidate the KDTree etc.
-
-        _helios.invalidate_static_scene(self._cpp_object)
+        # When the Scene changes after initialization, we want to invalidate the KDTree etc.
+        if not self._during_init:
+            _helios.invalidate_static_scene(self._cpp_object)
 
     @classmethod
     @validate_call

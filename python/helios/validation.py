@@ -245,6 +245,9 @@ class ValidatedModelMetaClass(type):
 
         # Create an __init__ for the class
         def __init__(self, *args, **instance_kwargs):
+
+            self._during_init = True
+
             # Iterate the fields in exactly the given order. When using a different order,
             # we risk that properties are instantiated in an incorrect order.
             for i, field in enumerate(annotations):
@@ -281,6 +284,7 @@ class ValidatedModelMetaClass(type):
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
 
+            self._during_init = False
             instance_kwargs.pop("_cpp_object", None)
             invalid_fields = set(instance_kwargs) - set(annotations)
             if invalid_fields:
