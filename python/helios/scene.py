@@ -295,7 +295,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):
         """Finalize the scene, making it ready for rendering."""
-        if len(self._cpp_object.primitives) == 0 and not is_finalized(self):
+        if len(self._cpp_object.primitives) == 0:
             execution_settings = compose_execution_settings(
                 execution_settings, parameters
             )

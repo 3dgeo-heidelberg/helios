@@ -5,6 +5,7 @@ from helios.settings import *
 from helios.survey import *
 from helios.platforms import *
 from helios.scanner import *
+from helios.utils import *
 
 import os
 import math
@@ -277,10 +278,6 @@ def test_transform_scenepart(box_f):
 def test_scene_auto_binary():
     # We create binary while reading from xml
     survey1 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
-    print(len(survey1.scene._cpp_object.scene_parts))
-    print(len(survey1.scene._cpp_object.primitives))
-    print(len(survey1.scene.scene_parts[0]._cpp_object.primitives))
-    print(len(survey1.scene.scene_parts[1]._cpp_object.primitives))
     points1, _ = survey1.run()
 
     survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
@@ -321,32 +318,7 @@ def test_scene_manual_binary():
     )
     scene1.to_binary("data/scenes/toyblocks/toyblocks_scene_manual1.scene")
 
-    scene_part11 = ScenePart.from_obj(
-        "data/sceneparts/basic/groundplane/groundplane.obj"
-    )
-    scene_part11.scale(70)
-    scene_part11.translate([20.0, 0.0, 0.0])
-    scene_part12 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
-    scene_part12.scale(1)
-    scene_part13 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
-    scene_part13.rotate(angle="45 deg", axis=[0, 0, 1.0])
-    scene_part13.scale(0.5)
-    scene_part13.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
-    scene_part13.translate([-45.0, 10.0, 10.0])
-    scene_part14 = ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
-    scene_part14.scale(0.5)
-    scene_part15 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
-    scene_part15.scale(1)
-
-    scene11 = StaticScene(
-        scene_parts=[
-            scene_part11,
-            scene_part12,
-            scene_part13,
-            scene_part14,
-            scene_part15,
-        ]
-    )
+    scene2 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene_manual1.scene")
     platform_settings1 = StaticPlatformSettings(x=-26, y=-31, z=0, force_on_ground=True)
     platform_settings2 = StaticPlatformSettings(x=-35, y=35, z=0, force_on_ground=True)
     platform_settings3 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
@@ -381,7 +353,7 @@ def test_scene_manual_binary():
     )
     platform1 = tripod()
     scanner1 = riegl_vz_400()
-    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene11)
+    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene2)
 
     survey1.add_leg(
         scanner_settings=scanner_settings1, platform_settings=platform_settings1
@@ -592,3 +564,36 @@ def test_scene_flag_from_xml_set():
 
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene)
+
+
+def test_create_binary_during_from_xml():
+    """
+    Test that a binary file is created when loading a scene from XML.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", save_to_binary=True)
+    assert os.path.exists("data/scenes/toyblocks/toyblocks_scene.scene")
+    os.remove("data/scenes/toyblocks/toyblocks_scene.scene")
+
+
+def test_flags_assosiated_with_scene():
+    #this creates a binary after reading from xml
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
+    assert is_xml_loaded(survey)
+    assert is_xml_loaded(survey.scene)
+    assert not is_binary_loaded(survey.scene)
+    assert not is_binary_loaded(survey)
+
+    #this reads from created binary directly through .from_xml
+    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", False)
+    assert is_xml_loaded(survey2)
+    assert is_xml_loaded(survey2.scene)
+    assert is_binary_loaded(survey2.scene)
+    
+    scene1 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene.scene")
+    assert is_binary_loaded(scene1)
+    assert not is_xml_loaded(scene1)
+
+    scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert is_xml_loaded(scene2)
+    assert not is_binary_loaded(scene2)
+    
