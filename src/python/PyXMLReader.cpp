@@ -5,14 +5,17 @@
 std::shared_ptr<Survey>
 readSurveyFromXml(std::string surveyPath,
                   std::vector<std::string> assetsPath,
-                  bool legNoiseDisabled)
+                  bool legNoiseDisabled,
+                  bool loadSceneNotFromBinary,
+                  bool writeSceneToBinary)
 {
-  bool rebuildScene = false;
-  XmlSurveyLoader xmlreader(surveyPath, assetsPath);
+  // it would be better to let user decide whether to write a scene into binary
+  // or not
+  XmlSurveyLoader xmlreader(surveyPath, assetsPath, writeSceneToBinary);
   xmlreader.sceneLoader.kdtFactoryType = 4;
   xmlreader.sceneLoader.kdtNumJobs = 0;
   xmlreader.sceneLoader.kdtSAHLossNodes = 32;
-  return xmlreader.load(legNoiseDisabled, rebuildScene);
+  return xmlreader.load(legNoiseDisabled, loadSceneNotFromBinary);
 }
 
 std::shared_ptr<Scanner>
@@ -42,9 +45,11 @@ readPlatformFromXml(std::string platformPath,
 }
 
 std::shared_ptr<Scene>
-readSceneFromXml(std::string filePath, std::vector<std::string> assetsPath)
+readSceneFromXml(std::string filePath,
+                 std::vector<std::string> assetsPath,
+                 bool writeBinary)
 {
-  bool rebuildScene = false;
+  bool rebuildScene = true;
   tinyxml2::XMLDocument doc;
   if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: Failed to load XML file " + filePath);
@@ -79,17 +84,17 @@ readSceneFromXml(std::string filePath, std::vector<std::string> assetsPath)
       std::shared_ptr<Scene> scene =
         xmlSceneLoader.createSceneFromXml(element, filePath, &sceneType);
 
-      if (scene) {
-        std::string sceneObjPath = filePath + ".scene";
+      if (writeBinary) {
+        std::string filePathWithoutExtension =
+          std::filesystem::path(filePath).replace_extension("").string();
+        std::string sceneObjPath = filePathWithoutExtension + ".scene";
         SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
-
-        scene->buildKDGroveWithLog();
-      } else {
-        logging::ERR("Error: Failed to create scene from XML");
-        return nullptr;
       }
-
+      scene->buildKDGroveWithLog();
       return scene;
+    } else {
+      logging::ERR("Error: Failed to create scene from XML");
+      return nullptr;
     }
   }
   return nullptr;

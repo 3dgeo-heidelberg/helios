@@ -1160,6 +1160,7 @@ PYBIND11_MODULE(_helios, m)
   py::class_<StaticScene, Scene, std::shared_ptr<StaticScene>> static_scene(
     m, "StaticScene");
   static_scene.def(py::init<>())
+    .def(py::init<StaticScene&>(), py::arg("scene"))
     .def("get_static_object_part", &StaticScene::getStaticObject, py::arg("id"))
     .def("set_static_object_part",
          &StaticScene::setStaticObject,

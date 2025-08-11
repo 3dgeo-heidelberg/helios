@@ -423,6 +423,7 @@ makeSceneShift(Survey& survey)
           survey.scanner->platform->scene->getGroundPointAt(platformPos).z;
         platformPos.z = groundZ;
       }
+      leg.mPlatformSettings->setPosition(platformPos);
     }
 
     if (leg.mScannerSettings) {

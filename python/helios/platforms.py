@@ -120,11 +120,7 @@ class StaticPlatformSettings(PlatformSettingsBase):
     x: float = 0
     y: float = 0
     z: float = 0
-    force_on_ground = False
-
-
-class StaticPlatformSettings(PlatformSettings):
-    pass
+    force_on_ground: bool = False
 
 
 class DynamicPlatformSettings(PlatformSettings):

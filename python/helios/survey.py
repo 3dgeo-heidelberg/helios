@@ -22,6 +22,7 @@ from helios.utils import (
     traj_dtype,
     apply_scene_shift,
     is_xml_loaded,
+    is_binary_loaded,
 )
 from helios.validation import AssetPath, Model, validate_xml_file
 
@@ -57,7 +58,6 @@ class Survey(Model, cpp_class=_helios.Survey):
     ):
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
-
         # Update the settings to use
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
@@ -70,13 +70,15 @@ class Survey(Model, cpp_class=_helios.Survey):
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
+        # Ensure that the scene has been finalized
+        if not (is_xml_loaded(self) or is_binary_loaded(self.scene) or is_xml_loaded(self.scene)):
+            self.scene._finalize(execution_settings)
+        
+        self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
+
         # Apply shift once and only if the survey is not loaded from XML
         if not is_xml_loaded(self):
             apply_scene_shift(self, execution_settings)
-
-        # Ensure that the scene has been finalized
-        self.scene._finalize(execution_settings)
-        self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # Set the fullwave form settings on the scanner
         self.scanner._cpp_object.apply_settings_FWF(
@@ -188,6 +190,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
+
     def add_leg(
         self,
         leg: Optional[Leg] = None,
@@ -202,8 +205,14 @@ class Survey(Model, cpp_class=_helios.Survey):
         from the provided settings.
         """
 
-        copy_platform_settings = PlatformSettings()
-        copy_scanner_settings = ScannerSettings()
+        copy_platform_settings = (
+            platform_settings.__class__() if platform_settings is not None
+            else PlatformSettings()
+        )
+        copy_scanner_settings = (
+            scanner_settings.__class__() if scanner_settings is not None
+            else ScannerSettings()
+        )
         # Set the parameters given as scanner + platform settings
         if platform_settings is not None:
             copy_platform_settings.update_from_object(platform_settings)
@@ -233,7 +242,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
-
         # If there are parameters left, we raise an error
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
@@ -244,18 +252,19 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     @classmethod
     @validate_call
-    def from_xml(cls, survey_file: AssetPath):
+    def from_xml(cls, survey_file: AssetPath, load_scene_not_from_binary: bool = True, write_scene_to_binary: bool = False):
         """Construct the survey object from an XML file."""
 
         # Validate the XML
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True
+            str(survey_file), [str(p) for p in get_asset_directories()], True, load_scene_not_from_binary, write_scene_to_binary
         )
 
         survey = cls._from_cpp(_cpp_survey)
         survey._is_loaded_from_xml = True
+        survey.scene._is_loaded_from_xml = True
         return survey
 
     def _pre_set(self, field, value):
