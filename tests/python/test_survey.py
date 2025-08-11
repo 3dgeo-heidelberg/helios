@@ -305,11 +305,18 @@ def test_survey_run_with_binary_scene():
     """
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     scene.to_binary("data/scenes/toyblocks/toyblocks_scene_case23.scene")
-    scene = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene_case23.scene")
+    scene = StaticScene.from_binary(
+        "data/scenes/toyblocks/toyblocks_scene_case23.scene"
+    )
 
     scanner_settings = ScannerSettings(
-        pulse_frequency=100000, scan_frequency=120, min_vertical_angle="-40 deg", max_vertical_angle="60 deg",
-        head_rotation="10 deg/s", rotation_start_angle="0 deg", rotation_stop_angle="180 deg"
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="180 deg",
     )
     platform_settings = PlatformSettings(x=0, y=0, z=0)
 
@@ -317,7 +324,9 @@ def test_survey_run_with_binary_scene():
     scanner = riegl_vz_400()
 
     survey = Survey(scanner=scanner, platform=platform, scene=scene)
-    survey.add_leg(platform_settings=platform_settings, scanner_settings=scanner_settings)
+    survey.add_leg(
+        platform_settings=platform_settings, scanner_settings=scanner_settings
+    )
 
     points, trajectory = survey.run(format=OutputFormat.NPY)
 

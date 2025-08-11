@@ -318,7 +318,9 @@ def test_scene_manual_binary():
     )
     scene1.to_binary("data/scenes/toyblocks/toyblocks_scene_manual1.scene")
 
-    scene2 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene_manual1.scene")
+    scene2 = StaticScene.from_binary(
+        "data/scenes/toyblocks/toyblocks_scene_manual1.scene"
+    )
     platform_settings1 = StaticPlatformSettings(x=-26, y=-31, z=0, force_on_ground=True)
     platform_settings2 = StaticPlatformSettings(x=-35, y=35, z=0, force_on_ground=True)
     platform_settings3 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
@@ -570,25 +572,27 @@ def test_create_binary_during_from_xml():
     """
     Test that a binary file is created when loading a scene from XML.
     """
-    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", save_to_binary=True)
+    scene = StaticScene.from_xml(
+        "data/scenes/toyblocks/toyblocks_scene.xml", save_to_binary=True
+    )
     assert os.path.exists("data/scenes/toyblocks/toyblocks_scene.scene")
     os.remove("data/scenes/toyblocks/toyblocks_scene.scene")
 
 
 def test_flags_assosiated_with_scene():
-    #this creates a binary after reading from xml
+    # this creates a binary after reading from xml
     survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
     assert is_xml_loaded(survey)
     assert is_xml_loaded(survey.scene)
     assert not is_binary_loaded(survey.scene)
     assert not is_binary_loaded(survey)
 
-    #this reads from created binary directly through .from_xml
+    # this reads from created binary directly through .from_xml
     survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", False)
     assert is_xml_loaded(survey2)
     assert is_xml_loaded(survey2.scene)
     assert is_binary_loaded(survey2.scene)
-    
+
     scene1 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene.scene")
     assert is_binary_loaded(scene1)
     assert not is_xml_loaded(scene1)
@@ -596,4 +600,3 @@ def test_flags_assosiated_with_scene():
     scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene2)
     assert not is_binary_loaded(scene2)
-    
