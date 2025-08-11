@@ -335,7 +335,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     def to_binary(self, filename: AssetPath, is_dyn_scene: bool = False):
         if not (is_xml_loaded(self) or is_binary_loaded(self)):
             self._finalize()
-            
+
         _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
 
     @classmethod

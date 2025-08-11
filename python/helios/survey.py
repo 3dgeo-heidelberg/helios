@@ -71,9 +71,13 @@ class Survey(Model, cpp_class=_helios.Survey):
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
         # Ensure that the scene has been finalized
-        if not (is_xml_loaded(self) or is_binary_loaded(self.scene) or is_xml_loaded(self.scene)):
+        if not (
+            is_xml_loaded(self)
+            or is_binary_loaded(self.scene)
+            or is_xml_loaded(self.scene)
+        ):
             self.scene._finalize(execution_settings)
-        
+
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # Apply shift once and only if the survey is not loaded from XML
@@ -190,7 +194,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
-
     def add_leg(
         self,
         leg: Optional[Leg] = None,
@@ -206,11 +209,13 @@ class Survey(Model, cpp_class=_helios.Survey):
         """
 
         copy_platform_settings = (
-            platform_settings.__class__() if platform_settings is not None
+            platform_settings.__class__()
+            if platform_settings is not None
             else PlatformSettings()
         )
         copy_scanner_settings = (
-            scanner_settings.__class__() if scanner_settings is not None
+            scanner_settings.__class__()
+            if scanner_settings is not None
             else ScannerSettings()
         )
         # Set the parameters given as scanner + platform settings
@@ -252,14 +257,23 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     @classmethod
     @validate_call
-    def from_xml(cls, survey_file: AssetPath, load_scene_not_from_binary: bool = True, write_scene_to_binary: bool = False):
+    def from_xml(
+        cls,
+        survey_file: AssetPath,
+        load_scene_not_from_binary: bool = True,
+        write_scene_to_binary: bool = False,
+    ):
         """Construct the survey object from an XML file."""
 
         # Validate the XML
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True, load_scene_not_from_binary, write_scene_to_binary
+            str(survey_file),
+            [str(p) for p in get_asset_directories()],
+            True,
+            load_scene_not_from_binary,
+            write_scene_to_binary,
         )
 
         survey = cls._from_cpp(_cpp_survey)
