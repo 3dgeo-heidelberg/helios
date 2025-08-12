@@ -6,18 +6,16 @@ python/helios/_version.py
 output/*
 pytest-output/*
 
-<<<<<<< HEAD
 # Ignore files written by our toolchain
 coverage.info
 *.orig
-=======
+
 # Ignore IDE stuff
 .idea
 tags
 mswin/
 valgrind.xml
 .vscode
->>>>>>> origin/main
 
 # Ignore common IDE artifacts
 .vscode
@@ -30,7 +28,6 @@ valgrind.xml
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-<<<<<<< HEAD
 *$py.class
 
 # C extensions
@@ -241,9 +238,3 @@ cython_debug/
 *.exe
 *.out
 *.app
-=======
-.pytest_cache
-.coverage
-coverage.xml
-coverage.info
->>>>>>> alpha-dev
