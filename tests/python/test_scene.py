@@ -3,6 +3,9 @@ from helios.settings import *
 from helios.survey import *
 from helios.settings import *
 from helios.survey import *
+from helios.platforms import *
+from helios.scanner import *
+from helios.utils import *
 
 import os
 import math
@@ -272,17 +275,153 @@ def test_transform_scenepart(box_f):
     assert np.allclose(bbox1 + offset, bbox2)
 
 
-def test_scene_binary():
-    survey1 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
-    survey1.scene.to_binary("data/scenes/toyblocks/toyblocks1.scene")
+def test_scene_auto_binary():
+    # We create binary while reading from xml
+    survey1 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
     points1, _ = survey1.run()
 
     survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
-    survey2.scene = StaticScene.from_binary("data/scenes/toyblocks/toyblocks1.scene")
-
+    survey2.scene = StaticScene.from_binary(
+        "data/scenes/toyblocks/toyblocks_scene.scene"
+    )
     points2, _ = survey2.run()
-    os.remove("data/scenes/toyblocks/toyblocks1.scene")
+
+    # We read from created binary directly through .from_xml
+    survey3 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", False)
+    points3, _ = survey3.run()
+
+    os.remove("data/scenes/toyblocks/toyblocks_scene.scene")
     assert len(points1) == len(points2)
+    assert len(points1) == len(points3)
+
+
+def test_scene_manual_binary():
+    scene_part1 = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    )
+    scene_part1.scale(70)
+    scene_part1.translate([20.0, 0.0, 0.0])
+    scene_part2 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part2.scale(1)
+    scene_part3 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part3.rotate(angle="45 deg", axis=[0, 0, 1.0])
+    scene_part3.scale(0.5)
+    scene_part3.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+    scene_part3.translate([-45.0, 10.0, 10.0])
+    scene_part4 = ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
+    scene_part4.scale(0.5)
+    scene_part5 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    scene_part5.scale(1)
+
+    scene1 = StaticScene(
+        scene_parts=[scene_part1, scene_part2, scene_part3, scene_part4, scene_part5]
+    )
+    scene1.to_binary("data/scenes/toyblocks/toyblocks_scene_manual1.scene")
+
+    scene2 = StaticScene.from_binary(
+        "data/scenes/toyblocks/toyblocks_scene_manual1.scene"
+    )
+    platform_settings1 = StaticPlatformSettings(x=-26, y=-31, z=0, force_on_ground=True)
+    platform_settings2 = StaticPlatformSettings(x=-35, y=35, z=0, force_on_ground=True)
+    platform_settings3 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
+    scanner_settings1 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="245 deg",
+        rotation_stop_angle="360 deg",
+    )
+    scanner_settings2 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        scan_angle="50 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="180 deg",
+        rotation_stop_angle="320 deg",
+    )
+    scanner_settings3 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="180 deg",
+    )
+    platform1 = tripod()
+    scanner1 = riegl_vz_400()
+    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene2)
+
+    survey1.add_leg(
+        scanner_settings=scanner_settings1, platform_settings=platform_settings1
+    )
+    survey1.add_leg(
+        scanner_settings=scanner_settings2, platform_settings=platform_settings2
+    )
+    survey1.add_leg(
+        scanner_settings=scanner_settings3, platform_settings=platform_settings3
+    )
+    points1, _ = survey1.run()
+
+    platform_settings2_1 = StaticPlatformSettings(
+        x=-26, y=-31, z=0, force_on_ground=True
+    )
+    platform_settings2_2 = StaticPlatformSettings(
+        x=-35, y=35, z=0, force_on_ground=True
+    )
+    platform_settings2_3 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
+    scanner_settings2_1 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="245 deg",
+        rotation_stop_angle="360 deg",
+    )
+    scanner_settings2_2 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        scan_angle="50 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="180 deg",
+        rotation_stop_angle="320 deg",
+    )
+    scanner_settings2_3 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="180 deg",
+    )
+    platform2 = tripod()
+    scanner2 = riegl_vz_400()
+    scene2 = StaticScene.from_binary(
+        "data/scenes/toyblocks/toyblocks_scene_manual1.scene"
+    )
+    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2)
+    survey2.add_leg(
+        scanner_settings=scanner_settings2_1, platform_settings=platform_settings2_1
+    )
+    survey2.add_leg(
+        scanner_settings=scanner_settings2_2, platform_settings=platform_settings2_2
+    )
+    survey2.add_leg(
+        scanner_settings=scanner_settings2_3, platform_settings=platform_settings2_3
+    )
+    points2, _ = survey2.run()
+    assert len(points1) == len(points2)
+    os.remove("data/scenes/toyblocks/toyblocks_scene_manual1.scene")
 
 
 def test_ground_plane():
@@ -427,3 +566,37 @@ def test_scene_flag_from_xml_set():
 
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene)
+
+
+def test_create_binary_during_from_xml():
+    """
+    Test that a binary file is created when loading a scene from XML.
+    """
+    scene = StaticScene.from_xml(
+        "data/scenes/toyblocks/toyblocks_scene.xml", save_to_binary=True
+    )
+    assert os.path.exists("data/scenes/toyblocks/toyblocks_scene.scene")
+    os.remove("data/scenes/toyblocks/toyblocks_scene.scene")
+
+
+def test_flags_assosiated_with_scene():
+    # this creates a binary after reading from xml
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
+    assert is_xml_loaded(survey)
+    assert is_xml_loaded(survey.scene)
+    assert not is_binary_loaded(survey.scene)
+    assert not is_binary_loaded(survey)
+
+    # this reads from created binary directly through .from_xml
+    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", False)
+    assert is_xml_loaded(survey2)
+    assert is_xml_loaded(survey2.scene)
+    assert is_binary_loaded(survey2.scene)
+
+    scene1 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene.scene")
+    assert is_binary_loaded(scene1)
+    assert not is_xml_loaded(scene1)
+
+    scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    assert is_xml_loaded(scene2)
+    assert not is_binary_loaded(scene2)

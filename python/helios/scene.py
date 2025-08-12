@@ -3,7 +3,14 @@ from helios.settings import (
     compose_execution_settings,
     ForceOnGroundStrategy,
 )
-from helios.utils import get_asset_directories, detect_separator
+from helios.utils import (
+    get_asset_directories,
+    detect_separator,
+    is_xml_loaded,
+    is_binary_loaded,
+    is_finalized,
+)
+
 from helios.validation import Angle, AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
@@ -288,11 +295,11 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):
         """Finalize the scene, making it ready for rendering."""
-
         if len(self._cpp_object.primitives) == 0:
             execution_settings = compose_execution_settings(
                 execution_settings, parameters
             )
+            self._is_finalized = True
             _helios.finalize_static_scene(
                 self._cpp_object,
                 execution_settings.factory_type,
@@ -313,28 +320,33 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             self._enforce_uniqueness_across_instances(field, value)
 
     def _post_set(self, field):
-        # When the Scene changes, we want to invalidate the KDTree etc.
-
-        _helios.invalidate_static_scene(self._cpp_object)
+        # When the Scene changes after initialization, we want to invalidate the KDTree etc.
+        if not self._during_init:
+            _helios.invalidate_static_scene(self._cpp_object)
 
     @classmethod
     @validate_call
     def from_binary(cls, filename: AssetPath):
         _cpp_scene = _helios.read_scene_from_binary(str(filename))
-        return cls._from_cpp(_cpp_scene)
+        scene = cls._from_cpp(_cpp_scene)
+        scene._is_loaded_from_binary = True
+        return scene
 
     def to_binary(self, filename: AssetPath, is_dyn_scene: bool = False):
+        if not (is_xml_loaded(self) or is_binary_loaded(self)):
+            self._finalize()
+
         _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
 
     @classmethod
     @validate_call
-    def from_xml(cls, scene_file: AssetPath):
+    def from_xml(cls, scene_file: AssetPath, save_to_binary: bool = False):
 
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
         _cpp_scene = _helios.read_scene_from_xml(
-            str(scene_file), [str(p) for p in get_asset_directories()]
+            str(scene_file), [str(p) for p in get_asset_directories()], save_to_binary
         )
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True

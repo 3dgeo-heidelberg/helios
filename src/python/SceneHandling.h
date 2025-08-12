@@ -1,4 +1,6 @@
 #pragma once
+#include <KDGroveFactory.h>
+#include <KDTreeFactory.h>
 #include <Rotation.h>
 #include <StaticScene.h>
 #include <Survey.h>

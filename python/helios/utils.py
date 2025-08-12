@@ -254,6 +254,16 @@ def detect_separator(file_path: Path) -> str:
     raise ValueError(f"Could not detect separator in file: {file_path}")
 
 
+def is_finalized(obj) -> bool:
+    """Return True if the Scene was finalized."""
+    return getattr(obj, "_is_finalized", False)
+
+
+def is_binary_loaded(obj) -> bool:
+    """Return True if the Scene was constructed via from_binary."""
+    return getattr(obj, "_is_loaded_from_binary", False)
+
+
 def is_xml_loaded(obj) -> bool:
     """Return True if the object was constructed via from_xml or _from_cpp."""
     return getattr(obj, "_is_loaded_from_xml", False)
@@ -269,9 +279,6 @@ def apply_scene_shift(
 
     if getattr(survey, "_scene_shift_done", False):
         return
-
-    if not is_xml_loaded(survey.scene):
-        survey.scene._finalize(execution_settings)
 
     _helios.make_scene_shift(
         survey._cpp_object,

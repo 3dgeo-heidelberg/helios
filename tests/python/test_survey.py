@@ -1,9 +1,10 @@
-from helios.platforms import Platform, DynamicPlatformSettings, load_traj_csv
-from helios.scanner import Scanner, riegl_lms_q560
+from helios.platforms import Platform, DynamicPlatformSettings, load_traj_csv, tripod
+from helios.scanner import Scanner, riegl_lms_q560, riegl_vz_400
 from helios.scene import StaticScene
 from helios.settings import ExecutionSettings
 from helios.survey import *
 
+import os
 import laspy
 from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
@@ -296,3 +297,39 @@ def test_run_interpolated_survey():
 
     assert np.allclose(m1["position"][0], m2["position"][0], rtol=1e-1, atol=1e-1)
     assert np.allclose(t1["position"][0], t2["position"][0], rtol=1e-1, atol=1e-1)
+
+
+def test_survey_run_with_binary_scene():
+    """
+    Test that a survey can be run with a binary scene.
+    """
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene.to_binary("data/scenes/toyblocks/toyblocks_scene_case23.scene")
+    scene = StaticScene.from_binary(
+        "data/scenes/toyblocks/toyblocks_scene_case23.scene"
+    )
+
+    scanner_settings = ScannerSettings(
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="180 deg",
+    )
+    platform_settings = PlatformSettings(x=0, y=0, z=0)
+
+    platform = tripod()
+    scanner = riegl_vz_400()
+
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey.add_leg(
+        platform_settings=platform_settings, scanner_settings=scanner_settings
+    )
+
+    points, trajectory = survey.run(format=OutputFormat.NPY)
+
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
+    os.remove("data/scenes/toyblocks/toyblocks_scene_case23.scene")
