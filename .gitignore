@@ -6,9 +6,18 @@ python/helios/_version.py
 output/*
 pytest-output/*
 
+<<<<<<< HEAD
 # Ignore files written by our toolchain
 coverage.info
 *.orig
+=======
+# Ignore IDE stuff
+.idea
+tags
+mswin/
+valgrind.xml
+.vscode
+>>>>>>> origin/main
 
 # Ignore common IDE artifacts
 .vscode

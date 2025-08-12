@@ -119,6 +119,13 @@
                                                             </xs:simpleContent>
                                                         </xs:complexType>
                                                     </xs:element>
+                                                    <xs:element name="incidentBeam" minOccurs="0">
+                                                        <xs:complexType>
+                                                        <xs:attribute type="xs:float" name="x" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="y" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="z" use="optional"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
                                                 </xs:all>
                                             <xs:attribute type="xs:string" name="id" use="required"/>
                                             <xs:attribute type="xs:int" name="wavelength_nm" use="optional"/>
@@ -144,8 +151,16 @@
                         <xs:attribute type="xs:short" name="maxNOR" use="optional"/>
                         <xs:attribute type="xs:int" name="scanProduct" use="optional"/>
                         <xs:attribute type="xs:int" name="wavelength_nm" use="optional"/>
-                        <xs:attribute type="xs:int" name="rotorFreq1_Hz" use="optional"/>
-                        <xs:attribute type="xs:int" name="rotorFreq2_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="rotorFreq1_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="rotorFreq2_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="rotorFreq3_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="angle1_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="angle2_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="angle3_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="refrIndex1" use="optional"/>
+                        <xs:attribute type="xs:float" name="refrIndex2" use="optional"/>
+                        <xs:attribute type="xs:float" name="refrIndex3" use="optional"/>
+                        <xs:attribute type="xs:float" name="refrIndex_air" use="optional"/>
                         <xs:attribute type="xs:float" name="averagePower_w" use="optional"/>
                         <xs:attribute type="xs:short" name="numFibers" use="optional"/>
                         <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
