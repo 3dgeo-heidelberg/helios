@@ -279,6 +279,9 @@ class Survey(Model, cpp_class=_helios.Survey):
         survey = cls._from_cpp(_cpp_survey)
         survey._is_loaded_from_xml = True
         survey.scene._is_loaded_from_xml = True
+        if not load_scene_not_from_binary:
+            survey.scene._is_loaded_from_binary = True
+        
         return survey
 
     def _pre_set(self, field, value):
