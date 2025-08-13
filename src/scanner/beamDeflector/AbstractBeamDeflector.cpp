@@ -1,13 +1,13 @@
 #include "AbstractBeamDeflector.h"
 
-#include <iostream>
-#include <logging.hpp>
+#include <memory>
 #include <sstream>
-using namespace std;
+#include <string>
+
+#include "MathConverter.h"
+#include <logging.hpp>
 
 #define _USE_MATH_DEFINES
-#include "MathConverter.h"
-#include <math.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -76,7 +76,7 @@ AbstractBeamDeflector::setScanAngle_rad(double scanAngle_rad)
     scanAngle_rad = cfg_device_scanAngleMax_rad;
   }
   this->cfg_setting_scanAngle_rad = scanAngle_rad;
-  stringstream ss;
+  std::stringstream ss;
   ss << "Scan angle set to "
      << MathConverter::radiansToDegrees(this->cfg_setting_scanAngle_rad);
   logging::INFO(ss.str());

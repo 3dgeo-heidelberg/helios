@@ -207,16 +207,18 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(pfs.front() == 100000);
     REQUIRE(scanner->getPulseLength_ns() == 4);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 2);
-    REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
-                      0.6108652) <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector())
-                        ->rotorSpeed_rad_1 -
-                      1160.876155) <= eps); // Hz / (2 pi)
+                        ->prisms[0]
+                        .rotation_speed_rad +
+                      488.4129379) // Hz / (2 pi)
+            <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector())
-                        ->rotorSpeed_rad_2 +
-                      742.298655) <= eps); // Hz / (2 pi)
+                        ->prisms[1]
+                        .rotation_speed_rad -
+                      763.8258938) // Hz / (2 pi)
+            <= eps);
     REQUIRE(std::fabs(scanner->getWavelength() - 905e-9) <= eps);
     REQUIRE(scanner->getMaxNOR() == 1);
     REQUIRE(scanner->getFWFSettings().beamSampleQuality == 3);
@@ -229,6 +231,56 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(std::fabs(eatt.getQ1() + 0.5) <= eps);
     REQUIRE(std::fabs(eatt.getQ2() + 0.5) <= eps);
     REQUIRE(std::fabs(eatt.getQ3() + 0.5) <= eps);
+    eraxis = scanner->getScannerHead()->cfg_device_rotateAxis;
+    REQUIRE(eraxis[0] == 1);
+    REQUIRE(eraxis[1] == 0);
+    REQUIRE(eraxis[2] == 0);
+
+    // Load and validate DJI Zenmuse L2
+    scanner = std::static_pointer_cast<Scanner>(
+      loader.getAssetById("scanner", "dji-zenmuse-l2", nullptr));
+    REQUIRE(std::dynamic_pointer_cast<SingleScanner>(scanner) == nullptr);
+    REQUIRE(std::dynamic_pointer_cast<MultiScanner>(scanner) != nullptr);
+    REQUIRE(scanner->getScannerId() == "dji-zenmuse-l2");
+    REQUIRE(scanner->getDetector()->cfg_device_accuracy_m == 0.02);
+    REQUIRE(scanner->getBeamDivergence() == 0.0027);
+    REQUIRE(scanner->name == "DJI Zenmuse L2");
+    REQUIRE(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+              scanner->getBeamDeflector()) != nullptr);
+    pfs = scanner->getSupportedPulseFreqs_Hz();
+    REQUIRE(pfs.size() == 1);
+    REQUIRE(pfs.front() == 240000);
+    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 2);
+    REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                        scanner->getBeamDeflector())
+                        ->prisms[0]
+                        .rotation_speed_rad -
+                      66.15126) // Hz / (2 pi)
+            <= eps);
+    REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                        scanner->getBeamDeflector())
+                        ->prisms[1]
+                        .rotation_speed_rad +
+                      324.55542) // Hz / (2 pi)
+            <= eps);
+    REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                        scanner->getBeamDeflector())
+                        ->prisms[2]
+                        .rotation_speed_rad -
+                      66.15145) // Hz / (2 pi)
+            <= eps);
+    REQUIRE(std::fabs(scanner->getWavelength() - 905e-9) <= eps);
+    REQUIRE(scanner->getFWFSettings().beamSampleQuality == 3);
+    epdiff = scanner->getHeadRelativeEmitterPosition();
+    REQUIRE(std::fabs(epdiff[0]) <= eps);
+    REQUIRE(std::fabs(epdiff[1]) <= eps);
+    REQUIRE(std::fabs(epdiff[2]) <= eps);
+    eatt = scanner->getHeadRelativeEmitterAttitude();
+    REQUIRE(std::fabs(eatt.getQ0() - 0.707107) <= eps);
+    REQUIRE(std::fabs(eatt.getQ1()) <= eps);
+    REQUIRE(std::fabs(eatt.getQ2()) <= eps);
+    REQUIRE(std::fabs(eatt.getQ3() - 0.707107) <= eps);
     eraxis = scanner->getScannerHead()->cfg_device_rotateAxis;
     REQUIRE(eraxis[0] == 1);
     REQUIRE(eraxis[1] == 0);
@@ -263,31 +315,28 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(scanner->getDetector(0)->cfg_device_rangeMin_m == 2);
     REQUIRE(scanner->getDetector(1)->cfg_device_rangeMin_m == 2);
     REQUIRE(scanner->getDetector(2)->cfg_device_rangeMin_m == 2);
-    REQUIRE(
-      std::fabs(scanner->getBeamDeflector(0)->cfg_device_scanAngleMax_rad -
-                0.6108652) <= eps);
-    REQUIRE(
-      std::fabs(scanner->getBeamDeflector(1)->cfg_device_scanAngleMax_rad -
-                0.6108652) <= eps);
-    REQUIRE(
-      std::fabs(scanner->getBeamDeflector(2)->cfg_device_scanAngleMax_rad -
-                0.6108652) <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector(0))
-                        ->rotorSpeed_rad_1 -
-                      1114.084602) <= eps);
+                        ->prisms[0]
+                        .rotation_speed_rad +
+                      488.4129379) // Hz / (2 pi)
+            <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector(1))
-                        ->rotorSpeed_rad_1 -
-                      1160.876155) <= eps);
+                        ->prisms[0]
+                        .rotation_speed_rad +
+                      488.4129379) // Hz / (2 pi)
+            <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector(0))
-                        ->rotorSpeed_rad_2 +
-                      636.6197724) <= eps);
+                        ->prisms[1]
+                        .rotation_speed_rad -
+                      763.8258938) <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector(1))
-                        ->rotorSpeed_rad_2 +
-                      742.298655) <= eps);
+                        ->prisms[1]
+                        .rotation_speed_rad -
+                      763.8258938) <= eps);
     REQUIRE(std::fabs(scanner->getWavelength(0) - 905e-9) <= eps);
     REQUIRE(std::fabs(scanner->getWavelength(1) - 905e-9) <= eps);
     REQUIRE(std::fabs(scanner->getWavelength(2) - 905e-9) <= eps);
