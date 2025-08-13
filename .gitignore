@@ -17,9 +17,6 @@ mswin/
 valgrind.xml
 .vscode
 
-# Ignore common IDE artifacts
-.vscode
-
 #
 # Python-language specific ignores taken from
 # https://raw.githubusercontent.com/github/gitignore/refs/heads/main/Python.gitignore
