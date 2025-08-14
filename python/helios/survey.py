@@ -92,6 +92,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         # we need to add serial IDs to the legs for proper process of writing into the file
         for i, leg in enumerate(self.legs):
             leg._cpp_object.serial_id = i
+        
+        # also, for proper writing into the file, we need to set IDs for the scene parts
+        for i, scene_part in enumerate(self.scene.scene_parts):
+            scene_part._cpp_object.id = str(i)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False
