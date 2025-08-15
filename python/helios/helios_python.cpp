@@ -3129,5 +3129,6 @@ PYBIND11_MODULE(_helios, m)
   m.def("read_scene_from_binary", &readSceneFromBinary);
   m.def("make_scene_shift", &makeSceneShift);
   m.def("load_interpolated_platform", &load_interpolated_platform);
+  m.def("add_scene_part_to_scene", &addScenePartToScene);
 }
 }

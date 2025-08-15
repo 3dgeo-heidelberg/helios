@@ -509,15 +509,29 @@ def test_add_scene_part():
     """
     Test that a scene part can be added to an existing scene.
     """
-    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene_part1 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    scene_part1.scale(70)
+    scene_part1.translate([20., 0., 0.])
+
+    scene_part2= ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part2.scale(1)
+    scene_part3= ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part3.rotate(angle="45 deg", axis=[0, 0, 1.0])
+    scene_part3.scale(0.5)
+    scene_part3.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+    scene_part3.translate([-45.,10.,10.])
+    scene_part4= ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
+    scene_part4.scale(0.5)
+
+    scene = StaticScene(scene_parts=[scene_part1, scene_part2, scene_part3, scene_part4])
+
+    scene_part5 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    scene_part5.scale(1)
+    scene.add_scene_part(scene_part5)
+
     assert len(scene.scene_parts) == 5
-
-    new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
-    scene.add_scene_part(new_part)
-
-    assert len(scene.scene_parts) == 6
-    assert len(scene._cpp_object.scene_parts) == 6
-    assert new_part in scene.scene_parts
+    assert len(scene._cpp_object.scene_parts) == 5
+    assert scene_part5 in scene.scene_parts
 
 
 def test_add_scene_part_invalid():
@@ -525,18 +539,74 @@ def test_add_scene_part_invalid():
     Test that adding a duplicate of scene_part raises an error. As well as usage of append method.
     """
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
-    scene2 = StaticScene()
     assert len(scene.scene_parts) == 5
 
     new_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
-    scene.add_scene_part(new_part)
+    with pytest.raises(RuntimeError, match="The scene loaded from XML cannot be modified."):
+        scene.add_scene_part(new_part)
 
-    with pytest.raises(ValueError, match="already used by another instance"):
-        scene2.add_scene_part(new_part)
 
-    with pytest.raises(AttributeError, match="object has no attribute 'append'"):
-        scene.append(new_part)
+def test_run_after_add_scene_part():
+    scene_part1 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    scene_part1.scale(70)
+    scene_part1.translate([20., 0., 0.])
 
+    scene_part2= ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part2.scale(1)
+    scene_part3= ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part3.rotate(angle="45 deg", axis=[0, 0, 1.0])
+    scene_part3.scale(0.5)
+    scene_part3.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+    scene_part3.translate([-45.,10.,10.])
+    scene_part4= ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
+    scene_part4.scale(0.5)
+
+    scene = StaticScene(scene_parts=[scene_part1, scene_part2, scene_part3, scene_part4])
+
+    scene_part5 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    scene_part5.scale(1)
+    scene.add_scene_part(scene_part5)
+    platform_settings1 = StaticPlatformSettings(x=-26, y=-31, z=0, force_on_ground=True)
+    platform_settings2 = StaticPlatformSettings(x=-35, y=35, z=0, force_on_ground=True)
+    platform_settings3 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
+    scanner_settings1 = ScannerSettings(is_active=True, pulse_frequency=100000, scan_frequency=120, min_vertical_angle="-40 deg", max_vertical_angle="60 deg",
+                                                head_rotation="10 deg/s", rotation_start_angle="245 deg", rotation_stop_angle="360 deg")
+    scanner_settings2 = ScannerSettings(is_active=True, pulse_frequency=100000, scan_frequency=120, scan_angle= "50 deg",
+                                                head_rotation="10 deg/s", rotation_start_angle="180 deg", rotation_stop_angle="320 deg")
+    scanner_settings3 = ScannerSettings(is_active=True, pulse_frequency=100000, scan_frequency=120, min_vertical_angle="-40 deg", max_vertical_angle="60 deg",
+                                            head_rotation="10 deg/s", rotation_start_angle="0 deg", rotation_stop_angle="180 deg")
+
+    platform = tripod()
+    scanner = riegl_vz_400()
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey.add_leg(scanner_settings=scanner_settings1, platform_settings=platform_settings1)
+    survey.add_leg(scanner_settings=scanner_settings2, platform_settings=platform_settings2)
+    survey.add_leg(scanner_settings=scanner_settings3, platform_settings=platform_settings3)
+    points, _ = survey.run()
+
+    scene_part11 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    scene_part11.scale(70)
+    scene_part11.translate([20., 0., 0.])
+    scene_part12= ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part12.scale(1)
+    scene_part13= ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part13.rotate(angle="45 deg", axis=[0, 0, 1.0])
+    scene_part13.scale(0.5)
+    scene_part13.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+    scene_part13.translate([-45.,10.,10.])
+    scene_part14= ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
+    scene_part14.scale(0.5)
+    scene_part15 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    scene_part15.scale(1)
+    scene2 = StaticScene(scene_parts=[scene_part11, scene_part12, scene_part13, scene_part14, scene_part15])
+    platform2 = tripod()
+    scanner2 = riegl_vz_400()
+    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2)
+    survey2.add_leg(scanner_settings=scanner_settings1, platform_settings=platform_settings1)
+    survey2.add_leg(scanner_settings=scanner_settings2, platform_settings=platform_settings2)
+    survey2.add_leg(scanner_settings=scanner_settings3, platform_settings=platform_settings3)
+    points2, _ = survey2.run()
+    assert len(points) == len(points2)
 
 def test_scenepart_flag_from_xml_set():
     from helios.utils import is_xml_loaded

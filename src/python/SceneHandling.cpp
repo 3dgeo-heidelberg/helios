@@ -440,3 +440,31 @@ makeSceneShift(Survey& survey)
     }
   }
 }
+
+void
+addScenePartToScene(std::shared_ptr<StaticScene> scene,
+                    std::shared_ptr<ScenePart> scenePart)
+{
+  invalidateStaticScene(scene);
+  scene->setKDGrove(nullptr);
+  for (auto& sp : scene->parts) {
+    // Append as a static object
+    scene->appendStaticObject(sp);
+
+    // Add scene part primitives to the scene
+    scene->primitives.insert(
+      scene->primitives.end(), sp->mPrimitives.begin(), sp->mPrimitives.end());
+  }
+  // Add the new scene part
+  for (Primitive* primitive : scenePart->mPrimitives) {
+    if (primitive->part == nullptr) {
+      primitive->part = scenePart;
+    }
+  }
+  scene->appendStaticObject(scenePart);
+  scene->primitives.insert(scene->primitives.end(),
+                           scenePart->mPrimitives.begin(),
+                           scenePart->mPrimitives.end());
+  scene->registerParts();
+  invalidateStaticScene(scene); // invalidate it for further finalization
+}
