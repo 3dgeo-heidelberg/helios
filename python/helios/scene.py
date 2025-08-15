@@ -317,9 +317,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
     def _pre_set(self, field, value):
         if is_xml_loaded(self) or is_binary_loaded(self):
-            raise RuntimeError(
-                "The scene loaded from XML cannot be modified."
-            )
+            raise RuntimeError("The scene loaded from XML cannot be modified.")
         if field == "scene_parts":
             self._enforce_uniqueness_across_instances(field, value)
 
