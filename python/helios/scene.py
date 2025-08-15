@@ -288,8 +288,8 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
     def add_scene_part(self, scene_part: ScenePart):
         """Add a scene part to the scene."""
-
         self.scene_parts = self.scene_parts + (scene_part,)
+        _helios.add_scene_part_to_scene(self._cpp_object, scene_part._cpp_object)
 
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
@@ -316,6 +316,8 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         )
 
     def _pre_set(self, field, value):
+        if is_xml_loaded(self) or is_binary_loaded(self):
+            raise RuntimeError("The scene loaded from XML cannot be modified.")
         if field == "scene_parts":
             self._enforce_uniqueness_across_instances(field, value)
 

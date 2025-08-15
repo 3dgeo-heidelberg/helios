@@ -79,3 +79,7 @@ findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
 
 void
 makeSceneShift(Survey& survey);
+
+void
+addScenePartToScene(std::shared_ptr<StaticScene> scene,
+                    std::shared_ptr<ScenePart> scenePart);
