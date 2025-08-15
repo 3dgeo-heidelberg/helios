@@ -11,6 +11,8 @@ import os
 import math
 import numpy as np
 import pytest
+import laspy
+import shutil
 
 from helios import HeliosException
 
@@ -600,3 +602,147 @@ def test_flags_assosiated_with_scene():
     scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene2)
     assert not is_binary_loaded(scene2)
+
+
+def test_manual_vs_xml_write_to_file():
+    """
+    Test that writing a scene to a file works correctly both manually and through XML.
+    """
+    test_dir = "output/test_writing/"
+    scene_part1 = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    )
+    scene_part1.scale(70)
+    scene_part1.translate([20.0, 0.0, 0.0])
+
+    scene_part2 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part2.scale(1)
+    scene_part3 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    scene_part3.rotate(angle="45 deg", axis=[0, 0, 1.0])
+    scene_part3.scale(0.5)
+    scene_part3.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+    scene_part3.translate([-45.0, 10.0, 10.0])
+    scene_part4 = ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
+    scene_part4.scale(0.5)
+    scene_part5 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    scene_part5.scale(1)
+    scene = StaticScene(
+        scene_parts=[scene_part1, scene_part2, scene_part3, scene_part4, scene_part5]
+    )
+
+    platform_settings1 = StaticPlatformSettings(x=-26, y=-31, z=0, force_on_ground=True)
+    platform_settings2 = StaticPlatformSettings(x=-35, y=35, z=0, force_on_ground=True)
+    platform_settings3 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
+    scanner_settings1 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="245 deg",
+        rotation_stop_angle="360 deg",
+    )
+    scanner_settings2 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        scan_angle="50 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="180 deg",
+        rotation_stop_angle="320 deg",
+    )
+    scanner_settings3 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="180 deg",
+    )
+    platform = tripod()
+    scanner = riegl_vz_400()
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey.add_leg(
+        scanner_settings=scanner_settings1, platform_settings=platform_settings1
+    )
+    survey.add_leg(
+        scanner_settings=scanner_settings2, platform_settings=platform_settings2
+    )
+    survey.add_leg(
+        scanner_settings=scanner_settings3, platform_settings=platform_settings3
+    )
+    survey.run(format="las", output_dir=test_dir)
+
+    subdirectories = [
+        d for d in os.listdir(test_dir) if os.path.isdir(os.path.join(test_dir, d))
+    ]
+    if len(subdirectories) == 1:
+        las_file_path = os.path.join(test_dir, subdirectories[0], "leg000_points.las")
+
+        las_file1 = laspy.read(las_file_path)
+
+        # Delete the subdirectory
+        subdirectory_path = os.path.join(test_dir, subdirectories[0])
+        shutil.rmtree(subdirectory_path)
+
+    platform_settings11 = StaticPlatformSettings(
+        x=-26, y=-31, z=0, force_on_ground=True
+    )
+    platform_settings12 = StaticPlatformSettings(x=-35, y=35, z=0, force_on_ground=True)
+    platform_settings13 = StaticPlatformSettings(x=60, y=0, z=0, force_on_ground=True)
+    scanner_settings11 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="245 deg",
+        rotation_stop_angle="360 deg",
+    )
+    scanner_settings12 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        scan_angle="50 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="180 deg",
+        rotation_stop_angle="320 deg",
+    )
+    scanner_settings13 = ScannerSettings(
+        is_active=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="180 deg",
+    )
+
+    scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    platform2 = tripod()
+    scanner2 = riegl_vz_400()
+    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2)
+    survey2.add_leg(
+        scanner_settings=scanner_settings11, platform_settings=platform_settings11
+    )
+    survey2.add_leg(
+        scanner_settings=scanner_settings12, platform_settings=platform_settings12
+    )
+    survey2.add_leg(
+        scanner_settings=scanner_settings13, platform_settings=platform_settings13
+    )
+    survey2.run(format="las", output_dir=test_dir)
+    subdirectories2 = [
+        d for d in os.listdir(test_dir) if os.path.isdir(os.path.join(test_dir, d))
+    ]
+    if len(subdirectories2) == 1:
+        las_file_path2 = os.path.join(test_dir, subdirectories2[0], "leg000_points.las")
+        las_file2 = laspy.read(las_file_path2)
+        shutil.rmtree(test_dir)
+
+    assert las_file1.X.shape[0] == las_file2.X.shape[0]
