@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="als_toyblocks_dji_zenmuse_l2" scene="data/scenes/demo/box_scene.xml#box_scene"
+            platform="data/platforms.xml#sr22"
+            scanner="data/scanners_als.xml#dji-zenmuse-l2-repetitive">
+
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+        
+        <leg>
+            <platformSettings x="0.0" y="-15.0" z="0.0"
+                            movePerSec_m="50"
+                            />
+            <scannerSettings  active="true"
+                              trajectoryTimeInterval_s="0.01"
+                            />
+        </leg>
+        <leg>
+            <platformSettings x="5.0" y="-15.0" z="0.0"
+                            movePerSec_m="50"
+                            />
+            <scannerSettings  active="false"/>
+        </leg>
+
+    </survey>
+</document>

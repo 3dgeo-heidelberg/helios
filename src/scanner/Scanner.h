@@ -553,7 +553,7 @@ public:
    * @brief Set the number of rays of the scanning device
    * @param numRays New number of rays for the scanning device
    * @param idx The index of the scanning device which number of rays must
-   *  be setted
+   *  be set
    * @see ScanningDevice::numRays
    */
   virtual void setNumRays(int const numRays, size_t const idx) = 0;
@@ -595,7 +595,7 @@ public:
    * @brief Set the pulse length
    * @param pulseLength_ns New pulse length (nanoseconds)
    * @param idx The index of the scanning device which pulse length must
-   *  be setted (by default 1, it is the first one)
+   *  be set (by default 1, it is the first one)
    * @see ScanningDevice::cfg_device_pulseLength_ns
    */
   virtual void setPulseLength_ns(double const pulseLength_ns,
@@ -660,7 +660,7 @@ public:
    * @brief Set beam divergence
    * @param beamDivergence New beam divergence (radians)
    * @param idx The index of the scanning device which beam divergence must
-   *  be setted (by default 0, it is the first one)
+   *  be set (by default 0, it is the first one)
    * @see ScanningDevice::beamDivergence_rad
    */
   virtual void setBeamDivergence(double const beamDivergence,
@@ -692,7 +692,7 @@ public:
    * @brief Set average power
    * @param averagePower New average power (watts)
    * @param idx The index of the scanning device which average power must be
-   *  setted (by default 0, it is the first one)
+   *  set (by default 0, it is the first one)
    * @see ScanningDevice::averagePower_w
    */
   virtual void setAveragePower(double const averagePower, size_t const idx) = 0;
@@ -752,7 +752,7 @@ public:
    * @brief Set device efficiency
    * @param efficiency New device efficiency
    * @param idx The index of the scanning device which efficiency must be
-   *  setted (by default 0, it is the first one)
+   *  set (by default 0, it is the first one)
    * @see ScanningDevice::efficiency
    */
   virtual void setEfficiency(double const efficiency, size_t const idx = 0) = 0;
@@ -782,7 +782,7 @@ public:
    * @brief Set receiver diameter
    * @param receiverDiameter  New receiver diameter
    * @param idx The index of the scanning device which efficiency must be
-   *  setted (by default 0, it is the first one)
+   *  set (by default 0, it is the first one)
    * @see ScanningDevice::receiverDiameter_m
    */
   virtual void setReceiverDiameter(double const receiverDiameter,
@@ -814,7 +814,7 @@ public:
    * @brief Set device visibility
    * @param visibility New device visibility (kilometers)
    * @param idx The index of the scanning device which visibility must be
-   *  setted (by default 0, it is the first one)
+   *  set (by default 0, it is the first one)
    * @see ScanningDevice::visibility_km
    */
   virtual void setVisibility(double const visibility, size_t const idx) = 0;
@@ -844,7 +844,7 @@ public:
    * @brief Set wave length
    * @param wavelength New wave length (meters)
    * @param idx The index of the scanning device which wavelength must be
-   *  setted (by default 0, it is the first one)
+   *  set (by default 0, it is the first one)
    * @see ScanningDevice::wavelength_m
    */
   virtual void setWavelength(double const wavelength, size_t const idx) = 0;
@@ -878,7 +878,7 @@ public:
    * @brief Set atmospheric extinction
    * @param atmosphericExtinction New atmospheric extinction
    * @param idx The index of the scanning device which atmospheric extinction
-   *  must be setted (by default 0, it is the first one)
+   *  must be set (by default 0, it is the first one)
    * @see ScanningDevice::atmosphericExtinction
    */
   virtual void setAtmosphericExtinction(double const atmosphericExtinction,
@@ -911,7 +911,7 @@ public:
    * @brief Set beam waist radius
    * @param beamWaistRadius New beam waist radius
    * @param idx The index of the scanning device which beam waist radius must
-   *  be setted (by default 0, it is the first one)
+   *  be set (by default 0, it is the first one)
    * @see ScanningDevice::beamWaistRadius
    */
   virtual void setBeamWaistRadius(double const beamWaistRadius,
@@ -938,7 +938,7 @@ public:
    * @brief Set the head's relative emitter position
    * @param pos The new position for the head's relative emitter
    * @param idx The index of the scanning device which head's relative
-   *  emitter position must be setted (by default 0, it is the first one)
+   *  emitter position must be set (by default 0, it is the first one)
    * @see ScanningDevice::headRelativeEmitterPosition
    */
   virtual void setHeadRelativeEmitterPosition(glm::dvec3 const& pos,
@@ -963,10 +963,10 @@ public:
   virtual Rotation getHeadRelativeEmitterAttitude(
     size_t const idx = 0) const = 0;
   /**
-   * @brief Obtain the head's relative emitter attitude
+   * @brief Set the head's relative emitter attitude
    * @param attitude The new attitude for the head's relative emitter
    * @param idx The index of the scanning device which head's relative
-   *  emitter attitude must be setted (by default 0, it is the first one)
+   *  emitter attitude must be set (by default 0, it is the first one)
    */
   virtual void setHeadRelativeEmitterAttitude(Rotation const& attitude,
                                               size_t const idx = 0) = 0;
@@ -998,7 +998,7 @@ public:
    * @brief Set \f$B_{t2}\f$
    * @param bt2 New \f$B_{t2}\f$
    * @param idx The index of the scanning device which cached Bt2 (square of
-   *  beam divergence) must be setted (by default 0, it is the first one)
+   *  beam divergence) must be set (by default 0, it is the first one)
    * @see ScanningDevice::cached_Bt2
    */
   virtual void setBt2(double const bt2, size_t const idx) = 0;
@@ -1233,7 +1233,7 @@ public:
    * @param scannerHead The scanner head to be assigned to the scanning
    *  device
    * @param idx The index of the scanning device which scanner head must be
-   *  setted
+   *  set
    */
   virtual void setScannerHead(std::shared_ptr<ScannerHead> scannerHead,
                               size_t const idx) = 0;
@@ -1267,7 +1267,7 @@ public:
    * @brief Set the beam deflector of the scanning device
    * @param deflector New beam deflector for the scanning device
    * @param idx The index of the scanning device which beam deflector must be
-   *  setted
+   *  set
    */
   virtual void setBeamDeflector(
     std::shared_ptr<AbstractBeamDeflector> deflector,
@@ -1300,7 +1300,7 @@ public:
   /**
    * @brief Set the abstract detector of the scanning device
    * @param idx The index of the scanning device which abstract detector
-   *  must be setted
+   *  must be set
    * @see AbstractDetector
    */
   virtual void setDetector(std::shared_ptr<AbstractDetector> detector,
@@ -1339,7 +1339,7 @@ public:
   /**
    * @brief Set the Full WaveForm settings of the scanning device
    * @param idx The index of the scanning device which full waveform settings
-   *  must be setted
+   *  must be set
    * @see FWFSettings
    */
   virtual void setFWFSettings(FWFSettings const& fwfSettings,
@@ -1375,7 +1375,7 @@ public:
    *  scanning device
    * @param pulseFreqs_Hz Supported pulse frequencies for the scanning device
    * @param idx The index of the scanning device which supported pulse
-   *  frequencies must be setted
+   *  frequencies must be set
    */
   virtual void setSupportedPulseFreqs_Hz(std::list<int>& pulseFreqs_Hz,
                                          size_t const idx) = 0;
@@ -1405,7 +1405,7 @@ public:
    * @brief Set the maximum number of returns per pulse for the scanning
    *  device (0 means no maximum at all).
    * @param maxNOR New max NOR for the scanning device
-   * @param idx Index of the scanning device which max NOR must be setted
+   * @param idx Index of the scanning device which max NOR must be set
    * @see ScanningDevice::maxNOR
    */
   virtual void setMaxNOR(int const maxNOR, size_t const idx) = 0;
@@ -1433,7 +1433,7 @@ public:
    *  discretization for the scanning device
    * @param numTimeBins The number of time bins for the scanning device
    * @param idx The index of the scanning device which number of time bins
-   *  must be setted
+   *  must be set
    */
   virtual void setNumTimeBins(int const numTimeBins, size_t const idx) = 0;
   /**
@@ -1464,7 +1464,7 @@ public:
    *  the scanning device
    * @param pii The new peak intensity index for the scanning device
    * @param idx The index of the scanning device which peak intensity
-   *  index must be setted
+   *  index must be set
    */
   virtual void setPeakIntensityIndex(int const pii, size_t const idx) = 0;
   /**

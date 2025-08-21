@@ -265,17 +265,26 @@ PYBIND11_MODULE(_helios, m)
       &PolygonMirrorBeamDeflector::getScanAngleEffectiveMax_rad)
     .def("clone", &PolygonMirrorBeamDeflector::clone);
 
+  py::class_<Prism> prism(m, "Prism");
+  prism
+    .def(py::init<double, bool, double, double>(),
+         py::arg("angle_rad_"),
+         py::arg("inclined_on_left"),
+         py::arg("refr_index"),
+         py::arg("rotation_speed_rad_"))
+    .def_readwrite("refractive_index", &Prism::refractive_index)
+    .def_readwrite("rotation_speed_rad", &Prism::rotation_speed_rad);
+
   py::class_<RisleyBeamDeflector,
              AbstractBeamDeflector,
              std::shared_ptr<RisleyBeamDeflector>>
     risley_beam_deflector(m, "RisleyBeamDeflector");
   risley_beam_deflector
-    .def(py::init<double, double, double>(),
-         py::arg("scanAngleMax_rad"),
-         py::arg("rotorFreq_1_Hz"),
-         py::arg("rotorFreq_2_Hz"))
-    .def_readwrite("rotor_speed_rad_1", &RisleyBeamDeflector::rotorSpeed_rad_1)
-    .def_readwrite("rotor_speed_rad_2", &RisleyBeamDeflector::rotorSpeed_rad_2)
+    .def(py::init<const std::vector<Prism>&, double, glm::dvec3>(),
+         py::arg("prisms"),
+         py::arg("refrIndex_air"),
+         py::arg("incidentBeam") = Directions::forward)
+    .def_readwrite("prisms", &RisleyBeamDeflector::prisms)
     .def("clone", &RisleyBeamDeflector::clone);
 
   py::class_<Primitive, PrimitiveWrap, std::shared_ptr<Primitive>> primitive(
