@@ -27,17 +27,10 @@ Cloud Library (PCL)](https://pointclouds.org/) bindings enabled. The following
 compilation flag is enough to achieve this:
 
 ```
--DPCL_BINDING=1
+--config-settings=cmake.build-type="Debug" --config-settings=cmake.define.HELIOS_PCL_BINDING=1
 ```
 
-Alternatively, the PCL bindings can be disabled by means of specifying:
-
-```
--DPCL_BINDING=0
-```
-
-However, explicitly disabling the PCL bindings should not be necessary since it
-is the default option.
+By default, PCL bindings are disabled.
 
 
 #### Simple demo
@@ -144,10 +137,10 @@ certain bugs and situations when they are not the adequate tool. For this
 purpose, we have started working in a compilation mode that injects code into
 HELIOS++ to extract useful data that can be analyzed to compare, visualize, and
 quantify different scenes, platforms, and scanners. To enable these code
-injections, the following compilation flag must be specified:
+injections, the following compilation flags must be specified:
 
 ```
--DDATA_ANALYTICS=1
+--config-settings=cmake.build-type="Debug" --config-settings=cmake.define.HELIOS_DATA_ANALYTICS=1
 ```
 
 All the data analytics utilities detailed below require the previous flag to be
@@ -169,7 +162,7 @@ Any pair of JSON report files can be compared with the python script at
 `scripts/debug/hda_diff_report.py`. Its syntax is simple:
 
 ```
-python3 scripts/debug/hda_diff_report.py <First JSON report> <Second JSON report>
+python scripts/debug/hda_diff_report.py <First JSON report> <Second JSON report>
 ```
 
 The resulting output warns about each difference between the two JSON reports
@@ -189,7 +182,7 @@ compared with the python script at `scripts/debug/hda_simstep_plotter.py`.
 Its syntax is simple:
 
 ```
-python3 scripts/debug/hda_simstep_plotter <First dir> <Second dir> <Output dir>
+python scripts/debug/hda_simstep_plotter <First dir> <Second dir> <Output dir>
 ```
 
 The generated plots will be exported in the given output directory. They
@@ -204,20 +197,20 @@ below.
 Note that the data analytics flag can be set to level 2:
 
 ```
--DDATA_ANALYTICS=2
+--config-settings=cmake.define.HELIOS_DATA_ANALYTICS=1
 ```
 
 Running this level of data analytics will lead to slower executions, but it will also record more information during simulation. This information will be available in the directory `helios_pulse_records`, including CSV files representing the values of the internal variables and one particular CSV that represents a point cloud with all the intersections for each elliptical footprint (`intensity_calc.csv`). The script `scripts/debug/hda_pulse_records_plotter.py` can be used to automatically generate figures representing the captured data such that:
 
 ```
-python3 scripts/debug/hda_pulse_records_plotter.py <First dir> <Second dir> <Output dir>
+python scripts/debug/hda_pulse_records_plotter.py <First dir> <Second dir> <Output dir>
 ```
 
 The generated plots will be exported in the given output directory. The first and second directories must point to a `helios_pulse_records` folder with its default structure and contents. Besides, the CSV point cloud can be transformed into a LAS/LAZ file using the `scripts/debug/hda_pulse_calc_intensity_csv_to_laz.sh` bash script such that:
 
 
 ```
-python3 scripts/debug/hda_pulse_calc_intensity_csv_to_laz.sh <Input CSV> <Output LAS/LAZ>
+python scripts/debug/hda_pulse_calc_intensity_csv_to_laz.sh <Input CSV> <Output LAS/LAZ>
 ```
 
 The generated LAS/LAZ file will use the LAS 1.4 format, including (x, y, z) coordinates and the different available values for each point (e.g., incidence angle, target area, cross-section, or the emitted and received powers).
