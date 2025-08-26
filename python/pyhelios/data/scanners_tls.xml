@@ -277,7 +277,7 @@
             name                       = "Velodyne HDL-64E"
             optics                     = "rotating"
             pulseFreqs_Hz              = "20312"
-            pulseLength_ns             = "5"
+            pulseLength_ns             = "10"
             rangeMin_m                 = "0.9144"
             rangeMax_m                 = "120"
             scanAngleMax_deg           = "1"
@@ -286,7 +286,7 @@
             scanFreqMax_Hz             = "0"
             wavelength_nm              = "905"
             maxNOR                     = "1"
-            headRotatePerSecMax_deg    = "5250">
+            headRotatePerSecMax_deg    = "5400">  <!-- up to 15 Hz = 15 rotations per second -->
 
     <FWFSettings beamSampleQuality="1"/>  <!-- set to one for fast simulations -->
     <channels>
