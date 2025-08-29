@@ -51,9 +51,10 @@ DynSequentiableMovingObject::applyAutoCRS(double const x,
     std::size_t const numMotions = ds->size();
     for (std::size_t i = 0; i < numMotions; ++i) {
       std::shared_ptr<DynMotion> dm = ds->get(i);
-      if ((dm->findType() == DynMotion::Type::TRANSLATION_R3 ||
-           dm->findType() == DynMotion::Type::IDENTITY_R3 ||
-           dm->findType() == DynMotion::Type::ROTATION_R3) &&
+      DynMotion::Type type = dm->findType();
+      if ((type == DynMotion::Type::TRANSLATION_R3 ||
+           type == DynMotion::Type::IDENTITY_R3 ||
+           type == DynMotion::Type::ROTATION_R3) &&
           dm->isAutoCRS()) {
         dm->setC(dm->getC() + dm->getAutoCRS() * u);
       }
