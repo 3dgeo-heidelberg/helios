@@ -10,7 +10,11 @@ pytest-output/*
 coverage.info
 *.orig
 
-# Ignore common IDE artifacts
+# Ignore IDE stuff
+.idea
+tags
+mswin/
+valgrind.xml
 .vscode
 
 #
@@ -21,7 +25,6 @@ coverage.info
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-<<<<<<< HEAD
 *$py.class
 
 # C extensions
@@ -232,9 +235,3 @@ cython_debug/
 *.exe
 *.out
 *.app
-=======
-.pytest_cache
-.coverage
-coverage.xml
-coverage.info
->>>>>>> alpha-dev

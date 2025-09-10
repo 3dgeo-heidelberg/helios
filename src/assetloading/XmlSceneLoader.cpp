@@ -223,9 +223,9 @@ XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
   while (swapNodes != nullptr) {
     bool holistic = false;
     int const swapStep =
-      boost::get<int>(XmlUtils::getAttribute(swapNodes, "swapStep", "int", 1));
-    bool const keepCRS = boost::get<bool>(
-      XmlUtils::getAttribute(swapNodes, "keepCRS", "bool", sorh->isKeepCRS()));
+      XmlUtils::getAttributeCast<int>(swapNodes, "swapStep", 1);
+    bool const keepCRS =
+      XmlUtils::getAttributeCast<bool>(swapNodes, "keepCRS", sorh->isKeepCRS());
     sorh->pushTimeToLive(swapStep);
     sorh->setKeepCRS(keepCRS);
     tinyxml2::XMLElement* filterNodes = swapNodes->FirstChildElement("filter");
@@ -485,22 +485,16 @@ XmlSceneLoader::loadDynMotions(tinyxml2::XMLElement* scenePartNode,
   dsmo->setId(ss.str());
 
   // Configure the step interval for the dynamic object and its observer
-  dsmo->setStepInterval(boost::get<int>(
-    XmlUtils::getAttribute(scenePartNode, "dynStep", "int", 1)));
-  dsmo->setObserverStepInterval(boost::get<int>(
-    XmlUtils::getAttribute(scenePartNode, "kdtDynStep", "int", 1)));
+  dsmo->setStepInterval(
+    XmlUtils::getAttributeCast<int>(scenePartNode, "dynStep", 1));
+  dsmo->setObserverStepInterval(
+    XmlUtils::getAttributeCast<int>(scenePartNode, "kdtDynStep", 1));
 
   // Get the time step for the dyn. obj. and its observer (nan if not given)
-  dsmo->setDynTimeStep(boost::get<double>(
-    XmlUtils::getAttribute(scenePartNode,
-                           "dynTimeStep",
-                           "double",
-                           std::numeric_limits<double>::quiet_NaN())));
-  dsmo->setObserverDynTimeStep(boost::get<double>(
-    XmlUtils::getAttribute(scenePartNode,
-                           "kdtDynTimeStep",
-                           "double",
-                           std::numeric_limits<double>::quiet_NaN())));
+  dsmo->setDynTimeStep(XmlUtils::getAttributeCast<double>(
+    scenePartNode, "dynTimeStep", std::numeric_limits<double>::quiet_NaN()));
+  dsmo->setObserverDynTimeStep(XmlUtils::getAttributeCast<double>(
+    scenePartNode, "kdtDynTimeStep", std::numeric_limits<double>::quiet_NaN()));
 
   // Return
   return dsmo;
@@ -536,13 +530,10 @@ XmlSceneLoader::handleDynamicSceneAttributes(tinyxml2::XMLElement* sceneNode,
 {
   // Configure step interval
   scene->setStepInterval(
-    boost::get<int>(XmlUtils::getAttribute(sceneNode, "dynStep", "int", 1)));
+    XmlUtils::getAttributeCast<int>(sceneNode, "dynStep", 1));
   // Get the dynamic time step for the dynamic scene (nan if not given)
-  scene->setDynTimeStep(boost::get<double>(
-    XmlUtils::getAttribute(sceneNode,
-                           "dynTimeStep",
-                           "double",
-                           std::numeric_limits<double>::quiet_NaN())));
+  scene->setDynTimeStep(XmlUtils::getAttributeCast<double>(
+    sceneNode, "dynTimeStep", std::numeric_limits<double>::quiet_NaN()));
   // Apply automatic CRS translation when requested
   glm::dvec3 const& shift = scene->getBBoxCRS()->getCentroid();
   size_t const numDynObjects = scene->numDynObjects();
