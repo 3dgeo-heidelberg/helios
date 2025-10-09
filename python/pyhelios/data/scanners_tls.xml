@@ -617,6 +617,99 @@
   </scanner>
   <!-- ##### END Velodyne HDL-64E ##### -->
 
+  <!--######## BEGIN LIVOX AVIA (REPETITIVE) ####### -->
+  <scanner  id                         = "livox-avia-repetitive"
+            accuracy_m                 = "0.02"
+            beamDivergence_rad         = "0.0083"
+            name                       = "Livox Avia (repetitive)"
+            optics                     = "risley"
+            pulseFreqs_Hz              = "240000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "1"
+            wavelength_nm              = "905"
+            rotorFreq1_Hz              = "50"
+            rotorFreq2_Hz              = "-50"
+            rotorFreq3_Hz              = "-150"
+            angle1_deg                 = "-27.65251"
+            angle2_deg                 = "29.767927015"
+            angle3_deg                 = "2.9191372182"
+            refrIndex1                 = "1.51"
+            refrIndex2                 = "1.51"
+            refrIndex3                 = "1.51"
+            refrIndex_air              = "1.0">
+
+    <FWFSettings beamSampleQuality="3"/>
+
+        <channels>
+            <channel id="0">
+                <incidentBeam x="-0.04000000" y="0.99919968" z="0" />
+            </channel>
+            <channel id="1">
+                <incidentBeam x="-0.02400000" y="0.99971196" z="0" />
+            </channel>
+            <channel id="2">
+                <incidentBeam x="-0.00800000" y="0.99996800" z="0" />
+            </channel>
+            <channel id="3">
+                <incidentBeam x="0.00800000"  y="0.99996800" z="0" />
+            </channel>
+            <channel id="4">
+                <incidentBeam x="0.02400000"  y="0.99971196" z="0" />
+            </channel>
+            <channel id="5">
+                <incidentBeam x="0.04000000"  y="0.99919968" z="0" />
+            </channel>
+        </channels>
+  </scanner>
+
+  <!--######## END LIVOX AVIA (REPETITIVE) ####### -->
+
+  <!--######## BEGIN LIVOX AVIA (NON-REPETITIVE) ####### -->
+  <scanner  id                         = "livox-avia-non-repetitive"
+            accuracy_m                 = "0.02"
+            beamDivergence_rad         = "0.0083"
+            name                       = "Livox Avia (non-repetitive)"
+            optics                     = "risley"
+            pulseFreqs_Hz              = "240000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "1"
+            wavelength_nm              = "905"
+            rotorFreq1_Hz              = "10.5283"
+            rotorFreq2_Hz              = "-51.6546"
+            rotorFreq3_Hz              = "10.52833"
+            angle1_deg                 = "-27.65251"
+            angle2_deg                 = "29.767927015"
+            angle3_deg                 = "2.9191372182"
+            refrIndex1                 = "1.51"
+            refrIndex2                 = "1.51"
+            refrIndex3                 = "1.51"
+            refrIndex_air              = "1.0">
+
+    <FWFSettings beamSampleQuality="3"/>
+
+        <channels>
+            <channel id="0">
+                <incidentBeam x="-0.04000000" y="0.99919968" z="0" />
+            </channel>
+            <channel id="1">
+                <incidentBeam x="-0.02400000" y="0.99971196" z="0" />
+            </channel>
+            <channel id="2">
+                <incidentBeam x="-0.00800000" y="0.99996800" z="0" />
+            </channel>
+            <channel id="3">
+                <incidentBeam x="0.00800000"  y="0.99996800" z="0" />
+            </channel>
+            <channel id="4">
+                <incidentBeam x="0.02400000"  y="0.99971196" z="0" />
+            </channel>
+            <channel id="5">
+                <incidentBeam x="0.04000000"  y="0.99919968" z="0" />
+            </channel>
+        </channels>
+  </scanner>
+
+  <!--######## END LIVOX AVIA (NON-REPETITIVE) ####### -->
 
   <!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
 
