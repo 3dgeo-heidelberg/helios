@@ -270,14 +270,15 @@
   <!-- ##### END Velodyne VLP-16 ("Puck") ##### -->
 
   <!-- ##### BEGIN Velodyne HDL-64E ##### -->
+  <!-- Beam divergence specified in datasheet as 2 mrad = 0.002 rad. We assume this is provided at FWHM, which at the 1/e2 point corresponds to 0.0034 mrad -->
 
   <scanner  id                         = "velodyne_hdl-64e"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0007"
+            beamDivergence_rad         = "0.0034"
             name                       = "Velodyne HDL-64E"
             optics                     = "rotating"
-            pulseFreqs_Hz              = "20312"
-            pulseLength_ns             = "10"
+            pulseFreqs_Hz              = "20833"
+            pulseLength_ns             = "5"
             rangeMin_m                 = "0.9144"
             rangeMax_m                 = "120"
             scanAngleMax_deg           = "1"
