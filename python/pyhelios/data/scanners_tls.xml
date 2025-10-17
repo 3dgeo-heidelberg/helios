@@ -269,8 +269,9 @@
   </scanner>
   <!-- ##### END Velodyne VLP-16 ("Puck") ##### -->
 
-  <!-- ##### BEGIN Velodyne HDL-64E ##### -->
-  <!-- Beam divergence specified in datasheet as 2 mrad = 0.002 rad. We assume this is provided at FWHM, which at the 1/e2 point corresponds to 0.0034 mrad -->
+  <!-- ##### BEGIN Velodyne HDL-64E S2 ##### -->
+  <!-- Beam divergence specified in datasheet as 2 mrad = 0.002 rad. We assume this is provided at FWHM, which at the 1/e2 point corresponds to 0.0034 mrad
+       see also https://www.researchgate.net/publication/45267342_Static_Calibration_and_Analysis_of_the_Velodyne_HDL-64E_S2_for_High_Accuracy_Mobile_Scanning -->
 
   <scanner  id                         = "velodyne_hdl-64e"
             accuracy_m                 = "0.02"
