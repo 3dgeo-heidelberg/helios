@@ -113,12 +113,12 @@ def _inner_optional_type(t: Type) -> Type:
 
 
 def get_all_annotations(cls):
-    """Collect __annotations__ from cls and all its bases (excluding `object`)."""
+    """Collect annotations from cls and all its bases (excluding `object`)."""
     anns: dict[str, type] = {}
     for base in reversed(cls.__mro__):
         if base is object:
             continue
-        anns.update(getattr(base, "__annotations__", {}))
+        anns.update(inspect.get_annotations(base))
     return anns
 
 
@@ -132,7 +132,7 @@ def get_all_defaults(cls, dct):
         if isinstance(base_defaults, dict):
             defaults.update(base_defaults)
 
-    for field, _ in dct.get("__annotations__", {}).items():
+    for field in inspect.get_annotations(cls).keys():
         if field in dct:
             val = dct[field]
             if not isinstance(val, property):
