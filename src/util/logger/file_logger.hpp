@@ -2,6 +2,7 @@
 
 #include <logger.hpp>
 
+#include <chrono>
 #include <fstream>
 
 // TODO: add log rolling
