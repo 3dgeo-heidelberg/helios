@@ -1,0 +1,46 @@
+name: Headercheck
+
+on:
+  workflow_dispatch:
+
+jobs:
+  headercheck:
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}  
+
+    # I am surprised to learn this, but apparently this is compiler-specific
+    # and we have some benefits from testing on both Ubuntu and Windows.
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    name: Header sanity check (${{ matrix.os }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: "3.9"
+          miniconda-version: "latest"
+
+      - name: Install Conda GCC
+        if: runner.os == 'Linux'
+        run: |
+          conda install -y -c conda-forge gcc gxx
+
+      - name: Install Helios
+        run: |
+          mkdir build
+          cd build
+          cmake -DHELIOS_HEADERCHECK="ON" -DBUILD_TESTING="OFF" ..
+          cmake --build . --config Debug
