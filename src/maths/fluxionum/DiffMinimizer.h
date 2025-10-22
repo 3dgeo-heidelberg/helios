@@ -2,6 +2,11 @@
 
 #include <Minimizer.h>
 
+// This works around a known issue in boost:
+// https://github.com/boostorg/serialization/issues/315
+#ifdef BOOST_NO_EXCEPTIONS
+#include <boost/throw_exception.hpp>
+#endif
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/void_cast.hpp>

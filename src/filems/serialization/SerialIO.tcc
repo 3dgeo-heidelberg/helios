@@ -6,6 +6,10 @@
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+// This works around a known issue in boost: https://github.com/boostorg/serialization/issues/315
+#ifdef BOOST_NO_EXCEPTIONS
+#include <boost/throw_exception.hpp>
+#endif
 #include <boost/serialization/unordered_map.hpp>
 
 #include <serial.h>
