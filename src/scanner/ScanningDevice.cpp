@@ -5,6 +5,7 @@
 #include <maths/model/BaseEnergyModel.h>
 #include <maths/model/ImprovedEnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <fstream>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -92,9 +93,68 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 
 // ***  M E T H O D S  *** //
 // *********************** //
+void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+{
+    std::cout << ">>> USING ScanningDevice::prepareSimulation() - NEW TRUE CARTESIAN GRID\n";
+
+    cached_subrayRotation.clear();
+    cached_subrayRadiusStep.clear();
+    cached_subrayDivergenceAngle_rad.clear();
+
+    int const N = FWF_settings.beamSampleQuality;  // Grid half-width (density)
+    double const maxOffset = std::tan(beamDivergence_rad); // Beam half-width
+    double const step = (2.0 * maxOffset) / (2 * N);       // Spacing between subrays
+
+    // Open file once (truncate previous content)
+    std::ofstream gridfile("subray_grid.csv", std::ios::trunc);
+    if (!gridfile.is_open()) {
+        std::cerr << "⚠️ Could not open subray_grid.csv for writing!\n";
+        return;
+    }
+
+    int linearIndex = 0;
+    for (int i = -N; i <= N; ++i) {
+        for (int j = -N; j <= N; ++j) {
+            double x_offset = i * step;
+            double y_offset = j * step;
+
+            // Compute small-angle rotation relative to central beam
+            double tilt_x = std::atan(x_offset);  // rotation around Y
+            double tilt_y = std::atan(y_offset);  // rotation around X
+
+            // Compose rotations
+            Rotation r = Rotation(Directions::right, tilt_y) *
+                         Rotation(Directions::up, tilt_x);
+
+            cached_subrayRotation.push_back(r);
+            cached_subrayRadiusStep.push_back(linearIndex++);
+
+            double angle_rad = std::sqrt(tilt_x * tilt_x + tilt_y * tilt_y);
+            cached_subrayDivergenceAngle_rad.push_back(angle_rad);
+
+            // Write once per loop iteration
+            gridfile << x_offset << "," << y_offset << "\n";
+        }
+    }
+
+    gridfile.close();
+
+    // Energy model setup
+    if (legacyEnergyModel)
+        energyModel = std::make_shared<BaseEnergyModel>(*this);
+    else
+        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+}
+
+
+
+
+
+/*
 void
 ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
+   std::cout << ">>> USING ScanningDevice::prepareSimulation() - PLANE POLAR GRID\n";
   // Elliptical footprint discrete method
   int const beamSampleQuality = FWF_settings.beamSampleQuality;
   double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
@@ -135,7 +195,7 @@ ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
     energyModel = std::make_shared<ImprovedEnergyModel>(*this);
   }
 }
-
+*/
 void
 ScanningDevice::configureBeam()
 {
@@ -170,15 +230,10 @@ ScanningDevice::calcAtmosphericAttenuation() const
 void
 ScanningDevice::calcRaysNumber()
 {
-  // Count circle steps
-  int count = 1;
-  for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
-       radiusStep++) {
-    int circleSteps = (int)(2 * M_PI) * radiusStep;
-    count += circleSteps;
-  }
+  // For a Cartesian grid: (2N + 1) * (2N + 1)
+  int N = FWF_settings.beamSampleQuality;
+  int count = (2 * N + 1) * (2 * N + 1);
 
-  // Update number of rays
   numRays = count;
   std::stringstream ss;
   ss << "Number of subsampling rays (" << id << "): " << numRays;
