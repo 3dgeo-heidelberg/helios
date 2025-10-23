@@ -622,7 +622,7 @@
   <!--######## BEGIN LIVOX AVIA (REPETITIVE) ####### -->
   <scanner  id                         = "livox-avia-repetitive"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0083"
+            beamDivergence_rad         = "0.0046"
             name                       = "Livox Avia (repetitive)"
             optics                     = "risley"
             pulseFreqs_Hz              = "40000"
@@ -671,7 +671,7 @@
   <!--######## BEGIN LIVOX AVIA (NON-REPETITIVE) ####### -->
   <scanner  id                         = "livox-avia-non-repetitive"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0083"
+            beamDivergence_rad         = "0.0046"
             name                       = "Livox Avia (non-repetitive)"
             optics                     = "risley"
             pulseFreqs_Hz              = "40000"
