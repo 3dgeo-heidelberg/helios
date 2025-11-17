@@ -13,9 +13,7 @@ if __name__ == "__main__":
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     simBuilder = pyhelios.SimulationBuilder(
-        "data/surveys/toyblocks/als_toyblocks.xml",
-        "assets/",
-        "output/"
+        "data/surveys/toyblocks/als_toyblocks.xml", "assets/", "output/"
     )
 
     # Set simulation config

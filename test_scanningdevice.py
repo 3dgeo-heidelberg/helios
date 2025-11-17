@@ -1,4 +1,3 @@
-
 import pyhelios
 import tempfile
 import os
@@ -33,11 +32,11 @@ temp_xml.close()
 
 # --- Build and run simulation --- #
 builder = pyhelios.SimulationBuilder(temp_xml.name, "data", "output")
-sim = builder.build()   # returns Simulation directly in this version
+sim = builder.build()  # returns Simulation directly in this version
 
 print("Running simulation (this should trigger ScanningDevice.cpp)...")
-sim.start()             # use .start() instead of .run()
-sim.join()              # wait until it finishes
+sim.start()  # use .start() instead of .run()
+sim.join()  # wait until it finishes
 print("Simulation finished.")
 
 # Clean up temporary XML

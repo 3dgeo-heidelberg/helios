@@ -2,9 +2,11 @@ import pyhelios
 import time
 import numpy as np
 
+
 def callback(output=None):
     with pyhelios.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE:
         pyhelios.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE.notify()
+
 
 if __name__ == "__main__":
     pyhelios.loggingVerbose()

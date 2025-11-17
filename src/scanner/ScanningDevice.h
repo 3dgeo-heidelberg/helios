@@ -113,7 +113,7 @@ protected:
    * @brief Beam deflector composing the scanner
    * @see AbstractBeamDeflector
    */
-   // New for Cartesian direction sampling
+  // New for Cartesian direction sampling
   std::vector<glm::vec3> cached_subrayDirection;
 
   std::shared_ptr<AbstractBeamDeflector> beamDeflector;
@@ -452,8 +452,6 @@ public:
   {
     return rangeErrExpr->eval(beamDeflector->getCurrentExactBeamAngle());
   }
-  
-  
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
