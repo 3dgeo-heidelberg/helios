@@ -69,11 +69,13 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
-  // Check for leg completion:
-  if (mScanner->getScannerHead(0)->rotateCompleted() &&
-      mScanner->platform->waypointReached()) {
-    onLegComplete();
-    return;
+  // Check for leg completion (new: max_duration)
+  if (mScanner->checkMaxTimeElapsed(currentGpsTime_ns, timeStart_ns.count()) ||
+      (mScanner->getScannerHead(0)->rotateCompleted() &&
+       mScanner->platform->waypointReached()))
+  {
+      onLegComplete();
+      return;
   }
 
   // Ordered execution of simulation components
@@ -84,6 +86,7 @@ Simulation::doSimStep()
   if (currentGpsTime_ns > 604800000000000.)
     currentGpsTime_ns -= 604800000000000.;
 }
+
 
 void
 Simulation::pause(bool pause)
