@@ -286,6 +286,18 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   if (leg->mScannerSettings != nullptr) {
     mSurvey->scanner->applySettings(leg->mScannerSettings);
   }
+// Apply max_duration to scanner
+if (leg->mTrajectorySettings != nullptr &&
+    leg->mTrajectorySettings->maxDuration_s > 0.0)
+{
+    getScanner()->setMaxDuration(leg->mTrajectorySettings->maxDuration_s);
+}
+else
+{
+    getScanner()->setMaxDuration(-1.0);   // disable
+}
+
+
   shared_ptr<Platform> platform(getScanner()->platform);
   mSurvey->scanner->lastTrajectoryTime = 0L;
 

@@ -19,6 +19,7 @@ using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
+Scanner::~Scanner() = default;
 Scanner::Scanner(std::string const id,
                  std::list<int> const& pulseFreqs,
                  bool const writeWaveform,
@@ -414,3 +415,14 @@ Scanner::buildScanningPulseProcess(
     throw HeliosException(ss.str());
   }
 }
+
+bool Scanner::maxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns)
+{
+    if (maxDuration_s <= 0.0)
+        return false;
+
+    double elapsed_s = (currentGpsTime_ns - timeStart_ns) * 1e-9;
+    return elapsed_s >= maxDuration_s;
+}
+
+
