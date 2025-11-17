@@ -1,11 +1,11 @@
 #include <ScanningDevice.h>
+#include <fstream>
 #include <logging.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
 #include <maths/model/BaseEnergyModel.h>
 #include <maths/model/ImprovedEnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
-#include <fstream>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -94,64 +94,71 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 // ***  M E T H O D S  *** //
 // *********************** //
 
-
-void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+void
+ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
-    std::cout << ">>> USING ScanningDevice::prepareSimulation() -  3CARTESIAN GRID\n";
-    // member vectors. store per subray information
-    cached_subrayRotation.clear(); // linear index here
-    cached_subrayRadiusStep.clear();
-    cached_subrayDivergenceAngle_rad.clear();
+  std::cout
+    << ">>> USING ScanningDevice::prepareSimulation() -  3CARTESIAN GRID\n";
+  // member vectors. store per subray information
+  cached_subrayRotation.clear(); // linear index here
+  cached_subrayRadiusStep.clear();
+  cached_subrayDivergenceAngle_rad.clear();
 
-    int const N = FWF_settings.beamSampleQuality;  // N is taken from the full-waveform settings 
-    double const maxOffset = std::tan(beamDivergence_rad); // Beam half-width
-    double const step = ( maxOffset) / (N);       // Spacing between grid points. step = (2*maxOffset) / (2N)
+  int const N =
+    FWF_settings
+      .beamSampleQuality; // N is taken from the full-waveform settings
+  double const maxOffset = std::tan(beamDivergence_rad); // Beam half-width
+  double const step =
+    (maxOffset) /
+    (N); // Spacing between grid points. step = (2*maxOffset) / (2N)
 
-    // Open file for inspecting x_offset, y_offset grid
-    std::ofstream gridfile("subray_grid.csv", std::ios::trunc);
-    if (!gridfile.is_open()) {
-        std::cerr << "Could not open subray_grid.csv for writing!\n";
-        return;
+  // Open file for inspecting x_offset, y_offset grid
+  std::ofstream gridfile("subray_grid.csv", std::ios::trunc);
+  if (!gridfile.is_open()) {
+    std::cerr << "Could not open subray_grid.csv for writing!\n";
+    return;
+  }
+
+  int linearIndex = 0;
+  for (int i = -N; i <= N; ++i) {
+    for (int j = -N; j <= N; ++j) { // the loop runs from -N to N si total
+                                    // number of subrays is (2N + 1)^2
+      double x_offset = i * step;
+      double y_offset = j * step;
+
+      // Compute small-angle rotation relative to central beam
+      double tilt_x = std::atan(x_offset); // rotation around Y
+      double tilt_y = std::atan(y_offset); // rotation around X
+
+      // Compose rotations
+      Rotation r =
+        Rotation(Directions::right, tilt_y) * Rotation(Directions::up, tilt_x);
+
+      cached_subrayRotation.push_back(r);
+      cached_subrayRadiusStep.push_back(linearIndex++);
+
+      double angle_rad = std::sqrt(tilt_x * tilt_x + tilt_y * tilt_y);
+      cached_subrayDivergenceAngle_rad.push_back(angle_rad);
+
+      // Write once per loop iteration
+      gridfile << x_offset << "," << y_offset << "\n";
     }
+  }
 
-    int linearIndex = 0;
-    for (int i = -N; i <= N; ++i) {  
-        for (int j = -N; j <= N; ++j) { // the loop runs from -N to N si total number of subrays is (2N + 1)^2
-            double x_offset = i * step;
-            double y_offset = j * step;
+  gridfile.close();
 
-            // Compute small-angle rotation relative to central beam
-            double tilt_x = std::atan(x_offset);  // rotation around Y
-            double tilt_y = std::atan(y_offset);  // rotation around X
-
-            // Compose rotations
-            Rotation r = Rotation(Directions::right, tilt_y) *
-                         Rotation(Directions::up, tilt_x);
-
-            cached_subrayRotation.push_back(r);
-            cached_subrayRadiusStep.push_back(linearIndex++);
-
-            double angle_rad = std::sqrt(tilt_x * tilt_x + tilt_y * tilt_y);
-            cached_subrayDivergenceAngle_rad.push_back(angle_rad);
-
-            // Write once per loop iteration
-            gridfile << x_offset << "," << y_offset << "\n";
-        }
-    }
-
-    gridfile.close();
-
-    // Energy model 
-    if (legacyEnergyModel)
-        energyModel = std::make_shared<BaseEnergyModel>(*this);
-    else
-        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+  // Energy model
+  if (legacyEnergyModel)
+    energyModel = std::make_shared<BaseEnergyModel>(*this);
+  else
+    energyModel = std::make_shared<ImprovedEnergyModel>(*this);
 }
 
 /*
 void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
-    std::cout << ">>> USING ScanningDevice::prepareSimulation() -csv POLAR GRID\n";
+    std::cout << ">>> USING ScanningDevice::prepareSimulation() -csv POLAR
+GRID\n";
 
     cached_subrayRotation.clear();
     cached_subrayRadiusStep.clear();
@@ -188,8 +195,8 @@ void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
         // ✅ Inner loop over angular steps per radius
         for (int circleStep = 0; circleStep < circleSteps; circleStep++)
         {
-            Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
-            r2 = r2.applyTo(r1);
+            Rotation r2 = Rotation(Directions::forward, circleStep_rad *
+circleStep); r2 = r2.applyTo(r1);
 
             cached_subrayRotation.push_back(r2);
             cached_subrayRadiusStep.push_back(radiusStep);

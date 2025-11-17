@@ -158,37 +158,31 @@ XmlSurveyLoader::createLegFromXML(
   } else {
     leg->mScannerSettings = std::make_shared<ScannerSettings>();
   }
-// Trajectory settings
-platformSettingsNode = legNode->FirstChildElement("platformSettings");
-if (platformSettingsNode != nullptr &&
-    XmlUtils::hasAttribute(platformSettingsNode, "trajectory")) 
-{
+  // Trajectory settings
+  platformSettingsNode = legNode->FirstChildElement("platformSettings");
+  if (platformSettingsNode != nullptr &&
+      XmlUtils::hasAttribute(platformSettingsNode, "trajectory")) {
     leg->mTrajectorySettings = createTrajectorySettingsFromXml(legNode);
-} 
-else 
-{
+  } else {
     leg->mTrajectorySettings = nullptr;
-}
+  }
 
-// Parse optional max_duration attribute 
-double maxDuration =
+  // Parse optional max_duration attribute
+  double maxDuration =
     XmlUtils::getAttributeCast<double>(legNode, "max_duration", -1.0);
 
-if (maxDuration > 0.0) {
+  if (maxDuration > 0.0) {
 
     // Ensure trajectory settings exist
     if (!leg->mTrajectorySettings)
-        leg->mTrajectorySettings = std::make_shared<TrajectorySettings>();
+      leg->mTrajectorySettings = std::make_shared<TrajectorySettings>();
 
     // Store in trajectory
     leg->mTrajectorySettings->maxDuration_s = maxDuration;
+  }
 
-
+  return leg;
 }
-
-return leg;
-}
-
 
 // ***  UTIL METHODS  *** //
 // ********************** //

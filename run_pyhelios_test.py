@@ -10,4 +10,3 @@ print("Running simulation...")
 sim.run()
 
 print("Done.")
-

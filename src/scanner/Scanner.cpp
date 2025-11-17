@@ -416,13 +416,12 @@ Scanner::buildScanningPulseProcess(
   }
 }
 
-bool Scanner::maxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns)
+bool
+Scanner::maxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns)
 {
-    if (maxDuration_s <= 0.0)
-        return false;
+  if (maxDuration_s <= 0.0)
+    return false;
 
-    double elapsed_s = (currentGpsTime_ns - timeStart_ns) * 1e-9;
-    return elapsed_s >= maxDuration_s;
+  double elapsed_s = (currentGpsTime_ns - timeStart_ns) * 1e-9;
+  return elapsed_s >= maxDuration_s;
 }
-
-

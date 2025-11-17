@@ -77,19 +77,16 @@ protected:
   bool maxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns);
   double maxDuration_s = -1.0;
 
-
 public:
+  Scanner(...);
+  virtual ~Scanner();
 
-    Scanner(...);
-    virtual ~Scanner();
-
-    void applySettings(...);
-    bool checkMaxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns)
-{
+  void applySettings(...);
+  bool checkMaxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns)
+  {
     return maxTimeElapsed(currentGpsTime_ns, timeStart_ns);
-}
+  }
 
- 
   /**
    * @brief The scanning pulse process used by the scanner
    * @see ScanningPulseProcess
@@ -212,7 +209,6 @@ public:
    * @param scanner The scanner to be copied
    */
   Scanner(Scanner& scanner);
-
 
   // ***   C L O N E   *** //
   // ********************* //
@@ -531,8 +527,8 @@ public:
   // *** GETTERs and SETTERs *** //
   // *************************** //
 
-  public:
-    void setMaxDuration(double v) { maxDuration_s = v; }
+public:
+  void setMaxDuration(double v) { maxDuration_s = v; }
 
   /**
    * @brief Obtain the requested scanning device.
