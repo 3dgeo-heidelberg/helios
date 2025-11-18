@@ -8,7 +8,7 @@ dependencies:
   - glm
   - importlib_resources
   - lapack
-  - lastools
+  - lastools >=2.0.4
   - libboost-python-devel
   - libboost-devel
   - libgdal

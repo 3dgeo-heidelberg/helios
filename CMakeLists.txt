@@ -64,7 +64,10 @@ find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
 
 # LasTools's CMake is not Modern CMake yet, so we have to use old-style find_package
-# that uses the provoded FindLASTools.cmake file
+# that uses the provoded FindLASTools.cmake file. I double-checked, November 2025 and
+# LASTools does now export a configuration, but it does not correctly predict
+# the place of the compiled library within the Conda installation tree. Keeping
+# the find module until this is fixed.
 find_package(LASTools REQUIRED)
 
 # We only build against PCL if explicitly requested

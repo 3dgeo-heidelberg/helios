@@ -1,60 +1,72 @@
 // ***  INITIALIZATION  *** //
 // ************************ //
-template <typename E> void SurfaceInspector::util::draggers::MinDragger<E>::initialize(){
-    a = 0;
-    b = x.size()-1;
-    c = 0;
-    partialSort();
-    initialized = true;
+template<typename E>
+void
+SurfaceInspector::util::draggers::MinDragger<E>::initialize()
+{
+  a = 0;
+  b = x.size() - 1;
+  c = 0;
+  partialSort();
+  initialized = true;
 }
 
 // ***  INNER METHODS  *** //
 // *********************** //
-template <typename E> void SurfaceInspector::util::draggers::MinDragger<E>::partialSort(){
-    // Prepare variables
-    E alpha = x[a];  // alpha = xmin
-    E beta = alpha;  // beta = xmax
-    E xi;
-    std::size_t alphaIdx = a, betaIdx = a;
+template<typename E>
+void
+SurfaceInspector::util::draggers::MinDragger<E>::partialSort()
+{
+  // Prepare variables
+  E alpha = x[a]; // alpha = xmin
+  E beta = alpha; // beta = xmax
+  E xi;
+  std::size_t alphaIdx = a, betaIdx = a;
 
-    // Find alpha and beta
-    for(std::size_t i = a+1 ; i <= b ; ++i){
-        xi = x[i];
-        if(xi < alpha){
-            alpha = xi;
-            alphaIdx = i;
-        }
-        if(xi > beta) {
-            beta = xi;
-            betaIdx = i;
-        }
+  // Find alpha and beta
+  for (std::size_t i = a + 1; i <= b; ++i) {
+    xi = x[i];
+    if (xi < alpha) {
+      alpha = xi;
+      alphaIdx = i;
     }
+    if (xi > beta) {
+      beta = xi;
+      betaIdx = i;
+    }
+  }
 
-    // Handle special case : a index equals beta index
-    if(a==betaIdx) betaIdx = alphaIdx; // After alpha swap, betaIdx -> alphaIdx
+  // Handle special case : a index equals beta index
+  if (a == betaIdx)
+    betaIdx = alphaIdx; // After alpha swap, betaIdx -> alphaIdx
 
-    // Swap alpha
-    xi = x[a];
-    x[a] = alpha;
-    x[alphaIdx] = xi;
+  // Swap alpha
+  xi = x[a];
+  x[a] = alpha;
+  x[alphaIdx] = xi;
 
-    // Swap beta
-    xi = x[b];
-    x[b] = beta;
-    x[betaIdx] = xi;
+  // Swap beta
+  xi = x[b];
+  x[b] = beta;
+  x[betaIdx] = xi;
 }
 
 // ***  OPTIMIZATION DRAGGER METHODS  *** //
 // ************************************** //
-template <typename E> void SurfaceInspector::util::draggers::MinDragger<E>::update(){
-    if(!initialized) initialize(); // First time, initialize
-    else{ // After first time
-        if(a<b){ // Update (a,b) indices and partial sort if necessary
-            ++a;
-            --b;
-            if(a>b) b=a; // Prevent indices from moving after intersection
-            partialSort();
-        }
-        ++c; // Update index of current element
+template<typename E>
+void
+SurfaceInspector::util::draggers::MinDragger<E>::update()
+{
+  if (!initialized)
+    initialize(); // First time, initialize
+  else {          // After first time
+    if (a < b) {  // Update (a,b) indices and partial sort if necessary
+      ++a;
+      --b;
+      if (a > b)
+        b = a; // Prevent indices from moving after intersection
+      partialSort();
     }
+    ++c; // Update index of current element
+  }
 }

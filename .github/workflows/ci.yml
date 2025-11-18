@@ -27,7 +27,7 @@ jobs:
           - macos-latest
           - windows-latest
         python:
-          - "3.9"
+          - "3.10"
           - "3.13"
     
     defaults:
@@ -102,7 +102,7 @@ jobs:
           auto-activate-base: false
           activate-environment: helios-dev
           environment-file: environment-dev.yml
-          python-version: "3.9"
+          python-version: "3.10"
           miniconda-version: "latest"
 
       - name: Install Conda GCC
