@@ -113,6 +113,9 @@ protected:
    * @brief Beam deflector composing the scanner
    * @see AbstractBeamDeflector
    */
+  // New for Cartesian direction sampling
+  std::vector<glm::vec3> cached_subrayDirection;
+
   std::shared_ptr<AbstractBeamDeflector> beamDeflector;
   /**
    * @brief Detector composing the scanner

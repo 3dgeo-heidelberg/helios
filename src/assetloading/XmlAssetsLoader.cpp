@@ -33,6 +33,7 @@ namespace fs = boost::filesystem;
 #include "OscillatingMirrorBeamDeflector.h"
 #include "PolygonMirrorBeamDeflector.h"
 #include "RisleyBeamDeflector.h"
+
 #include <scanner/EvalScannerHead.h>
 #include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
@@ -879,13 +880,11 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // Return built scanner
   return scanner;
 }
-
 std::shared_ptr<AbstractBeamDeflector>
 XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
 {
-  // Prepare beam deflector variable
   std::shared_ptr<AbstractBeamDeflector> beamDeflector = nullptr;
-  // Parse beam deflector
+
   std::string str_opticsType = scannerNode->Attribute("optics");
   double scanFreqMax_Hz =
     XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMax_Hz", 0.0);
@@ -893,50 +892,55 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
     XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMin_Hz", 0.0);
   double scanAngleMax_rad = MathConverter::degreesToRadians(
     XmlUtils::getAttributeCast<double>(scannerNode, "scanAngleMax_deg", 0.0));
-  // Build beam deflector
+
   if (str_opticsType == "oscillating") {
     int scanProduct =
       XmlUtils::getAttributeCast<int>(scannerNode, "scanProduct", 1000000);
     beamDeflector = std::make_shared<OscillatingMirrorBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct);
-  } else if (str_opticsType == "conic") {
+  }
+
+  else if (str_opticsType == "conic") {
     beamDeflector = std::make_shared<ConicBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz);
-  } else if (str_opticsType == "line") {
+  }
+
+  else if (str_opticsType == "line") {
     int numFibers =
       XmlUtils::getAttributeCast<int>(scannerNode, "numFibers", 1);
     beamDeflector = std::make_shared<FiberArrayBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers);
-  } else if (str_opticsType == "rotating") {
+  }
+
+  else if (str_opticsType == "rotating") {
     double scanAngleEffectiveMax_rad =
       MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
         scannerNode, "scanAngleEffectiveMax_deg", 0.0));
+
     tinyxml2::XMLElement* deflectionErrorNode =
       scannerNode->FirstChildElement("deflectionError");
-    if (deflectionErrorNode != nullptr) { // Build evaluable beam deflector
-      if (XmlUtils::hasAttribute(deflectionErrorNode, "expr")) {
-        std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr =
-          XmlUtils::createUnivarExprTree<double>(deflectionErrorNode,
-                                                 { { "THETA", "t" } });
-        beamDeflector = std::make_shared<EvalPolygonMirrorBeamDeflector>(
-          scanFreqMax_Hz,
-          scanFreqMin_Hz,
-          scanAngleMax_rad,
-          scanAngleEffectiveMax_rad,
-          vertAngErrExpr);
-      } else {
-        throw HeliosException(
-          "XmlAssetsLoader::createBeamDeflectorFromXml received a "
-          "deflectionError XML element with no expr attribute.");
-      }
-    } else { // Build classical beam deflector
+
+    if (deflectionErrorNode != nullptr &&
+        XmlUtils::hasAttribute(deflectionErrorNode, "expr")) {
+      std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr =
+        XmlUtils::createUnivarExprTree<double>(deflectionErrorNode,
+                                               { { "THETA", "t" } });
+      beamDeflector = std::make_shared<EvalPolygonMirrorBeamDeflector>(
+        scanFreqMax_Hz,
+        scanFreqMin_Hz,
+        scanAngleMax_rad,
+        scanAngleEffectiveMax_rad,
+        vertAngErrExpr);
+    } else {
       beamDeflector =
         std::make_shared<PolygonMirrorBeamDeflector>(scanFreqMax_Hz,
                                                      scanFreqMin_Hz,
                                                      scanAngleMax_rad,
                                                      scanAngleEffectiveMax_rad);
     }
-  } else if (str_opticsType == "risley") {
+  }
+
+  else if (str_opticsType == "risley") {
     std::vector<Prism> prisms;
 
     double rotorFreq_1_Hz =
@@ -962,30 +966,27 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
     double refr_air =
       XmlUtils::getAttributeCast<double>(scannerNode, "refrIndex_air", 1.0);
 
-    const double epsilon = 1e-6;
+    const double eps = 1e-6;
 
-    if (std::abs(prism1_angle_deg) > epsilon) {
-      bool inclinedOnLeft1 = prism1_angle_deg > 0.0;
-      double angle1_rad =
-        MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
+    if (std::abs(prism1_angle_deg) > eps) {
+      bool inclinedOnLeft = prism1_angle_deg > 0;
+      double rad = MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
       prisms.emplace_back(
-        angle1_rad, inclinedOnLeft1, refr_prism1, rotorFreq_1_Hz * 2.0 * M_PI);
+        rad, inclinedOnLeft, refr_prism1, rotorFreq_1_Hz * 2.0 * M_PI);
     }
 
-    if (std::abs(prism2_angle_deg) > epsilon) {
-      bool inclinedOnLeft2 = prism2_angle_deg > 0.0;
-      double angle2_rad =
-        MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
+    if (std::abs(prism2_angle_deg) > eps) {
+      bool inclinedOnLeft = prism2_angle_deg > 0;
+      double rad = MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
       prisms.emplace_back(
-        angle2_rad, inclinedOnLeft2, refr_prism2, rotorFreq_2_Hz * 2.0 * M_PI);
+        rad, inclinedOnLeft, refr_prism2, rotorFreq_2_Hz * 2.0 * M_PI);
     }
 
-    if (std::abs(prism3_angle_deg) > epsilon) {
-      bool inclinedOnLeft3 = prism3_angle_deg > 0.0;
-      double angle3_rad =
-        MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
+    if (std::abs(prism3_angle_deg) > eps) {
+      bool inclinedOnLeft = prism3_angle_deg > 0;
+      double rad = MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
       prisms.emplace_back(
-        angle3_rad, inclinedOnLeft3, refr_prism3, rotorFreq_3_Hz * 2.0 * M_PI);
+        rad, inclinedOnLeft, refr_prism3, rotorFreq_3_Hz * 2.0 * M_PI);
     }
 
     beamDeflector = std::make_shared<RisleyBeamDeflector>(prisms, refr_air);
@@ -993,12 +994,11 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
 
   if (beamDeflector == nullptr) {
     std::stringstream ss;
-    ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
-       << "'. Aborting.";
+    ss << "ERROR: Unknown beam deflector type: '" << str_opticsType << "'";
     logging::ERR(ss.str());
     exit(1);
   }
-  // Return built beam deflector
+
   return beamDeflector;
 }
 
