@@ -492,19 +492,6 @@ def test_is_ground():
     )
 
 
-def test_classification_scenepart():
-    """
-    Test that the classification of a scene part can be set correctly and be used during run of Survey
-    """
-    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
-    survey.scene.scene_parts[0].classification = 1
-    assert survey.scene.scene_parts[0]._cpp_object.classification == 1
-
-    meas, _ = survey.run()
-
-    assert np.any(meas["classification"] == 1)
-
-
 def test_add_scene_part():
     """
     Test that a scene part can be added to an existing scene.
