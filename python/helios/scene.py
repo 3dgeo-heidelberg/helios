@@ -33,7 +33,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         ForceOnGroundStrategy.NONE
     )
     is_ground: bool = False
-    classification: int = 0
 
     @validate_call
     def rotate(
