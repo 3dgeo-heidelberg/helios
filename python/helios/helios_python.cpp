@@ -933,26 +933,6 @@ PYBIND11_MODULE(_helios, m)
 
     .def_property(
       "primitives", &ScenePart::getPrimitives, &ScenePart::setPrimitives)
-    .def_property(
-      "classification",
-      [](const ScenePart& self) {
-        if (self.mPrimitives.empty()) {
-          throw std::runtime_error(
-            "It is required to have Primitives in the ScenePart to get the "
-            "classification property.");
-        }
-        return self.mPrimitives[0]->material->classification;
-      },
-      [](ScenePart& self, int classification) {
-        if (self.mPrimitives.empty()) {
-          throw std::runtime_error(
-            "It is required to have Primitives in the ScenePart to set the "
-            "classification property.");
-        }
-        for (auto& primitive : self.mPrimitives) {
-          primitive->material->classification = classification;
-        }
-      })
 
     .def_property_readonly(
       "num_primitives",
