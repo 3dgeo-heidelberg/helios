@@ -67,6 +67,7 @@ measurements_to_numpy(const std::vector<Measurement>& measurements)
   meas_fields.append(py::make_tuple("fullwave_index", "i4"));
   meas_fields.append(py::make_tuple("classification", "i4"));
   meas_fields.append(py::make_tuple("gps_time", "f8"));
+  meas_fields.append(py::make_tuple("point_source_id", "u2"));
 
   py::object dtype = np.attr("dtype")(meas_fields);
   py::dict fields = dtype.attr("fields");
@@ -98,6 +99,7 @@ measurements_to_numpy(const std::vector<Measurement>& measurements)
   size_t off_full = offsets["fullwave_index"];
   size_t off_class = offsets["classification"];
   size_t off_time = offsets["gps_time"];
+  size_t off_current_leg_index = offsets["point_source_id"];
 
   std::array<char32_t, 50> utf32_buffer;
 
@@ -122,6 +124,8 @@ measurements_to_numpy(const std::vector<Measurement>& measurements)
     *reinterpret_cast<int32_t*>(row + off_full) = m.fullwaveIndex;
     *reinterpret_cast<int32_t*>(row + off_class) = m.classification;
     *reinterpret_cast<double*>(row + off_time) = m.gpsTime / 1e9;
+    *reinterpret_cast<uint16_t*>(row + off_current_leg_index) =
+      m.currentLegIndex;
   }
 
   return result;
