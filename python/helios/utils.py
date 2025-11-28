@@ -301,6 +301,7 @@ meas_dtype = np.dtype(
         ("fullwave_index", "i4"),
         ("classification", "i4"),
         ("gps_time", "f8"),
+        ("point_source_id", "u2"),
     ]
 )
 
