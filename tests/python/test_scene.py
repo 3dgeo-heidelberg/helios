@@ -108,7 +108,7 @@ def test_scenepart_from_xyz():
         "data/sceneparts/pointclouds/sphere_dens25000.xyz",
         voxel_size=1.0,
         default_normal=[0.0, 0.0, 1.0],
-        sparse=True,
+        sparse=False,
     )
 
     assert len(scene_part1._cpp_object.primitives) > 0
