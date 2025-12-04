@@ -36,7 +36,7 @@ readXYZScenePart(
   glm::dvec3 defaultNormal = glm::dvec3(std::numeric_limits<double>::max(),
                                         std::numeric_limits<double>::max(),
                                         std::numeric_limits<double>::max()),
-  bool sparse = false,
+  bool sparse = true,
   int estimate_normals = 0,
   int normalXIndex = 3,
   int normalYIndex = 4,
