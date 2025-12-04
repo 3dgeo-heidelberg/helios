@@ -148,6 +148,12 @@ if(BUILD_TESTING)
   set_tests_properties(helios_test PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
 
+# Create benchmarks
+if(BUILD_BENCHMARKS)
+  find_package(benchmark REQUIRED)
+  add_subdirectory(benchmarks)
+endif()
+
 # Add the HelIOS++ executable
 add_executable(helios++)
 
