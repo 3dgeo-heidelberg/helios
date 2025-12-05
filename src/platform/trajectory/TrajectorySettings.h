@@ -15,6 +15,7 @@ class TrajectorySettings : public Asset
 public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
+  double maxDuration_s = -1.0;
   /**
    * @brief The start time \f$t_a\f$ of the trajectory
    *
