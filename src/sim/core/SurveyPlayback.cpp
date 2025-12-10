@@ -286,13 +286,17 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   if (leg->mScannerSettings != nullptr) {
     mSurvey->scanner->applySettings(leg->mScannerSettings);
   }
-  // Apply max_duration to scanner
+  // Apply max_duration to scanner (prefer trajectory override, then scanner settings)
+  double maxDuration_s = -1.0;
   if (leg->mTrajectorySettings != nullptr &&
       leg->mTrajectorySettings->maxDuration_s > 0.0) {
-    getScanner()->setMaxDuration(leg->mTrajectorySettings->maxDuration_s);
-  } else {
-    getScanner()->setMaxDuration(-1.0); // disable
+    maxDuration_s = leg->mTrajectorySettings->maxDuration_s;
+  } else if (leg->mScannerSettings != nullptr &&
+             leg->mScannerSettings->maxDuration_s > 0.0) {
+    maxDuration_s = leg->mScannerSettings->maxDuration_s;
   }
+  getScanner()->setMaxDuration(maxDuration_s);
+  maxDurationStartGpsTime_ns = currentGpsTime_ns;
 
   shared_ptr<Platform> platform(getScanner()->platform);
   mSurvey->scanner->lastTrajectoryTime = 0L;

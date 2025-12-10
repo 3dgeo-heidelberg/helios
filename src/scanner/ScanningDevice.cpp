@@ -104,48 +104,10 @@ ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
   cached_subrayRadiusStep.clear();
   cached_subrayDivergenceAngle_rad.clear();
 
-  int const N =
-    FWF_settings
-      .beamSampleQuality; // N is taken from the full-waveform settings
-  double const maxOffset = std::tan(beamDivergence_rad); // Beam half-width
-  double const step =
-    (maxOffset) /
-    (N); // Spacing between grid points. step = (2*maxOffset) / (2N)
-
-  // Open file for inspecting x_offset, y_offset grid
-  std::ofstream gridfile("subray_grid.csv", std::ios::trunc);
-  if (!gridfile.is_open()) {
-    std::cerr << "Could not open subray_grid.csv for writing!\n";
-    return;
-  }
-
-  int linearIndex = 0;
-  for (int i = -N; i <= N; ++i) {
-    for (int j = -N; j <= N; ++j) { // the loop runs from -N to N si total
-                                    // number of subrays is (2N + 1)^2
-      double x_offset = i * step;
-      double y_offset = j * step;
-
-      // Compute small-angle rotation relative to central beam
-      double tilt_x = std::atan(x_offset); // rotation around Y
-      double tilt_y = std::atan(y_offset); // rotation around X
-
-      // Compose rotations
-      Rotation r =
-        Rotation(Directions::right, tilt_y) * Rotation(Directions::up, tilt_x);
-
-      cached_subrayRotation.push_back(r);
-      cached_subrayRadiusStep.push_back(linearIndex++);
-
-      double angle_rad = std::sqrt(tilt_x * tilt_x + tilt_y * tilt_y);
-      cached_subrayDivergenceAngle_rad.push_back(angle_rad);
-
-      // Write once per loop iteration
-      gridfile << x_offset << "," << y_offset << "\n";
-    }
-  }
-
-  gridfile.close();
+  // Use a single central subray (disable experimental cartesian sampling)
+  cached_subrayRotation.push_back(Rotation());
+  cached_subrayRadiusStep.push_back(0);
+  cached_subrayDivergenceAngle_rad.push_back(0.0);
 
   // Energy model
   if (legacyEnergyModel)

@@ -199,6 +199,7 @@ Scanner::retrieveCurrentSettings(size_t const idx)
   settings->active = isActive();
   settings->beamDivAngle = getBeamDivergence(idx);
   settings->trajectoryTimeInterval = trajectoryTimeInterval_ns / 1000000000.0;
+  settings->maxDuration_s = maxDuration_s;
   // Settings from ScannerHead
   settings->headRotatePerSec_rad = getScannerHead(idx)->getRotateStart();
   settings->headRotateStart_rad = getScannerHead(idx)->getRotateCurrent();
@@ -417,11 +418,11 @@ Scanner::buildScanningPulseProcess(
 }
 
 bool
-Scanner::maxTimeElapsed(double currentGpsTime_ns, long long timeStart_ns)
+Scanner::maxTimeElapsed(double currentGpsTime_ns, double startGpsTime_ns)
 {
   if (maxDuration_s <= 0.0)
     return false;
 
-  double elapsed_s = (currentGpsTime_ns - timeStart_ns) * 1e-9;
+  double elapsed_s = (currentGpsTime_ns - startGpsTime_ns) * 1e-9;
   return elapsed_s >= maxDuration_s;
 }

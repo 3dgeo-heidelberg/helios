@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+
+<document>
+	<!-- ###################### BEGIN ALS Platforms ###################### -->
+	<platform id="sr22" name="Cirrus SR-22" type="linearpath">
+		<scannerMount z="0.7">
+			<rot axis="x" angle_deg="-90" />
+			<rot axis="z" angle_deg="90" />
+		</scannerMount>
+		<!--<positionXNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.02"/>
+		<positionYNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.02"/>
+		<positionZNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.02"/>
+		<attitudeXNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.001"/>
+		<attitudeYNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.001"/>
+		<attitudeZNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.001"/>-->
+	</platform>
+	
+	<platform id="quadcopter" name="Quadrocopter UAV" type="multicopter"
+		drag="0.01" engine_max_force="0.1"
+		speedup_magnitude="2.0" slowdown_magnitude="2.0" slowdown_distance="5.0"
+		base_pitch_deg="-5.0"	
+		roll_speed_deg="28.65" pitch_speed_deg="85.94" yaw_speed_deg="85.94"
+		roll_offset_deg="25.0" pitch_offset_deg="35.0"
+	>
+		<scannerMount x="0" y="0" z="0.2">
+			<rot axis="x" angle_deg="180" />
+			<rot axis="z" angle_deg="180" />
+		</scannerMount>
+	</platform>
+
+	<platform id="copter_linearpath" name="Quadrocopter UAV" type="linearpath">
+		<scannerMount x="0" y="0" z="0.2">
+			<rot axis="x" angle_deg="175" />
+		</scannerMount>
+	</platform>
+	<!-- ###################### END ALS Platforms ###################### -->
+
+
+	<!-- ###################### BEGIN MLS Platforms ###################### -->
+	<platform id="tractor" name="Tractor" type="groundvehicle" drag="0.005">
+		<scannerMount x="0" y="1" z="4" rotations="local">
+			<rot axis="z" angle_deg="90" />
+			<rot axis="y" angle_deg="-30" />
+		</scannerMount>
+	</platform>
+
+    <platform id="vehicle_linearpath" name="Vehicle" type="linearpath">
+		<scannerMount x="0" y="0" z="2.4" rotations="local">
+			<rot axis="z" angle_deg="90" />
+		</scannerMount>
+	</platform>
+    
+	<platform id="tractor_leftside" name="Tractor" type="groundvehicle" drag="0.01">
+		<scannerMount x="0" y="0.8" z="4">
+			<rot axis="y" angle_deg="-35" />
+		</scannerMount>
+	</platform>
+	
+	<platform id="vmx-450-car-left" name="RIEGL VMX-450 Car Left" type="linearpath">
+		<scannerMount x="-0.18" y="-2.2" z="2.2">
+			<rot axis="x" angle_deg="40" />
+			<rot axis="z" angle_deg="150" />		
+		</scannerMount>
+	</platform>
+
+	<platform id="vmx-450-car-right" name="RIEGL VMX-450 Car Right" type="linearpath">
+		<scannerMount x="0.18" y="-2.2" z="2.2">
+			<rot axis="x" angle_deg="40" />
+			<rot axis="z" angle_deg="210" />		
+		</scannerMount>
+	</platform>
+	
+	<platform id="vmq-1ha-car-0" name="RIEGL VMQ-1HA Car (0° mounting)" type="linearpath">
+		<scannerMount x="0.0" y="-1.15" z="2.2">
+			<rot axis="x" angle_deg="45" />
+			<rot axis="z" angle_deg="0" />		
+		</scannerMount>
+	</platform>
+	
+	<platform id="simple_linearpath" name="Simple Linearpath" type="linearpath">
+	</platform>
+	<!-- ###################### END MLS Platforms ###################### -->
+
+
+	<!-- ###################### BEGIN TLS Platforms ###################### -->
+	<platform id="tripod" name="TLS Tripod" type="static" drag="0">
+		<scannerMount x="0" y="0" z="1.5">
+		</scannerMount>
+	</platform>
+	<!-- ###################### END TLS Platforms ###################### -->
+	
+</document>

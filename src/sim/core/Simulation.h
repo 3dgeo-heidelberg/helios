@@ -103,6 +103,10 @@ protected:
    * @brief Time corresponding to simulation start (nanoseconds)
    */
   std::chrono::nanoseconds timeStart_ns;
+  /**
+   * @brief GPS time reference (nanoseconds) for evaluating max_duration
+   */
+  double maxDurationStartGpsTime_ns = 0.0;
 
   /**
    * @brief Time corresponding to simulation start (currentGpsTime in

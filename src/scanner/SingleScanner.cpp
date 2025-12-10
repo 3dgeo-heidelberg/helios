@@ -115,6 +115,7 @@ SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
                              size_t const idx)
 {
   // Configure scanner and scanning device
+  setMaxDuration(settings->maxDuration_s);
   setPulseFreq_Hz(settings->pulseFreq_Hz);
   setActive(settings->active);
   setBeamDivergence(settings->beamDivAngle, 0);

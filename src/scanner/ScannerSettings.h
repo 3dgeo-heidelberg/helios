@@ -78,6 +78,10 @@ public:
    */
   double trajectoryTimeInterval = 0.0; // In seconds
   /**
+   * @brief Optional maximum duration (seconds) for a leg; <=0 disables
+   */
+  double maxDuration_s = -1.0;
+  /**
    * @brief Specify the vertical resolution to be used. By default,
    *  vertical and horizontal resolutions are \f$0\f$ which means they will
    *  be ignored. When at least one of them is distinct than \f$0\f$, the
@@ -123,6 +127,7 @@ public:
     this->scanFreq_Hz = other->scanFreq_Hz;
     this->beamDivAngle = other->beamDivAngle;
     this->trajectoryTimeInterval = other->trajectoryTimeInterval;
+    this->maxDuration_s = other->maxDuration_s;
     this->verticalResolution_rad = other->verticalResolution_rad;
     this->horizontalResolution_rad = other->horizontalResolution_rad;
   }
@@ -182,6 +187,8 @@ public:
       settings->beamDivAngle = cherries->beamDivAngle;
     if (hasCherry("trajectoryTimeInterval"))
       settings->trajectoryTimeInterval = cherries->trajectoryTimeInterval;
+    if (hasCherry("maxDuration_s"))
+      settings->maxDuration_s = cherries->maxDuration_s;
     if (hasCherry("verticalResolution_rad"))
       settings->verticalResolution_rad = cherries->verticalResolution_rad;
     if (hasCherry("horizontalResolution_rad")) {

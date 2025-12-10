@@ -1187,6 +1187,26 @@ XmlAssetsLoader::createScannerSettingsFromXml(
                                        "trajectoryTimeInterval_s",
                                        template1->trajectoryTimeInterval,
                                        defaultScannerSettingsMsg);
+  // Optional max_duration can be provided as attribute or child element
+  if (XmlUtils::hasAttribute(node, "max_duration")) {
+    settings->maxDuration_s = XmlUtils::getAttributeCast<double>(
+      node, "max_duration", template1->maxDuration_s, defaultScannerSettingsMsg);
+  } else {
+    tinyxml2::XMLElement* maxDurationNode =
+      node->FirstChildElement("max_duration");
+    if (maxDurationNode != nullptr && maxDurationNode->GetText() != nullptr) {
+      try {
+        settings->maxDuration_s = std::stod(maxDurationNode->GetText());
+      } catch (std::exception const& e) {
+        logging::WARN(
+          std::string("XML Assets Loader: Failed to parse <max_duration> at line ") +
+          std::to_string(maxDurationNode->GetLineNum()) + ": " + e.what());
+        settings->maxDuration_s = template1->maxDuration_s;
+      }
+    } else {
+      settings->maxDuration_s = template1->maxDuration_s;
+    }
+  }
 
   // Parse alternative spec. based on vertical and horizontal resolutions
   if (XmlUtils::hasAttribute(node, "verticalResolution_deg")) {
@@ -1621,6 +1641,7 @@ XmlAssetsLoader::makeDefaultTemplates()
   defaultScannerTemplate->verticalAngleMin_rad = NAN;
   defaultScannerTemplate->verticalAngleMax_rad = NAN;
   defaultScannerTemplate->scanFreq_Hz = 0;
+  defaultScannerTemplate->maxDuration_s = -1.0;
 
   // Make default platform settings template
   defaultPlatformTemplate = std::make_shared<PlatformSettings>();
@@ -1666,6 +1687,8 @@ XmlAssetsLoader::trackNonDefaultScannerSettings(
     fields.insert("beamDivAngle");
   if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
     fields.insert("trajectoryTimeInterval");
+  if (base->maxDuration_s != ref->maxDuration_s)
+    fields.insert("maxDuration_s");
   if (base->verticalResolution_rad != ref->verticalResolution_rad)
     fields.insert("verticalResolution_rad");
   if (base->horizontalResolution_rad != ref->horizontalResolution_rad)
