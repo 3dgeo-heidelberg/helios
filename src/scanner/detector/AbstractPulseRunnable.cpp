@@ -72,8 +72,7 @@ AbstractPulseRunnable::capturePoint(
     {
       std::stringstream ss;
       ss << "AbstractPulseRunnable::capturePoint: rejected by min-range"
-         << " dist=" << m.distance
-         << " min=" << detector->cfg_device_rangeMin_m
+         << " dist=" << m.distance << " min=" << detector->cfg_device_rangeMin_m
          << " pulse=" << pulse.getPulseNumber()
          << " dev=" << pulse.getDeviceIndex();
       logging::TRACE(ss.str());
@@ -111,7 +110,8 @@ AbstractPulseRunnable::capturePoint(
     (cycleMeasurements->end() - 1)->position += scene.getShift();
     {
       std::stringstream ss;
-      ss << "AbstractPulseRunnable::capturePoint: pushed cycleMeasurements pulse="
+      ss << "AbstractPulseRunnable::capturePoint: pushed cycleMeasurements "
+            "pulse="
          << pulse.getPulseNumber() << " dev=" << pulse.getDeviceIndex()
          << " dist=" << m.distance;
       logging::INFO(ss.str());
