@@ -95,8 +95,7 @@ Simulation::doSimStep()
   }
 
   bool const noMovementOrRotation =
-    (mScanner->platform->originWaypoint == mScanner->platform->targetWaypoint &&
-     !mScanner->platform->isInterpolated() &&
+    (!mScanner->platform->canMove() &&
      mScanner->getScannerHead(0)->getRotatePerSec_rad() == 0.0);
 
   // warn user if no movement nor rotation and no max duration
