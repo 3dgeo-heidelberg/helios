@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <document>
-  <!-- Simple box-scene test with Livox and per-leg max_duration -->
+  <!-- Simple box-scene test with Livox and per-leg maxDuration_s -->
   <survey name="test_duration_box_livox"
       platform="data/test/test_platforms.xml#tripod_down"
       scanner="data/test/test_scanners.xml#livox-mid-100a"
       scene="data/scenes/demo/box_scene.xml#box_scene">
 
-    <leg id="1" max_duration="0.1">
+    <leg id="1" maxDuration_s="0.1">
       <platformSettings x="0" y="0" z="10" onGround="false"/>
       <scannerSettings active="true" id="scanner1"
           pulseFreq_hz="50000"

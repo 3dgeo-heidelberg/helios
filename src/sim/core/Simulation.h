@@ -104,7 +104,7 @@ protected:
    */
   std::chrono::nanoseconds timeStart_ns;
   /**
-   * @brief GPS time reference (nanoseconds) for evaluating max_duration
+   * @brief GPS time reference (nanoseconds) for evaluating maxDuration_s
    */
   double maxDurationStartGpsTime_ns = 0.0;
 

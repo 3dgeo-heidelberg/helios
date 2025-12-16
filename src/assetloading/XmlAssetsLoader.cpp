@@ -1196,23 +1196,23 @@ XmlAssetsLoader::createScannerSettingsFromXml(
                                        "trajectoryTimeInterval_s",
                                        template1->trajectoryTimeInterval,
                                        defaultScannerSettingsMsg);
-  // Optional max_duration can be provided as attribute or child element
-  if (XmlUtils::hasAttribute(node, "max_duration")) {
+  // Optional maxDuration_s can be provided as attribute or child element
+  if (XmlUtils::hasAttribute(node, "maxDuration_s")) {
     settings->maxDuration_s =
       XmlUtils::getAttributeCast<double>(node,
-                                         "max_duration",
+                                         "maxDuration_s",
                                          template1->maxDuration_s,
                                          defaultScannerSettingsMsg);
   } else {
     tinyxml2::XMLElement* maxDurationNode =
-      node->FirstChildElement("max_duration");
+      node->FirstChildElement("maxDuration_s");
     if (maxDurationNode != nullptr && maxDurationNode->GetText() != nullptr) {
       try {
         settings->maxDuration_s = std::stod(maxDurationNode->GetText());
       } catch (std::exception const& e) {
         logging::WARN(
           std::string(
-            "XML Assets Loader: Failed to parse <max_duration> at line ") +
+            "XML Assets Loader: Failed to parse <maxDuration_s> at line ") +
           std::to_string(maxDurationNode->GetLineNum()) + ": " + e.what());
         settings->maxDuration_s = template1->maxDuration_s;
       }

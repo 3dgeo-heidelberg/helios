@@ -79,7 +79,7 @@ Simulation::doSimStep()
     currentGpsTime_ns -= 604800000000000.;
 
   // Check for leg completion
-  // max_duration check happens after doSimStep to ensure all pulses are
+  // maxDuration_s check happens after doSimStep to ensure all pulses are
   // processed
   bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
     currentGpsTime_ns, maxDurationStartGpsTime_ns);

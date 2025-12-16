@@ -286,7 +286,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   if (leg->mScannerSettings != nullptr) {
     mSurvey->scanner->applySettings(leg->mScannerSettings);
   }
-  // Apply max_duration to scanner (prefer trajectory override, then scanner
+  // Apply maxDuration_s to scanner (prefer trajectory override, then scanner
   // settings)
   double maxDuration_s = -1.0;
   if (leg->mTrajectorySettings != nullptr &&

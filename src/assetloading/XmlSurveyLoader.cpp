@@ -167,9 +167,9 @@ XmlSurveyLoader::createLegFromXML(
     leg->mTrajectorySettings = nullptr;
   }
 
-  // Parse optional max_duration attribute
+  // Parse optional maxDuration_s attribute
   double maxDuration =
-    XmlUtils::getAttributeCast<double>(legNode, "max_duration", -1.0);
+    XmlUtils::getAttributeCast<double>(legNode, "maxDuration_s", -1.0);
 
   if (maxDuration > 0.0) {
 

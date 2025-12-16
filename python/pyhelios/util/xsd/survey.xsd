@@ -183,6 +183,7 @@
                                         </xs:element>
                                     </xs:sequence>
                                     <xs:attribute type="xs:int" name="stripId" use="optional"/>
+                                    <xs:attribute type="xs:float" name="maxDuration_s" use="optional"/>
                                 </xs:complexType>
                                 </xs:element>
                         </xs:choice>
