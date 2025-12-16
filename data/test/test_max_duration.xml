@@ -10,9 +10,7 @@
       <platformSettings x="0" y="0" z="10" onGround="false"/>
       <scannerSettings active="true" id="scanner1"
           pulseFreq_hz="50000"
-          trajectoryTimeInterval_s="0.01">
-        <scanPattern type="static"/>
-      </scannerSettings>
+          trajectoryTimeInterval_s="0.01"/>
     </leg>
 
   </survey>
