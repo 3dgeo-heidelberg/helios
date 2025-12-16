@@ -15,6 +15,11 @@ class TrajectorySettings : public Asset
 public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
+  /**
+   * @brief Maximum duration of the trajectory leg in seconds
+   *
+   * A negative value means no maximum duration
+   */
   double maxDuration_s = -1.0;
   /**
    * @brief The start time \f$t_a\f$ of the trajectory

@@ -7,12 +7,9 @@
       scene="data/scenes/demo/box_scene.xml#box_scene">
 
     <leg id="1" max_duration="0.1">
-      <platformSettings x="0" y="0" z="10" onGround="false" stopAndTurn="true"/>
+      <platformSettings x="0" y="0" z="10" onGround="false"/>
       <scannerSettings active="true" id="scanner1"
           pulseFreq_hz="50000"
-          headRotateStart_deg="0"
-          headRotateStop_deg="360"
-          headRotatePerSec_deg="360"
           trajectoryTimeInterval_s="0.01">
         <scanPattern type="static"/>
       </scannerSettings>
