@@ -3,7 +3,6 @@
 <document>
 
   <!-- ############### BEGIN Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
-  
 
   <!-- ##### BEGIN RIEGL VZ-400 ##### -->
   <scanner  id                         = "riegl_vz400"
