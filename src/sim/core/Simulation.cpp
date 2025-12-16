@@ -102,11 +102,13 @@ Simulation::doSimStep()
   // warn user if no movement nor rotation and no max duration
   if (noMovementOrRotation && mScanner->getMaxDuration() < 0.0) {
     std::stringstream ss;
-    ss << "ERROR: No platform movement, scanner head rotation or maximum duration set.\n"
-       << "Simulation would run indefinitely. To avoid this, simulation is aborted.";
-        logging::ERR(ss.str());
-        throw HeliosException(ss.str());
-    }
+    ss << "ERROR: No platform movement, scanner head rotation or maximum "
+          "duration set.\n"
+       << "Simulation would run indefinitely. To avoid this, simulation is "
+          "aborted.";
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
 
   // complete leg if both rotation and waypoint done
   if (!noMovementOrRotation && mScanner->getScannerHead(0)->rotateCompleted() &&
