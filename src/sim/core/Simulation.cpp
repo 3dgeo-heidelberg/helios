@@ -96,20 +96,19 @@ Simulation::doSimStep()
   bool const noMovementOrRotation =
     (mScanner->platform->originWaypoint == mScanner->platform->targetWaypoint &&
      mScanner->getScannerHead(0)->getRotatePerSec_rad() == 0.0);
-  
+
   // warn user if no movement nor rotation and no max duration
   if (noMovementOrRotation && mScanner->getMaxDuration() < 0.0) {
     static bool warned = false;
     if (!warned) {
-      logging::INFO(
-        "Warning: Platform has no movement nor rotation and no max_duration is set. Simulation might run indefinitely.");
+      logging::INFO("Warning: Platform has no movement nor rotation and no "
+                    "max_duration is set. Simulation might run indefinitely.");
       warned = true;
     }
   }
 
   // complete leg if both rotation and waypoint done
-  if (!noMovementOrRotation &&
-      mScanner->getScannerHead(0)->rotateCompleted() && 
+  if (!noMovementOrRotation && mScanner->getScannerHead(0)->rotateCompleted() &&
       mScanner->platform->waypointReached()) {
     onLegComplete();
     return;
