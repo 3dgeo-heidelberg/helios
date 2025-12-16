@@ -678,8 +678,7 @@ def test_maxduration_pyh(output_dir):
 @pytest.mark.exe
 def test_maxduration_exe(output_dir):
     dirname_exe = run_helios_executable(
-        Path("data") / "test" / "test_max_duration.xml",
-        output_dir
+        Path("data") / "test" / "test_max_duration.xml", output_dir
     )
     eval_maxduration(dirname_exe)
 
@@ -692,8 +691,8 @@ def eval_maxduration(dirname):
     assert delta_t <= delta_t_expected + 1e-4
 
 
-#@pytest.mark.pyh
-#def test_no_infinite_run_pyh(output_dir):
+# @pytest.mark.pyh
+# def test_no_infinite_run_pyh(output_dir):
 #    with pytest.raises(Exception):
 #        dirname_pyh = run_helios_pyhelios(
 #            Path("data") / "test" / "test_infinite_run.xml",
@@ -705,8 +704,7 @@ def eval_maxduration(dirname):
 @pytest.mark.exe
 def test_no_infinite_run_exe(output_dir, capfd):
     dirname_exe = run_helios_executable(
-        Path("data") / "test" / "test_infinite_run.xml",
-        output_dir
+        Path("data") / "test" / "test_infinite_run.xml", output_dir
     )
     captured = capfd.readouterr()
     eval_no_infinite_run(dirname_exe, captured)
@@ -718,4 +716,4 @@ def eval_no_infinite_run(dirname, captured):
     assert os.path.getsize(path) == 0
     # Not working as expected unless we globally set --capture=tee-sys in pyproject.toml
     # see https://github.com/pytest-dev/pytest/issues/5997
-    #assert "ERROR: No platform movement, scanner head rotation or maximum duration set." in captured.out
+    # assert "ERROR: No platform movement, scanner head rotation or maximum duration set." in captured.out
