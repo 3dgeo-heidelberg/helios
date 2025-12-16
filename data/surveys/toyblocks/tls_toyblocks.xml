@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
-    <survey name="toyblocks_tls" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#cartesian_grid_scanner">
+    <survey name="toyblocks_tls" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
 		<!-- platform: tripod, deflector: rotating -->
 		<leg>
             <platformSettings  x="-26" y="-31.0" z="0" onGround="true"/>

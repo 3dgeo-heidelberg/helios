@@ -880,11 +880,12 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // Return built scanner
   return scanner;
 }
+// Prepare beam deflector variable
 std::shared_ptr<AbstractBeamDeflector>
 XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
 {
   std::shared_ptr<AbstractBeamDeflector> beamDeflector = nullptr;
-
+  // Parse beam deflector
   std::string str_opticsType = scannerNode->Attribute("optics");
   double scanFreqMax_Hz =
     XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMax_Hz", 0.0);
@@ -892,7 +893,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
     XmlUtils::getAttributeCast<double>(scannerNode, "scanFreqMin_Hz", 0.0);
   double scanAngleMax_rad = MathConverter::degreesToRadians(
     XmlUtils::getAttributeCast<double>(scannerNode, "scanAngleMax_deg", 0.0));
-
+  // Build beam deflector
   if (str_opticsType == "oscillating") {
     int scanProduct =
       XmlUtils::getAttributeCast<int>(scannerNode, "scanProduct", 1000000);

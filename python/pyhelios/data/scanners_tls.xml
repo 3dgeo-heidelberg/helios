@@ -3,33 +3,7 @@
 <document>
 
   <!-- ############### BEGIN Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
-   <!-- ##### BEGIN Custom Raster Grid Scanner ##### -->
-<scanner id="cartesian_grid_scanner"
-         accuracy_m="0.01"
-         beamDivergence_rad="0.0005"
-         name="Cartesian Raster Grid Scanner"
-         optics="grid"
-         pulseFreqs_Hz="200000"
-         pulseLength_ns="4"
-         rangeMin_m="1"
-         scanAngleMax_deg="20"
-         scanFreqMin_Hz="0"
-         scanFreqMax_Hz="200"
-         wavelength_nm="1064">
-
-    <beamOrigin x="0" y="0.0" z="0.0">
-        <rot axis="x" angle_deg="0" />
-        <rot axis="y" angle_deg="0" />
-    </beamOrigin>
-
-    <!-- IMPORTANT NEW FIELD -->
-    <gridSweep fastAxis="y" slowAxis="x"
-               fastSteps="400" slowSteps="400"
-               sweepPattern="bidirectional"/>
-
-</scanner>
-<!-- ##### END Custom Raster Grid Scanner ##### -->
-
+  
 
   <!-- ##### BEGIN RIEGL VZ-400 ##### -->
   <scanner  id                         = "riegl_vz400"
