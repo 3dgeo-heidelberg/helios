@@ -976,21 +976,24 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
 
     if (std::abs(prism1_angle_deg) > eps) {
       bool inclinedOnLeft1 = prism1_angle_deg > 0;
-      double angle1_rad = MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
+      double angle1_rad =
+        MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
       prisms.emplace_back(
         angle1_rad, inclinedOnLeft1, refr_prism1, rotorFreq_1_Hz * 2.0 * M_PI);
     }
 
     if (std::abs(prism2_angle_deg) > eps) {
       bool inclinedOnLeft2 = prism2_angle_deg > 0;
-      double angle2_rad = MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
+      double angle2_rad =
+        MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
       prisms.emplace_back(
         angle2_rad, inclinedOnLeft2, refr_prism2, rotorFreq_2_Hz * 2.0 * M_PI);
     }
 
     if (std::abs(prism3_angle_deg) > eps) {
       bool inclinedOnLeft3 = prism3_angle_deg > 0;
-      double angle3_rad = MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
+      double angle3_rad =
+        MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
       prisms.emplace_back(
         angle3_rad, inclinedOnLeft3, refr_prism3, rotorFreq_3_Hz * 2.0 * M_PI);
     }
