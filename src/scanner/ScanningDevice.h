@@ -246,9 +246,8 @@ protected:
    * @brief The subray radius step or iteration.
    */
   std::vector<int> cached_subrayRadiusStep;
-  std::vector<double> cached_subrayX_offsets;   // for plotting
-  std::vector<double> cached_subrayY_offsets;   // for plotting
-
+  std::vector<double> cached_subrayX_offsets; // for plotting
+  std::vector<double> cached_subrayY_offsets; // for plotting
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

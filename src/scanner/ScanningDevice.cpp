@@ -95,7 +95,8 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 /*
 void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
-    std::cout << ">>> USING ScanningDevice::prepareSimulation() - CARTESIAN GRID (CLIPPED)\n";
+    std::cout << ">>> USING ScanningDevice::prepareSimulation() - CARTESIAN GRID
+(CLIPPED)\n";
 
     cached_subrayRotation.clear();
     cached_subrayRadiusStep.clear();
@@ -107,8 +108,8 @@ void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
     int const N = FWF_settings.beamSampleQuality;
 
     double const maxAngle = beamDivergence_rad;    // circular cone half-angle
-    double const maxOffset = std::tan(maxAngle);   // linear offset on unit sphere
-    double const step = maxOffset / N;
+    double const maxOffset = std::tan(maxAngle);   // linear offset on unit
+sphere double const step = maxOffset / N;
 
     // Save grid for plotting
     std::ofstream gridfile("clipped_subray_grid.csv", std::ios::trunc);
@@ -122,8 +123,9 @@ void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
             double y_offset = j * step;
 
             // Convert to angular tilt
-            double tilt_x = std::atan(x_offset);   // rotation around Y (left-right)
-            double tilt_y = std::atan(y_offset);   // rotation around X (up-down)
+            double tilt_x = std::atan(x_offset);   // rotation around Y
+(left-right) double tilt_y = std::atan(y_offset);   // rotation around X
+(up-down)
 
             // Total angular distance from central ray
             double radial = std::sqrt(tilt_x*tilt_x + tilt_y*tilt_y);
@@ -234,20 +236,22 @@ ScanningDevice::calcAtmosphericAttenuation() const
 
   return (3.91 / Vm) * pow((lambda / 0.55), -q);
 }
-void ScanningDevice::calcRaysNumber()
+void
+ScanningDevice::calcRaysNumber()
 {
-    // Count circle steps
-    int count = 1;
-    for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality; radiusStep++) {
-        int circleSteps = (int)(2 * M_PI) * radiusStep;
-        count += circleSteps;
-    }
+  // Count circle steps
+  int count = 1;
+  for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
+       radiusStep++) {
+    int circleSteps = (int)(2 * M_PI) * radiusStep;
+    count += circleSteps;
+  }
 
-    // Update number of rays
-    numRays = count;
-    std::stringstream ss;
-    ss << "Number of subsampling rays (" << id << "): " << numRays;
-    logging::INFO(ss.str());
+  // Update number of rays
+  numRays = count;
+  std::stringstream ss;
+  ss << "Number of subsampling rays (" << id << "): " << numRays;
+  logging::INFO(ss.str());
 }
 
 /*
