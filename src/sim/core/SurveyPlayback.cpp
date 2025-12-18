@@ -1,4 +1,5 @@
 #include "logging.hpp"
+#include <algorithm>
 #include <iomanip>
 #include <string>
 
@@ -181,9 +182,18 @@ SurveyPlayback::trackProgress()
     double legElapsedAngle =
       std::fabs(getScanner()->getScannerHead()->getRotateStart() -
                 getScanner()->getScannerHead()->getExactRotateCurrent());
-    int const legProgress = estimateAngularLegProgress(legElapsedAngle);
+    int legProgress = estimateAngularLegProgress(legElapsedAngle);
+    // Fallback to time-based progress when maxDuration is set
+    if (getScanner()->getMaxDuration() > 0.0) {
+      double const elapsed_s =
+        (currentGpsTime_ns - maxDurationStartGpsTime_ns) * 1e-9;
+      double const duration = getScanner()->getMaxDuration();
+      int const timeProgress =
+        static_cast<int>(std::min(100.0, (elapsed_s / duration) * 100.0));
+      legProgress = std::max(legProgress, timeProgress);
+    }
     estimateTime(legProgress, true, 0);
-  } else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
+  } else {
     double const legElapsedLength =
       glm::distance(getCurrentLeg()->mPlatformSettings->getPosition(),
                     mSurvey->scanner->platform->getPosition());

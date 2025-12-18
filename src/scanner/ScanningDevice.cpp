@@ -92,6 +92,73 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 
 // ***  M E T H O D S  *** //
 // *********************** //
+/*
+void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+{
+    std::cout << ">>> USING ScanningDevice::prepareSimulation() - CARTESIAN GRID (CLIPPED)\n";
+
+    cached_subrayRotation.clear();
+    cached_subrayRadiusStep.clear();
+    cached_subrayDivergenceAngle_rad.clear();
+
+    cached_subrayX_offsets.clear();   // ← ADD THESE
+    cached_subrayY_offsets.clear();   // ← ADD THESE
+
+    int const N = FWF_settings.beamSampleQuality;
+
+    double const maxAngle = beamDivergence_rad;    // circular cone half-angle
+    double const maxOffset = std::tan(maxAngle);   // linear offset on unit sphere
+    double const step = maxOffset / N;
+
+    // Save grid for plotting
+    std::ofstream gridfile("clipped_subray_grid.csv", std::ios::trunc);
+
+    int linearIndex = 0;
+    for (int i = -N; i <= N; ++i)
+    {
+        for (int j = -N; j <= N; ++j)
+        {
+            double x_offset = i * step;
+            double y_offset = j * step;
+
+            // Convert to angular tilt
+            double tilt_x = std::atan(x_offset);   // rotation around Y (left-right)
+            double tilt_y = std::atan(y_offset);   // rotation around X (up-down)
+
+            // Total angular distance from central ray
+            double radial = std::sqrt(tilt_x*tilt_x + tilt_y*tilt_y);
+
+            // === CLIP TO CIRCLE ===
+            if (radial > maxAngle)
+                continue;
+
+            // Save offsets
+            cached_subrayX_offsets.push_back(x_offset);
+            cached_subrayY_offsets.push_back(y_offset);
+
+            // Rotation composition
+            Rotation r = Rotation(Directions::right, tilt_y) *
+                         Rotation(Directions::up,    tilt_x);
+
+            cached_subrayRotation.push_back(r);
+            cached_subrayRadiusStep.push_back(linearIndex++);
+            cached_subrayDivergenceAngle_rad.push_back(radial);
+
+            // Log to CSV
+            gridfile << x_offset << "," << y_offset << "\n";
+        }
+    }
+
+    gridfile.close();
+
+    // Energy model
+    if (legacyEnergyModel)
+        energyModel = std::make_shared<BaseEnergyModel>(*this);
+    else
+        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+}
+
+*/
 
 void
 ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
@@ -167,7 +234,23 @@ ScanningDevice::calcAtmosphericAttenuation() const
 
   return (3.91 / Vm) * pow((lambda / 0.55), -q);
 }
+void ScanningDevice::calcRaysNumber()
+{
+    // Count circle steps
+    int count = 1;
+    for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality; radiusStep++) {
+        int circleSteps = (int)(2 * M_PI) * radiusStep;
+        count += circleSteps;
+    }
 
+    // Update number of rays
+    numRays = count;
+    std::stringstream ss;
+    ss << "Number of subsampling rays (" << id << "): " << numRays;
+    logging::INFO(ss.str());
+}
+
+/*
 void
 ScanningDevice::calcRaysNumber()
 {
@@ -185,7 +268,7 @@ ScanningDevice::calcRaysNumber()
   ss << "Number of subsampling rays (" << id << "): " << numRays;
   logging::INFO(ss.str());
 }
-
+*/
 void
 ScanningDevice::doSimStep(
   unsigned int legIndex,

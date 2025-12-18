@@ -56,6 +56,10 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
     if (!fs::path(path).is_relative()) {
       paths.push_back(path);
     }
+    // Allow relative paths that exist from current working directory
+    else if (fs::exists(path)) {
+      paths.push_back(path);
+    }
     for (auto assetPath : assetsDir) {
       if (fs::exists(fs::path(assetPath) / path)) {
         paths.push_back((fs::path(assetPath) / path).string());

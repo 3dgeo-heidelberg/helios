@@ -28,6 +28,9 @@ using helios::analytics::HDA_PulseRecorder;
 class Scanner;
 class SingleScanner;
 class MultiScanner;
+namespace HeliosTests {
+class EnergyModelsTest;
+}
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -45,6 +48,7 @@ protected:
   friend class MultiScanner;
   friend class BaseEnergyModel;
   friend class ImprovedEnergyModel;
+  friend class HeliosTests::EnergyModelsTest;
 
   // ***  DEVICE ATTRIBUTES  *** //
   // *************************** //
@@ -202,7 +206,11 @@ protected:
    */
   bool state_lastPulseWasHit = false;
 
-public:
+  /**
+   * @brief Cached footprint offsets for debugging visualization.
+   */
+  std::vector<std::pair<double, double>> debugFootprint;
+
   // ***  CACHED ATTRIBUTES  *** //
   // *************************** //
   /**
@@ -238,6 +246,9 @@ public:
    * @brief The subray radius step or iteration.
    */
   std::vector<int> cached_subrayRadiusStep;
+  std::vector<double> cached_subrayX_offsets;   // for plotting
+  std::vector<double> cached_subrayY_offsets;   // for plotting
+
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -487,6 +498,14 @@ public:
     Rotation const& headRelativeEmitterAttitude)
   {
     this->headRelativeEmitterAttitude = headRelativeEmitterAttitude;
+  }
+  /**
+   * @brief Get the cached debug footprint offsets.
+   * @see ScanningDevice::debugFootprint
+   */
+  inline std::vector<std::pair<double, double>> const& getDebugFootprint() const
+  {
+    return debugFootprint;
   }
   /**
    * @brief Obtain the Full Waveform settings of the scanning device
