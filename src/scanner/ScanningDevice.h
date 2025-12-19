@@ -206,7 +206,6 @@ protected:
    */
   bool state_lastPulseWasHit = false;
 
-
   // ***  CACHED ATTRIBUTES  *** //
   // *************************** //
   /**
