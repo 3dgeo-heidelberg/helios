@@ -149,7 +149,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     def from_tiff(cls, tiff_file: AssetPath):
         """Load the scene part from a TIFF file."""
 
-        _cpp_part = _helios.read_tiff_scene_part(str(tiff_file))
+        _cpp_part = _helios.read_tiff_scene_part(
+            str(tiff_file), [str(p) for p in get_asset_directories()]
+        )
 
         return cls._from_cpp(_cpp_part)
 
