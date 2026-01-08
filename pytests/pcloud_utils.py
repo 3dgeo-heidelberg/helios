@@ -78,13 +78,13 @@ class PointCloud:
         return PointCloud(X, fnames=fnames, F=F, y=y)
 
     @staticmethod
-    def from_las_file(path):
+    def from_las_file(path, fnames=None):
         """
         Build a point cloud object from the LAS file at the given path.
 
         :param path: Path to the LAS file.
         """
-        return PointCloud.from_las(laspy.read(path))
+        return PointCloud.from_las(laspy.read(path), fnames=fnames)
 
     @staticmethod
     def from_xyz_file(path, cols, names, sep=" "):
