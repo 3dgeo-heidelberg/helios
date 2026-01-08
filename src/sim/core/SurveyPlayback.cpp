@@ -193,7 +193,7 @@ SurveyPlayback::trackProgress()
       legProgress = std::max(legProgress, timeProgress);
     }
     estimateTime(legProgress, true, 0);
-  } else {
+  } else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
     double const legElapsedLength =
       glm::distance(getCurrentLeg()->mPlatformSettings->getPosition(),
                     mSurvey->scanner->platform->getPosition());
