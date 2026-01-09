@@ -81,18 +81,19 @@ Simulation::doSimStep()
   // Check for leg completion
   // maxDuration_s check happens after doSimStep to ensure all pulses are
   // processed
-  bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
-    currentGpsTime_ns, maxDurationStartGpsTime_ns);
-  if (maxDurationElapsed) {
-    double const elapsed_s =
-      (currentGpsTime_ns - maxDurationStartGpsTime_ns) * 1e-9;
-    std::stringstream ss;
-    ss << "Max duration reached (" << elapsed_s
-       << " s >= " << mScanner->getMaxDuration() << " s). Ending leg.";
-    logging::INFO(ss.str());
-    onLegComplete();
-    return;
-  }
+  // Temporarily disable max-duration early termination for regression comparison
+  // bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
+  //   currentGpsTime_ns, maxDurationStartGpsTime_ns);
+  // if (maxDurationElapsed) {
+  //   double const elapsed_s =
+  //     (currentGpsTime_ns - maxDurationStartGpsTime_ns) * 1e-9;
+  //   std::stringstream ss;
+  //   ss << "Max duration reached (" << elapsed_s
+  //      << " s >= " << mScanner->getMaxDuration() << " s). Ending leg.";
+  //   logging::INFO(ss.str());
+  //   onLegComplete();
+  //   return;
+  // }
 
   bool const noMovementOrRotation =
     (!mScanner->platform->canMove() &&

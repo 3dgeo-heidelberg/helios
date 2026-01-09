@@ -97,7 +97,6 @@ void
 ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
   // Reset cached subray data for a clean elliptical sampling pass
-  debugFootprint.clear();
   cached_subrayRotation.clear();
   cached_subrayRadiusStep.clear();
   cached_subrayDivergenceAngle_rad.clear();
