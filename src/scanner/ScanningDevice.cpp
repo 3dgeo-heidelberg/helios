@@ -96,6 +96,12 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 void
 ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
+  // Reset cached subray data for a clean elliptical sampling pass
+  debugFootprint.clear();
+  cached_subrayRotation.clear();
+  cached_subrayRadiusStep.clear();
+  cached_subrayDivergenceAngle_rad.clear();
+
   // Elliptical footprint discrete method
   int const beamSampleQuality = FWF_settings.beamSampleQuality;
   double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
