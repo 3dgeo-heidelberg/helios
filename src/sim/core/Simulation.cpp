@@ -1,5 +1,4 @@
 #include "logging.hpp"
-#include <HeliosException.h>
 #include <iostream>
 
 #include <chrono>
@@ -70,6 +69,13 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
+  // Check for leg completion:
+  if (mScanner->getScannerHead(0)->rotateCompleted() &&
+      mScanner->platform->waypointReached()) {
+    onLegComplete();
+    return;
+  }
+
   // Ordered execution of simulation components
   mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
   mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
@@ -78,9 +84,7 @@ Simulation::doSimStep()
   if (currentGpsTime_ns > 604800000000000.)
     currentGpsTime_ns -= 604800000000000.;
 
-  // Check for leg completion
-  // maxDuration_s check happens after doSimStep to ensure all pulses are
-  // processed
+  // Check for leg completion after stepping to support max duration
   bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
     currentGpsTime_ns, maxDurationStartGpsTime_ns);
   if (maxDurationElapsed) {
@@ -90,28 +94,6 @@ Simulation::doSimStep()
     ss << "Max duration reached (" << elapsed_s
        << " s >= " << mScanner->getMaxDuration() << " s). Ending leg.";
     logging::INFO(ss.str());
-    onLegComplete();
-    return;
-  }
-
-  bool const noMovementOrRotation =
-    (!mScanner->platform->canMove() &&
-     mScanner->getScannerHead(0)->getRotatePerSec_rad() == 0.0);
-
-  // warn user if no movement nor rotation and no max duration
-  if (noMovementOrRotation && mScanner->getMaxDuration() < 0.0) {
-    std::stringstream ss;
-    ss << "ERROR: No platform movement, scanner head rotation or maximum "
-          "duration set.\n"
-       << "Simulation would run indefinitely. To avoid this, simulation is "
-          "aborted.";
-    logging::ERR(ss.str());
-    throw HeliosException(ss.str());
-  }
-
-  // complete leg if both rotation and waypoint done
-  if (!noMovementOrRotation && mScanner->getScannerHead(0)->rotateCompleted() &&
-      mScanner->platform->waypointReached()) {
     onLegComplete();
     return;
   }
@@ -157,7 +139,6 @@ Simulation::start()
   prepareSimulation(mScanner->getPulseFreq_Hz());
   timeStart_ns =
     duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
-  maxDurationStartGpsTime_ns = currentGpsTime_ns;
 
 #ifdef DATA_ANALYTICS
   HDA_StateJSONReporter sjr((SurveyPlayback*)this, "helios_state.json");
