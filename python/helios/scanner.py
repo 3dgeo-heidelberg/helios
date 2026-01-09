@@ -33,8 +33,8 @@ class ScannerSettings(ScannerSettingsBase):
     scan_frequency: Frequency = 200
     beam_divergence_angle: Angle = 0.003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
-    vertical_resolution: Length = 0
-    horizontal_resolution: Length = 0
+    vertical_resolution: Angle = 0
+    horizontal_resolution: Angle = 0
 
 
 # TODO: Requires expert input

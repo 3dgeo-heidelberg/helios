@@ -269,6 +269,17 @@ def is_xml_loaded(obj) -> bool:
     return getattr(obj, "_is_loaded_from_xml", False)
 
 
+def check_integrate_survey_and_legs(survey: "Survey") -> None:
+    """
+    Integrate all legs with the survey if needed(i.e., Update the settings to fit the specified resolution.)
+    Validate results after integration.
+    """
+
+    if not getattr(survey, "_is_survey_and_legs_integrated", False):
+        _helios.check_integrate_survey_and_legs(survey._cpp_object)
+        setattr(survey, "_is_survey_and_legs_integrated", True)
+
+
 def apply_scene_shift(
     survey: "Survey", execution_settings: "ExecutionSettings"
 ) -> None:
