@@ -2721,7 +2721,7 @@ PYBIND11_MODULE(_helios, m)
                   &Simulation::getCallbackFrequency,
                   &Simulation::setCallbackFrequency)
 
-    .def("start", &Simulation::start)
+    .def("start", &Simulation::start, py::call_guard<py::gil_scoped_release>())
     .def("pause", &Simulation::pause)
     .def("stop", &Simulation::stop);
 
