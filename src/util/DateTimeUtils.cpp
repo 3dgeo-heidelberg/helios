@@ -19,14 +19,16 @@ DateTimeUtils::dateTimeStrToSeconds(std::string const str)
   t.tm_hour = stoi(str.substr(11, 2));
   t.tm_min = stoi(str.substr(14, 2));
   t.tm_sec = stoi(str.substr(17, 2));
-  t.tm_isdst = -1;
-  // Debug output:
-  // std::stringstream ss;
-  // ss  << "Provided GPS start time was \"" << str << "\"\n"
-  //     << t.tm_year << t.tm_mon <<t.tm_mday << t.tm_hour << t.tm_min <<
-  //     t.tm_sec << '\n';
-  // logging::ERR(ss.str());
+  // Interpret provided datetime as UTC to avoid local DST shifts
+  t.tm_isdst = 0;
+
+#ifdef _WIN32
+  std::time_t const tt = _mkgmtime(&t);
+#else
+  std::time_t const tt = timegm(&t);
+#endif
+
   return duration_cast<seconds>(
-           system_clock::from_time_t(std::mktime(&t)).time_since_epoch())
+           system_clock::from_time_t(tt).time_since_epoch())
     .count();
 }

@@ -70,7 +70,13 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
-  // Ordered execution of simulation components
+  // keep leg check before sim step to avoid coordinate offset
+  if (mScanner->getScannerHead(0)->rotateCompleted() &&
+      mScanner->platform->waypointReached()) {
+    onLegComplete();
+    return;
+  }
+
   mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
   mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
   mScanner->platform->scene->doSimStep();
