@@ -70,23 +70,7 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
-  // keep leg check before sim step to avoid coordinate offset
-  if (mScanner->getScannerHead(0)->rotateCompleted() &&
-      mScanner->platform->waypointReached()) {
-    onLegComplete();
-    return;
-  }
-
-  mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
-  mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
-  mScanner->platform->scene->doSimStep();
-  currentGpsTime_ns += stepGpsTime_ns;
-  if (currentGpsTime_ns > 604800000000000.)
-    currentGpsTime_ns -= 604800000000000.;
-
   // Check for leg completion
-  // maxDuration_s check happens after doSimStep to ensure all pulses are
-  // processed
   bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
     currentGpsTime_ns, maxDurationStartGpsTime_ns);
   if (maxDurationElapsed) {
@@ -99,7 +83,6 @@ Simulation::doSimStep()
     onLegComplete();
     return;
   }
-
   bool const noMovementOrRotation =
     (!mScanner->platform->canMove() &&
      mScanner->getScannerHead(0)->getRotatePerSec_rad() == 0.0);
@@ -121,6 +104,15 @@ Simulation::doSimStep()
     onLegComplete();
     return;
   }
+  // Perform simulation step
+  mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
+  mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
+  mScanner->platform->scene->doSimStep();
+  currentGpsTime_ns += stepGpsTime_ns;
+  if (currentGpsTime_ns > 604800000000000.)
+    currentGpsTime_ns -= 604800000000000.;
+
+
 }
 
 void
