@@ -111,8 +111,6 @@ Simulation::doSimStep()
   currentGpsTime_ns += stepGpsTime_ns;
   if (currentGpsTime_ns > 604800000000000.)
     currentGpsTime_ns -= 604800000000000.;
-
-
 }
 
 void
