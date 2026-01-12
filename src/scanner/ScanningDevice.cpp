@@ -92,9 +92,15 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 
 // ***  M E T H O D S  *** //
 // *********************** //
+
 void
 ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
+  // Reset cached subray data for a clean elliptical sampling pass
+  cached_subrayRotation.clear();
+  cached_subrayRadiusStep.clear();
+  cached_subrayDivergenceAngle_rad.clear();
+
   // Elliptical footprint discrete method
   int const beamSampleQuality = FWF_settings.beamSampleQuality;
   double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
@@ -166,7 +172,6 @@ ScanningDevice::calcAtmosphericAttenuation() const
 
   return (3.91 / Vm) * pow((lambda / 0.55), -q);
 }
-
 void
 ScanningDevice::calcRaysNumber()
 {

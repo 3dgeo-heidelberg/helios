@@ -33,6 +33,7 @@ namespace fs = boost::filesystem;
 #include "OscillatingMirrorBeamDeflector.h"
 #include "PolygonMirrorBeamDeflector.h"
 #include "RisleyBeamDeflector.h"
+
 #include <scanner/EvalScannerHead.h>
 #include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
@@ -879,7 +880,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // Return built scanner
   return scanner;
 }
-
 std::shared_ptr<AbstractBeamDeflector>
 XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
 {
@@ -899,20 +899,28 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
       XmlUtils::getAttributeCast<int>(scannerNode, "scanProduct", 1000000);
     beamDeflector = std::make_shared<OscillatingMirrorBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct);
-  } else if (str_opticsType == "conic") {
+  }
+
+  else if (str_opticsType == "conic") {
     beamDeflector = std::make_shared<ConicBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz);
-  } else if (str_opticsType == "line") {
+  }
+
+  else if (str_opticsType == "line") {
     int numFibers =
       XmlUtils::getAttributeCast<int>(scannerNode, "numFibers", 1);
     beamDeflector = std::make_shared<FiberArrayBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers);
-  } else if (str_opticsType == "rotating") {
+  }
+
+  else if (str_opticsType == "rotating") {
     double scanAngleEffectiveMax_rad =
       MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
         scannerNode, "scanAngleEffectiveMax_deg", 0.0));
+
     tinyxml2::XMLElement* deflectionErrorNode =
       scannerNode->FirstChildElement("deflectionError");
+
     if (deflectionErrorNode != nullptr) { // Build evaluable beam deflector
       if (XmlUtils::hasAttribute(deflectionErrorNode, "expr")) {
         std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr =
@@ -936,7 +944,9 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
                                                      scanAngleMax_rad,
                                                      scanAngleEffectiveMax_rad);
     }
-  } else if (str_opticsType == "risley") {
+  }
+
+  else if (str_opticsType == "risley") {
     std::vector<Prism> prisms;
 
     double rotorFreq_1_Hz =
@@ -962,26 +972,26 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
     double refr_air =
       XmlUtils::getAttributeCast<double>(scannerNode, "refrIndex_air", 1.0);
 
-    const double epsilon = 1e-6;
+    const double eps = 1e-6;
 
-    if (std::abs(prism1_angle_deg) > epsilon) {
-      bool inclinedOnLeft1 = prism1_angle_deg > 0.0;
+    if (std::abs(prism1_angle_deg) > eps) {
+      bool inclinedOnLeft1 = prism1_angle_deg > 0;
       double angle1_rad =
         MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
       prisms.emplace_back(
         angle1_rad, inclinedOnLeft1, refr_prism1, rotorFreq_1_Hz * 2.0 * M_PI);
     }
 
-    if (std::abs(prism2_angle_deg) > epsilon) {
-      bool inclinedOnLeft2 = prism2_angle_deg > 0.0;
+    if (std::abs(prism2_angle_deg) > eps) {
+      bool inclinedOnLeft2 = prism2_angle_deg > 0;
       double angle2_rad =
         MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
       prisms.emplace_back(
         angle2_rad, inclinedOnLeft2, refr_prism2, rotorFreq_2_Hz * 2.0 * M_PI);
     }
 
-    if (std::abs(prism3_angle_deg) > epsilon) {
-      bool inclinedOnLeft3 = prism3_angle_deg > 0.0;
+    if (std::abs(prism3_angle_deg) > eps) {
+      bool inclinedOnLeft3 = prism3_angle_deg > 0;
       double angle3_rad =
         MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
       prisms.emplace_back(
@@ -993,12 +1003,11 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
 
   if (beamDeflector == nullptr) {
     std::stringstream ss;
-    ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
-       << "'. Aborting.";
+    ss << "ERROR: Unknown beam deflector type: '" << str_opticsType << "'";
     logging::ERR(ss.str());
     exit(1);
   }
-  // Return built beam deflector
+
   return beamDeflector;
 }
 
@@ -1187,6 +1196,30 @@ XmlAssetsLoader::createScannerSettingsFromXml(
                                        "trajectoryTimeInterval_s",
                                        template1->trajectoryTimeInterval,
                                        defaultScannerSettingsMsg);
+  // Optional maxDuration_s can be provided as attribute or child element
+  if (XmlUtils::hasAttribute(node, "maxDuration_s")) {
+    settings->maxDuration_s =
+      XmlUtils::getAttributeCast<double>(node,
+                                         "maxDuration_s",
+                                         template1->maxDuration_s,
+                                         defaultScannerSettingsMsg);
+  } else {
+    tinyxml2::XMLElement* maxDurationNode =
+      node->FirstChildElement("maxDuration_s");
+    if (maxDurationNode != nullptr && maxDurationNode->GetText() != nullptr) {
+      try {
+        settings->maxDuration_s = std::stod(maxDurationNode->GetText());
+      } catch (std::exception const& e) {
+        logging::WARN(
+          std::string(
+            "XML Assets Loader: Failed to parse <maxDuration_s> at line ") +
+          std::to_string(maxDurationNode->GetLineNum()) + ": " + e.what());
+        settings->maxDuration_s = template1->maxDuration_s;
+      }
+    } else {
+      settings->maxDuration_s = template1->maxDuration_s;
+    }
+  }
 
   // Parse alternative spec. based on vertical and horizontal resolutions
   if (XmlUtils::hasAttribute(node, "verticalResolution_deg")) {
@@ -1621,6 +1654,7 @@ XmlAssetsLoader::makeDefaultTemplates()
   defaultScannerTemplate->verticalAngleMin_rad = NAN;
   defaultScannerTemplate->verticalAngleMax_rad = NAN;
   defaultScannerTemplate->scanFreq_Hz = 0;
+  defaultScannerTemplate->maxDuration_s = -1.0;
 
   // Make default platform settings template
   defaultPlatformTemplate = std::make_shared<PlatformSettings>();
@@ -1666,6 +1700,8 @@ XmlAssetsLoader::trackNonDefaultScannerSettings(
     fields.insert("beamDivAngle");
   if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
     fields.insert("trajectoryTimeInterval");
+  if (base->maxDuration_s != ref->maxDuration_s)
+    fields.insert("maxDuration_s");
   if (base->verticalResolution_rad != ref->verticalResolution_rad)
     fields.insert("verticalResolution_rad");
   if (base->horizontalResolution_rad != ref->horizontalResolution_rad)

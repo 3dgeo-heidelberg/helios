@@ -95,10 +95,15 @@
 
 
 	<!-- ###################### BEGIN TLS Platforms ###################### -->
-	<platform id="tripod" name="TLS Tripod" type="static" drag="0">
+	<platform id="tripod" name="TLS Tripod" type="static">
 		<scannerMount x="0" y="0" z="1.5">
 		</scannerMount>
 	</platform>
-	<!-- ###################### END TLS Platforms ###################### -->
 	
+	<platform id="tripod_down" name="TLS Tripod Downward" type="static">
+		<scannerMount x="0" y="0" z="1.5">
+			<rot axis="x" angle_deg="-90" />
+		</scannerMount>
+	</platform>
+	<!-- ###################### END TLS Platforms ###################### -->
 </document>

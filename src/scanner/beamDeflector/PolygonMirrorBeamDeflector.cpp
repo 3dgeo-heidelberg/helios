@@ -100,6 +100,16 @@ PolygonMirrorBeamDeflector::doSimStep()
 bool
 PolygonMirrorBeamDeflector::lastPulseLeftDevice()
 {
+  {
+    std::stringstream ss;
+    ss << "PolygonMirrorBeamDeflector::lastPulseLeftDevice: beamAngle="
+       << this->state_currentBeamAngle_rad
+       << " effMax=" << this->cfg_device_scanAngleEffectiveMax_rad
+       << " settingScanAngle=" << this->cfg_setting_scanAngle_rad
+       << " vertMin=" << this->cfg_setting_verticalAngleMin_rad
+       << " vertMax=" << this->cfg_setting_verticalAngleMax_rad;
+    logging::INFO(ss.str());
+  }
   // four conditions for the beam to return an echo:
   // 1) abs(currentAngle) <= scanAngleEffectiveMax
   // 2) abs(currentAngle) <= scanAngle (if it is set to something smaller)

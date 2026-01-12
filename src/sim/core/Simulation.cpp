@@ -1,4 +1,5 @@
 #include "logging.hpp"
+#include <HeliosException.h>
 #include <iostream>
 
 #include <chrono>
@@ -69,14 +70,41 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
-  // Check for leg completion:
-  if (mScanner->getScannerHead(0)->rotateCompleted() &&
+  // Check for leg completion
+  bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
+    currentGpsTime_ns, maxDurationStartGpsTime_ns);
+  if (maxDurationElapsed) {
+    double const elapsed_s =
+      (currentGpsTime_ns - maxDurationStartGpsTime_ns) * 1e-9;
+    std::stringstream ss;
+    ss << "Max duration reached (" << elapsed_s
+       << " s >= " << mScanner->getMaxDuration() << " s). Ending leg.";
+    logging::INFO(ss.str());
+    onLegComplete();
+    return;
+  }
+  bool const noMovementOrRotation =
+    (!mScanner->platform->canMove() &&
+     mScanner->getScannerHead(0)->getRotatePerSec_rad() == 0.0);
+
+  // warn user if no movement nor rotation and no max duration
+  if (noMovementOrRotation && mScanner->getMaxDuration() < 0.0) {
+    std::stringstream ss;
+    ss << "ERROR: No platform movement, scanner head rotation or maximum "
+          "duration set.\n"
+       << "Simulation would run indefinitely. To avoid this, simulation is "
+          "aborted.";
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
+
+  // complete leg if both rotation and waypoint done
+  if (!noMovementOrRotation && mScanner->getScannerHead(0)->rotateCompleted() &&
       mScanner->platform->waypointReached()) {
     onLegComplete();
     return;
   }
-
-  // Ordered execution of simulation components
+  // Perform simulation step
   mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
   mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
   mScanner->platform->scene->doSimStep();
@@ -125,6 +153,7 @@ Simulation::start()
   prepareSimulation(mScanner->getPulseFreq_Hz());
   timeStart_ns =
     duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+  maxDurationStartGpsTime_ns = currentGpsTime_ns;
 
 #ifdef DATA_ANALYTICS
   HDA_StateJSONReporter sjr((SurveyPlayback*)this, "helios_state.json");

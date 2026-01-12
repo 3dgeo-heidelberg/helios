@@ -9,6 +9,8 @@
 #include <filems/facade/FMSFacade.h>
 #include <scanner/PulseRecord.h>
 
+#include <logging.hpp>
+
 #include <glm/glm.hpp>
 
 #include <memory>
@@ -67,6 +69,14 @@ AbstractPulseRunnable::capturePoint(
   // TODO Pending : This check is already done in FullWaveformPulseRunnable
   // What is the point on repeating it?
   if (m.distance < detector->cfg_device_rangeMin_m) {
+    {
+      std::stringstream ss;
+      ss << "AbstractPulseRunnable::capturePoint: rejected by min-range"
+         << " dist=" << m.distance << " min=" << detector->cfg_device_rangeMin_m
+         << " pulse=" << pulse.getPulseNumber()
+         << " dev=" << pulse.getDeviceIndex();
+      logging::TRACE(ss.str());
+    }
     return;
   }
   // ########## BEGIN Apply gaussian range accuracy error ###########
@@ -86,11 +96,26 @@ AbstractPulseRunnable::capturePoint(
     std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
     allMeasurements->push_back(m);
     (allMeasurements->end() - 1)->position += scene.getShift();
+    {
+      std::stringstream ss;
+      ss << "AbstractPulseRunnable::capturePoint: pushed allMeasurements pulse="
+         << pulse.getPulseNumber() << " dev=" << pulse.getDeviceIndex()
+         << " dist=" << m.distance;
+      logging::INFO(ss.str());
+    }
   }
   if (cycleMeasurements != nullptr) {
     std::unique_lock<std::mutex> lock(*cycleMeasurementsMutex);
     cycleMeasurements->push_back(m);
     (cycleMeasurements->end() - 1)->position += scene.getShift();
+    {
+      std::stringstream ss;
+      ss << "AbstractPulseRunnable::capturePoint: pushed cycleMeasurements "
+            "pulse="
+         << pulse.getPulseNumber() << " dev=" << pulse.getDeviceIndex()
+         << " dist=" << m.distance;
+      logging::INFO(ss.str());
+    }
   }
   if (detector->pcloudYielder != nullptr)
     detector->pcloudYielder->push(m);

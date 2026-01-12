@@ -20,6 +20,7 @@ target_sources(
   "beamDeflector/PolygonMirrorBeamDeflector.cpp"
   "beamDeflector/FiberArrayBeamDeflector.cpp"
   "beamDeflector/ConicBeamDeflector.cpp"
+
   "beamDeflector/OscillatingMirrorBeamDeflector.cpp"
   "MultiScanner.cpp"
   "ScannerHead.cpp"

@@ -74,8 +74,19 @@ protected:
    * When a scanner is not active, it is not sensing
    */
   bool state_isActive = true;
+  bool maxTimeElapsed(double currentGpsTime_ns, double startGpsTime_ns);
+  double maxDuration_s = -1.0;
 
 public:
+  Scanner(...);
+  virtual ~Scanner();
+
+  void applySettings(...);
+  bool checkMaxTimeElapsed(double currentGpsTime_ns, double startGpsTime_ns)
+  {
+    return maxTimeElapsed(currentGpsTime_ns, startGpsTime_ns);
+  }
+
   /**
    * @brief The scanning pulse process used by the scanner
    * @see ScanningPulseProcess
@@ -198,7 +209,6 @@ public:
    * @param scanner The scanner to be copied
    */
   Scanner(Scanner& scanner);
-  ~Scanner() override = default;
 
   // ***   C L O N E   *** //
   // ********************* //
@@ -516,6 +526,11 @@ public:
 
   // *** GETTERs and SETTERs *** //
   // *************************** //
+
+public:
+  void setMaxDuration(double v) { maxDuration_s = v; }
+  double getMaxDuration() const { return maxDuration_s; }
+
   /**
    * @brief Obtain the requested scanning device.
    * @param idx The index of the scanning device to be obtained.

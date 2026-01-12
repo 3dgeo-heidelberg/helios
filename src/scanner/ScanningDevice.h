@@ -28,6 +28,9 @@ using helios::analytics::HDA_PulseRecorder;
 class Scanner;
 class SingleScanner;
 class MultiScanner;
+namespace HeliosTests {
+class EnergyModelsTest;
+}
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -45,6 +48,7 @@ protected:
   friend class MultiScanner;
   friend class BaseEnergyModel;
   friend class ImprovedEnergyModel;
+  friend class HeliosTests::EnergyModelsTest;
 
   // ***  DEVICE ATTRIBUTES  *** //
   // *************************** //
@@ -113,6 +117,7 @@ protected:
    * @brief Beam deflector composing the scanner
    * @see AbstractBeamDeflector
    */
+
   std::shared_ptr<AbstractBeamDeflector> beamDeflector;
   /**
    * @brief Detector composing the scanner
@@ -201,7 +206,6 @@ protected:
    */
   bool state_lastPulseWasHit = false;
 
-public:
   // ***  CACHED ATTRIBUTES  *** //
   // *************************** //
   /**
