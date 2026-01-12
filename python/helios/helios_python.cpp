@@ -121,6 +121,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/ScanningPulseProcessWrap.h>
 #include <python/SceneHandling.h>
 #include <python/SimulationWrap.h>
+#include <python/SurveyHandling.h>
 #include <python/utils.h>
 #include <sim/comps/ScanningStrip.h>
 #include <sim/core/Simulation.h>
@@ -3119,5 +3120,6 @@ PYBIND11_MODULE(_helios, m)
   m.def("make_scene_shift", &makeSceneShift);
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);
+  m.def("check_integrate_survey_and_legs", &checkIntegrateSurveyAndLegs);
 }
 }

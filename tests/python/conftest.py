@@ -101,6 +101,7 @@ def tls_survey(tls_scanner, tripod, scene):
         head_rotation="10 deg/s",
         rotation_start_angle="0 deg",
         rotation_stop_angle="10 deg",
+        scan_frequency=120,
     )
     return survey
 
