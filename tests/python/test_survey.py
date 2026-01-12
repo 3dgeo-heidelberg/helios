@@ -363,9 +363,7 @@ def test_survey_run_with_incorrect_ver_hor_resolution():
 
     scanner = riegl_vz_400()
     platform = simple_linearpath()
-    scene = StaticScene.from_xml(
-        "data/scenes/toyblocks/toyblocks_scene.xml"
-    )
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
 
     survey = Survey(scanner=scanner, platform=platform, scene=scene)
 
