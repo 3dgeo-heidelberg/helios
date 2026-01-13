@@ -254,6 +254,24 @@ def detect_separator(file_path: Path) -> str:
     raise ValueError(f"Could not detect separator in file: {file_path}")
 
 
+def _validate_trajectory_array(trajectory: np.ndarray) -> None:
+    """Validate that the trajectory array has the correct dtype and shape."""
+    if not isinstance(trajectory, np.ndarray):
+        raise TypeError(
+            f"Trajectory must be a NumPy ndarray. Got {type(trajectory)!r}."
+        )
+
+    if trajectory.ndim != 1:
+        raise ValueError(
+            f"Trajectory array must be 1-dimensional np.ndarray. Got {trajectory.ndim} dimensions."
+        )
+
+    if trajectory.dtype.names is None:
+        raise ValueError(
+            "Trajectory must be a structured NumPy array with named fields."
+        )
+
+
 def is_finalized(obj) -> bool:
     """Return True if the Scene was finalized."""
     return getattr(obj, "_is_finalized", False)

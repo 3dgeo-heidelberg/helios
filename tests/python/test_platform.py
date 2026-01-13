@@ -111,6 +111,42 @@ def test_load_interpolate_platform_invalid_id():
         )
 
 
+def test_load_interpolate_platform_invalid_trajectory():
+    trajectory1 = np.zeros((2, 7), dtype=traj_csv_dtype)
+    with pytest.raises(ValueError):
+        Platform.load_interpolate_platform(
+            trajectory=trajectory1,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+
+    trajectory2 = np.zeros((51, 7, 2))
+    with pytest.raises(ValueError):
+        ip = Platform.load_interpolate_platform(
+            trajectory=trajectory2,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+
+    trajectory3 = list(range(51))
+    with pytest.raises(ValueError):
+        ip = Platform.load_interpolate_platform(
+            trajectory=trajectory3,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+    trajectory4 = np.array(
+        [3.7, -1.04719755, 1.04719755, 5.77180384, 13.002584, 1.122905, 400.0]
+    )
+
+    with pytest.raises(ValueError):
+        ip = Platform.load_interpolate_platform(
+            trajectory=trajectory4,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+
+
 def test_load_interpolate_platform():
     trajectory = load_traj_csv(
         csv="data/trajectories/cycloid.trj",
@@ -129,16 +165,6 @@ def test_load_interpolate_platform():
     )
 
     assert isinstance(ip, Platform)
-
-
-def test_load_interpolate_platform_wrong_trajectory_shape():
-    trajectory = np.zeros((2, 7), dtype=traj_csv_dtype)
-    with pytest.raises(RuntimeError):
-        Platform.load_interpolate_platform(
-            trajectory=trajectory,
-            platform_file="data/platforms.xml",
-            platform_id="sr22",
-        )
 
 
 def test_load_interpolate_platform_wrong_rotation_spec():
