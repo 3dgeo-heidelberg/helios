@@ -1,6 +1,14 @@
-from helios.platforms import Platform, DynamicPlatformSettings, load_traj_csv, tripod
+import helios
+from helios import survey
+from helios.platforms import (
+    Platform,
+    DynamicPlatformSettings,
+    load_traj_csv,
+    tripod,
+    StaticPlatformSettings,
+)
 from helios.scanner import Scanner, riegl_lms_q560, riegl_vz_400
-from helios.scene import StaticScene
+from helios.scene import StaticScene, ScenePart
 from helios.settings import ExecutionSettings
 from helios.survey import *
 
@@ -333,3 +341,95 @@ def test_survey_run_with_binary_scene():
     assert points.shape[0] > 0
     assert trajectory.shape[0] > 0
     os.remove("data/scenes/toyblocks/toyblocks_scene_case23.scene")
+
+
+def test_static_plat_settings_valid_in_add_leg():
+    groundplane = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    ).scale(100)
+    tree = ScenePart.from_obj(
+        "data/sceneparts/arbaro/black_tupelo_low.obj", up_axis="y"
+    )
+    tree = tree.scale(0.5).translate([0.0, 15.0, 0.0])
+    scene = StaticScene(scene_parts=[groundplane, tree])
+    scanner = riegl_vz_400()
+    platform = tripod()
+    scanner_settings = ScannerSettings(
+        pulse_frequency=100_000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+    )
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        x=1.0,
+        y=25.5,
+        z=1.5,
+        force_on_ground=True,
+        rotation_start_angle="-100 deg",
+        rotation_stop_angle="225 deg",
+    )
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        x=-4.0,
+        y=-2.5,
+        z=1.5,
+        force_on_ground=True,
+        rotation_start_angle="-15 deg",
+        rotation_stop_angle="45 deg",
+    )
+
+    for leg in survey.legs:
+        assert leg.platform_settings.force_on_ground is True
+        assert leg.platform_settings._cpp_object.force_on_ground is True
+        assert type(leg.platform_settings) == StaticPlatformSettings
+
+
+def test_dynamic_plat_settings_valid_in_add_leg():
+    groundplane = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    ).scale(100)
+    tree = ScenePart.from_obj(
+        "data/sceneparts/arbaro/black_tupelo_low.obj", up_axis="y"
+    )
+    tree = tree.scale(0.5).translate([0.0, 15.0, 0.0])
+    scene = StaticScene(scene_parts=[groundplane, tree])
+    scanner = riegl_vz_400()
+    platform = tripod()
+    scanner_settings = ScannerSettings(
+        pulse_frequency=100_000,
+        scan_frequency=120,
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+        head_rotation="10 deg/s",
+    )
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        x=1.0,
+        y=25.5,
+        z=1.5,
+        speed_m_s=3.0,
+        rotation_start_angle="-100 deg",
+        rotation_stop_angle="225 deg",
+    )
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        x=-4.0,
+        y=-2.5,
+        z=1.5,
+        speed_m_s=3.0,
+        rotation_start_angle="-15 deg",
+        rotation_stop_angle="45 deg",
+    )
+
+    for leg in survey.legs:
+        assert leg.platform_settings.speed_m_s == 3.0
+        assert leg.platform_settings._cpp_object.speed_m_s == 3.0
+        assert type(leg.platform_settings) == DynamicPlatformSettings

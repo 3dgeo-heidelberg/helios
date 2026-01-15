@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
+from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING, Type
 from numpydantic import NDArray, Shape
 
 
@@ -284,6 +284,35 @@ def apply_scene_shift(
         survey._cpp_object,
     )
     setattr(survey, "_scene_shift_done", True)
+
+
+def _specify_platform_settings_type(parameters: dict) -> None:
+    """Specify the most suitable PlatformSettings subclass based on the given parameters."""
+
+    from helios.platforms import (
+        PlatformSettings,
+        StaticPlatformSettings,
+        DynamicPlatformSettings,
+    )
+    from helios.validation import get_all_annotations
+
+    candidates: list[Type[PlatformSettings]] = [
+        StaticPlatformSettings,
+        DynamicPlatformSettings,
+        PlatformSettings,
+    ]
+
+    param_keys = set(parameters.keys())
+    best_cls = PlatformSettings
+    best_score = -1
+    for cls in candidates:
+        ann_keys = set(get_all_annotations(cls).keys())
+        score = len(ann_keys & param_keys)
+        if score > best_score:
+            best_score = score
+            best_cls = cls
+
+    return best_cls()
 
 
 meas_dtype = np.dtype(

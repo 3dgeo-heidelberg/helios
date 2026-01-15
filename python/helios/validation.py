@@ -417,8 +417,13 @@ class UpdateableMixin:
         """Update a ValidatedCppModel object from a dictionary of keyword arguments"""
 
         keys = list(kwargs.keys())
+
+        anns = get_all_annotations(self.__class__)
         for key in keys:
-            if key in self.__class__.__dict__:
+            cls_attr = self.__class__.__dict__.get(key, None)
+            if key in anns:
+                setattr(self, key, kwargs.pop(key))
+            elif isinstance(cls_attr, property) and cls_attr.fset is not None:
                 setattr(self, key, kwargs.pop(key))
             elif not skip_exceptions:
                 raise ValueError(f"Invalid key: {key}")
