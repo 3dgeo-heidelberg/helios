@@ -107,7 +107,7 @@ class PlatformSettings(PlatformSettingsBase):
     y: float = 0
     z: float = 0
 
-    def force_on_ground(self, scene: StaticScene):
+    def do_force_on_ground(self, scene: StaticScene):
         """
         Move waypoint z coordinate to ground level
         """

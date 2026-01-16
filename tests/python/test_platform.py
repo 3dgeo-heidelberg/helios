@@ -29,7 +29,7 @@ def test_platform_settings_mls():
         y=0,
     )
     scanner_settings = ScannerSettings(pulse_frequency=1000)
-    platform_settings.force_on_ground(survey.scene)
+    platform_settings.do_force_on_ground(survey.scene)
     survey.add_leg(
         platform_settings=platform_settings,
         scanner_settings=scanner_settings,
@@ -48,7 +48,7 @@ def test_platform_settings_tls():
         y=0,
     )
 
-    platform_settings.force_on_ground(survey.scene)
+    platform_settings.do_force_on_ground(survey.scene)
     survey.add_leg(
         platform_settings=platform_settings,
     )
