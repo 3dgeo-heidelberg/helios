@@ -94,13 +94,11 @@ def compute_flight_lines(
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
     pattern_options = ["parallel", "criss-cross"]
     if flight_pattern not in pattern_options:
-        warnings.warn(
-            """
+        warnings.warn("""
         Specified flight pattern is not available.
         Possible choices: 'parallel', 'criss-cross'
         Flight pattern will be set to 'parallel'
-        """
-        )
+        """)
         flight_pattern = "parallel"
 
     if (
