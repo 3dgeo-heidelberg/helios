@@ -117,6 +117,8 @@ protected:
    * @brief Beam deflector composing the scanner
    * @see AbstractBeamDeflector
    */
+  // Cached subray directions for Cartesian sampling grids
+  std::vector<glm::vec3> cached_subrayDirection;
 
   std::shared_ptr<AbstractBeamDeflector> beamDeflector;
   /**
@@ -206,6 +208,11 @@ protected:
    */
   bool state_lastPulseWasHit = false;
 
+  /**
+   * @brief Cached footprint offsets for debugging visualization.
+   */
+  std::vector<std::pair<double, double>> debugFootprint;
+
   // ***  CACHED ATTRIBUTES  *** //
   // *************************** //
   /**
@@ -229,6 +236,12 @@ protected:
    */
   double cached_Bt2;
   /**
+   * NOTE: The following cached subray members are intentionally placed in
+   * the public section for unit tests and external consumers which rely on
+   * direct access to these buffers. Keep the declarations grouped here.
+   */
+public:
+  /**
    * @brief The rotation representing the subray divergence wrt to the
    *  central ray.
    */
@@ -241,6 +254,11 @@ protected:
    * @brief The subray radius step or iteration.
    */
   std::vector<int> cached_subrayRadiusStep;
+  std::vector<double> cached_subrayX_offsets;   // for plotting
+  std::vector<double> cached_subrayY_offsets;   // for plotting
+
+protected:
+
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -453,6 +471,8 @@ public:
   {
     return rangeErrExpr->eval(beamDeflector->getCurrentExactBeamAngle());
   }
+  
+  
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
@@ -490,6 +510,14 @@ public:
     Rotation const& headRelativeEmitterAttitude)
   {
     this->headRelativeEmitterAttitude = headRelativeEmitterAttitude;
+  }
+  /**
+   * @brief Get the cached debug footprint offsets.
+   * @see ScanningDevice::debugFootprint
+   */
+  inline std::vector<std::pair<double, double>> const& getDebugFootprint() const
+  {
+    return debugFootprint;
   }
   /**
    * @brief Obtain the Full Waveform settings of the scanning device

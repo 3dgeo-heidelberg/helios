@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<document>
+  <!-- ##### BEGIN RIEGL VZ-400 ##### -->
+  <scanner  id                         = "riegl_vz400"
+            name                       = "RIEGL VZ-400"
+            accuracy_m                 = "0.005"
+            beamDivergence_rad         = "0.0003"
+            headRotatePerSecMax_deg    = "60"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "100000,300000"
+            pulseLength_ns             = "5"
+            rangeMin_m                 = "1.5"
+            scanAngleMax_deg           = "120"
+            scanAngleEffectiveMax_deg  = "50"
+            scanFreqMin_Hz             = "3"
+            scanFreqMax_Hz             = "200">
+
+    <FWFSettings beamSampleQuality="8"/>
+    <headRotateAxis x="0" y="0" z="1"/>
+
+  </scanner>
+</document>

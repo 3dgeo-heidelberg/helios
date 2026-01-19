@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="scene" name="Scene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="efilepath" value="Scene2_Plane_45deg_tilt/.*.obj" />
+            </filter>
+        </part>
+    </scene>
+</document>

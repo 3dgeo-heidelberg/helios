@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="scene" name="Scene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="efilepath" value="Scene4_Cube_half_area_of_footprint_centered/.*.obj" />
+            </filter>
+        </part>
+    </scene>
+</document>

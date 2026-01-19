@@ -39,6 +39,9 @@ helios
 # wiki documentation
 */site
 
+# local experiment outputs
+jan-meeting/
+
 # ignore pytest stuff
 # Byte-compiled / optimized / DLL files
 *__pycache__/

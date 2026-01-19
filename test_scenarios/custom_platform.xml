@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<document>
+    <platform id="static_nadir" name="Static down-looking scanner" type="static">
+        <scannerMount x="0" y="0" z="0">
+            <rot axis="x" angle_deg="-90" />
+        </scannerMount>
+    </platform>
+</document>

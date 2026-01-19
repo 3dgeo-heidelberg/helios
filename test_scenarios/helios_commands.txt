@@ -1,0 +1,9 @@
+helios Survey1_Plane_orthogonal.xml --lasOutput --writeWaveform
+helios Survey2_Plane_45deg_tilt.xml --lasOutput --writeWaveform
+helios Survey3_Step_1m.xml --lasOutput --writeWaveform
+helios Survey4_Cube_half_area_of_footprint_centered.xml --lasOutput --writeWaveform
+
+helios Survey1_Plane_orthogonal.xml --writeWaveform --output output_alpha-dev --format las
+helios Survey2_Plane_45deg_tilt.xml --writeWaveform --output output_alpha-dev --format las
+helios Survey3_Step_1m.xml --writeWaveform --output output_alpha-dev --format las
+helios Survey4_Cube_half_area_of_footprint_centered.xml --writeWaveform --output output_alpha-dev --format las

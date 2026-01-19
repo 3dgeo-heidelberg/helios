@@ -1,5 +1,6 @@
 #include <ImprovedEnergyModel.h>
 #include <maths/EnergyMaths.h>
+#include <logging.hpp>
 #include <scanner/ScanningDevice.h>
 #include <scanner/detector/AbstractDetector.h>
 
@@ -68,52 +69,13 @@ ImprovedEnergyModel::computeReceivedPower(
 #endif
 )
 {
-  ImprovedReceivedPowerArgs const& args =
-    static_cast<ImprovedReceivedPowerArgs const&>(_args);
-  // Pre-computations
-  double const rangeSquared = args.targetRange * args.targetRange;
-  // Emitted power
-  double const Pe = computeEmittedPower(
-    ImprovedEmittedPowerArgs{ args.targetRange,
-                              rangeSquared,
-                              sd.detector->cfg_device_rangeMin_m,
-                              args.subrayRadiusStep });
-  // Target area
-  double const targetArea = computeTargetArea(
-    ImprovedTargetAreaArgs{ rangeSquared, args.subrayRadiusStep }
+  (void)_args;
 #if DATA_ANALYTICS >= 2
-    ,
-    calcIntensityRecords
+  (void)calcIntensityRecords;
 #endif
-  );
-  // Cross-section
-  double const bdrf =
-    EnergyMaths::computeBDRF(args.material, args.incidenceAngle_rad);
-  double const sigma = computeCrossSection(
-    BaseCrossSectionArgs{ args.material, bdrf, targetArea });
-  // Received power
-  double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
-    args.targetRange, sd.atmosphericExtinction);
-  double const receivedPower =
-    EnergyMaths::calcReceivedPowerImprovedFast(Pe,
-                                               sd.cached_Dr2,
-                                               16 * targetArea * rangeSquared,
-                                               sd.efficiency,
-                                               atmosphericFactor,
-                                               sigma);
-#if DATA_ANALYTICS >= 2
-  std::vector<double>& calcIntensityRecord = calcIntensityRecords.back();
-  calcIntensityRecord[3] = args.incidenceAngle_rad;
-  calcIntensityRecord[4] = args.targetRange;
-  calcIntensityRecord[5] = targetArea;
-  calcIntensityRecord[7] = bdrf;
-  calcIntensityRecord[8] = sigma;
-  calcIntensityRecord[9] = receivedPower;
-  calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
-  calcIntensityRecord[11] = Pe;
-  calcIntensityRecord[12] = args.subrayRadiusStep;
-#endif
-  return receivedPower * 1e09;
+  // No geometry/atmosphere/BDRF; just pass through constant emit power.
+  return computeEmittedPower(
+    ImprovedEmittedPowerArgs{ 0.0, 0.0, sd.detector->cfg_device_rangeMin_m, 0 });
 }
 
 double
@@ -121,14 +83,9 @@ ImprovedEnergyModel::computeEmittedPower(ModelArg const& _args)
 {
   ImprovedEmittedPowerArgs const& args =
     static_cast<ImprovedEmittedPowerArgs const&>(_args);
-  double const Omega0 = 1 - args.targetRange / args.rangeMin;
-  double const OmegaSquared = args.targetRangeSquared * omegaCacheSquared;
-  double const wSquared = w0Squared * (Omega0 * Omega0 + OmegaSquared);
-  return EnergyMaths::calcSubrayWiseEmittedPowerFast(
-    deviceConstantExpression[args.subrayRadiusStep],
-    wSquared,
-    negRadiiSquaredx2[args.subrayRadiusStep + 1],
-    negRadiiSquaredx2[args.subrayRadiusStep]);
+  (void)args; // unused for constant energy model
+  // Give every subray the full average power (no Gaussian weighting, no split).
+  return sd.averagePower_w;
 }
 
 double

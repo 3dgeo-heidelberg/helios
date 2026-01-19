@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<!-- Wider sweep and coarser resolution so the tilted plane gets fully covered. -->
+    <scannerSettings id="profile1" active="true" pulseFreq_hz="300000" verticalResolution_deg="0.1" horizontalResolution_deg="0.1" scanAngle_deg="30" beamDivergence_rad="0.05"/>
+    <survey name="2_Plane_45deg_tilt" scene="Scene2_Plane_45deg_tilt.xml#scene" platform="custom_platform.xml#static_nadir" scanner="custom_scanner.xml#riegl_vz400">
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="10" />
+        <leg>
+            <platformSettings x="0" y="0" z="100"/>
+            <scannerSettings template="profile1" headRotateStart_deg="-15" headRotateStop_deg="15" trajectoryTimeInterval_s="1.0"/>
+        </leg>
+    </survey>
+</document>

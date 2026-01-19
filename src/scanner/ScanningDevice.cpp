@@ -5,6 +5,10 @@
 #include <maths/model/BaseEnergyModel.h>
 #include <maths/model/ImprovedEnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <filesystem>
+#include <fstream>
+#include <algorithm>
+#include <limits>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -93,54 +97,205 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 // ***  M E T H O D S  *** //
 // *********************** //
 
+void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+{
+    std::cout << ">>> USING ScanningDevice::prepareSimulation() - CARTESIAN GRID\n";
+
+    cached_subrayRotation.clear();
+    cached_subrayRadiusStep.clear();
+    cached_subrayDivergenceAngle_rad.clear();
+
+    cached_subrayX_offsets.clear();   // ← ADD THESE
+    cached_subrayY_offsets.clear();   // ← ADD THESE
+
+    int const N = FWF_settings.beamSampleQuality;
+
+    double const maxAngle = beamDivergence_rad;    // circular cone half-angle
+    double const maxOffset = std::tan(maxAngle);   // linear offset on unit sphere
+    double const step = maxOffset / N;
+
+    // Save grid for plotting
+    std::ofstream gridfile("clipped_subray_grid.csv", std::ios::trunc);
+
+    int linearIndex = 0;
+    for (int i = -N; i <= N; ++i)
+    {
+        for (int j = -N; j <= N; ++j)
+        {
+            double x_offset = i * step;
+            double y_offset = j * step;
+
+            // Convert to angular tilt
+            double tilt_x = std::atan(x_offset);   // rotation around Y (left-right)
+            double tilt_y = std::atan(y_offset);   // rotation around X (up-down)
+
+            // Total angular distance from central ray
+            double radial = std::sqrt(tilt_x*tilt_x + tilt_y*tilt_y);
+
+            // === CLIP TO CIRCLE ===
+            if (radial > maxAngle)
+                continue;
+
+            // Save offsets
+            cached_subrayX_offsets.push_back(x_offset);
+            cached_subrayY_offsets.push_back(y_offset);
+
+            // Rotation composition
+            Rotation r = Rotation(Directions::right, tilt_y) *
+                         Rotation(Directions::up,    tilt_x);
+
+            cached_subrayRotation.push_back(r);
+            cached_subrayRadiusStep.push_back(linearIndex++);
+            cached_subrayDivergenceAngle_rad.push_back(radial);
+
+            // Log to CSV
+            gridfile << x_offset << "," << y_offset << "\n";
+        }
+    }
+
+    gridfile.close();
+
+    // Energy model
+    if (legacyEnergyModel)
+        energyModel = std::make_shared<BaseEnergyModel>(*this);
+    else
+        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+}
+
+
+/*
 void
 ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
-  // Reset cached subray data for a clean elliptical sampling pass
-  cached_subrayRotation.clear();
-  cached_subrayRadiusStep.clear();
-  cached_subrayDivergenceAngle_rad.clear();
+    // Elliptical footprint discrete method
+    int const beamSampleQuality = FWF_settings.beamSampleQuality;
+    double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
+>>>>>>> Stashed changes
 
-  // Elliptical footprint discrete method
-  int const beamSampleQuality = FWF_settings.beamSampleQuality;
-  double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
-
-  // Outer loop over radius steps from beam center to outer edge
-  for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++) {
-    double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
-    cached_subrayDivergenceAngle_rad.push_back(subrayDivergenceAngle_rad);
-
-    // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-    Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
-
-    // Calculate circle step width:
-    int circleSteps = (int)(PI_2 * radiusStep);
-
-    // Make sure that central ray is not skipped:
-    if (circleSteps == 0) {
-      circleSteps = 1;
+    debugFootprint.clear();   // <-- ensure empty before filling
+    std::ofstream polarFootprintFile("polar_footprint.csv", std::ios::trunc);
+    if (!polarFootprintFile.is_open()) {
+      // Use the WARN helper which handles visibility flags and formatting
+      logging::WARN("Could not open polar_footprint.csv for writing.");
     }
 
-    double const circleStep_rad = PI_2 / circleSteps;
+    // Outer loop over radius steps from beam center to outer edge
+    for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++) {
 
-    // # Loop over sub-rays along the circle
-    for (int circleStep = 0; circleStep < circleSteps; circleStep++) {
-      // Rotate around the circle
-      Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
-      r2 = r2.applyTo(r1);
-      // Cache subray generation data
-      cached_subrayRotation.push_back(r2);
-      cached_subrayRadiusStep.push_back(radiusStep);
+        double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
+        cached_subrayDivergenceAngle_rad.push_back(subrayDivergenceAngle_rad);
+
+        // Rotate subbeam into divergence step (towards outer rim of cone)
+        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
+
+        // Azimuthal samples in this ring
+        int circleSteps = (int)(PI_2 * radiusStep);
+        if (circleSteps == 0)
+            circleSteps = 1;
+
+        double const circleStep_rad = PI_2 / circleSteps;
+
+        // Loop over sub-rays on the circle
+        for (int circleStep = 0; circleStep < circleSteps; circleStep++) {
+
+            // Azimuth rotation
+            Rotation r2 = Rotation(Directions::forward,
+                                   circleStep_rad * circleStep);
+            r2 = r2.applyTo(r1);
+
+            // ================================
+            //   FOOTPRINT (local projection)
+            //   intersection with plane z = 1
+            // ================================
+            glm::vec3 forward(0,0,1);
+            glm::vec3 dir = r2.applyTo(forward);
+            dir = glm::normalize(dir);
+
+            // Guard against near-vertical directions (would blow up the projection)
+            if (std::abs(dir.z) < 1e-9) {
+              continue;
+            }
+            double x_off = dir.x / dir.z;   // tangent-plane projection
+            double y_off = dir.y / dir.z;
+
+            // Save for visualization
+            debugFootprint.emplace_back(x_off, y_off);
+            if (polarFootprintFile.is_open()) {
+              polarFootprintFile << x_off << "," << y_off << '\n';
+            }
+            // ================================
+
+            // Cache HELIOS ray generation data (unchanged)
+            cached_subrayRotation.push_back(r2);
+            cached_subrayRadiusStep.push_back(radiusStep);
+        }
     }
-  }
 
-  // Prepare energy model
-  if (legacyEnergyModel) {
-    energyModel = std::make_shared<BaseEnergyModel>(*this);
-  } else {
-    energyModel = std::make_shared<ImprovedEnergyModel>(*this);
-  }
+    // Persist footprint grid and area estimate for Cartesian-style sampling.
+    if (!debugFootprint.empty()) {
+      // Compute spacing in the tangent plane (z = 1) to derive cell area.
+      double dx = std::numeric_limits<double>::max();
+      double dy = std::numeric_limits<double>::max();
+      {
+        std::vector<double> xs;
+        xs.reserve(debugFootprint.size());
+        std::vector<double> ys;
+        ys.reserve(debugFootprint.size());
+        for (auto const& p : debugFootprint) {
+          xs.push_back(p.first);
+          ys.push_back(p.second);
+        }
+        auto spacing = [](std::vector<double>& v) {
+          std::sort(v.begin(), v.end());
+          double best = std::numeric_limits<double>::max();
+          for (size_t i = 1; i < v.size(); ++i) {
+            double d = v[i] - v[i - 1];
+            if (d > 1e-12 && d < best)
+              best = d;
+          }
+          return best;
+        };
+        dx = spacing(xs);
+        dy = spacing(ys);
+      }
+      double const area_z1 =
+        (dx == std::numeric_limits<double>::max() ||
+         dy == std::numeric_limits<double>::max())
+          ? 0.0
+          : dx * dy;
+
+      std::filesystem::path outPath("output/subray_grid.csv");
+      try {
+        std::filesystem::create_directories(outPath.parent_path());
+        std::ofstream csv(outPath);
+        if (csv.is_open()) {
+          csv << "# Subray footprint projected to z=1\n";
+          csv << "# dx=" << dx << ", dy=" << dy
+              << ", area_z1=" << area_z1
+              << " (area_at_range_R = area_z1 * R^2)\n";
+          csv << "index,x_offset,y_offset,area_z1\n";
+          for (size_t i = 0; i < debugFootprint.size(); ++i) {
+            csv << i << "," << debugFootprint[i].first << ","
+                << debugFootprint[i].second << "," << area_z1 << "\n";
+          }
+        } else {
+          logging::WARN("Could not open output/subray_grid.csv for writing.");
+        }
+      } catch (std::exception const& ex) {
+        logging::WARN(std::string("Failed to write subray footprint: ") +
+                      ex.what());
+      }
+    }
+
+    // Prepare energy model (same as original)
+    if (legacyEnergyModel) {
+        energyModel = std::make_shared<BaseEnergyModel>(*this);
+    } else {
+        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+    }
 }
+
+*/
 
 void
 ScanningDevice::configureBeam()
@@ -172,24 +327,36 @@ ScanningDevice::calcAtmosphericAttenuation() const
 
   return (3.91 / Vm) * pow((lambda / 0.55), -q);
 }
+void ScanningDevice::calcRaysNumber()
+{
+    // Count circle steps
+    int count = 1;
+    for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality; radiusStep++) {
+        int circleSteps = (int)(2 * M_PI) * radiusStep;
+        count += circleSteps;
+    }
+
+    // Update number of rays
+    numRays = count;
+    std::stringstream ss;
+    ss << "Number of subsampling rays (" << id << "): " << numRays;
+    logging::INFO(ss.str());
+}
+
+/*
 void
 ScanningDevice::calcRaysNumber()
 {
-  // Count circle steps
-  int count = 1;
-  for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
-       radiusStep++) {
-    int circleSteps = (int)(2 * M_PI) * radiusStep;
-    count += circleSteps;
-  }
+  // For a Cartesian grid: (2N + 1) * (2N + 1)
+  int N = FWF_settings.beamSampleQuality;
+  int count = (2 * N + 1) * (2 * N + 1);
 
-  // Update number of rays
   numRays = count;
   std::stringstream ss;
   ss << "Number of subsampling rays (" << id << "): " << numRays;
   logging::INFO(ss.str());
 }
-
+*/
 void
 ScanningDevice::doSimStep(
   unsigned int legIndex,
