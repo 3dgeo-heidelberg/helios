@@ -1,4 +1,3 @@
-
 # from typing import Optional
 # from pydantic import BaseModel
 # import numpy as np
@@ -53,7 +52,7 @@
 #     @property
 #     def absolute_mount_position(self) -> np.ndarray:
 #         return self.cached_absolute_mount_position
-    
+
 #     @property
 #     def attitude(self) -> Rotation:
 #         return self._attitude
@@ -66,7 +65,7 @@
 #     @property
 #     def position(self) -> np.ndarray:
 #         return self._position
-    
+
 #     @position.setter
 #     def position(self, value: np.ndarray):
 #         self._position = value
@@ -76,16 +75,16 @@
 #     @property
 #     def origin_waypoint(self) -> np.ndarray:
 #         return self._origin_waypoint
-    
+
 #     @origin_waypoint.setter
 #     def origin_waypoint(self, value: np.ndarray):
 #         self._origin_waypoint = value
 #         self.update_static_cache()
-    
+
 #     @property
 #     def target_waypoint(self) -> np.ndarray:
 #         return self._target_waypoint
-    
+
 #     @target_waypoint.setter
 #     def target_waypoint(self, value: np.ndarray):
 #         self._target_waypoint = value
@@ -94,7 +93,7 @@
 #     @property
 #     def next_waypoint(self) -> np.ndarray:
 #         return self._next_waypoint
-    
+
 #     @next_waypoint.setter
 #     def next_waypoint(self, value: np.ndarray):
 #         self._next_waypoint = value
@@ -107,21 +106,21 @@
 #         current_settings.is_on_ground = self.is_on_ground
 #         current_settings.position(self.position)
 #         return self.current_settings
-    
+
 #     def apply_settings(self, settings: PlatformSettings) -> None:
 #         self.settings_speed_m_s = settings.speed_m_s
 #         self.is_on_ground = settings.is_on_ground
 #         self.position = settings.position
-    
+
 #     @property
 #     def current_direction(self) -> np.ndarray:
 #         return self.cached_current_direction
-    
+
 #     @property
 #     def is_interpolated(self) -> bool:
 #         return self.cached_is_interpolating
 
-        
+
 #     def update_static_cache(self) -> None:
 #         self.cached_origin_to_target_dir_xy = np.array([
 #             self.target_waypoint[0] - self.origin_waypoint[0],
@@ -162,7 +161,7 @@
 #         if is_normalized and angle < 0.0:
 #             angle += np.pi * 2
 #         return angle
-    
+
 #     def get_by_name(self, name: str) -> Optional['Platform']:
 #         if self.name == name:
 #             return self

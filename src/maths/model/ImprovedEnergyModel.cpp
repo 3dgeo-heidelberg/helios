@@ -1,6 +1,6 @@
 #include <ImprovedEnergyModel.h>
-#include <maths/EnergyMaths.h>
 #include <logging.hpp>
+#include <maths/EnergyMaths.h>
 #include <scanner/ScanningDevice.h>
 #include <scanner/detector/AbstractDetector.h>
 
@@ -74,8 +74,8 @@ ImprovedEnergyModel::computeReceivedPower(
   (void)calcIntensityRecords;
 #endif
   // No geometry/atmosphere/BDRF; just pass through constant emit power.
-  return computeEmittedPower(
-    ImprovedEmittedPowerArgs{ 0.0, 0.0, sd.detector->cfg_device_rangeMin_m, 0 });
+  return computeEmittedPower(ImprovedEmittedPowerArgs{
+    0.0, 0.0, sd.detector->cfg_device_rangeMin_m, 0 });
 }
 
 double

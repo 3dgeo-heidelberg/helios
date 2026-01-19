@@ -1,14 +1,14 @@
 #include <ScanningDevice.h>
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <limits>
 #include <logging.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
 #include <maths/model/BaseEnergyModel.h>
 #include <maths/model/ImprovedEnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
-#include <filesystem>
-#include <fstream>
-#include <algorithm>
-#include <limits>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -97,71 +97,70 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 // ***  M E T H O D S  *** //
 // *********************** //
 
-void ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+void
+ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
 {
-    std::cout << ">>> USING ScanningDevice::prepareSimulation() - CARTESIAN GRID\n";
+  std::cout
+    << ">>> USING ScanningDevice::prepareSimulation() - CARTESIAN GRID\n";
 
-    cached_subrayRotation.clear();
-    cached_subrayRadiusStep.clear();
-    cached_subrayDivergenceAngle_rad.clear();
+  cached_subrayRotation.clear();
+  cached_subrayRadiusStep.clear();
+  cached_subrayDivergenceAngle_rad.clear();
 
-    cached_subrayX_offsets.clear();   // ← ADD THESE
-    cached_subrayY_offsets.clear();   // ← ADD THESE
+  cached_subrayX_offsets.clear(); // ← ADD THESE
+  cached_subrayY_offsets.clear(); // ← ADD THESE
 
-    int const N = FWF_settings.beamSampleQuality;
+  int const N = FWF_settings.beamSampleQuality;
 
-    double const maxAngle = beamDivergence_rad;    // circular cone half-angle
-    double const maxOffset = std::tan(maxAngle);   // linear offset on unit sphere
-    double const step = maxOffset / N;
+  double const maxAngle = beamDivergence_rad;  // circular cone half-angle
+  double const maxOffset = std::tan(maxAngle); // linear offset on unit sphere
+  double const step = maxOffset / N;
 
-    // Save grid for plotting
-    std::ofstream gridfile("clipped_subray_grid.csv", std::ios::trunc);
+  // Save grid for plotting
+  std::ofstream gridfile("clipped_subray_grid.csv", std::ios::trunc);
 
-    int linearIndex = 0;
-    for (int i = -N; i <= N; ++i)
-    {
-        for (int j = -N; j <= N; ++j)
-        {
-            double x_offset = i * step;
-            double y_offset = j * step;
+  int linearIndex = 0;
+  for (int i = -N; i <= N; ++i) {
+    for (int j = -N; j <= N; ++j) {
+      double x_offset = i * step;
+      double y_offset = j * step;
 
-            // Convert to angular tilt
-            double tilt_x = std::atan(x_offset);   // rotation around Y (left-right)
-            double tilt_y = std::atan(y_offset);   // rotation around X (up-down)
+      // Convert to angular tilt
+      double tilt_x = std::atan(x_offset); // rotation around Y (left-right)
+      double tilt_y = std::atan(y_offset); // rotation around X (up-down)
 
-            // Total angular distance from central ray
-            double radial = std::sqrt(tilt_x*tilt_x + tilt_y*tilt_y);
+      // Total angular distance from central ray
+      double radial = std::sqrt(tilt_x * tilt_x + tilt_y * tilt_y);
 
-            // === CLIP TO CIRCLE ===
-            if (radial > maxAngle)
-                continue;
+      // === CLIP TO CIRCLE ===
+      if (radial > maxAngle)
+        continue;
 
-            // Save offsets
-            cached_subrayX_offsets.push_back(x_offset);
-            cached_subrayY_offsets.push_back(y_offset);
+      // Save offsets
+      cached_subrayX_offsets.push_back(x_offset);
+      cached_subrayY_offsets.push_back(y_offset);
 
-            // Rotation composition
-            Rotation r = Rotation(Directions::right, tilt_y) *
-                         Rotation(Directions::up,    tilt_x);
+      // Rotation composition
+      Rotation r =
+        Rotation(Directions::right, tilt_y) * Rotation(Directions::up, tilt_x);
 
-            cached_subrayRotation.push_back(r);
-            cached_subrayRadiusStep.push_back(linearIndex++);
-            cached_subrayDivergenceAngle_rad.push_back(radial);
+      cached_subrayRotation.push_back(r);
+      cached_subrayRadiusStep.push_back(linearIndex++);
+      cached_subrayDivergenceAngle_rad.push_back(radial);
 
-            // Log to CSV
-            gridfile << x_offset << "," << y_offset << "\n";
-        }
+      // Log to CSV
+      gridfile << x_offset << "," << y_offset << "\n";
     }
+  }
 
-    gridfile.close();
+  gridfile.close();
 
-    // Energy model
-    if (legacyEnergyModel)
-        energyModel = std::make_shared<BaseEnergyModel>(*this);
-    else
-        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+  // Energy model
+  if (legacyEnergyModel)
+    energyModel = std::make_shared<BaseEnergyModel>(*this);
+  else
+    energyModel = std::make_shared<ImprovedEnergyModel>(*this);
 }
-
 
 /*
 void
@@ -211,9 +210,8 @@ ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
             glm::vec3 dir = r2.applyTo(forward);
             dir = glm::normalize(dir);
 
-            // Guard against near-vertical directions (would blow up the projection)
-            if (std::abs(dir.z) < 1e-9) {
-              continue;
+            // Guard against near-vertical directions (would blow up the
+projection) if (std::abs(dir.z) < 1e-9) { continue;
             }
             double x_off = dir.x / dir.z;   // tangent-plane projection
             double y_off = dir.y / dir.z;
@@ -327,20 +325,22 @@ ScanningDevice::calcAtmosphericAttenuation() const
 
   return (3.91 / Vm) * pow((lambda / 0.55), -q);
 }
-void ScanningDevice::calcRaysNumber()
+void
+ScanningDevice::calcRaysNumber()
 {
-    // Count circle steps
-    int count = 1;
-    for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality; radiusStep++) {
-        int circleSteps = (int)(2 * M_PI) * radiusStep;
-        count += circleSteps;
-    }
+  // Count circle steps
+  int count = 1;
+  for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
+       radiusStep++) {
+    int circleSteps = (int)(2 * M_PI) * radiusStep;
+    count += circleSteps;
+  }
 
-    // Update number of rays
-    numRays = count;
-    std::stringstream ss;
-    ss << "Number of subsampling rays (" << id << "): " << numRays;
-    logging::INFO(ss.str());
+  // Update number of rays
+  numRays = count;
+  std::stringstream ss;
+  ss << "Number of subsampling rays (" << id << "): " << numRays;
+  logging::INFO(ss.str());
 }
 
 /*

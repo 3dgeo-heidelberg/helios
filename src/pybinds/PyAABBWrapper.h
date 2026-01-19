@@ -2,7 +2,6 @@
 
 #include <AABB.h>
 #include <PyVertexWrapper.h>
-#include <AABB.h>
 
 namespace pyhelios {
 

@@ -46,7 +46,7 @@
 #                 settings._basic_template = cherries._basic_template.cherry_pick(cherries._basic_template, template_fields)
 #             else:
 #                 settings._basic_template = cherries._basic_template.copy(deep=True)
-        
+
 #         return settings
 
 #     @property
@@ -83,7 +83,7 @@
 #             bool: True if both vertical and horizontal resolutions are 0.0, False otherwise.
 #         """
 #         return self.vertical_resolution == 0.0 and self.horizontal_resolution == 0.0
-    
+
 #     def fit_to_resolution(self, scan_angle_max_rad: float) -> None:
 #         """
 #         Adjusts the scan frequency and head rotation per second based on the resolution and maximum scan angle.
@@ -95,10 +95,10 @@
 #         self.head_rotation = self.horizontal_resolution * self.scan_frequency
 
 #     @classmethod
-#     def create_preset(cls, name: str, pulse_frequency: int, horizontal_resolution: float, vertical_resolution: float, 
-#                       horizontal_fov: int, min_vertical_angle: float, max_vertical_angle: float, 
+#     def create_preset(cls, name: str, pulse_frequency: int, horizontal_resolution: float, vertical_resolution: float,
+#                       horizontal_fov: int, min_vertical_angle: float, max_vertical_angle: float,
 #                       save_as: Optional[str] = None) -> 'ScannerSettings':
-        
+
 #         preset = ScannerSettings(name=name, pulse_frequency=pulse_frequency,
 #                                  horizontal_resolution=horizontal_resolution,
 #                                  vertical_resolution=vertical_resolution,
@@ -112,7 +112,7 @@
 #     def to_file(self, file_path: str) -> None:
 #         with open(file_path, 'w') as file:
 #             json.dump(self.dict(), file)
-        
+
 #     @staticmethod
 #     def load_preset(file_path: str) -> 'ScannerSettings':
 #         with open(file_path, 'r') as file:

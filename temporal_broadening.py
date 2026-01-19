@@ -27,7 +27,9 @@ TITLE = "Emitted vs Received Waveform"
 # --------------------------------------- #
 
 
-def plot_waveform(fullwave: Path, row_idx: int, pulse_length_ns: float, title: str) -> Path:
+def plot_waveform(
+    fullwave: Path, row_idx: int, pulse_length_ns: float, title: str
+) -> Path:
     with fullwave.open("r") as f:
         try:
             line = next(line for i, line in enumerate(f) if i == row_idx)
@@ -62,9 +64,21 @@ def plot_waveform(fullwave: Path, row_idx: int, pulse_length_ns: float, title: s
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Plot emitted vs received waveform.")
-    parser.add_argument("--fullwave", type=Path, default=FULLWAVE_PATH, help="Path to legXXX_fullwave.txt")
-    parser.add_argument("--row", type=int, default=ROW_IDX, help="Zero-based row index to plot")
-    parser.add_argument("--pulse-length-ns", type=float, default=PULSE_LENGTH_NS, help="Pulse length for emitted model")
+    parser.add_argument(
+        "--fullwave",
+        type=Path,
+        default=FULLWAVE_PATH,
+        help="Path to legXXX_fullwave.txt",
+    )
+    parser.add_argument(
+        "--row", type=int, default=ROW_IDX, help="Zero-based row index to plot"
+    )
+    parser.add_argument(
+        "--pulse-length-ns",
+        type=float,
+        default=PULSE_LENGTH_NS,
+        help="Pulse length for emitted model",
+    )
     parser.add_argument("--title", type=str, default=TITLE, help="Plot title")
     args = parser.parse_args()
 

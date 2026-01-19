@@ -39,7 +39,9 @@ def parse_scenes(scene_args: List[str]) -> Dict[str, Tuple[Path, Path]]:
         try:
             name, cart, polar = item.split(":")
         except ValueError:
-            raise ValueError(f"Invalid --scenes entry '{item}'. Use name:cart.xml:polar.xml")
+            raise ValueError(
+                f"Invalid --scenes entry '{item}'. Use name:cart.xml:polar.xml"
+            )
         scenes[name] = (Path(cart), Path(polar))
     return scenes
 
@@ -53,7 +55,9 @@ def patch_beam_sample(src: Path, dst: Path, beam_sample_quality: int) -> None:
     tree.write(dst, encoding="UTF-8", xml_declaration=True)
 
 
-def run_helios(bin_path: Path, survey_xml: Path, output_dir: Path, assets_dir: Path) -> None:
+def run_helios(
+    bin_path: Path, survey_xml: Path, output_dir: Path, assets_dir: Path
+) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     cmd = [
         str(bin_path),
@@ -119,7 +123,9 @@ def process_scene(
     return results
 
 
-def plot_ratios(all_results: Dict[str, List[Tuple[int, float, float, float]]], out_dir: Path) -> None:
+def plot_ratios(
+    all_results: Dict[str, List[Tuple[int, float, float, float]]], out_dir: Path
+) -> None:
     plt.figure(figsize=(8, 5))
     for scene, rows in all_results.items():
         rows_sorted = sorted(rows, key=lambda r: r[0])
@@ -138,7 +144,9 @@ def plot_ratios(all_results: Dict[str, List[Tuple[int, float, float, float]]], o
     print(f"Saved ratio plot: {out_path}")
 
 
-def write_csv(all_results: Dict[str, List[Tuple[int, float, float, float]]], out_dir: Path) -> None:
+def write_csv(
+    all_results: Dict[str, List[Tuple[int, float, float, float]]], out_dir: Path
+) -> None:
     lines = ["scene,N,cartesian_mean,polar_mean,ratio"]
     for scene, rows in all_results.items():
         for n, c, p, r in rows:
@@ -150,9 +158,18 @@ def write_csv(all_results: Dict[str, List[Tuple[int, float, float, float]]], out
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Sweep beamSampleQuality and compare mean waveform energies.")
-    parser.add_argument("--helios-bin", type=Path, required=True, help="Path to helios++ binary.")
-    parser.add_argument("--out-dir", type=Path, required=True, help="Output directory for plots/CSV and helios outputs.")
+    parser = argparse.ArgumentParser(
+        description="Sweep beamSampleQuality and compare mean waveform energies."
+    )
+    parser.add_argument(
+        "--helios-bin", type=Path, required=True, help="Path to helios++ binary."
+    )
+    parser.add_argument(
+        "--out-dir",
+        type=Path,
+        required=True,
+        help="Output directory for plots/CSV and helios outputs.",
+    )
     parser.add_argument(
         "--scenes",
         nargs="+",
@@ -166,13 +183,26 @@ def main() -> None:
         default=[5, 10, 20, 30, 40, 50, 100],
         help="Values to set for FWFSettings@beamSampleQuality.",
     )
-    parser.add_argument("--assets-dir", type=Path, default=Path("test_scenarios"), help="Assets directory to pass to helios++.")
+    parser.add_argument(
+        "--assets-dir",
+        type=Path,
+        default=Path("test_scenarios"),
+        help="Assets directory to pass to helios++.",
+    )
     args = parser.parse_args()
 
     scenes = parse_scenes(args.scenes)
     all_results: Dict[str, List[Tuple[int, float, float, float]]] = {}
     for name, (cart, polar) in scenes.items():
-        res = process_scene(name, cart, polar, args.beam_samples, args.helios_bin, args.out_dir, args.assets_dir)
+        res = process_scene(
+            name,
+            cart,
+            polar,
+            args.beam_samples,
+            args.helios_bin,
+            args.out_dir,
+            args.assets_dir,
+        )
         all_results[name] = res
 
     plot_ratios(all_results, args.out_dir)

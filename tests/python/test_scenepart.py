@@ -1,7 +1,7 @@
 # from helios.scenepart import ScenePart
 # from helios.scene import Scene
 # import numpy as np
-    
+
 
 # ### different checks for transformation
 # def test_no_transformation(scene_part):

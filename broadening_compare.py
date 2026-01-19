@@ -40,7 +40,14 @@ def waveform_metrics(t: np.ndarray, y: np.ndarray) -> Dict[str, float]:
         std_t = float(np.sqrt(var_t))
     else:
         std_t = float("nan")
-    return {"peak": peak, "area": area, "fwhm": fwhm, "eff_width": eff_width, "std": std_t, "t_peak": t_peak}
+    return {
+        "peak": peak,
+        "area": area,
+        "fwhm": fwhm,
+        "eff_width": eff_width,
+        "std": std_t,
+        "t_peak": t_peak,
+    }
 
 
 def parse_row(line: str) -> np.ndarray:
@@ -50,7 +57,13 @@ def parse_row(line: str) -> np.ndarray:
 PULSE_LEN_NS = 4.0
 
 
-def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path, pulse_len_ns: float = PULSE_LEN_NS) -> None:
+def process_dataset(
+    name: str,
+    cart_path: Path,
+    polar_path: Path,
+    out_dir: Path,
+    pulse_len_ns: float = PULSE_LEN_NS,
+) -> None:
     print(f"\n=== {name} ===")
     csv_rows: List[str] = [
         "row,sampling,fwhm_emit,fwhm_recv,eff_emit,eff_recv,std_emit,std_recv,peak_emit,peak_recv,peak_shift,min_time,max_time"
@@ -83,8 +96,16 @@ def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path,
         rec_p = rp[10:]
         t_c = np.linspace(rc[7], rc[8], rec_c.size)
         t_p = np.linspace(rp[7], rp[8], rec_p.size)
-        bin_c = (rc[8] - rc[7]) / (rec_c.size - 1) if rec_c.size > 1 else pulse_len_ns / 10.0
-        bin_p = (rp[8] - rp[7]) / (rec_p.size - 1) if rec_p.size > 1 else pulse_len_ns / 10.0
+        bin_c = (
+            (rc[8] - rc[7]) / (rec_c.size - 1)
+            if rec_c.size > 1
+            else pulse_len_ns / 10.0
+        )
+        bin_p = (
+            (rp[8] - rp[7]) / (rec_p.size - 1)
+            if rec_p.size > 1
+            else pulse_len_ns / 10.0
+        )
         emit_c = emitted_wave(rec_c.size, bin_c, pulse_len_ns)
         emit_p = emitted_wave(rec_p.size, bin_p, pulse_len_ns)
         emit_c *= rec_c.max() / emit_c.max()
@@ -139,8 +160,12 @@ def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path,
     rec_p = rp[10:]
     t_c = np.linspace(rc[7], rc[8], rec_c.size)
     t_p = np.linspace(rp[7], rp[8], rec_p.size)
-    bin_c = (rc[8] - rc[7]) / (rec_c.size - 1) if rec_c.size > 1 else pulse_len_ns / 10.0
-    bin_p = (rp[8] - rp[7]) / (rec_p.size - 1) if rec_p.size > 1 else pulse_len_ns / 10.0
+    bin_c = (
+        (rc[8] - rc[7]) / (rec_c.size - 1) if rec_c.size > 1 else pulse_len_ns / 10.0
+    )
+    bin_p = (
+        (rp[8] - rp[7]) / (rec_p.size - 1) if rec_p.size > 1 else pulse_len_ns / 10.0
+    )
     emit_c = emitted_wave(rec_c.size, bin_c, pulse_len_ns)
     emit_p = emitted_wave(rec_p.size, bin_p, pulse_len_ns)
     emit_c *= rec_c.max() / emit_c.max()
@@ -159,10 +184,42 @@ def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path,
 
     plt.figure(figsize=(9, 5))
     # Draw Cartesian first, then Polar to ensure both are visible
-    plt.plot(t_c_rel, emit_c, label="Emitted waveform (Cartesian)", lw=2.2, color="C0", zorder=2)
-    plt.plot(t_c_rel, rec_c, label=fmt("Received waveform (Cartesian)", m_rc), alpha=0.9, lw=2, color="C1", zorder=2)
-    plt.plot(t_p_rel, emit_p, label="Emitted waveform (Polar)", lw=2.2, linestyle="--", color="C2", zorder=3)
-    plt.plot(t_p_rel, rec_p, label=fmt("Received waveform (Polar)", m_rp), alpha=0.95, lw=2, linestyle="--", color="C3", zorder=3)
+    plt.plot(
+        t_c_rel,
+        emit_c,
+        label="Emitted waveform (Cartesian)",
+        lw=2.2,
+        color="C0",
+        zorder=2,
+    )
+    plt.plot(
+        t_c_rel,
+        rec_c,
+        label=fmt("Received waveform (Cartesian)", m_rc),
+        alpha=0.9,
+        lw=2,
+        color="C1",
+        zorder=2,
+    )
+    plt.plot(
+        t_p_rel,
+        emit_p,
+        label="Emitted waveform (Polar)",
+        lw=2.2,
+        linestyle="--",
+        color="C2",
+        zorder=3,
+    )
+    plt.plot(
+        t_p_rel,
+        rec_p,
+        label=fmt("Received waveform (Polar)", m_rp),
+        alpha=0.95,
+        lw=2,
+        linestyle="--",
+        color="C3",
+        zorder=3,
+    )
     plt.xlabel("Time [ns] (relative)")
     plt.ylabel("Energy / Signal")
     plt.title(f"{name} | Cartesian vs Polar")
@@ -181,19 +238,31 @@ def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path,
     common_t_p = np.linspace(0, dur_p_mean, target_n)
 
     mean_emit_c = np.mean(
-        [np.interp(common_t_c, t_c_rel_list[i], emit_c_list[i], left=0.0, right=0.0) for i in range(len(t_c_rel_list))],
+        [
+            np.interp(common_t_c, t_c_rel_list[i], emit_c_list[i], left=0.0, right=0.0)
+            for i in range(len(t_c_rel_list))
+        ],
         axis=0,
     )
     mean_rec_c = np.mean(
-        [np.interp(common_t_c, t_c_rel_list[i], rec_c_list[i], left=0.0, right=0.0) for i in range(len(t_c_rel_list))],
+        [
+            np.interp(common_t_c, t_c_rel_list[i], rec_c_list[i], left=0.0, right=0.0)
+            for i in range(len(t_c_rel_list))
+        ],
         axis=0,
     )
     mean_emit_p = np.mean(
-        [np.interp(common_t_p, t_p_rel_list[i], emit_p_list[i], left=0.0, right=0.0) for i in range(len(t_p_rel_list))],
+        [
+            np.interp(common_t_p, t_p_rel_list[i], emit_p_list[i], left=0.0, right=0.0)
+            for i in range(len(t_p_rel_list))
+        ],
         axis=0,
     )
     mean_rec_p = np.mean(
-        [np.interp(common_t_p, t_p_rel_list[i], rec_p_list[i], left=0.0, right=0.0) for i in range(len(t_p_rel_list))],
+        [
+            np.interp(common_t_p, t_p_rel_list[i], rec_p_list[i], left=0.0, right=0.0)
+            for i in range(len(t_p_rel_list))
+        ],
         axis=0,
     )
 
@@ -203,10 +272,42 @@ def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path,
     m_rp_mean = waveform_metrics(common_t_p, mean_rec_p)
 
     plt.figure(figsize=(9, 5))
-    plt.plot(common_t_c, mean_emit_c, label="Mean emitted (Cartesian)", lw=2.2, color="C0", zorder=2)
-    plt.plot(common_t_c, mean_rec_c, label=fmt("Mean received (Cartesian)", m_rc_mean), alpha=0.9, lw=2, color="C1", zorder=2)
-    plt.plot(common_t_p, mean_emit_p, label="Mean emitted (Polar)", lw=2.2, linestyle="--", color="C2", zorder=3)
-    plt.plot(common_t_p, mean_rec_p, label=fmt("Mean received (Polar)", m_rp_mean), alpha=0.95, lw=2, linestyle="--", color="C3", zorder=3)
+    plt.plot(
+        common_t_c,
+        mean_emit_c,
+        label="Mean emitted (Cartesian)",
+        lw=2.2,
+        color="C0",
+        zorder=2,
+    )
+    plt.plot(
+        common_t_c,
+        mean_rec_c,
+        label=fmt("Mean received (Cartesian)", m_rc_mean),
+        alpha=0.9,
+        lw=2,
+        color="C1",
+        zorder=2,
+    )
+    plt.plot(
+        common_t_p,
+        mean_emit_p,
+        label="Mean emitted (Polar)",
+        lw=2.2,
+        linestyle="--",
+        color="C2",
+        zorder=3,
+    )
+    plt.plot(
+        common_t_p,
+        mean_rec_p,
+        label=fmt("Mean received (Polar)", m_rp_mean),
+        alpha=0.95,
+        lw=2,
+        linestyle="--",
+        color="C3",
+        zorder=3,
+    )
     plt.xlabel("Time [ns] (relative)")
     plt.ylabel("Energy / Signal")
     plt.title(f"{name} | Mean waveforms (Cartesian vs Polar)")
@@ -219,16 +320,33 @@ def process_dataset(name: str, cart_path: Path, polar_path: Path, out_dir: Path,
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Compare emitted/received waveforms across datasets.")
+    parser = argparse.ArgumentParser(
+        description="Compare emitted/received waveforms across datasets."
+    )
     parser.add_argument(
         "--base-dir",
         type=Path,
         default=Path("jan-meeting/point_clouds-const_energy"),
         help="Base directory containing Cartesian/ and Polar/ subfolders.",
     )
-    parser.add_argument("--out-dir", type=Path, default=Path("jan-meeting/temporal_broadening"), help="Directory to write plots.")
-    parser.add_argument("--cart-subdir", type=str, default="Cartesian", help="Subdir name for Cartesian sampling.")
-    parser.add_argument("--polar-subdir", type=str, default="Polar", help="Subdir name for Polar sampling.")
+    parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=Path("jan-meeting/temporal_broadening"),
+        help="Directory to write plots.",
+    )
+    parser.add_argument(
+        "--cart-subdir",
+        type=str,
+        default="Cartesian",
+        help="Subdir name for Cartesian sampling.",
+    )
+    parser.add_argument(
+        "--polar-subdir",
+        type=str,
+        default="Polar",
+        help="Subdir name for Polar sampling.",
+    )
     args = parser.parse_args()
 
     base = args.base_dir

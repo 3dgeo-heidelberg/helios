@@ -38,10 +38,10 @@
 #     def from_file(cls, filename: str, file_format: Optional[str] = None) -> 'ScenePart':
 #         if not os.path.exists(filename):
 #             raise FileNotFoundError(f"File {filename} not found.")
-        
+
 #         if file_format is None:
 #             file_format = Path(filename).suffix[1:].lower()
-        
+
 #         # Logic to handle different file formats
 #         method_name = f"from_{file_format}"
 #         if hasattr(cls, method_name):
@@ -90,50 +90,50 @@
 #         pass
 
 #     def transform(
-#         self, 
-#         translation: Optional[np.ndarray] = None, 
-#         scale: Optional[float] = None, 
-#         is_on_ground: Optional[bool] = True, 
+#         self,
+#         translation: Optional[np.ndarray] = None,
+#         scale: Optional[float] = None,
+#         is_on_ground: Optional[bool] = True,
 #         apply_to_axis: Optional[int] = None
 #     ) -> 'ScenePart':
 #         # Implement transformation logic
 #         pass
-    
+
 #     def rotate(
-#         self, 
-#         axis: Optional[np.ndarray] = None, 
-#         angle: Optional[float] = None, 
-#         origin: Optional[np.ndarray] = None, 
-#         rotation: Optional[np.ndarray] = None, 
-#         matrix: Optional[np.ndarray] = None, 
+#         self,
+#         axis: Optional[np.ndarray] = None,
+#         angle: Optional[float] = None,
+#         origin: Optional[np.ndarray] = None,
+#         rotation: Optional[np.ndarray] = None,
+#         matrix: Optional[np.ndarray] = None,
 #         euler_angles: Optional[np.ndarray] = None
 #     ):
 #         # Implement rotation logic
 #         pass
-    
+
 #     def make_motion(
-#         self, 
-#         translation: Optional[np.ndarray] = None, 
-#         rotation_axis: Optional[np.ndarray] = None, 
-#         rotation_angle: Optional[float] = None, 
+#         self,
+#         translation: Optional[np.ndarray] = None,
+#         rotation_axis: Optional[np.ndarray] = None,
+#         rotation_angle: Optional[float] = None,
 #         radians: Optional[bool] = True,
-#         rotation_center: Optional[np.ndarray] = None, 
-#         loop: Optional[int] = 1, 
-#         rotate_around_self: Optional[bool] = False, 
+#         rotation_center: Optional[np.ndarray] = None,
+#         loop: Optional[int] = 1,
+#         rotate_around_self: Optional[bool] = False,
 #         auto_crs: Optional[bool] = False
 #     ):
 #         # Implement motion logic
 #         pass
 
 #     def make_motion_sequence(
-#         self, 
-#         translations: Optional[List[np.ndarray]] = None, 
-#         rotation_axes: Optional[List[np.ndarray]] = None, 
-#         rotation_angles: Optional[List[float]] = None, 
+#         self,
+#         translations: Optional[List[np.ndarray]] = None,
+#         rotation_axes: Optional[List[np.ndarray]] = None,
+#         rotation_angles: Optional[List[float]] = None,
 #         radians: Optional[bool] = True,
-#         rotation_centers: Optional[List[np.ndarray]] = None, 
-#         loop: Optional[int] = 1, 
-#         rotate_around_self: Optional[bool] = False, 
+#         rotation_centers: Optional[List[np.ndarray]] = None,
+#         loop: Optional[int] = 1,
+#         rotate_around_self: Optional[bool] = False,
 #         auto_crs: Optional[bool] = False
 #     ):
 #         # Implement motion sequence logic

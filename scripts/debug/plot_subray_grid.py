@@ -20,23 +20,23 @@ def load_grid(path: pathlib.Path):
         for row in reader:
             if not row:
                 continue
-            if row[0].startswith('#'):
+            if row[0].startswith("#"):
                 # parse header hints if present
-                line = ','.join(row)
-                if 'dx=' in line and 'dy=' in line:
+                line = ",".join(row)
+                if "dx=" in line and "dy=" in line:
                     try:
-                        parts = line.replace('#', '').split(',')
+                        parts = line.replace("#", "").split(",")
                         for p in parts:
-                            if 'dx=' in p:
-                                dx = float(p.split('=')[1])
-                            if 'dy=' in p:
-                                dy = float(p.split('=')[1])
-                            if 'area_z1=' in p:
-                                area = float(p.split('=')[1])
+                            if "dx=" in p:
+                                dx = float(p.split("=")[1])
+                            if "dy=" in p:
+                                dy = float(p.split("=")[1])
+                            if "area_z1=" in p:
+                                area = float(p.split("=")[1])
                     except Exception:
                         pass
                 continue
-            if row[0] == 'index':
+            if row[0] == "index":
                 continue
             try:
                 _, x, y, area_z1 = row
@@ -51,8 +51,12 @@ def load_grid(path: pathlib.Path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('csv', nargs='?', default='output/subray_grid.csv',
-                        help='Path to subray_grid.csv (default: output/subray_grid.csv)')
+    parser.add_argument(
+        "csv",
+        nargs="?",
+        default="output/subray_grid.csv",
+        help="Path to subray_grid.csv (default: output/subray_grid.csv)",
+    )
     args = parser.parse_args()
 
     path = pathlib.Path(args.csv)
@@ -66,11 +70,11 @@ def main():
         sys.exit(1)
 
     fig, ax = plt.subplots(figsize=(6, 6))
-    ax.scatter(xs, ys, s=12, c='tab:blue', alpha=0.7)
-    ax.set_aspect('equal', adjustable='box')
-    ax.set_xlabel('x offset @ z=1')
-    ax.set_ylabel('y offset @ z=1')
-    ax.ticklabel_format(style='plain', useOffset=False, axis='both')
+    ax.scatter(xs, ys, s=12, c="tab:blue", alpha=0.7)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel("x offset @ z=1")
+    ax.set_ylabel("y offset @ z=1")
+    ax.ticklabel_format(style="plain", useOffset=False, axis="both")
 
     # Add a small margin around the data to keep it visible
     margin_x = (max(xs) - min(xs)) * 0.05 if len(xs) > 1 else 0.1
@@ -89,5 +93,5 @@ def main():
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

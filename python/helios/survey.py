@@ -1,7 +1,7 @@
 # from pydantic import BaseModel
 # from typing import Optional, Union, List
 # from helios.scanner import Scanner
-# from helios.leg import Leg 
+# from helios.leg import Leg
 # import math
 # from helios.scene import Scene
 # from helios.scannersettings import ScannerSettings
@@ -37,8 +37,8 @@
 #     on_finished_callback: Optional[callable] = None
 #     on_progress_callback: Optional[callable] = None
 #     is_running_flag: bool = False
-    
-#     #instead of propose functionality we first would create a Leg object, and then add it to survey legs 
+
+#     #instead of propose functionality we first would create a Leg object, and then add it to survey legs
 #     def add_leg(self, leg: Leg):
 #         if self._trajectory is not None:
 #             raise ValueError("Adding legs to a survey with an existing trajectory is not supported. "
@@ -57,21 +57,21 @@
 #         except IndexError:
 #              raise ValueError(f"Leg index {leg_index} is out of range!")
 
-#     def calculate_length(self): 
+#     def calculate_length(self):
 #         self._length = 0
 #         for i in range(len(self.legs) - 1):
 #             leg_distance = math.dist(self.legs[i].position, self.legs[i + 1].position)
 #             self.legs[i].set_length(leg_distance)
 #             self._length += self.legs[i].get_length()
 
-    
+
 #     def fullwave(self, **kwargs):
 #         self._fullwave_settings = kwargs
 
 #     def output(self):
 #         pass
 
-    
+
 #     def preview(self):
 #         ''' # some kind of visualization? e.g., 2D map preview, 3D preview with scene and markers for SPs/waypoints, etc.
 #             # survey.preview("2D")
@@ -101,7 +101,6 @@
 #             self.trajectory = trajectory
 
 
-
 #     def run(self,filename: str = None):
 #         #if filename is none, then run the survey without saving the output):
 #         self.is_running = True
@@ -120,8 +119,8 @@
 
 #     def stop(self):
 #         self.is_running = False
-    
-    
+
+
 #     def is_running(self):
 #         return self.is_running
 

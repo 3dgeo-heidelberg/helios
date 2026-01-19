@@ -25,7 +25,7 @@
 
 #     platform: Optional[Platform] = None
 #     scanning_pulse_process: Optional[ScanningPulseProcess] = None
-#     fms: Optional[FMSFacade] = None 
+#     fms: Optional[FMSFacade] = None
 #     output_paths: Optional[List[str]] = None
 #     all_measurements: Optional[List[Measurement]] = None
 #     all_trajectories: Optional[List[Trajectory]] = None
