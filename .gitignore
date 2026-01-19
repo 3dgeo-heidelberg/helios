@@ -31,7 +31,6 @@ valgrind.xml
 *.exe
 libhelios.so
 pyhelios.so
-helios
 
 # Output log
 *.log
