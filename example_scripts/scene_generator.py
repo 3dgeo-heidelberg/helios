@@ -48,7 +48,6 @@ from pathlib import Path
 import random
 import math
 
-
 try:
     objdir = sys.argv[1]
     groundplane = sys.argv[2]
@@ -57,8 +56,7 @@ try:
     number_segments = int(sys.argv[5])
     radius_scan_pos_circle = float(sys.argv[6])
 except:
-    print(
-        """
+    print("""
 #######################
 Description:
 > generate combined HELIOS survey AND scene XML file containing (1) the object files in a given folder and (2) a circular arrangement of scan positions around the object files
@@ -71,8 +69,7 @@ python scene_generator.py data/sceneparts/test data/sceneparts/basic/groundplane
 
 Resulting .xml file will be saved in current working directory
 #########################
-"""
-    )
+""")
     quit()
 
 
@@ -95,13 +92,11 @@ metafile = open(
 )
 metafile.write("ID;X;Y;Z;Name\n")
 
-datafile.write(
-    f"""<?xml version="1.0" encoding="UTF-8"?>
+datafile.write(f"""<?xml version="1.0" encoding="UTF-8"?>
 <document>
 	<scannerSettings id="scanner1" active="true" pulseFreq_hz="300000" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60" verticalResolution_deg="0.08" horizontalResolution_deg="0.08" trajectoryTimeInterval_s="0.05"/>
 	<survey name="TLS_survey" scene="{xml_file}#{name_scene}" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
-"""
-)
+""")
 
 
 # construct circular scan positions
@@ -120,14 +115,12 @@ for segment in range(0, number_segments):
 distributed_scan_positions = []
 for i in range(0, number_segments):
 
-    distributed_scan_positions.append(
-        f"""	
+    distributed_scan_positions.append(f"""	
 		<leg>
 		<platformSettings x="{circle_scan_pos_list_x[i]}" y="{circle_scan_pos_list_y[i]}" z="0" onGround="true"/>
 		<scannerSettings template="scanner1" active="true" headRotateStart_deg="0.0" headRotateStop_deg="360.0"/>
 		</leg>
-		"""
-    )
+		""")
     metafile.write(
         f"{i};{circle_scan_pos_list_x[i]};{circle_scan_pos_list_y[i]};0.0;ScanPos{i}\n"
     )
@@ -136,17 +129,14 @@ for entry in distributed_scan_positions:
     datafile.write(entry)
 
 
-datafile.write(
-    """		
+datafile.write("""		
 	</survey>
-			   """
-)
+			   """)
 
 
 # write XML part with ground plane
 
-datafile.write(
-    f"""
+datafile.write(f"""
 	<scene id="{name_scene}" name="scene">		
 	
 		<part>
@@ -159,8 +149,7 @@ datafile.write(
 			</filter> 
 		</part>
 		
-		"""
-)
+		""")
 
 
 # preparing lists for translating objects randomly
@@ -204,8 +193,7 @@ distributed_objects = []
 for i in range(0, number_objects):
 
     # maybe add up-axis?
-    distributed_objects.append(
-        f"""
+    distributed_objects.append(f"""
 		<part>
 		
 			<filter type="objloader">
@@ -219,8 +207,7 @@ for i in range(0, number_objects):
 			
 		</part>
 		
-"""
-    )
+""")
 
     metafile.write(f"-1;{transl_x[i]};{transl_y[i]};0.0;{list_objfiles[i]}\n")
 
@@ -229,12 +216,10 @@ for entry in distributed_objects:
     datafile.write(entry)
 
 
-datafile.write(
-    """
+datafile.write("""
 
 	</scene>
-</document>"""
-)
+</document>""")
 
 datafile.close()
 metafile.close()

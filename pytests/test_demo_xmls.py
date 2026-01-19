@@ -9,7 +9,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import urllib
 
-
 WORKING_DIR = os.getcwd()
 XSD_DIR = Path(WORKING_DIR) / "python/pyhelios/util/xsd"
 PYH_DIR = Path(WORKING_DIR) / "python/pyhelios"

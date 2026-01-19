@@ -9,13 +9,11 @@ import matplotlib.pyplot as plt
 # ---  FUNCTIONS  --- #
 # ------------------- #
 def print_help():
-    print(
-        """
+    print("""
 Input arguments:
     1 -> Path to first XYZ point cloud file
     2 -> Path to second XYZ point cloud file
-"""
-    )
+""")
 
 
 def parse_args():
