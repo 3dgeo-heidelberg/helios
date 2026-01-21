@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="dyn_scene" name="Dynamic scene"  >
+        
+        <!--Static sceneparts-->
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data\sceneparts\avia_test_flat_plane_2p05m\Cube.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+    </scene>
+</document>

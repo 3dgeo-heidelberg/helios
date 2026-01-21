@@ -12,7 +12,7 @@ using Base = std::shared_ptr<AbstractBeamDeflector>;
 Base
 RisleyBeamDeflector::clone()
 {
-  Base ombd = std::make_shared<RisleyBeamDeflector>(prisms, refrIndex_air);
+  Base ombd = std::make_shared<RisleyBeamDeflector>(prisms, refrIndex_air, incidentBeam, timeOffset);
 
   _clone(ombd);
   return ombd;
@@ -38,8 +38,11 @@ RisleyBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
 void
 RisleyBeamDeflector::doSimStep()
 {
-  // time integration
-  time += deltaT;
+  // Compute deflection at the current time. This allows the constructor or
+  // XML-parsed 'timeOffset' to set the initial orientation (time) so the
+  // very first simulated pulse is emitted at t = timeOffset (not
+  // timeOffset + deltaT). After computing the deflection for the current
+  // step we advance time by deltaT for the next call.
 
   // Start with incident beam
   glm::dvec3 beam = incidentBeam;
@@ -53,4 +56,8 @@ RisleyBeamDeflector::doSimStep()
   }
 
   this->cached_emitterRelativeAttitude = Rotation(Directions::forward, beam);
+
+  // Advance time after computing the deflection so that the first
+  // computation uses the already-applied timeOffset (if any).
+  time += deltaT;
 }

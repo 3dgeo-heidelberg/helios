@@ -998,7 +998,10 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
         angle3_rad, inclinedOnLeft3, refr_prism3, rotorFreq_3_Hz * 2.0 * M_PI);
     }
 
-    beamDeflector = std::make_shared<RisleyBeamDeflector>(prisms, refr_air);
+    double timeOffset_s =
+      XmlUtils::getAttributeCast<double>(scannerNode, "TimeOffset_s", 0.0);
+
+    beamDeflector = std::make_shared<RisleyBeamDeflector>(prisms, refr_air, Directions::forward, timeOffset_s);
   }
 
   if (beamDeflector == nullptr) {
@@ -1504,6 +1507,12 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         if (XmlUtils::hasAttribute(chan, "refrIndex_air")) {
           rbd->refrIndex_air =
             XmlUtils::getAttributeCast<double>(chan, "refrIndex_air", 0.0);
+        }
+
+        if (XmlUtils::hasAttribute(chan, "TimeOffset_s")) {
+          rbd->timeOffset =
+            XmlUtils::getAttributeCast<double>(chan, "TimeOffset_s", 0.0);
+          rbd->time = rbd->timeOffset;
         }
       }
     }

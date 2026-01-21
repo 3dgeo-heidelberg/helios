@@ -202,6 +202,13 @@ public:
    * Each prism has its own properties such as angle, refractive index, and
    * rotation speed.
    */
+  double timeOffset = 0;
+
+  /**
+   * @brief List of prisms in the Risley beam deflector
+   * Each prism has its own properties such as angle, refractive index, and
+   * rotation speed.
+   */
   std::vector<Prism> prisms;
 
   /**
@@ -221,12 +228,15 @@ public:
    */
   RisleyBeamDeflector(const std::vector<Prism>& prisms,
                       double refrIndex_air,
-                      glm::dvec3 incidentBeam = Directions::forward)
+                      glm::dvec3 incidentBeam = Directions::forward,
+                      double timeOffset = 0.0)
     : AbstractBeamDeflector(0, 0, 0)
     , prisms(prisms)
     , refrIndex_air(refrIndex_air)
     , incidentBeam(incidentBeam)
+    , timeOffset(timeOffset)
   {
+      time = timeOffset;
   }
 
   std::shared_ptr<AbstractBeamDeflector> clone() override;

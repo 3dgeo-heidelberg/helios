@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="avia_flat_plane_2p05m" scene="data\scenes\avia_test_flat_plane_2p05m.xml#dyn_scene"
+            platform="data/platforms.xml#simple_linearpath"
+            scanner="data/scanners_livox_avia.xml#livox-avia-non-repetitive-3-prism_best_current_fit">
+        
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+        
+        <leg>
+        <!-- minimal leg 3: 0.005 m with speed of 0.0009 m/s = 5.314 s integration time;
+		     decrease movePerSec_m for longer integration time -->
+            <platformSettings x="-0.0025" y="0" z="1.0"
+                            movePerSec_m="0.00125"
+                            />
+            <scannerSettings  active="true"
+                              trajectoryTimeInterval_s="0.01"
+                            />
+        </leg>
+        <leg>
+            <platformSettings x="0.0025" y="0" z="1.0"
+                            movePerSec_m="0.0009"
+                            />
+            <scannerSettings  active="false"
+                              />
+        </leg>
+
+    </survey>
+</document>
