@@ -902,8 +902,24 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
   }
 
   else if (str_opticsType == "conic") {
+    // Use the 3-parameter constructur for circular mode
     beamDeflector = std::make_shared<ConicBeamDeflector>(
       scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz);
+  }
+  else if (str_opticsType == "elliptical-conic") {
+    double acrossTrackAngle_rad = MathConverter::degreesToRadians(
+      XmlUtils::getAttributeCast<double>(scannerNode, "acrossTrackAngle_deg", 0.0));
+    double alongTrackAngle_rad = MathConverter::degreesToRadians(
+      XmlUtils::getAttributeCast<double>(scannerNode, "alongTrackAngle_deg", 0.0));
+    
+    // Use the 5-parameter constructor for elliptical mode
+    beamDeflector = std::make_shared<ConicBeamDeflector>(
+      scanAngleMax_rad, 
+      scanFreqMax_Hz, 
+      scanFreqMin_Hz, 
+      acrossTrackAngle_rad, 
+      alongTrackAngle_rad
+    );
   }
 
   else if (str_opticsType == "line") {

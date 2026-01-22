@@ -9,20 +9,38 @@
 std::shared_ptr<AbstractBeamDeflector>
 ConicBeamDeflector::clone()
 {
-  std::shared_ptr<AbstractBeamDeflector> cbd =
-    std::make_shared<ConicBeamDeflector>(
-      ConicBeamDeflector(cfg_device_scanAngleMax_rad,
-                         cfg_device_scanFreqMax_Hz,
-                         cfg_device_scanFreqMin_Hz));
+  std::shared_ptr<AbstractBeamDeflector> cbd;
+  
+  if (ellipticalMode) {
+    // Clone with ellipse parameters
+    cbd = std::make_shared<ConicBeamDeflector>(
+      cfg_device_scanAngleMax_rad,
+      cfg_device_scanFreqMax_Hz,
+      cfg_device_scanFreqMin_Hz,
+      acrossTrackAngle,
+      alongTrackAngle
+    );
+  } else {
+    // Clone as circular
+    cbd = std::make_shared<ConicBeamDeflector>(
+      cfg_device_scanAngleMax_rad,
+      cfg_device_scanFreqMax_Hz,
+      cfg_device_scanFreqMin_Hz
+    );
+  }
+  
   _clone(cbd);
   return cbd;
 }
-void
-ConicBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
+
+void ConicBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
 {
   AbstractBeamDeflector::_clone(abd);
   ConicBeamDeflector* cbd = (ConicBeamDeflector*)abd.get();
   cbd->r1 = Rotation(r1);
+  cbd->acrossTrackAngle = acrossTrackAngle;
+  cbd->alongTrackAngle = alongTrackAngle;
+  cbd->ellipticalMode = ellipticalMode;
 }
 
 // ***  M E T H O D S  *** //
@@ -34,7 +52,15 @@ ConicBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
   cached_angleBetweenPulses_rad =
     (double)(this->cfg_device_scanFreqMax_Hz * M_PI * 2) /
     settings->pulseFreq_Hz;
-  r1 = Rotation(glm::dvec3(1, 0, 0), this->cfg_setting_scanAngle_rad);
+  
+  // Initialize r1 with something (will be updated in doSimStep)
+  r1 = Rotation(glm::dvec3(1, 0, 0), 0.0);
+
+  // If we're in circular mode, ensure angles are the same as scan angle
+  if (!ellipticalMode) {
+    acrossTrackAngle = cfg_setting_scanAngle_rad;
+    alongTrackAngle = cfg_setting_scanAngle_rad;
+  }
 }
 
 void
@@ -46,6 +72,26 @@ ConicBeamDeflector::doSimStep()
     state_currentBeamAngle_rad = fmod(state_currentBeamAngle_rad, M_PI * 2);
   }
   // ####### END Update mirror angle ########
+
+  // Calculate rotation angle based on mode
+  double currentRadius;
+  if (ellipticalMode) {
+    // Elliptical pattern
+    double t = state_currentBeamAngle_rad;
+    double x = acrossTrackAngle * cos(t);
+    double y = alongTrackAngle * sin(t);
+    currentRadius = sqrt(x*x + y*y);
+  } else {
+    // Circular pattern (original behavior)
+    currentRadius = cfg_setting_scanAngle_rad;
+  }
+  
+  // Update r1 with the current angle
+  r1 = Rotation(glm::dvec3(1, 0, 0), currentRadius);
+  
+  // Create r2 rotation
   Rotation r2 = Rotation(Directions::forward, state_currentBeamAngle_rad);
+  
+  // combine rotations
   this->cached_emitterRelativeAttitude = r2.applyTo(r1);
 }
