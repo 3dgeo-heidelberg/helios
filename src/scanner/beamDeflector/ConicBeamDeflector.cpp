@@ -10,30 +10,27 @@ std::shared_ptr<AbstractBeamDeflector>
 ConicBeamDeflector::clone()
 {
   std::shared_ptr<AbstractBeamDeflector> cbd;
-  
+
   if (ellipticalMode) {
     // Clone with ellipse parameters
-    cbd = std::make_shared<ConicBeamDeflector>(
-      cfg_device_scanAngleMax_rad,
-      cfg_device_scanFreqMax_Hz,
-      cfg_device_scanFreqMin_Hz,
-      acrossTrackAngle,
-      alongTrackAngle
-    );
+    cbd = std::make_shared<ConicBeamDeflector>(cfg_device_scanAngleMax_rad,
+                                               cfg_device_scanFreqMax_Hz,
+                                               cfg_device_scanFreqMin_Hz,
+                                               acrossTrackAngle,
+                                               alongTrackAngle);
   } else {
     // Clone as circular
-    cbd = std::make_shared<ConicBeamDeflector>(
-      cfg_device_scanAngleMax_rad,
-      cfg_device_scanFreqMax_Hz,
-      cfg_device_scanFreqMin_Hz
-    );
+    cbd = std::make_shared<ConicBeamDeflector>(cfg_device_scanAngleMax_rad,
+                                               cfg_device_scanFreqMax_Hz,
+                                               cfg_device_scanFreqMin_Hz);
   }
-  
+
   _clone(cbd);
   return cbd;
 }
 
-void ConicBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
+void
+ConicBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
 {
   AbstractBeamDeflector::_clone(abd);
   ConicBeamDeflector* cbd = (ConicBeamDeflector*)abd.get();
@@ -52,7 +49,7 @@ ConicBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
   cached_angleBetweenPulses_rad =
     (double)(this->cfg_device_scanFreqMax_Hz * M_PI * 2) /
     settings->pulseFreq_Hz;
-  
+
   // Initialize r1 with something (will be updated in doSimStep)
   r1 = Rotation(glm::dvec3(1, 0, 0), 0.0);
 
@@ -80,18 +77,18 @@ ConicBeamDeflector::doSimStep()
     double t = state_currentBeamAngle_rad;
     double x = acrossTrackAngle * cos(t);
     double y = alongTrackAngle * sin(t);
-    currentRadius = sqrt(x*x + y*y);
+    currentRadius = sqrt(x * x + y * y);
   } else {
     // Circular pattern (original behavior)
     currentRadius = cfg_setting_scanAngle_rad;
   }
-  
+
   // Update r1 with the current angle
   r1 = Rotation(glm::dvec3(1, 0, 0), currentRadius);
-  
+
   // Create r2 rotation
   Rotation r2 = Rotation(Directions::forward, state_currentBeamAngle_rad);
-  
+
   // combine rotations
   this->cached_emitterRelativeAttitude = r2.applyTo(r1);
 }
