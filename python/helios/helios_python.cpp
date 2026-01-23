@@ -3119,5 +3119,8 @@ PYBIND11_MODULE(_helios, m)
   m.def("make_scene_shift", &makeSceneShift);
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);
+  m.def("read_material_from_file", &readMaterialFromFile);
+  m.def("apply_material_to_primitives", &applyMaterialToPrimitives);
+  m.def("find_material_by_name", &findMaterialByName);
 }
 }

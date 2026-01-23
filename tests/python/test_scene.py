@@ -15,6 +15,7 @@ import laspy
 import shutil
 
 from helios import HeliosException
+import _helios
 
 
 def test_construct_scene_from_xml():
@@ -859,3 +860,131 @@ def test_manual_vs_xml_write_to_file():
         shutil.rmtree(test_dir)
 
     assert las_file1.X.shape[0] == las_file2.X.shape[0]
+
+
+def test_read_materials_from_file():
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+    assert mat1.name == "Material.008"
+    assert mat1._cpp_object.name == "Material.008"
+    assert mat1.reflectance == 0.2
+
+
+def test_read_incorrect_file_for_material():
+    with pytest.raises(FileNotFoundError):
+        Material.from_file(
+            "data/sceneparts/toyblocks/incorrectfile.mtl", "Material.008"
+        )
+
+
+def test_read_incorrect_material_name():
+    with pytest.raises(RuntimeError):
+        Material.from_file(
+            "data/sceneparts/toyblocks/sphere.mtl", "IncorrectMaterialName"
+        )
+
+
+def test_apply_material_to_all_primitives():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    assert scene_part._cpp_object.primitives[4].material.name == "Material.007"
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+    scene_part.apply_material_to_all_primitives(mat1)
+
+    assert scene_part._cpp_object.primitives[4].material.name == "Material.008"
+
+
+def test_apply_material_to_primitives_in_specific_range():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    assert scene_part._cpp_object.primitives[17].material.reflectance == 0.5
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+
+    scene_part.apply_material_to_primitives_in_specific_range(mat1, start=10, stop=20)
+    assert scene_part._cpp_object.primitives[17].material.reflectance == 0.2
+
+
+def test_apply_material_to_primitives_incorrect_range():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+
+    with pytest.raises(ValueError):
+        scene_part.apply_material_to_primitives_in_specific_range(
+            mat1, start=20, stop=10
+        )
+
+    with pytest.raises(ValueError):
+        scene_part.apply_material_to_primitives_in_specific_range(
+            mat1, start=-5, stop=10
+        )
+
+
+def test_apply_material_to_indices():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    assert scene_part._cpp_object.primitives[3].material.spectra == "shingle_red"
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+
+    scene_part.apply_material_to_indices(mat1, indices=[1, 3, 5])
+    assert scene_part._cpp_object.primitives[3].material.spectra == "conifer"
+
+
+def test_apply_material_to_incorrect_indices():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+
+    with pytest.raises(IndexError):
+        scene_part.apply_material_to_indices(mat1, indices=[-1, 3000000])
+
+
+def test_update_material_attribute_for_specific_primitives():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    assert scene_part._cpp_object.primitives[0].material.reflectance == 0.5
+
+    scene_part.update_material_attribute_for_specific_primitives(
+        "Material.007", reflectance=0.9
+    )
+    assert scene_part._cpp_object.primitives[0].material.reflectance == 0.9
+
+    mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
+    scene_part.update_material_attribute_for_specific_primitives(
+        "Material.007", material=mat1
+    )
+    assert scene_part._cpp_object.primitives[0].material.reflectance == 0.2
+
+
+def test_update_material_attribute_incorrect_parameter():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+
+    with pytest.raises(RuntimeError):
+        scene_part.update_material_attribute_for_specific_primitives(
+            "IncorrectMaterialName", reflectance=0.9
+        )
+
+    with pytest.raises(ValueError):
+        scene_part.update_material_attribute_for_specific_primitives(
+            "Material.007", unknown_attribute=123
+        )
+
+    with pytest.raises(RuntimeError):
+        not_mat = ScenePart()
+        scene_part.update_material_attribute_for_specific_primitives(
+            "Material.007", material=not_mat
+        )
+
+
+def test_find_material_by_name():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    mat = _helios.find_material_by_name(scene_part._cpp_object, "Material.007")
+    assert mat.name == "Material.007"
+    assert mat.reflectance == 0.5
+
+
+def test_find_material_by_incorrect_name():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    with pytest.raises(RuntimeError):
+        _helios.find_material_by_name(scene_part._cpp_object, "IncorrectMaterialName")
+
+
+def test_find_material_incorrect_parameter_type():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    with pytest.raises(TypeError):
+        _helios.find_material_by_name(scene_part._cpp_object, 123)
+    with pytest.raises(TypeError):
+        _helios.find_material_by_name("Material.007")

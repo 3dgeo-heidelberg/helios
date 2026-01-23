@@ -11,7 +11,14 @@ from helios.utils import (
     is_finalized,
 )
 
-from helios.validation import Angle, AssetPath, Model, MultiAssetPath, validate_xml_file
+from helios.validation import (
+    Angle,
+    AssetPath,
+    Model,
+    MultiAssetPath,
+    validate_xml_file,
+    UpdateableMixin,
+)
 
 from numpydantic import NDArray, Shape
 from pydantic import (
@@ -26,6 +33,34 @@ from typing import Literal, Optional, Union, Tuple
 import numpy as np
 
 import _helios
+
+
+class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
+    name: str = ""
+    is_ground: bool = False
+    spectra: str = ""
+    reflectance: float = np.nan
+    specularity: float = 0
+    specular_exponent: float = 10
+    classification: int = 0
+    ambient_components: NDArray[Shape["4"], np.float64] = np.array(
+        [0, 0, 0, 0], dtype=np.float64
+    )
+    diffuse_components: NDArray[Shape["4"], np.float64] = np.array(
+        [0, 0, 0, 0], dtype=np.float64
+    )
+    specular_components: NDArray[Shape["4"], np.float64] = np.array(
+        [0, 0, 0, 0], dtype=np.float64
+    )
+
+    @classmethod
+    @validate_call
+    def from_file(cls, material_file: AssetPath, material_id: str = ""):
+        _cpp_material = _helios.read_material_from_file(
+            str(material_file), [str(p) for p in get_asset_directories()], material_id
+        )
+        material = cls._from_cpp(_cpp_material)
+        return material
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
@@ -280,6 +315,55 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         return cls._from_cpp(_cpp_part)
+
+    @validate_call
+    def apply_material_to_all_primitives(self, material: Material):
+        """Apply a material to all primitives in the scene part."""
+        indices = list(range(len(self._cpp_object.primitives)))
+        _helios.apply_material_to_primitives(
+            self._cpp_object, material._cpp_object, indices
+        )
+
+    @validate_call
+    def apply_material_to_primitives_in_specific_range(
+        self, material: Material, start: int, stop: int
+    ):
+        """Apply a material to all primitives within a specific elevation range in the scene part."""
+        if start < 0 or stop < start:
+            raise ValueError("Provided range is invalid")
+
+        indices = list(range(start, min(stop, len(self._cpp_object.primitives))))
+        _helios.apply_material_to_primitives(
+            self._cpp_object, material._cpp_object, indices
+        )
+
+    @validate_call
+    def apply_material_to_indices(self, material: Material, indices: list[int]):
+        """Apply a material to primitives at specific indices in the scene part."""
+        valid_indices = [
+            i for i in indices if 0 <= i < len(self._cpp_object.primitives)
+        ]
+        if not valid_indices:
+            raise IndexError(
+                "No valid indices provided. Indices must be within the range of existing primitives."
+            )
+
+        _helios.apply_material_to_primitives(
+            self._cpp_object, material._cpp_object, valid_indices
+        )
+
+    @validate_call
+    def update_material_attribute_for_specific_primitives(
+        self, name: str, material: Optional[Material] = None, **parameters
+    ):
+        """Update material attributes for specific primitives in the scene part."""
+        cpp_mat = _helios.find_material_by_name(self._cpp_object, name)
+        mat = Material._from_cpp(cpp_mat)
+        if material is not None:
+            mat.update_from_object(material)
+
+        if parameters:
+            mat.update_from_dict(parameters)
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

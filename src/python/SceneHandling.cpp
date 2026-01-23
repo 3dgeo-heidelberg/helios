@@ -1,11 +1,13 @@
 #include <DetailedVoxelLoader.h>
 #include <GeoTiffFileLoader.h>
 #include <KDTreeFactoryMaker.h>
+#include <MaterialsFileReader.h>
 #include <SceneHandling.h>
 #include <SerialSceneWrapper.h>
 #include <SpectralLibrary.h>
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
+#include <XmlAssetsLoader.h>
 
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
@@ -467,4 +469,59 @@ addScenePartToScene(std::shared_ptr<StaticScene> scene,
                            scenePart->mPrimitives.end());
   scene->registerParts();
   invalidateStaticScene(scene); // invalidate it for further finalization
+}
+
+std::shared_ptr<Material>
+readMaterialFromFile(std::string materialPath,
+                     std::vector<std::string> assetsPath,
+                     std::string materialId)
+{
+  fs::path searchfile(materialPath);
+  if (searchfile.is_relative()) {
+    for (const auto path : assetsPath) {
+      if (fs::exists(fs::path(path) / searchfile)) {
+        searchfile = fs::path(path) / searchfile;
+        break;
+      }
+    }
+  }
+  std::string resolved_path = searchfile.string();
+  if (resolved_path.empty()) {
+    throw std::runtime_error("Material file not found: " + materialPath);
+  }
+  std::map<std::string, Material> mats =
+    MaterialsFileReader::loadMaterials(resolved_path);
+  if (mats.find(materialId) == mats.end()) {
+    throw std::runtime_error("Material with name: '" + materialId +
+                             "' not found in material file: " + materialPath);
+  }
+  return std::make_shared<Material>(mats[materialId]);
+}
+
+void
+applyMaterialToPrimitives(std::shared_ptr<ScenePart> scenePart,
+                          std::shared_ptr<Material> material,
+                          const std::vector<size_t>& indices)
+{
+  const auto n = scenePart->mPrimitives.size();
+
+  for (size_t idx : indices) {
+    if (idx >= n) {
+      throw std::out_of_range("Primitive index " + std::to_string(idx) +
+                              " out of range (size=" + std::to_string(n) + ")");
+    }
+    scenePart->mPrimitives[idx]->material = material;
+  }
+}
+
+std::shared_ptr<Material>
+findMaterialByName(std::shared_ptr<ScenePart> scenePart,
+                   const std::string& name)
+{
+  for (auto& prim : scenePart->mPrimitives) {
+    if (prim->material && prim->material->name == name) {
+      return prim->material;
+    }
+  }
+  throw std::runtime_error("Material not found: " + name);
 }

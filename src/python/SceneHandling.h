@@ -5,6 +5,7 @@
 #include <StaticScene.h>
 #include <Survey.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
+#include <scene/Material.h>
 
 #include <memory>
 #include <string>
@@ -83,3 +84,17 @@ makeSceneShift(Survey& survey);
 void
 addScenePartToScene(std::shared_ptr<StaticScene> scene,
                     std::shared_ptr<ScenePart> scenePart);
+
+std::shared_ptr<Material>
+readMaterialFromFile(std::string materialPath,
+                     std::vector<std::string> assetsPath,
+                     std::string materialId);
+
+void
+applyMaterialToPrimitives(std::shared_ptr<ScenePart> scenePart,
+                          std::shared_ptr<Material> material,
+                          const std::vector<size_t>& indices);
+
+std::shared_ptr<Material>
+findMaterialByName(std::shared_ptr<ScenePart> scenePart,
+                   const std::string& name);
