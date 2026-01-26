@@ -623,14 +623,14 @@
   <scanner  id                         = "livox-avia-repetitive"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.0046"
-            name                       = "Livox Avia (repetitive)"
+            name                       = "Livox Avia (repetitive, 3 prisms)"
             optics                     = "risley"
             pulseFreqs_Hz              = "40000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "1"
-	  		rangeMax_m			       = "320"
+	  		    rangeMax_m			           = "320"
             wavelength_nm              = "905"
-	  		maxNOR 					   = "3"
+	  		    maxNOR 					           = "3"
             rotorFreq1_Hz              = "50"
             rotorFreq2_Hz              = "-50"
             rotorFreq3_Hz              = "-150"
@@ -646,22 +646,22 @@
 
         <channels>
             <channel id="0">
-                <incidentBeam x="-0.04000000" y="0.99919968" z="0" />
+                <incidentBeam x="-0.0614000000" y="0.99919968" z="0" />
             </channel>
             <channel id="1">
-                <incidentBeam x="-0.02400000" y="0.99971196" z="0" />
+                <incidentBeam x="-0.036800000" y="0.99971196" z="0" />
             </channel>
             <channel id="2">
-                <incidentBeam x="-0.00800000" y="0.99996800" z="0" />
+                <incidentBeam x="-0.012200000" y="0.99996800" z="0" />
             </channel>
             <channel id="3">
-                <incidentBeam x="0.00800000"  y="0.99996800" z="0" />
+                <incidentBeam x="0.012200000"  y="0.99996800" z="0" />
             </channel>
             <channel id="4">
-                <incidentBeam x="0.02400000"  y="0.99971196" z="0" />
+                <incidentBeam x="0.036800000"  y="0.99971196" z="0" />
             </channel>
             <channel id="5">
-                <incidentBeam x="0.04000000"  y="0.99919968" z="0" />
+                <incidentBeam x="0.0614000000"  y="0.99919968" z="0" />
             </channel>
         </channels>
   </scanner>
@@ -672,20 +672,20 @@
   <scanner  id                         = "livox-avia-non-repetitive"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.0046"
-            name                       = "Livox Avia (non-repetitive)"
+            name                       = "Livox Avia (non-repetitive, 3 prisms)"
             optics                     = "risley"
             pulseFreqs_Hz              = "40000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "1"
-	  		rangeMax_m				   = "320"
+	  		    rangeMax_m				         = "320"
             wavelength_nm              = "905"
-	  		maxNOR					   = "3"
-            rotorFreq1_Hz              = "117.195"
-            rotorFreq2_Hz              = "-41.485"
-            rotorFreq3_Hz              = "117.195"
-            angle1_deg                 = "-27.65251"
-            angle2_deg                 = "29.767927015"
-            angle3_deg                 = "2.9191372182"
+	  		    maxNOR					           = "3"
+            rotorFreq1_Hz              = "131.5463"
+            rotorFreq2_Hz              = "-40.8032"
+            rotorFreq3_Hz              = "-213.1611"
+            angle1_deg                 = "30.8856"
+            angle2_deg                 = "29.7735"
+            angle3_deg                 = "3.1351"
             refrIndex1                 = "1.51"
             refrIndex2                 = "1.51"
             refrIndex3                 = "1.51"
@@ -695,22 +695,22 @@
 
         <channels>
             <channel id="0">
-                <incidentBeam x="-0.04000000" y="0.99919968" z="0" />
+                <incidentBeam x="-0.0614000000" y="0.99919968" z="0" />
             </channel>
             <channel id="1">
-                <incidentBeam x="-0.02400000" y="0.99971196" z="0" />
+                <incidentBeam x="-0.036800000" y="0.99971196" z="0" />
             </channel>
             <channel id="2">
-                <incidentBeam x="-0.00800000" y="0.99996800" z="0" />
+                <incidentBeam x="-0.012200000" y="0.99996800" z="0" />
             </channel>
             <channel id="3">
-                <incidentBeam x="0.00800000"  y="0.99996800" z="0" />
+                <incidentBeam x="0.012200000"  y="0.99996800" z="0" />
             </channel>
             <channel id="4">
-                <incidentBeam x="0.02400000"  y="0.99971196" z="0" />
+                <incidentBeam x="0.036800000"  y="0.99971196" z="0" />
             </channel>
             <channel id="5">
-                <incidentBeam x="0.04000000"  y="0.99919968" z="0" />
+                <incidentBeam x="0.0614000000"  y="0.99919968" z="0" />
             </channel>
         </channels>
   </scanner>
