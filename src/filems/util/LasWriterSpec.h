@@ -225,14 +225,15 @@ public:
     // Update Header to 1.4 specification
     lwHeader.version_minor = U8(4);
 
-    // Update Point Data Format to support new return number / classes; see LAS 1.4 specification
+    // Update Point Data Format to support new return number / classes; see
+    // LAS 1.4 specification
     lwHeader.point_data_format = 6;
     lwHeader.point_data_record_length = 30;
 
     // Set the byte size for LAS 1.4 header block
     lwHeader.header_size = 375;
 
-    // Set the offset to data point byte value for LAS 1.4 
+    // Set the offset to data point byte value for LAS 1.4
     lwHeader.offset_to_point_data = 375;
   }
 
