@@ -19,10 +19,14 @@ authors:
   given-names: "Bernhard"
 - family-names: "Kempf"
   given-names: "Dominic"
+- family-names: "Isensee"
+  given-names: "Thomas"
+- family-names: "Kapitan"
+  given-names: "Dmitrii"
 title: "HELIOS++"
-version: 1.1.0
+version: 2.2.0
 doi: 10.5281/zenodo.4452870
-date-released: 2022-03-15
+date-released: 2026-MM-DD
 url: "https://github.com/3dgeo-heidelberg/helios"
 preferred-citation:
   type: article
