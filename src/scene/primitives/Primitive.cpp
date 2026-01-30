@@ -5,10 +5,7 @@
 void
 Primitive::_clone(Primitive* p)
 {
-  if (this->material == nullptr)
-    p->material = nullptr;
-  else
-    p->material = std::make_shared<Material>(*this->material);
+  p->material = this->material;
 }
 
 // ***  RAY INTERSECTION HANDLING  *** //
