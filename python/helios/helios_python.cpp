@@ -300,7 +300,7 @@ PYBIND11_MODULE(_helios, m)
       })
     .def_property(
       "material",
-      [](Primitive& prim) { return prim.material.get(); },
+      [](Primitive& prim) { return prim.material; },
       [](Primitive& prim, std::shared_ptr<Material> material) {
         prim.material = material;
       })
@@ -938,16 +938,13 @@ PYBIND11_MODULE(_helios, m)
       "num_primitives",
       [](const ScenePart& self) -> size_t { return self.mPrimitives.size(); })
 
-    .def(
-      "primitive",
-      [](ScenePart& self, size_t index) -> Primitive* {
-        if (index < self.mPrimitives.size()) {
-          return self.mPrimitives[index];
-        } else {
-          throw std::out_of_range("Index out of range");
-        }
-      },
-      py::return_value_policy::reference)
+    .def("primitive",
+         [](std::shared_ptr<ScenePart> self, size_t index) {
+           if (index >= self->mPrimitives.size())
+             throw std::out_of_range("Index out of range");
+           return self->mPrimitives[index];
+         })
+
     .def_property_readonly("all_vertices", &ScenePart::getAllVertices)
     .def("isDynamicMovingObject",
          [](const ScenePart& self) -> bool {
@@ -3120,7 +3117,10 @@ PYBIND11_MODULE(_helios, m)
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);
   m.def("read_material_from_file", &readMaterialFromFile);
-  m.def("apply_material_to_primitives", &applyMaterialToPrimitives);
-  m.def("find_material_by_name", &findMaterialByName);
+  m.def("apply_material_to_primitives_indices",
+        &applyMaterialToPrimitivesIndices);
+  m.def("apply_material_to_primitives_range", &applyMaterialToPrimitivesRange);
+  m.def("change_material_instance", &changeMaterialInstance);
+  m.def("get_materials_map", &getMaterialsMap);
 }
 }
