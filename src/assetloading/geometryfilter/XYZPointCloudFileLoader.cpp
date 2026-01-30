@@ -88,8 +88,7 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
   // Legacy default material commented below
   /*mat.useVertexColors = true;
   mat.isGround = true;*/
-  materials.insert(materials.end(),
-                   std::pair<std::string, Material>(mat.name, mat));
+  materials[mat.name] = std::make_shared<Material>(mat);
 
   // Open file input stream
   std::ifstream ifs;

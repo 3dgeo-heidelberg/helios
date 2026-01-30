@@ -5,16 +5,16 @@
 std::shared_ptr<Material>
 AbstractGeometryFilter::getMaterial(std::string materialName)
 {
-  std::map<std::string, Material>::iterator it = materials.find(materialName);
+  auto it = materials.find(materialName);
 
   if (it == materials.end()) {
     std::shared_ptr<Material> mat = std::make_shared<Material>();
     mat->name = materialName;
-    materials.insert(std::pair<std::string, Material>(materialName, *mat));
+    materials[materialName] = mat;
     return mat;
   }
 
-  return std::make_shared<Material>(it->second);
+  return it->second;
 }
 
 std::vector<std::shared_ptr<Material>>
@@ -26,15 +26,16 @@ AbstractGeometryFilter::parseMaterials()
 
   // Pick material
   std::string matfile = boost::get<std::string>(params["matfile"]);
-  std::map<std::string, Material> mats =
-    MaterialsFileReader::loadMaterials(matfile);
+  auto mats = MaterialsFileReader::loadMaterials(matfile);
   std::vector<std::shared_ptr<Material>> matvec(0);
   if (params.find("matname") != params.end()) { // Pick by name
     std::string matname = boost::get<std::string>(params["matname"]);
-    std::map<std::string, Material>::iterator it = mats.find(matname);
-    matvec.push_back(std::make_shared<Material>(it->second));
+    auto it = mats.find(matname);
+    if (it != mats.end())
+      matvec.push_back(it->second);
   } else { // No name, so pick first
-    matvec.push_back(std::make_shared<Material>(mats.begin()->second));
+    if (!mats.empty())
+      matvec.push_back(mats.begin()->second);
   }
 
   // Generate randomized materials if requested
