@@ -27,7 +27,7 @@ class ScannerSettings(ScannerSettingsBase):
     rotation_start_angle: Angle = 0
     rotation_stop_angle: Angle = 0
     pulse_frequency: Frequency = 300000
-    scan_angle: Angle = 0.349066
+    scan_angle: Angle = 0
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
     scan_frequency: Frequency = 200
