@@ -482,7 +482,7 @@ def test_is_ground():
 
     sp2 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
     sp2.scale(70)
-    sp2.is_ground = False
+    sp2.materials["None"].is_ground = False
 
     scene = StaticScene(scene_parts=[sp1, sp2])
     scene._finalize()

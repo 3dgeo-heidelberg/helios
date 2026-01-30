@@ -120,7 +120,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
-    is_ground: bool = False
 
     @property
     def materials(self) -> MaterialDict:
