@@ -879,24 +879,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("bound", &ScenePart::bound)
     .def_readwrite("force_on_ground", &ScenePart::forceOnGround)
 
-    .def_property(
-      "is_ground",
-      [](const ScenePart& self) {
-        if (self.mPrimitives.empty()) {
-          throw std::runtime_error("It is required to have Primitives in the "
-                                   "ScenePart to get the isGround property.");
-        }
-        return self.mPrimitives[0]->material->isGround;
-      },
-      [](ScenePart& self, bool isGround) {
-        if (self.mPrimitives.empty()) {
-          throw std::runtime_error("It is required to have Primitives in the "
-                                   "ScenePart to set the isGround property.");
-        }
-        for (auto& primitive : self.mPrimitives) {
-          primitive->material->isGround = isGround;
-        }
-      })
     .def_property("centroid", &ScenePart::getCentroid, &ScenePart::setCentroid)
     .def_property("id", &ScenePart::getId, &ScenePart::setId)
     .def_property(
