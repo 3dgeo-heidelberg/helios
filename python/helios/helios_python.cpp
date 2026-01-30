@@ -139,7 +139,11 @@ PYBIND11_MODULE(_helios, m)
 
   py::implicitly_convertible<py::iterable, VectorString>();
   py::register_exception<HeliosException>(m, "HeliosException");
-
+  py::register_exception<std::out_of_range>(m, "IndexError", PyExc_IndexError);
+  py::register_exception<std::invalid_argument>(
+    m, "ValueError", PyExc_ValueError);
+  py::register_exception<std::runtime_error>(
+    m, "RuntimeError", PyExc_RuntimeError);
   // Enable GDAL (Load its drivers)
   GDALAllRegister();
   if (GDALGetDriverCount() == 0) {
