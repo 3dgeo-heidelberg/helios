@@ -12,7 +12,7 @@ dependencies:
   - importlib_resources
   - lapack
   - laspy
-  - lastools
+  - lastools >=2.0.4
   - libboost-devel
   - libgdal
   - matplotlib-base

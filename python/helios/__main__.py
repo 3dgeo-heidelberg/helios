@@ -63,7 +63,7 @@ from helios.utils import add_asset_directory, set_rng_seed
 )
 @optgroup.option(
     "--format",
-    default="npy",
+    default="laz",
     show_default=True,
     help="Output format, can be las, laz, xyz, npy, or laspy.",
 )

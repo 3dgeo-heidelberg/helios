@@ -285,10 +285,10 @@ XYZPointCloudFileLoader::prepareVoxelsGrid(int& estimateNormals,
 
   // Instantiate voxel grid
   if (params.find("sparse") != params.end() &&
-      boost::get<bool>(params["sparse"])) { // Sparse voxel grid
-    voxelGrid = new SparseVoxelGrid(maxNVoxels);
-  } else { // Dense voxel grid
+      !boost::get<bool>(params["sparse"])) { // Dense voxel grid
     voxelGrid = new DenseVoxelGrid(maxNVoxels);
+  } else { // Sparse voxel grid (default)
+    voxelGrid = new SparseVoxelGrid(maxNVoxels);
   }
 
   // Check if voxel grid needs normal estimation or not

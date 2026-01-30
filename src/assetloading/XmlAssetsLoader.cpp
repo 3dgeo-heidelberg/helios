@@ -1278,7 +1278,11 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
 {
   tinyxml2::XMLElement* chan = channels->FirstChildElement("channel");
   tinyxml2::XMLElement* elem;
-  size_t idx = 0;           // Device/channel index
+  size_t idx = 0; // Device/channel index
+  int scanner_maxnor = XmlUtils::getAttributeCast<int>(
+    scannerNode,
+    "maxNOR",
+    0); // max number of returns per pulse; defined in scanner node
   while (chan != nullptr) { // Update i-th device with i-th channel
     // Set id
     scanner->setDeviceIndex(idx, idx);
@@ -1509,7 +1513,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         (XmlUtils::getAttributeCast<int>(chan, "wavelength_nm", 1064)) * 1e-9,
         idx);
     }
-    scanner->setMaxNOR(XmlUtils::getAttributeCast<int>(chan, "maxNOR", 0), idx);
+    scanner->setMaxNOR(
+      XmlUtils::getAttributeCast<int>(chan, "maxNOR", scanner_maxnor), idx);
     scanner->setReceivedEnergyMin(
       XmlUtils::getAttributeCast<double>(
         chan, "receivedEnergyMin_W", scanner->getReceivedEnergyMin(idx)),

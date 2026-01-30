@@ -161,7 +161,6 @@ protected:
     lp.set_extended_number_of_returns(U8(m.pulseReturnNumber));
 
     lp.set_classification(U8(m.classification) & CLASSIFICATION_MASK);
-    lp.set_extended_classification(U8(m.classification) & CLASSIFICATION_MASK);
 
     lp.set_gps_time(F64((m.gpsTime) / 1000000000.0));
 

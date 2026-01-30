@@ -108,7 +108,7 @@ def test_scenepart_from_xyz():
         "data/sceneparts/pointclouds/sphere_dens25000.xyz",
         voxel_size=1.0,
         default_normal=[0.0, 0.0, 1.0],
-        sparse=True,
+        sparse=False,
     )
 
     assert len(scene_part1._cpp_object.primitives) > 0
@@ -490,19 +490,6 @@ def test_is_ground():
         sp1._cpp_object.all_vertices[0].position[2],
         sp2._cpp_object.all_vertices[0].position[2],
     )
-
-
-def test_classification_scenepart():
-    """
-    Test that the classification of a scene part can be set correctly and be used during run of Survey
-    """
-    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
-    survey.scene.scene_parts[0].classification = 1
-    assert survey.scene.scene_parts[0]._cpp_object.classification == 1
-
-    meas, _ = survey.run()
-
-    assert np.any(meas["classification"] == 1)
 
 
 def test_add_scene_part():

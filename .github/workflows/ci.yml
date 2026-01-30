@@ -71,3 +71,45 @@ jobs:
         if: runner.os != 'macOS'
         run: |
           python -m pytest
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always() && github.event.inputs.upload-outputs == 'true' && runner.os == 'Windows'
+        with:
+          name: test-results
+          path: pytest-output/*
+          retention-days: 1
+
+  headercheck:
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}  
+  
+    runs-on: ubuntu-latest
+    name: Header sanity check
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: "3.10"
+          miniconda-version: "latest"
+
+      - name: Install Conda GCC
+        run: |
+          conda install -y -c conda-forge gcc gxx
+
+      - name: Install Helios
+        run: |
+          mkdir build
+          cd build
+          cmake -DHELIOS_HEADERCHECK="ON" ..
+          make

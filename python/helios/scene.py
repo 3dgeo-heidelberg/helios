@@ -33,7 +33,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         ForceOnGroundStrategy.NONE
     )
     is_ground: bool = False
-    classification: int = 0
 
     @validate_call
     def rotate(
@@ -185,7 +184,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         default_normal: NDArray[Shape["3"], np.float64] = np.array(
             [np.finfo(np.float64).max] * 3, dtype=np.float64
         ),
-        sparse: bool = False,
+        sparse: bool = True,
         estimate_normals: bool = False,
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
         rgb_file_columns: list[NonNegativeInt] = [6, 7, 8],
