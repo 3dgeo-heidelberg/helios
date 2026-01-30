@@ -489,39 +489,91 @@ readMaterialFromFile(std::string materialPath,
   if (resolved_path.empty()) {
     throw std::runtime_error("Material file not found: " + materialPath);
   }
-  std::map<std::string, Material> mats =
-    MaterialsFileReader::loadMaterials(resolved_path);
+  auto mats = MaterialsFileReader::loadMaterials(resolved_path);
+
+  if (mats.empty()) {
+    throw std::runtime_error("No materials found in material file: " +
+                             materialPath);
+  }
+
   if (mats.find(materialId) == mats.end()) {
     throw std::runtime_error("Material with name: '" + materialId +
                              "' not found in material file: " + materialPath);
   }
-  return std::make_shared<Material>(mats[materialId]);
+  auto it = mats.find(materialId);
+  if (it == mats.end()) {
+    throw std::runtime_error("Material with name: '" + materialId +
+                             "' not found in material file: " + materialPath);
+  }
+
+  return it->second;
 }
 
 void
-applyMaterialToPrimitives(std::shared_ptr<ScenePart> scenePart,
-                          std::shared_ptr<Material> material,
-                          const std::vector<size_t>& indices)
+changeMaterialInstance(std::shared_ptr<ScenePart> scenePart,
+                       const std::string& oldName,
+                       std::shared_ptr<Material> newMaterial)
 {
-  const auto n = scenePart->mPrimitives.size();
+  bool found = false;
 
-  for (size_t idx : indices) {
-    if (idx >= n) {
-      throw std::out_of_range("Primitive index " + std::to_string(idx) +
-                              " out of range (size=" + std::to_string(n) + ")");
+  for (auto& prim : scenePart->mPrimitives) {
+    if (prim->material && prim->material->name == oldName) {
+      prim->material = newMaterial;
+      found = true;
     }
-    scenePart->mPrimitives[idx]->material = material;
+  }
+  if (!found) {
+    throw std::runtime_error("Material with name '" + oldName +
+                             "' not found in the scene part.");
   }
 }
 
-std::shared_ptr<Material>
-findMaterialByName(std::shared_ptr<ScenePart> scenePart,
-                   const std::string& name)
+void
+applyMaterialToPrimitivesRange(std::shared_ptr<ScenePart> scenePart,
+                               std::shared_ptr<Material> material,
+                               size_t start,
+                               size_t stop)
 {
-  for (auto& prim : scenePart->mPrimitives) {
-    if (prim->material && prim->material->name == name) {
-      return prim->material;
+  size_t n = scenePart->mPrimitives.size();
+  if (start >= n - 1 || stop >= n || start >= stop) {
+    throw std::out_of_range(
+      "Invalid range for applying material to primitives.");
+  }
+  for (size_t i = start; i <= stop; ++i) {
+    scenePart->mPrimitives[i]->material = material;
+  }
+}
+
+void
+applyMaterialToPrimitivesIndices(std::shared_ptr<ScenePart> scenePart,
+                                 std::shared_ptr<Material> material,
+                                 const std::vector<size_t>& indices)
+{
+  for (const auto& index : indices) {
+    if (index >= scenePart->mPrimitives.size()) {
+      throw std::out_of_range("Index " + std::to_string(index) +
+                              " is out of range for primitives.");
+    }
+    scenePart->mPrimitives[index]->material = material;
+  }
+}
+
+std::vector<std::pair<std::string, std::shared_ptr<Material>>>
+getMaterialsMap(const std::shared_ptr<ScenePart>& part)
+{
+  std::vector<std::pair<std::string, std::shared_ptr<Material>>> out;
+  out.reserve(part->mPrimitives.size());
+
+  std::unordered_set<std::string> seen;
+  seen.reserve(part->mPrimitives.size());
+
+  for (const auto& prim : part->mPrimitives) {
+    if (!prim->material)
+      continue;
+    const auto& name = prim->material->name;
+    if (seen.insert(name).second) {
+      out.emplace_back(name, prim->material);
     }
   }
-  throw std::runtime_error("Material not found: " + name);
+  return out;
 }

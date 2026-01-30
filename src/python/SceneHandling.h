@@ -91,10 +91,20 @@ readMaterialFromFile(std::string materialPath,
                      std::string materialId);
 
 void
-applyMaterialToPrimitives(std::shared_ptr<ScenePart> scenePart,
-                          std::shared_ptr<Material> material,
-                          const std::vector<size_t>& indices);
+applyMaterialToPrimitivesRange(std::shared_ptr<ScenePart> scenePart,
+                               std::shared_ptr<Material> material,
+                               size_t range_start,
+                               size_t range_stop);
 
-std::shared_ptr<Material>
-findMaterialByName(std::shared_ptr<ScenePart> scenePart,
-                   const std::string& name);
+void
+applyMaterialToPrimitivesIndices(std::shared_ptr<ScenePart> scenePart,
+                                 std::shared_ptr<Material> material,
+                                 const std::vector<size_t>& indices);
+
+void
+changeMaterialInstance(std::shared_ptr<ScenePart> scenePart,
+                       const std::string& oldName,
+                       std::shared_ptr<Material> newMaterial);
+
+std::vector<std::pair<std::string, std::shared_ptr<Material>>>
+getMaterialsMap(const std::shared_ptr<ScenePart>& part);

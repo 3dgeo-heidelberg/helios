@@ -20,6 +20,7 @@ from helios.validation import (
     UpdateableMixin,
 )
 
+from collections.abc import MutableMapping
 from numpydantic import NDArray, Shape
 from pydantic import (
     PositiveFloat,
@@ -63,11 +64,68 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
         return material
 
 
+class MaterialDict(MutableMapping[str, Material]):
+    """
+    A dictionary-like interface for accessing and modifying materials via their names.
+    """
+
+    def __init__(self, owner: "ScenePart"):
+        self._owner = owner
+
+    def _snapshot(self) -> dict[str, Material]:
+        pairs = _helios.get_materials_map(self._owner._cpp_object)
+        return {name: Material._from_cpp(mat) for name, mat in pairs}
+
+    def __getitem__(self, name: str) -> Material:
+        snap = self._snapshot()
+        try:
+            return snap[name]
+        except KeyError:
+            raise KeyError(name)
+
+    def __setitem__(self, name: str, material: Material) -> None:
+        if not isinstance(material, Material):
+            raise TypeError("Value must be an instance of Material.")
+
+        _helios.change_material_instance(
+            self._owner._cpp_object, name, material._cpp_object
+        )
+
+    def __delitem__(self, name: str) -> None:
+        raise NotImplementedError("Deleting materials is not supported.")
+
+    def __iter__(self):
+        return iter(self._snapshot())
+
+    def __len__(self):
+        return len(self._snapshot())
+
+    def __contains__(self, name: object) -> bool:
+        if not isinstance(name, str):
+            return False
+        snap = self._snapshot()
+        return name in snap
+
+    def items(self):
+        return list(self._snapshot().items())
+
+    def keys(self):
+        return list(self._snapshot().keys())
+
+    def values(self):
+        return self._snapshot().values()
+
+
 class ScenePart(Model, cpp_class=_helios.ScenePart):
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
     is_ground: bool = False
+
+    @property
+    def materials(self) -> MaterialDict:
+        """Dictionary-like access to materials in the scene part."""
+        return MaterialDict(self)
 
     @validate_call
     def rotate(
@@ -154,7 +212,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @classmethod
     @validate_call
     def from_xml(cls, scene_part_file: AssetPath, id: int):
-
         # Validate the XML
         validate_xml_file(scene_part_file, "xsd/scene.xsd")
 
@@ -317,28 +374,30 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         return cls._from_cpp(_cpp_part)
 
     @validate_call
-    def apply_material_to_all_primitives(self, material: Material):
+    def _apply_material_to_all_primitives(self, material: Material):
         """Apply a material to all primitives in the scene part."""
-        indices = list(range(len(self._cpp_object.primitives)))
-        _helios.apply_material_to_primitives(
-            self._cpp_object, material._cpp_object, indices
+        range_start = 0
+        range_stop = len(self._cpp_object.primitives) - 1
+        _helios.apply_material_to_primitives_range(
+            self._cpp_object, material._cpp_object, range_start, range_stop
         )
 
     @validate_call
-    def apply_material_to_primitives_in_specific_range(
+    def _apply_material_to_primitives_in_specific_range(
         self, material: Material, start: int, stop: int
     ):
         """Apply a material to all primitives within a specific elevation range in the scene part."""
         if start < 0 or stop < start:
             raise ValueError("Provided range is invalid")
 
-        indices = list(range(start, min(stop, len(self._cpp_object.primitives))))
-        _helios.apply_material_to_primitives(
-            self._cpp_object, material._cpp_object, indices
+        range_start = start
+        range_stop = min(stop, len(self._cpp_object.primitives) - 1)
+        _helios.apply_material_to_primitives_range(
+            self._cpp_object, material._cpp_object, range_start, range_stop
         )
 
     @validate_call
-    def apply_material_to_indices(self, material: Material, indices: list[int]):
+    def _apply_material_to_indices(self, material: Material, indices: list[int]):
         """Apply a material to primitives at specific indices in the scene part."""
         valid_indices = [
             i for i in indices if 0 <= i < len(self._cpp_object.primitives)
@@ -348,22 +407,41 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                 "No valid indices provided. Indices must be within the range of existing primitives."
             )
 
-        _helios.apply_material_to_primitives(
+        _helios.apply_material_to_primitives_indices(
             self._cpp_object, material._cpp_object, valid_indices
         )
 
     @validate_call
-    def update_material_attribute_for_specific_primitives(
-        self, name: str, material: Optional[Material] = None, **parameters
+    def update_material(
+        self,
+        material: Material,
+        indices: Optional[list[int]] = None,
+        range_start: Optional[int] = None,
+        range_stop: Optional[int] = None,
     ):
-        """Update material attributes for specific primitives in the scene part."""
-        cpp_mat = _helios.find_material_by_name(self._cpp_object, name)
-        mat = Material._from_cpp(cpp_mat)
-        if material is not None:
-            mat.update_from_object(material)
+        """Update material(s) for the scene part.
 
-        if parameters:
-            mat.update_from_dict(parameters)
+        It can be provided in one of the following ways:
+        * 'indices': a list of specific primitive indices to update
+        * 'range_start' & 'range_stop': an elevation range to update
+
+        If neither is provided, the material will be applied to all primitives.
+        """
+        if indices is not None:
+            self._apply_material_to_indices(material, indices)
+        elif range_start is not None or range_stop is not None:
+            range_start = range_start if range_start is not None else 0
+            range_stop = (
+                range_stop
+                if range_stop is not None
+                else len(self._cpp_object.primitives)
+            )
+
+            self._apply_material_to_primitives_in_specific_range(
+                material, range_start, range_stop
+            )
+        else:
+            self._apply_material_to_all_primitives(material)
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
@@ -426,7 +504,6 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     @classmethod
     @validate_call
     def from_xml(cls, scene_file: AssetPath, save_to_binary: bool = False):
-
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
