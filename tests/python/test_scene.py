@@ -993,9 +993,9 @@ def test_update_material_attribute_incorrect_name():
 
     with pytest.raises(KeyError):
         scene_part_tif = ScenePart.from_tiff("data/sceneparts/basic/plane/plane.tif")
-        scene_part_tif.materials[
-            "default"
-        ].reflectance = 0.3  # fails because there are no properties to assign to
+        scene_part_tif.materials["default"].reflectance = (
+            0.3  # fails because there are no properties to assign to
+        )
 
 
 def test_material_dict_iteration():
