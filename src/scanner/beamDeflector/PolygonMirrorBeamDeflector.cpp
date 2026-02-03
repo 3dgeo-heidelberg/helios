@@ -1,6 +1,9 @@
 #include "PolygonMirrorBeamDeflector.h"
 
 #include "maths/Directions.h"
+#include <iostream>
+#include <logging.hpp>
+#include <sstream>
 #define _USE_MATH_DEFINES
 #include "MathConverter.h"
 #include <math.h>
@@ -44,18 +47,30 @@ PolygonMirrorBeamDeflector::applySettings(
   cfg_setting_verticalAngleMin_rad = settings->verticalAngleMin_rad;
   cfg_setting_verticalAngleMax_rad = settings->verticalAngleMax_rad;
 
+  std::stringstream ss;
+  ss << "Applying settings for PolygonMirrorBeamDeflector...\n";
+  ss << "Vertical angle min/max " << cfg_setting_verticalAngleMin_rad << "/"
+     << cfg_setting_verticalAngleMax_rad;
+
   // if not set, use the ones from the scanAngleEffectiveMax or scanAngle
   // (whichever is lower)
   if (std::isnan(cfg_setting_verticalAngleMin_rad)) {
     cfg_setting_verticalAngleMin_rad =
       -1. *
       std::min(cfg_device_scanAngleEffectiveMax_rad, cfg_setting_scanAngle_rad);
+    ss << "\n -- verticalAngleMin not set, using the value of "
+       << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMin_rad)
+       << " degrees";
   }
   if (std::isnan(cfg_setting_verticalAngleMax_rad)) {
     cfg_setting_verticalAngleMax_rad =
       std::min(cfg_device_scanAngleEffectiveMax_rad, cfg_setting_scanAngle_rad);
+    ss << "\n -- verticalAngleMax not set, using the value of "
+       << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMax_rad)
+       << " degrees";
   }
   state_currentBeamAngle_rad = 0;
+  logging::INFO(ss.str());
 
   // For calculating the spacing between subsequent shots:
   double const angleMax = cfg_device_scanAngleMax_rad;
