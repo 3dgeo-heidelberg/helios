@@ -9,8 +9,6 @@
 #include <filems/facade/FMSFacade.h>
 #include <scanner/PulseRecord.h>
 
-#include <logging.hpp>
-
 #include <glm/glm.hpp>
 
 #include <memory>
