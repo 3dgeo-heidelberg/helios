@@ -24,6 +24,11 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
 
   try {
     ifs = std::ifstream(filePathString, std::ifstream::binary);
+    if (!ifs.is_open()) {
+      std::stringstream ss;
+      ss << "Failed to open materials file: " << filePathString;
+      throw HeliosException(ss.str());
+    }
     while (getline(ifs, line)) {
       if (line.empty() || line == "\r" || line == "\r\n" || line == "\n")
         continue;
@@ -98,8 +103,11 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
     ss << newMats.size() << " material(s) loaded.";
     logging::DEBUG(ss.str());
   } catch (std::exception& e) {
-    logging::WARN("Failed to load materials file: " + filePathString + "\n" +
-                  "line='" + line + "'\n" + "EXCEPTION: " + e.what());
+    std::stringstream ss;
+    ss << "Error reading materials file '" << filePathString << "'\n"
+       << "EXCEPTION: " << e.what();
+    logging::ERR(ss.str());
+    throw;
   }
   ifs.close();
 
