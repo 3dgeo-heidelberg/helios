@@ -24,7 +24,7 @@ readObjScenePart(std::string filePath,
                  std::string upaxis);
 
 std::shared_ptr<ScenePart>
-readTiffScenePart(std::string filePath);
+readTiffScenePart(std::string filePath, std::vector<std::string> assetsPath);
 
 std::shared_ptr<ScenePart>
 readXYZScenePart(
