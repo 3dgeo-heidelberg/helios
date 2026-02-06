@@ -51,16 +51,14 @@ def sequence_from_indices(old_node, i, last_old_node, last_new_node):
 if __name__ == "__main__":
     # Handle help
     if len(sys.argv) != 3:
-        print(
-            """
+        print("""
 The script MUST receive exactly two arguments:
 
     1) Path to the input XML scene file with swaps in index-like format.
 
     2) Path to the output XML scene file with swaps in sequence-like format.
 
-"""
-        )
+""")
         sys.exit(1)
     # Load XML file representing a scene as first argument
     xml = ET.parse(sys.argv[1])
