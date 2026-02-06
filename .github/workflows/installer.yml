@@ -22,10 +22,11 @@ jobs:
             platform: linux-64
           - os: windows-latest
             platform: win-64
-          - os: macos-13
-            platform: osx-64
-          - os: macos-14
+          - os: macos-latest
             platform: osx-arm64
+          - os: macos-15-intel
+            platform: osx-64
+
     defaults:
       run:
         # Conda requires a login shell in order to work properly
@@ -74,10 +75,11 @@ jobs:
             platform: linux-64
           - os: windows-latest
             platform: win-64
-          - os: macos-13
-            platform: osx-64
-          - os: macos-14
+          - os: macos-latest
             platform: osx-arm64
+          - os: macos-15-intel
+            platform: osx-64
+
     defaults:
       run:
         # Conda requires a login shell in order to work properly
