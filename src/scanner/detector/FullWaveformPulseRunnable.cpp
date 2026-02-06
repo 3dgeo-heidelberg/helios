@@ -579,6 +579,7 @@ FullWaveformPulseRunnable::digestFullWaveform(
     tmp.returnNumber = numReturns + 1;
     tmp.classification = classification;
     tmp.gpsTime = pulse.getTime();
+    tmp.currentLegIndex = pulse.getLegIndex();
 
     pointsMeasurement.push_back(tmp);
     ++numReturns;

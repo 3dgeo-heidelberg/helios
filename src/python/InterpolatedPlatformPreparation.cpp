@@ -13,7 +13,8 @@ load_interpolated_platform(std::shared_ptr<LinearPathPlatform> basePlatform,
   // Acquire buffer
   auto buf = trajectory.request();
   if (buf.ndim != 1)
-    throw std::runtime_error("Trajectory array must be 1-dimensional");
+    throw std::runtime_error(
+      "Trajectory must be a 1-D structured NumPy array (shape=(n,).");
 
   // shape = (m,), each item is a struct of n doubles
   size_t m = buf.shape[0];
