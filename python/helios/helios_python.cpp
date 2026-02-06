@@ -121,6 +121,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/ScanningPulseProcessWrap.h>
 #include <python/SceneHandling.h>
 #include <python/SimulationWrap.h>
+#include <python/SurveyHandling.h>
 #include <python/utils.h>
 #include <sim/comps/ScanningStrip.h>
 #include <sim/core/Simulation.h>
@@ -144,6 +145,7 @@ PYBIND11_MODULE(_helios, m)
     m, "ValueError", PyExc_ValueError);
   py::register_exception<std::runtime_error>(
     m, "RuntimeError", PyExc_RuntimeError);
+
   // Enable GDAL (Load its drivers)
   GDALAllRegister();
   if (GDALGetDriverCount() == 0) {
@@ -304,7 +306,7 @@ PYBIND11_MODULE(_helios, m)
       })
     .def_property(
       "material",
-      [](Primitive& prim) { return prim.material; },
+      [](Primitive& prim) { return prim.material.get(); },
       [](Primitive& prim, std::shared_ptr<Material> material) {
         prim.material = material;
       })
@@ -879,6 +881,24 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("bound", &ScenePart::bound)
     .def_readwrite("force_on_ground", &ScenePart::forceOnGround)
 
+    .def_property(
+      "is_ground",
+      [](const ScenePart& self) {
+        if (self.mPrimitives.empty()) {
+          throw std::runtime_error("It is required to have Primitives in the "
+                                   "ScenePart to get the isGround property.");
+        }
+        return self.mPrimitives[0]->material->isGround;
+      },
+      [](ScenePart& self, bool isGround) {
+        if (self.mPrimitives.empty()) {
+          throw std::runtime_error("It is required to have Primitives in the "
+                                   "ScenePart to set the isGround property.");
+        }
+        for (auto& primitive : self.mPrimitives) {
+          primitive->material->isGround = isGround;
+        }
+      })
     .def_property("centroid", &ScenePart::getCentroid, &ScenePart::setCentroid)
     .def_property("id", &ScenePart::getId, &ScenePart::setId)
     .def_property(
@@ -924,13 +944,16 @@ PYBIND11_MODULE(_helios, m)
       "num_primitives",
       [](const ScenePart& self) -> size_t { return self.mPrimitives.size(); })
 
-    .def("primitive",
-         [](std::shared_ptr<ScenePart> self, size_t index) {
-           if (index >= self->mPrimitives.size())
-             throw std::out_of_range("Index out of range");
-           return self->mPrimitives[index];
-         })
-
+    .def(
+      "primitive",
+      [](ScenePart& self, size_t index) -> Primitive* {
+        if (index < self.mPrimitives.size()) {
+          return self.mPrimitives[index];
+        } else {
+          throw std::out_of_range("Index out of range");
+        }
+      },
+      py::return_value_policy::reference)
     .def_property_readonly("all_vertices", &ScenePart::getAllVertices)
     .def("isDynamicMovingObject",
          [](const ScenePart& self) -> bool {
@@ -2704,7 +2727,7 @@ PYBIND11_MODULE(_helios, m)
                   &Simulation::getCallbackFrequency,
                   &Simulation::setCallbackFrequency)
 
-    .def("start", &Simulation::start)
+    .def("start", &Simulation::start, py::call_guard<py::gil_scoped_release>())
     .def("pause", &Simulation::pause)
     .def("stop", &Simulation::stop);
 
@@ -3102,6 +3125,7 @@ PYBIND11_MODULE(_helios, m)
   m.def("make_scene_shift", &makeSceneShift);
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);
+  m.def("check_integrate_survey_and_legs", &checkIntegrateSurveyAndLegs);
   m.def("read_material_from_file", &readMaterialFromFile);
   m.def("apply_material_to_primitives_indices",
         &applyMaterialToPrimitivesIndices);

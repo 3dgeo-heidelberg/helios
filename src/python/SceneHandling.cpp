@@ -63,15 +63,12 @@ finalizeStaticScene(std::shared_ptr<StaticScene> scene,
       scene->primitives.end(), sp->mPrimitives.begin(), sp->mPrimitives.end());
   }
 
+  scene->setKDGroveFactory(std::make_shared<KDGroveFactory>(makeKDTreeFactory(
+    kdtFactoryType, kdtNumJobs, kdtGeomJobs, kdtSAHLossNodes)));
   // Call scene finalization
   if (!scene->finalizeLoading()) {
     throw std::runtime_error("Finalizing the scene failed.");
   }
-
-  // Build KDGroveFactory
-  scene->setKDGroveFactory(std::make_shared<KDGroveFactory>(makeKDTreeFactory(
-    kdtFactoryType, kdtNumJobs, kdtGeomJobs, kdtSAHLossNodes)));
-  scene->buildKDGroveWithLog();
 }
 
 void
@@ -116,11 +113,12 @@ readObjScenePart(std::string filePath,
 }
 
 std::shared_ptr<ScenePart>
-readTiffScenePart(std::string filePath)
+readTiffScenePart(std::string filePath, std::vector<std::string> assetsPath)
 {
 
   GeoTiffFileLoader loader;
   loader.params["filepath"] = filePath;
+  loader.setAssetsDir(assetsPath);
   std::shared_ptr<ScenePart> sp(loader.run());
 
   // Connect all primitives to their scene part
