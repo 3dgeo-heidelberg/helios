@@ -23,6 +23,7 @@ from helios.utils import (
     apply_scene_shift,
     is_xml_loaded,
     is_binary_loaded,
+    check_integrate_survey_and_legs,
     _specify_platform_settings_type,
 )
 from helios.validation import (
@@ -85,18 +86,19 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
+        # we need to add serial IDs to the legs for proper process of writing into the file
+        for i, leg in enumerate(self.legs):
+            leg._cpp_object.serial_id = i
+
         # Apply shift once and only if the survey is not loaded from XML
         if not is_xml_loaded(self):
+            check_integrate_survey_and_legs(self)
             apply_scene_shift(self, execution_settings)
 
         # Set the fullwave form settings on the scanner
         self.scanner._cpp_object.apply_settings_FWF(
             self.full_waveform_settings._to_cpp()
         )
-
-        # we need to add serial IDs to the legs for proper process of writing into the file
-        for i, leg in enumerate(self.legs):
-            leg._cpp_object.serial_id = i
 
         # also, for proper writing into the file, we need to set IDs for the scene parts
         for i, scene_part in enumerate(self.scene.scene_parts):

@@ -1,5 +1,5 @@
 from helios.scene import StaticScene
-from helios.utils import get_asset_directories
+from helios.utils import get_asset_directories, _validate_trajectory_array
 from helios.validation import (
     AssetPath,
     Model,
@@ -156,10 +156,19 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         interpolation_method: Literal["CANONICAL", "ARINC 705"] = "ARINC 705",
         sync_gps_time: bool = False,
     ):
-        """Load a platform from an XML file with interpolation enabled."""
+        """Load a platform from an XML file with interpolation enabled.
+        Args:
+            trajectory: 1-D structured NumPy array of shape (n,).
+            platform_file: File path to platform XML file.
+            platform_id: ID of desired platform.
+            interpolation_method: Interpolation method to use. Options are "CANONICAL" and "ARINC 705".
+            sync_gps_time: Whether to sync GPS time with platform's start time.
+        """
 
         # Validate the XML
         validate_xml_file(platform_file, "xsd/platform.xsd")
+
+        _validate_trajectory_array(trajectory)
 
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id

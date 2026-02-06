@@ -72,6 +72,10 @@ public:
    * @brief Measurement GPS time
    */
   double gpsTime;
+  /**
+   * @brief Current leg index (only for point cloud output in Python API)
+   */
+  uint16_t currentLegIndex = 65535; // Default to 65535 indicating undefined
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -95,6 +99,7 @@ public:
     fullwaveIndex = m.fullwaveIndex;
     classification = m.classification;
     gpsTime = m.gpsTime;
+    currentLegIndex = m.currentLegIndex;
   }
   virtual ~Measurement() = default;
 

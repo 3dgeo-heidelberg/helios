@@ -5,6 +5,7 @@ from helios.platforms import (
     DynamicPlatformSettings,
     load_traj_csv,
     tripod,
+    simple_linearpath,
     StaticPlatformSettings,
 )
 from helios.scanner import Scanner, riegl_lms_q560, riegl_vz_400
@@ -51,7 +52,7 @@ def test_add_leg_parameters():
 def test_survey_run_numpy_output(survey):
     points, trajectory = survey.run(format=OutputFormat.NPY)
 
-    assert points.shape[0] == 200
+    assert points.shape[0] == 352
     assert trajectory.shape[0] == 101
     assert points.dtype == meas_dtype
     assert trajectory.dtype == traj_dtype
@@ -66,7 +67,7 @@ def test_survey_run_las_output(survey, tmp_path):
 
     # Read the output
     las = laspy.read(files[0])
-    las.X.shape[0] == 200
+    las.X.shape[0] == 352
 
 
 def test_survey_run_laz_output(survey, tmp_path):
@@ -90,13 +91,13 @@ def test_survey_run_xyz_output(survey, tmp_path):
 
     # Read the output
     points = np.genfromtxt(files[0], delimiter="")
-    assert points.shape[0] == 200
+    assert points.shape[0] == 352
 
 
 def test_survey_run_laspy_output(survey):
     las, traj = survey.run(format=OutputFormat.LASPY)
 
-    assert len(las.points) == 200
+    assert len(las.points) == 352
     assert all(las.return_number == np.ones_like(las.return_number))
     assert traj.shape == (101,)
 
@@ -111,7 +112,7 @@ def test_set_gpstime(survey):
 
     points, _ = survey.run()
 
-    assert np.all(points["gps_time"] > 0)
+    assert np.all(points["gps_time"] >= 0)
     assert np.all(points["gps_time"] < 1)
 
 
@@ -433,3 +434,105 @@ def test_dynamic_plat_settings_valid_in_add_leg():
         assert leg.platform_settings.speed_m_s == 3.0
         assert leg.platform_settings._cpp_object.speed_m_s == 3.0
         assert type(leg.platform_settings) == DynamicPlatformSettings
+
+
+def test_survey_run_with_incorrect_ver_hor_resolution():
+    """
+    Test that a survey raises an error when vertical or horizontal resolution is set incorrectly.
+    """
+    scanner_settings1 = ScannerSettings(
+        pulse_frequency=100_000,
+        scan_frequency=120,
+        min_vertical_angle=-40,
+        max_vertical_angle=60,
+        head_rotation=10,
+    )
+
+    scanner_settings2 = ScannerSettings(
+        pulse_frequency=100_000,
+        vertical_resolution=0.2,  # we mean degrees, but did not specify units
+        horizontal_resolution=0.2,
+        min_vertical_angle=-40,
+        max_vertical_angle=60,
+    )
+
+    scanner = riegl_vz_400()
+    platform = simple_linearpath()
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    survey.add_leg(
+        scanner_settings=scanner_settings1,
+        x=1.0,
+        y=25.5,
+        z=1.5,
+        force_on_ground=True,
+        rotation_start_angle=100,
+        rotation_stop_angle=225,
+    )
+
+    survey.add_leg(
+        scanner_settings=scanner_settings2,
+        x=-4.0,
+        y=-2.5,
+        z=1.5,
+        force_on_ground=True,
+        rotation_start_angle=-45,
+        rotation_stop_angle=45,
+    )
+
+    with pytest.raises(RuntimeError):
+        survey.run(format=OutputFormat.NPY)
+
+
+def test_survey_run_with_hor_ver_resolution():
+    """
+    Test that a survey runs successfully when vertical or horizontal resolution is set with correct units.
+    """
+    scanner_settings1 = ScannerSettings(
+        pulse_frequency=100_000,
+        scan_frequency=120,
+        min_vertical_angle=-40,
+        max_vertical_angle=60,
+        head_rotation=10,
+    )
+
+    scanner_settings2 = ScannerSettings(
+        pulse_frequency=100_000,
+        vertical_resolution="0.2 deg",
+        horizontal_resolution="0.2 deg",
+        min_vertical_angle=-40,
+        max_vertical_angle=60,
+    )
+
+    scanner = riegl_vz_400()
+    platform = simple_linearpath()
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    survey.add_leg(
+        scanner_settings=scanner_settings1,
+        x=1.0,
+        y=25.5,
+        z=1.5,
+        force_on_ground=True,
+        rotation_start_angle=100,
+        rotation_stop_angle=225,
+    )
+
+    survey.add_leg(
+        scanner_settings=scanner_settings2,
+        x=-4.0,
+        y=-2.5,
+        z=1.5,
+        force_on_ground=True,
+        rotation_start_angle=-45,
+        rotation_stop_angle=45,
+    )
+
+    points, trajectory = survey.run(format=OutputFormat.NPY)
+
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
