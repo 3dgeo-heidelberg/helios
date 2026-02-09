@@ -4,16 +4,23 @@ channels:
 dependencies:
   # These are the dependencies that are also formulated on the feedstock
   - armadillo
+  - backports.strenum
+  - click
+  - click-option-group
   - blas
   - glm
   - importlib_resources
   - lapack
-  - lastools
-  - libboost-python-devel
+  - laspy
+  - lastools >=2.0.4
   - libboost-devel
   - libgdal
   - matplotlib-base
+  - numpydantic
+  - pint
   - pip
+  - pybind11
+  - pydantic
   - python
   - scikit-build-core
   - setuptools_scm
@@ -33,3 +40,4 @@ dependencies:
   - pooch
   - ninja
   - pytest-cov
+  - catch2

@@ -37,7 +37,7 @@ jobs:
       - name: Create constructor dev environment
         uses: conda-incubator/setup-miniconda@v3
         with:
-          channels: conda-forge,defaults
+          channels: conda-forge
 
       - name: Install constructor and menuinst
         run: |

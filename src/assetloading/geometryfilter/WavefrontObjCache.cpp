@@ -4,29 +4,51 @@
 
 #include "WavefrontObjCache.h"
 
-WavefrontObjCache &WavefrontObjCache::getInstance() {
+WavefrontObjCache&
+WavefrontObjCache::getInstance()
+{
   static WavefrontObjCache instance;
   return instance;
 }
 
-WavefrontObjCache::WavefrontObjCache() { m_capacity = 32; }
+WavefrontObjCache::WavefrontObjCache()
+{
+  m_capacity = 32;
+}
 
-WavefrontObjCache::~WavefrontObjCache() {
-  for (auto &elem : m_map)
+WavefrontObjCache::~WavefrontObjCache()
+{
+  for (auto& elem : m_map)
     delete elem.second.first;
 }
 
-size_t WavefrontObjCache::size() const { return m_map.size(); }
+size_t
+WavefrontObjCache::size() const
+{
+  return m_map.size();
+}
 
-size_t WavefrontObjCache::capacity() const { return m_capacity; }
+size_t
+WavefrontObjCache::capacity() const
+{
+  return m_capacity;
+}
 
-bool WavefrontObjCache::empty() const { return m_map.empty(); }
+bool
+WavefrontObjCache::empty() const
+{
+  return m_map.empty();
+}
 
-bool WavefrontObjCache::contains(const std::string &key) {
+bool
+WavefrontObjCache::contains(const std::string& key)
+{
   return m_map.find(key) != m_map.end();
 }
 
-void WavefrontObjCache::insert(const std::string &key, WavefrontObj * value) {
+void
+WavefrontObjCache::insert(const std::string& key, WavefrontObj* value)
+{
   auto i = m_map.find(key);
 
   if (i == m_map.end()) {
@@ -39,7 +61,9 @@ void WavefrontObjCache::insert(const std::string &key, WavefrontObj * value) {
   }
 }
 
-value_type WavefrontObjCache::get(const std::string & key) {
+value_type
+WavefrontObjCache::get(const std::string& key)
+{
 
   // Is the key already stored in the cache?
   auto i = m_map.find(key);
@@ -61,7 +85,7 @@ value_type WavefrontObjCache::get(const std::string & key) {
 
     // Update the iterator in the map
     j = m_list.begin();
-    const value_type &value = i->second.first;
+    const value_type& value = i->second.first;
     m_map[key] = std::make_pair(value, j);
 
     // Return the element
@@ -72,7 +96,9 @@ value_type WavefrontObjCache::get(const std::string & key) {
   }
 }
 
-void WavefrontObjCache::deallocate() {
+void
+WavefrontObjCache::deallocate()
+{
   auto i = --m_list.end();
   delete m_map[*i].first;
   m_map[*i].first = nullptr;

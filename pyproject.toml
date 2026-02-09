@@ -2,11 +2,12 @@
 requires = [
     "scikit-build-core",
     "setuptools_scm",
+    "pybind11[global]",
 ]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "pyhelios"
+name = "helios"
 dynamic = ["version"]
 description = "The HELIOS++ Virtual Laser Scanning Simulator"
 readme = "README.md"
@@ -18,12 +19,11 @@ classifiers = [
 ]
 
 [project.scripts]
-helios = "pyhelios.__main__:helios_entrypoint"
-helios-live = "pyhelios.live:helios_live"
+helios = "helios.__main__:cli"
 
 [tool.scikit-build]
 metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
-sdist.include = ["python/pyhelios/_version.py"]
+sdist.include = ["python/helios/_version.py"]
 
 [tool.scikit-build.cmake]
 minimum-version = "3.18"
@@ -40,13 +40,19 @@ HELIOS_BUDDING_METRICS = "0"
 CMAKE_INSTALL_RPATH_USE_LINK_PATH = "ON"
 
 [tool.setuptools_scm]  # Section required
-write_to = "python/pyhelios/_version.py"
+write_to = "python/helios/_version.py"
 
+[tool.cibuildwheel]
+# Super-verbose output for debugging purpose
+build-verbosity = 3
+# Testing commands for our wheels
+test-command = "PYTHONPATH=$(pwd)/python pytest {package}/tests/python"
+test-requires = ["pytest", "ruptures"]
 [tool.pytest.ini_options]
 markers = [
     "exe: mark tests for the command line tool",
     "pyh: mark tests for the python bindings pyhelios",
 ]
 testpaths = [
-    "pytests",
+    "tests/python",
 ]

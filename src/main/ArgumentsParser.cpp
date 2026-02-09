@@ -1,264 +1,355 @@
 #include <ArgumentsParser.h>
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 // *** PUBLIC METHODS *** //
 // ********************** //
-bool ArgumentsParser::parseHelpRequest(){
-    return findIndexOfArgument("-h") >= 0 ||
-        findIndexOfArgument("--help") >= 0;
+bool
+ArgumentsParser::parseHelpRequest()
+{
+  return findIndexOfArgument("-h") >= 0 || findIndexOfArgument("--help") >= 0;
 }
 
-bool ArgumentsParser::parseTestRequest(){
-    return findIndexOfArgument("--test") >= 0;
+bool
+ArgumentsParser::parseTestRequest()
+{
+  return findIndexOfArgument("--test") >= 0;
 }
 
-bool ArgumentsParser::parseVersionRequest(){
-    return findIndexOfArgument("--version") >= 0;
+bool
+ArgumentsParser::parseVersionRequest()
+{
+  return findIndexOfArgument("--version") >= 0;
 }
 
-std::string ArgumentsParser::parseTestDir(){
-    int index = findIndexOfArgument("--testDir");
-    if(index >= 0){
-        size_t idx = std::string(argv[index+1]).length()-1;
-        if(argv[index+1][idx] == '/') return argv[index+1];
-        return std::string(argv[index+1])+"/";
-    }
-    return "data/test/";
+std::string
+ArgumentsParser::parseTestDir()
+{
+  int index = findIndexOfArgument("--testDir");
+  if (index >= 0) {
+    size_t idx = std::string(argv[index + 1]).length() - 1;
+    if (argv[index + 1][idx] == '/')
+      return argv[index + 1];
+    return std::string(argv[index + 1]) + "/";
+  }
+  return "data/test/";
 }
 
-std::string ArgumentsParser::parseDemoRequest(){
-    int index = findIndexOfArgument("--demo");
-    if(index >= 0) return argv[index+1];
-    return "NULL";
+std::string
+ArgumentsParser::parseDemoRequest()
+{
+  int index = findIndexOfArgument("--demo");
+  if (index >= 0)
+    return argv[index + 1];
+  return "NULL";
 }
 
-std::string ArgumentsParser::parseDemoSurveyPath(){
-    int index = findIndexOfArgument("--demoSurvey");
-    if(index >= 0) return argv[index+1];
-    return "";
+std::string
+ArgumentsParser::parseDemoSurveyPath()
+{
+  int index = findIndexOfArgument("--demoSurvey");
+  if (index >= 0)
+    return argv[index + 1];
+  return "";
 }
 
-std::string ArgumentsParser::parseDemoAssetsPath(){
-    int index = findIndexOfArgument("--demoAssets");
-    if(index >= 0) return argv[index+1];
-    return "";
+std::string
+ArgumentsParser::parseDemoAssetsPath()
+{
+  int index = findIndexOfArgument("--demoAssets");
+  if (index >= 0)
+    return argv[index + 1];
+  return "";
 }
 
-std::string ArgumentsParser::parseSurveyPath() {
-    if(argc < 2){
-        std::cout << "Survey path as first argument is required!" << std::endl;
-        exit(1);
-    }
-    return std::string(argv[1]);
+std::string
+ArgumentsParser::parseSurveyPath()
+{
+  if (argc < 2) {
+    std::cout << "Survey path as first argument is required!" << std::endl;
+    exit(1);
+  }
+  return std::string(argv[1]);
 }
 
-std::vector<std::string> ArgumentsParser::parseAssetsPath(){
-    int index = findIndexOfArgument("--assets");
-    std::vector<std::string> assetsPaths;
-    while(index >= 0){
-        assetsPaths.push_back(argv[index+1]);
-        index = findIndexOfArgument("--assets", index);
-    }
-    assetsPaths.push_back("assets/");
-    return assetsPaths;
+std::vector<std::string>
+ArgumentsParser::parseAssetsPath()
+{
+  int index = findIndexOfArgument("--assets");
+  std::vector<std::string> assetsPaths;
+  while (index >= 0) {
+    assetsPaths.push_back(argv[index + 1]);
+    index = findIndexOfArgument("--assets", index);
+  }
+  assetsPaths.push_back("assets/");
+  return assetsPaths;
 }
 
-std::string ArgumentsParser::parseOutputPath(){
-    int index = findIndexOfArgument("--output");
-    if(index >= 0){
-        size_t idx = std::string(argv[index+1]).length()-1;
-        if(argv[index+1][idx] == '/') return argv[index+1];
-        return std::string(argv[index+1])+"/";
-    }
-    return "output/";
+std::string
+ArgumentsParser::parseOutputPath()
+{
+  int index = findIndexOfArgument("--output");
+  if (index >= 0) {
+    size_t idx = std::string(argv[index + 1]).length() - 1;
+    if (argv[index + 1][idx] == '/')
+      return argv[index + 1];
+    return std::string(argv[index + 1]) + "/";
+  }
+  return "output/";
 }
 
-bool ArgumentsParser::parseWriteWaveform(){
-    return findIndexOfArgument("--writeWaveform") >= 0;
+bool
+ArgumentsParser::parseWriteWaveform()
+{
+  return findIndexOfArgument("--writeWaveform") >= 0;
 }
 
-bool ArgumentsParser::parseWritePulse(){
-    return findIndexOfArgument("--writePulse") >= 0;
+bool
+ArgumentsParser::parseWritePulse()
+{
+  return findIndexOfArgument("--writePulse") >= 0;
 }
 
-bool ArgumentsParser::parseCalcEchowidth(){
-    return findIndexOfArgument("--calcEchowidth") >= 0;
+bool
+ArgumentsParser::parseCalcEchowidth()
+{
+  return findIndexOfArgument("--calcEchowidth") >= 0;
 }
 
-std::string ArgumentsParser::parseSeed(){
-    int index = findIndexOfArgument("--seed");
-    if(index >= 0){
-        return std::string(argv[index+1]);
-    }
-    return "";
+std::string
+ArgumentsParser::parseSeed()
+{
+  int index = findIndexOfArgument("--seed");
+  if (index >= 0) {
+    return std::string(argv[index + 1]);
+  }
+  return "";
 }
 
-int ArgumentsParser::parseParallelizationStrategy(){
-    int index = findIndexOfArgument("--parallelization");
-    if(index < 0) return 1;
-    return std::stoi(argv[index+1]);
+int
+ArgumentsParser::parseParallelizationStrategy()
+{
+  int index = findIndexOfArgument("--parallelization");
+  if (index < 0)
+    return 1;
+  return std::stoi(argv[index + 1]);
 }
 
-std::size_t ArgumentsParser::parseNJobs(){
-    int index = findIndexOfArgument("-j");
-    if(index < 0) index = findIndexOfArgument("--njobs");
-    if(index < 0) index = findIndexOfArgument("--nthreads");
-    if(index < 0) return 0;
-    return std::stoul(argv[index+1]);
+std::size_t
+ArgumentsParser::parseNJobs()
+{
+  int index = findIndexOfArgument("-j");
+  if (index < 0)
+    index = findIndexOfArgument("--njobs");
+  if (index < 0)
+    index = findIndexOfArgument("--nthreads");
+  if (index < 0)
+    return 0;
+  return std::stoul(argv[index + 1]);
 }
 
-int ArgumentsParser::parseChunkSize(){
-    int index = findIndexOfArgument("--chunkSize");
-    if(index < 0) return 32;
-    return std::stoi(argv[index+1]);
+int
+ArgumentsParser::parseChunkSize()
+{
+  int index = findIndexOfArgument("--chunkSize");
+  if (index < 0)
+    return 32;
+  return std::stoi(argv[index + 1]);
 }
 
-int ArgumentsParser::parseWarehouseFactor(){
-    int index = findIndexOfArgument("--warehouseFactor");
-    if(index < 0) return 4;
-    return std::stoi(argv[index+1]);
+int
+ArgumentsParser::parseWarehouseFactor()
+{
+  int index = findIndexOfArgument("--warehouseFactor");
+  if (index < 0)
+    return 4;
+  return std::stoi(argv[index + 1]);
 }
 
-bool ArgumentsParser::parseDisablePlatformNoise(){
-    return findIndexOfArgument("--disablePlatformNoise")>=0;
+bool
+ArgumentsParser::parseDisablePlatformNoise()
+{
+  return findIndexOfArgument("--disablePlatformNoise") >= 0;
 }
 
-bool ArgumentsParser::parseDisableLegNoise(){
-    return findIndexOfArgument("--disableLegNoise")>=0;
+bool
+ArgumentsParser::parseDisableLegNoise()
+{
+  return findIndexOfArgument("--disableLegNoise") >= 0;
 }
 
-bool ArgumentsParser::parseRebuildScene(){
-    return findIndexOfArgument("--rebuildScene")>=0;
+bool
+ArgumentsParser::parseRebuildScene()
+{
+  return findIndexOfArgument("--rebuildScene") >= 0;
 }
 
-bool ArgumentsParser::parseNoSceneWriting(){
-    return findIndexOfArgument("--noSceneWriting") >= 0;
+bool
+ArgumentsParser::parseNoSceneWriting()
+{
+  return findIndexOfArgument("--noSceneWriting") >= 0;
 }
 
-void ArgumentsParser::parseLoggingVerbosity(){
-    if(findIndexOfArgument("--silent")>=0) logging::makeSilent();
-    else if(
-        findIndexOfArgument("-q") >= 0 ||
-        findIndexOfArgument("--quiet") >= 0
-    ){
-        logging::makeQuiet();
-    }
-    else if(
-        findIndexOfArgument("-v2")>=0 ||
-        findIndexOfArgument("-vv")>=0
-    ){
-        logging::makeVerbose2();
-    }
-    else if(findIndexOfArgument("-vt")>=0) logging::makeTime();
-    else if(findIndexOfArgument("-v")>=0) logging::makeVerbose();
-    else logging::makeDefault();
+void
+ArgumentsParser::parseLoggingVerbosity()
+{
+  if (findIndexOfArgument("--silent") >= 0)
+    logging::makeSilent();
+  else if (findIndexOfArgument("-q") >= 0 ||
+           findIndexOfArgument("--quiet") >= 0) {
+    logging::makeQuiet();
+  } else if (findIndexOfArgument("-v2") >= 0 ||
+             findIndexOfArgument("-vv") >= 0) {
+    logging::makeVerbose2();
+  } else if (findIndexOfArgument("-vt") >= 0)
+    logging::makeTime();
+  else if (findIndexOfArgument("-v") >= 0)
+    logging::makeVerbose();
+  else
+    logging::makeDefault();
 }
 
-std::string ArgumentsParser::parseLoggingOutputMode(){
-    if(findIndexOfArgument("--logFile")>=0) return "full";
-    else if(findIndexOfArgument("--logFileOnly")>=0) return "file";
-    else return "std_out";
+std::string
+ArgumentsParser::parseLoggingOutputMode()
+{
+  if (findIndexOfArgument("--logFile") >= 0)
+    return "full";
+  else if (findIndexOfArgument("--logFileOnly") >= 0)
+    return "file";
+  else
+    return "std_out";
 }
 
-bool ArgumentsParser::parseFullWaveNoise(){
-    return findIndexOfArgument("--fullwaveNoise") >= 0;
+bool
+ArgumentsParser::parseFullWaveNoise()
+{
+  return findIndexOfArgument("--fullwaveNoise") >= 0;
 }
 
-bool ArgumentsParser::parseLasOutput(){
-    return findIndexOfArgument("--lasOutput") >= 0;
+bool
+ArgumentsParser::parseLasOutput()
+{
+  return findIndexOfArgument("--lasOutput") >= 0;
 }
 
-bool ArgumentsParser::parseLas10(){
-    return findIndexOfArgument("--las10") >= 0;
+bool
+ArgumentsParser::parseLas10()
+{
+  return findIndexOfArgument("--las10") >= 0;
 }
 
-bool ArgumentsParser::parseZipOutput(){
-    return findIndexOfArgument("--zipOutput") >= 0;
+bool
+ArgumentsParser::parseZipOutput()
+{
+  return findIndexOfArgument("--zipOutput") >= 0;
 }
 
-double ArgumentsParser::parseLasScale(){
-    int index = findIndexOfArgument("--lasScale");
-    if(index < 0) return 0.0001;
-    return std::stod(argv[index+1]);
+double
+ArgumentsParser::parseLasScale()
+{
+  int index = findIndexOfArgument("--lasScale");
+  if (index < 0)
+    return 0.0001;
+  return std::stod(argv[index + 1]);
 }
 
-bool ArgumentsParser::parseUnzip(
-    std::string *inputPath,
-    std::string *outputPath
-){
-    int index = findIndexOfArgument("--unzip");
-    if(index < 0) return false;
+bool
+ArgumentsParser::parseUnzip(std::string* inputPath, std::string* outputPath)
+{
+  int index = findIndexOfArgument("--unzip");
+  if (index < 0)
+    return false;
 
-    *inputPath = std::string(argv[index+1]);
-    *outputPath = std::string(argv[index+2]);
-    return true;
+  *inputPath = std::string(argv[index + 1]);
+  *outputPath = std::string(argv[index + 2]);
+  return true;
 }
 
-bool ArgumentsParser::parseFixedIncidenceAngle(){
-    return findIndexOfArgument("--fixedIncidenceAngle") >= 0;
+bool
+ArgumentsParser::parseFixedIncidenceAngle()
+{
+  return findIndexOfArgument("--fixedIncidenceAngle") >= 0;
 }
 
-std::string ArgumentsParser::parseGpsStartTime(){
-    int index = findIndexOfArgument("--gpsStartTime");
-    if(index >= 0) return argv[index+1];
-    return "";
+std::string
+ArgumentsParser::parseGpsStartTime()
+{
+  int index = findIndexOfArgument("--gpsStartTime");
+  if (index >= 0)
+    return argv[index + 1];
+  return "";
 }
 
-int ArgumentsParser::parseKDTreeType(){
-    int index = findIndexOfArgument("--kdt");
-    if(index < 0) return 4;
-    return std::atoi(argv[index+1]);
+int
+ArgumentsParser::parseKDTreeType()
+{
+  int index = findIndexOfArgument("--kdt");
+  if (index < 0)
+    return 4;
+  return std::atoi(argv[index + 1]);
 }
 
-size_t ArgumentsParser::parseKDTreeJobs(){
-    int index = findIndexOfArgument("--kdtJobs");
-    if(index < 0) return 0;
-    return std::stoul(argv[index+1]);
+size_t
+ArgumentsParser::parseKDTreeJobs()
+{
+  int index = findIndexOfArgument("--kdtJobs");
+  if (index < 0)
+    return 0;
+  return std::stoul(argv[index + 1]);
 }
 
-size_t ArgumentsParser::parseKDTreeGeometricJobs(){
-    int index = findIndexOfArgument("--kdtGeomJobs");
-    if(index < 0) return 0;
-    return std::stoul(argv[index+1]);
+size_t
+ArgumentsParser::parseKDTreeGeometricJobs()
+{
+  int index = findIndexOfArgument("--kdtGeomJobs");
+  if (index < 0)
+    return 0;
+  return std::stoul(argv[index + 1]);
 }
 
-size_t ArgumentsParser::parseSAHLossNodes(){
-    int index = findIndexOfArgument("--sahNodes");
-    if(index < 0) return 32;
-    return std::stoul(argv[index+1]);
+size_t
+ArgumentsParser::parseSAHLossNodes()
+{
+  int index = findIndexOfArgument("--sahNodes");
+  if (index < 0)
+    return 32;
+  return std::stoul(argv[index + 1]);
 }
 
-bool ArgumentsParser::parseSplitByChannel(){
-    return findIndexOfArgument("--splitByChannel") >= 0;
+bool
+ArgumentsParser::parseSplitByChannel()
+{
+  return findIndexOfArgument("--splitByChannel") >= 0;
 }
 
-bool ArgumentsParser::parseLegacyEnergyModel(){
-    return findIndexOfArgument("--legacyEnergyModel") >= 0;
+bool
+ArgumentsParser::parseLegacyEnergyModel()
+{
+  return findIndexOfArgument("--legacyEnergyModel") >= 0;
 }
 
 // *** PRIVATE METHODS *** //
 // *********************** //
-int ArgumentsParser::findIndexOfArgument(std::string&& arg, int offset){
-    // Get lower case arg
-    std::string argLow(arg);
-    std::transform(arg.begin(), arg.end(), argLow.begin(),
-        [](unsigned char c) {
-            return std::tolower(c);
-        }
-    );
-    // Compare arg against each argvi in argv
-    for(int i = 1 + offset; i < argc ; i++){
-        // Get lower case argvi
-        std::string argvi(argv[i]);
-        std::transform(argvi.begin(), argvi.end(), argvi.begin(),
-            [](unsigned char c){
-                return std::tolower(c);
-            }
-        );
-        // Compare lower case strings
-        if(argLow == argvi) return i;
-    }
-    return -1;
+int
+ArgumentsParser::findIndexOfArgument(std::string&& arg, int offset)
+{
+  // Get lower case arg
+  std::string argLow(arg);
+  std::transform(arg.begin(), arg.end(), argLow.begin(), [](unsigned char c) {
+    return std::tolower(c);
+  });
+  // Compare arg against each argvi in argv
+  for (int i = 1 + offset; i < argc; i++) {
+    // Get lower case argvi
+    std::string argvi(argv[i]);
+    std::transform(argvi.begin(),
+                   argvi.end(),
+                   argvi.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    // Compare lower case strings
+    if (argLow == argvi)
+      return i;
+  }
+  return -1;
 }

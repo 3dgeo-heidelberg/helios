@@ -19,6 +19,8 @@ else()
   set(HELIOS_VERSION_FULL "2.0.1")
 endif()
 
+find_package(pybind11 CONFIG REQUIRED)
+
 project(Helios++
   VERSION ${HELIOS_VERSION}
   LANGUAGES C CXX
@@ -38,7 +40,7 @@ cmake_policy(SET CMP0076 NEW)
 include(GNUInstallDirs)
 
 # Define the minimum C++ standard that is required
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # For Python bindings, we need to enable position-independent code
@@ -55,7 +57,7 @@ option(HELIOS_PCL "Enable PCL support for debugging visualization" OFF)
 add_library(helios)
 
 # Find external dependencies
-find_package(GDAL REQUIRED)
+find_package(GDAL CONFIG REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
@@ -64,7 +66,10 @@ find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
 
 # LasTools's CMake is not Modern CMake yet, so we have to use old-style find_package
-# that uses the provoded FindLASTools.cmake file
+# that uses the provoded FindLASTools.cmake file. I double-checked, November 2025 and
+# LASTools does now export a configuration, but it does not correctly predict
+# the place of the compiled library within the Conda installation tree. Keeping
+# the find module until this is fixed.
 find_package(LASTools REQUIRED)
 
 # We only build against PCL if explicitly requested
@@ -114,6 +119,7 @@ target_include_directories(helios
 # Expose version information to the C++ sources
 target_compile_definitions(helios
   PUBLIC
+    GLM_ENABLE_EXPERIMENTAL
     HELIOS_VERSION="${HELIOS_VERSION_FULL}"
     HELIOS_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
 )
@@ -121,6 +127,7 @@ target_compile_definitions(helios
 # Ensure Windows-specific compile options
 if(WIN32 OR MSVC)
   target_compile_definitions(helios PUBLIC WIN32_LEAN_AND_MEAN _OS_WINDOWS_)
+  target_compile_options(helios PUBLIC /bigobj)
 endif()
 
 # Enable data analytics code if requested
@@ -131,30 +138,30 @@ if(HELIOS_BUDDING_METRICS)
   target_compile_definitions(helios PUBLIC BUDDING_METRICS=ON)
 endif()
 
+# Create test suite
+include(CTest)
+if(BUILD_TESTING)
+  find_package(Catch2 3 REQUIRED)
+  add_executable(helios_test)
+  add_test(NAME helios_test COMMAND helios_test)
+  target_link_libraries(helios_test PRIVATE helios Catch2::Catch2WithMain)
+  set_tests_properties(helios_test PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif()
+
 # Add the HelIOS++ executable
 add_executable(helios++)
 
 target_link_libraries(helios++ PRIVATE helios)
 
 if(BUILD_PYTHON)
-  find_package(Python COMPONENTS Interpreter Development)
-  find_package(Boost REQUIRED COMPONENTS python)
-
-  add_library(_pyhelios MODULE)
-
-  target_link_libraries(_pyhelios
-  PRIVATE
-    helios
-    Boost::python
-    Python::Module
-  )
-
-  # Control the output name of the produced shared library
-  set_target_properties(_pyhelios PROPERTIES PREFIX "")
-  set_target_properties(_pyhelios PROPERTIES OUTPUT_NAME "_pyhelios")
-  if(WIN32)
-    set_target_properties(_pyhelios PROPERTIES SUFFIX ".pyd")
+  include_directories(${Python_INCLUDE_DIRS})
+  include_directories(${CMAKE_SOURCE_DIR}/src/python)
+  pybind11_add_module(_helios MODULE python/helios/helios_python.cpp)
+  if(MSVC)
+    target_compile_options(_helios PUBLIC /bigobj)
   endif()
+  target_link_libraries(_helios PUBLIC helios pybind11::module)
+  install(TARGETS _helios DESTINATION .)
 endif()
 
 # Traverse the source tree to add all relevant sources
@@ -171,15 +178,11 @@ endif()
 install(
   TARGETS
     helios++
-  DESTINATION pyhelios/bin
+  DESTINATION helios/bin
 )
 
-if(BUILD_PYTHON)
-  install(
-    TARGETS
-      _pyhelios
-    DESTINATION .
-  )
+if(HELIOS_HEADERCHECK)
+  add_subdirectory(tests/headercheck)
 endif()
 
 include(FeatureSummary)
