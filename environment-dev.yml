@@ -32,6 +32,11 @@ dependencies:
   # The following packages are not dependencies, but required
   # for development workflows e.g. local testing
   - doxygen
+  - ipykernel
+  - mkdocs <1.6
+  - mkdocs-jupyter
+  - mkdocs-material
+  - mkdoxy
   - pytest
   - laspy
   - lazrs-python
