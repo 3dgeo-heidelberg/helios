@@ -25,6 +25,9 @@ plugins:
         python:
           paths:
             - ./python
+          options:
+            # Avoid importing the package (which requires the compiled extension).
+            allow_inspection: false
   - mkdocs-jupyter:
       execute: false
 
