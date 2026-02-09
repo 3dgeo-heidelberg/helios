@@ -13,10 +13,13 @@ plugins:
   - mkdoxy:
       projects:
         heliosAPI:
-          src-dirs: ../src
+          src-dirs: ./src
           full-doc: true
           doxy-cfg:
             SHORT_NAMES: true
+            FILE_PATTERNS: "*.h *.hpp *.hh *.hxx *.c *.cc *.cpp *.cxx"
+            RECURSIVE: true
+            EXTRACT_ALL: true
   - mkdocs-jupyter:
       execute: true
       allow_errors: false
