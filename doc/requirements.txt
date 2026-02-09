@@ -2,4 +2,5 @@ mkdocs<1.6
 mkdocs-material
 mkdocs-jupyter
 mkdoxy
+mkdocstrings[python]
 ipykernel

@@ -20,6 +20,11 @@ plugins:
             FILE_PATTERNS: "*.h *.hpp *.hh *.hxx *.c *.cc *.cpp *.cxx"
             RECURSIVE: true
             EXTRACT_ALL: true
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - ./python
   - mkdocs-jupyter:
       execute: true
       allow_errors: false
@@ -54,3 +59,4 @@ nav:
       - Variables: heliosAPI/variables.md
       - Macros: heliosAPI/macros.md
       - Files: heliosAPI/files.md
+  - Python API: api/python.md
