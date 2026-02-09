@@ -26,9 +26,7 @@ plugins:
           paths:
             - ./python
   - mkdocs-jupyter:
-      execute: true
-      allow_errors: false
-      kernel_name: python3
+      execute: false
 
 extra_javascript:
   - javascript/readthedocs.js
