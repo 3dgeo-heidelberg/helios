@@ -57,4 +57,4 @@ nav:
       - Variables: heliosAPI/variables.md
       - Macros: heliosAPI/macros.md
       - Files: heliosAPI/files.md
-  - Python API: api/python.md
+  - Python API: pythonapi.md
