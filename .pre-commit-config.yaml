@@ -30,7 +30,7 @@ repos:
   - id: validate-cff
 
 - repo: https://github.com/abravalheri/validate-pyproject
-  rev: v0.24.1
+  rev: v0.25
   hooks:
   # Validate the contents of pyproject.toml
   - id: validate-pyproject
