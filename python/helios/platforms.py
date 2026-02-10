@@ -5,9 +5,10 @@ from helios.validation import (
     Model,
     UpdateableMixin,
     validate_xml_file,
+    get_all_annotations,
 )
 from pydantic import Field, validate_call
-from typing import Annotated, Any, Literal, Optional
+from typing import Annotated, Any, Literal, Optional, Type
 from numpydantic import NDArray
 
 import numpy as np
@@ -33,6 +34,27 @@ traj_csv_dtype = np.dtype(
         ("z", "f8"),
     ]
 )
+
+
+def _specify_platform_settings_type(parameters: dict) -> None:
+    """Specify the most suitable PlatformSettings subclass based on the given parameters."""
+    candidates: list[Type[PlatformSettings]] = [
+        StaticPlatformSettings,
+        DynamicPlatformSettings,
+        PlatformSettings,
+    ]
+
+    param_keys = set(parameters.keys())
+    best_cls = PlatformSettings
+    best_score = -1
+    for cls in candidates:
+        ann_keys = set(get_all_annotations(cls).keys())
+        score = len(ann_keys & param_keys)
+        if score > best_score:
+            best_score = score
+            best_cls = cls
+
+    return best_cls()
 
 
 def load_traj_csv(

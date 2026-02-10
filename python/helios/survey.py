@@ -4,6 +4,7 @@ from helios.platforms import (
     PlatformSettings,
     traj_csv_dtype,
     TrajectorySettings,
+    _specify_platform_settings_type,
 )
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
@@ -24,7 +25,6 @@ from helios.utils import (
     is_xml_loaded,
     is_binary_loaded,
     check_integrate_survey_and_legs,
-    _specify_platform_settings_type,
 )
 from helios.validation import (
     AssetPath,
