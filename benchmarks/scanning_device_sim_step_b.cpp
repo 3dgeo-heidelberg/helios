@@ -1,31 +1,20 @@
+#include <adt/exprtree/UnivarExprTreeNode.h>
 #include <benchmark/benchmark.h>
+#include <maths/MathConverter.h>
 #include <memory>
+#include <scanner/ScannerHead.h>
 #include <scanner/ScanningDevice.h>
 #include <scanner/ScanningPulseProcess.h>
+#include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
+bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
+  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
+  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 namespace {
-class DummyBeamDeflector : public AbstractBeamDeflector
-{
-public:
-  DummyBeamDeflector()
-    : AbstractBeamDeflector(/*scanAngleMax_rad=*/0.0,
-                            /*scanFreqMax_Hz=*/0.0,
-                            /*scanFreqMin_Hz=*/0.0)
-  {
-  }
 
-  std::shared_ptr<AbstractBeamDeflector> clone() override
-  {
-    return std::make_shared<DummyBeamDeflector>(*this);
-  }
-
-  void doSimStep() override {}
-
-  std::string getOpticsType() const override { return "dummy"; }
-
-  bool lastPulseLeftDevice() override { return true; }
-};
-
+// A subclass of ScanningDevice to allow setting the ScannerHead and
+// AbstractBeamDeflector for the benchmark, since ScanningDevice does not have
+// public setters for these attributes.
 class BenchmarkScanningDevice : public ScanningDevice
 {
 public:
@@ -43,9 +32,7 @@ public:
 };
 } // namespace
 
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
+// benchmark for doSimStep of ScanningDevice
 
 static void
 scanning_device_sim_step_benchmark(benchmark::State& state)
@@ -64,8 +51,7 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
   const double receiverDiameter = 0.15;
   const double atmosphericVisibility = 23.0;
   const int wavelength = 1064;
-  // create a dummy range error expression tree (constant 0) for the sake of the
-  // benchmark
+  // create a dummy range error expression tree (constant 0)
   auto rangeErrExpr = std::make_shared<UnivarExprTreeNode<double>>();
   rangeErrExpr->symbolType = UnivarExprTreeNode<double>::NUMBER;
   rangeErrExpr->num = 0.0;
@@ -87,8 +73,14 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
                                               rangeErrExpr);
   scanDevPtr->setScannerHeadForBenchmark(
     std::make_shared<ScannerHead>(glm::dvec3(0, 1, 0), 0.0));
+  // Polygon Beam Deflector settings are taken from RIEGL VZ-400
   scanDevPtr->setBeamDeflectorForBenchmark(
-    std::make_shared<DummyBeamDeflector>());
+    std::make_shared<PolygonMirrorBeamDeflector>(
+      120.0,                                  // scanFreqMax_Hz
+      3.0,                                    // scanFreqMin_Hz
+      MathConverter::degreesToRadians(120.0), // scanAngleMax_rad
+      MathConverter::degreesToRadians(50.0)   // scanAngleEffectiveMax_rad
+      ));
 
   ScanningDevice* scanDev = scanDevPtr.get();
   for (auto _ : state) {
