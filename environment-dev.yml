@@ -41,3 +41,7 @@ dependencies:
   - ninja
   - pytest-cov
   - catch2
+  - breathe
+  - nbsphinx
+  - nbsphinx-link
+  - sphinx_mdinclude
