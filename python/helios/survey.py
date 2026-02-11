@@ -4,6 +4,7 @@ from helios.platforms import (
     PlatformSettings,
     traj_csv_dtype,
     TrajectorySettings,
+    _specify_platform_settings_type,
 )
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
@@ -25,7 +26,11 @@ from helios.utils import (
     is_binary_loaded,
     check_integrate_survey_and_legs,
 )
-from helios.validation import AssetPath, Model, validate_xml_file
+from helios.validation import (
+    AssetPath,
+    Model,
+    validate_xml_file,
+)
 
 from datetime import datetime, timezone
 from numpydantic import NDArray
@@ -227,6 +232,9 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Set the parameters given as scanner + platform settings
         if platform_settings is not None:
             copy_platform_settings.update_from_object(platform_settings)
+        else:
+            copy_platform_settings = _specify_platform_settings_type(parameters)
+
         if scanner_settings is not None:
             copy_scanner_settings.update_from_object(scanner_settings)
 
