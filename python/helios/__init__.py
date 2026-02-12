@@ -12,6 +12,8 @@ from helios.platforms import (
     load_traj_csv,
     TrajectorySettings,
     StaticPlatformSettings,
+    list_platforms,
+    platform_from_name,
 )
 from helios.scanner import Scanner, ScannerSettings, list_scanners, scanner_from_name
 from helios.scene import StaticScene, ScenePart
