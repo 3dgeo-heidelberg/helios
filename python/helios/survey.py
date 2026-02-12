@@ -38,12 +38,25 @@ from numpydantic import NDArray
 from pathlib import Path
 from pydantic import Field, validate_call
 from typing import Annotated, Optional, Tuple
+import threading
 
 import numpy as np
 import tempfile
 import laspy
 
 import _helios
+
+
+def _start_playback_interruptible(playback, poll_interval=0.1):
+    worker = threading.Thread(target=playback.start)
+    worker.start()
+    try:
+        while worker.is_alive():
+            worker.join(timeout=poll_interval)
+    except KeyboardInterrupt:
+        playback.stop()
+        worker.join()
+        raise
 
 
 class Survey(Model, cpp_class=_helios.Survey):
@@ -165,7 +178,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.scanner._cpp_object.all_output_paths = np.empty((0,))
         self.scanner._cpp_object.all_measurements_mutex = None
         # Start simulating the survey
-        playback.start()
+        _start_playback_interruptible(playback)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
