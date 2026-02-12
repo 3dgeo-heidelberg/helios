@@ -8,10 +8,12 @@ from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
 from typing import Any, Optional, Type, Union, get_origin, get_args
 from typing_extensions import Annotated, dataclass_transform
+from numpydantic import NDArray, Shape
 
 import annotated_types
 import inspect
 import multiprocessing
+import numpy as np
 import os
 import xmlschema
 
@@ -39,6 +41,23 @@ AngleVelocity = Annotated[float, _unit_validator(units.rad / units.s)]
 Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
 Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
+
+
+def _coerce_r3vector(value: Any):
+    if value is None:
+        return value
+    if isinstance(value, (list, tuple)) and len(value) != 3:
+        raise ValueError("Value must be a 3D vector of length 3.")
+    try:
+        return np.asarray(value, dtype=np.float64)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("Value must be a 3D vector coercible to float64.") from exc
+
+
+R3Vector = Annotated[
+    NDArray[Shape["3"], np.float64],
+    BeforeValidator(_coerce_r3vector),
+]
 
 
 def validate_xml_file(file_path: Path, schema_path: Path):

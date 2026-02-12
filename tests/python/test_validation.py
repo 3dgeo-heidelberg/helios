@@ -395,6 +395,34 @@ def test_threadcount_annotation():
         assert foo(-1)
 
 
+def test_r3vector_annotation():
+    @validate_call
+    def foo(vec: R3Vector):
+        return vec
+
+    as_int_array = foo(np.array([0, 15, 0]))
+    as_list = foo([0, 15, 0])
+    as_tuple = foo((0, 15, 0))
+
+    assert isinstance(as_int_array, np.ndarray)
+    assert isinstance(as_list, np.ndarray)
+    assert isinstance(as_tuple, np.ndarray)
+    assert as_list.dtype == np.float64
+    assert as_tuple.dtype == np.float64
+    assert as_int_array.dtype == np.float64
+    assert as_list.shape == (3,)
+    assert as_tuple.shape == (3,)
+    assert as_int_array.shape == (3,)
+    assert np.allclose(as_list, as_tuple)
+    assert np.allclose(as_list, as_int_array)
+
+    with pytest.raises(ValueError):
+        foo([0, 1])
+
+    with pytest.raises(ValueError):
+        foo(np.array([0.0, 1.0]))
+
+
 def test_assetpath_annotation():
     @validate_call
     def foo(path: AssetPath):
