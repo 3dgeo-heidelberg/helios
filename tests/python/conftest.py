@@ -110,6 +110,16 @@ def tls_survey(tls_scanner, tripod, scene):
 survey = tls_survey
 
 
+@pytest.fixture
+def light_als_multiscanner_survey():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    for leg in survey.legs:
+        leg.scanner_settings.pulse_frequency = 2000
+        leg.scanner_settings.scan_frequency = 20
+        leg.scanner_settings.trajectory_time_interval = 0.2
+    return survey
+
+
 @pytest.fixture()
 def assetdir(tmp_path):
     add_asset_directory(tmp_path)
