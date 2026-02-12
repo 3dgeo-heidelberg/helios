@@ -43,20 +43,28 @@ Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
 
 
-def _coerce_r3vector(value: Any):
-    if value is None:
-        return value
-    if isinstance(value, (list, tuple)) and len(value) != 3:
-        raise ValueError("Value must be a 3D vector of length 3.")
-    try:
-        return np.asarray(value, dtype=np.float64)
-    except (TypeError, ValueError) as exc:
-        raise ValueError("Value must be a 3D vector coercible to float64.") from exc
+def _coerce_vector(length: int, name: str):
+    def _validator(value: Any):
+        if value is None:
+            return value
+        if isinstance(value, (list, tuple)) and len(value) != length:
+            raise ValueError(f"Value must be a {name} of length {length}.")
+        try:
+            return np.asarray(value, dtype=np.float64)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Value must be a {name} coercible to float64.") from exc
+
+    return _validator
 
 
 R3Vector = Annotated[
     NDArray[Shape["3"], np.float64],
-    BeforeValidator(_coerce_r3vector),
+    BeforeValidator(_coerce_vector(3, "3D vector")),
+]
+
+Quaternion = Annotated[
+    NDArray[Shape["4"], np.float64],
+    BeforeValidator(_coerce_vector(4, "quaternion")),
 ]
 
 

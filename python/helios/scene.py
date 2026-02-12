@@ -16,6 +16,7 @@ from helios.validation import (
     AssetPath,
     Model,
     MultiAssetPath,
+    Quaternion,
     R3Vector,
     validate_xml_file,
 )
@@ -44,7 +45,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @validate_call
     def rotate(
         self,
-        quaternion: Optional[NDArray[Shape["4"], np.float64]] = None,
+        quaternion: Optional[Quaternion] = None,
         axis: Optional[R3Vector] = None,
         angle: Optional[Angle] = None,
         from_axis: Optional[R3Vector] = None,

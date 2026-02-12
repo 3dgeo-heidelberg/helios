@@ -423,6 +423,26 @@ def test_r3vector_annotation():
         foo(np.array([0.0, 1.0]))
 
 
+def test_quaternion_annotation():
+    @validate_call
+    def foo(vec: Quaternion):
+        return vec
+
+    as_list = foo([1, 0, 0, 0])
+    as_tuple = foo((1, 0, 0, 0))
+
+    assert isinstance(as_list, np.ndarray)
+    assert isinstance(as_tuple, np.ndarray)
+    assert as_list.dtype == np.float64
+    assert as_tuple.dtype == np.float64
+    assert as_list.shape == (4,)
+    assert as_tuple.shape == (4,)
+    assert np.allclose(as_list, as_tuple)
+
+    with pytest.raises(ValueError):
+        foo([1, 0, 0])
+
+
 def test_assetpath_annotation():
     @validate_call
     def foo(path: AssetPath):
