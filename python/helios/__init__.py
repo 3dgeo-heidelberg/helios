@@ -13,7 +13,7 @@ from helios.platforms import (
     TrajectorySettings,
     StaticPlatformSettings,
 )
-from helios.scanner import Scanner, ScannerSettings
+from helios.scanner import Scanner, ScannerSettings, list_scanners, scanner_from_name
 from helios.scene import StaticScene, ScenePart
 from helios.settings import (
     ExecutionSettings,
