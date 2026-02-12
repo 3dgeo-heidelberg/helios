@@ -77,11 +77,7 @@ class MaterialDict(MutableMapping[str, Material]):
         return {name: Material._from_cpp(mat) for name, mat in pairs}
 
     def __getitem__(self, name: str) -> Material:
-        snap = self._snapshot()
-        try:
-            return snap[name]
-        except KeyError:
-            raise KeyError(name)
+        return self._snapshot()[name]
 
     def __setitem__(self, name: str, material: Material) -> None:
         if not isinstance(material, Material):
@@ -103,8 +99,7 @@ class MaterialDict(MutableMapping[str, Material]):
     def __contains__(self, name: object) -> bool:
         if not isinstance(name, str):
             return False
-        snap = self._snapshot()
-        return name in snap
+        return name in self._snapshot()
 
     def items(self):
         return list(self._snapshot().items())
