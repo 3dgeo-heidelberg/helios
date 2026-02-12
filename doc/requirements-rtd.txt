@@ -1,4 +1,5 @@
 breathe
+cmake
 nbsphinx
 nbsphinx-link
 sphinx_mdinclude

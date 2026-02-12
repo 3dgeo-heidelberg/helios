@@ -10,7 +10,6 @@ build:
     python: "3.13"
   apt_packages:
     - doxygen
-    - cmake
 
 python:
   install:
