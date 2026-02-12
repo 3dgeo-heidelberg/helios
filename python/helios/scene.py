@@ -16,6 +16,8 @@ from helios.validation import (
     AssetPath,
     Model,
     MultiAssetPath,
+    Quaternion,
+    R3Vector,
     validate_xml_file,
     UpdateableMixin,
 )
@@ -124,12 +126,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @validate_call
     def rotate(
         self,
-        quaternion: Optional[NDArray[Shape["4"], np.float64]] = None,
-        axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        quaternion: Optional[Quaternion] = None,
+        axis: Optional[R3Vector] = None,
         angle: Optional[Angle] = None,
-        from_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
-        to_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
-        rotation_center: Optional[NDArray[Shape["3"], np.float64]] = None,
+        from_axis: Optional[R3Vector] = None,
+        to_axis: Optional[R3Vector] = None,
+        rotation_center: Optional[R3Vector] = None,
     ):
         """Rotate the scene part.
 
@@ -197,7 +199,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         return self
 
     @validate_call
-    def translate(self, offset: NDArray[Shape["3"], np.float64]):
+    def translate(self, offset: R3Vector):
         """Translate the scene part by an offset."""
 
         _helios.translate_scene_part(self._cpp_object, offset)
@@ -269,7 +271,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: NonNegativeFloat = 0.0,
-        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+        default_normal: R3Vector = np.array(
             [np.finfo(np.float64).max] * 3, dtype=np.float64
         ),
         sparse: bool = True,
@@ -311,7 +313,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: NonNegativeFloat = 0.0,
-        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+        default_normal: R3Vector = np.array(
             [np.finfo(np.float64).max] * 3, dtype=np.float64
         ),
         sparse: bool = False,
