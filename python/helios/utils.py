@@ -4,7 +4,7 @@ from pathlib import Path
 from pydantic import validate_call
 from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
 from numpydantic import NDArray, Shape
-
+import functools
 
 import importlib_resources as resources
 import numpy as np
@@ -27,6 +27,19 @@ _builtin_asset_directories = [
     resources.files("helios"),
     resources.files("helios") / "data",
 ]
+
+
+class classonlymethod:
+    def __init__(self, func):
+        self._cm = classmethod(func)
+        functools.update_wrapper(self, func)
+
+    def __get__(self, obj, owner=None):
+        if obj is not None:
+            raise TypeError(
+                f"{self.__name__}() may only be called on the class, not an instance"
+            )
+        return self._cm.__get__(None, owner)
 
 
 def add_asset_directory(directory: Path) -> None:

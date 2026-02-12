@@ -151,3 +151,24 @@ def test_find_files(assetdir):
 
     found = find_files(assetdir / "*/*.obj")
     assert len(found) == 2
+
+
+def test_classonlymethod():
+    class SomeClass:
+        @classonlymethod
+        def my_method(cls):
+            return "Hello"
+
+    class SubClass:
+        @classonlymethod
+        def reading_from_smth(cls):
+            return SubClass()
+
+    assert SomeClass.my_method() == "Hello"
+    with pytest.raises(TypeError):
+        s = SomeClass()
+        s.my_method()
+
+    instance_obj = SubClass.reading_from_smth()
+    with pytest.raises(TypeError):
+        instance_obj.reading_from_smth()
