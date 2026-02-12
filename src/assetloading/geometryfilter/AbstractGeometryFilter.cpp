@@ -41,7 +41,6 @@ AbstractGeometryFilter::parseMaterials()
     logging::ERR(ss.str());
     throw HeliosException(ss.str());
   }
-  std::string matfile = matfilePath.string();
 
   // Pick material
   std::string matfile = boost::get<std::string>(params["matfile"]);
