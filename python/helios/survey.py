@@ -25,6 +25,7 @@ from helios.utils import (
     is_xml_loaded,
     is_binary_loaded,
     check_integrate_survey_and_legs,
+    classonlymethod,
 )
 from helios.validation import (
     AssetPath,
@@ -269,7 +270,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         # we ensure that the property is validated
         self.legs = self.legs + (leg,)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(
         cls,

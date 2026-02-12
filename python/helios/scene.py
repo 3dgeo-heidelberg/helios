@@ -4,6 +4,7 @@ from helios.settings import (
     ForceOnGroundStrategy,
 )
 from helios.utils import (
+    classonlymethod,
     get_asset_directories,
     detect_separator,
     is_xml_loaded,
@@ -205,7 +206,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         _helios.translate_scene_part(self._cpp_object, offset)
         return self
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, scene_part_file: AssetPath, id: int):
         # Validate the XML
@@ -218,7 +219,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part._is_loaded_from_xml = True
         return scene_part
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
         """Load the scene part from an OBJ file.
@@ -232,7 +233,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_tiff(cls, tiff_file: AssetPath):
         """Load the scene part from a TIFF file."""
@@ -243,7 +244,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_objs(cls, obj_files: MultiAssetPath, up_axis: Literal["y", "z"] = "z"):
         """Load multiple scene parts from OBJ files
@@ -253,7 +254,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
         return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_tiffs(cls, tiff_files: MultiAssetPath):
         """Load multiple scene parts from TIFF files
@@ -263,7 +264,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
         return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xyz(
         cls,
@@ -305,7 +306,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xyzs(
         cls,
@@ -343,7 +344,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             for xyz in xyz_files
         ]
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_vox(
         cls,
@@ -485,9 +486,10 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         if not self._during_init:
             _helios.invalidate_static_scene(self._cpp_object)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_binary(cls, filename: AssetPath):
+        """Classmethod to load a scene from a binary file. The binary file should have been created by the 'to_binary' method of this class."""
         _cpp_scene = _helios.read_scene_from_binary(str(filename))
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_binary = True
@@ -499,7 +501,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
         _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, scene_file: AssetPath, save_to_binary: bool = False):
         # Validate the XML

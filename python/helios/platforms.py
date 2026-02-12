@@ -1,5 +1,9 @@
 from helios.scene import StaticScene
-from helios.utils import get_asset_directories, _validate_trajectory_array
+from helios.utils import (
+    classonlymethod,
+    get_asset_directories,
+    _validate_trajectory_array,
+)
 from helios.validation import (
     AssetPath,
     Model,
@@ -154,9 +158,10 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
     # TODO: should platform_settings get set from xml as well?
     platform_settings: Optional[PlatformSettings] = None
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, platform_file: AssetPath, platform_id: str = ""):
+        """Classmethod to load a platform from an XML file. The XML file should conform to the schema defined in "xsd/platform.xsd". The platform_id parameter can be used to specify which platform to load if the XML file contains multiple platforms."""
 
         # Validate the XML
         validate_xml_file(platform_file, "xsd/platform.xsd")
@@ -168,7 +173,7 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         platform._is_loaded_from_xml = True
         return platform
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def load_interpolate_platform(
         cls,

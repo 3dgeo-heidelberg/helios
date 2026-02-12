@@ -1,4 +1,4 @@
-from helios.utils import get_asset_directories
+from helios.utils import classonlymethod, get_asset_directories
 from helios.validation import (
     Angle,
     AngleVelocity,
@@ -66,9 +66,10 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 
 class Scanner(Model, cpp_class=_helios.Scanner):
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
+        """Classmethod to load a scanner from an XML file. The XML file should conform to the schema defined in "xsd/scanner.xsd". The scanner_id parameter can be used to specify which scanner to load if the XML file contains multiple scanners. The method validates the XML file against the schema before loading the scanner."""
 
         # Validate the XML
         validate_xml_file(scanner_file, "xsd/scanner.xsd")
