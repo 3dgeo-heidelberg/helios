@@ -17,6 +17,7 @@ import laspy
 from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
 
+
 def test_construct_survey_from_xml():
     survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
 
