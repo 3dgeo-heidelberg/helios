@@ -87,9 +87,16 @@ ScenePart::addObj(WavefrontObj* obj)
   ss.str("");
   size_t oldNumPrimitives = mPrimitives.size();
 
-  Primitive* p;
   for (size_t i = 0; i < obj->primitives.size(); i++) {
-    p = obj->primitives[i]->clone();
+    Primitive* origP = obj->primitives[i];
+    if (origP == nullptr)
+      continue;
+    Primitive* p = origP->clone();
+    // Restore the original material shared_ptr so all triangles
+    // loaded from the OBJ that reference the same material name will
+    // share the same Material instance.
+    if (origP->material != nullptr)
+      p->material = origP->material;
     mPrimitives.push_back(p);
   }
 

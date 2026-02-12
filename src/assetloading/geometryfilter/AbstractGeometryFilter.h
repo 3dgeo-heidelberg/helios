@@ -38,7 +38,7 @@ public:
   /**
    * @brief Available materials
    */
-  std::map<std::string, Material> materials;
+  std::map<std::string, std::shared_ptr<Material>> materials;
 
   /**
    * @brief ScenePart used to build the output. Not strictly necessary for
