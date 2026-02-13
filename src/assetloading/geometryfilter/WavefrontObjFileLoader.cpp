@@ -274,7 +274,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
     Material mat;
     mat.useVertexColors = true;
     mat.matFilePath = filePath.string();
-    materials.insert(std::pair<std::string, Material>(currentMat, mat));
+    materials[currentMat] = std::make_shared<Material>(mat);
     std::string line;
     try {
       while (true) { // Loop until EndOfReadingException
@@ -321,8 +321,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
         // Read materials
         else if (lineParts[0] == "mtllib") {
           std::string s = filePath.parent_path().string() + "/" + lineParts[1];
-          std::map<std::string, Material> mats =
-            MaterialsFileReader::loadMaterials(s);
+          auto mats = MaterialsFileReader::loadMaterials(s);
           materials.insert(mats.begin(), mats.end());
         }
 

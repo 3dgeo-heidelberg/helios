@@ -4,6 +4,7 @@ from helios.settings import (
     ForceOnGroundStrategy,
 )
 from helios.utils import (
+    classonlymethod,
     get_asset_directories,
     detect_separator,
     is_xml_loaded,
@@ -11,8 +12,18 @@ from helios.utils import (
     is_finalized,
 )
 
-from helios.validation import Angle, AssetPath, Model, MultiAssetPath, validate_xml_file
+from helios.validation import (
+    Angle,
+    AssetPath,
+    Model,
+    MultiAssetPath,
+    Quaternion,
+    R3Vector,
+    validate_xml_file,
+    UpdateableMixin,
+)
 
+from collections.abc import MutableMapping
 from numpydantic import NDArray, Shape
 from pydantic import (
     PositiveFloat,
@@ -28,21 +39,100 @@ import numpy as np
 import _helios
 
 
+class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
+    name: str = ""
+    is_ground: bool = False
+    spectra: str = ""
+    reflectance: float = np.nan
+    specularity: float = 0
+    specular_exponent: float = 10
+    classification: int = 0
+    ambient_components: NDArray[Shape["4"], np.float64] = np.array(
+        [0, 0, 0, 0], dtype=np.float64
+    )
+    diffuse_components: NDArray[Shape["4"], np.float64] = np.array(
+        [0, 0, 0, 0], dtype=np.float64
+    )
+    specular_components: NDArray[Shape["4"], np.float64] = np.array(
+        [0, 0, 0, 0], dtype=np.float64
+    )
+
+    @classmethod
+    @validate_call
+    def from_file(cls, material_file: AssetPath, material_id: str = ""):
+        _cpp_material = _helios.read_material_from_file(
+            str(material_file), [str(p) for p in get_asset_directories()], material_id
+        )
+        material = cls._from_cpp(_cpp_material)
+        return material
+
+
+class MaterialDict(MutableMapping[str, Material]):
+    """
+    A dictionary-like interface for accessing and modifying materials via their names.
+    """
+
+    def __init__(self, owner: "ScenePart"):
+        self._owner = owner
+
+    def _snapshot(self) -> dict[str, Material]:
+        pairs = _helios.get_materials_map(self._owner._cpp_object)
+        return {name: Material._from_cpp(mat) for name, mat in pairs}
+
+    def __getitem__(self, name: str) -> Material:
+        return self._snapshot()[name]
+
+    def __setitem__(self, name: str, material: Material) -> None:
+        if not isinstance(material, Material):
+            raise TypeError("Value must be an instance of Material.")
+
+        _helios.change_material_instance(
+            self._owner._cpp_object, name, material._cpp_object
+        )
+
+    def __delitem__(self, name: str) -> None:
+        raise NotImplementedError("Deleting materials is not supported.")
+
+    def __iter__(self):
+        return iter(self._snapshot())
+
+    def __len__(self):
+        return len(self._snapshot())
+
+    def __contains__(self, name: object) -> bool:
+        if not isinstance(name, str):
+            return False
+        return name in self._snapshot()
+
+    def items(self):
+        return list(self._snapshot().items())
+
+    def keys(self):
+        return list(self._snapshot().keys())
+
+    def values(self):
+        return self._snapshot().values()
+
+
 class ScenePart(Model, cpp_class=_helios.ScenePart):
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
-    is_ground: bool = False
+
+    @property
+    def materials(self) -> MaterialDict:
+        """Dictionary-like access to materials in the scene part."""
+        return MaterialDict(self)
 
     @validate_call
     def rotate(
         self,
-        quaternion: Optional[NDArray[Shape["4"], np.float64]] = None,
-        axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        quaternion: Optional[Quaternion] = None,
+        axis: Optional[R3Vector] = None,
         angle: Optional[Angle] = None,
-        from_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
-        to_axis: Optional[NDArray[Shape["3"], np.float64]] = None,
-        rotation_center: Optional[NDArray[Shape["3"], np.float64]] = None,
+        from_axis: Optional[R3Vector] = None,
+        to_axis: Optional[R3Vector] = None,
+        rotation_center: Optional[R3Vector] = None,
     ):
         """Rotate the scene part.
 
@@ -110,16 +200,15 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         return self
 
     @validate_call
-    def translate(self, offset: NDArray[Shape["3"], np.float64]):
+    def translate(self, offset: R3Vector):
         """Translate the scene part by an offset."""
 
         _helios.translate_scene_part(self._cpp_object, offset)
         return self
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, scene_part_file: AssetPath, id: int):
-
         # Validate the XML
         validate_xml_file(scene_part_file, "xsd/scene.xsd")
 
@@ -130,7 +219,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part._is_loaded_from_xml = True
         return scene_part
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
         """Load the scene part from an OBJ file.
@@ -144,7 +233,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_tiff(cls, tiff_file: AssetPath):
         """Load the scene part from a TIFF file."""
@@ -155,7 +244,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_objs(cls, obj_files: MultiAssetPath, up_axis: Literal["y", "z"] = "z"):
         """Load multiple scene parts from OBJ files
@@ -165,7 +254,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
         return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_tiffs(cls, tiff_files: MultiAssetPath):
         """Load multiple scene parts from TIFF files
@@ -175,7 +264,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
         return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xyz(
         cls,
@@ -183,7 +272,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: NonNegativeFloat = 0.0,
-        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+        default_normal: R3Vector = np.array(
             [np.finfo(np.float64).max] * 3, dtype=np.float64
         ),
         sparse: bool = True,
@@ -217,7 +306,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xyzs(
         cls,
@@ -225,7 +314,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: NonNegativeFloat = 0.0,
-        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+        default_normal: R3Vector = np.array(
             [np.finfo(np.float64).max] * 3, dtype=np.float64
         ),
         sparse: bool = False,
@@ -255,12 +344,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             for xyz in xyz_files
         ]
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_vox(
         cls,
         vox_file: AssetPath,
-        intersection_mode: Literal["scaled", "fixed"],
+        intersection_mode: Literal["scaled", "fixed", "transmittive"] = "transmittive",
         intersection_argument: Optional[float] = None,
         random_shift: bool = False,
         ladlut_path: Optional[str] = None,
@@ -282,6 +371,76 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         return cls._from_cpp(_cpp_part)
+
+    @validate_call
+    def _apply_material_to_all_primitives(self, material: Material):
+        """Apply a material to all primitives in the scene part."""
+        range_start = 0
+        range_stop = len(self._cpp_object.primitives) - 1
+        _helios.apply_material_to_primitives_range(
+            self._cpp_object, material._cpp_object, range_start, range_stop
+        )
+
+    @validate_call
+    def _apply_material_to_primitives_in_specific_range(
+        self, material: Material, start: int, stop: int
+    ):
+        """Apply a material to all primitives within a specific elevation range in the scene part."""
+        if start < 0 or stop < start:
+            raise ValueError("Provided range is invalid")
+
+        range_start = start
+        range_stop = min(stop, len(self._cpp_object.primitives) - 1)
+        _helios.apply_material_to_primitives_range(
+            self._cpp_object, material._cpp_object, range_start, range_stop
+        )
+
+    @validate_call
+    def _apply_material_to_indices(self, material: Material, indices: list[int]):
+        """Apply a material to primitives at specific indices in the scene part."""
+        valid_indices = [
+            i for i in indices if 0 <= i < len(self._cpp_object.primitives)
+        ]
+        if not valid_indices:
+            raise IndexError(
+                "No valid indices provided. Indices must be within the range of existing primitives."
+            )
+
+        _helios.apply_material_to_primitives_indices(
+            self._cpp_object, material._cpp_object, valid_indices
+        )
+
+    @validate_call
+    def update_material(
+        self,
+        material: Material,
+        indices: Optional[list[int]] = None,
+        range_start: Optional[int] = None,
+        range_stop: Optional[int] = None,
+    ):
+        """Update material(s) for the scene part.
+
+        It can be provided in one of the following ways:
+        * 'indices': a list of specific primitive indices to update
+        * 'range_start' & 'range_stop': an elevation range to update
+
+        If neither is provided, the material will be applied to all primitives.
+        """
+        if indices is not None:
+            self._apply_material_to_indices(material, indices)
+        elif range_start is not None or range_stop is not None:
+            range_start = range_start if range_start is not None else 0
+            range_stop = (
+                range_stop
+                if range_stop is not None
+                else len(self._cpp_object.primitives)
+            )
+
+            self._apply_material_to_primitives_in_specific_range(
+                material, range_start, range_stop
+            )
+        else:
+            self._apply_material_to_all_primitives(material)
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
@@ -327,9 +486,10 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         if not self._during_init:
             _helios.invalidate_static_scene(self._cpp_object)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_binary(cls, filename: AssetPath):
+        """Classmethod to load a scene from a binary file. The binary file should have been created by the 'to_binary' method of this class."""
         _cpp_scene = _helios.read_scene_from_binary(str(filename))
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_binary = True
@@ -341,10 +501,9 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
         _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, scene_file: AssetPath, save_to_binary: bool = False):
-
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 

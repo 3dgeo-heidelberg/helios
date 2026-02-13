@@ -1,4 +1,4 @@
-from helios.utils import get_asset_directories
+from helios.utils import classonlymethod, get_asset_directories
 from helios.validation import (
     Angle,
     AngleVelocity,
@@ -12,6 +12,7 @@ from helios.validation import (
     validate_xml_file,
 )
 from pydantic import validate_call
+from typing import Callable
 
 import _helios
 import numpy as np
@@ -66,9 +67,10 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 
 class Scanner(Model, cpp_class=_helios.Scanner):
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
+        """Classmethod to load a scanner from an XML file. The XML file should conform to the schema defined in "xsd/scanner.xsd". The scanner_id parameter can be used to specify which scanner to load if the XML file contains multiple scanners. The method validates the XML file against the schema before loading the scanner."""
 
         # Validate the XML
         validate_xml_file(scanner_file, "xsd/scanner.xsd")
@@ -85,111 +87,67 @@ class Scanner(Model, cpp_class=_helios.Scanner):
 # Predefined scanners
 #
 
-# ALS Scanners
+SCANNER_REGISTRY: dict[str, tuple[str, str]] = {
+    # ALS Scanners
+    "leica_als50": ("data/scanners_als.xml", "leica_als50"),
+    "leica_als50_ii": ("data/scanners_als.xml", "leica_als50-ii"),
+    "optech_2033": ("data/scanners_als.xml", "optech_2033"),
+    "optech_3100": ("data/scanners_als.xml", "optech_3100"),
+    "optech_galaxy": ("data/scanners_als.xml", "optech_galaxy"),
+    "riegl_lms_q560": ("data/scanners_als.xml", "riegl_lms-q560"),
+    "riegl_lms_q780": ("data/scanners_als.xml", "riegl_lms-q780"),
+    "riegl_vq_780i": ("data/scanners_als.xml", "riegl_vq_780i"),
+    "riegl_vux_1uav": ("data/scanners_als.xml", "riegl_vux-1uav"),
+    "riegl_vux_1uav22": ("data/scanners_als.xml", "riegl_vux-1uav22"),
+    "riegl_vux_1ha22": ("data/scanners_als.xml", "riegl_vux-1ha22"),
+    "riegl_vq_880g": ("data/scanners_als.xml", "riegl_vq-880g"),
+    "riegl_vq_1560i": ("data/scanners_als.xml", "riegl_vq-1560i"),
+    "livox_mid70": ("data/scanners_als.xml", "livox_mid-70"),
+    "livox_mid100": ("data/scanners_als.xml", "livox-mid-100"),
+    "livox_mid100a": ("data/scanners_als.xml", "livox-mid-100a"),
+    "livox_mid100b": ("data/scanners_als.xml", "livox-mid-100b"),
+    "livox_mid100c": ("data/scanners_als.xml", "livox-mid-100c"),
+    # TLS Scanners
+    "riegl_vz_400": ("data/scanners_tls.xml", "riegl_vz400"),
+    "riegl_vz_1000": ("data/scanners_tls.xml", "riegl_vz1000"),
+    "riegl_vq_450": ("data/scanners_tls.xml", "riegl_vq-450"),
+    "livox_mid70_tls": ("data/scanners_tls.xml", "livox_mid-70"),
+    "vlp16": ("data/scanners_tls.xml", "vlp16"),
+    "velodyne_hdl_64e": ("data/scanners_tls.xml", "velodyne_hdl-64e"),
+    "tractor_scanner": ("data/scanners_tls.xml", "tractorscanner"),
+    "pano_scanner": ("data/scanners_tls.xml", "panoscanner"),
+}
 
 
-def leica_als50():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="leica_als50")
+def list_scanners() -> list[str]:
+    """List all predefined scanner names."""
+    return list(SCANNER_REGISTRY.keys())
 
 
-def leica_als50_ii():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="leica_als50-ii")
+@validate_call
+def scanner_from_name(scanner_name: str) -> Scanner:
+    """Create a predefined scanner by its string name."""
+    try:
+        scanner_file, scanner_id = SCANNER_REGISTRY[scanner_name]
+    except KeyError as exc:
+        valid_names = ", ".join(list_scanners())
+        raise ValueError(
+            f"Unknown scanner '{scanner_name}'. Available scanners: {valid_names}"
+        ) from exc
+    return Scanner.from_xml(scanner_file, scanner_id=scanner_id)
 
 
-def optech_2033():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="optech_2033")
+def _make_predefined_scanner(scanner_name: str) -> Callable[[], Scanner]:
+    def _scanner_factory():
+        return scanner_from_name(scanner_name)
+
+    _scanner_factory.__name__ = scanner_name
+    _scanner_factory.__qualname__ = scanner_name
+    _scanner_factory.__doc__ = f"Create predefined scanner '{scanner_name}'."
+    return _scanner_factory
 
 
-def optech_3100():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="optech_3100")
+for _scanner_name in SCANNER_REGISTRY:
+    globals()[_scanner_name] = _make_predefined_scanner(_scanner_name)
 
-
-def optech_galaxy():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="optech_galaxy")
-
-
-def riegl_lms_q560():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_lms-q560")
-
-
-def riegl_lms_q780():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_lms-q780")
-
-
-def riegl_vq_780i():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vq_780i")
-
-
-def riegl_vux_1uav():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vux-1uav")
-
-
-def riegl_vux_1uav22():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vux-1uav22")
-
-
-def riegl_vux_1ha22():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vux-1ha22")
-
-
-def riegl_vq_880g():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vq-880g")
-
-
-def riegl_vq_1560i():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vq-1560i")
-
-
-def livox_mid70():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="livox_mid-70")
-
-
-def livox_mid100():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="livox-mid-100")
-
-
-def livox_mid100a():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="livox-mid-100a")
-
-
-def livox_mid100b():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="livox-mid-100b")
-
-
-def livox_mid100c():
-    return Scanner.from_xml("data/scanners_als.xml", scanner_id="livox-mid-100c")
-
-
-# TLS Scanners
-
-
-def riegl_vz_400():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vz400")
-
-
-def riegl_vz_1000():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vz1000")
-
-
-def riegl_vq_450():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vq-450")
-
-
-def livox_mid70_tls():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="livox_mid-70")
-
-
-def vlp16():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="vlp16")
-
-
-def velodyne_hdl_64e():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="velodyne_hdl-64e")
-
-
-def tractor_scanner():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="tractorscanner")
-
-
-def pano_scanner():
-    return Scanner.from_xml("data/scanners_tls.xml", scanner_id="panoscanner")
+del _scanner_name

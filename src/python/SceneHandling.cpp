@@ -1,11 +1,13 @@
 #include <DetailedVoxelLoader.h>
 #include <GeoTiffFileLoader.h>
 #include <KDTreeFactoryMaker.h>
+#include <MaterialsFileReader.h>
 #include <SceneHandling.h>
 #include <SerialSceneWrapper.h>
 #include <SpectralLibrary.h>
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
+#include <XmlAssetsLoader.h>
 
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
@@ -465,4 +467,111 @@ addScenePartToScene(std::shared_ptr<StaticScene> scene,
                            scenePart->mPrimitives.end());
   scene->registerParts();
   invalidateStaticScene(scene); // invalidate it for further finalization
+}
+
+std::shared_ptr<Material>
+readMaterialFromFile(std::string materialPath,
+                     std::vector<std::string> assetsPath,
+                     std::string materialId)
+{
+  fs::path searchfile(materialPath);
+  if (searchfile.is_relative()) {
+    for (const auto path : assetsPath) {
+      if (fs::exists(fs::path(path) / searchfile)) {
+        searchfile = fs::path(path) / searchfile;
+        break;
+      }
+    }
+  }
+  std::string resolved_path = searchfile.string();
+  if (resolved_path.empty()) {
+    throw std::runtime_error("Material file not found: " + materialPath);
+  }
+  auto mats = MaterialsFileReader::loadMaterials(resolved_path);
+
+  if (mats.empty()) {
+    throw std::runtime_error("No materials found in material file: " +
+                             materialPath);
+  }
+
+  if (mats.find(materialId) == mats.end()) {
+    throw std::runtime_error("Material with name: '" + materialId +
+                             "' not found in material file: " + materialPath);
+  }
+  auto it = mats.find(materialId);
+  if (it == mats.end()) {
+    throw std::runtime_error("Material with name: '" + materialId +
+                             "' not found in material file: " + materialPath);
+  }
+
+  return it->second;
+}
+
+void
+changeMaterialInstance(std::shared_ptr<ScenePart> scenePart,
+                       const std::string& oldName,
+                       std::shared_ptr<Material> newMaterial)
+{
+  bool found = false;
+
+  for (auto& prim : scenePart->mPrimitives) {
+    if (prim->material && prim->material->name == oldName) {
+      prim->material = newMaterial;
+      found = true;
+    }
+  }
+  if (!found) {
+    throw std::runtime_error("Material with name '" + oldName +
+                             "' not found in the scene part.");
+  }
+}
+
+void
+applyMaterialToPrimitivesRange(std::shared_ptr<ScenePart> scenePart,
+                               std::shared_ptr<Material> material,
+                               size_t start,
+                               size_t stop)
+{
+  size_t n = scenePart->mPrimitives.size();
+  if (start >= n - 1 || stop >= n || start >= stop) {
+    throw std::out_of_range(
+      "Invalid range for applying material to primitives.");
+  }
+  for (size_t i = start; i <= stop; ++i) {
+    scenePart->mPrimitives[i]->material = material;
+  }
+}
+
+void
+applyMaterialToPrimitivesIndices(std::shared_ptr<ScenePart> scenePart,
+                                 std::shared_ptr<Material> material,
+                                 const std::vector<size_t>& indices)
+{
+  for (const auto& index : indices) {
+    if (index >= scenePart->mPrimitives.size()) {
+      throw std::out_of_range("Index " + std::to_string(index) +
+                              " is out of range for primitives.");
+    }
+    scenePart->mPrimitives[index]->material = material;
+  }
+}
+
+std::vector<std::pair<std::string, std::shared_ptr<Material>>>
+getMaterialsMap(const std::shared_ptr<ScenePart>& part)
+{
+  std::vector<std::pair<std::string, std::shared_ptr<Material>>> out;
+  out.reserve(part->mPrimitives.size());
+
+  std::unordered_set<std::string> seen;
+  seen.reserve(part->mPrimitives.size());
+
+  for (const auto& prim : part->mPrimitives) {
+    if (!prim->material)
+      continue;
+    const auto& name = prim->material->name;
+    if (seen.insert(name).second) {
+      out.emplace_back(name, prim->material);
+    }
+  }
+  return out;
 }

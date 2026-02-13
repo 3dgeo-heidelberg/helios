@@ -342,15 +342,21 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
       platform->initLegManual();
     else
       platform->initLeg();
-    try { // Transform trajectory time (if any) to simulation time
-      if (leg->mTrajectorySettings != nullptr &&
-          leg->mTrajectorySettings->hasStartTime()) {
-        std::shared_ptr<InterpolatedMovingPlatform> imp =
-          dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
-        imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
+
+    if (leg->mTrajectorySettings != nullptr &&
+        leg->mTrajectorySettings->hasStartTime()) {
+      std::shared_ptr<InterpolatedMovingPlatform> imp =
+        dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+      if (!imp) {
+        std::stringstream ss;
+        ss << "Expected InterpolatedMovingPlatform, but received a different "
+              "Platform type.\n"
+              "Please use \"InterpolatedMovingPlatform\".\n";
+        throw std::runtime_error(ss.str());
       }
-    } catch (...) {
+      imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
     }
+
     // Set the interpolated moving platform time difference from target leg
     if (platform->isInterpolated()) {
       std::shared_ptr<InterpolatedMovingPlatform> imp =

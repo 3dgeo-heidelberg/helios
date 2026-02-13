@@ -140,6 +140,11 @@ PYBIND11_MODULE(_helios, m)
 
   py::implicitly_convertible<py::iterable, VectorString>();
   py::register_exception<HeliosException>(m, "HeliosException");
+  py::register_exception<std::out_of_range>(m, "IndexError", PyExc_IndexError);
+  py::register_exception<std::invalid_argument>(
+    m, "ValueError", PyExc_ValueError);
+  py::register_exception<std::runtime_error>(
+    m, "RuntimeError", PyExc_RuntimeError);
 
   // Enable GDAL (Load its drivers)
   GDALAllRegister();
@@ -3121,5 +3126,11 @@ PYBIND11_MODULE(_helios, m)
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);
   m.def("check_integrate_survey_and_legs", &checkIntegrateSurveyAndLegs);
+  m.def("read_material_from_file", &readMaterialFromFile);
+  m.def("apply_material_to_primitives_indices",
+        &applyMaterialToPrimitivesIndices);
+  m.def("apply_material_to_primitives_range", &applyMaterialToPrimitivesRange);
+  m.def("change_material_instance", &changeMaterialInstance);
+  m.def("get_materials_map", &getMaterialsMap);
 }
 }

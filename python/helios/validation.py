@@ -8,10 +8,12 @@ from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
 from typing import Any, Optional, Type, Union, get_origin, get_args
 from typing_extensions import Annotated, dataclass_transform
+from numpydantic import NDArray, Shape
 
 import annotated_types
 import inspect
 import multiprocessing
+import numpy as np
 import os
 import xmlschema
 
@@ -39,6 +41,31 @@ AngleVelocity = Annotated[float, _unit_validator(units.rad / units.s)]
 Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
 Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
+
+
+def _coerce_vector(length: int, name: str):
+    def _validator(value: Any):
+        if value is None:
+            return value
+        if isinstance(value, (list, tuple)) and len(value) != length:
+            raise ValueError(f"Value must be a {name} of length {length}.")
+        try:
+            return np.asarray(value, dtype=np.float64)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Value must be a {name} coercible to float64.") from exc
+
+    return _validator
+
+
+R3Vector = Annotated[
+    NDArray[Shape["3"], np.float64],
+    BeforeValidator(_coerce_vector(3, "3D vector")),
+]
+
+Quaternion = Annotated[
+    NDArray[Shape["4"], np.float64],
+    BeforeValidator(_coerce_vector(4, "quaternion")),
+]
 
 
 def validate_xml_file(file_path: Path, schema_path: Path):
@@ -408,8 +435,13 @@ class UpdateableMixin:
         """Update a ValidatedCppModel object from a dictionary of keyword arguments"""
 
         keys = list(kwargs.keys())
+
+        anns = get_all_annotations(self.__class__)
         for key in keys:
-            if key in self.__class__.__dict__:
+            cls_attr = self.__class__.__dict__.get(key, None)
+            if key in anns:
+                setattr(self, key, kwargs.pop(key))
+            elif isinstance(cls_attr, property) and cls_attr.fset is not None:
                 setattr(self, key, kwargs.pop(key))
             elif not skip_exceptions:
                 raise ValueError(f"Invalid key: {key}")
