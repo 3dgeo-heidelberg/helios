@@ -12,7 +12,7 @@ from helios.validation import (
     get_all_annotations,
 )
 from pydantic import Field, validate_call
-from typing import Annotated, Any, Literal, Optional, Type
+from typing import Annotated, Any, Callable, Literal, Optional, Type
 from numpydantic import NDArray
 
 import numpy as np
@@ -212,46 +212,50 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
 # Predefined platforms
 #
 
-
-def sr22():
-    return Platform.from_xml("data/platforms.xml", platform_id="sr22")
-
-
-def quadcopter():
-    return Platform.from_xml("data/platforms.xml", platform_id="quadcopter")
-
-
-def copter_linearpath():
-    return Platform.from_xml("data/platforms.xml", platform_id="copter_linearpath")
-
-
-def tractor():
-    return Platform.from_xml("data/platforms.xml", platform_id="tractor")
+PLATFORM_REGISTRY: dict[str, tuple[str, str]] = {
+    "sr22": ("data/platforms.xml", "sr22"),
+    "quadcopter": ("data/platforms.xml", "quadcopter"),
+    "copter_linearpath": ("data/platforms.xml", "copter_linearpath"),
+    "tractor": ("data/platforms.xml", "tractor"),
+    "tractor_leftside": ("data/platforms.xml", "tractor_leftside"),
+    "vehicle_linearpath": ("data/platforms.xml", "vehicle_linearpath"),
+    "vmx_450_car_left": ("data/platforms.xml", "vmx-450-car-left"),
+    "vmx_450_car_right": ("data/platforms.xml", "vmx-450-car-right"),
+    "vmq_1ha_car": ("data/platforms.xml", "vmq-1ha-car-0"),
+    "simple_linearpath": ("data/platforms.xml", "simple_linearpath"),
+    "tripod": ("data/platforms.xml", "tripod"),
+}
 
 
-def tractor_leftside():
-    return Platform.from_xml("data/platforms.xml", platform_id="tractor_leftside")
+def list_platforms() -> list[str]:
+    """List all predefined platform names."""
+    return list(PLATFORM_REGISTRY.keys())
 
 
-def vehicle_linearpath():
-    return Platform.from_xml("data/platforms.xml", platform_id="vehicle_linearpath")
+@validate_call
+def platform_from_name(platform_name: str) -> Platform:
+    """Create a predefined platform by its string name."""
+    try:
+        platform_file, platform_id = PLATFORM_REGISTRY[platform_name]
+    except KeyError as exc:
+        valid_names = ", ".join(list_platforms())
+        raise ValueError(
+            f"Unknown platform '{platform_name}'. Available platforms: {valid_names}"
+        ) from exc
+    return Platform.from_xml(platform_file, platform_id=platform_id)
 
 
-def vmx_450_car_left():
-    return Platform.from_xml("data/platforms.xml", platform_id="vmx-450-car-left")
+def _make_predefined_platform(platform_name: str) -> Callable[[], Platform]:
+    def _platform_factory():
+        return platform_from_name(platform_name)
+
+    _platform_factory.__name__ = platform_name
+    _platform_factory.__qualname__ = platform_name
+    _platform_factory.__doc__ = f"Create predefined platform '{platform_name}'."
+    return _platform_factory
 
 
-def vmx_450_car_right():
-    return Platform.from_xml("data/platforms.xml", platform_id="vmx-450-car-right")
+for _platform_name in PLATFORM_REGISTRY:
+    globals()[_platform_name] = _make_predefined_platform(_platform_name)
 
-
-def vmq_1ha_car():
-    return Platform.from_xml("data/platforms.xml", platform_id="vmq-1ha-car-0")
-
-
-def simple_linearpath():
-    return Platform.from_xml("data/platforms.xml", platform_id="simple_linearpath")
-
-
-def tripod():
-    return Platform.from_xml("data/platforms.xml", platform_id="tripod")
+del _platform_name

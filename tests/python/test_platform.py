@@ -5,20 +5,27 @@ import math
 import pytest
 from pydantic import ValidationError
 from helios import HeliosException
+import helios.platforms as platform_module
 
 
 def test_preinstantiated_platforms():
-    assert isinstance(sr22(), Platform)
-    assert isinstance(quadcopter(), Platform)
-    assert isinstance(copter_linearpath(), Platform)
-    assert isinstance(tractor(), Platform)
-    assert isinstance(tractor_leftside(), Platform)
-    assert isinstance(vehicle_linearpath(), Platform)
-    assert isinstance(vmx_450_car_left(), Platform)
-    assert isinstance(vmx_450_car_right(), Platform)
-    assert isinstance(vmq_1ha_car(), Platform)
-    assert isinstance(simple_linearpath(), Platform)
-    assert isinstance(tripod(), Platform)
+    for platform_name in list_platforms():
+        platform_factory = getattr(platform_module, platform_name)
+        assert isinstance(platform_factory(), Platform)
+
+
+def test_list_platforms_matches_registry():
+    assert list_platforms() == list(platform_module.PLATFORM_REGISTRY.keys())
+
+
+def test_platform_from_name():
+    for platform_name in list_platforms():
+        assert isinstance(platform_from_name(platform_name), Platform)
+
+
+def test_platform_from_name_invalid():
+    with pytest.raises(ValueError, match="Unknown platform"):
+        platform_from_name("not-a-valid-platform")
 
 
 def test_platform_settings_mls():
