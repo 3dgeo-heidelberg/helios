@@ -5,6 +5,7 @@
 #include <maths/model/BaseEnergyModel.h>
 #include <maths/model/ImprovedEnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <cmath>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -73,6 +74,8 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->rangeErrExpr = scdev.rangeErrExpr;
   this->state_currentPulseNumber = scdev.state_currentPulseNumber;
   this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
+  this->cfg_setting_warmupPhase_s = scdev.cfg_setting_warmupPhase_s;
+  this->state_warmupApplied = scdev.state_warmupApplied;
   this->cached_Dr2 = scdev.cached_Dr2;
   this->cached_Bt2 = scdev.cached_Bt2;
 
@@ -201,6 +204,10 @@ ScanningDevice::doSimStep(
   std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
   std::function<void(SimulatedPulse const& sp)> handlePulseComputation)
 {
+  if (isActive && !state_warmupApplied) {
+    applyWarmupPhase(simFreq_Hz);
+  }
+
   // Do what must be done whether active or not
   // ------------------------------------------//
   // Update head attitude (we do this even when the scanner is inactive):
@@ -249,6 +256,25 @@ ScanningDevice::doSimStep(
                                           state_currentPulseNumber,
                                           devIdx));
   }
+}
+
+void
+ScanningDevice::applyWarmupPhase(int const simFreq_Hz)
+{
+  if (state_warmupApplied || cfg_setting_warmupPhase_s <= 0.0 || simFreq_Hz <= 0)
+  {
+    state_warmupApplied = true;
+    return;
+  }
+
+  long long const warmupPulses = std::max(
+    0LL, (long long)std::llround(cfg_setting_warmupPhase_s * simFreq_Hz));
+
+  for (long long i = 0; i < warmupPulses; ++i) {
+    scannerHead->doSimStep(simFreq_Hz);
+    beamDeflector->doSimStep();
+  }
+  state_warmupApplied = true;
 }
 
 Rotation

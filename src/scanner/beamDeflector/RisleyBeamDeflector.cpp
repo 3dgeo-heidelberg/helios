@@ -12,7 +12,8 @@ using Base = std::shared_ptr<AbstractBeamDeflector>;
 Base
 RisleyBeamDeflector::clone()
 {
-  Base ombd = std::make_shared<RisleyBeamDeflector>(prisms, refrIndex_air);
+  Base ombd =
+    std::make_shared<RisleyBeamDeflector>(prisms, refrIndex_air, incidentBeam);
 
   _clone(ombd);
   return ombd;
@@ -21,7 +22,13 @@ void
 RisleyBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
 {
   AbstractBeamDeflector::_clone(abd);
-  RisleyBeamDeflector* ombd = (RisleyBeamDeflector*)abd.get();
+  RisleyBeamDeflector* rbd = (RisleyBeamDeflector*)abd.get();
+  rbd->deltaT = deltaT;
+  rbd->pulseFreq = pulseFreq;
+  rbd->time = time;
+  rbd->refrIndex_air = refrIndex_air;
+  rbd->prisms = prisms;
+  rbd->incidentBeam = incidentBeam;
 }
 
 void

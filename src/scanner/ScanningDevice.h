@@ -205,6 +205,14 @@ protected:
    * @brief Flag specifying if last pulse was hit (true) or not (false)
    */
   bool state_lastPulseWasHit = false;
+  /**
+   * @brief Warmup phase (seconds) configured from scanner settings
+   */
+  double cfg_setting_warmupPhase_s = 0.0;
+  /**
+   * @brief Whether warmup has already been applied for current settings
+   */
+  bool state_warmupApplied = false;
 
   // ***  CACHED ATTRIBUTES  *** //
   // *************************** //
@@ -323,6 +331,10 @@ public:
     Rotation const& platformAttitude,
     std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
     std::function<void(SimulatedPulse const& sp)> handlePulseComputation);
+  /**
+   * @brief Advance head/deflector without emitting pulses to apply warmup.
+   */
+  void applyWarmupPhase(int const simFreq_Hz);
   /**
    * @brief Compute the absolute beam attitude of the scanning device
    *  with respect to given absolute platform attitude
@@ -581,5 +593,13 @@ public:
   inline void setReceivedEnergyMin(double const receivedEnergyMin_W)
   {
     this->receivedEnergyMin_W = receivedEnergyMin_W;
+  }
+  /**
+   * @brief Set warmup phase and mark it for application in next active step.
+   */
+  inline void setWarmupPhase_s(double const warmupPhase_s)
+  {
+    cfg_setting_warmupPhase_s = warmupPhase_s;
+    state_warmupApplied = false;
   }
 };

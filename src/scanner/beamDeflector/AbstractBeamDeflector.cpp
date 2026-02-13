@@ -23,6 +23,7 @@ AbstractBeamDeflector::_clone(std::shared_ptr<AbstractBeamDeflector> abd)
     abd->cfg_setting_verticalAngleMin_rad;
   this->cfg_setting_verticalAngleMax_rad =
     abd->cfg_setting_verticalAngleMax_rad;
+  this->cfg_setting_warmupPhase_s = abd->cfg_setting_warmupPhase_s;
   this->state_currentBeamAngle_rad = abd->state_currentBeamAngle_rad;
   this->state_angleDiff_rad = abd->state_angleDiff_rad;
   this->cached_angleBetweenPulses_rad = abd->cached_angleBetweenPulses_rad;
@@ -36,6 +37,7 @@ AbstractBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
 {
   setScanAngle_rad(settings->scanAngle_rad);
   setScanFreq_Hz(settings->scanFreq_Hz);
+  setWarmupPhase_s(settings->warmupPhase_s);
   cfg_setting_verticalAngleMin_rad = settings->verticalAngleMin_rad;
   cfg_setting_verticalAngleMax_rad = settings->verticalAngleMax_rad;
   double angleMax = cfg_setting_scanAngle_rad;
@@ -98,4 +100,10 @@ void
 AbstractBeamDeflector::setScanFreq_Hz(double scanFreq_hz)
 {
   cfg_setting_scanFreq_Hz = scanFreq_hz;
+}
+
+void
+AbstractBeamDeflector::setWarmupPhase_s(double warmupPhase_s)
+{
+  cfg_setting_warmupPhase_s = warmupPhase_s;
 }

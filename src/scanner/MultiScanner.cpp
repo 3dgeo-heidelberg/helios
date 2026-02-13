@@ -87,6 +87,7 @@ MultiScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
   // Configure scanning devices and their components
   size_t const numScanDevs = scanDevs.size();
   for (size_t i = 0; i < numScanDevs; ++i) {
+    scanDevs[i].setWarmupPhase_s(settings->warmupPhase_s);
     scanDevs[i].configureBeam();
     getDetector(i)->applySettings(settings);
     getScannerHead(i)->applySettings(settings);

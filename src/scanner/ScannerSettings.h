@@ -82,6 +82,12 @@ public:
    */
   double maxDuration_s = -1.0;
   /**
+   * @brief Optional warmup phase (seconds) applied before the first pulse.
+   * Deflectors that support this can initialize their internal simulation
+   * state to this phase.
+   */
+  double warmupPhase_s = 0.0;
+  /**
    * @brief Specify the vertical resolution to be used. By default,
    *  vertical and horizontal resolutions are \f$0\f$ which means they will
    *  be ignored. When at least one of them is distinct than \f$0\f$, the
@@ -128,6 +134,7 @@ public:
     this->beamDivAngle = other->beamDivAngle;
     this->trajectoryTimeInterval = other->trajectoryTimeInterval;
     this->maxDuration_s = other->maxDuration_s;
+    this->warmupPhase_s = other->warmupPhase_s;
     this->verticalResolution_rad = other->verticalResolution_rad;
     this->horizontalResolution_rad = other->horizontalResolution_rad;
   }
@@ -189,6 +196,8 @@ public:
       settings->trajectoryTimeInterval = cherries->trajectoryTimeInterval;
     if (hasCherry("maxDuration_s"))
       settings->maxDuration_s = cherries->maxDuration_s;
+    if (hasCherry("warmupPhase_s"))
+      settings->warmupPhase_s = cherries->warmupPhase_s;
     if (hasCherry("verticalResolution_rad"))
       settings->verticalResolution_rad = cherries->verticalResolution_rad;
     if (hasCherry("horizontalResolution_rad")) {
@@ -286,7 +295,9 @@ public:
          << "\ttemplate.scanFreq_Hz = " << baseTemplate->scanFreq_Hz << "\n"
          << "\ttemplate.beamDivAngle = " << baseTemplate->beamDivAngle << "\n"
          << "\ttemplate.trajectoryTimeInterval = "
-         << baseTemplate->trajectoryTimeInterval << "\n";
+         << baseTemplate->trajectoryTimeInterval << "\n"
+         << "\ttemplate.warmupPhase_s = " << baseTemplate->warmupPhase_s
+         << "\n";
     }
     ss << "active = " << active << "\n"
        << "headRotatePerSec_rad = " << headRotatePerSec_rad << "\n"
@@ -299,6 +310,7 @@ public:
        << "scanFreq_Hz = " << scanFreq_Hz << "\n"
        << "beamDivAngle = " << beamDivAngle << "\n"
        << "trajectoryTimeInterval = " << trajectoryTimeInterval << "\n"
+       << "warmupPhase_s = " << warmupPhase_s << "\n"
        << "verticalResolution_rad = " << verticalResolution_rad << "\n"
        << "horizontalResolution_rad = " << horizontalResolution_rad << "\n";
     return ss.str();

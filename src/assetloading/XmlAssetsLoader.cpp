@@ -1220,6 +1220,16 @@ XmlAssetsLoader::createScannerSettingsFromXml(
       settings->maxDuration_s = template1->maxDuration_s;
     }
   }
+  // Optional warmup phase in seconds. Keep legacy TimeOffset_s compatibility.
+  if (XmlUtils::hasAttribute(node, "warmupPhase_s")) {
+    settings->warmupPhase_s = XmlUtils::getAttributeCast<double>(
+      node, "warmupPhase_s", template1->warmupPhase_s, defaultScannerSettingsMsg);
+  } else if (XmlUtils::hasAttribute(node, "TimeOffset_s")) {
+    settings->warmupPhase_s = XmlUtils::getAttributeCast<double>(
+      node, "TimeOffset_s", template1->warmupPhase_s, defaultScannerSettingsMsg);
+  } else {
+    settings->warmupPhase_s = template1->warmupPhase_s;
+  }
 
   // Parse alternative spec. based on vertical and horizontal resolutions
   if (XmlUtils::hasAttribute(node, "verticalResolution_deg")) {
@@ -1655,6 +1665,7 @@ XmlAssetsLoader::makeDefaultTemplates()
   defaultScannerTemplate->verticalAngleMax_rad = NAN;
   defaultScannerTemplate->scanFreq_Hz = 0;
   defaultScannerTemplate->maxDuration_s = -1.0;
+  defaultScannerTemplate->warmupPhase_s = 0.0;
 
   // Make default platform settings template
   defaultPlatformTemplate = std::make_shared<PlatformSettings>();
@@ -1702,6 +1713,8 @@ XmlAssetsLoader::trackNonDefaultScannerSettings(
     fields.insert("trajectoryTimeInterval");
   if (base->maxDuration_s != ref->maxDuration_s)
     fields.insert("maxDuration_s");
+  if (base->warmupPhase_s != ref->warmupPhase_s)
+    fields.insert("warmupPhase_s");
   if (base->verticalResolution_rad != ref->verticalResolution_rad)
     fields.insert("verticalResolution_rad");
   if (base->horizontalResolution_rad != ref->horizontalResolution_rad)
