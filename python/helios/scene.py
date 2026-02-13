@@ -349,7 +349,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     def from_vox(
         cls,
         vox_file: AssetPath,
-        intersection_mode: Literal["scaled", "fixed"],
+        intersection_mode: Literal["scaled", "fixed", "transmittive"] = "transmittive",
         intersection_argument: Optional[float] = None,
         random_shift: bool = False,
         ladlut_path: Optional[str] = None,

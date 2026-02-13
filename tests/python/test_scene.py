@@ -198,14 +198,18 @@ def test_scenepart_from_xyzs(xyz_parts_dir):
 def test_scenepart_from_vox():
     scene_parts1 = ScenePart.from_vox(
         "data/test/semitransparent_voxels.vox",
-        intersection_mode="fixed",
+        intersection_mode="transmittive",
     )
     scene_parts2 = ScenePart.from_vox(
+        "data/test/semitransparent_voxels.vox",
+        intersection_mode="fixed",
+    )
+    scene_parts3 = ScenePart.from_vox(
         "data/test/semitransparent_voxels.vox",
         intersection_mode="scaled",
         intersection_argument=0.5,
     )
-    scene_parts3 = ScenePart.from_vox(
+    scene_parts4 = ScenePart.from_vox(
         "data/test/semitransparent_voxels.vox",
         intersection_mode="scaled",
     )
@@ -213,6 +217,7 @@ def test_scenepart_from_vox():
     assert len(scene_parts1._cpp_object.primitives) > 0
     assert len(scene_parts2._cpp_object.primitives) > 0
     assert len(scene_parts3._cpp_object.primitives) > 0
+    assert len(scene_parts4._cpp_object.primitives) > 0
 
     with pytest.raises(ValueError):
         ScenePart.from_vox(
