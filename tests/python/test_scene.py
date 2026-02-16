@@ -900,3 +900,18 @@ def test_material_dict_cache_mutation_propagates():
 
     mats2 = scene_part.materials._snapshot()
     assert mats2["Material.007"].reflectance == 0.123
+
+
+def test_setitem_replaces_material_and_key_changes():
+    scene_part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+
+    mat = Material(name="Plastic", reflectance=0.5)
+    scene_part.materials["Material.007"] = mat
+
+    assert "Material.007" not in scene_part.materials
+    assert "Plastic" in scene_part.materials
+    assert scene_part.materials["Plastic"].reflectance == 0.5
+    assert scene_part._cpp_object.primitives[5].material.name == "Plastic"
+
+    with pytest.raises(KeyError):
+        scene_part.materials["Material.007"].reflectance = 0.9
