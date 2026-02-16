@@ -1,3 +1,9 @@
+/*
+This benchmark is a macro benchmark for an entire SurveyPlayback.
+It follows the setup of a SurveyPlayback in LidarSim.cpp with the tls_toyblocks.
+The benchmark tests the performance of the SurveyPlayback->start() method.
+*/
+
 #include <benchmark/benchmark.h>
 
 #include "Survey.h"
@@ -22,36 +28,6 @@ static void
 macro_playback_benchmark(benchmark::State& state)
 {
   // manually set up a LidarSim
-  // helios::main::LidarSim app;
-  // app.init(
-  //   "data/surveys/toyblocks/tls_toyblocks.xml",
-  //   std::vector<std::string>{"./assets/"},
-  //   "./output/",
-  //   false,\
-  //   false,
-  //   false,
-  //   0, // parallelizationStrategy
-  //   0UL,
-  //   32,
-  //   4,
-  //   false,
-  //   true,
-  //   false,
-  //   false,
-  //   true,
-  //   true,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   "",
-  //   (1.0E-4),
-  //   4, // kdtType, maybe adjust this
-  //   1UL,
-  //   1UL,
-  //   32,
-  //   true
-  // );
   fs::path src_file = fs::path(__FILE__).parent_path(); // .../benchmarks
   fs::path repo_root = src_file.parent_path();          // repo root
   std::string surveyPath =

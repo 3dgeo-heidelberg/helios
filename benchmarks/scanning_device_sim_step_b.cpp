@@ -1,3 +1,11 @@
+/*
+This benchmark tests the performance of the doSimStep method of ScanningDevice.
+The benchmark sets up a ScanningDevice with example specifications from a RIEGL
+VZ-400, with an appropriate PolygonBeamDeflector and ScannerHead. The benchmark
+isolates the performance of the ScannerHead, BeamDeflector and ScanningDevice
+parts of the SimStep, and does not include pulse computation.
+*/
+
 #include <adt/exprtree/UnivarExprTreeNode.h>
 #include <benchmark/benchmark.h>
 #include <maths/MathConverter.h>
@@ -32,7 +40,7 @@ public:
 };
 } // namespace
 
-// benchmark for doSimStep of ScanningDevice
+// benchmark begin
 
 static void
 scanning_device_sim_step_benchmark(benchmark::State& state)
