@@ -1,3 +1,11 @@
+/*
+This benchmark tests the performance of the computeSubrays method of
+FullWaveformPulseRunnable. It sets up a mock Scene, SingleScanner and
+FullWaveformPulseRunnable. The benchmark does not test the performance of
+testIntersection, and instead returns nullptr for all subray intersections.
+Scanner settings are largely taken from example RIEGL VZ-400 specifications.
+*/
+
 #include <benchmark/benchmark.h>
 #include <logging.hpp>
 
