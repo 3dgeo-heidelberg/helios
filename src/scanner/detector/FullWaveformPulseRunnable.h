@@ -73,6 +73,7 @@ private:
    *  registered
    * @see FullWaveformPulseRunnable::handleSubray
    */
+protected:
   void computeSubrays(NoiseSource<double>& intersectionHandlingNoiseSource,
                       std::map<double, double>& reflections,
                       vector<RaySceneIntersection>& intersects
@@ -82,6 +83,7 @@ private:
                       std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
+private:
   /**
    * @brief Handle sub-rays along the circle
    * @param[in] tMinMax Minimum and maximum time to intersection with respect

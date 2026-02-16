@@ -14,10 +14,7 @@ Scanner settings are largely taken from example RIEGL VZ-400 specifications.
 #include <platform/Platform.h>
 #include <scanner/SingleScanner.h>
 #include <scanner/detector/FullWaveformPulseDetector.h>
-
-#define private public
 #include <scanner/detector/FullWaveformPulseRunnable.h>
-#undef private
 
 #include <map>
 #include <memory>
