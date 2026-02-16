@@ -98,14 +98,26 @@ def tls_survey(tls_scanner, tripod, scene):
         y=0,
         z=0,
         pulse_frequency=2000,
+        scan_angle="20 deg",
         head_rotation="10 deg/s",
         rotation_start_angle="0 deg",
         rotation_stop_angle="10 deg",
+        scan_frequency=120,
     )
     return survey
 
 
 survey = tls_survey
+
+
+@pytest.fixture
+def light_als_multiscanner_survey():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    for leg in survey.legs:
+        leg.scanner_settings.pulse_frequency = 2000
+        leg.scanner_settings.scan_frequency = 20
+        leg.scanner_settings.trajectory_time_interval = 0.2
+    return survey
 
 
 @pytest.fixture()

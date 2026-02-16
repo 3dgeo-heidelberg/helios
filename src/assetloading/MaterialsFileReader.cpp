@@ -11,12 +11,12 @@
 
 #include "MaterialsFileReader.h"
 
-std::map<std::string, Material>
+std::map<std::string, std::shared_ptr<Material>>
 MaterialsFileReader::loadMaterials(std::string filePathString)
 {
   std::ifstream ifs;
   Material newMat;
-  std::map<std::string, Material> newMats;
+  std::map<std::string, std::shared_ptr<Material>> newMats;
   bool firstMaterial = true;
 
   logging::DEBUG("Reading materials from .mtl file '" + filePathString + "'");
@@ -24,6 +24,11 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
 
   try {
     ifs = std::ifstream(filePathString, std::ifstream::binary);
+    if (!ifs.is_open()) {
+      std::stringstream ss;
+      ss << "Failed to open materials file: " << filePathString;
+      throw std::runtime_error(ss.str());
+    }
     while (getline(ifs, line)) {
       if (line.empty() || line == "\r" || line == "\r\n" || line == "\n")
         continue;
@@ -37,7 +42,7 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
         if (firstMaterial)
           firstMaterial = false;
         else
-          newMats.insert(std::pair<std::string, Material>(newMat.name, newMat));
+          newMats[newMat.name] = std::make_shared<Material>(newMat);
         newMat = Material();
         newMat.matFilePath = filePathString;
         newMat.name = lineParts[1];
@@ -93,14 +98,13 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
 
     // Don't forget to put final material to the map:
     newMat.setSpecularity(); // Specularity scalar from components
-    newMats.insert(newMats.end(),
-                   std::pair<std::string, Material>(newMat.name, newMat));
+    newMats[newMat.name] = std::make_shared<Material>(newMat);
     std::stringstream ss;
     ss << newMats.size() << " material(s) loaded.";
     logging::DEBUG(ss.str());
   } catch (std::exception& e) {
-    logging::WARN("Failed to load materials file: " + filePathString + "\n" +
-                  "line='" + line + "'\n" + "EXCEPTION: " + e.what());
+    throw std::runtime_error("Error reading materials file '" + filePathString +
+                             "': " + e.what());
   }
   ifs.close();
 

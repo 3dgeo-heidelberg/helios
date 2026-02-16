@@ -1,6 +1,6 @@
 # Blender v2.69 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib groundplane.mtl
+mtllib plane.mtl
 o Plane
 v  1 -1 0
 v -1 -1 0

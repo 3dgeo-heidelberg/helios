@@ -5,14 +5,25 @@ __version__ = metadata.version(__package__)
 del metadata
 
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings
-from helios.scanner import Scanner, ScannerSettings
+from helios.platforms import (
+    Platform,
+    PlatformSettings,
+    DynamicPlatformSettings,
+    load_traj_csv,
+    TrajectorySettings,
+    StaticPlatformSettings,
+    list_platforms,
+    platform_from_name,
+)
+from helios.scanner import Scanner, ScannerSettings, list_scanners, scanner_from_name
 from helios.scene import StaticScene, ScenePart
 from helios.settings import (
     ExecutionSettings,
+    ForceOnGroundStrategy,
     FullWaveformSettings,
     KDTreeFactoryType,
     LogVerbosity,
+    OutputFormat,
     OutputSettings,
     ParallelizationStrategy,
     set_execution_settings,

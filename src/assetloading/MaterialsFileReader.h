@@ -1,5 +1,6 @@
 #pragma once
 
+#include <HeliosException.h>
 #include <map>
 #include <string>
 
@@ -16,6 +17,6 @@ public:
    * @param filePathString Path to materials file
    * @return Parsed materials
    */
-  static std::map<std::string, Material> loadMaterials(
+  static std::map<std::string, std::shared_ptr<Material>> loadMaterials(
     std::string filePathString);
 };

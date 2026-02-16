@@ -1,10 +1,12 @@
 #pragma once
 
+#include <boost/filesystem.hpp>
 #include <map>
 #include <string>
-
+namespace fs = boost::filesystem;
 #include "Material.h"
 #include "ScenePart.h"
+#include <logging.hpp>
 
 #include "maths/Rotation.h"
 
@@ -38,7 +40,7 @@ public:
   /**
    * @brief Available materials
    */
-  std::map<std::string, Material> materials;
+  std::map<std::string, std::shared_ptr<Material>> materials;
 
   /**
    * @brief ScenePart used to build the output. Not strictly necessary for

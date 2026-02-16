@@ -5,6 +5,7 @@
 #include <StaticScene.h>
 #include <Survey.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
+#include <scene/Material.h>
 
 #include <memory>
 #include <string>
@@ -24,7 +25,7 @@ readObjScenePart(std::string filePath,
                  std::string upaxis);
 
 std::shared_ptr<ScenePart>
-readTiffScenePart(std::string filePath);
+readTiffScenePart(std::string filePath, std::vector<std::string> assetsPath);
 
 std::shared_ptr<ScenePart>
 readXYZScenePart(
@@ -83,3 +84,27 @@ makeSceneShift(Survey& survey);
 void
 addScenePartToScene(std::shared_ptr<StaticScene> scene,
                     std::shared_ptr<ScenePart> scenePart);
+
+std::shared_ptr<Material>
+readMaterialFromFile(std::string materialPath,
+                     std::vector<std::string> assetsPath,
+                     std::string materialId);
+
+void
+applyMaterialToPrimitivesRange(std::shared_ptr<ScenePart> scenePart,
+                               std::shared_ptr<Material> material,
+                               size_t range_start,
+                               size_t range_stop);
+
+void
+applyMaterialToPrimitivesIndices(std::shared_ptr<ScenePart> scenePart,
+                                 std::shared_ptr<Material> material,
+                                 const std::vector<size_t>& indices);
+
+void
+changeMaterialInstance(std::shared_ptr<ScenePart> scenePart,
+                       const std::string& oldName,
+                       std::shared_ptr<Material> newMaterial);
+
+std::vector<std::pair<std::string, std::shared_ptr<Material>>>
+getMaterialsMap(const std::shared_ptr<ScenePart>& part);

@@ -1,13 +1,18 @@
 from helios.scene import StaticScene
-from helios.utils import get_asset_directories
+from helios.utils import (
+    classonlymethod,
+    get_asset_directories,
+    _validate_trajectory_array,
+)
 from helios.validation import (
     AssetPath,
     Model,
     UpdateableMixin,
     validate_xml_file,
+    get_all_annotations,
 )
 from pydantic import Field, validate_call
-from typing import Annotated, Any, Literal, Optional
+from typing import Annotated, Any, Callable, Literal, Optional, Type
 from numpydantic import NDArray
 
 import numpy as np
@@ -33,6 +38,27 @@ traj_csv_dtype = np.dtype(
         ("z", "f8"),
     ]
 )
+
+
+def _specify_platform_settings_type(parameters: dict) -> None:
+    """Specify the most suitable PlatformSettings subclass based on the given parameters."""
+    candidates: list[Type[PlatformSettings]] = [
+        StaticPlatformSettings,
+        DynamicPlatformSettings,
+        PlatformSettings,
+    ]
+
+    param_keys = set(parameters.keys())
+    best_cls = PlatformSettings
+    best_score = -1
+    for cls in candidates:
+        ann_keys = set(get_all_annotations(cls).keys())
+        score = len(ann_keys & param_keys)
+        if score > best_score:
+            best_score = score
+            best_cls = cls
+
+    return best_cls()
 
 
 def load_traj_csv(
@@ -107,7 +133,7 @@ class PlatformSettings(PlatformSettingsBase):
     y: float = 0
     z: float = 0
 
-    def force_on_ground(self, scene: StaticScene):
+    def do_force_on_ground(self, scene: StaticScene):
         """
         Move waypoint z coordinate to ground level
         """
@@ -132,9 +158,10 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
     # TODO: should platform_settings get set from xml as well?
     platform_settings: Optional[PlatformSettings] = None
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def from_xml(cls, platform_file: AssetPath, platform_id: str = ""):
+        """Classmethod to load a platform from an XML file. The XML file should conform to the schema defined in "xsd/platform.xsd". The platform_id parameter can be used to specify which platform to load if the XML file contains multiple platforms."""
 
         # Validate the XML
         validate_xml_file(platform_file, "xsd/platform.xsd")
@@ -146,7 +173,7 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         platform._is_loaded_from_xml = True
         return platform
 
-    @classmethod
+    @classonlymethod
     @validate_call
     def load_interpolate_platform(
         cls,
@@ -156,10 +183,19 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         interpolation_method: Literal["CANONICAL", "ARINC 705"] = "ARINC 705",
         sync_gps_time: bool = False,
     ):
-        """Load a platform from an XML file with interpolation enabled."""
+        """Load a platform from an XML file with interpolation enabled.
+        Args:
+            trajectory: 1-D structured NumPy array of shape (n,).
+            platform_file: File path to platform XML file.
+            platform_id: ID of desired platform.
+            interpolation_method: Interpolation method to use. Options are "CANONICAL" and "ARINC 705".
+            sync_gps_time: Whether to sync GPS time with platform's start time.
+        """
 
         # Validate the XML
         validate_xml_file(platform_file, "xsd/platform.xsd")
+
+        _validate_trajectory_array(trajectory)
 
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
@@ -176,46 +212,50 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
 # Predefined platforms
 #
 
-
-def sr22():
-    return Platform.from_xml("data/platforms.xml", platform_id="sr22")
-
-
-def quadcopter():
-    return Platform.from_xml("data/platforms.xml", platform_id="quadcopter")
-
-
-def copter_linearpath():
-    return Platform.from_xml("data/platforms.xml", platform_id="copter_linearpath")
-
-
-def tractor():
-    return Platform.from_xml("data/platforms.xml", platform_id="tractor")
+PLATFORM_REGISTRY: dict[str, tuple[str, str]] = {
+    "sr22": ("data/platforms.xml", "sr22"),
+    "quadcopter": ("data/platforms.xml", "quadcopter"),
+    "copter_linearpath": ("data/platforms.xml", "copter_linearpath"),
+    "tractor": ("data/platforms.xml", "tractor"),
+    "tractor_leftside": ("data/platforms.xml", "tractor_leftside"),
+    "vehicle_linearpath": ("data/platforms.xml", "vehicle_linearpath"),
+    "vmx_450_car_left": ("data/platforms.xml", "vmx-450-car-left"),
+    "vmx_450_car_right": ("data/platforms.xml", "vmx-450-car-right"),
+    "vmq_1ha_car": ("data/platforms.xml", "vmq-1ha-car-0"),
+    "simple_linearpath": ("data/platforms.xml", "simple_linearpath"),
+    "tripod": ("data/platforms.xml", "tripod"),
+}
 
 
-def tractor_leftside():
-    return Platform.from_xml("data/platforms.xml", platform_id="tractor_leftside")
+def list_platforms() -> list[str]:
+    """List all predefined platform names."""
+    return list(PLATFORM_REGISTRY.keys())
 
 
-def vehicle_linearpath():
-    return Platform.from_xml("data/platforms.xml", platform_id="vehicle_linearpath")
+@validate_call
+def platform_from_name(platform_name: str) -> Platform:
+    """Create a predefined platform by its string name."""
+    try:
+        platform_file, platform_id = PLATFORM_REGISTRY[platform_name]
+    except KeyError as exc:
+        valid_names = ", ".join(list_platforms())
+        raise ValueError(
+            f"Unknown platform '{platform_name}'. Available platforms: {valid_names}"
+        ) from exc
+    return Platform.from_xml(platform_file, platform_id=platform_id)
 
 
-def vmx_450_car_left():
-    return Platform.from_xml("data/platforms.xml", platform_id="vmx-450-car-left")
+def _make_predefined_platform(platform_name: str) -> Callable[[], Platform]:
+    def _platform_factory():
+        return platform_from_name(platform_name)
+
+    _platform_factory.__name__ = platform_name
+    _platform_factory.__qualname__ = platform_name
+    _platform_factory.__doc__ = f"Create predefined platform '{platform_name}'."
+    return _platform_factory
 
 
-def vmx_450_car_right():
-    return Platform.from_xml("data/platforms.xml", platform_id="vmx-450-car-right")
+for _platform_name in PLATFORM_REGISTRY:
+    globals()[_platform_name] = _make_predefined_platform(_platform_name)
 
-
-def vmq_1ha_car():
-    return Platform.from_xml("data/platforms.xml", platform_id="vmq-1ha-car-0")
-
-
-def simple_linearpath():
-    return Platform.from_xml("data/platforms.xml", platform_id="simple_linearpath")
-
-
-def tripod():
-    return Platform.from_xml("data/platforms.xml", platform_id="tripod")
+del _platform_name

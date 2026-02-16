@@ -19,8 +19,6 @@ else()
   set(HELIOS_VERSION_FULL "2.0.1")
 endif()
 
-find_package(pybind11 CONFIG REQUIRED)
-
 project(Helios++
   VERSION ${HELIOS_VERSION}
   LANGUAGES C CXX
@@ -52,6 +50,14 @@ option(BUILD_DOCS "Enable building of documentation" ON)
 option(HELIOS_DATA_ANALYTICS "Enable data analytics mode used for debugging internal state" OFF)
 option(HELIOS_BUDDING_METRICS "Enable budding metrics for debugging" OFF)
 option(HELIOS_PCL "Enable PCL support for debugging visualization" OFF)
+option(HELIOS_DOCS_ONLY "Configure only documentation targets" OFF)
+
+# If we are e.g. running on RTD, skip everything except Doxygen
+if(HELIOS_DOCS_ONLY)
+  set(BUILD_DOCS ON)
+  add_subdirectory(doc)
+  return()
+endif()
 
 # Add a library for Helios that both the executable and the Python bindings can link against
 add_library(helios)
@@ -160,6 +166,7 @@ add_executable(helios++)
 target_link_libraries(helios++ PRIVATE helios)
 
 if(BUILD_PYTHON)
+  find_package(pybind11 CONFIG REQUIRED)
   include_directories(${Python_INCLUDE_DIRS})
   include_directories(${CMAKE_SOURCE_DIR}/src/python)
   pybind11_add_module(_helios MODULE python/helios/helios_python.cpp)

@@ -70,6 +70,7 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
   }
   // Prepare default material
   Material mat;
+  materials[mat.name] = std::make_shared<Material>(mat);
   // Legacy default material for vegetation studies commented below
   /*mat.isGround = false;
   mat.useVertexColors = true;
@@ -91,7 +92,7 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
 
   // Prepare detailed voxels
   for (DetailedVoxel* dv : dvs) {
-    dv->material = std::make_shared<Material>(mat);
+    dv->material = getMaterial(mat.name);
     for (size_t i = 0; i < dv->getNumVertices(); i++) {
       Color4f& color = dv->getVertices()[i].color;
       color.x = 0.5;

@@ -5,20 +5,27 @@ import math
 import pytest
 from pydantic import ValidationError
 from helios import HeliosException
+import helios.platforms as platform_module
 
 
 def test_preinstantiated_platforms():
-    assert isinstance(sr22(), Platform)
-    assert isinstance(quadcopter(), Platform)
-    assert isinstance(copter_linearpath(), Platform)
-    assert isinstance(tractor(), Platform)
-    assert isinstance(tractor_leftside(), Platform)
-    assert isinstance(vehicle_linearpath(), Platform)
-    assert isinstance(vmx_450_car_left(), Platform)
-    assert isinstance(vmx_450_car_right(), Platform)
-    assert isinstance(vmq_1ha_car(), Platform)
-    assert isinstance(simple_linearpath(), Platform)
-    assert isinstance(tripod(), Platform)
+    for platform_name in list_platforms():
+        platform_factory = getattr(platform_module, platform_name)
+        assert isinstance(platform_factory(), Platform)
+
+
+def test_list_platforms_matches_registry():
+    assert list_platforms() == list(platform_module.PLATFORM_REGISTRY.keys())
+
+
+def test_platform_from_name():
+    for platform_name in list_platforms():
+        assert isinstance(platform_from_name(platform_name), Platform)
+
+
+def test_platform_from_name_invalid():
+    with pytest.raises(ValueError, match="Unknown platform"):
+        platform_from_name("not-a-valid-platform")
 
 
 def test_platform_settings_mls():
@@ -29,7 +36,7 @@ def test_platform_settings_mls():
         y=0,
     )
     scanner_settings = ScannerSettings(pulse_frequency=1000)
-    platform_settings.force_on_ground(survey.scene)
+    platform_settings.do_force_on_ground(survey.scene)
     survey.add_leg(
         platform_settings=platform_settings,
         scanner_settings=scanner_settings,
@@ -48,7 +55,7 @@ def test_platform_settings_tls():
         y=0,
     )
 
-    platform_settings.force_on_ground(survey.scene)
+    platform_settings.do_force_on_ground(survey.scene)
     survey.add_leg(
         platform_settings=platform_settings,
     )
@@ -111,6 +118,42 @@ def test_load_interpolate_platform_invalid_id():
         )
 
 
+def test_load_interpolate_platform_invalid_trajectory():
+    trajectory1 = np.zeros((2, 7), dtype=traj_csv_dtype)
+    with pytest.raises(ValueError):
+        Platform.load_interpolate_platform(
+            trajectory=trajectory1,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+
+    trajectory2 = np.zeros((51, 7, 2))
+    with pytest.raises(ValueError):
+        ip = Platform.load_interpolate_platform(
+            trajectory=trajectory2,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+
+    trajectory3 = list(range(51))
+    with pytest.raises(ValueError):
+        ip = Platform.load_interpolate_platform(
+            trajectory=trajectory3,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+    trajectory4 = np.array(
+        [3.7, -1.04719755, 1.04719755, 5.77180384, 13.002584, 1.122905, 400.0]
+    )
+
+    with pytest.raises(ValueError):
+        ip = Platform.load_interpolate_platform(
+            trajectory=trajectory4,
+            platform_file="data/platforms.xml",
+            platform_id="sr22",
+        )
+
+
 def test_load_interpolate_platform():
     trajectory = load_traj_csv(
         csv="data/trajectories/cycloid.trj",
@@ -129,16 +172,6 @@ def test_load_interpolate_platform():
     )
 
     assert isinstance(ip, Platform)
-
-
-def test_load_interpolate_platform_wrong_trajectory_shape():
-    trajectory = np.zeros((2, 7), dtype=traj_csv_dtype)
-    with pytest.raises(RuntimeError):
-        Platform.load_interpolate_platform(
-            trajectory=trajectory,
-            platform_file="data/platforms.xml",
-            platform_id="sr22",
-        )
 
 
 def test_load_interpolate_platform_wrong_rotation_spec():

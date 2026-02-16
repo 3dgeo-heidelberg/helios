@@ -121,6 +121,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/ScanningPulseProcessWrap.h>
 #include <python/SceneHandling.h>
 #include <python/SimulationWrap.h>
+#include <python/SurveyHandling.h>
 #include <python/utils.h>
 #include <sim/comps/ScanningStrip.h>
 #include <sim/core/Simulation.h>
@@ -139,6 +140,11 @@ PYBIND11_MODULE(_helios, m)
 
   py::implicitly_convertible<py::iterable, VectorString>();
   py::register_exception<HeliosException>(m, "HeliosException");
+  py::register_exception<std::out_of_range>(m, "IndexError", PyExc_IndexError);
+  py::register_exception<std::invalid_argument>(
+    m, "ValueError", PyExc_ValueError);
+  py::register_exception<std::runtime_error>(
+    m, "RuntimeError", PyExc_RuntimeError);
 
   // Enable GDAL (Load its drivers)
   GDALAllRegister();
@@ -2721,7 +2727,7 @@ PYBIND11_MODULE(_helios, m)
                   &Simulation::getCallbackFrequency,
                   &Simulation::setCallbackFrequency)
 
-    .def("start", &Simulation::start)
+    .def("start", &Simulation::start, py::call_guard<py::gil_scoped_release>())
     .def("pause", &Simulation::pause)
     .def("stop", &Simulation::stop);
 
@@ -3119,5 +3125,12 @@ PYBIND11_MODULE(_helios, m)
   m.def("make_scene_shift", &makeSceneShift);
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);
+  m.def("check_integrate_survey_and_legs", &checkIntegrateSurveyAndLegs);
+  m.def("read_material_from_file", &readMaterialFromFile);
+  m.def("apply_material_to_primitives_indices",
+        &applyMaterialToPrimitivesIndices);
+  m.def("apply_material_to_primitives_range", &applyMaterialToPrimitivesRange);
+  m.def("change_material_instance", &changeMaterialInstance);
+  m.def("get_materials_map", &getMaterialsMap);
 }
 }
