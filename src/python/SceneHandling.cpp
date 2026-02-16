@@ -99,17 +99,24 @@ readObjScenePart(std::string filePath,
   loader.params["filepath"] = filePath;
   loader.params["up"] = upaxis;
   loader.setAssetsDir(assetsPath);
-  std::shared_ptr<ScenePart> sp(loader.run());
+  try {
+    std::shared_ptr<ScenePart> sp(loader.run());
 
-  // Connect all primitives to their scene part
-  for (auto p : sp->mPrimitives)
-    p->part = sp;
+    // Connect all primitives to their scene part
+    for (auto p : sp->mPrimitives)
+      p->part = sp;
 
-  // Object lifetime caveat! Settings primsOut to nullptr will prevent the
-  // loader destructor from deleting the primitives.
-  loader.primsOut = nullptr;
+    // Object lifetime caveat: prevent destructor from deleting these
+    // primitives.
+    loader.primsOut = nullptr;
 
-  return sp;
+    return sp;
+  } catch (const std::exception& e) {
+    std::stringstream ss;
+    ss << "Failed to read OBJ scene part '" << filePath << "': " << e.what();
+    logging::ERR(ss.str());
+    throw;
+  }
 }
 
 std::shared_ptr<ScenePart>

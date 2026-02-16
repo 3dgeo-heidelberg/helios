@@ -257,6 +257,8 @@ Scene::doForceOnGround()
     std::shared_ptr<ScenePart> part = parts[i];
     if (part->isNull())
       continue;
+    if (part->mPrimitives.empty() || part->mPrimitives[0]->material == nullptr)
+      continue;
     if (!part->mPrimitives[0]->material->isGround)
       continue;
     I.push_back(i);              // Store index of found ground part
