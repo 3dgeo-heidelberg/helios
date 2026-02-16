@@ -86,6 +86,12 @@ class MaterialDict(MutableMapping[str, Material]):
         if not isinstance(material, Material):
             raise TypeError("Value must be an instance of Material.")
 
+        snapshot = self._snapshot()
+        if name not in snapshot:
+            raise KeyError(
+                f"Material with name '{name}' does not exist in the scene part."
+            )
+
         _helios.change_material_instance(
             self._owner._cpp_object, name, material._cpp_object
         )
