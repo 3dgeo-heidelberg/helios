@@ -57,7 +57,7 @@ jobs:
 
       - name: Install Helios
         run: |
-          python -m pip install --no-build-isolation --config-settings=cmake.build-type="Release" --config-settings=build-dir="build" --config-settings=cmake.define.BUILD_TESTING="ON" -v .
+          python -m pip install --no-build-isolation --config-settings=cmake.build-type="Release" --config-settings=build-dir="build" --config-settings=cmake.define.BUILD_TESTING="ON" --config-settings=cmake.define.BUILD_BENCHMARKS="ON" -v .
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
