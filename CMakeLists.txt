@@ -174,6 +174,12 @@ endif()
 # Traverse the source tree to add all relevant sources
 add_subdirectory(src)
 
+# Create benchmarks
+if(BUILD_BENCHMARKS)
+  find_package(benchmark REQUIRED)
+  add_subdirectory(benchmarks)
+endif()
+
 # Add documentation building through the CMake build system
 if(BUILD_DOCS)
   add_subdirectory(doc)
