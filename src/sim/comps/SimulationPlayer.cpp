@@ -341,6 +341,8 @@ SimulationPlayer::restartSimulation(Simulation& sim)
   sim.mStopped = false;
   sim.mCurrentLegIndex = 0;
   sim.maxDurationStartGpsTime_ns = sim.currentGpsTime_ns;
+  sim.maxDurationDeferredUntilFirstPulse = false;
+  sim.maxDurationStartPulseNumber = sim.getScanner()->getCurrentPulseNumber();
   // Restart simulation step loop (i.e., time)
   logging::DEBUG("Restarting simulation step loop ...");
   sim.getStepLoop().setCurrentStep(0);

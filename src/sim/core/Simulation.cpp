@@ -70,6 +70,17 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
+  if (mScanner->getMaxDuration() > 0.0 && maxDurationDeferredUntilFirstPulse) {
+    int const currentPulseNumber = mScanner->getCurrentPulseNumber();
+    if (currentPulseNumber <= maxDurationStartPulseNumber) {
+      // Keep elapsed maxDuration_s at ~0 until first pulse is emitted.
+      maxDurationStartGpsTime_ns = currentGpsTime_ns;
+    } else {
+      maxDurationDeferredUntilFirstPulse = false;
+      maxDurationStartGpsTime_ns = currentGpsTime_ns;
+    }
+  }
+
   // Check for leg completion
   bool const maxDurationElapsed = mScanner->checkMaxTimeElapsed(
     currentGpsTime_ns, maxDurationStartGpsTime_ns);
@@ -154,6 +165,8 @@ Simulation::start()
   timeStart_ns =
     duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
   maxDurationStartGpsTime_ns = currentGpsTime_ns;
+  maxDurationDeferredUntilFirstPulse = false;
+  maxDurationStartPulseNumber = mScanner->getCurrentPulseNumber();
 
 #ifdef DATA_ANALYTICS
   HDA_StateJSONReporter sjr((SurveyPlayback*)this, "helios_state.json");
