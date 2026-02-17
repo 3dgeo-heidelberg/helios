@@ -1,13 +1,13 @@
-#include "GroundVehiclePlatform.h"
+#include <helios/platform/GroundVehiclePlatform.h>
 
 using namespace std;
 
 #include <glm/gtx/norm.hpp>
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
-#include "typedef.h"
+#include <helios/util/typedef.h>
 
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

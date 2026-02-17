@@ -1,8 +1,8 @@
-#include "SpectralLibrary.h"
+#include <helios/assetloading/SpectralLibrary.h>
 
 #include <fstream>
+#include <helios/util/logger/logging.hpp>
 #include <iostream>
-#include <logging.hpp>
 #include <set>
 #include <typeinfo>
 

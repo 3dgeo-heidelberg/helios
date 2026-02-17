@@ -1,4 +1,4 @@
-#include "LinearPathPlatform.h"
+#include <helios/platform/LinearPathPlatform.h>
 
 #include <glm/gtx/norm.hpp>
 

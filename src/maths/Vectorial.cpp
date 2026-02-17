@@ -1,5 +1,5 @@
-#include "Vectorial.h"
-#include "MathConstants.h"
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/Vectorial.h>
 
 double
 Vectorial::directionToAngleXY(glm::dvec3 const u, bool positive)

@@ -19,5 +19,3 @@ if(BUILD_TESTING)
 endif()
 add_subdirectory(util)
 add_subdirectory(visualhelios)
-
-target_include_directories(helios PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

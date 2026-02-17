@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <DetailedVoxel.h>
-#include <UniformNoiseSource.h>
-#include <maths/RayUtils.h>
+#include <helios/maths/RayUtils.h>
+#include <helios/noise/UniformNoiseSource.h>
+#include <helios/scene/primitives/DetailedVoxel.h>
 
 static bool
 checkIntersection(const std::vector<double>& it)

@@ -1,7 +1,7 @@
-#include <ImprovedEnergyModel.h>
-#include <maths/EnergyMaths.h>
-#include <scanner/ScanningDevice.h>
-#include <scanner/detector/AbstractDetector.h>
+#include <helios/maths/EnergyMaths.h>
+#include <helios/maths/model/ImprovedEnergyModel.h>
+#include <helios/scanner/ScanningDevice.h>
+#include <helios/scanner/detector/AbstractDetector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

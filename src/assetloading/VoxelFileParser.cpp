@@ -1,4 +1,4 @@
-#include <VoxelFileParser.h>
+#include <helios/assetloading/VoxelFileParser.h>
 
 char const VoxelFileParser::BLANK_CHARACTERS[] = { ' ', '\t', '\r', '\n' };
 

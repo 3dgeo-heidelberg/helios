@@ -1,6 +1,6 @@
-#include <maths/Directions.h>
-#include <platform/InterpolatedMovingPlatform.h>
-#include <platform/trajectory/DesignTrajectoryFunction.h>
+#include <helios/maths/Directions.h>
+#include <helios/platform/InterpolatedMovingPlatform.h>
+#include <helios/platform/trajectory/DesignTrajectoryFunction.h>
 
 #include <glm/gtx/norm.hpp>
 

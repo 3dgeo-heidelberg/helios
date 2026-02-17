@@ -1,6 +1,6 @@
-#include <SerialIO.h>
-#include <logging.hpp>
-#include <scene/StaticScene.h>
+#include <helios/filems/serialization/SerialIO.h>
+#include <helios/scene/StaticScene.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

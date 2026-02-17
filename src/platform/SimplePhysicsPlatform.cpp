@@ -1,4 +1,4 @@
-#include "SimplePhysicsPlatform.h"
+#include <helios/platform/SimplePhysicsPlatform.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

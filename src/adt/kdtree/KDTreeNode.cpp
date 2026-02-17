@@ -1,11 +1,11 @@
-#include "KDTreeNode.h"
-#include "KDTreeNodeRoot.h"
-#include "KDTreePrimitiveComparator.h"
-#include <SerialIO.h>
-#include <serial.h>
+#include <helios/adt/kdtree/KDTreeNode.h>
+#include <helios/adt/kdtree/KDTreeNodeRoot.h>
+#include <helios/adt/kdtree/KDTreePrimitiveComparator.h>
+#include <helios/filems/serialization/SerialIO.h>
+#include <helios/filems/serialization/serial.h>
 
+#include <helios/util/logger/logging.hpp>
 #include <iostream>
-#include <logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

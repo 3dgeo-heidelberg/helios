@@ -1,22 +1,22 @@
 // TODO Pending : This implementation is calling scanner setLastPulseWasHit
 // Is this thread safe?
-#include "FullWaveformPulseRunnable.h"
+#include <helios/scanner/detector/FullWaveformPulseRunnable.h>
 
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#include "maths/Rotation.h"
-#include <TimeWatcher.h>
-#include <filems/facade/FMSFacade.h>
-#include <maths/EnergyMaths.h>
-#include <maths/RayUtils.h>
-#include <scanner/Scanner.h>
-#include <scanner/detector/FullWaveform.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/maths/EnergyMaths.h>
+#include <helios/maths/RayUtils.h>
+#include <helios/maths/Rotation.h>
+#include <helios/scanner/Scanner.h>
+#include <helios/scanner/detector/FullWaveform.h>
+#include <helios/util/TimeWatcher.h>
 
 #if DATA_ANALYTICS >= 2
-#include <dataanalytics/HDA_GlobalVars.h>
+#include <helios/dataanalytics/HDA_GlobalVars.h>
 using helios::analytics::HDA_GV;
 
 #include <glm/gtx/norm.hpp>

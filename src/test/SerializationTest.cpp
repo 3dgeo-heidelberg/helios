@@ -1,12 +1,12 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <DetailedVoxel.h>
-#include <Scene.h>
-#include <SerialIO.h>
 #include <cstdio>
+#include <helios/filems/serialization/SerialIO.h>
+#include <helios/scene/Scene.h>
+#include <helios/scene/primitives/DetailedVoxel.h>
 #include <string>
 #include <vector>
 

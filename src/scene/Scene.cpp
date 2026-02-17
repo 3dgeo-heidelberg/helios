@@ -1,13 +1,13 @@
 // #include <iostream>
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <KDTreeRaycaster.h>
-#include <Scene.h>
-#include <SerialIO.h>
-#include <TimeWatcher.h>
-#include <UniformNoiseSource.h>
-#include <surfaceinspector/maths/Plane.hpp>
-#include <surfaceinspector/maths/PlaneFitter.hpp>
+#include <helios/alg/raycast/KDTreeRaycaster.h>
+#include <helios/filems/serialization/SerialIO.h>
+#include <helios/noise/UniformNoiseSource.h>
+#include <helios/scene/Scene.h>
+#include <helios/surfaceinspector/maths/Plane.hpp>
+#include <helios/surfaceinspector/maths/PlaneFitter.hpp>
+#include <helios/util/TimeWatcher.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -17,7 +17,7 @@
 #include <unordered_set>
 
 #if DATA_ANALYTICS >= 2
-#include <dataanalytics/HDA_GlobalVars.h>
+#include <helios/dataanalytics/HDA_GlobalVars.h>
 using helios::analytics::HDA_GV;
 #endif
 

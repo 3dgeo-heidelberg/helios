@@ -1,6 +1,6 @@
-#include <TimeWatcher.h>
+#include <helios/util/TimeWatcher.h>
+#include <helios/util/logger/logging.hpp>
 #include <iomanip>
-#include <logging.hpp>
 #include <sstream>
 
 // *** CONSTRUCTOR *** //

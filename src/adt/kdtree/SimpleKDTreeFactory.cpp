@@ -1,8 +1,8 @@
-#include <BinaryTreeDepthIterator.h>
-#include <IBinaryTreeNode.h>
-#include <KDTreePrimitiveComparator.h>
-#include <SimpleKDTreeFactory.h>
-#include <logging.hpp>
+#include <helios/adt/bintree/BinaryTreeDepthIterator.h>
+#include <helios/adt/bintree/IBinaryTreeNode.h>
+#include <helios/adt/kdtree/KDTreePrimitiveComparator.h>
+#include <helios/adt/kdtree/SimpleKDTreeFactory.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

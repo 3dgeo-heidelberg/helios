@@ -1,13 +1,13 @@
-#include "AbstractPulseRunnable.h"
+#include <helios/scanner/detector/AbstractPulseRunnable.h>
 
 #define _USE_MATH_DEFINES
-#include "MathConstants.h"
 #include "math.h"
-#include <maths/EnergyMaths.h>
+#include <helios/maths/EnergyMaths.h>
+#include <helios/maths/MathConstants.h>
 
-#include "AbstractDetector.h"
-#include <filems/facade/FMSFacade.h>
-#include <scanner/PulseRecord.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/scanner/PulseRecord.h>
+#include <helios/scanner/detector/AbstractDetector.h>
 
 #include <glm/glm.hpp>
 

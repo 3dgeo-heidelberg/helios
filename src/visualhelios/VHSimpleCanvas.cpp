@@ -1,7 +1,7 @@
 #ifdef PCL_BINDING
 
-#include <Primitive.h>
-#include <visualhelios/VHSimpleCanvas.h>
+#include <helios/scene/primitives/Primitive.h>
+#include <helios/visualhelios/VHSimpleCanvas.h>
 
 #include <sstream>
 

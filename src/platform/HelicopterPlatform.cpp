@@ -1,12 +1,12 @@
-#include "HelicopterPlatform.h"
+#include <helios/platform/HelicopterPlatform.h>
 
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
 
-#include "PrintUtils.h"
-#include "Vectorial.h"
 #include <glm/gtx/norm.hpp>
-#include <logging.hpp>
-#include <maths/MathConstants.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/Vectorial.h>
+#include <helios/util/PrintUtils.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION *** //
 // *********************************** //

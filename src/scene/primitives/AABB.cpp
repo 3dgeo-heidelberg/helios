@@ -1,5 +1,5 @@
-#include "AABB.h"
-#include "logging.hpp"
+#include <helios/scene/primitives/AABB.h>
+#include <helios/util/logger/logging.hpp>
 
 #include <glm/gtx/string_cast.hpp>
 

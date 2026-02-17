@@ -1,13 +1,13 @@
-#include <assetloading/geometryfilter/DenseVoxelGrid.h>
-#include <assetloading/geometryfilter/SparseVoxelGrid.h>
-#include <assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <helios/assetloading/geometryfilter/DenseVoxelGrid.h>
+#include <helios/assetloading/geometryfilter/SparseVoxelGrid.h>
+#include <helios/assetloading/geometryfilter/XYZPointCloudFileLoader.h>
 
-#include <logging.hpp>
-#include <util/FileUtils.h>
-#include <util/HeliosException.h>
+#include <helios/filems/util/FileUtils.h>
+#include <helios/util/HeliosException.h>
+#include <helios/util/logger/logging.hpp>
 
-#include "Material.h"
-#include "PlaneFitter.h"
+#include <helios/maths/PlaneFitter.h>
+#include <helios/scene/Material.h>
 
 #include <iostream>
 

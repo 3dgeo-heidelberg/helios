@@ -1,13 +1,13 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <FullWaveformPulseDetector.h>
-#include <HelicopterPlatform.h>
-#include <OscillatingMirrorBeamDeflector.h>
-#include <Survey.h>
-#include <scanner/SingleScanner.h>
+#include <helios/platform/HelicopterPlatform.h>
+#include <helios/scanner/SingleScanner.h>
+#include <helios/scanner/beamDeflector/OscillatingMirrorBeamDeflector.h>
+#include <helios/scanner/detector/FullWaveformPulseDetector.h>
+#include <helios/sim/comps/Survey.h>
 
 TEST_CASE("Survey Copy Test")
 {

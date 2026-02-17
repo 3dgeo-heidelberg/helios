@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
-#include <platform/InterpolatedMovingPlatform.h>
+#include <helios/platform/InterpolatedMovingPlatform.h>
+#include <helios/util/logger/logging.hpp>
 
 TEST_CASE("Functional platform test ")
 {

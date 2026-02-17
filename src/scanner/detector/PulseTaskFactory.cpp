@@ -1,6 +1,6 @@
-#include <DynFullWaveformPulseRunnable.h>
-#include <FullWaveformPulseRunnable.h>
-#include <PulseTaskFactory.h>
+#include <helios/scanner/detector/DynFullWaveformPulseRunnable.h>
+#include <helios/scanner/detector/FullWaveformPulseRunnable.h>
+#include <helios/scanner/detector/PulseTaskFactory.h>
 
 using std::dynamic_pointer_cast;
 

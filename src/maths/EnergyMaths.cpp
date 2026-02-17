@@ -1,6 +1,6 @@
-#include <EnergyMaths.h>
-#include <util/HeliosException.h>
-#include <util/logger/logging.hpp>
+#include <helios/maths/EnergyMaths.h>
+#include <helios/util/HeliosException.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  EMITTED / RECEIVED POWER  *** //
 // ********************************** //

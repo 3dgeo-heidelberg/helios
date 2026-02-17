@@ -1,5 +1,5 @@
-#include <scanner/Scanner.h>
-#include <scanner/WarehouseScanningPulseProcess.h>
+#include <helios/scanner/Scanner.h>
+#include <helios/scanner/WarehouseScanningPulseProcess.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

@@ -1,15 +1,15 @@
-#include <DetailedVoxelLoader.h>
-#include <GeoTiffFileLoader.h>
-#include <KDTreeFactoryMaker.h>
-#include <NullGeometryFilter.h>
-#include <TimeWatcher.h>
-#include <WavefrontObjFileLoader.h>
-#include <XYZPointCloudFileLoader.h>
-#include <XmlSceneLoader.h>
-#include <XmlUtils.h>
-#include <scene/dynamic/DynScene.h>
+#include <helios/adt/kdtree/KDTreeFactoryMaker.h>
+#include <helios/assetloading/XmlSceneLoader.h>
+#include <helios/assetloading/XmlUtils.h>
+#include <helios/assetloading/geometryfilter/DetailedVoxelLoader.h>
+#include <helios/assetloading/geometryfilter/GeoTiffFileLoader.h>
+#include <helios/assetloading/geometryfilter/NullGeometryFilter.h>
+#include <helios/assetloading/geometryfilter/WavefrontObjFileLoader.h>
+#include <helios/assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <helios/scene/dynamic/DynScene.h>
+#include <helios/util/TimeWatcher.h>
 
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <memory>

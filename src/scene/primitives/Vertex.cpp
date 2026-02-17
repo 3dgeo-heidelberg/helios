@@ -1,4 +1,4 @@
-#include "Vertex.h"
+#include <helios/scene/primitives/Vertex.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

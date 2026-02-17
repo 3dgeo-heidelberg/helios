@@ -1,5 +1,5 @@
-#include <rigidmotion/RigidMotion.h>
-#include <rigidmotion/RigidMotionException.h>
+#include <helios/maths/rigidmotion/RigidMotion.h>
+#include <helios/maths/rigidmotion/RigidMotionException.h>
 #include <sstream>
 
 using namespace rigidmotion;

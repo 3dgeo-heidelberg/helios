@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <LadLut.h>
-#include <LadLutLoader.h>
+#include <helios/assetloading/LadLutLoader.h>
+#include <helios/maths/LadLut.h>
 #include <string>
 
 constexpr double eps = 0.00001;

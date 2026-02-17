@@ -1,12 +1,12 @@
-#include <ScanningDevice.h>
-#include <logging.hpp>
-#include <maths/EnergyMaths.h>
-#include <maths/MathConstants.h>
-#include <maths/model/BaseEnergyModel.h>
-#include <maths/model/ImprovedEnergyModel.h>
-#include <scanner/detector/AbstractDetector.h>
+#include <helios/maths/EnergyMaths.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/model/BaseEnergyModel.h>
+#include <helios/maths/model/ImprovedEnergyModel.h>
+#include <helios/scanner/ScanningDevice.h>
+#include <helios/scanner/detector/AbstractDetector.h>
+#include <helios/util/logger/logging.hpp>
 #if DATA_ANALYTICS >= 2
-#include <dataanalytics/HDA_GlobalVars.h>
+#include <helios/dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
 #endif
 

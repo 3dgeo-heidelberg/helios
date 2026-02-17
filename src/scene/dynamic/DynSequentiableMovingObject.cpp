@@ -1,4 +1,4 @@
-#include <scene/dynamic/DynSequentiableMovingObject.h>
+#include <helios/scene/dynamic/DynSequentiableMovingObject.h>
 
 #include <vector>
 

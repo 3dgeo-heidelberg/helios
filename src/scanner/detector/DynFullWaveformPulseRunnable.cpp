@@ -1,4 +1,4 @@
-#include <DynFullWaveformPulseRunnable.h>
+#include <helios/scanner/detector/DynFullWaveformPulseRunnable.h>
 
 // ***  ASSISTANCE METHODS  *** //
 // **************************** //

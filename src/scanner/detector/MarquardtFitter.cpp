@@ -1,6 +1,6 @@
-#include "MarquardtFitter.h"
+#include <helios/scanner/detector/MarquardtFitter.h>
 
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
 #include <algorithm>
 #include <cmath>

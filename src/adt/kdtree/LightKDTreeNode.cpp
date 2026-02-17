@@ -1,4 +1,4 @@
-#include <LightKDTreeNode.h>
+#include <helios/adt/kdtree/LightKDTreeNode.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

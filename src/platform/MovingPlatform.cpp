@@ -2,12 +2,12 @@
 
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/vector_angle.hpp>
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
 
-#include "MovingPlatform.h"
-#include "PrintUtils.h"
+#include <helios/platform/MovingPlatform.h>
+#include <helios/util/PrintUtils.h>
 using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

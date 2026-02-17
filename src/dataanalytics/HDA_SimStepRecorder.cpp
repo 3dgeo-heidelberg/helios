@@ -1,16 +1,16 @@
 #ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_SimStepRecorder.h>
+#include <helios/dataanalytics/HDA_SimStepRecorder.h>
 
-#include <beamDeflector/AbstractBeamDeflector.h>
-#include <maths/MathConstants.h>
-#include <maths/RotationOrder.h>
-#include <platform/Platform.h>
-#include <scanner/BuddingScanningPulseProcess.h>
-#include <scanner/Scanner.h>
-#include <scanner/ScannerHead.h>
-#include <scanner/WarehouseScanningPulseProcess.h>
-#include <util/HeliosException.h>
-#include <util/logger/logging.hpp>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/RotationOrder.h>
+#include <helios/platform/Platform.h>
+#include <helios/scanner/BuddingScanningPulseProcess.h>
+#include <helios/scanner/Scanner.h>
+#include <helios/scanner/ScannerHead.h>
+#include <helios/scanner/WarehouseScanningPulseProcess.h>
+#include <helios/scanner/beamDeflector/AbstractBeamDeflector.h>
+#include <helios/util/HeliosException.h>
+#include <helios/util/logger/logging.hpp>
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>

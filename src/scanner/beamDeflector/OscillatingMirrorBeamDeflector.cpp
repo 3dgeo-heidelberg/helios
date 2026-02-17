@@ -1,15 +1,15 @@
-#include "OscillatingMirrorBeamDeflector.h"
+#include <helios/scanner/beamDeflector/OscillatingMirrorBeamDeflector.h>
 
 #include <iostream>
 #include <sstream>
 using namespace std;
 
 #define _USE_MATH_DEFINES
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 #include <math.h>
 
-#include "MathConverter.h"
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
+#include <helios/maths/MathConverter.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

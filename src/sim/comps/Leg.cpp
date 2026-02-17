@@ -1,5 +1,5 @@
-#include <Leg.h>
-#include <ScanningStrip.h>
+#include <helios/sim/comps/Leg.h>
+#include <helios/sim/comps/ScanningStrip.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

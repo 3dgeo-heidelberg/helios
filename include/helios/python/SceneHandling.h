@@ -1,0 +1,110 @@
+#pragma once
+#include <helios/adt/grove/KDGroveFactory.h>
+#include <helios/adt/kdtree/KDTreeFactory.h>
+#include <helios/maths/Rotation.h>
+#include <helios/platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/scene/Material.h>
+#include <helios/scene/StaticScene.h>
+#include <helios/sim/comps/Survey.h>
+
+#include <memory>
+#include <string>
+#include <vector>
+
+void
+invalidateStaticScene(std::shared_ptr<StaticScene> scene);
+
+void
+setSceneReflectances(std::shared_ptr<StaticScene> scene,
+                     std::vector<std::string> assetsPath,
+                     float wavelength);
+
+std::shared_ptr<ScenePart>
+readObjScenePart(std::string filePath,
+                 std::vector<std::string> assetsPath,
+                 std::string upaxis);
+
+std::shared_ptr<ScenePart>
+readTiffScenePart(std::string filePath, std::vector<std::string> assetsPath);
+
+std::shared_ptr<ScenePart>
+readXYZScenePart(
+  std::string filePath,
+  std::vector<std::string> assetsPath,
+  std::string separator,
+  double voxelSize,
+  double maxColorValue = 0.0,
+  glm::dvec3 defaultNormal = glm::dvec3(std::numeric_limits<double>::max(),
+                                        std::numeric_limits<double>::max(),
+                                        std::numeric_limits<double>::max()),
+  bool sparse = true,
+  int estimate_normals = 0,
+  int normalXIndex = 3,
+  int normalYIndex = 4,
+  int normalZIndex = 5,
+  int rgbRIndex = 6,
+  int rgbGIndex = 7,
+  int rgbBIndex = 8,
+  bool snapNeighborNormal = false);
+
+std::shared_ptr<ScenePart>
+readVoxScenePart(std::string filePath,
+                 std::vector<std::string> assetsPath,
+                 std::string intersectionMode,
+                 double intersectionArgument,
+                 bool randomShift = false,
+                 std::string ladlutPath = "");
+
+void
+rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);
+
+void
+scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor);
+
+void
+translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset);
+
+void
+writeSceneToBinary(const std::string& writePath,
+                   std::shared_ptr<Scene> scene,
+                   bool isDynScene = false);
+
+std::shared_ptr<Scene>
+readSceneFromBinary(const std::string& readPath);
+
+void
+findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
+                              std::shared_ptr<ScannerSettings> ref,
+                              std::string const defaultTemplateId,
+                              std::unordered_set<std::string>& fields);
+
+void
+makeSceneShift(Survey& survey);
+
+void
+addScenePartToScene(std::shared_ptr<StaticScene> scene,
+                    std::shared_ptr<ScenePart> scenePart);
+
+std::shared_ptr<Material>
+readMaterialFromFile(std::string materialPath,
+                     std::vector<std::string> assetsPath,
+                     std::string materialId);
+
+void
+applyMaterialToPrimitivesRange(std::shared_ptr<ScenePart> scenePart,
+                               std::shared_ptr<Material> material,
+                               size_t range_start,
+                               size_t range_stop);
+
+void
+applyMaterialToPrimitivesIndices(std::shared_ptr<ScenePart> scenePart,
+                                 std::shared_ptr<Material> material,
+                                 const std::vector<size_t>& indices);
+
+void
+changeMaterialInstance(std::shared_ptr<ScenePart> scenePart,
+                       const std::string& oldName,
+                       std::shared_ptr<Material> newMaterial);
+
+std::vector<std::pair<std::string, std::shared_ptr<Material>>>
+getMaterialsMap(const std::shared_ptr<ScenePart>& part);

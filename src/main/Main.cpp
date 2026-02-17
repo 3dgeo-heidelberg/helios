@@ -1,17 +1,17 @@
-#include <ArgumentsParser.h>
-#include <filems/util/FileUtils.h>
-#include <helios_version.h>
-#include <main/LidarSim.h>
-#include <main/MainHelp.h>
-#include <noise/RandomnessGenerator.h>
+#include <helios/filems/util/FileUtils.h>
+#include <helios/main/ArgumentsParser.h>
+#include <helios/main/LidarSim.h>
+#include <helios/main/MainHelp.h>
+#include <helios/noise/RandomnessGenerator.h>
+#include <helios/util/helios_version.h>
 
 #ifdef PCL_BINDING
-#include <demo/DemoSelector.h>
+#include <helios/demo/DemoSelector.h>
 #endif
 
 #ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_GlobalVars.h>
-#include <dataanalytics/HDA_GlobalVarsReporter.h>
+#include <helios/dataanalytics/HDA_GlobalVars.h>
+#include <helios/dataanalytics/HDA_GlobalVarsReporter.h>
 #endif
 
 #include <boost/filesystem.hpp>

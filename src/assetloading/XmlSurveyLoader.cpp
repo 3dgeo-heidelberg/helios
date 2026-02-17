@@ -1,14 +1,14 @@
-#include <RandomnessGenerator.h>
-#include <SerialSceneWrapper.h>
-#include <TimeWatcher.h>
-#include <XmlSurveyLoader.h>
-#include <XmlUtils.h>
-#include <adt/exprtree/UnivarExprTreeStringFactory.h>
-#include <fluxionum/DiffDesignMatrixInterpolator.h>
-#include <fluxionum/ParametricLinearPiecesFunction.h>
-#include <logging.hpp>
-#include <platform/InterpolatedMovingPlatformEgg.h>
-#include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
+#include <helios/adt/exprtree/UnivarExprTreeStringFactory.h>
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/assetloading/XmlUtils.h>
+#include <helios/filems/serialization/SerialSceneWrapper.h>
+#include <helios/maths/fluxionum/DiffDesignMatrixInterpolator.h>
+#include <helios/maths/fluxionum/ParametricLinearPiecesFunction.h>
+#include <helios/noise/RandomnessGenerator.h>
+#include <helios/platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
+#include <helios/util/TimeWatcher.h>
+#include <helios/util/logger/logging.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>

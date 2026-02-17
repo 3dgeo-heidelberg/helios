@@ -1,12 +1,12 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/lexical_cast/bad_lexical_cast.hpp>
 
-#include <AABB.h>
-#include <Primitive.h>
-#include <ScenePart.h>
-#include <Triangle.h>
-#include <WavefrontObj.h>
-#include <util/logger/logging.hpp>
+#include <helios/assetloading/ScenePart.h>
+#include <helios/assetloading/geometryfilter/WavefrontObj.h>
+#include <helios/scene/primitives/AABB.h>
+#include <helios/scene/primitives/Primitive.h>
+#include <helios/scene/primitives/Triangle.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

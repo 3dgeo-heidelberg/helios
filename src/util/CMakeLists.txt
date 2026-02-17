@@ -1,12 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "threadpool"
-  "serialization"
-  "logger"
-)
-
 target_sources(
   helios
   PRIVATE

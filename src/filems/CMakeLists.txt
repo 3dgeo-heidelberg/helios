@@ -1,18 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "facade"
-  "factory"
-  "read"
-  "serialization"
-  "util"
-  "write"
-  "write/core"
-  "write/comps"
-  "write/strategies"
-)
-
 target_sources(
   helios
   PRIVATE

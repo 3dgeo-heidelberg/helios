@@ -1,15 +1,15 @@
-#include <main/LidarSim.h>
+#include <helios/main/LidarSim.h>
 
 #include <iostream>
 
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include "Survey.h"
-#include "XmlSurveyLoader.h"
-#include <TimeWatcher.h>
-#include <filems/facade/FMSFacade.h>
-#include <filems/factory/FMSFacadeFactory.h>
-#include <scanner/detector/PulseThreadPoolFactory.h>
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/filems/factory/FMSFacadeFactory.h>
+#include <helios/scanner/detector/PulseThreadPoolFactory.h>
+#include <helios/sim/comps/Survey.h>
+#include <helios/util/TimeWatcher.h>
 
 namespace fms = helios::filems;
 

@@ -6,14 +6,16 @@ isolates the performance of the ScannerHead, BeamDeflector and ScanningDevice
 parts of the SimStep, and does not include pulse computation.
 */
 
-#include <adt/exprtree/UnivarExprTreeNode.h>
+#include <helios/adt/exprtree/UnivarExprTreeNode.h>
+#include <helios/maths/MathConverter.h>
+#include <helios/scanner/ScannerHead.h>
+#include <helios/scanner/ScanningDevice.h>
+#include <helios/scanner/ScanningPulseProcess.h>
+#include <helios/scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
+
 #include <benchmark/benchmark.h>
-#include <maths/MathConverter.h>
+
 #include <memory>
-#include <scanner/ScannerHead.h>
-#include <scanner/ScanningDevice.h>
-#include <scanner/ScanningPulseProcess.h>
-#include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
 bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
   logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,

@@ -2,7 +2,7 @@
 // Created by miguelyermo on 23/6/21.
 //
 
-#include "WavefrontObjCache.h"
+#include <helios/assetloading/geometryfilter/WavefrontObjCache.h>
 
 WavefrontObjCache&
 WavefrontObjCache::getInstance()

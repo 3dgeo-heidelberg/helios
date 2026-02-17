@@ -1,14 +1,14 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <MathConstants.h>
-#include <maths/rigidmotion/RigidMotionEngine.h>
-#include <maths/rigidmotion/RigidMotionException.h>
-#include <maths/rigidmotion/RigidMotionR2Factory.h>
-#include <maths/rigidmotion/RigidMotionR3Factory.h>
-#include <scene/dynamic/DynMotion.h>
-#include <scene/dynamic/DynMotionEngine.h>
-#include <scene/dynamic/DynMovingObject.h>
-#include <scene/primitives/Triangle.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/rigidmotion/RigidMotionEngine.h>
+#include <helios/maths/rigidmotion/RigidMotionException.h>
+#include <helios/maths/rigidmotion/RigidMotionR2Factory.h>
+#include <helios/maths/rigidmotion/RigidMotionR3Factory.h>
+#include <helios/scene/dynamic/DynMotion.h>
+#include <helios/scene/dynamic/DynMotionEngine.h>
+#include <helios/scene/dynamic/DynMovingObject.h>
+#include <helios/scene/primitives/Triangle.h>
 
 TEST_CASE("Rigid motion test")
 {

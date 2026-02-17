@@ -1,10 +1,10 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <HelicopterPlatform.h>
-#include <MathConstants.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/platform/HelicopterPlatform.h>
 
 TEST_CASE("Platform physics test")
 {

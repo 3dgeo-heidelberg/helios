@@ -1,4 +1,4 @@
-#include "RotationOrder.h"
+#include <helios/maths/RotationOrder.h>
 
 const glm::dvec3 RotationOrder::ZERO = glm::dvec3(0, 0, 0);
 const glm::dvec3 RotationOrder::PLUS_I = glm::dvec3(1, 0, 0);

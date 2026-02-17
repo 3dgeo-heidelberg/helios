@@ -1,10 +1,10 @@
-#include "RisleyBeamDeflector.h"
+#include <helios/scanner/beamDeflector/RisleyBeamDeflector.h>
 
 #include <memory>
 
 #include <glm/glm.hpp>
 
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
 
 using Base = std::shared_ptr<AbstractBeamDeflector>;
 

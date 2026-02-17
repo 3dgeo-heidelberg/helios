@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <noise/NormalNoiseSource.h>
-#include <noise/UniformNoiseSource.h>
+#include <helios/noise/NormalNoiseSource.h>
+#include <helios/noise/UniformNoiseSource.h>
 
 TEST_CASE("Noise sources test")
 {

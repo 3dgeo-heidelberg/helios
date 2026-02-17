@@ -2,11 +2,11 @@
 #include <catch2/generators/catch_generators.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <SingleScanner.h>
-#include <maths/EnergyMaths.h>
-#include <scanner/detector/FullWaveformPulseRunnable.h>
+#include <helios/maths/EnergyMaths.h>
+#include <helios/scanner/SingleScanner.h>
+#include <helios/scanner/detector/FullWaveformPulseRunnable.h>
 
 TEST_CASE("Energy Models Test ")
 {

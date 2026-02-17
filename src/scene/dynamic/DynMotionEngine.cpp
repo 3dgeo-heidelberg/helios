@@ -1,4 +1,4 @@
-#include <DynMotionEngine.h>
+#include <helios/scene/dynamic/DynMotionEngine.h>
 
 // ***  DYNAMIC MOTION ENGINE METHODS  *** //
 // *************************************** //

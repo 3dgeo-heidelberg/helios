@@ -1,4 +1,4 @@
-#include <python/InterpolatedPlatformPreparation.h>
+#include <helios/python/InterpolatedPlatformPreparation.h>
 
 // std::shared_ptr<InterpolatedMovingPlatformEgg>
 std::shared_ptr<Platform>

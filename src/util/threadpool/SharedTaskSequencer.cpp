@@ -1,5 +1,5 @@
-#include <SharedTaskSequencer.h>
-#include <SmartSharedFunctorContainer.h>
+#include <helios/util/SmartSharedFunctorContainer.h>
+#include <helios/util/threadpool/SharedTaskSequencer.h>
 
 // ***  SHARED TASK HANDLING  *** //
 // ****************************** //

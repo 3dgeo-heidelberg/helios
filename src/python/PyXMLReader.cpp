@@ -1,6 +1,6 @@
-#include <PyXMLReader.h>
-#include <SpectralLibrary.h>
-#include <XmlSurveyLoader.h>
+#include <helios/assetloading/SpectralLibrary.h>
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/python/PyXMLReader.h>
 
 std::shared_ptr<Survey>
 readSurveyFromXml(std::string surveyPath,

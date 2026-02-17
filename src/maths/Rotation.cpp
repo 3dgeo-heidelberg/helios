@@ -2,11 +2,11 @@
 
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/perpendicular.hpp>
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
-#include "HeliosException.h"
-#include "MathConstants.h"
-#include "Rotation.h"
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/Rotation.h>
+#include <helios/util/HeliosException.h>
 
 /** Build a rotation from the quaternion coordinates.
  * <p>A rotation can be built from a <em>normalized</em> quaternion,

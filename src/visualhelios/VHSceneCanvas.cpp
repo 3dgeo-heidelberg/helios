@@ -1,7 +1,7 @@
 #ifdef PCL_BINDING
 
-#include <MathConstants.h>
-#include <visualhelios/VHSceneCanvas.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/visualhelios/VHSceneCanvas.h>
 
 #include <glm/detail/type_vec3.hpp>
 

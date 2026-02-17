@@ -1,8 +1,8 @@
-#include "LadLutLoader.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <fstream>
-#include <logging.hpp>
+#include <helios/assetloading/LadLutLoader.h>
+#include <helios/util/logger/logging.hpp>
 #include <vector>
 
 std::shared_ptr<LadLut>

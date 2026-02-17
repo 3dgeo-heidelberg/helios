@@ -1,4 +1,4 @@
-#include <SAHKDTreeFactory.h>
+#include <helios/adt/kdtree/SAHKDTreeFactory.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

@@ -1,8 +1,8 @@
-#include <maths/WaveMaths.h>
-#include <scanner/EvalScannerHead.h>
-#include <scanner/SingleScanner.h>
-#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
-#include <scanner/detector/AbstractDetector.h>
+#include <helios/maths/WaveMaths.h>
+#include <helios/scanner/EvalScannerHead.h>
+#include <helios/scanner/SingleScanner.h>
+#include <helios/scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+#include <helios/scanner/detector/AbstractDetector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

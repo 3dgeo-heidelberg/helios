@@ -1,4 +1,4 @@
-#include "Primitive.h"
+#include <helios/scene/primitives/Primitive.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

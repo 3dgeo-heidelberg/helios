@@ -1,4 +1,4 @@
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 #include <iomanip>
 #include <string>
 
@@ -10,14 +10,14 @@ using namespace std::chrono;
 #include <boost/format.hpp>
 namespace fs = boost::filesystem;
 
-#include "AbstractDetector.h"
-#include "HelicopterPlatform.h"
-#include "SurveyPlayback.h"
-#include <ScanningStrip.h>
-#include <filems/facade/FMSFacade.h>
-#include <filems/write/comps/SimpleSyncFileWriter.h>
 #include <glm/gtx/vector_angle.hpp>
-#include <platform/InterpolatedMovingPlatform.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/filems/write/comps/SimpleSyncFileWriter.h>
+#include <helios/platform/HelicopterPlatform.h>
+#include <helios/platform/InterpolatedMovingPlatform.h>
+#include <helios/scanner/detector/AbstractDetector.h>
+#include <helios/sim/comps/ScanningStrip.h>
+#include <helios/sim/core/SurveyPlayback.h>
 
 using helios::filems::SimpleSyncFileWriter;
 

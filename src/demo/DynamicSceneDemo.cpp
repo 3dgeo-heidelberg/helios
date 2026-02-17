@@ -1,11 +1,11 @@
 #ifdef PCL_BINDING
 
-#include <HeliosException.h>
-#include <XmlSurveyLoader.h>
-#include <demo/DynamicSceneDemo.h>
-#include <filems/facade/FMSFacade.h>
-#include <filems/facade/FMSWriteFacade.h>
-#include <filems/factory/FMSFacadeFactory.h>
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/demo/DynamicSceneDemo.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/filems/facade/FMSWriteFacade.h>
+#include <helios/filems/factory/FMSFacadeFactory.h>
+#include <helios/util/HeliosException.h>
 
 using helios::filems::FMSFacade;
 using helios::filems::FMSFacadeFactory;

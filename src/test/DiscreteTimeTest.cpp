@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
-#include <sim/tools/DiscreteTime.h>
+#include <helios/sim/tools/DiscreteTime.h>
 
 TEST_CASE("Discrete time test")
 {

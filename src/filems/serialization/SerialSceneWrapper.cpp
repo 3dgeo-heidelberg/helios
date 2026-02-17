@@ -1,6 +1,6 @@
-#include <SerialIO.h>
-#include <SerialSceneWrapper.h>
-#include <logging.hpp>
+#include <helios/filems/serialization/SerialIO.h>
+#include <helios/filems/serialization/SerialSceneWrapper.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  READ / WRITE  *** //
 // ********************** //

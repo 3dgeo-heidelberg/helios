@@ -1,6 +1,6 @@
-#include "Voxel.h"
-#include <MathConstants.h>
 #include <glm/gtx/vector_angle.hpp>
+#include <helios/maths/MathConstants.h>
+#include <helios/scene/primitives/Voxel.h>
 
 // ***  CONSTRUCTION  *** //
 // ********************** //

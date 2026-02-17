@@ -1,12 +1,12 @@
 #ifdef PCL_BINDING
 
-#include <DynMotion.h>
-#include <MathConstants.h>
-#include <demo/SimplePrimitivesDemo.h>
-#include <rigidmotion/RigidMotionR3Factory.h>
-#include <scene/dynamic/DynMovingObject.h>
-#include <scene/dynamic/DynObject.h>
-#include <visualhelios/VHSimpleCanvas.h>
+#include <helios/demo/SimplePrimitivesDemo.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/rigidmotion/RigidMotionR3Factory.h>
+#include <helios/scene/dynamic/DynMotion.h>
+#include <helios/scene/dynamic/DynMovingObject.h>
+#include <helios/scene/dynamic/DynObject.h>
+#include <helios/visualhelios/VHSimpleCanvas.h>
 
 using namespace std::chrono_literals;
 using HeliosDemos::SimplePrimitivesDemo;

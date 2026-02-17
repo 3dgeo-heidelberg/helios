@@ -1,4 +1,4 @@
-#include <assetloading/geometryfilter/NullGeometryFilter.h>
+#include <helios/assetloading/geometryfilter/NullGeometryFilter.h>
 
 // ***  MAIN METHODS  *** //
 // ********************** //

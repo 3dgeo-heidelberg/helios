@@ -1,19 +1,19 @@
-#include <Scanner.h>
-#include <filems/facade/FMSFacade.h>
-#include <scanner/detector/AbstractDetector.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/scanner/Scanner.h>
+#include <helios/scanner/detector/AbstractDetector.h>
 
 #include <iostream>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
-#include <PulseTaskDropper.h>
-#include <PulseThreadPool.h>
-#include <Trajectory.h>
-#include <scanner/BuddingScanningPulseProcess.h>
-#include <scanner/WarehouseScanningPulseProcess.h>
+#include <helios/scanner/BuddingScanningPulseProcess.h>
+#include <helios/scanner/Trajectory.h>
+#include <helios/scanner/WarehouseScanningPulseProcess.h>
+#include <helios/scanner/detector/PulseTaskDropper.h>
+#include <helios/scanner/detector/PulseThreadPool.h>
 
 using namespace std;
 

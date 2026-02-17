@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "RotateFilter.h"
 #include <boost/variant/get.hpp>
+#include <helios/assetloading/geometryfilter/RotateFilter.h>
 
 ScenePart*
 RotateFilter::run()

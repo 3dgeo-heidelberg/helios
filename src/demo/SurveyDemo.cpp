@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <SurveyDemo.h>
+#include <helios/demo/SurveyDemo.h>
 
 #include <boost/filesystem.hpp>
 

@@ -1,12 +1,12 @@
 #ifdef PCL_BINDING
-#include <demo/DemoSelector.h>
-#include <util/HeliosException.h>
+#include <helios/demo/DemoSelector.h>
+#include <helios/util/HeliosException.h>
 
 #include <sstream>
 
-#include <demo/DynamicSceneDemo.h>
-#include <demo/RaycastingDemo.h>
-#include <demo/SimplePrimitivesDemo.h>
+#include <helios/demo/DynamicSceneDemo.h>
+#include <helios/demo/RaycastingDemo.h>
+#include <helios/demo/SimplePrimitivesDemo.h>
 
 using HeliosDemos::DemoSelector;
 using std::make_shared;

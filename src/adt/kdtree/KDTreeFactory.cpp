@@ -1,4 +1,4 @@
-#include <KDTreeFactory.h>
+#include <helios/adt/kdtree/KDTreeFactory.h>
 
 // ***  LIGHTEN  *** //
 // ***************** //

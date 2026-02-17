@@ -7,14 +7,16 @@ Scanner settings are largely taken from example RIEGL VZ-400 specifications.
 */
 
 #include <benchmark/benchmark.h>
-#include <logging.hpp>
 
-#include <AABB.h>
-#include <noise/UniformNoiseSource.h>
-#include <platform/Platform.h>
-#include <scanner/SingleScanner.h>
-#include <scanner/detector/FullWaveformPulseDetector.h>
-#include <scanner/detector/FullWaveformPulseRunnable.h>
+#include <helios/noise/UniformNoiseSource.h>
+#include <helios/platform/Platform.h>
+#include <helios/scanner/SingleScanner.h>
+#include <helios/scanner/detector/FullWaveformPulseDetector.h>
+#include <helios/scanner/detector/FullWaveformPulseRunnable.h>
+#include <helios/scene/primitives/AABB.h>
+#include <helios/util/logger/logging.hpp>
+
+#include <benchmark/benchmark.h>
 
 #include <map>
 #include <memory>

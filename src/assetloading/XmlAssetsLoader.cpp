@@ -1,9 +1,9 @@
-#include "logging.hpp"
-#include <HeliosException.h>
-#include <scanner/MultiScanner.h>
-#include <scanner/SingleScanner.h>
+#include <helios/scanner/MultiScanner.h>
+#include <helios/scanner/SingleScanner.h>
+#include <helios/util/HeliosException.h>
+#include <helios/util/logger/logging.hpp>
 
-#include <adt/exprtree/UnivarExprTreeNode.h>
+#include <helios/adt/exprtree/UnivarExprTreeNode.h>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -17,33 +17,33 @@
 #include <boost/lexical_cast.hpp>
 namespace fs = boost::filesystem;
 
-#include "typedef.h"
-#include <XmlUtils.h>
+#include <helios/assetloading/XmlUtils.h>
+#include <helios/util/typedef.h>
 
-#include <fluxionum/TemporalDesignMatrix.h>
+#include <helios/maths/fluxionum/TemporalDesignMatrix.h>
 
-#include "GroundVehiclePlatform.h"
-#include "HelicopterPlatform.h"
-#include "InterpolatedMovingPlatformEgg.h"
-#include "LinearPathPlatform.h"
+#include <helios/platform/GroundVehiclePlatform.h>
+#include <helios/platform/HelicopterPlatform.h>
+#include <helios/platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/platform/LinearPathPlatform.h>
 
-#include "ConicBeamDeflector.h"
-#include "FiberArrayBeamDeflector.h"
-#include "FullWaveformPulseDetector.h"
-#include "OscillatingMirrorBeamDeflector.h"
-#include "PolygonMirrorBeamDeflector.h"
-#include "RisleyBeamDeflector.h"
-#include <scanner/EvalScannerHead.h>
-#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+#include <helios/scanner/EvalScannerHead.h>
+#include <helios/scanner/beamDeflector/ConicBeamDeflector.h>
+#include <helios/scanner/beamDeflector/FiberArrayBeamDeflector.h>
+#include <helios/scanner/beamDeflector/OscillatingMirrorBeamDeflector.h>
+#include <helios/scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
+#include <helios/scanner/beamDeflector/RisleyBeamDeflector.h>
+#include <helios/scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+#include <helios/scanner/detector/FullWaveformPulseDetector.h>
 
-#include "maths/MathConverter.h"
+#include <helios/maths/MathConverter.h>
 
-#include "WavefrontObjCache.h"
-#include "XmlAssetsLoader.h"
-#include <FileUtils.h>
+#include <helios/assetloading/XmlAssetsLoader.h>
+#include <helios/assetloading/geometryfilter/WavefrontObjCache.h>
+#include <helios/filems/util/FileUtils.h>
 
-#include "MathConverter.h"
-#include "TimeWatcher.h"
+#include <helios/maths/MathConverter.h>
+#include <helios/util/TimeWatcher.h>
 
 // ***  CONSTANTS  *** //
 // ******************* //

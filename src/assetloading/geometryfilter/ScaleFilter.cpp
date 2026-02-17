@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include <boost/variant/get.hpp>
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
-#include "ScaleFilter.h"
+#include <helios/assetloading/geometryfilter/ScaleFilter.h>
 
 ScenePart*
 ScaleFilter::run()

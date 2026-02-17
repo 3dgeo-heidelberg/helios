@@ -1,4 +1,4 @@
-#include "Material.h"
+#include <helios/scene/Material.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

@@ -1,6 +1,6 @@
-#include "AbstractGeometryFilter.h"
-#include "MaterialsFileReader.h"
-#include "UniformNoiseSource.h"
+#include <helios/assetloading/MaterialsFileReader.h>
+#include <helios/assetloading/geometryfilter/AbstractGeometryFilter.h>
+#include <helios/noise/UniformNoiseSource.h>
 
 std::shared_ptr<Material>
 AbstractGeometryFilter::getMaterial(std::string materialName)

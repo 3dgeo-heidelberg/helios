@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <VHDynObjectAdapter.h>
+#include <helios/visualhelios/adapters/VHDynObjectAdapter.h>
 
 using visualhelios::VHDynObjectAdapter;
 

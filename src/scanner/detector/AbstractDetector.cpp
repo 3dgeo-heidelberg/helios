@@ -1,6 +1,6 @@
-#include <filems/facade/FMSFacade.h>
-#include <logging.hpp>
-#include <scanner/detector/AbstractDetector.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/scanner/detector/AbstractDetector.h>
+#include <helios/util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

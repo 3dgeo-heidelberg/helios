@@ -1,8 +1,8 @@
 #ifdef PCL_BINDING
 
-#include <Primitive.h>
-#include <VHStaticObjectAdapter.h>
-#include <Voxel.h>
+#include <helios/scene/primitives/Primitive.h>
+#include <helios/scene/primitives/Voxel.h>
+#include <helios/visualhelios/adapters/VHStaticObjectAdapter.h>
 
 #include <functional>
 

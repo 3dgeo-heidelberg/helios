@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <PlaneFitter.h>
+#include <helios/maths/PlaneFitter.h>
 
 TEST_CASE("PlaneFitter: Best fitting plane orthogonal normal")
 {

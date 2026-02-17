@@ -1,9 +1,9 @@
-#include "ConicBeamDeflector.h"
+#include <helios/scanner/beamDeflector/ConicBeamDeflector.h>
 
 #define _USE_MATH_DEFINES
 #include "math.h"
 
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 std::shared_ptr<AbstractBeamDeflector>

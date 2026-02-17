@@ -1,10 +1,10 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <FastSAHKDTreeFactory.h>
-#include <GroveKDTreeRaycaster.h>
-#include <KDGrove.h>
-#include <Primitive.h>
-#include <Triangle.h>
+#include <helios/adt/grove/KDGrove.h>
+#include <helios/adt/kdtree/FastSAHKDTreeFactory.h>
+#include <helios/alg/raycast/GroveKDTreeRaycaster.h>
+#include <helios/scene/primitives/Primitive.h>
+#include <helios/scene/primitives/Triangle.h>
 
 #include <memory>
 #include <vector>

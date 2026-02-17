@@ -1,5 +1,5 @@
-#include <GroveKDTreeRaycaster.h>
-#include <Primitive.h>
+#include <helios/alg/raycast/GroveKDTreeRaycaster.h>
+#include <helios/scene/primitives/Primitive.h>
 
 #include <vector>
 

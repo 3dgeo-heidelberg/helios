@@ -1,4 +1,4 @@
-#include <noise/RandomnessGenerator.h>
+#include <helios/noise/RandomnessGenerator.h>
 
 // ***  DEFAULT RANDOMNESS GENERATOR  *** //
 // ************************************** //

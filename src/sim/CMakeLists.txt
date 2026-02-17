@@ -1,11 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "comps"
-  "core"
-  "tools"
-)
-
 target_sources(
   helios
   PRIVATE

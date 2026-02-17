@@ -1,5 +1,5 @@
-#include <DetailedVoxel.h>
 #include <boost/algorithm/string.hpp>
+#include <helios/scene/primitives/DetailedVoxel.h>
 
 // ***  CONSTRUCTION  *** //
 // ********************** //

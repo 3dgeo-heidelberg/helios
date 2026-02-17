@@ -1,4 +1,4 @@
-#include <AxisSAHKDTreeGeometricStrategy.h>
+#include <helios/adt/kdtree/AxisSAHKDTreeGeometricStrategy.h>
 
 // ***  CLONE  *** //
 // *************** //

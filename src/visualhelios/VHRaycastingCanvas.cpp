@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <visualhelios/VHRaycastingCanvas.h>
+#include <helios/visualhelios/VHRaycastingCanvas.h>
 
 #include <pcl/impl/point_types.hpp>
 

@@ -1,8 +1,8 @@
 #ifdef PCL_BINDING
 
-#include <platform/HelicopterPlatform.h>
-#include <sim/comps/Leg.h>
-#include <visualhelios/adapters/VHScannerAdapter.h>
+#include <helios/platform/HelicopterPlatform.h>
+#include <helios/sim/comps/Leg.h>
+#include <helios/visualhelios/adapters/VHScannerAdapter.h>
 
 #include <glm/gtx/norm.hpp>
 

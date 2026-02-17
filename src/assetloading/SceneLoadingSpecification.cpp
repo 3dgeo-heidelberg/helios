@@ -1,4 +1,4 @@
-#include <SceneLoadingSpecification.h>
+#include <helios/assetloading/SceneLoadingSpecification.h>
 
 // ***  A P P L Y  *** //
 // ******************* //

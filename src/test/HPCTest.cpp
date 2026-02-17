@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
-#include <hpc/SM_ParallelMergeSort.h>
+#include <helios/hpc/SM_ParallelMergeSort.h>
 
 #include <algorithm>
 

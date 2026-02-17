@@ -1,5 +1,5 @@
 #if DATA_ANALYTICS >= 2
-#include <HDA_GlobalVars.h>
+#include <helios/dataanalytics/HDA_GlobalVars.h>
 
 namespace helios {
 namespace analytics {

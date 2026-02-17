@@ -7,9 +7,9 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
-#include "MaterialsFileReader.h"
+#include <helios/assetloading/MaterialsFileReader.h>
 
 std::map<std::string, std::shared_ptr<Material>>
 MaterialsFileReader::loadMaterials(std::string filePathString)

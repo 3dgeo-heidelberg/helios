@@ -1,5 +1,5 @@
-#include <adt/grove/KDGrove.h>
-#include <scene/dynamic/DynMovingObject.h>
+#include <helios/adt/grove/KDGrove.h>
+#include <helios/scene/dynamic/DynMovingObject.h>
 
 #include <functional>
 

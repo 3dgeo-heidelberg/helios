@@ -1,11 +1,11 @@
-#include "PolygonMirrorBeamDeflector.h"
+#include <helios/scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
+#include <helios/util/logger/logging.hpp>
 #include <iostream>
-#include <logging.hpp>
 #include <sstream>
 #define _USE_MATH_DEFINES
-#include "MathConverter.h"
+#include <helios/maths/MathConverter.h>
 #include <math.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

@@ -1,14 +1,14 @@
-#include <AbstractDetector.h>
-#include <HeliosException.h>
-#include <PyHeliosSimulation.h>
-#include <RotateFilter.h>
-#include <Rotation.h>
+#include <helios/assetloading/geometryfilter/RotateFilter.h>
+#include <helios/maths/Rotation.h>
+#include <helios/python/PyHeliosSimulation.h>
+#include <helios/scanner/detector/AbstractDetector.h>
+#include <helios/util/HeliosException.h>
 
-#include <PulseThreadPoolFactory.h>
 #include <chrono>
-#include <filems/facade/FMSFacade.h>
-#include <filems/facade/FMSWriteFacade.h>
-#include <filems/factory/FMSFacadeFactory.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/filems/facade/FMSWriteFacade.h>
+#include <helios/filems/factory/FMSFacadeFactory.h>
+#include <helios/scanner/detector/PulseThreadPoolFactory.h>
 
 using helios::filems::FMSWriteFacade;
 

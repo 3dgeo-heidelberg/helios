@@ -1,12 +1,12 @@
-#include "WavefrontObjFileLoader.h"
-#include "WavefrontObj.h"
-#include "WavefrontObjCache.h"
-#include <filems/read/comps/BufferedLineFileReader.h>
-#include <filems/read/exceptions/EndOfReadingException.h>
+#include <helios/assetloading/geometryfilter/WavefrontObj.h>
+#include <helios/assetloading/geometryfilter/WavefrontObjCache.h>
+#include <helios/assetloading/geometryfilter/WavefrontObjFileLoader.h>
+#include <helios/filems/read/comps/BufferedLineFileReader.h>
+#include <helios/filems/read/exceptions/EndOfReadingException.h>
 
+#include <helios/util/logger/logging.hpp>
 #include <iostream>
 #include <string>
-#include <util/logger/logging.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -14,18 +14,18 @@
 #include <boost/variant/get.hpp>
 #include <boost/variant/variant.hpp>
 
-#include "maths/Rotation.h"
+#include <helios/maths/Rotation.h>
 typedef boost::
   variant<bool, int, float, double, std::string, glm::dvec3, Rotation>
     ObjectT;
 
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
-#include <FileUtils.h>
+#include <helios/filems/util/FileUtils.h>
 
-#include "Triangle.h"
+#include <helios/scene/primitives/Triangle.h>
 
-#include "MaterialsFileReader.h"
+#include <helios/assetloading/MaterialsFileReader.h>
 
 // ***  MAIN METHODS *** //
 // ********************* //

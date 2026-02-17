@@ -1,5 +1,5 @@
-#include <scene/dynamic/DynObject.h>
-#include <scene/primitives/Primitive.h>
+#include <helios/scene/dynamic/DynObject.h>
+#include <helios/scene/primitives/Primitive.h>
 
 // ***  DYNAMIC BEHAVIOR  *** //
 // ************************** //

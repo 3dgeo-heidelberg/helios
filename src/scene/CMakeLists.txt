@@ -1,11 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "primitives"
-  "dynamic"
-)
-
 target_sources(
   helios
   PRIVATE

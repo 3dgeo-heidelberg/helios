@@ -1,12 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "beamDeflector"
-  "beamDeflector/evaluable"
-  "detector"
-)
-
 target_sources(
   helios
   PRIVATE

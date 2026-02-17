@@ -1,6 +1,6 @@
-#include <KDTreeBuildType.h>
-#include <MultiThreadKDTreeFactory.h>
-#include <surfaceinspector/maths/Scalar.hpp>
+#include <helios/adt/kdtree/KDTreeBuildType.h>
+#include <helios/adt/kdtree/MultiThreadKDTreeFactory.h>
+#include <helios/surfaceinspector/maths/Scalar.hpp>
 
 using SurfaceInspector::maths::Scalar;
 

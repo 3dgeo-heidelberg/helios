@@ -1,12 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "rigidmotion"
-  "fluxionum"
-  "model"
-)
-
 target_sources(
   helios
   PRIVATE

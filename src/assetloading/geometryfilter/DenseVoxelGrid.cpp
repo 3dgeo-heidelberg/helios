@@ -1,4 +1,4 @@
-#include <assetloading/geometryfilter/DenseVoxelGrid.h>
+#include <helios/assetloading/geometryfilter/DenseVoxelGrid.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

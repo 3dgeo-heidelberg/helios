@@ -1,5 +1,5 @@
-#include <FastSAHKDTreeGeometricStrategy.h>
-#include <FastSAHKDTreeRecountSubTask.h>
+#include <helios/adt/kdtree/FastSAHKDTreeGeometricStrategy.h>
+#include <helios/adt/kdtree/FastSAHKDTreeRecountSubTask.h>
 
 // ***  CLONE  *** //
 // *************** //

@@ -1,13 +1,13 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <adt/bintree/BinaryTreeFastDepthIterator.h>
-#include <adt/exprtree/RegUnivarExprTreeNode.h>
-#include <adt/exprtree/RegUnivarExprTreeStringFactory.h>
-#include <adt/exprtree/UnivarExprTreeNode.h>
-#include <adt/exprtree/UnivarExprTreeStringFactory.h>
+#include <helios/adt/bintree/BinaryTreeFastDepthIterator.h>
+#include <helios/adt/exprtree/RegUnivarExprTreeNode.h>
+#include <helios/adt/exprtree/RegUnivarExprTreeStringFactory.h>
+#include <helios/adt/exprtree/UnivarExprTreeNode.h>
+#include <helios/adt/exprtree/UnivarExprTreeStringFactory.h>
 
 #include <memory>
 #include <vector>

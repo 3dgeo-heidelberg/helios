@@ -1,7 +1,7 @@
-#include <SAHKDTreeComputeLossNodesSubTask.h>
-#include <SAHKDTreeGeometricStrategy.h>
-#include <SM_ParallelMergeSort.h>
-#include <SimpleKDTreeBuildChildrenNodesSubTask.h>
+#include <helios/adt/kdtree/SAHKDTreeComputeLossNodesSubTask.h>
+#include <helios/adt/kdtree/SAHKDTreeGeometricStrategy.h>
+#include <helios/adt/kdtree/SimpleKDTreeBuildChildrenNodesSubTask.h>
+#include <helios/hpc/SM_ParallelMergeSort.h>
 
 using helios::hpc::SM_ParallelMergeSort;
 

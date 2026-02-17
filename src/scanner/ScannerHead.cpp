@@ -1,10 +1,10 @@
-#include "ScannerHead.h"
+#include <helios/scanner/ScannerHead.h>
 
 #define _USE_MATH_DEFINES
-#include <MathConstants.h>
+#include <helios/maths/MathConstants.h>
 #include <math.h>
 
-#include "typedef.h"
+#include <helios/util/typedef.h>
 
 // ***  M E T H O D S  *** //
 // *********************** //

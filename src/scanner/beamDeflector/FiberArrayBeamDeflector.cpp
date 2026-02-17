@@ -1,5 +1,5 @@
-#include "FiberArrayBeamDeflector.h"
-#include "maths/Directions.h"
+#include <helios/maths/Directions.h>
+#include <helios/scanner/beamDeflector/FiberArrayBeamDeflector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

@@ -1,11 +1,11 @@
-#include "AbstractBeamDeflector.h"
+#include <helios/scanner/beamDeflector/AbstractBeamDeflector.h>
 
 #include <memory>
 #include <sstream>
 #include <string>
 
-#include "MathConverter.h"
-#include <logging.hpp>
+#include <helios/maths/MathConverter.h>
+#include <helios/util/logger/logging.hpp>
 
 #define _USE_MATH_DEFINES
 

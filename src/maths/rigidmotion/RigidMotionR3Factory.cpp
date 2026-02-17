@@ -1,6 +1,6 @@
-#include <maths/MathConstants.h>
-#include <rigidmotion/RigidMotionException.h>
-#include <rigidmotion/RigidMotionR3Factory.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/rigidmotion/RigidMotionException.h>
+#include <helios/maths/rigidmotion/RigidMotionR3Factory.h>
 
 using namespace rigidmotion;
 

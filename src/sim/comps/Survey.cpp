@@ -1,11 +1,11 @@
 
 #include <glm/gtx/norm.hpp>
 
-#include "Survey.h"
-#include <AbstractDetector.h>
-#include <Simulation.h>
-#include <SurveyPlayback.h>
-#include <platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/scanner/detector/AbstractDetector.h>
+#include <helios/sim/comps/Survey.h>
+#include <helios/sim/core/Simulation.h>
+#include <helios/sim/core/SurveyPlayback.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

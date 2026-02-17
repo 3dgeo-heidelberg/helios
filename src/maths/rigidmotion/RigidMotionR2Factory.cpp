@@ -1,4 +1,4 @@
-#include <rigidmotion/RigidMotionR2Factory.h>
+#include <helios/maths/rigidmotion/RigidMotionR2Factory.h>
 
 using namespace rigidmotion;
 

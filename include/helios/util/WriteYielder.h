@@ -1,0 +1,41 @@
+#pragma once
+
+#include <helios/filems/facade/FMSWriteFacade.h>
+#include <helios/util/Yielder.h>
+
+/**
+ * @author Alberto M. Esmoris Pena
+ * @version 1.0
+ * @brief Abstract class representing a write yielder. It is, a yielder which
+ *  can use the FMSWriteFacade to write its output.
+ * @tparam T The type of object handled by the yielder
+ * @see helios::filems::FMSWriteFacade
+ */
+template<typename T>
+class WriteYielder : public Yielder<T>
+{
+protected:
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The facade for writing operations
+   * @see filems::FMSWriteFacade
+   */
+  helios::filems::FMSWriteFacade& write;
+
+public:
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for the abstract write yielder
+   * @see Yielder::Yielder
+   * @see WriteYielder::write
+   */
+  WriteYielder(helios::filems::FMSWriteFacade& write,
+               std::size_t bufferSize = 256)
+    : Yielder<T>(bufferSize)
+    , write(write)
+  {
+  }
+  virtual ~WriteYielder() = default;
+};

@@ -1,8 +1,8 @@
-#include "Triangle.h"
+#include <helios/scene/primitives/Triangle.h>
 
 #define _USE_MATH_DEFINES
 #include "math.h"
-#include <MathConstants.h>
+#include <helios/maths/MathConstants.h>
 
 #include <algorithm>
 #include <sstream>

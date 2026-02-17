@@ -1,5 +1,5 @@
-#include "KDTreeRaycaster.h"
-#include "logging.hpp"
+#include <helios/alg/raycast/KDTreeRaycaster.h>
+#include <helios/util/logger/logging.hpp>
 
 std::map<double, Primitive*>
 KDTreeRaycaster::searchAll(glm::dvec3 const rayOrigin,

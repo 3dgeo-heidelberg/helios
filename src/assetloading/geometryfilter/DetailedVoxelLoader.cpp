@@ -1,11 +1,11 @@
-#include "DetailedVoxelLoader.h"
-#include "VoxelFileParser.h"
-#include <FileUtils.h>
-#include <LadLutLoader.h>
-#include <assetloading/MaterialsFileReader.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
-#include <noise/UniformNoiseSource.h>
+#include <helios/assetloading/LadLutLoader.h>
+#include <helios/assetloading/MaterialsFileReader.h>
+#include <helios/assetloading/VoxelFileParser.h>
+#include <helios/assetloading/geometryfilter/DetailedVoxelLoader.h>
+#include <helios/filems/util/FileUtils.h>
+#include <helios/noise/UniformNoiseSource.h>
 
 namespace fs = boost::filesystem;
 

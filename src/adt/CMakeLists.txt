@@ -1,14 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "tree"
-  "bintree"
-  "kdtree"
-  "grove"
-  "exprtree"
-)
-
 target_sources(
   helios
   PRIVATE

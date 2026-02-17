@@ -1,11 +1,11 @@
 #ifdef PCL_BINDING
 
-#include <XmlSurveyLoader.h>
-#include <demo/RaycastingDemo.h>
-#include <filems/facade/FMSFacade.h>
-#include <filems/facade/FMSWriteFacade.h>
-#include <filems/factory/FMSFacadeFactory.h>
-#include <util/HeliosException.h>
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/demo/RaycastingDemo.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/filems/facade/FMSWriteFacade.h>
+#include <helios/filems/factory/FMSFacadeFactory.h>
+#include <helios/util/HeliosException.h>
 
 #include <memory>
 

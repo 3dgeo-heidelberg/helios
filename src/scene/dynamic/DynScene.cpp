@@ -1,6 +1,6 @@
-#include <SerialIO.h>
-#include <logging.hpp>
-#include <scene/dynamic/DynScene.h>
+#include <helios/filems/serialization/SerialIO.h>
+#include <helios/scene/dynamic/DynScene.h>
+#include <helios/util/logger/logging.hpp>
 
 using std::stringstream;
 

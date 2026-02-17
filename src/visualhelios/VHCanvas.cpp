@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <visualhelios/VHCanvas.h>
+#include <helios/visualhelios/VHCanvas.h>
 
 #include <chrono>
 #include <thread>

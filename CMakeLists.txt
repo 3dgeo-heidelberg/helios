@@ -87,10 +87,6 @@ endif()
 # We use Armadillo as a a header library and link against LAPACK and BLAS
 # ourselves. We do so in a desperate attempt to circumvent a conda packaging
 # issue on Windows that reports overlinking of the LAPACK library.
-target_include_directories(helios
-  PUBLIC
-    ${ARMADILLO_INCLUDE_DIRS}
-)
 target_compile_definitions(helios
   PUBLIC
     ARMA_DONT_USE_WRAPPER
@@ -117,8 +113,12 @@ target_link_libraries(helios
     ${LASTOOLS_LIBRARIES}
 )
 
-target_include_directories(helios
+target_include_directories(
+  helios
   PUBLIC
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src
+    ${ARMADILLO_INCLUDE_DIRS}
     ${LASTOOLS_INCLUDE_DIRS}
 )
 

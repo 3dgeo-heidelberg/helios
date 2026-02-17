@@ -1,10 +1,3 @@
-target_include_directories(
-  helios
-  PUBLIC
-  "."
-  "geometryfilter"
-)
-
 target_sources(
   helios
   PRIVATE

@@ -1,18 +1,18 @@
-#include <DetailedVoxelLoader.h>
-#include <GeoTiffFileLoader.h>
-#include <KDTreeFactoryMaker.h>
-#include <MaterialsFileReader.h>
-#include <SceneHandling.h>
-#include <SerialSceneWrapper.h>
-#include <SpectralLibrary.h>
-#include <WavefrontObjFileLoader.h>
-#include <XYZPointCloudFileLoader.h>
-#include <XmlAssetsLoader.h>
+#include <helios/adt/kdtree/KDTreeFactoryMaker.h>
+#include <helios/assetloading/MaterialsFileReader.h>
+#include <helios/assetloading/SpectralLibrary.h>
+#include <helios/assetloading/XmlAssetsLoader.h>
+#include <helios/assetloading/geometryfilter/DetailedVoxelLoader.h>
+#include <helios/assetloading/geometryfilter/GeoTiffFileLoader.h>
+#include <helios/assetloading/geometryfilter/WavefrontObjFileLoader.h>
+#include <helios/assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <helios/filems/serialization/SerialSceneWrapper.h>
+#include <helios/python/SceneHandling.h>
 
-#include <fluxionum/DiffDesignMatrixInterpolator.h>
-#include <fluxionum/ParametricLinearPiecesFunction.h>
-#include <logging.hpp>
-#include <platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/maths/fluxionum/DiffDesignMatrixInterpolator.h>
+#include <helios/maths/fluxionum/ParametricLinearPiecesFunction.h>
+#include <helios/platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/util/logger/logging.hpp>
 
 std::shared_ptr<KDTreeFactory>
 makeKDTreeFactory(int kdtFactoryType,

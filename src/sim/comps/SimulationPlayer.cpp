@@ -1,13 +1,13 @@
-#include <assetloading/ScenePart.h>
-#include <filems/factory/FMSFacadeFactory.h>
-#include <scene/Scene.h>
-#include <sim/comps/SimulationPlayer.h>
-#include <sim/core/Simulation.h>
-#include <sim/core/SurveyPlayback.h>
+#include <helios/assetloading/ScenePart.h>
+#include <helios/filems/factory/FMSFacadeFactory.h>
+#include <helios/scene/Scene.h>
+#include <helios/sim/comps/SimulationPlayer.h>
+#include <helios/sim/core/Simulation.h>
+#include <helios/sim/core/SurveyPlayback.h>
 using helios::filems::FMSFacadeFactory;
-#include <platform/InterpolatedMovingPlatform.h>
-#include <platform/MovingPlatform.h>
-#include <scanner/Scanner.h>
+#include <helios/platform/InterpolatedMovingPlatform.h>
+#include <helios/platform/MovingPlatform.h>
+#include <helios/scanner/Scanner.h>
 
 #include <chrono>
 using namespace std::chrono;

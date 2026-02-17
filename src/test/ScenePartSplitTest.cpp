@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <ScenePart.h>
-#include <Triangle.h>
+#include <helios/assetloading/ScenePart.h>
+#include <helios/scene/primitives/Triangle.h>
 
 #include <vector>
 

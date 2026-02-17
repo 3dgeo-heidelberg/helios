@@ -1,4 +1,4 @@
-#include "TranslateFilter.h"
+#include <helios/assetloading/geometryfilter/TranslateFilter.h>
 
 #include <boost/variant/get.hpp>
 

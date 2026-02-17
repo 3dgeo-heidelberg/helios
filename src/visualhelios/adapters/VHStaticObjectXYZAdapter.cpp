@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <VHStaticObjectXYZAdapter.h>
+#include <helios/visualhelios/adapters/VHStaticObjectXYZAdapter.h>
 
 using visualhelios::VHStaticObjectXYZAdapter;
 

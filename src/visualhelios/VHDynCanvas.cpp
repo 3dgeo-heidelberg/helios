@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <visualhelios/VHDynCanvas.h>
+#include <helios/visualhelios/VHDynCanvas.h>
 
 using namespace visualhelios;
 

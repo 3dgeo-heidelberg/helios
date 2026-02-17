@@ -1,15 +1,15 @@
-#include <HeliosException.h>
-#include <MathConverter.h>
-#include <NormalNoiseSource.h>
-#include <UniformNoiseSource.h>
-#include <XmlUtils.h>
-#include <assetloading/geometryfilter/DetailedVoxelLoader.h>
-#include <assetloading/geometryfilter/GeoTiffFileLoader.h>
-#include <assetloading/geometryfilter/WavefrontObjFileLoader.h>
-#include <assetloading/geometryfilter/XYZPointCloudFileLoader.h>
-#include <rigidmotion/RigidMotionR3Factory.h>
+#include <helios/assetloading/XmlUtils.h>
+#include <helios/assetloading/geometryfilter/DetailedVoxelLoader.h>
+#include <helios/assetloading/geometryfilter/GeoTiffFileLoader.h>
+#include <helios/assetloading/geometryfilter/WavefrontObjFileLoader.h>
+#include <helios/assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <helios/maths/MathConverter.h>
+#include <helios/maths/rigidmotion/RigidMotionR3Factory.h>
+#include <helios/noise/NormalNoiseSource.h>
+#include <helios/noise/UniformNoiseSource.h>
+#include <helios/util/HeliosException.h>
 
-#include <logging.hpp>
+#include <helios/util/logger/logging.hpp>
 
 #include <armadillo>
 #include <boost/algorithm/string.hpp>

@@ -1,4 +1,4 @@
-#include "IntersectionHandlingResult.h"
+#include <helios/scene/IntersectionHandlingResult.h>
 
 #include <sstream>
 

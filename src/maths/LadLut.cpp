@@ -1,5 +1,5 @@
-#include "LadLut.h"
-#include "MathConstants.h"
+#include <helios/maths/LadLut.h>
+#include <helios/maths/MathConstants.h>
 
 // ***  CONSTANTS  *** //
 // ******************* //

@@ -1,7 +1,7 @@
 #ifdef DATA_ANALYTICS
 
-#include <dataanalytics/HDA_Recorder.h>
-#include <util/HeliosException.h>
+#include <helios/dataanalytics/HDA_Recorder.h>
+#include <helios/util/HeliosException.h>
 
 #include <boost/filesystem.hpp>
 

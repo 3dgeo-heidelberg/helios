@@ -1,5 +1,5 @@
-#include "Directions.h"
 #include <glm/glm.hpp>
+#include <helios/maths/Directions.h>
 
 // ***  CONSTANTS  *** //
 // ******************* //

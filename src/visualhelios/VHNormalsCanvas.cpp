@@ -1,6 +1,6 @@
 #ifdef PCL_BINDING
 
-#include <visualhelios/VHNormalsCanvas.h>
+#include <helios/visualhelios/VHNormalsCanvas.h>
 
 using namespace visualhelios;
 

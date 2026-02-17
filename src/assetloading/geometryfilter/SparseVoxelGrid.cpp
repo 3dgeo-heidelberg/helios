@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <assetloading/geometryfilter/SparseVoxelGrid.h>
+#include <helios/assetloading/geometryfilter/SparseVoxelGrid.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

@@ -1,4 +1,4 @@
-#include <DynMotion.h>
+#include <helios/scene/dynamic/DynMotion.h>
 
 // ***  NORMALS UTILS  *** //
 // *********************** //

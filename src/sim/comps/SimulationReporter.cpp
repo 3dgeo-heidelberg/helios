@@ -1,6 +1,6 @@
-#include <Simulation.h>
-#include <SimulationReporter.h>
-#include <logging.hpp>
+#include <helios/sim/comps/SimulationReporter.h>
+#include <helios/sim/core/Simulation.h>
+#include <helios/util/logger/logging.hpp>
 
 #include <memory>
 #include <sstream>

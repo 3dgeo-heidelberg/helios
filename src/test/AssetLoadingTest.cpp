@@ -2,29 +2,29 @@
 #include <catch2/generators/catch_generators.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
 bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
   logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
   logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
-#include <assetloading/XmlAssetsLoader.h>
-#include <assetloading/XmlSceneLoader.h>
-#include <assetloading/XmlSurveyLoader.h>
-#include <assetloading/XmlUtils.h>
-#include <noise/NoiseSource.h>
-#include <noise/NormalNoiseSource.h>
-#include <noise/UniformNoiseSource.h>
-#include <platform/GroundVehiclePlatform.h>
-#include <platform/HelicopterPlatform.h>
-#include <platform/LinearPathPlatform.h>
-#include <platform/Platform.h>
-#include <scanner/MultiScanner.h>
-#include <scanner/SingleScanner.h>
-#include <scanner/beamDeflector/ConicBeamDeflector.h>
-#include <scanner/beamDeflector/OscillatingMirrorBeamDeflector.h>
-#include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
-#include <scanner/beamDeflector/RisleyBeamDeflector.h>
+#include <helios/assetloading/XmlAssetsLoader.h>
+#include <helios/assetloading/XmlSceneLoader.h>
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/assetloading/XmlUtils.h>
+#include <helios/noise/NoiseSource.h>
+#include <helios/noise/NormalNoiseSource.h>
+#include <helios/noise/UniformNoiseSource.h>
+#include <helios/platform/GroundVehiclePlatform.h>
+#include <helios/platform/HelicopterPlatform.h>
+#include <helios/platform/LinearPathPlatform.h>
+#include <helios/platform/Platform.h>
+#include <helios/scanner/MultiScanner.h>
+#include <helios/scanner/SingleScanner.h>
+#include <helios/scanner/beamDeflector/ConicBeamDeflector.h>
+#include <helios/scanner/beamDeflector/OscillatingMirrorBeamDeflector.h>
+#include <helios/scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
+#include <helios/scanner/beamDeflector/RisleyBeamDeflector.h>
 
 TEST_CASE("Asset Loading Tests")
 {

@@ -1,5 +1,5 @@
 #ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_PulseRecorder.h>
+#include <helios/dataanalytics/HDA_PulseRecorder.h>
 
 using namespace helios::analytics;
 

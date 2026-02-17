@@ -1,6 +1,6 @@
-#include <filems/write/comps/SimpleSyncFileTrajectoryWriter.h>
-#include <filems/write/comps/ZipSyncFileTrajectoryWriter.h>
-#include <filems/write/core/TrajectoryWriter.h>
+#include <helios/filems/write/comps/SimpleSyncFileTrajectoryWriter.h>
+#include <helios/filems/write/comps/ZipSyncFileTrajectoryWriter.h>
+#include <helios/filems/write/core/TrajectoryWriter.h>
 
 #include <sstream>
 

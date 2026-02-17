@@ -1,10 +1,10 @@
-#include <KDTreePrimitiveComparator.h>
-#include <SM_ParallelMergeSort.h>
-#include <SimpleKDTreeBuildChildrenNodesSubTask.h>
-#include <SimpleKDTreeComputeRootNodeBoundariesSubTask.h>
-#include <SimpleKDTreeGeometricStrategy.h>
-#include <SimpleKDTreePopulateSplitsSubTask.h>
-#include <surfaceinspector/maths/Vector.hpp>
+#include <helios/adt/kdtree/KDTreePrimitiveComparator.h>
+#include <helios/adt/kdtree/SimpleKDTreeBuildChildrenNodesSubTask.h>
+#include <helios/adt/kdtree/SimpleKDTreeComputeRootNodeBoundariesSubTask.h>
+#include <helios/adt/kdtree/SimpleKDTreeGeometricStrategy.h>
+#include <helios/adt/kdtree/SimpleKDTreePopulateSplitsSubTask.h>
+#include <helios/hpc/SM_ParallelMergeSort.h>
+#include <helios/surfaceinspector/maths/Vector.hpp>
 
 using helios::hpc::SM_ParallelMergeSort;
 using SurfaceInspector::maths::Vector;

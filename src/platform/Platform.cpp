@@ -1,10 +1,10 @@
-#include "maths/Directions.h"
 #include <glm/gtx/norm.hpp>
+#include <helios/maths/Directions.h>
 
-#include "MathConstants.h"
-#include "Platform.h"
-#include "PrintUtils.h"
-#include "Vectorial.h"
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/Vectorial.h>
+#include <helios/platform/Platform.h>
+#include <helios/util/PrintUtils.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

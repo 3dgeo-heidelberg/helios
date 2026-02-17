@@ -1,8 +1,8 @@
-#include <AbstractGeometryFilter.h>
-#include <ScenePart.h>
-#include <SwapOnRepeatHandler.h>
-#include <XYZPointCloudFileLoader.h>
-#include <scene/primitives/Primitive.h>
+#include <helios/assetloading/ScenePart.h>
+#include <helios/assetloading/SwapOnRepeatHandler.h>
+#include <helios/assetloading/geometryfilter/AbstractGeometryFilter.h>
+#include <helios/assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <helios/scene/primitives/Primitive.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

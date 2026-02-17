@@ -1,9 +1,9 @@
-#include "GeoTiffFileLoader.h"
-#include <Triangle.h>
-#include <Vertex.h>
 #include <boost/variant/get.hpp>
 #include <fstream>
-#include <logging.hpp>
+#include <helios/assetloading/geometryfilter/GeoTiffFileLoader.h>
+#include <helios/scene/primitives/Triangle.h>
+#include <helios/scene/primitives/Vertex.h>
+#include <helios/util/logger/logging.hpp>
 #include <ogrsf_frmts.h>
 #include <sstream>
 

@@ -1,5 +1,5 @@
-#include <maths/Directions.h>
-#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+#include <helios/maths/Directions.h>
+#include <helios/scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

@@ -1,4 +1,4 @@
-#include <MultiThreadSAHKDTreeFactory.h>
+#include <helios/adt/kdtree/MultiThreadSAHKDTreeFactory.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

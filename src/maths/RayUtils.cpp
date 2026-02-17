@@ -1,6 +1,6 @@
-#include <HeliosException.h>
-#include <logging.hpp>
-#include <maths/RayUtils.h>
+#include <helios/maths/RayUtils.h>
+#include <helios/util/HeliosException.h>
+#include <helios/util/logger/logging.hpp>
 
 glm::dvec3
 RayUtils::obtainPointAfterTraversing(AABB const& aabb,

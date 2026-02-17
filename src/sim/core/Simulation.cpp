@@ -1,25 +1,25 @@
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 #include <iostream>
 
 #include <chrono>
 using namespace std::chrono;
 
-#include "AbstractDetector.h"
-#include <platform/InterpolatedMovingPlatform.h>
-#include <platform/InterpolatedMovingPlatformEgg.h>
-#include <scanner/BuddingScanningPulseProcess.h>
-#include <scene/dynamic/DynScene.h>
+#include <helios/platform/InterpolatedMovingPlatform.h>
+#include <helios/platform/InterpolatedMovingPlatformEgg.h>
+#include <helios/scanner/BuddingScanningPulseProcess.h>
+#include <helios/scanner/detector/AbstractDetector.h>
+#include <helios/scene/dynamic/DynScene.h>
 #ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_SimStepRecorder.h>
+#include <helios/dataanalytics/HDA_SimStepRecorder.h>
 using helios::analytics::HDA_Recorder;
 using helios::analytics::HDA_SimStepRecorder;
 using helios::analytics::HDA_StateJSONReporter;
 #endif
 
-#include "Simulation.h"
-#include <DateTimeUtils.h>
-#include <TimeWatcher.h>
-#include <filems/facade/FMSFacade.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/sim/core/Simulation.h>
+#include <helios/util/DateTimeUtils.h>
+#include <helios/util/TimeWatcher.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

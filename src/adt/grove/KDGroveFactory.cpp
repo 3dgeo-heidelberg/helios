@@ -1,7 +1,7 @@
-#include <KDGroveFactory.h>
-#include <KDGroveStats.h>
-#include <KDGroveSubject.h>
-#include <TimeWatcher.h>
+#include <helios/adt/grove/KDGroveFactory.h>
+#include <helios/adt/grove/KDGroveStats.h>
+#include <helios/adt/grove/KDGroveSubject.h>
+#include <helios/util/TimeWatcher.h>
 
 // ***  K-DIMENSIONAL GROVE FACTORY METHODS  *** //
 // ********************************************* //

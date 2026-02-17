@@ -4,19 +4,19 @@ It follows the setup of a SurveyPlayback in LidarSim.cpp with the tls_toyblocks.
 The benchmark tests the performance of the SurveyPlayback->start() method.
 */
 
+#include <helios/assetloading/XmlSurveyLoader.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/filems/factory/FMSFacadeFactory.h>
+#include <helios/main/LidarSim.h>
+#include <helios/noise/RandomnessGenerator.h>
+#include <helios/scanner/detector/PulseThreadPoolFactory.h>
+#include <helios/sim/comps/Survey.h>
+#include <helios/util/logger/logging.hpp>
+
 #include <benchmark/benchmark.h>
-
-#include "Survey.h"
-#include <assetloading/XmlSurveyLoader.h>
 #include <boost/filesystem.hpp>
-#include <filems/facade/FMSFacade.h>
-#include <filems/factory/FMSFacadeFactory.h>
-#include <main/LidarSim.h>
-#include <memory>
-#include <noise/RandomnessGenerator.h>
-#include <scanner/detector/PulseThreadPoolFactory.h>
 
-#include "logging.hpp"
+#include <memory>
 
 namespace fs = boost::filesystem;
 

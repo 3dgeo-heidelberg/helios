@@ -1,8 +1,8 @@
 #ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_StateJSONReporter.h>
-#include <filems/facade/FMSFacade.h>
-#include <sim/core/SurveyPlayback.h>
-#include <util/helios_version.h>
+#include <helios/dataanalytics/HDA_StateJSONReporter.h>
+#include <helios/filems/facade/FMSFacade.h>
+#include <helios/sim/core/SurveyPlayback.h>
+#include <helios/util/helios_version.h>
 
 #include <memory>
 #include <sstream>

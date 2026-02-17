@@ -1,7 +1,7 @@
-#include <DynMovingObject.h>
-#include <GroveKDTreeRaycaster.h>
-#include <KDGrove.h>
-#include <KDGroveSubject.h>
+#include <helios/adt/grove/KDGrove.h>
+#include <helios/adt/grove/KDGroveSubject.h>
+#include <helios/alg/raycast/GroveKDTreeRaycaster.h>
+#include <helios/scene/dynamic/DynMovingObject.h>
 
 // ***  BASIC DYNGROVE SUBJECT METHODS  *** //
 // **************************************** //

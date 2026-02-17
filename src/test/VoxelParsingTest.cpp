@@ -1,9 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
-#include <VoxelFileParser.h>
 #include <filesystem>
+#include <helios/assetloading/VoxelFileParser.h>
+#include <helios/util/logger/logging.hpp>
 #include <string>
 
 TEST_CASE("Voxel Parsing Test ")

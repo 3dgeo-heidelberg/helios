@@ -1,9 +1,9 @@
-#include <scanner/EvalScannerHead.h>
+#include <helios/scanner/EvalScannerHead.h>
 
 #define _USE_MATH_DEFINES
-#include <MathConstants.h>
+#include <helios/maths/MathConstants.h>
+#include <helios/maths/TrigoTricks.h>
 #include <math.h>
-#include <maths/TrigoTricks.h>
 
 // ***  M E T H O D S  *** //
 // *********************** //

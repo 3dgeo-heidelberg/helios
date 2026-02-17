@@ -1,4 +1,4 @@
-#include <SurveyHandling.h>
+#include <helios/python/SurveyHandling.h>
 
 void
 checkIntegrateSurveyAndLegs(std::shared_ptr<Survey> survey)

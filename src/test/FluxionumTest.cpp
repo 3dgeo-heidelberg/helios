@@ -1,20 +1,20 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <helios/util/logger/logging.hpp>
 
-#include <fluxionum/ClosestLesserSampleFunction.h>
-#include <fluxionum/DesignMatrix.h>
-#include <fluxionum/DiffDesignMatrix.h>
-#include <fluxionum/DiffDesignMatrixInterpolator.h>
-#include <fluxionum/FixedIterativeEulerMethod.h>
-#include <fluxionum/FixedParametricIterativeEulerMethod.h>
-#include <fluxionum/IndexedDesignMatrix.h>
-#include <fluxionum/LinearPiecesFunction.h>
-#include <fluxionum/ParametricClosestLesserSampleFunction.h>
-#include <fluxionum/ParametricLinearPiecesFunction.h>
-#include <fluxionum/TemporalDesignMatrix.h>
-#include <fluxionum/UnivariateNewtonRaphsonMinimizer.h>
+#include <helios/maths/fluxionum/ClosestLesserSampleFunction.h>
+#include <helios/maths/fluxionum/DesignMatrix.h>
+#include <helios/maths/fluxionum/DiffDesignMatrix.h>
+#include <helios/maths/fluxionum/DiffDesignMatrixInterpolator.h>
+#include <helios/maths/fluxionum/FixedIterativeEulerMethod.h>
+#include <helios/maths/fluxionum/FixedParametricIterativeEulerMethod.h>
+#include <helios/maths/fluxionum/IndexedDesignMatrix.h>
+#include <helios/maths/fluxionum/LinearPiecesFunction.h>
+#include <helios/maths/fluxionum/ParametricClosestLesserSampleFunction.h>
+#include <helios/maths/fluxionum/ParametricLinearPiecesFunction.h>
+#include <helios/maths/fluxionum/TemporalDesignMatrix.h>
+#include <helios/maths/fluxionum/UnivariateNewtonRaphsonMinimizer.h>
 
 #include <armadillo>
 

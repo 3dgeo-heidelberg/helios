@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <noise/RandomnessGenerator.h>
+#include <helios/noise/RandomnessGenerator.h>
 
 TEST_CASE("Randomness generation test")
 {
