@@ -242,6 +242,7 @@ rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation)
 {
   for (auto p : sp->mPrimitives)
     p->rotate(rotation);
+  sp->bound = nullptr;
 }
 
 void
@@ -249,6 +250,7 @@ scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor)
 {
   for (auto p : sp->mPrimitives)
     p->scale(scaleFactor);
+  sp->bound = nullptr;
 }
 
 void
@@ -256,6 +258,7 @@ translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset)
 {
   for (auto p : sp->mPrimitives)
     p->translate(offset);
+  sp->bound = nullptr;
 }
 
 void

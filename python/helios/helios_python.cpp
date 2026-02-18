@@ -369,19 +369,12 @@ PYBIND11_MODULE(_helios, m)
         std::copy(vertices.begin(), vertices.end(), aabb.vertices);
       },
       "Get and set the vertices of the AABB")
-    .def_property(
+    .def_property_readonly(
       "bounds",
       [](const AABB& aabb) {
-        return std::vector<glm::dvec3>(aabb.bounds, aabb.bounds + 2);
+        return py::make_tuple(aabb.bounds[0], aabb.bounds[1]);
       },
-      [](AABB& aabb, const std::vector<glm::dvec3>& bounds) {
-        if (bounds.size() != 2) {
-          throw std::runtime_error(
-            "Bounds array must have exactly 2 elements.");
-        }
-        std::copy(bounds.begin(), bounds.end(), aabb.bounds);
-      },
-      "Get and set the cached bounds of the AABB")
+      "Get the cached bounds of the AABB")
     .def_property_readonly(
       "min_vertex",
       [](AABB& aabb) { return &(aabb.vertices[0]); },
@@ -879,6 +872,18 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("rotation", &ScenePart::mRotation)
     .def_readwrite("scale", &ScenePart::mScale)
     .def_readwrite("bound", &ScenePart::bound)
+    .def_property_readonly("bbox",
+                           [](ScenePart& self) {
+                             if (self.bound == nullptr) {
+                               if (self.mPrimitives.empty()) {
+                                 self.bound = std::make_shared<AABB>(
+                                   0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                               } else {
+                                 self.computeCentroid(true);
+                               }
+                             }
+                             return self.bound;
+                           })
     .def_readwrite("force_on_ground", &ScenePart::forceOnGround)
 
     .def_property(
@@ -1061,16 +1066,39 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("scene_parts", &Scene::parts)
     .def_readwrite("primitives", &Scene::primitives)
 
-    .def_property("bbox", &Scene::getBBox, &Scene::setBBox)
+    .def_property_readonly(
+      "bbox",
+      [](Scene& self) {
+        std::shared_ptr<AABB> bbox = self.getAABB();
+        if (bbox == nullptr) {
+          if (!self.primitives.empty()) {
+            self.setBBox(AABB::getForPrimitives(self.primitives));
+          } else {
+            std::vector<Primitive*> partPrimitives;
+            for (auto const& part : self.parts) {
+              if (part == nullptr)
+                continue;
+              partPrimitives.insert(partPrimitives.end(),
+                                    part->mPrimitives.begin(),
+                                    part->mPrimitives.end());
+            }
+            if (!partPrimitives.empty()) {
+              self.setBBox(AABB::getForPrimitives(partPrimitives));
+            } else {
+              self.setBBox(
+                std::make_shared<AABB>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+            }
+          }
+          bbox = self.getAABB();
+        }
+        return bbox;
+      })
     .def_property("bbox_crs", &Scene::getBBoxCRS, &Scene::setBBoxCRS)
     .def_property(
       "kd_grove_factory", &Scene::getKDGroveFactory, &Scene::setKDGroveFactory)
     .def_property_readonly(
       "num_primitives",
       [](const ScenePart& self) -> size_t { return self.mPrimitives.size(); })
-    .def_property_readonly(
-      "aabb", &Scene::getAABB, py::return_value_policy::reference)
-
     .def_property_readonly("shift", &Scene::getShift)
     .def_property(
       "dyn_scene_step",

@@ -120,10 +120,27 @@ class MaterialDict(MutableMapping[str, Material]):
         return self._snapshot().values()
 
 
+class BoundingBox(Model, cpp_class=_helios.AABB):
+    @property
+    def bounds(self) -> tuple[R3Vector, R3Vector]:
+        return self._cpp_object.bounds
+
+    @property
+    def centroid(self) -> R3Vector:
+        lower, upper = self.bounds
+        return (
+            np.asarray(lower, dtype=np.float64) + np.asarray(upper, dtype=np.float64)
+        ) / 2.0
+
+
 class ScenePart(Model, cpp_class=_helios.ScenePart):
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
+
+    @property
+    def bbox(self) -> BoundingBox:
+        return BoundingBox._from_cpp(self._cpp_object.bbox)
 
     @property
     def materials(self) -> MaterialDict:
@@ -451,6 +468,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
     scene_parts: Tuple[ScenePart, ...] = ()
+
+    @property
+    def bbox(self) -> BoundingBox:
+        return BoundingBox._from_cpp(self._cpp_object.bbox)
 
     def add_scene_part(self, scene_part: ScenePart):
         """Add a scene part to the scene."""
