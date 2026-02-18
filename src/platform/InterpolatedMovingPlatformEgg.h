@@ -45,6 +45,29 @@ public:
   }
   ~InterpolatedMovingPlatformEgg() override = default;
 
+  // ***   C L O N E   *** //
+  // ********************* //
+  std::shared_ptr<Platform> clone() override
+  {
+    std::shared_ptr<InterpolatedMovingPlatformEgg> ipe =
+      std::make_shared<InterpolatedMovingPlatformEgg>();
+    _clone(ipe);
+    return ipe;
+  }
+
+  void _clone(std::shared_ptr<Platform> p) override
+  {
+    MovingPlatform::_clone(p);
+    auto ipe = std::static_pointer_cast<InterpolatedMovingPlatformEgg>(p);
+
+    ipe->scope = scope;
+    ipe->rotspec = rotspec;
+    ipe->tdm = tdm;
+    ipe->ddm = ddm;
+    ipe->syncGPSTime = syncGPSTime;
+    ipe->startTime = startTime;
+  }
+
   // ***  EGG METHODS  *** //
   // ********************* //
   InterpolatedMovingPlatform hatch(SimulationStepLoop& stepLoop) override

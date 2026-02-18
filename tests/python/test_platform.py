@@ -1,6 +1,9 @@
 from helios.platforms import *
+from helios.scanner import riegl_vz_400
+from helios.scene import ScenePart, StaticScene
 from helios.survey import *
 
+import copy
 import math
 import pytest
 from pydantic import ValidationError
@@ -192,3 +195,158 @@ def test_load_interpolate_platform_wrong_rotation_spec():
             platform_id="sr22",
             interpolation_method="blah",
         )
+
+
+def test_dynamic_platform_settings_clone_and_deepcopy():
+    settings = DynamicPlatformSettings(
+        x=1.0,
+        y=2.0,
+        z=3.0,
+        speed_m_s=4.0,
+        trajectory_settings=TrajectorySettings(start_time=5.0, end_time=6.0),
+    )
+    settings._scene_shift_done = True
+    settings.runtime_marker = "temporary"
+
+    for copied in (settings.clone(), copy.deepcopy(settings)):
+        assert copied is not settings
+        assert copied.trajectory_settings is not settings.trajectory_settings
+        assert copied.x == 1.0
+        assert copied.y == 2.0
+        assert copied.z == 3.0
+        assert copied.speed_m_s == 4.0
+        assert copied.trajectory_settings.start_time == 5.0
+        assert copied.trajectory_settings.end_time == 6.0
+        assert not hasattr(copied, "_scene_shift_done")
+        assert not hasattr(copied, "runtime_marker")
+
+        copied.trajectory_settings.start_time = 7.0
+        assert settings.trajectory_settings.start_time == 5.0
+
+        survey = Survey(
+            scanner=riegl_vz_400(),
+            platform=tripod(),
+            scene=StaticScene(
+                scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+            ),
+        )
+        survey.add_leg(
+            platform_settings=copied,
+            scanner_settings=ScannerSettings(
+                pulse_frequency=2000,
+                scan_angle="20 deg",
+                head_rotation="10 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+                scan_frequency=120,
+            ),
+        )
+        points, trajectory = survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_platform_clone_and_deepcopy_run_survey():
+    platform = tripod()
+    platform.runtime_note = "temporary"
+
+    for copied in (platform.clone(), copy.deepcopy(platform)):
+        assert copied is not platform
+        assert copied._cpp_object is not platform._cpp_object
+        assert not hasattr(copied, "runtime_note")
+
+        survey = Survey(
+            scanner=riegl_vz_400(),
+            platform=copied,
+            scene=StaticScene(
+                scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+            ),
+        )
+        survey.add_leg(
+            scanner_settings=ScannerSettings(
+                pulse_frequency=2000,
+                scan_angle="20 deg",
+                head_rotation="10 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+                scan_frequency=120,
+            ),
+            x=0,
+            y=0,
+            z=0,
+        )
+        points, trajectory = survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+@pytest.mark.parametrize(
+    "settings",
+    [
+        PlatformSettings(x=1.0, y=2.0, z=3.0),
+        StaticPlatformSettings(x=1.0, y=2.0, z=3.0, force_on_ground=False),
+    ],
+)
+def test_platform_settings_clone_and_deepcopy_run_survey(settings):
+    settings.runtime_note = "temporary"
+
+    for copied in (settings.clone(), copy.deepcopy(settings)):
+        assert copied is not settings
+        assert copied._cpp_object is not settings._cpp_object
+        assert copied.x == settings.x
+        assert copied.y == settings.y
+        assert copied.z == settings.z
+        assert not hasattr(copied, "runtime_note")
+
+        survey = Survey(
+            scanner=riegl_vz_400(),
+            platform=tripod(),
+            scene=StaticScene(
+                scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+            ),
+        )
+        survey.add_leg(
+            platform_settings=copied,
+            scanner_settings=ScannerSettings(
+                pulse_frequency=2000,
+                scan_angle="20 deg",
+                head_rotation="10 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+                scan_frequency=120,
+            ),
+        )
+        points, trajectory = survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_trajectory_settings_clone_and_deepcopy():
+    settings = TrajectorySettings(start_time=5.0, end_time=6.0, teleport_to_start=True)
+    settings.runtime_note = "temporary"
+    survey = Survey.from_xml("data/surveys/demo/als_interpolated_trajectory.xml")
+    for leg in survey.legs:
+        leg.scanner_settings.pulse_frequency = 2000
+        leg.scanner_settings.scan_frequency = 20
+        leg.scanner_settings.head_rotation = "30 deg/s"
+
+    for copied in (settings.clone(), copy.deepcopy(settings)):
+        assert copied is not settings
+        assert copied.start_time == 5.0
+        assert copied.end_time == 6.0
+        assert copied.teleport_to_start is True
+        assert not hasattr(copied, "runtime_note")
+
+        cloned_survey = survey.clone()
+        cloned_survey.legs[0].trajectory_settings = copied
+        points, trajectory = cloned_survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0

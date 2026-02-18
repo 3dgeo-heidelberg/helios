@@ -7,15 +7,16 @@ from helios.platforms import *
 from helios.scanner import *
 from helios.utils import *
 
-import os
+import copy
 import math
-import numpy as np
-import pytest
-import laspy
+import os
 from pathlib import Path
 
-from helios import HeliosException
 import _helios
+import laspy
+import numpy as np
+import pytest
+from helios import HeliosException
 
 
 def _write_xyz_file(path: Path, separator: str = " ") -> None:
@@ -101,6 +102,128 @@ def test_scene_invalidation():
     assert len(scene._cpp_object.primitives) == 0
     scene._finalize()
     assert len(scene._cpp_object.primitives) > 0
+
+
+def test_static_scene_clone_and_deepcopy(scene):
+    scene._is_finalized = True
+    scene.runtime_note = "temporary"
+    execution_settings = ExecutionSettings(num_threads=1)
+
+    for copied in (scene.clone(), copy.deepcopy(scene)):
+        assert copied is not scene
+        assert len(copied.scene_parts) == len(scene.scene_parts)
+        assert copied.scene_parts[0] is not scene.scene_parts[0]
+        assert not hasattr(copied, "_is_finalized")
+        assert not hasattr(copied, "runtime_note")
+
+        survey = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=copied)
+        survey.add_leg(
+            scanner_settings=ScannerSettings(
+                pulse_frequency=2000,
+                scan_angle="20 deg",
+                head_rotation="10 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+                scan_frequency=120,
+            ),
+            x=0,
+            y=0,
+            z=0,
+        )
+        points, trajectory = survey.run(
+            format=OutputFormat.NPY, execution_settings=execution_settings
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+        copied.scene_parts[0].force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+        assert scene.scene_parts[0].force_on_ground == ForceOnGroundStrategy.NONE
+
+
+def test_scene_part_clone_and_deepcopy_run_survey():
+    scene_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene_part.runtime_note = "temporary"
+
+    for copied in (scene_part.clone(), copy.deepcopy(scene_part)):
+        assert copied is not scene_part
+        assert copied._cpp_object is not scene_part._cpp_object
+        assert not hasattr(copied, "runtime_note")
+
+        survey = Survey(
+            scanner=riegl_vz_400(),
+            platform=tripod(),
+            scene=StaticScene(scene_parts=[copied]),
+        )
+        survey.add_leg(
+            scanner_settings=ScannerSettings(
+                pulse_frequency=2000,
+                scan_angle="20 deg",
+                head_rotation="10 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+                scan_frequency=120,
+            ),
+            x=0,
+            y=0,
+            z=0,
+        )
+        points, trajectory = survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_material_clone_and_deepcopy_run_survey():
+    material = Material(name="clone_mat", reflectance=0.5, classification=2)
+    material.runtime_note = "temporary"
+
+    for copied in (material.clone(), copy.deepcopy(material)):
+        assert copied is not material
+        assert copied._cpp_object is not material._cpp_object
+        assert copied.name == "clone_mat"
+        assert copied.reflectance == 0.5
+        assert copied.classification == 2
+        assert not hasattr(copied, "runtime_note")
+
+        scene_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+        scene_part.update_material(copied)
+
+        survey = Survey(
+            scanner=riegl_vz_400(),
+            platform=tripod(),
+            scene=StaticScene(scene_parts=[scene_part]),
+        )
+        survey.add_leg(
+            scanner_settings=ScannerSettings(
+                pulse_frequency=2000,
+                scan_angle="20 deg",
+                head_rotation="10 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+                scan_frequency=120,
+            ),
+            x=0,
+            y=0,
+            z=0,
+        )
+        points, trajectory = survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_bounding_box_clone_and_deepcopy(scene):
+    scene._finalize()
+    bbox = scene.bbox
+    bbox.runtime_note = "temporary"
+
+    for copied in (bbox.clone(), copy.deepcopy(bbox)):
+        assert copied is not bbox
+        assert copied._cpp_object is not bbox._cpp_object
+        assert copied.bounds == bbox.bounds
+        assert not hasattr(copied, "runtime_note")
 
 
 def test_scenepart_from_obj():
@@ -229,11 +352,6 @@ def test_scenepart_from_vox():
 
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])
-    # Avoid flaky crashes in optimized builds from concurrent KDTree construction
-    # for very small test scenes.
-    scene._finalize(
-        execution_settings=ExecutionSettings(kdt_num_threads=1, kdt_geom_num_threads=1)
-    )
     return np.array(scene._cpp_object.bbox_crs.bounds)
 
 
@@ -251,12 +369,6 @@ def test_boundingbox_centroid(box):
 
 def test_scene_bbox_extraction(box):
     scene = StaticScene(scene_parts=[box])
-    # Avoid flaky crashes in optimized builds from concurrent KDTree construction
-    # for very small test scenes.
-    scene._finalize(
-        execution_settings=ExecutionSettings(kdt_num_threads=1, kdt_geom_num_threads=1)
-    )
-
     bbox = scene.bbox
     assert isinstance(bbox, BoundingBox)
     assert np.allclose(

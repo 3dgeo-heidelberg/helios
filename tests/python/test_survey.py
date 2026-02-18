@@ -12,7 +12,9 @@ from helios.scanner import Scanner, riegl_lms_q560, riegl_vz_400
 from helios.scene import StaticScene, ScenePart
 from helios.settings import ExecutionSettings
 from helios.survey import *
+from helios.utils import set_rng_seed
 
+import copy
 import laspy
 from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
@@ -26,6 +28,57 @@ def test_construct_survey_from_xml():
     assert isinstance(survey.platform, Platform)
     assert isinstance(survey.scanner, Scanner)
     assert isinstance(survey.scene, StaticScene)
+
+
+def test_leg_clone_and_deepcopy(survey):
+    leg = survey.legs[0]
+    leg._is_survey_and_legs_integrated = True
+    leg.runtime_note = "temporary"
+    original_pulse_frequency = leg.scanner_settings.pulse_frequency
+    execution_settings = ExecutionSettings(num_threads=1)
+
+    for copied in (leg.clone(), copy.deepcopy(leg)):
+        assert copied is not leg
+        assert copied.scanner_settings is not leg.scanner_settings
+        assert copied.platform_settings is not leg.platform_settings
+        assert not hasattr(copied, "_is_survey_and_legs_integrated")
+        assert not hasattr(copied, "runtime_note")
+
+        copied.scanner_settings.pulse_frequency = original_pulse_frequency + 1
+        assert leg.scanner_settings.pulse_frequency == original_pulse_frequency
+
+        cloned_survey = Survey(
+            scanner=riegl_vz_400(),
+            platform=tripod(),
+            scene=StaticScene(
+                scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+            ),
+        )
+        cloned_survey.add_leg(leg=copied)
+        points, trajectory = cloned_survey.run(
+            format=OutputFormat.NPY, execution_settings=execution_settings
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_survey_clone_run_matches_point_cloud(survey):
+    cloned_survey = survey.clone()
+    execution_settings = ExecutionSettings(num_threads=1)
+
+    set_rng_seed(42)
+    points, trajectory = survey.run(
+        format=OutputFormat.NPY, execution_settings=execution_settings
+    )
+
+    set_rng_seed(42)
+    cloned_points, cloned_trajectory = cloned_survey.run(
+        format=OutputFormat.NPY, execution_settings=execution_settings
+    )
+
+    assert cloned_survey.scene is not survey.scene
+    np.testing.assert_array_equal(points, cloned_points)
+    np.testing.assert_array_equal(trajectory, cloned_trajectory)
 
 
 def test_add_leg_parameters():

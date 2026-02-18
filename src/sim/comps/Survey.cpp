@@ -6,6 +6,8 @@
 #include <Simulation.h>
 #include <SurveyPlayback.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
+#include <scene/StaticScene.h>
+#include <scene/dynamic/DynScene.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -30,9 +32,17 @@ Survey::Survey(Survey& survey, bool const deepCopy)
   }
 
   // Make deep copy effective
-  if (deepCopy) {
-    this->scanner->platform->scene =
-      std::make_shared<Scene>(*this->scanner->platform->scene);
+  if (deepCopy && this->scanner->platform->scene != nullptr) {
+    auto scene = this->scanner->platform->scene;
+    if (auto dynScene = std::dynamic_pointer_cast<DynScene>(scene)) {
+      this->scanner->platform->scene = std::make_shared<DynScene>(*dynScene);
+    } else if (auto staticScene =
+                 std::dynamic_pointer_cast<StaticScene>(scene)) {
+      this->scanner->platform->scene =
+        std::make_shared<StaticScene>(*staticScene);
+    } else {
+      this->scanner->platform->scene = std::make_shared<Scene>(*scene);
+    }
   }
 }
 

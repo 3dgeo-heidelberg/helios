@@ -1,5 +1,6 @@
 #include <Scanner.h>
 #include <filems/facade/FMSFacade.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
 #include <scanner/detector/AbstractDetector.h>
 
 #include <iostream>
@@ -16,6 +17,26 @@
 #include <scanner/WarehouseScanningPulseProcess.h>
 
 using namespace std;
+
+namespace {
+std::shared_ptr<Platform>
+clonePlatformForScanner(const std::shared_ptr<Platform>& platform)
+{
+  if (platform == nullptr) {
+    return nullptr;
+  }
+
+  // Clone interpolated eggs explicitly to preserve the egg type.
+  if (auto egg =
+        std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(platform)) {
+    auto clonedEgg = std::make_shared<InterpolatedMovingPlatformEgg>();
+    egg->_clone(clonedEgg);
+    return clonedEgg;
+  }
+
+  return platform->clone();
+}
+}
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -50,10 +71,7 @@ Scanner::Scanner(Scanner& s)
   this->state_isActive = s.state_isActive;
 
   this->fms = s.fms;
-  if (s.platform == nullptr)
-    this->platform = nullptr;
-  else
-    this->platform = s.platform->clone();
+  this->platform = clonePlatformForScanner(s.platform);
 
   if (s.allOutputPaths == nullptr)
     this->allOutputPaths = nullptr;
@@ -118,11 +136,7 @@ Scanner::_clone(Scanner& sc) const
   sc.state_isActive = state_isActive;
   sc.spp = nullptr; // Cannot be cloned (unique pointer)
   sc.fms = fms;
-  if (platform == nullptr) {
-    sc.platform = nullptr;
-  } else {
-    sc.platform = platform->clone();
-  }
+  sc.platform = clonePlatformForScanner(platform);
   if (allOutputPaths == nullptr) {
     sc.allOutputPaths = nullptr;
   } else {
