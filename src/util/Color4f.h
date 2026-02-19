@@ -1,29 +1,12 @@
 #pragma once
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/serialization/base_object.hpp>
-
 /**
  * @brief Class representing a color with 4 float components: RGBA
  */
 class Color4f
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a Color3f to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number of the Color4f
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & x & y & z & w;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //

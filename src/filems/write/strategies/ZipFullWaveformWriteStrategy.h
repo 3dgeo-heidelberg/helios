@@ -1,8 +1,7 @@
 #pragma once
 
+#include <filems/util/ZipRecordIO.h>
 #include <filems/write/strategies/DirectFullWaveformWriteStrategy.h>
-
-#include <boost/archive/binary_oarchive.hpp>
 
 namespace helios {
 namespace filems {
@@ -23,7 +22,7 @@ protected:
    *  associated to the file output stream of the parent
    *  DirectFullWaveformWriteStrategy
    */
-  boost::archive::binary_oarchive& oa;
+  boost::iostreams::filtering_ostream& oa;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -34,7 +33,7 @@ public:
    * @see DirectFullWaveformWriteStrategy::DirectFullWaveformWriteStrategy
    */
   ZipFullWaveformWriteStrategy(std::ofstream& ofs,
-                               boost::archive::binary_oarchive& oa)
+                               boost::iostreams::filtering_ostream& oa)
     : DirectFullWaveformWriteStrategy(ofs)
     , oa(oa)
   {
@@ -49,7 +48,7 @@ public:
    */
   void write(FullWaveform const& fullWaveform) override
   {
-    oa << fullWaveformToString(fullWaveform);
+    writeZippedStringRecord(oa, fullWaveformToString(fullWaveform));
   }
 };
 

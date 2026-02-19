@@ -8,7 +8,6 @@ from helios.utils import (
     get_asset_directories,
     detect_separator,
     is_xml_loaded,
-    is_binary_loaded,
     is_finalized,
 )
 
@@ -502,7 +501,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         )
 
     def _pre_set(self, field, value):
-        if is_xml_loaded(self) or is_binary_loaded(self):
+        if is_xml_loaded(self):
             raise RuntimeError("The scene loaded from XML cannot be modified.")
         if field == "scene_parts":
             self._enforce_uniqueness_across_instances(field, value)
@@ -514,27 +513,14 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
     @classonlymethod
     @validate_call
-    def from_binary(cls, filename: AssetPath):
-        """Classmethod to load a scene from a binary file. The binary file should have been created by the 'to_binary' method of this class."""
-        _cpp_scene = _helios.read_scene_from_binary(str(filename))
-        scene = cls._from_cpp(_cpp_scene)
-        scene._is_loaded_from_binary = True
-        return scene
-
-    def to_binary(self, filename: AssetPath, is_dyn_scene: bool = False):
-        if not (is_xml_loaded(self) or is_binary_loaded(self)):
-            self._finalize()
-
-        _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
-
-    @classonlymethod
-    @validate_call
-    def from_xml(cls, scene_file: AssetPath, save_to_binary: bool = False):
+    def from_xml(cls, scene_file: AssetPath):
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
         _cpp_scene = _helios.read_scene_from_xml(
-            str(scene_file), [str(p) for p in get_asset_directories()], save_to_binary
+            str(scene_file),
+            [str(p) for p in get_asset_directories()],
+            True,
         )
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True

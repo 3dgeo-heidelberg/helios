@@ -1159,7 +1159,6 @@ PYBIND11_MODULE(_helios, m)
            return self.getGroundPointAt(point);
          })
     .def("finalize_loading", &Scene::finalizeLoading, py::arg("safe") = false)
-    .def("write_object", &Scene::writeObject)
     .def("translate",
          [](Scene& scene, double x, double y, double z) {
            glm::dvec3 shift(x, y, z);
@@ -1227,7 +1226,6 @@ PYBIND11_MODULE(_helios, m)
          &StaticScene::removeStaticObject,
          py::arg("id"))
     .def("clear_static_object_parts", &StaticScene::clearStaticObjects)
-    .def("write_object", &StaticScene::writeObject, py::arg("path"))
     .def("shutdown", &StaticScene::shutdown);
 
   py::class_<Platform, std::shared_ptr<Platform>> platform(m, "Platform");
@@ -2100,7 +2098,6 @@ PYBIND11_MODULE(_helios, m)
     .def("load_survey",
          &PyHeliosSimulation::loadSurvey,
          py::arg("legNoiseDisabled") = false,
-         py::arg("rebuildScene") = false,
          py::arg("writeWaveform") = false,
          py::arg("calcEchowidth") = false,
          py::arg("fullWaveNoise") = false,
@@ -2801,7 +2798,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("factory", &helios::filems::FMSFacade::factory)
     .def_readwrite("read", &helios::filems::FMSFacade::read)
     .def_readwrite("write", &helios::filems::FMSFacade::write)
-    .def_readwrite("serialization", &helios::filems::FMSFacade::serialization)
 
     .def("disconnect", &helios::filems::FMSFacade::disconnect);
 
@@ -3181,8 +3177,6 @@ PYBIND11_MODULE(_helios, m)
   m.def("rotate_scene_part", &rotateScenePart);
   m.def("scale_scene_part", &scaleScenePart);
   m.def("translate_scene_part", &translateScenePart);
-  m.def("write_scene_to_binary", &writeSceneToBinary);
-  m.def("read_scene_from_binary", &readSceneFromBinary);
   m.def("make_scene_shift", &makeSceneShift);
   m.def("load_interpolated_platform", &load_interpolated_platform);
   m.def("add_scene_part_to_scene", &addScenePartToScene);

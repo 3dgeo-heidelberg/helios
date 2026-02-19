@@ -137,16 +137,6 @@ public:
    */
   bool parseDisableLegNoise();
   /**
-   * @brief Parse the rebuild scene flag from invocation arguments
-   * @return True if rebuild scene flag was specified, False otherwise
-   */
-  bool parseRebuildScene();
-  /**
-   * @brief Parse the write scene flag from invocation arguments
-   * @return True if write scene flag was specified, false otherwise.
-   */
-  bool parseNoSceneWriting();
-  /**
    * @brief Parse the verbosity level for logging from invocation arguments
    */
   void parseLoggingVerbosity();

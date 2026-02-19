@@ -9,7 +9,6 @@ from helios.utils import *
 
 import copy
 import math
-import os
 from pathlib import Path
 
 import _helios
@@ -500,62 +499,14 @@ def test_transform_scenepart(box_f):
     assert np.allclose(bbox1 + offset, bbox2)
 
 
-def test_scene_auto_binary():
-    # We create binary while reading from xml
-    survey1 = Survey.from_xml(
-        "data/surveys/demo/box_survey_static_puck.xml", True, True
-    )
+def test_scene_from_xml_reproducible_run():
+    survey1 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
     _configure_fast_survey_legs(survey1)
     points1, _ = survey1.run()
 
     survey2 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
-    survey2.scene = StaticScene.from_binary("data/scenes/demo/box_scene.scene")
     _configure_fast_survey_legs(survey2)
     points2, _ = survey2.run()
-
-    # We read from created binary directly through .from_xml
-    survey3 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml", False)
-    _configure_fast_survey_legs(survey3)
-    points3, _ = survey3.run()
-
-    os.remove("data/scenes/demo/box_scene.scene")
-    assert len(points1) == len(points2)
-    assert len(points1) == len(points3)
-
-
-def test_scene_manual_binary(tmp_path):
-    scene1 = StaticScene(
-        scene_parts=[
-            ScenePart.from_obj("data/sceneparts/basic/box/box100.obj"),
-            ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj").scale(0.5),
-        ]
-    )
-    binary_path = tmp_path / "manual.scene"
-    scene1.to_binary(str(binary_path))
-    scene2 = StaticScene.from_binary(str(binary_path))
-
-    scanner_settings = ScannerSettings(
-        is_active=True,
-        pulse_frequency=2000,
-        scan_frequency=20,
-        scan_angle="20 deg",
-        head_rotation="30 deg/s",
-        rotation_start_angle="0 deg",
-        rotation_stop_angle="20 deg",
-    )
-    platform_settings = StaticPlatformSettings(x=0, y=0, z=0, force_on_ground=True)
-
-    survey1 = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene1)
-    survey1.add_leg(
-        scanner_settings=scanner_settings, platform_settings=platform_settings
-    )
-    points1, _ = survey1.run(format=OutputFormat.NPY)
-
-    survey2 = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene2)
-    survey2.add_leg(
-        scanner_settings=scanner_settings, platform_settings=platform_settings
-    )
-    points2, _ = survey2.run(format=OutputFormat.NPY)
 
     assert len(points1) == len(points2)
 
@@ -743,38 +694,13 @@ def test_scene_flag_from_xml_set():
     assert is_xml_loaded(scene)
 
 
-def test_create_binary_during_from_xml():
-    """
-    Test that a binary file is created when loading a scene from XML.
-    """
-    scene = StaticScene.from_xml(
-        "data/scenes/toyblocks/toyblocks_scene.xml", save_to_binary=True
-    )
-    assert os.path.exists("data/scenes/toyblocks/toyblocks_scene.scene")
-    os.remove("data/scenes/toyblocks/toyblocks_scene.scene")
-
-
 def test_flags_assosiated_with_scene():
-    # this creates a binary after reading from xml
-    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
     assert is_xml_loaded(survey)
     assert is_xml_loaded(survey.scene)
-    assert not is_binary_loaded(survey.scene)
-    assert not is_binary_loaded(survey)
-
-    # this reads from created binary directly through .from_xml
-    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", False)
-    assert is_xml_loaded(survey2)
-    assert is_xml_loaded(survey2.scene)
-    assert is_binary_loaded(survey2.scene)
-
-    scene1 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene.scene")
-    assert is_binary_loaded(scene1)
-    assert not is_xml_loaded(scene1)
 
     scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene2)
-    assert not is_binary_loaded(scene2)
 
 
 def test_manual_vs_xml_write_to_file(tmp_path):

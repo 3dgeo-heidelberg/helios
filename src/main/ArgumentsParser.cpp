@@ -179,18 +179,6 @@ ArgumentsParser::parseDisableLegNoise()
   return findIndexOfArgument("--disableLegNoise") >= 0;
 }
 
-bool
-ArgumentsParser::parseRebuildScene()
-{
-  return findIndexOfArgument("--rebuildScene") >= 0;
-}
-
-bool
-ArgumentsParser::parseNoSceneWriting()
-{
-  return findIndexOfArgument("--noSceneWriting") >= 0;
-}
-
 void
 ArgumentsParser::parseLoggingVerbosity()
 {

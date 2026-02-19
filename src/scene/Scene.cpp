@@ -3,7 +3,6 @@
 
 #include <KDTreeRaycaster.h>
 #include <Scene.h>
-#include <SerialIO.h>
 #include <TimeWatcher.h>
 #include <UniformNoiseSource.h>
 #include <surfaceinspector/maths/Plane.hpp>
@@ -452,24 +451,4 @@ Scene::getSwapOnRepeatObjects()
       sorObjs.push_back(sp);
   }
   return sorObjs;
-}
-
-// ***  READ/WRITE  *** //
-// ******************** //
-void
-Scene::writeObject(string path)
-{
-  stringstream ss;
-  ss << "Writing scene object to " << path << " ...";
-  logging::INFO(ss.str());
-  SerialIO::getInstance()->write<Scene>(path, this);
-}
-
-Scene*
-Scene::readObject(string path)
-{
-  std::stringstream ss;
-  ss << "Reading scene object from " << path << " ...";
-  logging::INFO(ss.str());
-  return SerialIO::getInstance()->read<Scene>(path);
 }

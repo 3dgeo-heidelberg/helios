@@ -39,13 +39,6 @@ public:
    *  True means platform noise is disabled, false means it is enabled
    * @param legNoiseDisabled Flag to specify leg noise disabled.
    *  True means leg noise is disabled, false means it is enabled
-   * @param rebuildScene Flag to specify rebuild scene policy. True means
-   *  scene will be built even when a previously built scene has been found,
-   *  false means previously built scene will be used when available
-   * @param writeScene Flag to specify scene writing policy. True means
-   *  the scene will be written if it is created during asset loading,
-   *  false means it will not. Note that if the scene is read, it will not
-   *  be written (no matter the flag).
    * @param lasOutput Flag to specify LAS output format. True implies using
    *  LAS output format, false implies don't
    * @param las10 Flag to specify that the output format must be LAS v1.0.
@@ -79,8 +72,6 @@ public:
             bool splitByChannel = false,
             bool platformNoiseDisabled = false,
             bool legNoiseDisabled = false,
-            bool rebuildScene = false,
-            bool writeScene = true,
             bool lasOutput = false,
             bool las10 = false,
             bool zipOutput = false,

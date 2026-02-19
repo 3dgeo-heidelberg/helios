@@ -1,5 +1,4 @@
 #include <RandomnessGenerator.h>
-#include <SerialSceneWrapper.h>
 #include <TimeWatcher.h>
 #include <XmlSurveyLoader.h>
 #include <XmlUtils.h>
@@ -20,7 +19,7 @@
 namespace fs = boost::filesystem;
 
 std::shared_ptr<Survey>
-XmlSurveyLoader::load(bool legNoiseDisabled, bool rebuildScene)
+XmlSurveyLoader::load(bool legNoiseDisabled)
 {
   tinyxml2::XMLNode* pRoot = doc.FirstChild();
   if (pRoot == nullptr) {
@@ -37,13 +36,12 @@ XmlSurveyLoader::load(bool legNoiseDisabled, bool rebuildScene)
     return nullptr;
   }
 
-  return createSurveyFromXml(surveyNodes, legNoiseDisabled, rebuildScene);
+  return createSurveyFromXml(surveyNodes, legNoiseDisabled);
 }
 
 std::shared_ptr<Survey>
 XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
-                                     bool legNoiseDisabled,
-                                     bool rebuildScene)
+                                     bool legNoiseDisabled)
 {
   // Prepare survey loading
   reinitLoader();
@@ -73,7 +71,7 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
 
   // Load scene
   std::string sceneString = surveyNode->Attribute("scene");
-  survey->scanner->platform->scene = loadScene(sceneString, rebuildScene);
+  survey->scanner->platform->scene = loadScene(sceneString);
   SpectralLibrary spectralLibrary = SpectralLibrary(
     (float)survey->scanner->getWavelength(), assetsDir, "spectra");
   spectralLibrary.readReflectances();
@@ -182,60 +180,17 @@ XmlSurveyLoader::reinitLoader()
 }
 
 std::shared_ptr<Scene>
-XmlSurveyLoader::loadScene(std::string sceneString, bool rebuildScene)
+XmlSurveyLoader::loadScene(std::string sceneString)
 {
   logging::INFO("Loading Scene...");
 
   std::shared_ptr<Scene> scene;
   TimeWatcher tw;
   tw.start();
-
-  std::string sceneFullPath;
   try {
-    std::vector<std::string> paths;
-    boost::split(paths, sceneString, boost::is_any_of("#"));
-    sceneFullPath = paths.at(0);
-    sceneFullPath = sceneFullPath.substr(0, sceneFullPath.length() - 3);
-  } catch (...) { // Case for having Survey and Scene in the same XML
-    sceneFullPath = xmlDocFilePath.substr(0, xmlDocFilePath.length() - 3);
-  }
-  std::string sceneObjPath = sceneFullPath + "scene";
-  try {
-    fs::path sceneObj(sceneObjPath);
-    fs::path sceneXml(sceneFullPath + "xml");
-
-    if (sceneXml.is_relative()) {
-      for (auto path : assetsDir) {
-        if (fs::exists(fs::path(path) / sceneXml)) {
-          sceneXml = fs::path(path) / sceneXml;
-          sceneObj = fs::path(path) / sceneObj;
-          break;
-        }
-      }
-    }
-
-    if (fs::is_regular_file(sceneObj) &&
-        fs::last_write_time(sceneObj) > fs::last_write_time(sceneXml) &&
-        !rebuildScene) {
-      SerialSceneWrapper* ssw =
-        SerialSceneWrapper::readScene(sceneObj.string());
-      scene = std::shared_ptr<Scene>(ssw->getScene());
-      delete ssw;
-    } else {
-      SerialSceneWrapper::SceneType sceneType;
-      scene = std::dynamic_pointer_cast<Scene>(
-        getAssetByLocation("scene", sceneString, &sceneType));
-      if (writeScene) {
-        SerialSceneWrapper(sceneType, scene.get())
-          .writeScene(sceneObj.string());
-      }
-      /*
-       * Build KDGrove for Scene after exporting it.
-       * This way memory issues coming from tracking of pointers at
-       *    serialization are avoided, as there is more available memory
-       */
-      scene->buildKDGroveWithLog();
-    }
+    scene = std::dynamic_pointer_cast<Scene>(
+      getAssetByLocation("scene", sceneString));
+    scene->buildKDGroveWithLog();
   } catch (std::exception& e) {
     std::stringstream ss;
     ss << "EXCEPTION at XmlSurveyLoader::loadScene:\n\t" << e.what();

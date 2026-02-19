@@ -1,10 +1,9 @@
 #include <FileUtils.h>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/regex.hpp>
+#include <filems/util/ZipRecordIO.h>
 #include <logging.hpp>
 namespace fs = boost::filesystem;
 
@@ -118,14 +117,12 @@ FileUtils::unzipFile(std::string const inputPath, std::string const outputPath)
     boost::iostreams::zlib_params zp(compressionMode);
     compressedIn.push(boost::iostreams::zlib_decompressor(zp));
     compressedIn.push(ifs);
-    boost::archive::binary_iarchive ia(compressedIn);
 
     // Prepare output stream
     ofs.open(outputPath, std::ios_base::out);
 
     // Decompress
-    while (str.length() > 0) {
-      ia >> str;
+    while (helios::filems::readZippedStringRecord(compressedIn, str)) {
       ofs << str;
     }
   } catch (std::exception& e) {

@@ -1,12 +1,5 @@
 #pragma once
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/access.hpp>
-
 namespace fluxionum {
 
 /**
@@ -25,29 +18,7 @@ template<typename IT, typename ET>
 class IterativeMethodHandler
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize the iterative method handler to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the iterative method handler
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    ar & maxIters;
-    ar & currentIter;
-    ar & enableConvergenceCriterion;
-    ar & convergenceEps;
-    ar & patience;
-    ar & patienceCount;
-    ar & patienceEps;
-    ar & patiencePreserveBest;
-    ar & patienceBestError;
-    ar & patienceBestInput;
-  }
 
 public:
   // ***  ENUMERATION  *** //

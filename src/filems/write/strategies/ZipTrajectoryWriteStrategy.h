@@ -1,8 +1,7 @@
 #pragma once
 
+#include <filems/util/ZipRecordIO.h>
 #include <filems/write/strategies/DirectTrajectoryWriteStrategy.h>
-
-#include <boost/archive/binary_oarchive.hpp>
 
 namespace helios {
 namespace filems {
@@ -23,7 +22,7 @@ protected:
    *  associated to the file output stream of the parent
    *  DirectTrajectoryWriteStrategy
    */
-  boost::archive::binary_oarchive& oa;
+  boost::iostreams::filtering_ostream& oa;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -34,7 +33,7 @@ public:
    * @see DirectTrajectoryWriteStrategy::DirectTrajectoryWriteStrategy
    */
   ZipTrajectoryWriteStrategy(std::ofstream& ofs,
-                             boost::archive::binary_oarchive& oa)
+                             boost::iostreams::filtering_ostream& oa)
     : DirectTrajectoryWriteStrategy(ofs)
     , oa(oa)
   {
@@ -47,7 +46,10 @@ public:
    * @brief Write trajectory to compressed file
    * @see DirectTrajectoryWriteStrategy::write
    */
-  void write(Trajectory const& t) override { oa << trajectoryToString(t); }
+  void write(Trajectory const& t) override
+  {
+    writeZippedStringRecord(oa, trajectoryToString(t));
+  }
 };
 
 }

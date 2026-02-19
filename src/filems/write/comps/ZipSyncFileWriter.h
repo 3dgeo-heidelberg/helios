@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/archive/binary_oarchive.hpp>
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <filems/write/comps/SimpleSyncFileWriter.h>
@@ -32,9 +31,10 @@ protected:
    */
   boost::iostreams::zlib_params zp;
   /**
-   * @brief Binary output archive
+   * @brief Compressed output stream pointer for compatibility with write
+   * strategies
    */
-  std::unique_ptr<boost::archive::binary_oarchive> oa;
+  boost::iostreams::filtering_ostream* oa = nullptr;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -55,8 +55,7 @@ public:
     zp = boost::iostreams::zlib_params(compressionMode);
     compressedOut.push(boost::iostreams::zlib_compressor(zp));
     compressedOut.push(ofs);
-    oa = std::unique_ptr<boost::archive::binary_oarchive>(
-      new boost::archive::binary_oarchive(compressedOut));
+    oa = &compressedOut;
   }
   virtual ~ZipSyncFileWriter() = default;
 

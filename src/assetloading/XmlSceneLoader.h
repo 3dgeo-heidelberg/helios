@@ -7,7 +7,6 @@
 #include <KDTreeFactory.h>
 #include <Scene.h>
 #include <SceneLoadingSpecification.h>
-#include <SerialSceneWrapper.h>
 #include <StaticScene.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
 
@@ -91,10 +90,8 @@ public:
    * @return Shared pointer to created scene
    * @see Scene
    */
-  std::shared_ptr<Scene> createSceneFromXml(
-    tinyxml2::XMLElement* sceneNode,
-    std::string path,
-    SerialSceneWrapper::SceneType* sceneType = nullptr);
+  std::shared_ptr<Scene> createSceneFromXml(tinyxml2::XMLElement* sceneNode,
+                                            std::string path);
 
   /**
    * @brief Load filters defining the scene part.

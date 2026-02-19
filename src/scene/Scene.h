@@ -1,12 +1,6 @@
 #pragma once
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/split_member.hpp>
-
 #include <glm/glm.hpp>
-#include <serial.h>
 
 #include <AABB.h>
 #include <Asset.h>
@@ -29,69 +23,6 @@ class Scene : public Asset
 {
 
 private:
-  // ***  SERIALIZATION  *** //
-  // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Handle scene save operation
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param s Scene to be saved
-   * @param version Version number for the Scene
-   */
-  template<class Archive>
-  void save(Archive& ar, unsigned int const version) const
-  {
-    // Register primitive derivates
-    ar.template register_type<Vertex>();
-    ar.template register_type<AABB>();
-    ar.template register_type<Triangle>();
-    ar.template register_type<Voxel>();
-    ar.template register_type<DetailedVoxel>();
-
-    // Save the scene itself
-    boost::serialization::void_cast_register<Scene, Asset>();
-    ar& boost::serialization::base_object<Asset>(*this);
-    ar & kdgf;
-    // ar &kdgrove; // KDGrove not saved because trees might be too deep
-    ar & bbox;
-    ar & bbox_crs;
-    ar & primitives;
-    ar & parts;
-  }
-  /**
-   * @brief Handle scene load operation
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param s Scene to be loaded
-   * @param version Version number for the Scene
-   */
-  template<class Archive>
-  void load(Archive& ar, unsigned int const fileVersion)
-  {
-    // Register primitive derivates
-    ar.template register_type<Vertex>();
-    ar.template register_type<AABB>();
-    ar.template register_type<Triangle>();
-    ar.template register_type<Voxel>();
-    ar.template register_type<DetailedVoxel>();
-
-    // Load the scene itself
-    boost::serialization::void_cast_register<Scene, Asset>();
-    ar& boost::serialization::base_object<Asset>(*this);
-    ar & kdgf;
-    // ar &kdgrove; // KDTree not loaded because it might be too deep
-    ar & bbox;
-    ar & bbox_crs;
-    ar & primitives;
-    ar & parts;
-
-    // Build KDTree from primitives
-    if (kdgf != nullptr)
-      buildKDGroveWithLog(true);
-  }
-  BOOST_SERIALIZATION_SPLIT_MEMBER();
-
 protected:
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -510,20 +441,6 @@ public:
    * @see XmlSurveyLoader::createSurveyFromXml
    */
   inline double getDefaultReflectance() const { return defaultReflectance; }
-
-  // ***   READ/WRITE  *** //
-  // ********************* //
-  /**
-   * @brief Serialize the scene and write it to given output file
-   * @param path Path to output file where serialized scene shall be stored
-   */
-  virtual void writeObject(std::string path);
-  /**
-   * @brief Read serialized scene from given file
-   * @param path Path to file where a serialized scene is stored
-   * @return Imported scene
-   */
-  static Scene* readObject(std::string path);
 
   // ***  SIMULATION STEP  *** //
   // ************************* //

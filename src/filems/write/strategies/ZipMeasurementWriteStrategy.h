@@ -1,8 +1,7 @@
 #pragma once
 
+#include <filems/util/ZipRecordIO.h>
 #include <filems/write/strategies/DirectMeasurementWriteStrategy.h>
-
-#include <boost/archive/binary_oarchive.hpp>
 
 namespace helios {
 namespace filems {
@@ -23,7 +22,7 @@ protected:
    *  associated to the file output stream of the parent
    *  DirectMeasurementWriteStrategy
    */
-  boost::archive::binary_oarchive& oa;
+  boost::iostreams::filtering_ostream& oa;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -34,7 +33,7 @@ public:
    * @see DirectMeasurementWriteStrategy::DirectMeasurementWriteStrategy
    */
   ZipMeasurementWriteStrategy(std::ofstream& ofs,
-                              boost::archive::binary_oarchive& oa)
+                              boost::iostreams::filtering_ostream& oa)
     : DirectMeasurementWriteStrategy(ofs)
     , oa(oa)
   {
@@ -49,7 +48,7 @@ public:
    */
   void write(Measurement const& m, glm::dvec3 const& shift) override
   {
-    oa << measurementToString(m, shift);
+    writeZippedStringRecord(oa, measurementToString(m, shift));
   }
 };
 

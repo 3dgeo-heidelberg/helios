@@ -23,7 +23,6 @@ target_sources(
   "RayIntersectionTest.cpp"
   "RigidMotionTest.cpp"
   "ScenePartSplitTest.cpp"
-  "SerializationTest.cpp"
   "SurveyCopyTest.cpp"
   "VoxelParsingTest.cpp"
 )

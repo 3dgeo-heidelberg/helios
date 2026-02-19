@@ -2,7 +2,6 @@
 
 #include <filems/facade/FMSFactoryFacade.h>
 #include <filems/facade/FMSReadFacade.h>
-#include <filems/facade/FMSSerializationFacade.h>
 #include <filems/facade/FMSWriteFacade.h>
 
 #include <memory>
@@ -32,11 +31,6 @@ public:
    * @brief The facade for file management system writing operations
    */
   FMSWriteFacade write;
-  /**
-   * @brief The facade for file management system serialization operations
-   */
-  FMSSerializationFacade serialization;
-
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
   /**

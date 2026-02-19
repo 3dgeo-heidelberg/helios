@@ -31,8 +31,6 @@ LidarSim::init(std::string surveyPath,
                bool splitByChannel,
                bool platformNoiseDisabled,
                bool legNoiseDisabled,
-               bool rebuildScene,
-               bool writeScene,
                bool lasOutput,
                bool las10,
                bool zipOutput,
@@ -65,8 +63,6 @@ LidarSim::init(std::string surveyPath,
      << "warehouseFactor: " << warehouseFactor << "\n"
      << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
      << "legNoiseDisabled: " << legNoiseDisabled << "\n"
-     << "rebuildScene: " << rebuildScene << "\n"
-     << "writeScene: " << writeScene << "\n"
      << "lasOutput: " << lasOutput << "\n"
      << "las10: " << las10 << "\n"
      << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
@@ -79,13 +75,12 @@ LidarSim::init(std::string surveyPath,
 
   // Load survey description from XML file:
   std::shared_ptr<XmlSurveyLoader> xmlreader =
-    std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath, writeScene);
+    std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
   xmlreader->sceneLoader.kdtFactoryType = kdtType;
   xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
   xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;
   xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
-  std::shared_ptr<Survey> survey =
-    xmlreader->load(legNoiseDisabled, rebuildScene);
+  std::shared_ptr<Survey> survey = xmlreader->load(legNoiseDisabled);
   if (survey == nullptr) {
     logging::ERR("Failed to load survey!");
     exit(-1);

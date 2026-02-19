@@ -1,11 +1,5 @@
 #pragma once
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/serialization.hpp>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <utility>
@@ -19,21 +13,7 @@
 class IntersectionHandlingResult
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize an IntersectionHandlingResult to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the intersection handling result
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & intersectionPoint;
-    ar & canContinue;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

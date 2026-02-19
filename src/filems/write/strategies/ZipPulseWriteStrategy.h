@@ -1,8 +1,7 @@
 #pragma once
 
+#include <filems/util/ZipRecordIO.h>
 #include <filems/write/strategies/DirectPulseWriteStrategy.h>
-
-#include <boost/archive/binary_oarchive.hpp>
 
 namespace helios {
 namespace filems {
@@ -17,7 +16,7 @@ protected:
    *  associated to the file output stream of the parent
    *  DirectPulseWriteStrategy.
    */
-  boost::archive::binary_oarchive& oa;
+  boost::iostreams::filtering_ostream& oa;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -27,7 +26,8 @@ public:
    * @see ZipPulseWriteStrategy::oa
    * @see DirectPulseWriteStrategy::DirectPulseWriteStrategy
    */
-  ZipPulseWriteStrategy(std::ofstream& ofs, boost::archive::binary_oarchive& oa)
+  ZipPulseWriteStrategy(std::ofstream& ofs,
+                        boost::iostreams::filtering_ostream& oa)
     : DirectPulseWriteStrategy(ofs)
     , oa(oa)
   {
@@ -42,7 +42,7 @@ public:
    */
   void write(PulseRecord const& pulseRecord) override
   {
-    oa << pulseToString(pulseRecord);
+    writeZippedStringRecord(oa, pulseToString(pulseRecord));
   }
 };
 

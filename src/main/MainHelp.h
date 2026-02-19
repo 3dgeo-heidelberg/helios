@@ -110,14 +110,6 @@ printMainHelp()
     << "consumption."
     << "\n\t\t\t\tBy default: 4\n\n"
 
-    << "\t\t--rebuildScene : Force scene rebuild even when a previously\n"
-    << "\t\t\tbuilt scene is available\n"
-    << "\t\t\t\tBy default: previous scene is used if found\n\n"
-
-    << "\t\t--noSceneWriting : If a scene is created during asset loading,\n"
-    << "\t\t\tit will be written by default. Enabling this flag will prevent\n"
-    << "\t\t\tthis writing.\n\n"
-
     << "\t\t--kdt <integer> : Specify the type of KDTree to be built for "
     << "for the scene\n"
     << "\t\t\tUsing 1 is for the simple KDTree based on median "
