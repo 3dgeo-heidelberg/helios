@@ -64,6 +64,16 @@ SingleScanner::clone()
 {
   std::shared_ptr<Scanner> scanner = std::make_shared<SingleScanner>(*this);
   _clone(*scanner);
+  for (size_t i = 0; i < scanner->getNumDevices(); ++i) {
+    auto detector = scanner->getDetector(i);
+    if (detector != nullptr) {
+      // Rebind detector ownership to the cloned scanner instance.
+      detector->scanner = scanner;
+      auto reboundDetector = detector->clone();
+      reboundDetector->scanner = scanner;
+      scanner->setDetector(reboundDetector, i);
+    }
+  }
   return scanner;
 }
 

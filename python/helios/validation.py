@@ -416,24 +416,80 @@ class Model(metaclass=ValidatedModelMetaClass):
             _check_if_exists(value)
             info[value] = self
 
+    def _reconstruct_from_model_fields(self, memo):
+        cls = self.__class__
+        obj_id = id(self)
+        if obj_id in memo:
+            return memo[obj_id]
+
+        annotations = get_all_annotations(cls)
+
+        # Allocate and memoize before deepcopying fields so recursive references resolve.
+        cpp_copy = None
+        if cls._cpp_class is not None and hasattr(self, "_cpp_object"):
+            if hasattr(self._cpp_object, "clone"):
+                cpp_copy = self._cpp_object.clone()
+            else:
+                try:
+                    cpp_copy = cls._cpp_class(self._cpp_object)
+                except TypeError:
+                    pass
+
+        if cpp_copy is not None:
+            reconstructed = cls.__new__(cls, _cpp_object=cpp_copy)
+            memo[obj_id] = reconstructed
+
+            # Keep C++-backed fields from the cloned C++ object graph.
+            # For scalar C++-backed fields, preserve Python-level values.
+            # For Model-typed C++-backed fields, keep the C++ clone wiring.
+            reconstructed._during_init = True
+            try:
+                for field, annot in annotations.items():
+                    is_iterable_model = _is_iterable_of_model_annotation(annot)
+                    is_model = False
+                    if _is_optional(annot):
+                        inner = _inner_optional_type(annot)
+                        is_model = isinstance(inner, type) and hasattr(
+                            inner, "_cpp_class"
+                        )
+                    else:
+                        is_model = isinstance(annot, type) and hasattr(
+                            annot, "_cpp_class"
+                        )
+
+                    if hasattr(cpp_copy, field) and (is_model or is_iterable_model):
+                        # Iterable[Model] getters expect an initialized cache.
+                        if is_iterable_model and not hasattr(
+                            reconstructed, f"_{field}"
+                        ):
+                            setattr(reconstructed, f"_{field}", [])
+                        # Prime wrapper cache from C++ clone graph.
+                        getattr(reconstructed, field)
+                        continue
+                    setattr(reconstructed, field, deepcopy(getattr(self, field), memo))
+            finally:
+                reconstructed._during_init = False
+
+            return reconstructed
+        else:
+            reconstructed = cls.__new__(cls)
+            memo[obj_id] = reconstructed
+
+            kwargs = {}
+            for field in annotations:
+                kwargs[field] = deepcopy(getattr(self, field), memo)
+
+            reconstructed.__init__(**kwargs)
+
+            return reconstructed
+
     def clone(self):
         """Create a deep copy of the object"""
+        return self._reconstruct_from_model_fields({})
 
-        cpp_object = None
-
-        # Check whether the underlying C++ class supports cloning
-        if self.__class__._cpp_class is not None:
-            if not hasattr(self._cpp_object, "clone"):
-                raise ValueError("Underlying C++ class does not support cloning.")
-
-            # Clone the underlying C++ object
-            cpp_object = self._cpp_object.clone()
-
-        properties = {
-            f: getattr(self, f) for f in get_all_annotations(self.__class__).keys()
-        }
-
-        return self.__class__(_cpp_object=cpp_object, **properties)
+    def __deepcopy__(self, memo):
+        """Create a deep copy of the object using model field reconstruction."""
+        return self._reconstruct_from_model_fields(memo)
 
 
 class UpdateableMixin:

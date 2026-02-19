@@ -1,5 +1,7 @@
 from helios.settings import *
+from helios.survey import OutputFormat
 
+import copy
 from pathlib import Path
 
 
@@ -99,3 +101,60 @@ def test_convert_full_waveform_settings_to_cpp():
     assert cpp_settings.beam_sample_quality == 4
     assert cpp_settings.win_size == 2.0
     assert cpp_settings.max_fullwave_range == 10.0
+
+
+def test_execution_settings_clone_and_deepcopy_run_survey(survey):
+    settings = ExecutionSettings(num_threads=1, chunk_size=16)
+    settings.runtime_note = "temporary"
+
+    for copied in (settings.clone(), copy.deepcopy(settings)):
+        assert copied is not settings
+        assert copied.chunk_size == 16
+        assert copied.num_threads == 1
+        assert not hasattr(copied, "runtime_note")
+
+        copied.chunk_size = 24
+        assert settings.chunk_size == 16
+
+        points, trajectory = survey.clone().run(
+            format=OutputFormat.NPY, execution_settings=copied
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_output_settings_clone_and_deepcopy_run_survey(survey):
+    settings = OutputSettings(format=OutputFormat.NPY, split_by_channel=False)
+    settings.runtime_note = "temporary"
+
+    for copied in (settings.clone(), copy.deepcopy(settings)):
+        assert copied is not settings
+        assert copied.format == OutputFormat.NPY
+        assert not hasattr(copied, "runtime_note")
+
+        points, trajectory = survey.clone().run(output_settings=copied)
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0
+
+
+def test_full_waveform_settings_clone_and_deepcopy_run_survey(survey):
+    settings = FullWaveformSettings(
+        bin_size=1.0 * units.ns,
+        beam_sample_quality=4,
+        win_size=2.0 * units.ns,
+        max_fullwave_range=10.0 * units.ns,
+    )
+    settings.runtime_note = "temporary"
+
+    for copied in (settings.clone(), copy.deepcopy(settings)):
+        assert copied is not settings
+        assert copied.beam_sample_quality == 4
+        assert not hasattr(copied, "runtime_note")
+
+        cloned_survey = survey.clone()
+        cloned_survey.full_waveform_settings = copied
+        points, trajectory = cloned_survey.run(
+            format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        )
+        assert points.shape[0] > 0
+        assert trajectory.shape[0] > 0

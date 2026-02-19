@@ -811,8 +811,12 @@ PYBIND11_MODULE(_helios, m)
 
   py::class_<Survey, Asset, std::shared_ptr<Survey>> survey(
     m, "Survey", py::module_local());
-  survey
-    .def(py::init<>())
+  survey.def(py::init<>())
+    .def("clone",
+         [](Survey& s) {
+           // true here enables deepcopying semantics
+           return std::make_shared<Survey>(s, true);
+         })
 
     .def_readwrite("scanner", &Survey::scanner)
     .def_readwrite("legs", &Survey::legs)
@@ -1093,7 +1097,34 @@ PYBIND11_MODULE(_helios, m)
         }
         return bbox;
       })
-    .def_property("bbox_crs", &Scene::getBBoxCRS, &Scene::setBBoxCRS)
+    .def_property(
+      "bbox_crs",
+      [](Scene& self) {
+        std::shared_ptr<AABB> bbox = self.getBBoxCRS();
+        if (bbox == nullptr) {
+          if (!self.primitives.empty()) {
+            self.setBBoxCRS(AABB::getForPrimitives(self.primitives));
+          } else {
+            std::vector<Primitive*> partPrimitives;
+            for (auto const& part : self.parts) {
+              if (part == nullptr)
+                continue;
+              partPrimitives.insert(partPrimitives.end(),
+                                    part->mPrimitives.begin(),
+                                    part->mPrimitives.end());
+            }
+            if (!partPrimitives.empty()) {
+              self.setBBoxCRS(AABB::getForPrimitives(partPrimitives));
+            } else {
+              self.setBBoxCRS(
+                std::make_shared<AABB>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+            }
+          }
+          bbox = self.getBBoxCRS();
+        }
+        return bbox;
+      },
+      &Scene::setBBoxCRS)
     .def_property(
       "kd_grove_factory", &Scene::getKDGroveFactory, &Scene::setKDGroveFactory)
     .def_property_readonly(
@@ -1426,8 +1457,10 @@ PYBIND11_MODULE(_helios, m)
   py::class_<InterpolatedMovingPlatformEgg,
              MovingPlatform,
              std::shared_ptr<InterpolatedMovingPlatformEgg>>
-    interpolated_egg(m, "InterpolatedMovingPlatformEgg");
-  interpolated_egg.def(py::init<>());
+    interpolated_egg(
+      m, "InterpolatedMovingPlatformEgg", py::multiple_inheritance());
+  interpolated_egg.def(py::init<>())
+    .def("clone", &InterpolatedMovingPlatformEgg::clone);
 
   py::class_<SwapOnRepeatHandler, std::shared_ptr<SwapOnRepeatHandler>>
     swap_on_repeat_handler(m, "SwapOnRepeatHandler");
