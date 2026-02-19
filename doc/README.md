@@ -23,6 +23,13 @@ The HTML output is written to:
 build-docs/doc/sphinx
 ```
 
+Alternatively, if you are not interested in local Doxygen builds, you can also
+call Sphinx directly and ignore the Doxygen-related error message:
+
+```
+sphinx-build -b html <src-foc-folder> <target-output-directory>
+```
+
 ## Serve
 
 To preview locally, serve the HTML folder with a simple HTTP server:
