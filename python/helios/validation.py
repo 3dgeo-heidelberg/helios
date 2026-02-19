@@ -127,6 +127,8 @@ def _is_iterable_of_model_annotation(a):
         return False
 
     args = get_args(a)
+    if len(args) == 0 or not isinstance(args[0], type):
+        return False
     return issubclass(args[0], Model)
 
 
@@ -224,6 +226,12 @@ class ValidatedModelMetaClass(type):
                             )
                     else:
                         if hasattr(a, "_cpp_class"):
+                            if not hasattr(self, f"_{f}"):
+                                if hasattr(a, "_from_cpp"):
+                                    setattr(self, f"_{f}", a._from_cpp(value))
+                                    return getattr(self, f"_{f}")
+                                setattr(self, f"_{f}", value)
+                                return value
                             getattr(self, f"_{f}")._cpp_object = value
                             return getattr(self, f"_{f}")
                         return value

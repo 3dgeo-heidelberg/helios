@@ -237,6 +237,51 @@ def get_bbox(part):
     return np.array(scene._cpp_object.bbox_crs.bounds)
 
 
+def test_scenepart_bbox_extraction(box):
+    bbox = box.bbox
+    assert isinstance(bbox, BoundingBox)
+    assert np.allclose(np.array(bbox.bounds), np.array(box._cpp_object.bbox.bounds))
+
+
+def test_boundingbox_centroid(box):
+    bbox = box.bbox
+    expected = np.mean(np.array(bbox.bounds), axis=0)
+    assert np.allclose(np.array(bbox.centroid), expected)
+
+
+def test_scene_bbox_extraction(box):
+    scene = StaticScene(scene_parts=[box])
+    # Avoid flaky crashes in optimized builds from concurrent KDTree construction
+    # for very small test scenes.
+    scene._finalize(
+        execution_settings=ExecutionSettings(kdt_num_threads=1, kdt_geom_num_threads=1)
+    )
+
+    bbox = scene.bbox
+    assert isinstance(bbox, BoundingBox)
+    assert np.allclose(
+        np.array(bbox.bounds),
+        np.array(scene._cpp_object.bbox.bounds),
+    )
+
+
+def test_scenepart_bbox_updates_after_transformations(box):
+    def _expected_bounds(part):
+        vertices = np.array([v.position for v in part._cpp_object.all_vertices])
+        return np.array([vertices.min(axis=0), vertices.max(axis=0)])
+
+    assert np.allclose(np.array(box.bbox.bounds), _expected_bounds(box))
+
+    box.translate([10.0, -20.0, 30.0])
+    assert np.allclose(np.array(box.bbox.bounds), _expected_bounds(box))
+
+    box.scale(1.5)
+    assert np.allclose(np.array(box.bbox.bounds), _expected_bounds(box))
+
+    box.rotate(axis=[1.0, 0.0, 0.0], angle=np.pi / 6)
+    assert np.allclose(np.array(box.bbox.bounds), _expected_bounds(box))
+
+
 def check_rotation(box1, box2):
     bbox1 = get_bbox(box1)
     bbox1[0][1] = bbox1[0][1] * math.sqrt(2)

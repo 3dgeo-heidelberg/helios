@@ -16,7 +16,7 @@ from helios.platforms import (
     platform_from_name,
 )
 from helios.scanner import Scanner, ScannerSettings, list_scanners, scanner_from_name
-from helios.scene import StaticScene, ScenePart
+from helios.scene import StaticScene, ScenePart, BoundingBox
 from helios.settings import (
     ExecutionSettings,
     ForceOnGroundStrategy,
