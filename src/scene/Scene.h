@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <string>
+
 #include <AABB.h>
 #include <Asset.h>
 #include <DetailedVoxel.h>
@@ -96,6 +98,23 @@ public:
       delete p;
   }
   Scene(Scene& s);
+
+  /**
+   * @brief Save scene state to a cereal binary archive.
+   *
+   * This API is C++-only for now (no Python bindings exposure).
+   *
+   * @param path Path to the destination file.
+   */
+  void saveCereal(std::string const& path) const;
+  /**
+   * @brief Load scene state from a cereal binary archive.
+   *
+   * Current scene content will be released before loading.
+   *
+   * @param path Path to the source file.
+   */
+  void loadCereal(std::string const& path);
 
   // ***   M E T H O D S   *** //
   // ************************* //

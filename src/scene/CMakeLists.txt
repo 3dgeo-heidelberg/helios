@@ -13,6 +13,7 @@ target_sources(
   "Material.cpp"
   "StaticScene.cpp"
   "Scene.cpp"
+  "SceneSerialization.cpp"
   "primitives/Primitive.cpp"
   "primitives/DetailedVoxel.cpp"
   "primitives/Voxel.cpp"

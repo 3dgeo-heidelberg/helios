@@ -1199,6 +1199,20 @@ PYBIND11_MODULE(_helios, m)
       },
       py::return_value_policy::reference)
     .def("build_kd_grove", &Scene::buildKDGroveWithLog, py::arg("safe") = true)
+    .def(
+      "to_binary",
+      [](Scene const& scene, std::string const& path) {
+        scene.saveCereal(path);
+      },
+      py::arg("path"))
+    .def_static(
+      "from_binary",
+      [](std::string const& path) {
+        std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+        scene->loadCereal(path);
+        return scene;
+      },
+      py::arg("path"))
     .def("intersection_min_max",
          py::overload_cast<std::vector<double> const&,
                            glm::dvec3 const&,
@@ -1214,6 +1228,20 @@ PYBIND11_MODULE(_helios, m)
     m, "StaticScene");
   static_scene.def(py::init<>())
     .def(py::init<StaticScene&>(), py::arg("scene"))
+    .def(
+      "to_binary",
+      [](StaticScene const& scene, std::string const& path) {
+        scene.saveCereal(path);
+      },
+      py::arg("path"))
+    .def_static(
+      "from_binary",
+      [](std::string const& path) {
+        std::shared_ptr<StaticScene> scene = std::make_shared<StaticScene>();
+        scene->loadCereal(path);
+        return scene;
+      },
+      py::arg("path"))
     .def("get_static_object_part", &StaticScene::getStaticObject, py::arg("id"))
     .def("set_static_object_part",
          &StaticScene::setStaticObject,

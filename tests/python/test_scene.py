@@ -72,6 +72,48 @@ def _find_single_las_file(output_dir: Path) -> Path:
     return files[0]
 
 
+def _single_thread_execution_settings() -> ExecutionSettings:
+    return ExecutionSettings(
+        num_threads=1,
+        kdt_num_threads=1,
+        kdt_geom_num_threads=1,
+    )
+
+
+def _run_tls_npy(scene: StaticScene, execution_settings: ExecutionSettings):
+    survey = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene)
+    survey.add_leg(
+        scanner_settings=ScannerSettings(
+            pulse_frequency=2000,
+            scan_angle="20 deg",
+            head_rotation="10 deg/s",
+            rotation_start_angle="0 deg",
+            rotation_stop_angle="10 deg",
+            scan_frequency=120,
+        ),
+        platform_settings=StaticPlatformSettings(x=0, y=0, z=0),
+    )
+    return survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+
+
+def _assert_scene_binary_roundtrip_output_eq(
+    scene: StaticScene, tmp_path: Path, test_name: str
+):
+    execution_settings = _single_thread_execution_settings()
+    scene_binary = tmp_path / f"{test_name}.bin"
+    scene.to_binary(scene_binary)
+
+    restored_scene = Scene.from_binary(scene_binary)
+
+    set_rng_seed(42)
+    points1, trajectory1 = _run_tls_npy(scene, execution_settings)
+    set_rng_seed(42)
+    points2, trajectory2 = _run_tls_npy(restored_scene, execution_settings)
+
+    np.testing.assert_array_equal(points1, points2)
+    np.testing.assert_array_equal(trajectory1, trajectory2)
+
+
 def test_construct_scene_from_xml():
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
 
@@ -509,6 +551,86 @@ def test_scene_from_xml_reproducible_run():
     points2, _ = survey2.run()
 
     assert len(points1) == len(points2)
+
+
+def test_scene_binary_roundtrip_reproducible_run(tmp_path):
+    execution_settings = _single_thread_execution_settings()
+
+    survey1 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
+    _configure_fast_survey_legs(survey1)
+    survey1.scene._finalize(execution_settings=execution_settings)
+
+    scene_binary = tmp_path / "scene.bin"
+    survey1.scene.to_binary(scene_binary)
+
+    restored_scene = Scene.from_binary(scene_binary)
+    assert len(restored_scene.scene_parts) == len(survey1.scene.scene_parts)
+    assert np.allclose(
+        np.array(restored_scene.bbox.bounds),
+        np.array(survey1.scene.bbox.bounds),
+    )
+
+    survey2 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
+    _configure_fast_survey_legs(survey2)
+    survey2.scene = restored_scene
+
+    set_rng_seed(42)
+    points1, trajectory1 = survey1.run(
+        format=OutputFormat.NPY,
+        execution_settings=execution_settings,
+    )
+    set_rng_seed(42)
+    points2, trajectory2 = survey2.run(
+        format=OutputFormat.NPY,
+        execution_settings=execution_settings,
+    )
+
+    np.testing.assert_array_equal(points1, points2)
+    np.testing.assert_array_equal(trajectory1, trajectory2)
+
+
+def test_scene_to_binary_non_finalized_roundtrip(tmp_path):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    assert len(scene._cpp_object.primitives) == 0
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name="scene_non_finalized",
+    )
+
+
+def test_scene_to_binary_finalized_roundtrip(tmp_path):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    scene._finalize(execution_settings=_single_thread_execution_settings())
+    assert len(scene._cpp_object.primitives) > 0
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name="scene_finalized",
+    )
+
+
+def test_scene_to_binary_invalidated_roundtrip(tmp_path):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    scene._finalize(execution_settings=_single_thread_execution_settings())
+    assert len(scene._cpp_object.primitives) > 0
+
+    scene.scene_parts = scene.scene_parts + (
+        ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj").scale(0.5),
+    )
+    assert len(scene._cpp_object.primitives) == 0
+
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name="scene_invalidated",
+    )
 
 
 def test_ground_plane():

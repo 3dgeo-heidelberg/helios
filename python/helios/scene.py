@@ -31,6 +31,7 @@ from pydantic import (
     NonNegativeInt,
     validate_call,
 )
+from pathlib import Path
 from typing import Literal, Optional, Union, Tuple
 import numpy as np
 
@@ -525,3 +526,19 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
         return scene
+
+    @classonlymethod
+    @validate_call
+    def from_binary(cls, binary_file: AssetPath):
+        _cpp_scene = _helios.StaticScene.from_binary(str(binary_file))
+        return cls._from_cpp(_cpp_scene)
+
+    @validate_call
+    def to_binary(self, binary_file: Path):
+        # Ensure primitives and KD data exist before persisting.
+        self._finalize()
+        self._cpp_object.to_binary(str(binary_file.expanduser()))
+
+
+class Scene(StaticScene):
+    """Convenience alias of StaticScene."""
