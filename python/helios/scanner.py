@@ -110,6 +110,8 @@ SCANNER_REGISTRY: dict[str, tuple[str, str]] = {
     # TLS Scanners
     "riegl_vz_400": ("data/scanners_tls.xml", "riegl_vz400"),
     "riegl_vz_1000": ("data/scanners_tls.xml", "riegl_vz1000"),
+    "riegl_vz_2000i": ("data/scanners_tls.xml", "riegl_vz2000i"),
+    "riegl_vz_600i": ("data/scanners_tls.xml", "riegl_vz600i"),
     "riegl_vq_450": ("data/scanners_tls.xml", "riegl_vq-450"),
     "livox_mid70_tls": ("data/scanners_tls.xml", "livox_mid-70"),
     "vlp16": ("data/scanners_tls.xml", "vlp16"),
