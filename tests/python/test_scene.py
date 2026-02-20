@@ -107,7 +107,7 @@ def _assert_scene_binary_roundtrip_output_eq(
     scene_binary = tmp_path / f"{test_name}.bin"
     scene.to_binary(scene_binary, compression_level=compression_level)
 
-    restored_scene = Scene.from_binary(scene_binary)
+    restored_scene = StaticScene.from_binary(scene_binary)
 
     set_rng_seed(42)
     points1, trajectory1 = _run_tls_npy(scene, execution_settings)
@@ -567,7 +567,7 @@ def test_scene_binary_roundtrip_reproducible_run(tmp_path):
     scene_binary = tmp_path / "scene.bin"
     survey1.scene.to_binary(scene_binary)
 
-    restored_scene = Scene.from_binary(scene_binary)
+    restored_scene = StaticScene.from_binary(scene_binary)
     assert len(restored_scene.scene_parts) == len(survey1.scene.scene_parts)
     assert np.allclose(
         np.array(restored_scene.bbox.bounds),
