@@ -19,25 +19,6 @@
  */
 class StaticScene : public Scene
 {
-private:
-  // ***  SERIALIZATION  *** //
-  // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a StaticScene to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the StaticScene
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<StaticScene, Scene>();
-    boost::serialization::void_cast_register<StaticScene, Scene>();
-    ar& boost::serialization::base_object<Scene>(*this);
-    ar & staticObjs;
-  }
-
 protected:
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -122,19 +103,4 @@ public:
    * @return Number of static objects in the scene
    */
   inline size_t numStaticObjects() { return staticObjs.size(); }
-
-  // ***  READ / WRITE  *** //
-  // ********************** //
-  /**
-   * @brief Serialize the static scene and write it to given output file
-   * @param path Path to output file where serialized static scene shall be
-   *  stored
-   */
-  void writeObject(std::string path) override;
-  /**
-   * @brief Read serialized static scene from given file
-   * @param path Path to file where a serialized static scene is stored
-   * @return Imported static scene
-   */
-  static StaticScene* readObject(std::string path);
 };

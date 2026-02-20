@@ -20,32 +20,7 @@ class WavefrontObj;
  */
 class ScenePart
 {
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a ScenePart to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the ScenePart
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & mPrimitives;
-    ar & centroid;
-    ar & bound;
-    ar & mId;
-    ar & subpartLimit;
-    ar & onRayIntersectionMode;
-    ar & onRayIntersectionArgument;
-    ar & randomShift;
-    ar & ladlut;
-    ar & mOrigin;
-    ar & mRotation;
-    ar & mScale;
-    ar & forceOnGround;
-  }
 
 public:
   // ***  TYPE ENUM  *** //

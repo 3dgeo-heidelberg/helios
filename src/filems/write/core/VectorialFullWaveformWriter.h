@@ -1,7 +1,6 @@
 #pragma once
 
 #include <filems/write/comps/SimpleVectorialSyncFileFullWaveformWriter.h>
-#include <filems/write/comps/ZipVectorialSyncFileFullWaveformWriter.h>
 #include <filems/write/core/BaseFullWaveformWriter.h>
 #include <scanner/detector/FullWaveform.h>
 #include <util/HeliosException.h>
@@ -61,10 +60,7 @@ public:
   std::shared_ptr<SyncFileWriter<std::vector<FullWaveform> const&>> makeWriter(
     std::string const& path) const override
   {
-    if (isZipOutput()) {
-      return std::make_shared<ZipVectorialSyncFileFullWaveformWriter>(path);
-    } else
-      return std::make_shared<SimpleVectorialSyncFileFullWaveformWriter>(path);
+    return std::make_shared<SimpleVectorialSyncFileFullWaveformWriter>(path);
   }
 };
 

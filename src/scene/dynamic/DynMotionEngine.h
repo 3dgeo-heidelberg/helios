@@ -19,21 +19,7 @@
 class DynMotionEngine
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a dynamic motion engine to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the dynamic motion engine
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & rme;
-    ar & rm3f;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

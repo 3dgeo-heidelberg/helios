@@ -14,10 +14,7 @@ BaseFullWaveformWriter<WriteArgs...>::configure(std::string const& parent,
   std::stringstream ss;
   ss.str("");
   ss << parent << prefix;
-  if (isZipOutput())
-    ss << "_fullwave.bin";
-  else
-    ss << "_fullwave.txt";
+  ss << "_fullwave.txt";
   setOutputFilePath(ss.str());
 }
 

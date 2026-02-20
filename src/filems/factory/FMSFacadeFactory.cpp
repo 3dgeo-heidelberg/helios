@@ -89,11 +89,11 @@ helios::filems::FMSFacadeFactory::buildFacade(std::string const& outdir,
   // Configure full waveform writer
   fmsWrite.setFullWaveformWriter(
     std::make_shared<VectorialFullWaveformWriter>());
-  fmsWrite.setFullWaveformWriterZipOutput(zipOutput);
+  fmsWrite.setFullWaveformWriterZipOutput(false); // Never zip
 
   // Configure pulse writer
   fmsWrite.setPulseWriter(std::make_shared<VectorialPulseWriter>());
-  fmsWrite.setPulseWriterZipOutput(zipOutput);
+  fmsWrite.setPulseWriterZipOutput(false); // Never zip
 
   // Return
   return fms;

@@ -15,24 +15,7 @@ class MultiThreadSAHKDTreeFactory : public MultiThreadKDTreeFactory
   using MultiThreadKDTreeFactory::kdtf;
 
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a multi thread SAH KDTree factory to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the multi thread SAH K dimensional
-   *  tree factory
-   */
-  template<class Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    boost::serialization::void_cast_register<MultiThreadSAHKDTreeFactory,
-                                             MultiThreadKDTreeFactory>();
-    ar& boost::serialization::base_object<MultiThreadKDTreeFactory>(*this);
-    ar & sahkdtf;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

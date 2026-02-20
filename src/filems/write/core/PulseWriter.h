@@ -2,7 +2,6 @@
 
 #include <filems/factory/SyncFileMeasurementWriterFactory.h>
 #include <filems/write/comps/SimpleSyncFilePulseWriter.h>
-#include <filems/write/comps/ZipSyncFilePulseWriter.h>
 #include <filems/write/core/BasePulseWriter.h>
 #include <scanner/PulseRecord.h>
 #include <util/HeliosException.h>
@@ -48,10 +47,7 @@ public:
   std::shared_ptr<SyncFileWriter<PulseRecord const&>> makeWriter(
     std::string const& path) const override
   {
-    if (isZipOutput()) {
-      return std::make_shared<ZipSyncFilePulseWriter>(path);
-    } else
-      return std::make_shared<SimpleSyncFilePulseWriter>(path);
+    return std::make_shared<SimpleSyncFilePulseWriter>(path);
   }
 };
 

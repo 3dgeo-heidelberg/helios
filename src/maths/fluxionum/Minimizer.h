@@ -1,12 +1,5 @@
 #pragma once
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/serialization.hpp>
-
 #include <functional>
 
 namespace fluxionum {
@@ -34,20 +27,7 @@ template<typename IT, typename OT>
 class Minimizer
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize the minimizer to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the minimizer
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    ar & f;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

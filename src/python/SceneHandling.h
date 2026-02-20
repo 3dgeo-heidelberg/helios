@@ -65,14 +65,6 @@ void
 translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset);
 
 void
-writeSceneToBinary(const std::string& writePath,
-                   std::shared_ptr<Scene> scene,
-                   bool isDynScene = false);
-
-std::shared_ptr<Scene>
-readSceneFromBinary(const std::string& readPath);
-
-void
 findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
                               std::shared_ptr<ScannerSettings> ref,
                               std::string const defaultTemplateId,

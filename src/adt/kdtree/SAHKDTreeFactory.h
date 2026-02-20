@@ -131,28 +131,7 @@ class SAHKDTreeFactory : public SimpleKDTreeFactory
   friend class SAHKDTreeGeometricStrategy;
 
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a surface area heuristic KDTree factory to a stream
-   *  of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the surface area heuristic KDTree
-   *  factory
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    boost::serialization::void_cast_register<SAHKDTreeFactory,
-                                             SimpleKDTreeFactory>();
-    ar& boost::serialization::base_object<SimpleKDTreeFactory>(*this);
-    ar & ci & cl & co;
-    ar & lossNodes;
-    ar & cacheI & cacheL & cacheO & cacheT;
-    ar & cacheRoot;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

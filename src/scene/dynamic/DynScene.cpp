@@ -1,4 +1,3 @@
-#include <SerialIO.h>
 #include <logging.hpp>
 #include <scene/dynamic/DynScene.h>
 
@@ -113,24 +112,4 @@ DynScene::makeStepLoop(int const stepInterval)
 {
   this->stepLoop =
     NonVoidStepLoop<bool>(stepInterval, [&]() -> bool { return doStep(); });
-}
-
-// ***   READ/WRITE  *** //
-// ********************* //
-void
-DynScene::writeObject(std::string path)
-{
-  std::stringstream ss;
-  ss << "Writing dynamic scene object to " << path << " ...";
-  logging::INFO(ss.str());
-  SerialIO::getInstance()->write<DynScene>(path, this);
-}
-
-DynScene*
-DynScene::readObject(std::string path)
-{
-  std::stringstream ss;
-  ss << "Reading dynamic scene object from " << path << " ...";
-  logging::INFO(ss.str());
-  return SerialIO::getInstance()->read<DynScene>(path);
 }

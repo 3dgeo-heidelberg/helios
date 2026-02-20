@@ -1,5 +1,4 @@
 #include <filems/write/comps/SimpleSyncFileTrajectoryWriter.h>
-#include <filems/write/comps/ZipSyncFileTrajectoryWriter.h>
 #include <filems/write/core/TrajectoryWriter.h>
 
 #include <sstream>
@@ -14,11 +13,7 @@ TrajectoryWriter::configure(std::string const& parent,
 {
   std::stringstream ss;
   ss.str("");
-  ss << parent << prefix << "_trajectory";
-  if (isZipOutput())
-    ss << ".bin";
-  else
-    ss << ".txt";
+  ss << parent << prefix << "_trajectory.txt";
   setOutputFilePath(ss.str());
 }
 
@@ -33,14 +28,11 @@ TrajectoryWriter::writeTrajectory(Trajectory const& t)
 void
 TrajectoryWriter::setOutputFilePath(std::string const& path)
 {
-  if (zipOutput) {
-    setSyncFileWriter(std::make_shared<ZipSyncFileTrajectoryWriter>(path));
-  } else if (lasOutput) {
+  if (isLasOutput()) {
     throw HeliosException(
       "TrajectoryWriter cannot export output in LAS format");
-  } else {
-    setSyncFileWriter(std::make_shared<SimpleSyncFileTrajectoryWriter>(path));
   }
+  setSyncFileWriter(std::make_shared<SimpleSyncFileTrajectoryWriter>(path));
 }
 
 }

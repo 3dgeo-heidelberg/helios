@@ -1,7 +1,5 @@
 #pragma once
 
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/shared_ptr.hpp>
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -24,30 +22,7 @@ class Vertex;
 class Primitive
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a Primitive to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the Primitive
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    // Register ScenePart derived classes
-    ar.template register_type<DynMovingObject>();
-    ar.template register_type<DynSequentiableMovingObject>();
-
-    // Debugging purposes ---
-    /*std::string partId = "#NULLID#";
-    if(part!=nullptr) partId = part->getId();*/
-    // --- Debugging purposes
-
-    ar & part;
-    ar & material;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //

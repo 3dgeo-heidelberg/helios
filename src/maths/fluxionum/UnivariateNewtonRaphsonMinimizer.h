@@ -3,13 +3,6 @@
 #include <DiffMinimizer.h>
 #include <IterativeMethodHandler.h>
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/serialization.hpp>
-
 namespace fluxionum {
 
 /**
@@ -27,25 +20,7 @@ template<typename IT, typename OT>
 class UnivariateNewtonRaphsonMinimizer : public DiffMinimizer<IT, OT>
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize the univariate Newton-Raphson minimizer to a stream
-   *  of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the univariate Newton-Raphson
-   *  minimizer
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    boost::serialization::void_cast_register<UnivariateNewtonRaphsonMinimizer,
-                                             DiffMinimizer>();
-    ar& boost::serialization::base_object<DiffMinimizer>(*this);
-    ar & imh;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

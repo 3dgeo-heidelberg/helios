@@ -23,7 +23,6 @@ from helios.utils import (
     traj_dtype,
     apply_scene_shift,
     is_xml_loaded,
-    is_binary_loaded,
     check_integrate_survey_and_legs,
     classonlymethod,
 )
@@ -91,11 +90,7 @@ class Survey(Model, cpp_class=_helios.Survey):
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
         # Ensure that the scene has been finalized
-        if not (
-            is_xml_loaded(self)
-            or is_binary_loaded(self.scene)
-            or is_xml_loaded(self.scene)
-        ):
+        if not (is_xml_loaded(self) or is_xml_loaded(self.scene)):
             self.scene._finalize(execution_settings)
 
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
@@ -288,8 +283,6 @@ class Survey(Model, cpp_class=_helios.Survey):
     def from_xml(
         cls,
         survey_file: AssetPath,
-        load_scene_not_from_binary: bool = True,
-        write_scene_to_binary: bool = False,
     ):
         """Construct the survey object from an XML file."""
 
@@ -300,15 +293,11 @@ class Survey(Model, cpp_class=_helios.Survey):
             str(survey_file),
             [str(p) for p in get_asset_directories()],
             True,
-            load_scene_not_from_binary,
-            write_scene_to_binary,
         )
 
         survey = cls._from_cpp(_cpp_survey)
         survey._is_loaded_from_xml = True
         survey.scene._is_loaded_from_xml = True
-        if not load_scene_not_from_binary:
-            survey.scene._is_loaded_from_binary = True
 
         return survey
 

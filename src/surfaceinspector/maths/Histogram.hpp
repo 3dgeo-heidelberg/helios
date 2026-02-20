@@ -2,8 +2,6 @@
 
 #include <vector>
 
-#include <boost/serialization/access.hpp>
-
 #include <surfaceinspector/maths/functions/GaussianFunction.hpp>
 #include <surfaceinspector/util/Object.hpp>
 
@@ -21,23 +19,7 @@ template<typename T>
 class Histogram : public SurfaceInspector::util::Object
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a Histogram to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Verison number of Histogram
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & m & n;
-    ar & xmin & xmax & delta & step & norm;
-    ar & c & r & d;
-    ar & a & b;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //

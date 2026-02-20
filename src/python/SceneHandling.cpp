@@ -3,7 +3,6 @@
 #include <KDTreeFactoryMaker.h>
 #include <MaterialsFileReader.h>
 #include <SceneHandling.h>
-#include <SerialSceneWrapper.h>
 #include <SpectralLibrary.h>
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
@@ -259,38 +258,6 @@ translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset)
   for (auto p : sp->mPrimitives)
     p->translate(offset);
   sp->bound = nullptr;
-}
-
-void
-writeSceneToBinary(const std::string& filename,
-                   std::shared_ptr<Scene> scene,
-                   bool isDynScene)
-{
-
-  SerialSceneWrapper::SceneType sceneType;
-  if (isDynScene) {
-    sceneType = SerialSceneWrapper::SceneType::DYNAMIC_SCENE;
-  } else {
-    sceneType = SerialSceneWrapper::SceneType::STATIC_SCENE;
-  }
-  SerialSceneWrapper(sceneType, scene.get()).writeScene(filename);
-}
-
-std::shared_ptr<Scene>
-readSceneFromBinary(const std::string& filename)
-{
-  fs::path filePath = fs::path(filename);
-
-  if (!fs::is_regular_file(filePath)) {
-    throw std::runtime_error("Binary Scene file does not exist: " +
-                             filePath.string());
-  }
-
-  SerialSceneWrapper* ssw = SerialSceneWrapper::readScene(filePath.string());
-  std::shared_ptr<Scene> scene = std::shared_ptr<Scene>(ssw->getScene());
-  delete ssw;
-
-  return scene;
 }
 
 void

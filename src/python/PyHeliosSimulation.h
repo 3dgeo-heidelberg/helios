@@ -420,12 +420,8 @@ public:
    *
    * @param[in] legNoiseDisabled True to disable leg noise, False to
    * enable it
-   * @param[in] rebuildScene True to force scene rebuild even when a previous
-   * scene has been built, False to allow usage of previously built scene
-   * when it is available
    */
   void loadSurvey(bool legNoiseDisabled = false,
-                  bool rebuildScene = false,
                   bool writeWaveform = false,
                   bool calcEchowidth = false,
                   bool fullWaveNoise = false,

@@ -9,7 +9,6 @@ from helios.utils import *
 
 import copy
 import math
-import os
 from pathlib import Path
 
 import _helios
@@ -17,6 +16,7 @@ import laspy
 import numpy as np
 import pytest
 from helios import HeliosException
+from helios.validation import CompressionLevel
 
 
 def _write_xyz_file(path: Path, separator: str = " ") -> None:
@@ -71,6 +71,51 @@ def _find_single_las_file(output_dir: Path) -> Path:
         f"found {len(files)}: {[str(path) for path in files]}"
     )
     return files[0]
+
+
+def _single_thread_execution_settings() -> ExecutionSettings:
+    return ExecutionSettings(
+        num_threads=1,
+        kdt_num_threads=1,
+        kdt_geom_num_threads=1,
+    )
+
+
+def _run_tls_npy(scene: StaticScene, execution_settings: ExecutionSettings):
+    survey = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene)
+    survey.add_leg(
+        scanner_settings=ScannerSettings(
+            pulse_frequency=2000,
+            scan_angle="20 deg",
+            head_rotation="10 deg/s",
+            rotation_start_angle="0 deg",
+            rotation_stop_angle="10 deg",
+            scan_frequency=120,
+        ),
+        platform_settings=StaticPlatformSettings(x=0, y=0, z=0),
+    )
+    return survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+
+
+def _assert_scene_binary_roundtrip_output_eq(
+    scene: StaticScene,
+    tmp_path: Path,
+    test_name: str,
+    compression_level: CompressionLevel = 6,
+):
+    execution_settings = _single_thread_execution_settings()
+    scene_binary = tmp_path / f"{test_name}.bin"
+    scene.to_binary(scene_binary, compression_level=compression_level)
+
+    restored_scene = Scene.from_binary(scene_binary)
+
+    set_rng_seed(42)
+    points1, trajectory1 = _run_tls_npy(scene, execution_settings)
+    set_rng_seed(42)
+    points2, trajectory2 = _run_tls_npy(restored_scene, execution_settings)
+
+    np.testing.assert_array_equal(points1, points2)
+    np.testing.assert_array_equal(trajectory1, trajectory2)
 
 
 def test_construct_scene_from_xml():
@@ -500,64 +545,109 @@ def test_transform_scenepart(box_f):
     assert np.allclose(bbox1 + offset, bbox2)
 
 
-def test_scene_auto_binary():
-    # We create binary while reading from xml
-    survey1 = Survey.from_xml(
-        "data/surveys/demo/box_survey_static_puck.xml", True, True
-    )
+def test_scene_from_xml_reproducible_run():
+    survey1 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
     _configure_fast_survey_legs(survey1)
     points1, _ = survey1.run()
 
     survey2 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
-    survey2.scene = StaticScene.from_binary("data/scenes/demo/box_scene.scene")
     _configure_fast_survey_legs(survey2)
     points2, _ = survey2.run()
 
-    # We read from created binary directly through .from_xml
-    survey3 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml", False)
-    _configure_fast_survey_legs(survey3)
-    points3, _ = survey3.run()
-
-    os.remove("data/scenes/demo/box_scene.scene")
     assert len(points1) == len(points2)
-    assert len(points1) == len(points3)
 
 
-def test_scene_manual_binary(tmp_path):
-    scene1 = StaticScene(
-        scene_parts=[
-            ScenePart.from_obj("data/sceneparts/basic/box/box100.obj"),
-            ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj").scale(0.5),
-        ]
+def test_scene_binary_roundtrip_reproducible_run(tmp_path):
+    execution_settings = _single_thread_execution_settings()
+
+    survey1 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
+    _configure_fast_survey_legs(survey1)
+    survey1.scene._finalize(execution_settings=execution_settings)
+
+    scene_binary = tmp_path / "scene.bin"
+    survey1.scene.to_binary(scene_binary)
+
+    restored_scene = Scene.from_binary(scene_binary)
+    assert len(restored_scene.scene_parts) == len(survey1.scene.scene_parts)
+    assert np.allclose(
+        np.array(restored_scene.bbox.bounds),
+        np.array(survey1.scene.bbox.bounds),
     )
-    binary_path = tmp_path / "manual.scene"
-    scene1.to_binary(str(binary_path))
-    scene2 = StaticScene.from_binary(str(binary_path))
 
-    scanner_settings = ScannerSettings(
-        is_active=True,
-        pulse_frequency=2000,
-        scan_frequency=20,
-        scan_angle="20 deg",
-        head_rotation="30 deg/s",
-        rotation_start_angle="0 deg",
-        rotation_stop_angle="20 deg",
+    survey2 = Survey.from_xml("data/surveys/demo/box_survey_static_puck.xml")
+    _configure_fast_survey_legs(survey2)
+    survey2.scene = restored_scene
+
+    set_rng_seed(42)
+    points1, trajectory1 = survey1.run(
+        format=OutputFormat.NPY,
+        execution_settings=execution_settings,
     )
-    platform_settings = StaticPlatformSettings(x=0, y=0, z=0, force_on_ground=True)
-
-    survey1 = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene1)
-    survey1.add_leg(
-        scanner_settings=scanner_settings, platform_settings=platform_settings
+    set_rng_seed(42)
+    points2, trajectory2 = survey2.run(
+        format=OutputFormat.NPY,
+        execution_settings=execution_settings,
     )
-    points1, _ = survey1.run(format=OutputFormat.NPY)
 
-    survey2 = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene2)
-    survey2.add_leg(
-        scanner_settings=scanner_settings, platform_settings=platform_settings
+    np.testing.assert_array_equal(points1, points2)
+    np.testing.assert_array_equal(trajectory1, trajectory2)
+
+
+def test_scene_to_binary_non_finalized_roundtrip(tmp_path):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
     )
-    points2, _ = survey2.run(format=OutputFormat.NPY)
+    assert len(scene._cpp_object.primitives) == 0
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name="scene_non_finalized",
+    )
 
-    assert len(points1) == len(points2)
+
+def test_scene_to_binary_finalized_roundtrip(tmp_path):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    scene._finalize(execution_settings=_single_thread_execution_settings())
+    assert len(scene._cpp_object.primitives) > 0
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name="scene_finalized",
+    )
+
+
+def test_scene_to_binary_invalidated_roundtrip(tmp_path):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    scene._finalize(execution_settings=_single_thread_execution_settings())
+    assert len(scene._cpp_object.primitives) > 0
+
+    scene.scene_parts = scene.scene_parts + (
+        ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj").scale(0.5),
+    )
+    assert len(scene._cpp_object.primitives) == 0
+
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name="scene_invalidated",
+    )
+
+
+@pytest.mark.parametrize("compression_level", ["none", "default", "fast", "best", 0, 5])
+def test_scene_to_binary_compressed_roundtrip(tmp_path, compression_level):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name=f"scene_compressed_{compression_level}",
+        compression_level=compression_level,
+    )
 
 
 def test_ground_plane():
@@ -743,38 +833,13 @@ def test_scene_flag_from_xml_set():
     assert is_xml_loaded(scene)
 
 
-def test_create_binary_during_from_xml():
-    """
-    Test that a binary file is created when loading a scene from XML.
-    """
-    scene = StaticScene.from_xml(
-        "data/scenes/toyblocks/toyblocks_scene.xml", save_to_binary=True
-    )
-    assert os.path.exists("data/scenes/toyblocks/toyblocks_scene.scene")
-    os.remove("data/scenes/toyblocks/toyblocks_scene.scene")
-
-
 def test_flags_assosiated_with_scene():
-    # this creates a binary after reading from xml
-    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", True, True)
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
     assert is_xml_loaded(survey)
     assert is_xml_loaded(survey.scene)
-    assert not is_binary_loaded(survey.scene)
-    assert not is_binary_loaded(survey)
-
-    # this reads from created binary directly through .from_xml
-    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml", False)
-    assert is_xml_loaded(survey2)
-    assert is_xml_loaded(survey2.scene)
-    assert is_binary_loaded(survey2.scene)
-
-    scene1 = StaticScene.from_binary("data/scenes/toyblocks/toyblocks_scene.scene")
-    assert is_binary_loaded(scene1)
-    assert not is_xml_loaded(scene1)
 
     scene2 = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
     assert is_xml_loaded(scene2)
-    assert not is_binary_loaded(scene2)
 
 
 def test_manual_vs_xml_write_to_file(tmp_path):
