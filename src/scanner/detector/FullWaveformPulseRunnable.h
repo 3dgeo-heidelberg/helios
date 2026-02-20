@@ -106,6 +106,8 @@ private:
                     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   );
+
+protected:
   /**
    * @brief Digest intersections found through ray casting
    * @param[in] beamDir Beam normalized director vector
@@ -134,6 +136,8 @@ private:
     std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
+
+private:
   /**
    * @brief Find min and max hit distances in meters
    * @param[out] minHitDist_m Min hit distance will be stored here
@@ -245,6 +249,7 @@ private:
 #endif
   );
 
+protected:
   // ***  ASSISTANCE METHODS  *** //
   // **************************** //
   /**
@@ -259,6 +264,8 @@ private:
     std::vector<double> const& tMinMax,
     glm::dvec3 const& o,
     glm::dvec3 const& v) const;
+
+private:
   /**
    * @brief Detect full waveform peaks
    */
