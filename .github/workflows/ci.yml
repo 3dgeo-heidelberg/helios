@@ -28,7 +28,7 @@ jobs:
           - windows-latest
         python:
           - "3.10"
-          - "3.13"
+          - "3.14"
     
     defaults:
       run:
