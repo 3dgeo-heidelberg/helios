@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+  <!-- RISLEY optics (RisleyBeamDeflector) -->
+  <survey name="test_warmup_risley"
+          scene="data/scenes/demo/box_scene.xml#box_scene"
+          platform="data/platforms.xml#tripod"
+          scanner="data/scanners_tls.xml#livox_mid-70">
+    <leg id="risley_warmup" maxDuration_s="0.01">
+      <platformSettings x="0" y="0" z="0" onGround="false"/>
+      <scannerSettings active="true"
+                       pulseFreq_hz="100000"
+                       headRotatePerSec_deg="20"
+                       headRotateStart_deg="0"
+                       headRotateStop_deg="10"
+                       warmupPhase_s="0.002"/>
+    </leg>
+  </survey>
+
+</document>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+  <!-- OSCILLATING optics (OscillatingMirrorBeamDeflector) -->
+  <survey name="test_warmup_oscillating"
+          scene="data/scenes/demo/box_scene.xml#box_scene"
+          platform="data/platforms.xml#tripod"
+          scanner="data/scanners_als.xml#optech_2033">
+    <leg id="osc_no_warmup" maxDuration_s="0.012">
+      <platformSettings x="0" y="0" z="0" onGround="false"/>
+      <scannerSettings active="true"
+                       pulseFreq_hz="33000"
+                       scanAngle_deg="15"
+                       scanFreq_hz="20"
+                       headRotatePerSec_deg="20"
+                       headRotateStart_deg="0"
+                       headRotateStop_deg="10"
+                       warmupPhase_s="0.0"/>
+    </leg>
+  </survey>
+
+</document>

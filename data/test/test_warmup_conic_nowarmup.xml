@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+  <!-- CONIC optics (ConicBeamDeflector) -->
+  <survey name="test_warmup_conic"
+          scene="data/scenes/demo/box_scene.xml#box_scene"
+          platform="data/platforms.xml#tripod"
+          scanner="data/scanners_als.xml#riegl_vq-880g">
+    <leg id="conic_no_warmup" maxDuration_s="0.012">
+      <platformSettings x="0" y="0" z="0" onGround="false"/>
+      <scannerSettings active="true"
+                       pulseFreq_hz="200000"
+                       scanAngle_deg="18"
+                       scanFreq_hz="50"
+                       headRotatePerSec_deg="20"
+                       headRotateStart_deg="0"
+                       headRotateStop_deg="10"
+                       warmupPhase_s="0.0"/>
+    </leg>
+  </survey>
+
+</document>
