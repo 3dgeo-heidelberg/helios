@@ -6,6 +6,12 @@ Unlike the computeSubrays benchmark, this focuses on the ray-scene
 intersection path by repeatedly calling findIntersection against a small,
 in-memory triangle-grid scene that is finalized (KD-Grove built) once during
 setup.
+
+This file also contains a "miss" benchmark variant that exercises the
+intersection traversal work when the ray intersects the scene AABB but does
+not intersect any primitive. It uses a sparse scene with a large AABB and a
+few tiny triangle patches placed in the corners, then shoots a ray through
+the empty center.
 */
 
 #include <benchmark/benchmark.h>
@@ -110,6 +116,58 @@ makeTriangleGridScene(std::size_t const gridResolution)
   return scene;
 }
 
+static std::shared_ptr<Scene>
+makeSparseCornerScene()
+{
+  auto scene = std::make_shared<Scene>();
+  auto part = std::make_shared<ScenePart>();
+  part->mId = "benchmarkSparseCorners";
+
+  // Create a few tiny triangle patches in the four corners of a large square.
+  // This makes the scene AABB large while leaving empty space in the center.
+  // A ray through the center will intersect the AABB but miss all primitives.
+  double const halfExtent = 50.0;
+  double const patchSize = 1.0;
+  double const z = -10.0;
+
+  auto addPatch = [&](double const cx, double const cy) {
+    double const x0 = cx;
+    double const x1 = cx + patchSize;
+    double const y0 = cy;
+    double const y1 = cy + patchSize;
+
+    Vertex const v00(x0, y0, z);
+    Vertex const v10(x1, y0, z);
+    Vertex const v01(x0, y1, z);
+    Vertex const v11(x1, y1, z);
+
+    auto* t0 = new Triangle(v00, v10, v11);
+    t0->part = part;
+    part->mPrimitives.push_back(t0);
+    scene->primitives.push_back(t0);
+
+    auto* t1 = new Triangle(v00, v11, v01);
+    t1->part = part;
+    part->mPrimitives.push_back(t1);
+    scene->primitives.push_back(t1);
+  };
+
+  part->mPrimitives.reserve(8);
+  scene->primitives.reserve(8);
+
+  // Four corners, with a tiny patch in each.
+  addPatch(-halfExtent, -halfExtent);
+  addPatch(-halfExtent, halfExtent - patchSize);
+  addPatch(halfExtent - patchSize, -halfExtent);
+  addPatch(halfExtent - patchSize, halfExtent - patchSize);
+
+  if (!scene->finalizeLoading(false)) {
+    throw std::runtime_error("Failed to finalize sparse benchmark scene");
+  }
+
+  return scene;
+}
+
 static std::shared_ptr<SingleScanner>
 makeScannerWithScene(std::shared_ptr<Scene> scene)
 {
@@ -179,6 +237,30 @@ struct BenchmarkContext
   }
 };
 
+struct MissBenchmarkContext
+{
+  std::shared_ptr<SingleScanner> scanner;
+  BenchmarkFullWaveformPulseRunnable runnable;
+  glm::dvec3 rayOrigin;
+  glm::dvec3 rayDir;
+  std::vector<double> tMinMax;
+
+  MissBenchmarkContext()
+    : scanner(makeScannerWithScene(makeSparseCornerScene()))
+    , runnable(scanner, makePulse(glm::dvec3(0.0, 0.0, 20.0)))
+    , rayOrigin(0.0, 0.0, 20.0)
+    , rayDir(0.0, 0.0, -1.0)
+  {
+    runnable.detector = scanner->getDetector(0);
+    tMinMax = scanner->platform->scene->getAABB()->getRayIntersection(rayOrigin,
+                                                                      rayDir);
+    if (tMinMax.empty()) {
+      throw std::runtime_error(
+        "Miss benchmark ray does not intersect the scene AABB");
+    }
+  }
+};
+
 static void
 fullwaveform_find_intersection_benchmark(benchmark::State& state)
 {
@@ -205,7 +287,32 @@ fullwaveform_find_intersection_benchmark(benchmark::State& state)
                         (gridResolution < 2 ? 1 : (gridResolution - 1))));
 }
 
+static void
+fullwaveform_find_intersection_miss_benchmark(benchmark::State& state)
+{
+  MissBenchmarkContext ctx;
+
+  std::size_t missCount = 0;
+
+  for (auto _ : state) {
+    std::shared_ptr<RaySceneIntersection> itst =
+      ctx.runnable.callFindIntersection(ctx.tMinMax, ctx.rayOrigin, ctx.rayDir);
+
+    benchmark::DoNotOptimize(itst);
+    if (itst == nullptr) {
+      ++missCount;
+    } else {
+      // In case of unexpected hits, make them visible.
+      benchmark::DoNotOptimize(itst->hitDistance);
+    }
+  }
+
+  state.counters["misses"] = benchmark::Counter(static_cast<double>(missCount));
+  state.counters["triangles"] = benchmark::Counter(8.0);
+}
+
 } // namespace
 
 BENCHMARK(fullwaveform_find_intersection_benchmark)->Arg(33);
+BENCHMARK(fullwaveform_find_intersection_miss_benchmark);
 BENCHMARK_MAIN();
