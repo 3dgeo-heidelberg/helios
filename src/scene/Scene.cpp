@@ -36,32 +36,49 @@ Scene::Scene(Scene& s)
     this->bbox_crs = nullptr;
   else
     this->bbox_crs = std::shared_ptr<AABB>((AABB*)s.bbox_crs->clone());
-  std::set<ScenePart*> _parts; // Pointer to each ScenePart, no repeats
-  std::vector<Primitive*> nonPartPrimitives; // Primitives without ScenePart
-  ScenePart* _sp;
-  Primitive* _p;
-  for (size_t i = 0; i < s.primitives.size(); i++) { // Fill parts
-    _p = s.primitives[i];
-    _sp = _p->part.get();
-    if (_sp != nullptr)
-      _parts.insert(_sp); // Primitive with part
-    else
-      nonPartPrimitives.push_back(_p); // Primitive with no part
-  }
-  for (ScenePart* sp : _parts) { // Handle primitives associated with ScenePart
-    std::shared_ptr<ScenePart> spc = std::make_shared<ScenePart>(*sp);
-    for (Primitive* p : spc->mPrimitives) {
-      p->part = spc;
-      this->primitives.push_back(p);
+
+  // Non-finalized scenes can have parts but no primitives yet.
+  // Preserve these parts so a copied scene can still be finalized later.
+  if (s.primitives.empty() && !s.parts.empty()) {
+    for (std::shared_ptr<ScenePart> const& part : s.parts) {
+      if (part == nullptr)
+        continue;
+      std::shared_ptr<ScenePart> partCopy = std::make_shared<ScenePart>(*part);
+      for (Primitive* p : partCopy->mPrimitives) {
+        p->part = partCopy;
+      }
+      this->parts.push_back(partCopy);
     }
-  }
-  for (Primitive* p : nonPartPrimitives) { // Handle primitives with no part
-    this->primitives.push_back(p->clone());
+  } else {
+    std::set<ScenePart*> _parts; // Pointer to each ScenePart, no repeats
+    std::vector<Primitive*> nonPartPrimitives; // Primitives without ScenePart
+    ScenePart* _sp;
+    Primitive* _p;
+    for (size_t i = 0; i < s.primitives.size(); i++) { // Fill parts
+      _p = s.primitives[i];
+      _sp = _p->part.get();
+      if (_sp != nullptr)
+        _parts.insert(_sp); // Primitive with part
+      else
+        nonPartPrimitives.push_back(_p); // Primitive with no part
+    }
+    for (ScenePart* sp :
+         _parts) { // Handle primitives associated with ScenePart
+      std::shared_ptr<ScenePart> spc = std::make_shared<ScenePart>(*sp);
+      for (Primitive* p : spc->mPrimitives) {
+        p->part = spc;
+        this->primitives.push_back(p);
+      }
+    }
+    for (Primitive* p : nonPartPrimitives) { // Handle primitives with no part
+      this->primitives.push_back(p->clone());
+    }
+
+    registerParts();
   }
 
-  registerParts();
   this->kdgf = s.kdgf;
-  if (s.parts.empty()) {
+  if (parts.empty() || primitives.empty()) {
     kdgrove = nullptr;
   } else {
     buildKDGrove(true);
@@ -256,6 +273,8 @@ Scene::doForceOnGround()
   for (std::size_t i = 0; i < m; ++i) {
     std::shared_ptr<ScenePart> part = parts[i];
     if (part->isNull())
+      continue;
+    if (part->mPrimitives.empty() || part->mPrimitives[0]->material == nullptr)
       continue;
     if (!part->mPrimitives[0]->material->isGround)
       continue;

@@ -41,3 +41,4 @@ dependencies:
   - ninja
   - pytest-cov
   - catch2
+  - benchmark

@@ -34,6 +34,34 @@ class IterCppMockObject:
     somemodels = [MockCppObject(), MockCppObject()]
 
 
+class NoDefaultCtorCppObject:
+    someint = 0
+
+    def __init__(self, token):
+        if not isinstance(token, str):
+            raise TypeError("token must be a string")
+        self.token = token
+
+
+class CloneTrackingCppObject:
+    someint = 0
+    clone_calls = 0
+    copy_ctor_calls = 0
+
+    def __init__(self, token):
+        if isinstance(token, CloneTrackingCppObject):
+            self.__class__.copy_ctor_calls += 1
+            self.token = token.token
+            return
+        if not isinstance(token, str):
+            raise TypeError("token must be a string")
+        self.token = token
+
+    def clone(self):
+        self.__class__.clone_calls += 1
+        return CloneTrackingCppObject(self.token)
+
+
 def test_validated_cpp_properties():
     class Obj(Model, cpp_class=MockCppObject):
         someint: int = 42
@@ -356,9 +384,13 @@ def test_clone_with_nonsupporting_cpp_object():
         somestr: str
 
     obj = Obj("foo")
+    clone = obj.clone()
+    copied = copy.deepcopy(obj)
 
-    with pytest.raises(ValueError):
-        obj.clone()
+    assert clone.somestr == "foo"
+    assert copied.somestr == "foo"
+    assert clone is not obj
+    assert copied is not obj
 
 
 def test_clone_without_cpp():
@@ -375,6 +407,80 @@ def test_clone_without_cpp():
 
     obj2.someint = 44
     assert obj.someint != obj2.someint
+
+
+def test_clone_and_deepcopy_propagate_reconstruction_failure():
+    class Obj(Model, cpp_class=NoDefaultCtorCppObject):
+        someint: int = 42
+
+    obj = Obj(_cpp_object=NoDefaultCtorCppObject("x"), someint=7)
+
+    with pytest.raises(TypeError):
+        obj.clone()
+
+    with pytest.raises(TypeError):
+        copy.deepcopy(obj)
+
+
+def test_clone_and_deepcopy_prefer_cpp_clone_when_available():
+    class Obj(Model, cpp_class=CloneTrackingCppObject):
+        someint: int = 42
+
+    CloneTrackingCppObject.clone_calls = 0
+    CloneTrackingCppObject.copy_ctor_calls = 0
+
+    obj = Obj(_cpp_object=CloneTrackingCppObject("x"), someint=7)
+    cloned = obj.clone()
+    copied = copy.deepcopy(obj)
+
+    assert cloned.someint == 7
+    assert copied.someint == 7
+    assert CloneTrackingCppObject.clone_calls == 2
+    assert CloneTrackingCppObject.copy_ctor_calls == 0
+
+
+def test_clone_and_deepcopy_reconstruct_model_fields_only():
+    class Child(Model, cpp_class=MockCppObject):
+        someint: int = 42
+
+    class Parent(Model, cpp_class=MockCppObject):
+        child: Child = Child()
+        values: list[int] = [1, 2]
+        mapping: dict[str, list[int]] = {"a": [3]}
+
+    parent = Parent(child=Child(7), values=[10, 11], mapping={"a": [12]})
+    parent._is_loaded_from_xml = True
+    parent.runtime_tag = "transient"
+
+    for copied in (parent.clone(), copy.deepcopy(parent)):
+        assert copied is not parent
+        assert copied.child is not parent.child
+        assert copied.child.someint == 7
+        assert copied.values == [10, 11]
+        assert copied.mapping == {"a": [12]}
+        assert not hasattr(copied, "_is_loaded_from_xml")
+        assert not hasattr(copied, "runtime_tag")
+
+        copied.child.someint = 9
+        copied.values.append(13)
+        copied.mapping["a"].append(14)
+        assert parent.child.someint == 7
+        assert parent.values == [10, 11]
+        assert parent.mapping == {"a": [12]}
+
+
+def test_clone_and_deepcopy_support_recursive_model_fields():
+    class Obj(Model):
+        payload: object = None
+
+    obj = Obj()
+    obj.payload = obj
+
+    cloned = obj.clone()
+    copied = copy.deepcopy(obj)
+
+    assert cloned is cloned.payload
+    assert copied is copied.payload
 
 
 def test_threadcount_annotation():

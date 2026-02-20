@@ -344,8 +344,8 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
       // This exception is okay, since it means the reader has finished
     } catch (std::exception& e) {
       ss << "Error reading primitives.\nEXCEPTION: " << e.what();
-      logging::WARN(ss.str());
-      ss.str("");
+      logging::ERR(ss.str());
+      throw;
     }
 
     return loadedObj;
@@ -354,7 +354,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
        << "\"\n\t" << ex.what();
     logging::ERR(ss.str());
     ss.str("");
-    throw ex;
+    throw;
   }
 }
 

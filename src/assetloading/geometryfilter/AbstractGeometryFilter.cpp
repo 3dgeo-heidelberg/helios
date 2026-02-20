@@ -24,6 +24,24 @@ AbstractGeometryFilter::parseMaterials()
     return std::vector<std::shared_ptr<Material>>(0);
   }
 
+  fs::path matfilePath = boost::get<std::string>(params["matfile"]);
+  bool found = false;
+  for (const auto& base : assetsDir) {
+    fs::path candidate = fs::path(base) / matfilePath;
+    if (fs::exists(candidate)) {
+      matfilePath = candidate;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    std::stringstream ss;
+    ss << "Material file not found: " << matfilePath.string();
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
+
   // Pick material
   std::string matfile = boost::get<std::string>(params["matfile"]);
   auto mats = MaterialsFileReader::loadMaterials(matfile);
@@ -31,8 +49,14 @@ AbstractGeometryFilter::parseMaterials()
   if (params.find("matname") != params.end()) { // Pick by name
     std::string matname = boost::get<std::string>(params["matname"]);
     auto it = mats.find(matname);
-    if (it != mats.end())
-      matvec.push_back(it->second);
+    if (it == mats.end()) {
+      std::stringstream ss;
+      ss << "Material with name '" << matname
+         << "' was not found in material file: " << matfile;
+      logging::ERR(ss.str());
+      throw HeliosException(ss.str());
+    }
+    matvec.push_back(it->second);
   } else { // No name, so pick first
     if (!mats.empty())
       matvec.push_back(mats.begin()->second);

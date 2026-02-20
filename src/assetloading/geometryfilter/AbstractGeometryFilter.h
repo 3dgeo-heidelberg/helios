@@ -1,10 +1,12 @@
 #pragma once
 
+#include <boost/filesystem.hpp>
 #include <map>
 #include <string>
-
+namespace fs = boost::filesystem;
 #include "Material.h"
 #include "ScenePart.h"
+#include <logging.hpp>
 
 #include "maths/Rotation.h"
 

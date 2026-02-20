@@ -1,5 +1,6 @@
 #pragma once
 
+#include <HeliosException.h>
 #include <map>
 #include <string>
 
