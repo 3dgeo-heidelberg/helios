@@ -38,7 +38,7 @@ jobs:
       - name: Create constructor dev environment
         uses: conda-incubator/setup-miniconda@v3
         with:
-          channels: conda-forge,defaults
+          conda-remove-defaults: true
 
       - name: Install constructor and menuinst
         run: |
@@ -99,7 +99,8 @@ jobs:
       - name: Install Helios through installer
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-activate-base: true
+          conda-remove-defaults: true
+          auto-activate: true
           activate-environment: ""
           installer-url: file://${{ github.workspace }}/dist/${{ env.INSTALLER }}
 
