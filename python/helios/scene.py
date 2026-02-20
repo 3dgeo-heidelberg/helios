@@ -14,6 +14,7 @@ from helios.utils import (
 from helios.validation import (
     Angle,
     AssetPath,
+    CompressionLevel,
     Model,
     MultiAssetPath,
     Quaternion,
@@ -534,10 +535,12 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         return cls._from_cpp(_cpp_scene)
 
     @validate_call
-    def to_binary(self, binary_file: Path):
+    def to_binary(self, binary_file: Path, compression_level: CompressionLevel = 6):
         # Ensure primitives and KD data exist before persisting.
         self._finalize()
-        self._cpp_object.to_binary(str(binary_file.expanduser()))
+        self._cpp_object.to_binary(
+            str(binary_file.expanduser()), compression_level=compression_level
+        )
 
 
 class Scene(StaticScene):

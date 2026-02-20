@@ -16,6 +16,7 @@ import laspy
 import numpy as np
 import pytest
 from helios import HeliosException
+from helios.validation import CompressionLevel
 
 
 def _write_xyz_file(path: Path, separator: str = " ") -> None:
@@ -97,11 +98,14 @@ def _run_tls_npy(scene: StaticScene, execution_settings: ExecutionSettings):
 
 
 def _assert_scene_binary_roundtrip_output_eq(
-    scene: StaticScene, tmp_path: Path, test_name: str
+    scene: StaticScene,
+    tmp_path: Path,
+    test_name: str,
+    compression_level: CompressionLevel = 6,
 ):
     execution_settings = _single_thread_execution_settings()
     scene_binary = tmp_path / f"{test_name}.bin"
-    scene.to_binary(scene_binary)
+    scene.to_binary(scene_binary, compression_level=compression_level)
 
     restored_scene = Scene.from_binary(scene_binary)
 
@@ -630,6 +634,19 @@ def test_scene_to_binary_invalidated_roundtrip(tmp_path):
         scene=scene,
         tmp_path=tmp_path,
         test_name="scene_invalidated",
+    )
+
+
+@pytest.mark.parametrize("compression_level", ["none", "default", "fast", "best", 0, 5])
+def test_scene_to_binary_compressed_roundtrip(tmp_path, compression_level):
+    scene = StaticScene(
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+    )
+    _assert_scene_binary_roundtrip_output_eq(
+        scene=scene,
+        tmp_path=tmp_path,
+        test_name=f"scene_compressed_{compression_level}",
+        compression_level=compression_level,
     )
 
 

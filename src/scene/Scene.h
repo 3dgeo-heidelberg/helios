@@ -105,8 +105,10 @@ public:
    * This API is C++-only for now (no Python bindings exposure).
    *
    * @param path Path to the destination file.
+   * @param compressionLevel zlib compression level in [0, 9], where 0 means
+   *  no compression and 6 is zlib's default compression level.
    */
-  void saveCereal(std::string const& path) const;
+  void saveCereal(std::string const& path, int compressionLevel = 6) const;
   /**
    * @brief Load scene state from a cereal binary archive.
    *

@@ -19,6 +19,7 @@
 #include <Triangle.h>
 #include <Voxel.h>
 #include <scene/primitives/DetailedVoxel.h>
+#include <util/HeliosException.h>
 
 #include <chrono>
 #include <cstdio>
@@ -321,5 +322,65 @@ TEST_CASE("SceneSerialization: built KD round-trip with factory variants")
       REQUIRE(after->point.y == Catch::Approx(before->point.y).margin(1e-9));
       REQUIRE(after->point.z == Catch::Approx(before->point.z).margin(1e-9));
     }
+  }
+}
+
+TEST_CASE("SceneSerialization: compression levels and validation")
+{
+  struct CompressionVariant
+  {
+    int level;
+    std::string name;
+  };
+
+  std::vector<CompressionVariant> const variants = {
+    { 0, "none" },
+    { 1, "fast" },
+    { 6, "default" },
+    { 9, "best" },
+  };
+
+  for (CompressionVariant const& variant : variants) {
+    SECTION(variant.name)
+    {
+      Scene scene;
+      populateMixedScene(scene);
+      scene.setKDGroveFactory(nullptr);
+
+      TempArchivePath archive("scene_serialization_compression_" +
+                              variant.name);
+      scene.saveCereal(archive.path.string(), variant.level);
+
+      Scene loaded;
+      loaded.loadCereal(archive.path.string());
+
+      REQUIRE(loaded.id == scene.id);
+      REQUIRE(loaded.name == scene.name);
+      REQUIRE(loaded.sourceFilePath == scene.sourceFilePath);
+      REQUIRE(loaded.getDefaultReflectance() ==
+              Catch::Approx(scene.getDefaultReflectance()));
+      REQUIRE(loaded.primitives.size() == scene.primitives.size());
+      REQUIRE(loaded.parts.size() == scene.parts.size());
+      REQUIRE(loaded.getKDGrove() == nullptr);
+      REQUIRE(loaded.getRaycaster() == nullptr);
+    }
+  }
+
+  SECTION("invalid negative level throws")
+  {
+    Scene scene;
+    populateMixedScene(scene);
+    TempArchivePath archive("scene_serialization_compression_invalid_neg");
+    REQUIRE_THROWS_AS(scene.saveCereal(archive.path.string(), -1),
+                      HeliosException);
+  }
+
+  SECTION("invalid large level throws")
+  {
+    Scene scene;
+    populateMixedScene(scene);
+    TempArchivePath archive("scene_serialization_compression_invalid_large");
+    REQUIRE_THROWS_AS(scene.saveCereal(archive.path.string(), 10),
+                      HeliosException);
   }
 }

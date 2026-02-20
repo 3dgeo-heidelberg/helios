@@ -1201,10 +1201,13 @@ PYBIND11_MODULE(_helios, m)
     .def("build_kd_grove", &Scene::buildKDGroveWithLog, py::arg("safe") = true)
     .def(
       "to_binary",
-      [](Scene const& scene, std::string const& path) {
-        scene.saveCereal(path);
+      [](Scene const& scene,
+         std::string const& path,
+         int const compressionLevel) {
+        scene.saveCereal(path, compressionLevel);
       },
-      py::arg("path"))
+      py::arg("path"),
+      py::arg("compression_level") = 6)
     .def_static(
       "from_binary",
       [](std::string const& path) {
@@ -1230,10 +1233,13 @@ PYBIND11_MODULE(_helios, m)
     .def(py::init<StaticScene&>(), py::arg("scene"))
     .def(
       "to_binary",
-      [](StaticScene const& scene, std::string const& path) {
-        scene.saveCereal(path);
+      [](StaticScene const& scene,
+         std::string const& path,
+         int const compressionLevel) {
+        scene.saveCereal(path, compressionLevel);
       },
-      py::arg("path"))
+      py::arg("path"),
+      py::arg("compression_level") = 6)
     .def_static(
       "from_binary",
       [](std::string const& path) {

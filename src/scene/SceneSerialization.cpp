@@ -17,6 +17,9 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 
+#include <boost/iostreams/filter/zlib.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
@@ -28,6 +31,40 @@
 #include <unordered_map>
 
 namespace {
+
+bool
+isLikelyZlibStream(std::istream& in)
+{
+  std::istream::pos_type const start = in.tellg();
+  if (start == std::istream::pos_type(-1))
+    return false;
+
+  unsigned char header[2] = { 0, 0 };
+  in.read(reinterpret_cast<char*>(header), 2);
+  std::streamsize const got = in.gcount();
+  in.clear();
+  in.seekg(start);
+  if (got != 2)
+    return false;
+
+  // RFC 1950: CMF must encode DEFLATE with 32K window and the
+  // two-byte header must be divisible by 31.
+  if (header[0] != 0x78)
+    return false;
+  unsigned int const cmf_flg =
+    (static_cast<unsigned int>(header[0]) << 8u) | header[1];
+  return (cmf_flg % 31u) == 0u;
+}
+
+int
+normalizeCompressionLevel(int const compressionLevel)
+{
+  if (compressionLevel < 0 || compressionLevel > 9) {
+    throw HeliosException(
+      "Scene serialization compressionLevel must be in [0, 9]");
+  }
+  return compressionLevel;
+}
 
 struct DVec2DTO
 {
@@ -1259,7 +1296,7 @@ loadSceneFromDTO(Scene& scene, SceneDTO const& dto)
 } // namespace
 
 void
-Scene::saveCereal(std::string const& path) const
+Scene::saveCereal(std::string const& path, int const compressionLevel) const
 {
   SceneDTO dto = sceneToDTO(*this);
   std::ofstream ofs(path, std::ios::binary | std::ios::trunc);
@@ -1267,8 +1304,22 @@ Scene::saveCereal(std::string const& path) const
     throw HeliosException("Cannot open scene serialization output file: " +
                           path);
   }
-  cereal::BinaryOutputArchive archive(ofs);
+
+  int const normalizedLevel = normalizeCompressionLevel(compressionLevel);
+  if (normalizedLevel == 0) {
+    cereal::BinaryOutputArchive archive(ofs);
+    archive(dto);
+    return;
+  }
+
+  boost::iostreams::zlib_params zp(normalizedLevel);
+  boost::iostreams::filtering_ostream compressedOut;
+  compressedOut.push(boost::iostreams::zlib_compressor(zp));
+  compressedOut.push(ofs);
+
+  cereal::BinaryOutputArchive archive(compressedOut);
   archive(dto);
+  compressedOut.reset();
 }
 
 void
@@ -1281,8 +1332,17 @@ Scene::loadCereal(std::string const& path)
   }
 
   SceneDTO dto;
-  cereal::BinaryInputArchive archive(ifs);
-  archive(dto);
+  if (isLikelyZlibStream(ifs)) {
+    boost::iostreams::filtering_istream compressedIn;
+    compressedIn.push(boost::iostreams::zlib_decompressor());
+    compressedIn.push(ifs);
+    cereal::BinaryInputArchive archive(compressedIn);
+    archive(dto);
+    compressedIn.reset();
+  } else {
+    cereal::BinaryInputArchive archive(ifs);
+    archive(dto);
+  }
 
   loadSceneFromDTO(*this, dto);
   raycaster = (kdgrove == nullptr)
