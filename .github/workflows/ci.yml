@@ -44,7 +44,8 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          auto-activate-base: false
+          conda-remove-defaults: true
+          auto-activate: false
           activate-environment: helios-dev
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
@@ -99,7 +100,8 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          auto-activate-base: false
+          conda-remove-defaults: true
+          auto-activate: false
           activate-environment: helios-dev
           environment-file: environment-dev.yml
           python-version: "3.10"
