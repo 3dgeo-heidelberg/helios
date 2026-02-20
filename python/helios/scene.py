@@ -8,7 +8,6 @@ from helios.utils import (
     get_asset_directories,
     detect_separator,
     is_xml_loaded,
-    is_finalized,
 )
 
 from helios.validation import (
@@ -541,7 +540,3 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         self._cpp_object.to_binary(
             str(binary_file.expanduser()), compression_level=compression_level
         )
-
-
-class Scene(StaticScene):
-    """Convenience alias of StaticScene."""
