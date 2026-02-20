@@ -10,3 +10,7 @@ add_test(NAME scanning_device_sim_step_b COMMAND scanning_device_sim_step_b)
 add_executable(fullwaveform_compute_subrays_b fullwaveform_compute_subrays_b.cpp)
 target_link_libraries(fullwaveform_compute_subrays_b PUBLIC benchmark::benchmark helios)
 add_test(NAME fullwaveform_compute_subrays_b COMMAND fullwaveform_compute_subrays_b)
+
+add_executable(fullwaveform_find_intersection_b fullwaveform_find_intersection_b.cpp)
+target_link_libraries(fullwaveform_find_intersection_b PUBLIC benchmark::benchmark helios)
+add_test(NAME fullwaveform_find_intersection_b COMMAND fullwaveform_find_intersection_b)

@@ -245,6 +245,7 @@ private:
 #endif
   );
 
+protected:
   // ***  ASSISTANCE METHODS  *** //
   // **************************** //
   /**
@@ -259,6 +260,8 @@ private:
     std::vector<double> const& tMinMax,
     glm::dvec3 const& o,
     glm::dvec3 const& v) const;
+
+private:
   /**
    * @brief Detect full waveform peaks
    */
