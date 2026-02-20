@@ -3,11 +3,7 @@ namespace fs = boost::filesystem;
 
 #include "FullWaveformPulseDetector.h"
 #include <filems/facade/FMSFacade.h>
-#include <filems/write/comps/ZipSyncFileWriter.h>
 #include <logging.hpp>
-
-using helios::filems::SimpleSyncFileWriter;
-using helios::filems::ZipSyncFileWriter;
 
 using namespace std;
 

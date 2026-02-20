@@ -14,10 +14,7 @@ BasePulseWriter<WriteArgs...>::configure(std::string const& parent,
   std::stringstream ss;
   ss.str("");
   ss << parent << prefix;
-  if (isZipOutput())
-    ss << "_pulse.bin";
-  else
-    ss << "_pulse.txt";
+  ss << "_pulse.txt";
   setOutputFilePath(ss.str());
 }
 

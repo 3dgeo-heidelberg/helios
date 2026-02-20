@@ -3,7 +3,6 @@
 #include <filems/write/comps/SimpleMultiSyncFileWriter.h>
 #include <filems/write/strategies/DirectMeasurementWriteStrategy.h>
 #include <filems/write/strategies/VectorialWriteStrategy.h>
-#include <filems/write/strategies/ZipMeasurementWriteStrategy.h>
 
 #include <memory>
 #include <string>

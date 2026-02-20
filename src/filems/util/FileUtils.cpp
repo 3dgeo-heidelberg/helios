@@ -1,9 +1,6 @@
 #include <FileUtils.h>
 #include <boost/filesystem.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
 #include <boost/regex.hpp>
-#include <filems/util/ZipRecordIO.h>
 #include <logging.hpp>
 namespace fs = boost::filesystem;
 
@@ -99,37 +96,6 @@ FileUtils::getFilesByExpression(std::string const pathExpression)
   }
 
   return filePaths;
-}
-
-void
-FileUtils::unzipFile(std::string const inputPath, std::string const outputPath)
-{
-  std::string str = "START";
-  std::ifstream ifs;
-  std::ofstream ofs;
-  int compressionMode = // Must match the one used by ZipSyncFileWriter
-    boost::iostreams::zlib::best_compression;
-
-  try {
-    // Prepare input stream
-    ifs.open(inputPath, std::ios_base::in | std::ios_base::binary);
-    boost::iostreams::filtering_istream compressedIn;
-    boost::iostreams::zlib_params zp(compressionMode);
-    compressedIn.push(boost::iostreams::zlib_decompressor(zp));
-    compressedIn.push(ifs);
-
-    // Prepare output stream
-    ofs.open(outputPath, std::ios_base::out);
-
-    // Decompress
-    while (helios::filems::readZippedStringRecord(compressedIn, str)) {
-      ofs << str;
-    }
-  } catch (std::exception& e) {
-    std::stringstream ss;
-    ss << "FileUtils::unzipFile EXCEPTION:\n\t" << e.what();
-    logging::WARN(ss.str());
-  }
 }
 
 void

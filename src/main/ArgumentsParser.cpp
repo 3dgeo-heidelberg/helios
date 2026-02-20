@@ -243,18 +243,6 @@ ArgumentsParser::parseLasScale()
 }
 
 bool
-ArgumentsParser::parseUnzip(std::string* inputPath, std::string* outputPath)
-{
-  int index = findIndexOfArgument("--unzip");
-  if (index < 0)
-    return false;
-
-  *inputPath = std::string(argv[index + 1]);
-  *outputPath = std::string(argv[index + 2]);
-  return true;
-}
-
-bool
 ArgumentsParser::parseFixedIncidenceAngle()
 {
   return findIndexOfArgument("--fixedIncidenceAngle") >= 0;

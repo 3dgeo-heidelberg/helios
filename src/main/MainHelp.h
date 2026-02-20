@@ -23,12 +23,6 @@ printMainHelp()
     << "\t\t--test : Deprecated. Run the testing executable helios_test "
        "instead\n\n"
 
-    << "\t\t--unzip <input_path> <output_path>\n"
-    << "\t\t\tDecompress the file at input path and write it decompressed "
-    << "at output path.\n"
-    << "\t\t\tFile at input path must be the compressed output of helios++"
-    << "\n\n"
-
     << "\t\t--assets <dir_path> : Specify the path(s) to assets/data "
        "directory\n"
     << "\t\t\tTo specify multiple paths, duplicate the argument,"
@@ -78,7 +72,8 @@ printMainHelp()
        "in LAS format (v 1.4)\n\n"
     << "\t\t--las10: Use this flag to write in LAS format (v 1.0)\n\n"
 
-    << "\t\t--zipOutput : Use this flag to generate compressed output\n\n"
+    << "\t\t--zipOutput : Use this flag to generate compressed LAS output"
+    << " (LAZ)\n\n"
 
     << "\t\t--lasScale : Specify the decimal scale factor for LAS output"
     << "\n\n"
