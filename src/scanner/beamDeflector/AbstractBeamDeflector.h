@@ -51,7 +51,7 @@ public:
   /**
    * @brief Optional warmup phase (seconds) consumed by compatible deflectors
    */
-  double cfg_setting_warmupPhase_s = 0;
+  double cfg_setting_opticsWarmupPhase_s = 0;
 
   // Stat variables:
   /**
@@ -169,14 +169,14 @@ public:
   virtual void setScanFreq_Hz(double scanFreq_hz);
   /**
    * @brief Set warmup phase for deflector internals
-   * @param warmupPhase_s Warmup phase in seconds
+   * @param opticsWarmupPhase_s Warmup phase in seconds
    */
-  virtual void setWarmupPhase_s(double warmupPhase_s);
+  virtual void setOpticsWarmupPhase_s(double opticsWarmupPhase_s);
   /**
    * @brief Get warmup phase currently set on deflector
    * @return Warmup phase in seconds
    */
-  virtual double getWarmupPhase_s() { return cfg_setting_warmupPhase_s; }
+  virtual double getOpticsWarmupPhase_s() { return cfg_setting_opticsWarmupPhase_s; }
   /**
    * @brief Get the exact current beam angle.
    *

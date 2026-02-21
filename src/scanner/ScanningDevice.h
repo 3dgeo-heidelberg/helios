@@ -208,11 +208,11 @@ protected:
   /**
    * @brief Warmup phase (seconds) configured from scanner settings
    */
-  double cfg_setting_warmupPhase_s = 0.0;
+  double cfg_setting_opticsWarmupPhase_s = 0.0;
   /**
    * @brief Whether warmup has already been applied for current settings
    */
-  bool state_warmupApplied = false;
+  bool state_opticsWarmupApplied = false;
 
   // ***  CACHED ATTRIBUTES  *** //
   // *************************** //
@@ -597,9 +597,9 @@ public:
   /**
    * @brief Set warmup phase and mark it for application in next active step.
    */
-  inline void setWarmupPhase_s(double const warmupPhase_s)
+  inline void setOpticsWarmupPhase_s(double const opticsWarmupPhase_s)
   {
-    cfg_setting_warmupPhase_s = warmupPhase_s;
-    state_warmupApplied = false;
+    cfg_setting_opticsWarmupPhase_s = opticsWarmupPhase_s;
+    state_opticsWarmupApplied = false;
   }
 };
