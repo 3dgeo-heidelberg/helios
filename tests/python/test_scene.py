@@ -887,6 +887,7 @@ def test_read_materials_from_file():
     mat1 = Material.from_file("data/sceneparts/toyblocks/sphere.mtl", "Material.008")
     assert mat1.name == "Material.008"
     assert mat1._cpp_object.name == "Material.008"
+    assert mat1._cpp_object.mat_file_path.endswith("sphere.mtl")
     assert mat1.reflectance == 0.2
 
 

@@ -63,6 +63,11 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
             str(material_file), [str(p) for p in get_asset_directories()], material_id
         )
         material = cls._from_cpp(_cpp_material)
+        material._set_constructor_provenance(
+            "from_file",
+            material_file=material_file,
+            material_id=material_id,
+        )
         return material
 
 
@@ -203,14 +208,24 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         # Maybe shift by the rotation center
         if rotation_center is not None:
-            self.translate(-rotation_center)
+            _helios.translate_scene_part(self._cpp_object, -rotation_center)
 
         # Perform the actual rotation
         _helios.rotate_scene_part(self._cpp_object, rot)
 
         # Undo the shift by the rotation center
         if rotation_center is not None:
-            self.translate(rotation_center)
+            _helios.translate_scene_part(self._cpp_object, rotation_center)
+
+        self._append_operation_provenance(
+            "rotate",
+            quaternion=quaternion,
+            axis=axis,
+            angle=angle,
+            from_axis=from_axis,
+            to_axis=to_axis,
+            rotation_center=rotation_center,
+        )
 
         return self
 
@@ -219,6 +234,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Scale the scene part by a factor."""
 
         _helios.scale_scene_part(self._cpp_object, factor)
+        self._append_operation_provenance("scale", factor=factor)
         return self
 
     @validate_call
@@ -226,6 +242,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Translate the scene part by an offset."""
 
         _helios.translate_scene_part(self._cpp_object, offset)
+        self._append_operation_provenance("translate", offset=offset)
         return self
 
     @classonlymethod
@@ -239,6 +256,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
         scene_part = cls._from_cpp(_cpp_scene_part)
         scene_part._is_loaded_from_xml = True
+        scene_part._disable_yaml_serialization_for_descendants()
+        scene_part._set_constructor_provenance(
+            "from_xml",
+            scene_part_file=scene_part_file,
+            id=id,
+        )
         return scene_part
 
     @classonlymethod
@@ -253,7 +276,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(obj_file), [str(p) for p in get_asset_directories()], up_axis
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_obj",
+            obj_file=obj_file,
+            up_axis=up_axis,
+        )
+        return scene_part
 
     @classonlymethod
     @validate_call
@@ -264,7 +293,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(tiff_file), [str(p) for p in get_asset_directories()]
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_tiff",
+            tiff_file=tiff_file,
+        )
+        return scene_part
 
     @classonlymethod
     @validate_call
@@ -326,7 +360,21 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             snap_neighbor_normal,
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_xyz",
+            xyz_file=xyz_file,
+            voxel_size=voxel_size,
+            separator=separator,
+            max_color_value=max_color_value,
+            default_normal=default_normal,
+            sparse=sparse,
+            estimate_normals=estimate_normals,
+            normals_file_columns=normals_file_columns,
+            rgb_file_columns=rgb_file_columns,
+            snap_neighbor_normal=snap_neighbor_normal,
+        )
+        return scene_part
 
     @classonlymethod
     @validate_call
@@ -392,7 +440,16 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             ladlut_path if ladlut_path is not None else "",
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_vox",
+            vox_file=vox_file,
+            intersection_mode=intersection_mode,
+            intersection_argument=intersection_argument,
+            random_shift=random_shift,
+            ladlut_path=ladlut_path,
+        )
+        return scene_part
 
     @validate_call
     def _apply_material_to_all_primitives(self, material: Material):
@@ -525,13 +582,17 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         )
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
+        scene._disable_yaml_serialization_for_descendants()
+        scene._set_constructor_provenance("from_xml", scene_file=scene_file)
         return scene
 
     @classonlymethod
     @validate_call
     def from_binary(cls, binary_file: AssetPath):
         _cpp_scene = _helios.StaticScene.from_binary(str(binary_file))
-        return cls._from_cpp(_cpp_scene)
+        scene = cls._from_cpp(_cpp_scene)
+        scene._set_constructor_provenance("from_binary", binary_file=binary_file)
+        return scene
 
     @validate_call
     def to_binary(self, binary_file: Path, compression_level: CompressionLevel = 6):

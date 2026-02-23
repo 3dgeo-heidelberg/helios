@@ -44,6 +44,23 @@ def test_custom_asset_directory(tmp_path):
     assert find_file("test_file") == file
 
 
+def test_add_asset_directory_context_manager(tmp_path):
+    assert tmp_path not in get_asset_directories()
+
+    with add_asset_directory(tmp_path):
+        assert tmp_path in get_asset_directories()
+
+    assert tmp_path not in get_asset_directories()
+
+
+def test_add_asset_directory_repr_is_silent(tmp_path):
+    handle = add_asset_directory(tmp_path)
+    try:
+        assert repr(handle) == ""
+    finally:
+        handle.close()
+
+
 def test_combine_empty():
     # Passing no parameters yields correct result
 

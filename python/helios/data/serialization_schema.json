@@ -1,0 +1,776 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/version_0"
+    }
+  ],
+  "$defs": {
+    "version_0": {
+      "type": "object",
+      "required": [
+        "serialization_major_version",
+        "serialization_minor_version",
+        "model_class",
+        "fields"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "binary"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fields": {
+                "$ref": "#/$defs/empty_fields"
+              }
+            }
+          },
+          "else": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/model_document_helios_leg_Leg"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_platforms_DynamicPlatformSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_platforms_Platform"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_platforms_PlatformSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_platforms_PlatformSettingsBase"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_platforms_StaticPlatformSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_platforms_TrajectorySettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_ConicOpticsScannerSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_LineOpticsScannerSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_OscillatingOpticsScannerSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_RisleyOpticsScannerSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_RotatingOpticsScannerSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_Scanner"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_ScannerSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scanner_ScannerSettingsBase"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scene_BoundingBox"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scene_Material"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scene_ScenePart"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_scene_StaticScene"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_settings_ExecutionSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_settings_FullWaveformSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_settings_OutputSettings"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_survey_Survey"
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "serialization_major_version": {
+          "const": 0
+        },
+        "serialization_minor_version": {
+          "const": 0
+        },
+        "model_class": {
+          "enum": [
+            "helios.leg.Leg",
+            "helios.platforms.DynamicPlatformSettings",
+            "helios.platforms.Platform",
+            "helios.platforms.PlatformSettings",
+            "helios.platforms.PlatformSettingsBase",
+            "helios.platforms.StaticPlatformSettings",
+            "helios.platforms.TrajectorySettings",
+            "helios.scanner.ConicOpticsScannerSettings",
+            "helios.scanner.LineOpticsScannerSettings",
+            "helios.scanner.OscillatingOpticsScannerSettings",
+            "helios.scanner.RisleyOpticsScannerSettings",
+            "helios.scanner.RotatingOpticsScannerSettings",
+            "helios.scanner.Scanner",
+            "helios.scanner.ScannerSettings",
+            "helios.scanner.ScannerSettingsBase",
+            "helios.scene.BoundingBox",
+            "helios.scene.Material",
+            "helios.scene.ScenePart",
+            "helios.scene.StaticScene",
+            "helios.settings.ExecutionSettings",
+            "helios.settings.FullWaveformSettings",
+            "helios.settings.OutputSettings",
+            "helios.survey.Survey"
+          ]
+        },
+        "fields": {
+          "type": "object"
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "constructor": {
+              "type": "object",
+              "required": [
+                "method",
+                "kwargs"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "method": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kwargs": {
+                  "type": "object"
+                }
+              }
+            },
+            "operations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "method",
+                  "kwargs"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "kwargs": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "binary": {
+          "type": "object",
+          "required": [
+            "method",
+            "path"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "method": {
+              "type": "string",
+              "minLength": 1
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "empty_fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "model_document_helios_leg_Leg": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.leg.Leg"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_leg_Leg"
+        }
+      }
+    },
+    "model_document_helios_platforms_DynamicPlatformSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.platforms.DynamicPlatformSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_platforms_DynamicPlatformSettings"
+        }
+      }
+    },
+    "model_document_helios_platforms_Platform": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.platforms.Platform"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_platforms_Platform"
+        }
+      }
+    },
+    "model_document_helios_platforms_PlatformSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.platforms.PlatformSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_platforms_PlatformSettings"
+        }
+      }
+    },
+    "model_document_helios_platforms_PlatformSettingsBase": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.platforms.PlatformSettingsBase"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_platforms_PlatformSettingsBase"
+        }
+      }
+    },
+    "model_document_helios_platforms_StaticPlatformSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.platforms.StaticPlatformSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_platforms_StaticPlatformSettings"
+        }
+      }
+    },
+    "model_document_helios_platforms_TrajectorySettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.platforms.TrajectorySettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_platforms_TrajectorySettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_ConicOpticsScannerSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.ConicOpticsScannerSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_ConicOpticsScannerSettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_LineOpticsScannerSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.LineOpticsScannerSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_LineOpticsScannerSettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_OscillatingOpticsScannerSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.OscillatingOpticsScannerSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_OscillatingOpticsScannerSettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_RisleyOpticsScannerSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.RisleyOpticsScannerSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_RisleyOpticsScannerSettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_RotatingOpticsScannerSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.RotatingOpticsScannerSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_RotatingOpticsScannerSettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_Scanner": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.Scanner"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_Scanner"
+        }
+      }
+    },
+    "model_document_helios_scanner_ScannerSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.ScannerSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_ScannerSettings"
+        }
+      }
+    },
+    "model_document_helios_scanner_ScannerSettingsBase": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scanner.ScannerSettingsBase"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scanner_ScannerSettingsBase"
+        }
+      }
+    },
+    "model_document_helios_scene_BoundingBox": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scene.BoundingBox"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scene_BoundingBox"
+        }
+      }
+    },
+    "model_document_helios_scene_Material": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scene.Material"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scene_Material"
+        }
+      }
+    },
+    "model_document_helios_scene_ScenePart": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scene.ScenePart"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scene_ScenePart"
+        }
+      }
+    },
+    "model_document_helios_scene_StaticScene": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scene.StaticScene"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scene_StaticScene"
+        }
+      }
+    },
+    "model_document_helios_settings_ExecutionSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.settings.ExecutionSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_settings_ExecutionSettings"
+        }
+      }
+    },
+    "model_document_helios_settings_FullWaveformSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.settings.FullWaveformSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_settings_FullWaveformSettings"
+        }
+      }
+    },
+    "model_document_helios_settings_OutputSettings": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.settings.OutputSettings"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_settings_OutputSettings"
+        }
+      }
+    },
+    "model_document_helios_survey_Survey": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.survey.Survey"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_survey_Survey"
+        }
+      }
+    },
+    "fields_helios_leg_Leg": {
+      "type": "object",
+      "required": [
+        "scanner_settings",
+        "platform_settings",
+        "trajectory_settings"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scanner_settings": {},
+        "platform_settings": {},
+        "trajectory_settings": {}
+      }
+    },
+    "fields_helios_platforms_DynamicPlatformSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {},
+        "y": {},
+        "z": {},
+        "trajectory_settings": {},
+        "speed_m_s": {}
+      }
+    },
+    "fields_helios_platforms_Platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "platform_settings": {}
+      }
+    },
+    "fields_helios_platforms_PlatformSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {},
+        "y": {},
+        "z": {}
+      }
+    },
+    "fields_helios_platforms_PlatformSettingsBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_platforms_StaticPlatformSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {},
+        "y": {},
+        "z": {},
+        "force_on_ground": {}
+      }
+    },
+    "fields_helios_platforms_TrajectorySettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start_time": {},
+        "end_time": {},
+        "teleport_to_start": {}
+      }
+    },
+    "fields_helios_scanner_ConicOpticsScannerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scanner_LineOpticsScannerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scanner_OscillatingOpticsScannerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scanner_RisleyOpticsScannerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scanner_RotatingOpticsScannerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "is_active": {},
+        "head_rotation": {},
+        "rotation_start_angle": {},
+        "rotation_stop_angle": {}
+      }
+    },
+    "fields_helios_scanner_Scanner": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scanner_ScannerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "is_active": {},
+        "head_rotation": {},
+        "rotation_start_angle": {},
+        "rotation_stop_angle": {},
+        "pulse_frequency": {},
+        "scan_angle": {},
+        "min_vertical_angle": {},
+        "max_vertical_angle": {},
+        "scan_frequency": {},
+        "beam_divergence_angle": {},
+        "trajectory_time_interval": {},
+        "vertical_resolution": {},
+        "horizontal_resolution": {}
+      }
+    },
+    "fields_helios_scanner_ScannerSettingsBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scene_BoundingBox": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scene_Material": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {},
+        "is_ground": {},
+        "spectra": {},
+        "reflectance": {},
+        "specularity": {},
+        "specular_exponent": {},
+        "classification": {},
+        "ambient_components": {},
+        "diffuse_components": {},
+        "specular_components": {}
+      }
+    },
+    "fields_helios_scene_ScenePart": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "force_on_ground": {}
+      }
+    },
+    "fields_helios_scene_StaticScene": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scene_parts": {}
+      }
+    },
+    "fields_helios_settings_ExecutionSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "parallelization": {},
+        "num_threads": {},
+        "chunk_size": {},
+        "warehouse_factor": {},
+        "log_file": {},
+        "log_file_only": {},
+        "verbosity": {},
+        "factory_type": {},
+        "kdt_num_threads": {},
+        "kdt_geom_num_threads": {},
+        "sah_nodes": {},
+        "discard_shutdown": {}
+      }
+    },
+    "fields_helios_settings_FullWaveformSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bin_size": {},
+        "beam_sample_quality": {},
+        "win_size": {},
+        "max_fullwave_range": {}
+      }
+    },
+    "fields_helios_settings_OutputSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {},
+        "split_by_channel": {},
+        "output_dir": {},
+        "write_waveform": {},
+        "write_pulse": {},
+        "las_scale": {}
+      }
+    },
+    "fields_helios_survey_Survey": {
+      "type": "object",
+      "required": [
+        "scanner",
+        "platform",
+        "scene"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scanner": {},
+        "platform": {},
+        "scene": {},
+        "legs": {},
+        "name": {},
+        "gps_time": {},
+        "full_waveform_settings": {},
+        "trajectory": {}
+      }
+    }
+  }
+}

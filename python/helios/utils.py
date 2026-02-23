@@ -42,7 +42,42 @@ class classonlymethod:
         return self._cm.__get__(None, owner)
 
 
-def add_asset_directory(directory: Path) -> None:
+class _AssetDirectoryRegistration:
+    """Handle returned by add_asset_directory, usable as a context manager."""
+
+    def __init__(self, directory: Path, inserted: bool):
+        self.directory = directory
+        self._inserted = inserted
+        self._closed = False
+
+    def __enter__(self):
+        return self.directory
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
+        return False
+
+    def close(self) -> None:
+        if self._closed:
+            return
+        if self._inserted and self.directory in _custom_asset_directories:
+            _custom_asset_directories.remove(self.directory)
+        self._closed = True
+
+    def __repr__(self) -> str:
+        # Keep add_asset_directory(...) silent when used as a plain function in REPLs.
+        return ""
+
+    def _repr_pretty_(self, p, cycle) -> None:
+        # IPython pretty-printer hook: intentionally render nothing.
+        return None
+
+    def _ipython_display_(self) -> None:
+        # IPython rich-display hook: intentionally render nothing.
+        return None
+
+
+def add_asset_directory(directory: Path) -> _AssetDirectoryRegistration:
     """
     Add a directory to the list of directories that will be searched for assets.
 
@@ -52,8 +87,12 @@ def add_asset_directory(directory: Path) -> None:
 
     directory = Path(directory)
 
+    inserted = False
     if directory not in _custom_asset_directories:
         _custom_asset_directories.append(directory)
+        inserted = True
+
+    return _AssetDirectoryRegistration(directory, inserted)
 
 
 def get_asset_directories() -> list[Path]:
