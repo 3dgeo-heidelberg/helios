@@ -20,46 +20,7 @@
 class DynObject : public ScenePart
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a dynamic object to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the dynamic object
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::split_member(ar, *this, version);
-  }
-  /**
-   * @brief Save a serialized dynamic object to a stream of bytes
-   * @see DynObject::serialize(Archive &, const unsigned int)
-   * @see DynObject::load(Archive &, const unsigned int)
-   */
-  template<typename Archive>
-  void save(Archive& ar, const unsigned int version) const
-  {
-    boost::serialization::void_cast_register<DynObject, ScenePart>();
-    ar& boost::serialization::base_object<ScenePart>(*this);
-    ar & stepLoop.getStepInterval();
-  }
-  /**
-   * @brief Load a serialized dynamic object from a stream of bytes
-   * @see DynObject::serialize(Archive &, const unsigned int)
-   * @see DynObject::save(Archive &, const unsigned int)
-   */
-  template<typename Archive>
-  void load(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<DynObject, ScenePart>();
-    ar& boost::serialization::base_object<ScenePart>(*this);
-    int stepInterval;
-    ar & stepInterval;
-    stepLoop.setStepInterval(stepInterval);
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

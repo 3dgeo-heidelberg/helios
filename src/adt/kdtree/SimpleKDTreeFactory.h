@@ -23,23 +23,7 @@ class SimpleKDTreeFactory : public KDTreeFactory
   friend class SimpleKDTreeGeometricStrategy;
 
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a simple KDTree factory to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the simple KDTree factory
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<SimpleKDTreeFactory,
-                                             KDTreeFactory>();
-    ar& boost::serialization::base_object<KDTreeFactory>(*this);
-    ar & minSplitPrimitives;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

@@ -10,21 +10,7 @@
 class Voxel : public Primitive
 {
 private:
-  // ***  BOOST SERIALIZATION  *** //
   // ***************************** //
-  friend class boost::serialization::access;
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<Voxel, Primitive>();
-    ar& boost::serialization::base_object<Primitive>(*this);
-    ar & v;
-    ar & numPoints;
-    ar & r & g & b;
-    ar & bbox;
-    ar & color;
-    ar & halfSize;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //
@@ -249,37 +235,3 @@ public:
    */
   void update() override;
 };
-
-// ***  BOOST SERIALIZATION  *** //
-// ***************************** //
-/*
- * Below code is commented because it is not necessary and it might cause
- * memory leaks when called from external sources (i.e. from python)
- */
-/*namespace boost {
-        namespace serialization {
-
-                template<class Archive>
-                inline void save_construct_data(
-                        Archive & ar, const Voxel * t, const unsigned int
-file_version)
-                {
-                        // save data required to construct instance
-                        ar << t->v.pos;
-                        ar << t->halfSize * 2;
-                }
-
-                template<class Archive>
-                inline void load_construct_data(
-                        Archive & ar, Voxel * t, const unsigned int
-file_version)
-                {
-                        // retrieve data from archive required to construct new
-instance glm::dvec3 center; double voxelSize; ar >> center; ar >> voxelSize;
-
-                        // invoke inplace constructor to initialize instance of
-my_class
-                        ::new(t)Voxel(center, voxelSize);
-                }
-        }
-}*/

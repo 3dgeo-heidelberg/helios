@@ -27,9 +27,6 @@
 #include <filems/write/comps/SimpleSyncFileMeasurementWriter.h>
 #include <filems/write/comps/SimpleVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/SyncFileWriter.h>
-#include <filems/write/comps/ZipMultiVectorialSyncFileMeasurementWriter.h>
-#include <filems/write/comps/ZipSyncFileMeasurementWriter.h>
-#include <filems/write/comps/ZipVectorialSyncFileMeasurementWriter.h>
 #include <util/HeliosException.h>
 
 #include <memory>
@@ -48,7 +45,6 @@ enum WriterType
 {
   las10Type, /**< LAS v1.0 file writer type */
   las14Type, /**< LAS v1.4 file writer type */
-  zipType,   /**< Zipped text file writer type */
   simpleType /**< .xyz file writer type */
 };
 
@@ -105,8 +101,6 @@ public:
           minIntensity,  // Min intensity
           deltaIntensity // Delta intensity
         );
-      case zipType:
-        return std::make_shared<ZipSyncFileMeasurementWriter>(path);
       case simpleType:
         return std::make_shared<SimpleSyncFileMeasurementWriter>(path);
     }
@@ -158,8 +152,6 @@ public:
           minIntensity,  // Min intensity
           deltaIntensity // Delta intensity
         );
-      case zipType:
-        return std::make_shared<ZipVectorialSyncFileMeasurementWriter>(path);
       case simpleType:
         return std::make_shared<SimpleVectorialSyncFileMeasurementWriter>(path);
     }
@@ -211,9 +203,6 @@ public:
           minIntensity,  // Min intensity
           deltaIntensity // Delta intensity
         );
-      case zipType:
-        return std::make_shared<ZipMultiVectorialSyncFileMeasurementWriter>(
-          path);
       case simpleType:
         return std::make_shared<SimpleMultiVectorialSyncFileMeasurementWriter>(
           path);

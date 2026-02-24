@@ -67,13 +67,12 @@ macro_playback_benchmark(benchmark::State& state)
   bool const legacyEnergyModel = true;
 
   std::shared_ptr<XmlSurveyLoader> xmlreader =
-    std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath, writeScene);
+    std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
   xmlreader->sceneLoader.kdtFactoryType = kdtType;
   xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
   xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;
   xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
-  std::shared_ptr<Survey> survey =
-    xmlreader->load(legNoiseDisabled, rebuildScene);
+  std::shared_ptr<Survey> survey = xmlreader->load(legNoiseDisabled);
   if (survey == nullptr) {
     std::cerr << "Error loading survey from XML file: " << surveyPath
               << std::endl;

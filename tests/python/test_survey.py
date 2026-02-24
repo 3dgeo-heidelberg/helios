@@ -367,13 +367,10 @@ def test_run_interpolated_survey():
     assert np.allclose(t1["position"][0], t2["position"][0], rtol=1e-1, atol=1e-1)
 
 
-def test_survey_run_with_binary_scene(tmp_path, scene):
+def test_survey_run_with_scene_fixture(scene):
     """
-    Test that a survey can be run with a binary scene.
+    Test that a survey can be run with an in-memory scene.
     """
-    binary_path = tmp_path / "box_scene_case23.scene"
-    scene.to_binary(str(binary_path))
-    scene = StaticScene.from_binary(str(binary_path))
 
     scanner_settings = ScannerSettings(
         pulse_frequency=2000,

@@ -47,24 +47,7 @@ class FastSAHKDTreeFactory : public SAHKDTreeFactory
   using SAHKDTreeFactory::lossNodes;
 
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a fast surface area heuristic KDTree factory to a
-   *  stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the fast surface area heuristic KDTRee
-   *  factory
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    boost::serialization::void_cast_register<FastSAHKDTreeFactory,
-                                             SAHKDTreeFactory>();
-    ar& boost::serialization::base_object<SAHKDTreeFactory>(*this);
-  }
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

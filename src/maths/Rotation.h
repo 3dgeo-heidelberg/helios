@@ -2,9 +2,6 @@
 
 #include "RotationOrder.h"
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-
 /**
  * This class implements rotations in a three-dimensional space.
  *
@@ -75,19 +72,11 @@
  */
 class Rotation
 {
-  // ***  SERIALIZATION  *** //
-  // *********************** //
-  friend class boost::serialization::access;
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & q0 & q1 & q2 & q3;
-  }
-
-  // ***  ATTRIBUTES  *** //
-  // ******************** //
-  /** Scalar coordinate of the quaternion. */
-  double q0, q1, q2, q3;
+private:
+  double q0 = 1.0;
+  double q1 = 0.0;
+  double q2 = 0.0;
+  double q3 = 0.0;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

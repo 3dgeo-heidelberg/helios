@@ -35,32 +35,7 @@
 class MultiThreadKDTreeFactory : public SimpleKDTreeFactory
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a multi thread KDTree factory to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the multi thread K dimensional tree
-   *  factory
-   */
-  template<class Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    boost::serialization::void_cast_register<MultiThreadKDTreeFactory,
-                                             SimpleKDTreeFactory>();
-
-    ar& boost::serialization::base_object<SimpleKDTreeFactory>(*this);
-    ar & kdtf;
-    ar & minTaskPrimitives;
-    // ar &tpNode; // No need to serialize because default built one is used
-    // ar &numJobs; // No need to serialize, inplace initialization
-    // ar &geomJobs; // No need to serialize, inplace initialization
-    // ar &gs; // No need to serialize, inplace initialization
-    // ar &maxGeometryDepth; // No need to serialize, inplace initialization
-    // ar &masters; // No need to serialize, inplace initialization
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

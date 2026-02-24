@@ -2,8 +2,6 @@
 
 #include <HeliosException.h>
 
-#include <boost/serialization/access.hpp>
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -37,24 +35,7 @@ template<typename T>
 class DynSequence
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a dynamic sequence to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the dynamic sequence
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & id;
-    ar & next;
-    ar & loop;
-    ar & sequence;
-    ar & iteration;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

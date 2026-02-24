@@ -103,8 +103,7 @@ jobs:
 
       - name: Ensure that the package is working (rudimentary)
         run: |
-          helios --version
-          python -c "import pyhelios; print(pyhelios.__version__)"
+          python -c "import helios"
 
   checksums:
     name: Calculate checksums

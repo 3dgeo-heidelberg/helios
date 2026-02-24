@@ -5,17 +5,13 @@
 std::shared_ptr<Survey>
 readSurveyFromXml(std::string surveyPath,
                   std::vector<std::string> assetsPath,
-                  bool legNoiseDisabled,
-                  bool loadSceneNotFromBinary,
-                  bool writeSceneToBinary)
+                  bool legNoiseDisabled)
 {
-  // it would be better to let user decide whether to write a scene into binary
-  // or not
-  XmlSurveyLoader xmlreader(surveyPath, assetsPath, writeSceneToBinary);
+  XmlSurveyLoader xmlreader(surveyPath, assetsPath);
   xmlreader.sceneLoader.kdtFactoryType = 4;
   xmlreader.sceneLoader.kdtNumJobs = 0;
   xmlreader.sceneLoader.kdtSAHLossNodes = 32;
-  return xmlreader.load(legNoiseDisabled, loadSceneNotFromBinary);
+  return xmlreader.load(legNoiseDisabled);
 }
 
 std::shared_ptr<Scanner>
@@ -47,9 +43,8 @@ readPlatformFromXml(std::string platformPath,
 std::shared_ptr<Scene>
 readSceneFromXml(std::string filePath,
                  std::vector<std::string> assetsPath,
-                 bool writeBinary)
+                 bool buildKDGrove)
 {
-  bool rebuildScene = true;
   tinyxml2::XMLDocument doc;
   if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: Failed to load XML file " + filePath);
@@ -75,22 +70,14 @@ readSceneFromXml(std::string filePath,
       xmlSurveyLoader.sceneLoader.kdtFactoryType = 4;
       xmlSurveyLoader.sceneLoader.kdtNumJobs = 0;
       xmlSurveyLoader.sceneLoader.kdtSAHLossNodes = 32;
-      return xmlSurveyLoader.loadScene(sceneString, rebuildScene);
+      return xmlSurveyLoader.loadScene(sceneString);
     } else if (elementName == "scene") {
       // Load the scene directly from a scene node
       XmlSceneLoader xmlSceneLoader(assetsPath);
-
-      SerialSceneWrapper::SceneType sceneType;
       std::shared_ptr<Scene> scene =
-        xmlSceneLoader.createSceneFromXml(element, filePath, &sceneType);
-
-      if (writeBinary) {
-        std::string filePathWithoutExtension =
-          std::filesystem::path(filePath).replace_extension("").string();
-        std::string sceneObjPath = filePathWithoutExtension + ".scene";
-        SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
-      }
-      scene->buildKDGroveWithLog();
+        xmlSceneLoader.createSceneFromXml(element, filePath);
+      if (buildKDGrove)
+        scene->buildKDGroveWithLog();
       return scene;
     } else {
       logging::ERR("Error: Failed to create scene from XML");

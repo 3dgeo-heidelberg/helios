@@ -14,10 +14,9 @@ BaseMeasurementWriter<WriteArgs...>::configure(std::string const& parent,
       ss << "_points.laz";
     else
       ss << "_points.las";
-  } else if (isZipOutput())
-    ss << "_points.bin";
-  else
+  } else {
     ss << "_points.xyz";
+  }
   std::string const outpath = ss.str();
 
   // Log for debug level
@@ -39,8 +38,6 @@ BaseMeasurementWriter<WriteArgs...>::chooseWriterType() const
     return las10Type;
   else if (isLasOutput())
     return las14Type;
-  else if (isZipOutput())
-    return zipType;
   return simpleType;
 }
 

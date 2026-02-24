@@ -96,8 +96,8 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
   } else if (type == "scanner") {
     result = std::dynamic_pointer_cast<Asset>(createScannerFromXml(assetNode));
   } else if (type == "scene") {
-    result = std::dynamic_pointer_cast<Asset>(sceneLoader.createSceneFromXml(
-      assetNode, xmlDocFilePath, (SerialSceneWrapper::SceneType*)extraOutput));
+    result = std::dynamic_pointer_cast<Asset>(
+      sceneLoader.createSceneFromXml(assetNode, xmlDocFilePath));
   } else if (type == "scannerSettings") {
     result =
       std::dynamic_pointer_cast<Asset>(createScannerSettingsFromXml(assetNode));

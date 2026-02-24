@@ -501,6 +501,29 @@ def test_threadcount_annotation():
         assert foo(-1)
 
 
+def test_compression_level_annotation():
+    @validate_call
+    def foo(level: CompressionLevel):
+        return level
+
+    assert foo("none") == 0
+    assert foo("default") == 6
+    assert foo("fast") == 1
+    assert foo("best") == 9
+    assert foo(0) == 0
+    assert foo(9) == 9
+    assert foo(np.int64(5)) == 5
+
+    with pytest.raises(ValueError):
+        foo("invalid")
+
+    with pytest.raises(ValueError):
+        foo(True)
+
+    with pytest.raises(ValueError):
+        foo(10)
+
+
 def test_r3vector_annotation():
     @validate_call
     def foo(vec: R3Vector):

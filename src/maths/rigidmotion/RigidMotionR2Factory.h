@@ -3,13 +3,6 @@
 #include <rigidmotion/RigidMotionFactory.h>
 
 #include <armadillo>
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/void_cast.hpp>
 
 namespace rigidmotion {
 
@@ -25,24 +18,7 @@ namespace rigidmotion {
 class RigidMotionR2Factory : public RigidMotionFactory
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a \f$\mathbb{R}^{2}\f$ rigid motion factory to a
-   *  stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the \f$\mathbb{R}^{2}\f$ rigid motion
-   *  factory
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<RigidMotionR2Factory,
-                                             RigidMotionFactory>();
-    ar& boost::serialization::base_object<RigidMotionFactory>(*this);
-  }
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //

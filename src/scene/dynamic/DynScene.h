@@ -25,54 +25,6 @@
  */
 class DynScene : public StaticScene
 {
-private:
-  // ***  SERIALIZATION  *** //
-  // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a DynScene to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the DynScene
-   * @see DynScene::save(Archive &, const unsigned int)
-   * @see DynScene::load(Archive &, const unsigned int)
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::split_member(ar, *this, version);
-  }
-  /**
-   * @brief Save a serialized DynScene to a stream of bytes
-   * @see DynScene::serialize(Archive &, const unsigned int)
-   * @see DynScene::load(Archive &, const unsigned int)
-   */
-  template<class Archive>
-  void save(Archive& ar, const unsigned int version) const
-  {
-    boost::serialization::void_cast_register<DynScene, StaticScene>();
-    ar& boost::serialization::base_object<StaticScene>(*this);
-    ar & dynObjs;
-    ar & updated;
-    ar & stepLoop.getStepInterval();
-  }
-  /**
-   * @brief Load a serialized DynScene from a stream of bytes
-   * @see DynScene::serialize(Archive &, const unsigned int)
-   * @see DynScene::save(Archive &, const unsigned int)
-   */
-  template<class Archive>
-  void load(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<DynScene, StaticScene>();
-    ar& boost::serialization::base_object<StaticScene>(*this);
-    ar & dynObjs;
-    ar & updated;
-    int stepInterval;
-    ar & stepInterval;
-    stepLoop.setStepInterval(stepInterval);
-  }
-
 protected:
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -350,19 +302,4 @@ public:
   {
     this->dynTimeStep = dynTimeStep;
   }
-
-  // ***   READ/WRITE  *** //
-  // ********************* //
-  /**
-   * @brief Serialize the dynamic scene and write it to given output file
-   * @param path Path to output file where serialized dynamic scene shall be
-   *  stored
-   */
-  void writeObject(std::string path) override;
-  /**
-   * @brief Read serialized dynamic scene from given file
-   * @param path Path to file where a serialized dynamic scene is stored
-   * @return Imported dynamic scene
-   */
-  static DynScene* readObject(std::string path);
 };

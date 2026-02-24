@@ -164,19 +164,6 @@ from helios.utils import add_asset_directory, set_rng_seed
     ),
 )
 @optgroup.option(
-    "--rebuildScene",
-    is_flag=True,
-    help=("Force scene rebuild even when a previously built scene is available"),
-)
-@optgroup.option(
-    "--noSceneWriting",
-    is_flag=True,
-    help=(
-        "If a scene is created during asset loading, it will be written by "
-        "default. Enabling this flag will prevent this writing."
-    ),
-)
-@optgroup.option(
     "--disablePlatformNoise",
     is_flag=True,
     help=(
@@ -287,8 +274,6 @@ def cli(**kw):
     # The following parameters are defined but not yet implemented:
     # * disableLegNoise
     # * disablePlatformNoise
-    # * noSceneWriting
-    # * rebuildScene
     # * fixedIncidenceAngle
     # * calcEchowidth
     # * zipOutput

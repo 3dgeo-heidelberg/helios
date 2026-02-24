@@ -1,5 +1,8 @@
 #include "Primitive.h"
 
+#include <iomanip>
+#include <sstream>
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 void

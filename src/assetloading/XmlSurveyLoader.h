@@ -34,11 +34,6 @@ protected:
    *  so the first leg has 0 as serial id.
    */
   int lastLegSerialId = -1;
-  /**
-   * @brief Flag to decide whether to write a scene (provided it was created
-   *  and not read during asset loading).
-   */
-  bool writeScene = true;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -48,11 +43,8 @@ public:
    * @param filePath Path to the XML File
    * @param assetsDir Path to the assets directory
    */
-  XmlSurveyLoader(std::string& filePath,
-                  std::vector<std::string>& assetsDir,
-                  bool writeScene = true)
+  XmlSurveyLoader(std::string& filePath, std::vector<std::string>& assetsDir)
     : XmlAssetsLoader(filePath, assetsDir)
-    , writeScene(writeScene)
   {
   }
 
@@ -80,25 +72,19 @@ public:
    *
    * @param surveyNode XML element/node containing survey data
    * @param legNoiseDisabled Flag to disable leg noise
-   * @param rebuildScene Flag to specify scene must be rebuild even
-   *  when a previously built one is found (true) or not (false)
    * @return Created survey
    * @see Survey
    * @see XmlSurveyLoader::reinitLoader
    */
   std::shared_ptr<Survey> createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
-                                              bool legNoiseDisabled = false,
-                                              bool rebuildScene = false);
+                                              bool legNoiseDisabled = false);
   /**
    * @brief Load a full survey from XML
    * @param legNoiseDisabled Flag to disable leg noise
-   * @param rebuildScene Flag to specify scene must be rebuild even
-   *  when a previously built one is found (true) or not (false)
    * @return Fully loaded survey
    * @see Survey
    */
-  std::shared_ptr<Survey> load(bool legNoiseDisabled = false,
-                               bool rebuildScene = false);
+  std::shared_ptr<Survey> load(bool legNoiseDisabled = false);
 
 protected:
   // ***  UTIL METHODS  *** //
@@ -115,13 +101,10 @@ protected:
    * @brief Load scene from XML
    * @param sceneString String from XML scene attribute at survey
    *  element/node
-   * @param rebuildScene Flag to specify scene must be rebuild even
-   *  when a previously built one is found (true) or not (false)
    * @return Loaded scene
    * @see Scene
    */
-  std::shared_ptr<Scene> loadScene(std::string sceneString,
-                                   bool rebuildScene = false);
+  std::shared_ptr<Scene> loadScene(std::string sceneString);
   /**
    * @brief Load the core components of the survey. It is, its name,
    *  the source file path, the scanner and the platform

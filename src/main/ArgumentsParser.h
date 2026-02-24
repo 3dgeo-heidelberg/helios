@@ -137,16 +137,6 @@ public:
    */
   bool parseDisableLegNoise();
   /**
-   * @brief Parse the rebuild scene flag from invocation arguments
-   * @return True if rebuild scene flag was specified, False otherwise
-   */
-  bool parseRebuildScene();
-  /**
-   * @brief Parse the write scene flag from invocation arguments
-   * @return True if write scene flag was specified, false otherwise.
-   */
-  bool parseNoSceneWriting();
-  /**
    * @brief Parse the verbosity level for logging from invocation arguments
    */
   void parseLoggingVerbosity();
@@ -172,7 +162,8 @@ public:
   bool parseLas10();
   /**
    * @brief Parse the ZIP output specification
-   * @return True if ZIP output was requested, False otherwise.
+   * @return True if compressed LAS output (LAZ) was requested,
+   *  False otherwise.
    */
   bool parseZipOutput();
   /**
@@ -180,13 +171,6 @@ public:
    * @return Scale factor to be used by the LasSyncFileWriter
    */
   double parseLasScale();
-  /**
-   * @brief Parse an unzip request for given input and output path
-   * @param inputPath Where the input path will be stored
-   * @param outputPath Where the output path will be stored
-   * @return True if unzip was requested, False otherwise.
-   */
-  bool parseUnzip(std::string* inputPath, std::string* outputPath);
   /**
    * @brief Parse the fixed incidence angle specification.
    * When fixed incidence angle is requested, incidence angle for all

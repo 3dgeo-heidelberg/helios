@@ -5,7 +5,6 @@ target_include_directories(
   "facade"
   "factory"
   "read"
-  "serialization"
   "util"
   "write"
   "write/core"
@@ -16,9 +15,6 @@ target_include_directories(
 target_sources(
   helios
   PRIVATE
-  "serialization/SerialIO.cpp"
-  "serialization/serial_adt_utils.cpp"
-  "serialization/SerialSceneWrapper.cpp"
   "util/FileUtils.cpp"
   "facade/FMSWriteFacade.cpp"
   "write/core/PulseWriter.cpp"

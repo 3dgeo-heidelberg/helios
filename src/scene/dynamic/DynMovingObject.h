@@ -35,52 +35,7 @@ class DynMovingObject
   , public KDGroveSubject
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a dynamic moving object to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the dynamic moving object
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::split_member(ar, *this, version);
-  }
-  /**
-   * @brief Save a serialized dynamic moving object to a stream of bytes
-   * @see DynMovingObject::serialize(Archive &, const unsigned int)
-   * @see DynMovingObject::load(Archive &, const unsigned int)
-   */
-  template<typename Archive>
-  void save(Archive& ar, const unsigned int version) const
-  {
-    boost::serialization::void_cast_register<DynMovingObject, DynObject>();
-    ar& boost::serialization::base_object<DynObject>(*this);
-    ar & positionMotionQueue;
-    ar & normalMotionQueue;
-    ar & dme;
-    ar & observerStepLoop.getStepInterval();
-  }
-  /**
-   * @brief Load a serialized dynamic moving object from a stream of bytes
-   * @see DynMovingObject::serialize(Archive &, const unsigned int)
-   * @see DynMovingObject::save(Archive &, const unsigned int)
-   */
-  template<typename Archive>
-  void load(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<DynMovingObject, DynObject>();
-    ar& boost::serialization::base_object<DynObject>(*this);
-    ar & positionMotionQueue;
-    ar & normalMotionQueue;
-    ar & dme;
-    int stepInterval;
-    ar & stepInterval;
-    observerStepLoop.setStepInterval(stepInterval);
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

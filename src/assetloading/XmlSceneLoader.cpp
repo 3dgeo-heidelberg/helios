@@ -18,8 +18,7 @@
 // ************************ //
 std::shared_ptr<Scene>
 XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
-                                   std::string path,
-                                   SerialSceneWrapper::SceneType* sceneType)
+                                   std::string path)
 {
   std::shared_ptr<StaticScene> scene = std::make_shared<StaticScene>();
   bool dynScene = false;
@@ -90,14 +89,6 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
     exit(-1);
   }
   scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
-
-  // Store scene type if requested
-  if (sceneType != nullptr) {
-    if (dynScene)
-      *sceneType = SerialSceneWrapper::SceneType::DYNAMIC_SCENE;
-    else
-      *sceneType = SerialSceneWrapper::SceneType::STATIC_SCENE;
-  }
 
   // Handle dynamic scene attributes
   if (dynScene) {

@@ -3,14 +3,6 @@
 #include <IBinaryTreeNode.h>
 #include <ITreeIterator.h>
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-
-#include <boost/serialization/base_object.hpp>
-
 #include <deque>
 #include <iterator>
 
@@ -52,23 +44,7 @@ template<typename NodeType>
 class BinaryTreeFastDepthIterator : public ITreeIterator<NodeType*>
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a BinaryTreeFastDepthIterator to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the BinaryTreeFastDepthIterator
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::base_object<BinaryTreeFastDepthIterator<NodeType>,
-                                      ITreeIterator<NodeType*>>();
-    ar& boost::serialization::base_object<ITreeIterator<NodeType*>>(*this);
-    ar & pendingNodes;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

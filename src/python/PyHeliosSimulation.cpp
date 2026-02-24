@@ -327,7 +327,6 @@ PyHeliosSimulation::join()
 // ******************************************** //
 void
 PyHeliosSimulation::loadSurvey(bool legNoiseDisabled,
-                               bool rebuildScene,
                                bool writeWaveform,
                                bool calcEchowidth,
                                bool fullWaveNoise,
@@ -337,7 +336,7 @@ PyHeliosSimulation::loadSurvey(bool legNoiseDisabled,
   xmlreader->sceneLoader.kdtFactoryType = kdtFactory;
   xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
   xmlreader->sceneLoader.kdtSAHLossNodes = kdtSAHLossNodes;
-  survey = xmlreader->load(legNoiseDisabled, rebuildScene);
+  survey = xmlreader->load(legNoiseDisabled);
   survey->scanner->setWriteWaveform(writeWaveform);
   survey->scanner->setWritePulse(writePulse);
   survey->scanner->setCalcEchowidth(calcEchowidth);

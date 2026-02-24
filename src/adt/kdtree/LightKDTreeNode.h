@@ -3,16 +3,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-
-#include <boost/serialization/vector.hpp>
-
 #include <BinaryTreeBreadthIterator.h>
 #include <BinaryTreeDepthIterator.h>
 #include <BinaryTreeFastBreadthIterator.h>
@@ -22,7 +12,7 @@
 #include <AABB.h>
 #include <Primitive.h>
 
-// Including primitives below is necessary for serialization
+// Including primitives below is necessary for complete type information
 #include <DetailedVoxel.h>
 #include <Triangle.h>
 #include <Voxel.h>
@@ -34,33 +24,7 @@
 class LightKDTreeNode : public IBinaryTreeNode
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a LightKDTreeNode to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of byes
-   * @param version Version number for the LightKDTreeNode
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    // Register classes derived from Primitive
-    ar.template register_type<Vertex>();
-    ar.template register_type<AABB>();
-    ar.template register_type<Triangle>();
-    ar.template register_type<Voxel>();
-    ar.template register_type<DetailedVoxel>();
-
-    boost::serialization::void_cast_register<LightKDTreeNode,
-                                             IBinaryTreeNode>();
-    ar & left;
-    ar & right;
-    ar & splitPos;
-    ar & splitAxis;
-    ar & primitives;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //

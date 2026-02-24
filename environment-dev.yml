@@ -5,6 +5,7 @@ dependencies:
   # These are the dependencies that are also formulated on the feedstock
   - armadillo
   - backports.strenum
+  - cereal
   - click
   - click-option-group
   - blas

@@ -6,7 +6,7 @@ from pint import UnitRegistry
 from pydantic import validate_call, GetCoreSchemaHandler
 from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
-from typing import Any, Optional, Type, Union, get_origin, get_args
+from typing import Any, Literal, Optional, Type, Union, get_origin, get_args
 from typing_extensions import Annotated, dataclass_transform
 from numpydantic import NDArray, Shape
 
@@ -107,6 +107,42 @@ AssetPath = Annotated[Path, AfterValidator(find_file)]
 MultiAssetPath = Annotated[list[Path], BeforeValidator(find_files)]
 ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
 CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
+
+
+def _coerce_compression_level(level: Any) -> int:
+    if isinstance(level, str):
+        level_l = level.lower()
+        if level_l == "none":
+            return 0
+        if level_l == "default":
+            return 6
+        if level_l == "fast":
+            return 1
+        if level_l == "best":
+            return 9
+        raise ValueError(
+            "Compression level must be an int in [0, 9], 'none', 'default', "
+            "'fast' or 'best'."
+        )
+    if isinstance(level, bool):
+        raise ValueError(
+            "Compression level must be an int in [0, 9], 'none', 'default', "
+            "'fast' or 'best'."
+        )
+    if isinstance(level, (int, np.integer)):
+        return int(level)
+    raise ValueError(
+        "Compression level must be an int in [0, 9], 'none', 'default', "
+        "'fast' or 'best'."
+    )
+
+
+CompressionLevel = Annotated[
+    Union[int, Literal["none", "default", "fast", "best"]],
+    BeforeValidator(_coerce_compression_level),
+    annotated_types.Ge(0),
+    annotated_types.Le(9),
+]
 
 
 def _is_iterable_annotation(a):

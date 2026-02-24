@@ -3,32 +3,12 @@
 #include <cmath>
 #include <string>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-
 /**
  * @brief Class representing a material specification
  */
 class Material
 {
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & name;
-    ar & isGround;
-    ar & useVertexColors;
-    ar & matFilePath;
-    ar & map_Kd;
-    ar & reflectance;
-    ar & specularity;
-    ar & specularExponent;
-    ar & classification;
-    ar & spectra;
-    ar & ka & kd & ks;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //

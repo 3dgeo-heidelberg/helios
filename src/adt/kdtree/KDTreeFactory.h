@@ -20,27 +20,7 @@
 class KDTreeFactory
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a KDTree factory to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the K dimensional tree factory
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    // Register KDTree node classes
-    ar.template register_type<LightKDTreeNode>();
-    ar.template register_type<KDTreeNode>();
-    ar.template register_type<KDTreeNodeRoot>();
-
-    // Serialization itself
-    ar & buildLightNodes;
-    // LightKDTreeNodeBlockAllocator lkdtnBlockAllocator; // No need, deflt.
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

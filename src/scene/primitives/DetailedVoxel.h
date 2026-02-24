@@ -3,8 +3,6 @@
 #include <Voxel.h>
 #include <string>
 
-#include <boost/serialization/map.hpp>
-
 /**
  * @author Alberto M. Esmoris Pena
  * @verison 1.0
@@ -14,19 +12,7 @@
  */
 class DetailedVoxel : public Voxel
 {
-  // ***  BOOST SERIALIZATION  *** //
   // ***************************** //
-  friend class boost::serialization::access;
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<DetailedVoxel, Voxel>();
-    ar& boost::serialization::base_object<Voxel>(*this);
-    ar & intValues;
-    ar & doubleValues;
-    ar & identifiers;
-    ar & maxPad;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //
@@ -314,64 +300,3 @@ public:
    */
   double computeSigmaWithLadLut(glm::dvec3 const& direction) override;
 };
-
-// ***  BOOST SERIALIZATION  *** //
-// ***************************** //
-/*
- * Below code is commented because it is not necessary and it might cause
- * memory leaks when called from external sources (i.e. from python)
- */
-/*namespace boost{
-namespace serialization{
-    template<class Archive>
-    inline void save_construct_data(
-        Archive &ar, const DetailedVoxel *t, const unsigned int file_version
-    ){
-        ar << t->v.pos.x << t->v.pos.y << t->v.pos.z;
-        ar << t->halfSize;
-        ar << t->getMaxPad();
-        ar << t->getNumberOfIntValues();
-        for(size_t i = 0 ; i < t->getNumberOfIntValues() ; i++)
-            ar << t->getIntValue(i);
-        ar << t->getNumberOfDoubleValues();
-        for(size_t i = 0 ; i < t->getNumberOfDoubleValues() ; i++)
-            ar << t->getDoubleValue(i);
-        ar << t->material;
-    }
-
-    template<class Archive>
-    inline void load_construct_data(
-        Archive &ar, DetailedVoxel *t, const unsigned int file_version
-    ){
-        double x = 0.0, y = 0.0, z = 0.0;
-        double halfVoxelSize = 0.0;
-        double maxPad = 0.0;
-        size_t nIntValues = 0;
-        int intVal = 0;
-        std::vector<int> intValues;
-        size_t nDoubleValues = 0;
-        double doubleVal = 0.0;
-        std::vector<double> doubleValues;
-        std::shared_ptr<Material> mat;
-
-        ar >> x; ar >> y; ar >> z;
-        ar >> halfVoxelSize;
-        ar >> maxPad;
-        ar >> nIntValues;
-        for(size_t i = 0 ; i < nIntValues ; i++){
-            ar >> intVal;
-            intValues.push_back(intVal);
-        }
-        ar >> nDoubleValues;
-        for(size_t i = 0 ; i < nDoubleValues ; i++){
-            ar >> doubleVal;
-            doubleValues.push_back(doubleVal);
-        }
-        ar >> mat;
-
-        ::new(t)DetailedVoxel(x, y, z, halfVoxelSize, intValues, doubleValues);
-        t->setMaxPad(maxPad);
-        t->material = mat;
-    }
-}
-}*/

@@ -12,23 +12,7 @@
 class AABB : public Primitive
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize an axis-aligned bounding box to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the axis-aligned bounding box
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<AABB, Primitive>();
-    ar& boost::serialization::base_object<Primitive>(*this);
-    ar & vertices;
-    ar & bounds;
-  }
 
 public:
   // ***  ATTRIBUTES  *** //
@@ -203,30 +187,3 @@ public:
    */
   std::string toString();
 };
-
-namespace boost {
-namespace serialization {
-
-template<class Archive>
-inline void
-save_construct_data(Archive& ar, const AABB* t, const unsigned int file_version)
-{
-  // save data required to construct instance
-  ar << t->vertices[0].pos;
-  ar << t->vertices[1].pos;
-}
-
-template<class Archive>
-inline void
-load_construct_data(Archive& ar, AABB* t, const unsigned int file_version)
-{
-  // retrieve data from archive required to construct new instance
-  glm::dvec3 min, max;
-  ar >> min;
-  ar >> max;
-
-  // invoke inplace constructor to initialize instance of my_class
-  ::new (t) AABB(min, max);
-}
-}
-}

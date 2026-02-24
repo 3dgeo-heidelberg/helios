@@ -2,6 +2,7 @@
 
 #include <HeliosException.h>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "Material.h"

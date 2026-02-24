@@ -3,7 +3,6 @@ target_include_directories(
   PUBLIC
   "."
   "threadpool"
-  "serialization"
   "logger"
 )
 

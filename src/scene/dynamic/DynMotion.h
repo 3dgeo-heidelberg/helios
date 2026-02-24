@@ -2,9 +2,6 @@
 
 #include <rigidmotion/RigidMotion.h>
 
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/deque.hpp>
-#include <boost/serialization/void_cast.hpp>
 #include <memory>
 
 /**
@@ -20,26 +17,7 @@
 class DynMotion : public rigidmotion::RigidMotion
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a dynamic motion to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the dynamic motion
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    boost::serialization::void_cast_register<DynMotion,
-                                             rigidmotion::RigidMotion>();
-    ar& boost::serialization::base_object<RigidMotion>(*this);
-    ar & selfMode;
-    ar & normalMode;
-    // ar &C; // Not needed because it is in save/load construct
-    // ar &A; // Not needed because it is in save/load construct
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

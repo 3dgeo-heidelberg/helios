@@ -1,7 +1,6 @@
 #pragma once
 
 #include <filems/write/comps/SimpleVectorialSyncFilePulseWriter.h>
-#include <filems/write/comps/ZipVectorialSyncFilePulseWriter.h>
 #include <filems/write/core/BasePulseWriter.h>
 #include <scanner/PulseRecord.h>
 #include <util/HeliosException.h>
@@ -62,11 +61,7 @@ public:
   std::shared_ptr<SyncFileWriter<std::vector<PulseRecord> const&>> makeWriter(
     std::string const& path) const override
   {
-    if (isZipOutput()) {
-      return std::make_shared<ZipVectorialSyncFilePulseWriter>(path);
-    } else {
-      return std::make_shared<SimpleVectorialSyncFilePulseWriter>(path);
-    }
+    return std::make_shared<SimpleVectorialSyncFilePulseWriter>(path);
   }
 };
 

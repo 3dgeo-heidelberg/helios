@@ -9,9 +9,7 @@
 std::shared_ptr<Survey>
 readSurveyFromXml(std::string surveyPath,
                   std::vector<std::string> assetsPath,
-                  bool legNoiseDisabled,
-                  bool loadSceneNotFromBinary,
-                  bool writeSceneToBinary);
+                  bool legNoiseDisabled);
 
 std::shared_ptr<Scanner>
 readScannerFromXml(std::string scannerPath,
@@ -26,7 +24,7 @@ readPlatformFromXml(std::string platformPath,
 std::shared_ptr<Scene>
 readSceneFromXml(std::string filePath,
                  std::vector<std::string> assetsPath,
-                 bool writeBinary);
+                 bool buildKDGrove = true);
 
 std::shared_ptr<ScenePart>
 readScenePartFromXml(std::string filePath,

@@ -7,39 +7,6 @@
  */
 class KDTreeNode : public LightKDTreeNode
 {
-private:
-  // ***  SERIALIZATION  *** //
-  // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a KDTreeNode to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the KDTreeNode
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    /*
-     * Code below is commented because it is no longer needed as it is now
-     * done in LightKDTreeNode. However, in case problems arise or
-     * KDTreeNode should become the basis for KDTree node implementation,
-     * it must be uncommented or serialization will not work
-     */
-    // Register classes derived from Primitive
-    /*ar.template register_type<Vertex>();
-    ar.template register_type<AABB>();
-    ar.template register_type<Triangle>();
-    ar.template register_type<Voxel>();
-    ar.template register_type<DetailedVoxel>();*/
-
-    // Serialization itself
-    boost::serialization::void_cast_register<KDTreeNode, LightKDTreeNode>();
-    ar& boost::serialization::base_object<LightKDTreeNode>(*this);
-    ar & bound;
-    ar & surfaceArea;
-  }
-
 public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -95,18 +62,4 @@ public:
    * @param kdtn KDTreeNode to swap attributes with
    */
   void swap(KDTreeNode& kdtn);
-
-  // ***  OBJECT METHODS  *** //
-  // ************************ //
-  /**
-   * @brief Serialize KDTree
-   * @param path Path to file where the serialized KDTree must be exported
-   */
-  void writeObject(std::string path);
-  /**
-   * @brief Import a serialized KDTree from file
-   * @param path Path to the file containing a serialized KDTree
-   * @return Imported KDTree
-   */
-  static KDTreeNode* readObject(std::string path);
 };

@@ -1,12 +1,5 @@
 #pragma once
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/shared_ptr.hpp>
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -17,18 +10,7 @@
  */
 class LadLut
 {
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & X;
-    ar & Y;
-    ar & Z;
-    ar & G;
-    ar & angles;
-  }
 
 public:
   // ***  CONSTANTS  *** //

@@ -179,18 +179,6 @@ ArgumentsParser::parseDisableLegNoise()
   return findIndexOfArgument("--disableLegNoise") >= 0;
 }
 
-bool
-ArgumentsParser::parseRebuildScene()
-{
-  return findIndexOfArgument("--rebuildScene") >= 0;
-}
-
-bool
-ArgumentsParser::parseNoSceneWriting()
-{
-  return findIndexOfArgument("--noSceneWriting") >= 0;
-}
-
 void
 ArgumentsParser::parseLoggingVerbosity()
 {
@@ -252,18 +240,6 @@ ArgumentsParser::parseLasScale()
   if (index < 0)
     return 0.0001;
   return std::stod(argv[index + 1]);
-}
-
-bool
-ArgumentsParser::parseUnzip(std::string* inputPath, std::string* outputPath)
-{
-  int index = findIndexOfArgument("--unzip");
-  if (index < 0)
-    return false;
-
-  *inputPath = std::string(argv[index + 1]);
-  *outputPath = std::string(argv[index + 2]);
-  return true;
 }
 
 bool

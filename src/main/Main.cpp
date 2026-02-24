@@ -1,5 +1,4 @@
 #include <ArgumentsParser.h>
-#include <filems/util/FileUtils.h>
 #include <helios_version.h>
 #include <main/LidarSim.h>
 #include <main/MainHelp.h>
@@ -54,7 +53,6 @@ main(int argc, char** argv)
     std::cout << getHeliosFullVersion() << std::endl;
     return EXIT_SUCCESS;
   } else if (argc > 1) {
-    std::string inputPath, outputPath;
     std::string demo = ap.parseDemoRequest();
     std::string demoSurveyPath = ap.parseDemoSurveyPath();
     std::string demoAssetsPath = ap.parseDemoAssetsPath();
@@ -78,11 +76,6 @@ main(int argc, char** argv)
       done = true;
     }
 #endif
-    // Unzip execution branch
-    else if (ap.parseUnzip(&inputPath, &outputPath)) {
-      FileUtils::unzipFile(inputPath, outputPath);
-      done = true;
-    }
   }
 
   // Main simulation execution branch
@@ -137,8 +130,6 @@ main(int argc, char** argv)
              ap.parseSplitByChannel(),
              ap.parseDisablePlatformNoise(),
              ap.parseDisableLegNoise(),
-             ap.parseRebuildScene(),
-             !ap.parseNoSceneWriting(),
              ap.parseLasOutput(),
              ap.parseLas10(),
              ap.parseZipOutput(),

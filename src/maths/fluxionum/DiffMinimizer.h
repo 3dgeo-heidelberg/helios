@@ -2,15 +2,6 @@
 
 #include <Minimizer.h>
 
-// This works around a known issue in boost:
-// https://github.com/boostorg/serialization/issues/315
-#ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
-#endif
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/serialization.hpp>
-#include <boost/serialization/void_cast.hpp>
-
 #include <functional>
 #include <vector>
 
@@ -34,22 +25,7 @@ template<typename IT, typename OT>
 class DiffMinimizer : public Minimizer<IT, OT>
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize the differential minimizer to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the differential minimizer
-   */
-  template<typename Archive>
-  void serialize(Archive& ar, unsigned int const version)
-  {
-    boost::serialization::void_cast_register<DiffMinimizer, Minimizer>();
-    ar& boost::serialization::base_object<Minimizer>(*this);
-    ar & df;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

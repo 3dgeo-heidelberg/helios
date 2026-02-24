@@ -15,21 +15,7 @@
 class KDGroveFactory
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a KDGrove factory to a stream of bytes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for hte K dimensional grove factory
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    // Serialization itself
-    // ar &kdtf; // Not necessary, already handled with inplace constructor
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

@@ -50,15 +50,6 @@ public:
     std::string const pathExpression);
 
   /**
-   * @brief Decompress a file generated through ZipSyncFileWriter
-   * @param inputPath Path to the compressed file to be decompressed
-   * @param outputPath Path where the decompressed file will be written
-   * @see ZipSyncFileWriter
-   */
-  static void unzipFile(std::string const inputPath,
-                        std::string const outputPath);
-
-  /**
    * @brief Extract the extension and the path without extension from given
    *  path with extension
    * @param[in] path The patch which extension must be extracted

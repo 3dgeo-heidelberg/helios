@@ -1,7 +1,5 @@
 #pragma once
 
-#include <boost/serialization/access.hpp>
-
 #include <functional>
 #include <vector>
 
@@ -17,24 +15,7 @@ template<class Class>
 class BlockAllocator
 {
 private:
-  // ***  SERIALIZATION  *** //
   // *********************** //
-  friend class boost::serialization::access;
-  /**
-   * @brief Serialize a BlockAllocator to a stream of byes
-   * @tparam Archive Type of rendering
-   * @param ar Specific rendering for the stream of bytes
-   * @param version Version number for the BlockAllocator
-   */
-  template<class Archive>
-  void serialize(Archive& ar, const unsigned int version)
-  {
-    ar & blockSize;
-    ar & blocks;
-    ar & lastBlockElements;
-    ar & lastBlock;
-    ar & _nextBlockSize;
-  }
 
 protected:
   // ***  ATTRIBUTES  *** //

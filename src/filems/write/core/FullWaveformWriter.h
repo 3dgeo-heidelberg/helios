@@ -2,8 +2,6 @@
 
 #include <filems/write/comps/SimpleSyncFileFullWaveformWriter.h>
 #include <filems/write/comps/SimpleSyncFileWriter.h>
-#include <filems/write/comps/ZipSyncFileFullWaveformWriter.h>
-#include <filems/write/comps/ZipSyncFileWriter.h>
 #include <filems/write/core/BaseFullWaveformWriter.h>
 #include <scanner/detector/FullWaveform.h>
 
@@ -58,10 +56,7 @@ public:
   std::shared_ptr<SyncFileWriter<FullWaveform const&>> makeWriter(
     std::string const& path) const override
   {
-    if (isZipOutput()) {
-      return std::make_shared<ZipSyncFileFullWaveformWriter>(path);
-    } else
-      return std::make_shared<SimpleSyncFileFullWaveformWriter>(path);
+    return std::make_shared<SimpleSyncFileFullWaveformWriter>(path);
   }
 };
 
