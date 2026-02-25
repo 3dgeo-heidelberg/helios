@@ -50,6 +50,33 @@
   </scanner>
   <!-- ##### END RIEGL VZ-1000 ##### -->
 
+
+	<!-- ##### BEGIN RIEGL VZ-2000i ##### -->	
+	<scanner 	id 							          = "riegl_vz2000i"
+            name                      = "RIEGL VZ-2000i"
+            accuracy_m                = "0.005"
+            beamDivergence_rad        = "0.00027"
+            headRotatePerSecMax_deg   = "150"
+            optics                    = "rotating"
+            pulseFreqs_Hz             = "50000,100000,300000,600000,1200000"
+            pulseLength_ns            = "5"
+            rangeMin_m                = "1.5"
+            scanAngleMax_deg          = "120"
+            scanAngleEffectiveMax_deg = "50"
+            scanFreqMin_Hz            = "3"
+            scanFreqMax_Hz            = "240">
+        
+      <FWFSettings beamSampleQuality="3"/>	
+        <beamOrigin x="0" y="0" z="0.2">
+          <rot axis="y" angle_deg="0" />
+          <rot axis="z" angle_deg="0" />
+          <rot axis="x" angle_deg="0" />
+        </beamOrigin>
+        <headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+  <!-- ##### END RIEGL VZ-2000i ##### -->
+
+
   <!-- ##### BEGIN RIEGL VZ-600i ##### -->    
   <scanner  id                         = "riegl_vz600i"
             name                       = "RIEGL VZ-600i"
