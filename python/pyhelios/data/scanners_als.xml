@@ -282,6 +282,25 @@
   </scanner>
   <!-- ##### END RIEGL LMS VQ-880-G II ##### -->
 
+  <!-- ##### BEGIN RIEGL LMS VQ-840-GE ##### -->
+
+  <scanner  id                         = "riegl_vq-840-ge"
+            accuracy_m                 = "0.02"
+            beamDivergence_rad         = "0.0006"
+            name                       = "RIEGL VQ-840-GE"
+            optics                     = "elliptical-conic"
+            pulseFreqs_Hz              = "50000,10000,200000"
+            pulseLength_ns             = "2"
+            rangeMin_m                 = "20"
+            maxNOR                     = "9"
+            scanAngleMax_deg           = "20"
+            acrossTrackAngle_deg       = "20"
+            alongTrackAngle_deg        = "14"
+            scanFreqMin_Hz             = "10"
+            scanFreqMax_Hz             = "100"
+            wavelength_nm              = "532">
+  </scanner>
+  <!-- ##### END RIEGL LMS VQ-840-GE ##### -->
 
   <!-- ##### BEGIN RIEGL VQ-1560i - Combined ##### -->
 
