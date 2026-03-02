@@ -416,6 +416,18 @@ makeSceneShift(Survey& survey)
         currentSettings->cherryPick(leg.mScannerSettings, scannerFields);
     }
   }
+
+  std::shared_ptr<InterpolatedMovingPlatformEgg> pe =
+    std::dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
+      survey.scanner->platform);
+
+  if (!pe || !pe->tdm)
+    return;
+
+  size_t xIdx = 3, yIdx = 4, zIdx = 5;
+  pe->tdm->addToColumn(xIdx, -shift.x);
+  pe->tdm->addToColumn(yIdx, -shift.y);
+  pe->tdm->addToColumn(zIdx, -shift.z);
 }
 
 void

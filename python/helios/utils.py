@@ -4,6 +4,7 @@ from pathlib import Path
 from pydantic import validate_call
 from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
 from numpydantic import NDArray, Shape
+from numpy.lib import recfunctions as rfn
 import functools
 
 import importlib_resources as resources
@@ -283,6 +284,70 @@ def _validate_trajectory_array(trajectory: np.ndarray) -> None:
         raise ValueError(
             "Trajectory must be a structured NumPy array with named fields."
         )
+
+
+def _is_buffer_exportable(trajectory: np.ndarray) -> bool:
+    """Check if the trajectory array is buffer-exportable."""
+    try:
+        memoryview(trajectory)
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+def _prepare_trajectory_array(trajectory: np.ndarray) -> np.ndarray:
+    """
+    Prepare the trajectory array for passing to the C++ backend. This includes:
+      - 1-D structured ndarray
+      - exactly fields in order: t, roll, pitch, yaw, x, y, z
+      - float64 for all fields
+      - buffer-exportable packed layout
+    """
+    _validate_trajectory_array(trajectory)
+    required_fields = ("t", "roll", "pitch", "yaw", "x", "y", "z")
+    names = trajectory.dtype.names
+    req_set = set(required_fields)
+    names_set = set(names)
+
+    if names_set != req_set:
+        missing = [f for f in required_fields if f not in names_set]
+        extra = [f for f in names if f not in req_set]
+        parts = []
+        if missing:
+            parts.append(f"missing={missing}")
+        if extra:
+            parts.append(f"extra={extra}")
+        raise ValueError(
+            f"Trajectory array must have exactly the following fields: {required_fields}. "
+            f"Got {names}. ({', '.join(parts)})"
+        )
+
+    if names != required_fields:
+        trajectory = trajectory[list(required_fields)]
+
+    need_cast = False
+    for field in required_fields:
+        if trajectory.dtype[field] != np.dtype("f8"):
+            need_cast = True
+            break
+
+    if need_cast:
+        canon_dtype = np.dtype([(field, "f8") for field in required_fields])
+        copy_trajectory = np.empty(trajectory.shape, dtype=canon_dtype)
+        for field in required_fields:
+            copy_trajectory[field] = trajectory[field].astype("f8")
+        trajectory = copy_trajectory
+
+    if not _is_buffer_exportable(trajectory):
+        trajectory = rfn.repack_fields(trajectory)
+        if not _is_buffer_exportable(trajectory):
+            raise ValueError(
+                "Trajectory array could not be converted to a buffer-exportable format."
+                "(likely overlapping/out-of-order field offsets). "
+                "Please rebuild/repack the structured array."
+            )
+
+    return trajectory
 
 
 def is_finalized(obj) -> bool:

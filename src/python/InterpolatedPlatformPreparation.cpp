@@ -1,31 +1,59 @@
 #include <python/InterpolatedPlatformPreparation.h>
 
-// std::shared_ptr<InterpolatedMovingPlatformEgg>
 std::shared_ptr<Platform>
 load_interpolated_platform(std::shared_ptr<LinearPathPlatform> basePlatform,
                            py::array trajectory,
                            std::string rotspec,
-                           bool syncGPSTime)
+                           bool syncGPSTime,
+                           bool isRollPitchYawInRadians)
 {
   std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
     std::make_shared<InterpolatedMovingPlatformEgg>();
 
-  // Acquire buffer
-  auto buf = trajectory.request();
-  if (buf.ndim != 1)
-    throw std::runtime_error(
-      "Trajectory must be a 1-D structured NumPy array (shape=(n,).");
+  py::buffer_info buf;
+  try {
+    buf = trajectory.request();
+  } catch (const py::error_already_set& e) {
+    std::ostringstream ss;
+    ss << "Failed to export trajectory as a buffer. "
+       << "Make sure it is a 1-D structured array with non-overlapping, "
+       << "in-order fields and float64 dtype for all fields. "
+       << "Original error: " << e.what();
+    throw std::runtime_error(ss.str());
+  }
 
-  // shape = (m,), each item is a struct of n doubles
+  if (buf.ndim != 1) {
+    throw std::runtime_error(
+      "Trajectory must be a 1-D structured NumPy array (shape=(n,)).");
+  }
+
+  std::array<const char*, 7> reqNames = { "t", "roll", "pitch", "yaw",
+                                          "x", "y",    "z" };
+  py::object dtype = trajectory.attr("dtype");
+  py::object names_obj = dtype.attr("names");
+  if (names_obj.is_none()) {
+    throw std::runtime_error(
+      "Trajectory must be a structured NumPy array with named fields.");
+  }
+  py::tuple names = dtype.attr("names").cast<py::tuple>();
+  if (names.size() != reqNames.size()) {
+    throw std::runtime_error("Trajectory dtype must have exactly 7 fields: t, "
+                             "roll, pitch, yaw, x, y, z.");
+  }
+  for (size_t i = 0; i < reqNames.size(); ++i) {
+    if (names[i].cast<std::string>() != reqNames[i]) {
+      throw std::runtime_error("Trajectory dtype fields must be in order: t, "
+                               "roll, pitch, yaw, x, y, z.");
+    }
+  }
+
   size_t m = buf.shape[0];
   size_t rec_size = buf.itemsize;
   size_t stride = buf.strides[0];
   char* base = static_cast<char*>(buf.ptr);
 
   // Get the dtype.fields dict and the names tuple
-  py::object dtype = trajectory.attr("dtype");
   py::dict fields = dtype.attr("fields").cast<py::dict>();
-  py::tuple names = dtype.attr("names").cast<py::tuple>();
   size_t n_fields = names.size();
 
   // Precompute offsets and collect column‐names
@@ -63,6 +91,11 @@ load_interpolated_platform(std::shared_ptr<LinearPathPlatform> basePlatform,
   platform->startTime = startTime;
   platform->tdm->shiftTime(-startTime);
   platform->syncGPSTime = syncGPSTime;
+  if (!isRollPitchYawInRadians) {
+    for (size_t j = 0; j < 3; ++j) {
+      platform->tdm->setColumn(j, platform->tdm->getColumn(j) * PI_OVER_180);
+    }
+  }
 
   platform->ddm = platform->tdm->toDiffDesignMatrixPointer(
     fluxionum::DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES, false);

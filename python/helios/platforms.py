@@ -2,7 +2,7 @@ from helios.scene import StaticScene
 from helios.utils import (
     classonlymethod,
     get_asset_directories,
-    _validate_trajectory_array,
+    _prepare_trajectory_array,
 )
 from helios.validation import (
     AssetPath,
@@ -91,6 +91,10 @@ def load_traj_csv(
         pitchIndex: Column number of pitch
         yawIndex: Column number of yaw
         trajectory_separator: Char which separates columns.
+
+       Returns:
+        A structured numpy array with fields 't', 'x', 'y', 'z', 'roll', 'pitch', 'yaw'.
+        'roll', 'pitch', and 'yaw' are in radians
     """
 
     indices = {
@@ -182,6 +186,7 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         platform_id: str = "",
         interpolation_method: Literal["CANONICAL", "ARINC 705"] = "ARINC 705",
         sync_gps_time: bool = False,
+        is_roll_pitch_yaw_in_radians: bool = True,
     ):
         """Load a platform from an XML file with interpolation enabled.
         Args:
@@ -190,19 +195,24 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
             platform_id: ID of desired platform.
             interpolation_method: Interpolation method to use. Options are "CANONICAL" and "ARINC 705".
             sync_gps_time: Whether to sync GPS time with platform's start time.
+            is_roll_pitch_yaw_in_radians: Whether roll, pitch, and yaw in the trajectory are in radians.
         """
 
         # Validate the XML
         validate_xml_file(platform_file, "xsd/platform.xsd")
 
-        _validate_trajectory_array(trajectory)
+        trajectory = _prepare_trajectory_array(trajectory)
 
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
 
         _cpp_interpolated_platform = _helios.load_interpolated_platform(
-            _cpp_platform, trajectory, interpolation_method, sync_gps_time
+            _cpp_platform,
+            trajectory,
+            interpolation_method,
+            sync_gps_time,
+            is_roll_pitch_yaw_in_radians,
         )
         cppplatform = cls._from_cpp(_cpp_interpolated_platform)
         return cppplatform
