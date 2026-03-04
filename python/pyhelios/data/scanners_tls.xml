@@ -50,6 +50,7 @@
   </scanner>
   <!-- ##### END RIEGL VZ-1000 ##### -->
 
+
   <!-- ##### BEGIN RIEGL VZ-600i ##### -->    
   <scanner  id                         = "riegl_vz600i"
             name                       = "RIEGL VZ-600i"
@@ -102,38 +103,39 @@
 
 
   <!--######## BEGIN LIVOX Mid 40 ####### -->
-  <!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
-  <scanner  id                         = "livox_mid-40"
-            accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0027"
-            name                       = "Livox Mid-40"
-            optics                     = "risley"
-            pulseFreqs_Hz              = "100000"
-            pulseLength_ns             = "4"
-            rangeMin_m                 = "2"
-            wavelength_nm              = "905"
-	        maxNOR                     = "2"
-            rotorFreq1_Hz              = "-77.733333333"
-            rotorFreq2_Hz              = "121.566666666"
-            angle1_deg                 = "-18.0"
-            angle2_deg                 = "18.0"
-            refrIndex1                 = "1.5095"
-            refrIndex2                 = "1.5095"
-            refrIndex_air              = "1.0">
+  <!-- elliptical beam divergence (horizontal: 0.000523598 rad, vertical: 0.004887 rad), we use the value for the semi-minor axis -->
+  <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
+  <scanner  id                        = "livox_mid-40" 
+            accuracy_m                = "0.01"
+            beamDivergence_rad        = "0.0005" 
+            name                      = "Livox Mid-40" 
+            optics                    = "risley" 
+            pulseFreqs_Hz             = "100000" 
+            pulseLength_ns            = "4" 
+            rangeMin_m                = "1"
+            maxNOR                    = "2"
+            wavelength_nm             = "905" 
+            rotorFreq1_Hz             = "-121.5657" 
+            rotorFreq2_Hz             = "77.7430" 
+            angle1_deg                = "18.7481" 
+            angle2_deg                = "17.9634" 
+            refrIndex1                = "1.51" 
+            refrIndex2                = "1.51" 
+            refrIndex_air             = "1.0">
 
-    <FWFSettings beamSampleQuality="3"/>
-    <beamOrigin x="0" y="0" z="0">
-      <rot axis="z" angle_deg="-90" />
-    </beamOrigin>
-
-    <headRotateAxis x="1" y="0" z="0" />
+    <FWFSettings beamSampleQuality="3" />
+        <channels>
+            <channel id="0">
+                <incidentBeam x="0.0" y="1.0" z="0" />
+            </channel>
+        </channels>
   </scanner>
 
   <!--######## END LIVOX Mid-40 ####### -->
 
 
-  <!--######## BEGIN LIVOX Mid 70 ####### -->
-  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°) -->
+  <!--######## BEGIN LIVOX Mid-70 ####### -->
+  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°). -->
   <scanner  id                         = "livox_mid-70"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.0027"
@@ -142,8 +144,8 @@
             pulseFreqs_Hz              = "100000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2"
+            maxNOR                     = "2"
             wavelength_nm              = "905"
-	  		maxNOR					   = "2"
             rotorFreq1_Hz              = "-77.733333333"
             rotorFreq2_Hz              = "121.566666666"
             angle1_deg                 = "-29.7"
@@ -161,6 +163,56 @@
   </scanner>
 
   <!--######## END LIVOX Mid-70 ####### -->
+
+
+  <!--######## BEGIN LIVOX Avia (NON-REPETITIVE) ####### -->
+  <!-- elliptical beam divergence, we use the value for the semi-minor axis -->
+  <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
+  <scanner  id                         = "livox-avia-non-repetitive"
+            accuracy_m                 = "0.01" 
+            beamDivergence_rad         = "0.0005" 
+            name                       = "Livox Avia (non-repetitive)" 
+            optics                     = "risley" 
+            pulseFreqs_Hz              = "40000" 
+            pulseLength_ns             = "4" 
+            rangeMin_m                 = "1"
+            maxNOR                     = "3"
+            wavelength_nm              = "905" 
+            rotorFreq1_Hz              = "-131.5463" 
+            rotorFreq2_Hz              = "40.8032" 
+            rotorFreq3_Hz              = "213.1611" 
+            angle1_deg                 = "30.8856" 
+            angle2_deg                 = "29.7735" 
+            angle3_deg                 = "3.1351" 
+            refrIndex1                 = "1.51" 
+            refrIndex2                 = "1.51" 
+            refrIndex3                 = "1.51" 
+            refrIndex_air              = "1.0">
+
+    <FWFSettings beamSampleQuality="3" />
+        <channels>
+            <channel id="0">
+                <incidentBeam x="-0.05216070" y="0.99863870" z="0" />
+            </channel>
+            <channel id="1">
+                <incidentBeam x="-0.03237635" y="0.99947575" z="0" />
+            </channel>
+            <channel id="2">
+                <incidentBeam x="-0.01079672" y="0.99994171" z="0" />
+            </channel>
+            <channel id="3">
+                <incidentBeam x="0.01079672" y="0.99994171" z="0" />
+            </channel>
+            <channel id="4">
+                <incidentBeam x="0.03237635" y="0.99947575" z="0" />
+            </channel>
+            <channel id="5">
+                <incidentBeam x="0.05300785" y="0.99859410" z="0" />
+            </channel>
+        </channels>
+  </scanner>
+
+  <!--######## END LIVOX Avia ####### -->
 
 
   <!-- ##### BEGIN Velodyne VLP-16 ("Puck") ##### -->
@@ -619,103 +671,6 @@
   </scanner>
   <!-- ##### END Velodyne HDL-64E ##### -->
 
-  <!--######## BEGIN LIVOX AVIA (REPETITIVE) ####### -->
-  <scanner  id                         = "livox-avia-repetitive"
-            accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0046"
-            name                       = "Livox Avia (repetitive, 3 prisms)"
-            optics                     = "risley"
-            pulseFreqs_Hz              = "40000"
-            pulseLength_ns             = "4"
-            rangeMin_m                 = "1"
-	  		    rangeMax_m			           = "320"
-            wavelength_nm              = "905"
-	  		    maxNOR 					           = "3"
-            rotorFreq1_Hz              = "50"
-            rotorFreq2_Hz              = "-50"
-            rotorFreq3_Hz              = "-150"
-            angle1_deg                 = "-27.65251"
-            angle2_deg                 = "29.767927015"
-            angle3_deg                 = "2.9191372182"
-            refrIndex1                 = "1.51"
-            refrIndex2                 = "1.51"
-            refrIndex3                 = "1.51"
-            refrIndex_air              = "1.0">
-
-    <FWFSettings beamSampleQuality="3"/>
-
-        <channels>
-            <channel id="0">
-                <incidentBeam x="-0.0614000000" y="0.99919968" z="0" />
-            </channel>
-            <channel id="1">
-                <incidentBeam x="-0.036800000" y="0.99971196" z="0" />
-            </channel>
-            <channel id="2">
-                <incidentBeam x="-0.012200000" y="0.99996800" z="0" />
-            </channel>
-            <channel id="3">
-                <incidentBeam x="0.012200000"  y="0.99996800" z="0" />
-            </channel>
-            <channel id="4">
-                <incidentBeam x="0.036800000"  y="0.99971196" z="0" />
-            </channel>
-            <channel id="5">
-                <incidentBeam x="0.0614000000"  y="0.99919968" z="0" />
-            </channel>
-        </channels>
-  </scanner>
-
-  <!--######## END LIVOX AVIA (REPETITIVE) ####### -->
-
-  <!--######## BEGIN LIVOX AVIA (NON-REPETITIVE) ####### -->
-  <scanner  id                         = "livox-avia-non-repetitive"
-            accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0046"
-            name                       = "Livox Avia (non-repetitive, 3 prisms)"
-            optics                     = "risley"
-            pulseFreqs_Hz              = "40000"
-            pulseLength_ns             = "4"
-            rangeMin_m                 = "1"
-	  		    rangeMax_m				         = "320"
-            wavelength_nm              = "905"
-	  		    maxNOR					           = "3"
-            rotorFreq1_Hz              = "131.5463"
-            rotorFreq2_Hz              = "-40.8032"
-            rotorFreq3_Hz              = "-213.1611"
-            angle1_deg                 = "30.8856"
-            angle2_deg                 = "29.7735"
-            angle3_deg                 = "3.1351"
-            refrIndex1                 = "1.51"
-            refrIndex2                 = "1.51"
-            refrIndex3                 = "1.51"
-            refrIndex_air              = "1.0">
-
-    <FWFSettings beamSampleQuality="3"/>
-
-        <channels>
-            <channel id="0">
-                <incidentBeam x="-0.0614000000" y="0.99919968" z="0" />
-            </channel>
-            <channel id="1">
-                <incidentBeam x="-0.036800000" y="0.99971196" z="0" />
-            </channel>
-            <channel id="2">
-                <incidentBeam x="-0.012200000" y="0.99996800" z="0" />
-            </channel>
-            <channel id="3">
-                <incidentBeam x="0.012200000"  y="0.99996800" z="0" />
-            </channel>
-            <channel id="4">
-                <incidentBeam x="0.036800000"  y="0.99971196" z="0" />
-            </channel>
-            <channel id="5">
-                <incidentBeam x="0.0614000000"  y="0.99919968" z="0" />
-            </channel>
-        </channels>
-  </scanner>
-
-  <!--######## END LIVOX AVIA (NON-REPETITIVE) ####### -->
 
   <!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
 
