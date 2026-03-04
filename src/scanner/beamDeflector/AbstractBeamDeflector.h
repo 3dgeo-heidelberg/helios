@@ -48,6 +48,10 @@ public:
    * @brief Maximum vertical scanning angle (radians)
    */
   double cfg_setting_verticalAngleMax_rad = 0;
+  /**
+   * @brief Optional warmup phase (seconds) consumed by compatible deflectors
+   */
+  double cfg_setting_opticsWarmupPhase_s = 0;
 
   // Stat variables:
   /**
@@ -163,6 +167,19 @@ public:
    * @param scanFreq_hz New scanning frequency (hertz)
    */
   virtual void setScanFreq_Hz(double scanFreq_hz);
+  /**
+   * @brief Set warmup phase for deflector internals
+   * @param opticsWarmupPhase_s Warmup phase in seconds
+   */
+  virtual void setOpticsWarmupPhase_s(double opticsWarmupPhase_s);
+  /**
+   * @brief Get warmup phase currently set on deflector
+   * @return Warmup phase in seconds
+   */
+  virtual double getOpticsWarmupPhase_s()
+  {
+    return cfg_setting_opticsWarmupPhase_s;
+  }
   /**
    * @brief Get the exact current beam angle.
    *

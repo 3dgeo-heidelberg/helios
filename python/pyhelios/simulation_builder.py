@@ -7,7 +7,6 @@ import os
 import time
 import importlib_resources as resources
 
-
 SimulationBuilderRotateFilter = namedtuple(
     "SimulationBuilderRotateFilter", ["q0", "q1", "q2", "q3", "id"]
 )

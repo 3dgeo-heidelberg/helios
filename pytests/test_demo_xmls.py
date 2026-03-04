@@ -9,7 +9,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import urllib
 
-
 WORKING_DIR = os.getcwd()
 XSD_DIR = Path(WORKING_DIR) / "python/pyhelios/util/xsd"
 PYH_DIR = Path(WORKING_DIR) / "python/pyhelios"
@@ -228,6 +227,14 @@ def get_paths(survey_file):
         pytest.param(
             (Path(WORKING_DIR) / "data" / "surveys" / "dyn" / "tls_tree1_dyn.xml"),
             id="tls_tree1_dyn.xml",
+        ),
+        pytest.param(
+            (Path(WORKING_DIR) / "data" / "test" / "test_max_duration.xml"),
+            id="test_max_duration.xml",
+        ),
+        pytest.param(
+            (Path(WORKING_DIR) / "data" / "test" / "test_warmup_risley.xml"),
+            id="test_warmup.xml",
         ),
     ],
 )

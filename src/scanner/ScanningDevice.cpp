@@ -1,4 +1,5 @@
 #include <ScanningDevice.h>
+#include <cmath>
 #include <logging.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
@@ -73,6 +74,8 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->rangeErrExpr = scdev.rangeErrExpr;
   this->state_currentPulseNumber = scdev.state_currentPulseNumber;
   this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
+  this->cfg_setting_opticsWarmupPhase_s = scdev.cfg_setting_opticsWarmupPhase_s;
+  this->state_opticsWarmupApplied = scdev.state_opticsWarmupApplied;
   this->cached_Dr2 = scdev.cached_Dr2;
   this->cached_Bt2 = scdev.cached_Bt2;
 
@@ -201,6 +204,10 @@ ScanningDevice::doSimStep(
   std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
   std::function<void(SimulatedPulse const& sp)> handlePulseComputation)
 {
+  if (isActive && !state_opticsWarmupApplied) {
+    applyWarmupPhase(simFreq_Hz);
+  }
+
   // Do what must be done whether active or not
   // ------------------------------------------//
   // Update head attitude (we do this even when the scanner is inactive):
@@ -249,6 +256,25 @@ ScanningDevice::doSimStep(
                                           state_currentPulseNumber,
                                           devIdx));
   }
+}
+
+void
+ScanningDevice::applyWarmupPhase(int const simFreq_Hz)
+{
+  if (state_opticsWarmupApplied || cfg_setting_opticsWarmupPhase_s <= 0.0 ||
+      simFreq_Hz <= 0) {
+    state_opticsWarmupApplied = true;
+    return;
+  }
+
+  long long const warmupPulses = std::max(
+    0LL, (long long)std::llround(cfg_setting_opticsWarmupPhase_s * simFreq_Hz));
+
+  for (long long i = 0; i < warmupPulses; ++i) {
+    scannerHead->doSimStep(simFreq_Hz);
+    beamDeflector->doSimStep();
+  }
+  state_opticsWarmupApplied = true;
 }
 
 Rotation

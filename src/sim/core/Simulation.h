@@ -107,6 +107,14 @@ protected:
    * @brief GPS time reference (nanoseconds) for evaluating maxDuration_s
    */
   double maxDurationStartGpsTime_ns = 0.0;
+  /**
+   * @brief Whether maxDuration_s timing is deferred until first pulse of leg.
+   */
+  bool maxDurationDeferredUntilFirstPulse = false;
+  /**
+   * @brief Pulse counter snapshot at leg start for deferred maxDuration_s.
+   */
+  int maxDurationStartPulseNumber = 0;
 
   /**
    * @brief Time corresponding to simulation start (currentGpsTime in

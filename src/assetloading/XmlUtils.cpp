@@ -458,4 +458,40 @@ XmlUtils::assertDocumentForAssetLoading(tinyxml2::XMLDocument& doc,
     ss << caller << " failed due to a document error";
     throw HeliosException(ss.str());
   }
+  // Require XML declaration (e.g. <?xml version="1.0" ?>) as first node
+  tinyxml2::XMLNode* firstNode = doc.FirstChild();
+  if (firstNode == nullptr || firstNode->ToDeclaration() == nullptr) {
+    std::stringstream ss;
+    ss << "XML document '" << filename << "' at '" << path
+       << "' does not start with an XML declaration (<?xml ...?>). Not a "
+          "standard XML file.";
+    logging::ERR(ss.str());
+    std::stringstream ss2;
+    ss2 << caller << " failed due to missing XML declaration.";
+    throw HeliosException(ss2.str());
+  }
+  // Basic structural validation: ensure document has a root element
+  tinyxml2::XMLElement* root = doc.FirstChildElement();
+  if (root == nullptr) {
+    std::stringstream ss;
+    ss << "XML document '" << filename << "' at '" << path
+       << "' does not contain a root element: empty XML file.";
+    logging::ERR(ss.str());
+    std::stringstream ss2;
+    ss2 << caller << " failed due to empty XML document.";
+    throw HeliosException(ss2.str());
+  }
+
+  // Require the root element to be <document>
+  if (std::string(root->Name()) != "document") {
+    std::stringstream ss;
+    ss << "XML document '" << filename << "' at '" << path
+       << "' root element is <" << root->Name()
+       << "> but expected <document>. Not a standard XML file.";
+    logging::ERR(ss.str());
+    std::stringstream ss2;
+    ss2 << caller << " failed due to unexpected root element <" << root->Name()
+        << ">.";
+    throw HeliosException(ss2.str());
+  }
 }

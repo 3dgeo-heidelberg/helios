@@ -308,6 +308,9 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   }
   getScanner()->setMaxDuration(maxDuration_s);
   maxDurationStartGpsTime_ns = currentGpsTime_ns;
+  maxDurationStartPulseNumber = getScanner()->getCurrentPulseNumber();
+  maxDurationDeferredUntilFirstPulse =
+    (maxDuration_s > 0.0) && getScanner()->isActive();
 
   shared_ptr<Platform> platform(getScanner()->platform);
   mSurvey->scanner->lastTrajectoryTime = 0L;

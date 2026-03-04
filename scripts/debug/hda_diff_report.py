@@ -6,13 +6,11 @@ import json
 # ---  FUNCTIONS  --- #
 # ------------------- #
 def print_help():
-    print(
-        """
+    print("""
 Input arguments:
     1 -> Path to first JSON report file
     2 -> Path to second JSON report file
-"""
-    )
+""")
 
 
 def parse_args(helpf=print_help):

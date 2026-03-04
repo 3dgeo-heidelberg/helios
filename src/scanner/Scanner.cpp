@@ -211,6 +211,8 @@ Scanner::retrieveCurrentSettings(size_t const idx)
     getBeamDeflector(idx)->cfg_setting_verticalAngleMin_rad;
   settings->verticalAngleMax_rad =
     getBeamDeflector(idx)->cfg_setting_verticalAngleMax_rad;
+  settings->opticsWarmupPhase_s =
+    getBeamDeflector(idx)->getOpticsWarmupPhase_s();
   // Return settings
   return settings;
 }

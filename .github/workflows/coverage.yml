@@ -20,20 +20,32 @@ jobs:
       run:
         # Conda requires a login shell in order to work properly
         shell: bash -l {0}  
+
+    env:
+      CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
     
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Restore conda environment cache
+        id: conda-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CONDA_INSTALL_DIR }}
+          key: conda-${{ runner.os }}-py3.14-${{ hashFiles('environment-dev.yml') }}
+
       - name: Create Helios dev environment
         uses: conda-incubator/setup-miniconda@v3
         with:
+          installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
-          auto-activate-base: false
+          conda-remove-defaults: true
+          auto-activate: false
           activate-environment: helios-dev
           environment-file: environment-dev.yml
-          python-version: "3.13"
+          python-version: "3.14"
           miniconda-version: "latest"
 
       - name: Install Conda GCC

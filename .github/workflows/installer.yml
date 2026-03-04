@@ -22,10 +22,11 @@ jobs:
             platform: linux-64
           - os: windows-latest
             platform: win-64
-          - os: macos-13
-            platform: osx-64
-          - os: macos-14
+          - os: macos-latest
             platform: osx-arm64
+          - os: macos-15-intel
+            platform: osx-64
+
     defaults:
       run:
         # Conda requires a login shell in order to work properly
@@ -37,7 +38,7 @@ jobs:
       - name: Create constructor dev environment
         uses: conda-incubator/setup-miniconda@v3
         with:
-          channels: conda-forge,defaults
+          conda-remove-defaults: true
 
       - name: Install constructor and menuinst
         run: |
@@ -74,10 +75,11 @@ jobs:
             platform: linux-64
           - os: windows-latest
             platform: win-64
-          - os: macos-13
-            platform: osx-64
-          - os: macos-14
+          - os: macos-latest
             platform: osx-arm64
+          - os: macos-15-intel
+            platform: osx-64
+
     defaults:
       run:
         # Conda requires a login shell in order to work properly
@@ -97,7 +99,8 @@ jobs:
       - name: Install Helios through installer
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-activate-base: true
+          conda-remove-defaults: true
+          auto-activate: true
           activate-environment: ""
           installer-url: file://${{ github.workspace }}/dist/${{ env.INSTALLER }}
 

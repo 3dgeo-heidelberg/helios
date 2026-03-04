@@ -219,6 +219,9 @@ BOOST_PYTHON_MODULE(_pyhelios)
     .add_property("trajectoryTimeInterval",
                   &ScannerSettings::trajectoryTimeInterval,
                   &ScannerSettings::trajectoryTimeInterval)
+    .add_property("opticsWarmupPhase",
+                  &ScannerSettings::opticsWarmupPhase_s,
+                  &ScannerSettings::opticsWarmupPhase_s)
     .add_property("id", &ScannerSettings::id, &ScannerSettings::id)
     .def("hasTemplate", &ScannerSettings::hasTemplate)
     .def("getTemplate",
