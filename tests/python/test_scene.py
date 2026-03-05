@@ -32,10 +32,30 @@ def _write_xyz_file(path: Path, separator: str = " ") -> None:
             handle.write("\n")
 
 
+def _write_only_points_xyz_file(path: Path) -> None:
+    points = [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [1.0, 1.0, 0.0],
+    ]
+    with path.open("w", encoding="utf-8") as handle:
+        for point in points:
+            handle.write(" ".join(str(value) for value in point))
+            handle.write("\n")
+
+
 @pytest.fixture
 def xyz_file(tmp_path) -> Path:
     path = tmp_path / "small.xyz"
     _write_xyz_file(path)
+    return path
+
+
+@pytest.fixture
+def only_points_xyz_file(tmp_path) -> Path:
+    path = tmp_path / "small_only_points.xyz"
+    _write_only_points_xyz_file(path)
     return path
 
 
@@ -1137,3 +1157,150 @@ def test_setitem_replaces_material_and_key_changes():
 
     with pytest.raises(KeyError):
         scene_part.materials["Material.007"].reflectance = 0.9
+
+
+def test_scene_part_from_numpy_basic():
+    """Test basic creation of scene part from numpy array."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0, 255, 0, 0],
+            [1.0, 0.0, 0.0, 0, 255, 0],
+            [0.0, 1.0, 0.0, 0, 0, 255],
+            [1.0, 1.0, 0.0, 255, 255, 0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(
+        points,
+        voxel_size=1.0,
+        max_color_value=255.0,
+        rgb_file_columns=[3, 4, 5],
+        default_normal=[0.0, 0.0, 1.0],
+    )
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+def test_scene_part_from_numpy_matches_xyz(xyz_file):
+    """Test that numpy array creation produces same result as XYZ file."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0, 255, 0, 0],
+            [1.0, 0.0, 0.0, 0, 255, 0],
+            [0.0, 1.0, 0.0, 0, 0, 255],
+            [1.0, 1.0, 0.0, 255, 255, 0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(
+        points,
+        voxel_size=1.0,
+        max_color_value=255.0,
+        rgb_file_columns=[3, 4, 5],
+        default_normal=[0.0, 0.0, 1.0],
+    )
+    scene_part_xyz = ScenePart.from_xyz(
+        str(xyz_file),
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+    assert len(scene_part._cpp_object.primitives) == len(
+        scene_part_xyz._cpp_object.primitives
+    )
+
+
+def test_scene_part_from_numpy_with_normals():
+    """Test creating scene part from numpy array with normal vectors."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 255, 0, 0],
+            [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 255, 0],
+            [0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 255],
+            [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 255, 255, 0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(
+        points,
+        voxel_size=1.0,
+        normals_file_columns=[3, 4, 5],
+        rgb_file_columns=[6, 7, 8],
+        max_color_value=255.0,
+    )
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+def test_scene_part_from_numpy_with_normals_only():
+    """Test creating scene part from numpy array with only normal vectors, no RGB."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+            [1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+            [0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(
+        points,
+        voxel_size=1.0,
+        normals_file_columns=[3, 4, 5],
+    )
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+def test_scene_part_from_numpy_no_rgb_no_normals(only_points_xyz_file):
+    """Test creating scene part from numpy array with only XYZ coordinates."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(points, voxel_size=1.0)
+    scene_part_xyz = ScenePart.from_xyz(
+        str(only_points_xyz_file),
+        separator=" ",
+        voxel_size=1.0,
+    )
+    assert len(scene_part._cpp_object.primitives) == len(
+        scene_part_xyz._cpp_object.primitives
+    )
+
+
+def test_scene_part_from_numpy_transformations():
+    """Test transformations on numpy-created scene part."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(points, voxel_size=1.0)
+    original_bbox = np.array(scene_part.bbox.bounds)
+
+    scene_part.translate([10.0, 20.0, 0.0])
+    translated_bbox = np.array(scene_part.bbox.bounds)
+
+    assert not np.allclose(original_bbox, translated_bbox)
+    assert np.allclose(original_bbox + [10.0, 20.0, 0.0], translated_bbox)
+
+
+def test_scene_part_from_numpy_material_update():
+    """Test updating material on numpy-created scene part."""
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(points, voxel_size=1.0)
+
+    mat = Material(name="test_material", reflectance=0.7)
+    assert len(scene_part._cpp_object.primitives) > 0
+    scene_part.update_material(mat)
+
+    assert len(scene_part.materials) > 0

@@ -655,10 +655,7 @@ readNumpyScenePart(const double* data,
   }
 
   double halfVoxelSize = voxelSize * 0.5;
-  int estimateNormalsForLoader =
-    estimate_normals
-      ? 1
-      : 0;
+  int estimateNormalsForLoader = estimate_normals ? 1 : 0;
   loader.prepareVoxelsGrid(estimateNormalsForLoader, halfVoxelSize);
 
   const int nxI = normalXIndex;
