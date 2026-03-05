@@ -341,4 +341,24 @@ public:
    * @see AbstractGeometryFilter::run
    */
   ScenePart* run() override;
+  /* friends declaration */
+  friend std::shared_ptr<ScenePart> readNumpyScenePart(
+    const double* data,
+    std::size_t nrows,
+    std::size_t ncols,
+    std::ptrdiff_t rowStrideElems,
+    std::ptrdiff_t colStrideElems,
+    std::vector<std::string> assetsPath,
+    double voxelSize,
+    double maxColorValue,
+    glm::dvec3 defaultNormal,
+    bool sparse,
+    bool estimate_normals,
+    int normalXIndex,
+    int normalYIndex,
+    int normalZIndex,
+    int rgbRIndex,
+    int rgbGIndex,
+    int rgbBIndex,
+    bool snapNeighborNormal);
 };
