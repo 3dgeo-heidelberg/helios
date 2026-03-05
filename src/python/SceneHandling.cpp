@@ -522,7 +522,7 @@ applyMaterialToPrimitivesRange(std::shared_ptr<ScenePart> scenePart,
                                size_t stop)
 {
   size_t n = scenePart->mPrimitives.size();
-  if (start >= n - 1 || stop >= n || start >= stop) {
+  if (n == 0 || start >= n || stop >= n || start > stop) {
     throw std::out_of_range(
       "Invalid range for applying material to primitives.");
   }
