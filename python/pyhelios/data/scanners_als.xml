@@ -318,10 +318,11 @@
   <!-- ##### END RIEGL VQ-1560i - Combined ##### -->
 
   <!-- ##### LIVOX Mid-70 -->
-  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°) -->
+  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°)
+       accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
   <scanner  id                         = "livox_mid-70"
-            accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.004887"
+            accuracy_m                 = "0.01"
+            beamDivergence_rad         = "0.0005"
             name                       = "Livox Mid-70"
             optics                     = "risley"
             pulseFreqs_Hz              = "100000"
@@ -348,7 +349,7 @@
   <!--######## END LIVOX Mid-70 ####### -->
 
   <!-- ##### LIVOX Mid-100 -->
-    <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
+  <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
   <scanner  id                         = "livox-mid-100"
             accuracy_m                = "0.01"
             beamDivergence_rad        = "0.0005" 
