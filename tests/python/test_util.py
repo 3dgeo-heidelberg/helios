@@ -1,4 +1,5 @@
 from helios.utils import *
+from helios.utils import _prepare_trajectory_array
 
 from pathlib import Path
 
@@ -172,3 +173,83 @@ def test_classonlymethod():
     instance_obj = SubClass.reading_from_smth()
     with pytest.raises(TypeError):
         instance_obj.reading_from_smth()
+
+
+def test_prepare_trajectory_array_wrong_arr():
+    required_fields = ("t", "roll", "pitch", "yaw", "x", "y", "z")
+    test_arr1 = np.zeros(
+        2,
+        dtype={
+            "names": ("t", "x", "y", "z", "roll", "pitch", "yaw"),
+            "formats": ("f8", "i4", "f8", "f8", "i4", "f8", "f8"),
+        },
+    )
+
+    test_arr2 = np.ones(
+        2,
+        dtype={
+            "names": ("t", "roll", "pitch", "yaw", "x", "y", "z"),
+            "formats": ("f8", "f8", "f8", "f8", "f8", "f8", "f8"),
+        },
+    )
+
+    test_arr3 = np.zeros(
+        2,
+        dtype={
+            "names": ("t", "x", "y", "z", "roll", "pitch", "yaw"),
+            "formats": ("f8", "f8", "f8", "f8", "f8", "f8", "f8"),
+        },
+    )
+    test_arr3 = test_arr3[["t", "yaw", "x", "z", "roll", "pitch", "y"]]
+
+    res_test_arr1 = _prepare_trajectory_array(test_arr1)
+    res_test_arr2 = _prepare_trajectory_array(test_arr2)
+    res_test_arr3 = _prepare_trajectory_array(test_arr3)
+
+    assert res_test_arr1.dtype.names == required_fields
+    assert all(res_test_arr1.dtype[f] == np.dtype("f8") for f in required_fields)
+    assert res_test_arr2.dtype.names == required_fields
+    assert all(res_test_arr2.dtype[f] == np.dtype("f8") for f in required_fields)
+    assert res_test_arr3.dtype.names == required_fields
+    assert all(res_test_arr3.dtype[f] == np.dtype("f8") for f in required_fields)
+
+
+def test_prepare_trajectory_array_wrong_dtype():
+    with pytest.raises(ValueError):
+        _prepare_trajectory_array(np.zeros(2, dtype=[("t", "f8"), ("b", "f8")]))
+
+    with pytest.raises(ValueError):
+        _prepare_trajectory_array(
+            np.zeros(
+                1,
+                dtype={
+                    "names": ("t", "x", "y", "z", "roll", "pitch"),
+                    "formats": ("f8", "f8", "f8", "f8", "f8", "f8"),
+                },
+            )
+        )
+
+    with pytest.raises(ValueError):
+        _prepare_trajectory_array(
+            np.zeros(
+                1,
+                dtype={
+                    "names": ("t", "x", "y", "z", "roll", "pitch", "yaw", "extra"),
+                    "formats": ("f8", "f8", "f8", "f8", "f8", "f8", "f8", "f8"),
+                },
+            )
+        )
+
+    with pytest.raises(ValueError):
+        _prepare_trajectory_array(
+            np.zeros(
+                1,
+                dtype={
+                    "names": ("t", "x", "y", "z", "rokl", "pitch", "yaw"),
+                    "formats": ("f8", "f8", "f8", "f8", "f8", "f8", "f8"),
+                },
+            )
+        )
+
+    with pytest.raises(ValueError):
+        _prepare_trajectory_array(np.zeros(10))
