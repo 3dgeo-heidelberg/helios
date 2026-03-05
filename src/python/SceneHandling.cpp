@@ -754,7 +754,7 @@ readNumpyScenePart(const double* data,
       if (pointsCount == 0 || endIdx == startIdx)
         break;
 
-      for (ssize_t row = 0; row < N; ++row) {
+      for (std::size_t row = 0; row < N; ++row) {
         const std::size_t IDX = idx_of_row[row];
         if (IDX < startIdx || IDX >= endIdx)
           continue;
