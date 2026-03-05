@@ -39,6 +39,31 @@ import _helios
 
 
 class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
+    """
+    Class representing a material that can be applied to primitives in a scene part. A material defines the visual properties of the primitives, such as their color and reflectance,
+    but also helios-specific properties such as the classification and whether the scene part should be considered as ground.
+
+    :param name: The name of the material. This is used to reference the material when applying it to primitives in a scene part.
+    :param is_ground: Whether the material should be considered as ground. This is used to position legs with 'force_on_ground' strategy on the ground level of the scene.
+    :param spectra: The name of the spectra file to use for the material. The spectra file should be located in one of the asset directories.
+    :param reflectance: The reflectance of the material. This is used in the intensity calculation for returns on the respective scene parts.
+    :param specularity: The specularity of the material. This is used in the intensity calculation for returns on the respective scene parts.
+    :param specular_exponent: The specular exponent of the material. This is used in the intensity calculation for returns on the respective scene parts.
+    :param classification: The classification of the material. This is used to assign a classification value to points that hit the respective scene parts.
+    :param ambient_components: The ambient components of the material. In .mtl files, this is the Ka component. This is used in the intensity calculation for returns on the respective scene parts.
+    :param diffuse_components: The diffuse components of the material. In .mtl files, this is the Kd component. This is used in the intensity calculation for returns on the respective scene parts.
+    :param specular_components: The specular components of the material. In .mtl files, this is the Ks component. This is used in the intensity calculation for returns on the respective scene parts.
+    :type name: str
+    :type is_ground: bool
+    :type spectra: str
+    :type reflectance: float
+    :type specularity: float
+    :type specular_exponent: float
+    :type classification: int
+    :type ambient_components: NDArray[Shape["4"], np.float64]
+    :type diffuse_components: NDArray[Shape["4"], np.float64]
+    :type specular_components: NDArray[Shape["4"], np.float64]
+    """
     name: str = ""
     is_ground: bool = False
     spectra: str = ""
@@ -120,12 +145,17 @@ class MaterialDict(MutableMapping[str, Material]):
 
 
 class BoundingBox(Model, cpp_class=_helios.AABB):
+    """
+    Class representing an axis-aligned bounding box. Used for representing the bounds of scene parts and scenes.
+    """
     @property
     def bounds(self) -> tuple[R3Vector, R3Vector]:
+        """The lower left and upper right corner of the bounding box."""
         return self._cpp_object.bounds
 
     @property
     def centroid(self) -> R3Vector:
+        """The centroid of the bounding box."""
         lower, upper = self.bounds
         return (
             np.asarray(lower, dtype=np.float64) + np.asarray(upper, dtype=np.float64)
@@ -133,17 +163,30 @@ class BoundingBox(Model, cpp_class=_helios.AABB):
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
+    """
+    Class representing a part of the scene. A scene part is a collection of primitives that share the same material and that is typically loaded from one file.
+    A scene can be composed of multiple scene parts, which can be transformed independently and have different materials.
+    Scene parts can be loaded from .obj, .tiff, .xyz and .vox files.
+
+    :param force_on_ground: The strategy to use for forcing the scene part on the ground. This is used to position legs with 'force_on_ground' strategy on the ground level of the scene.
+    :type force_on_ground: Union[ForceOnGroundStrategy, PositiveInt]
+    """
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
 
     @property
     def bbox(self) -> BoundingBox:
+        """The axis-aligned bounding box of the scene part."""
         return BoundingBox._from_cpp(self._cpp_object.bbox)
 
     @property
     def materials(self) -> MaterialDict:
-        """Dictionary-like access to materials in the scene part."""
+        """Dictionary-like access to materials in the scene part.
+        
+        :return: A dictionary-like object for accessing and modifying materials in the scene part via their names.
+        :rtype: MaterialDict
+        """
         return MaterialDict(self)
 
     @validate_call
@@ -159,12 +202,21 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Rotate the scene part.
 
         The rotation can be specified as one of the following parameters:
+        
         * A quaternion
         * An axis and an angle
         * An origin and an image vector
 
         Optionally, you may specify a rotation center. If omitted the origin
         of the coordinate system of the scene part will be used.
+
+        :param quaternion: The quaternion to use for the rotation.
+        :param axis: The axis to use for the rotation. Must be provided together with the 'angle' parameter.
+        :param angle: The angle to use for the rotation. Must be provided together with the 'axis' parameter.
+        :param from_axis: The origin vector to use for the rotation. Must be provided together with the 'to_axis' parameter.
+        :param to_axis: The image vector to use for the rotation. Must be provided together with the 'from_axis' parameter.
+        :param rotation_center: The center to use for the rotation. If omitted, the origin of the coordinate system of the scene part will be used.
+        :type quaternion: Optional[Quaternion]
         """
 
         # The rotation object that we want to construct
@@ -216,14 +268,22 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
     @validate_call
     def scale(self, factor: PositiveFloat):
-        """Scale the scene part by a factor."""
+        """Scale the scene part by a factor.
+        
+        :param factor: The factor to scale the scene part by.
+        :type factor: PositiveFloat
+        """
 
         _helios.scale_scene_part(self._cpp_object, factor)
         return self
 
     @validate_call
     def translate(self, offset: R3Vector):
-        """Translate the scene part by an offset."""
+        """Translate the scene part by an offset.
+        
+        :param offset: The offset to translate the scene part by.
+        :type offset: R3Vector
+        """
 
         _helios.translate_scene_part(self._cpp_object, offset)
         return self
@@ -247,6 +307,14 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Load the scene part from an OBJ file.
 
         For paths (potentially) containing wildcards, use 'ScenePart.from_objs()' instead!
+
+        :param obj_file: The path to the OBJ file to load the scene part from. Can potentially contain wildcards ('*').
+        :param up_axis: The up axis to use for the loaded scene part.
+        :type obj_file: AssetPath
+        :type up_axis: Literal["y", "z"]
+
+        :return: The loaded scene part.
+        :rtype: ScenePart
         """
 
         _cpp_part = _helios.read_obj_scene_part(
@@ -258,7 +326,16 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @classonlymethod
     @validate_call
     def from_tiff(cls, tiff_file: AssetPath):
-        """Load the scene part from a TIFF file."""
+        """Load the scene part from a TIFF file.
+        
+        For paths (potentially) containing wildcards, use 'ScenePart.from_tiffs()' instead!
+        
+        :param tiff_file: The path to the TIFF file to load the scene part from.
+        :type tiff_file: AssetPath
+        
+        :return: The loaded scene part.
+        :rtype: ScenePart
+        """
 
         _cpp_part = _helios.read_tiff_scene_part(
             str(tiff_file), [str(p) for p in get_asset_directories()]
@@ -273,6 +350,14 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         Expects a single Path containing some (or none) wildcards ('*').
         Supports '**' for matching multiple directories.
+
+        :param obj_files: The path to the OBJ files to load the scene parts from. Can potentially contain wildcards ('*').
+        :param up_axis: The up axis to use for the loaded scene parts.
+        :type obj_files: MultiAssetPath
+        :type up_axis: Literal["y", "z"]
+
+        :return: The loaded scene parts.
+        :rtype: list[ScenePart]
         """
         return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
 
@@ -283,6 +368,14 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         Expects a single Path containing some (or none) wildcards ('*').
         Supports '**' for matching multiple directories.
+
+        :param tiff_files: The path to the TIFF files to load the scene parts from. Can potentially contain wildcards ('*').
+        :type tiff_files: MultiAssetPath
+        :return: The loaded scene parts.
+        :rtype: list[ScenePart]
+
+        :return: The loaded scene parts.
+        :rtype: list[ScenePart]
         """
         return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
 
@@ -303,7 +396,33 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         rgb_file_columns: list[NonNegativeInt] = [6, 7, 8],
         snap_neighbor_normal: bool = False,
     ):
-        """Load the scene part from an XYZ file."""
+        """
+        Load the scene part from an XYZ file.
+        
+        :param xyz_file: The path to the XYZ file to load the scene part from. Can potentially contain wildcards ('*').
+        :param voxel_size: The voxel size to use for voxelizing the XYZ point cloud so that it can be converted to a 3D model with surfaces that can be scanned.
+        :param separator: The separator used in the XYZ file.
+        :param max_color_value: The maximum color value used for normalizing RGB values in the XYZ file.
+        :param default_normal: The default normal to use for points in the XYZ file that do not have a normal.
+        :param sparse: Whether to use a sparse voxel grid for the conversion of the XYZ point cloud to a 3D model. If false, a dense voxel grid will be used, which can lead to higher memory usage.
+        :param estimate_normals: Whether to estimate normals for points in the XYZ file that do not have a normal. This can be used if the XYZ file does not contain normals or if the provided normals are not reliable.
+        :param normals_file_columns: The columns in the XYZ file to use for the normal components if the XYZ file contains normals. The default is [3, 4, 5].
+        :param rgb_file_columns: The columns in the XYZ file to use for the RGB components if the XYZ file contains RGB values. The default is [6, 7, 8].
+        :param snap_neighbor_normal: Whether to snap the normal of points in the XYZ file that do not have a normal to the normal of their nearest neighbor that has a normal.
+        :type xyz_file: AssetPath
+        :type voxel_size: PositiveFloat
+        :type separator: Optional[str]
+        :type max_color_value: NonNegativeFloat
+        :type default_normal: R3Vector
+        :type sparse: bool
+        :type estimate_normals: bool
+        :type normals_file_columns: list[NonNegativeInt]
+        :type rgb_file_columns: list[NonNegativeInt]
+        :type snap_neighbor_normal: bool
+
+        :return: The loaded scene part.
+        :rtype: ScenePart
+        """
 
         if separator is None:
             separator = detect_separator(xyz_file)
@@ -348,7 +467,34 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
         Load multiple scene parts from XYZ files.
 
-        Each parameters hould be a single shared value for all files.
+        Expects a single Path containing some (or none) wildcards ('*').
+        Supports '**' for matching multiple directories.
+
+        Each parameters should be a single shared value for all files.
+
+        :param xyz_file: The path to the XYZ file to load the scene part from. Can potentially contain wildcards ('*').
+        :param voxel_size: The voxel size to use for voxelizing the XYZ point cloud so that it can be converted to a 3D model with surfaces that can be scanned.
+        :param separator: The separator used in the XYZ file.
+        :param max_color_value: The maximum color value used for normalizing RGB values in the XYZ file.
+        :param default_normal: The default normal to use for points in the XYZ file that do not have a normal.
+        :param sparse: Whether to use a sparse voxel grid for the conversion of the XYZ point cloud to a 3D model. If false, a dense voxel grid will be used, which can lead to higher memory usage.
+        :param estimate_normals: Whether to estimate normals for points in the XYZ file that do not have a normal. This can be used if the XYZ file does not contain normals or if the provided normals are not reliable.
+        :param normals_file_columns: The columns in the XYZ file to use for the normal components if the XYZ file contains normals. The default is [3, 4, 5].
+        :param rgb_file_columns: The columns in the XYZ file to use for the RGB components if the XYZ file contains RGB values. The default is [6, 7, 8].
+        :param snap_neighbor_normal: Whether to snap the normal of points in the XYZ file that do not have a normal to the normal of their nearest neighbor that has a normal.
+        :type xyz_file: AssetPath
+        :type voxel_size: PositiveFloat
+        :type separator: Optional[str]
+        :type max_color_value: NonNegativeFloat
+        :type default_normal: R3Vector
+        :type sparse: bool
+        :type estimate_normals: bool
+        :type normals_file_columns: list[NonNegativeInt]
+        :type rgb_file_columns: list[NonNegativeInt]
+        :type snap_neighbor_normal: bool
+
+        :return: The loaded scene parts.
+        :rtype: list[ScenePart]
         """
         return [
             ScenePart.from_xyz(
@@ -443,10 +589,20 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Update material(s) for the scene part.
 
         It can be provided in one of the following ways:
+
         * 'indices': a list of specific primitive indices to update
-        * 'range_start' & 'range_stop': an elevation range to update
+        * 'range_start' & 'range_stop': an index range to update
 
         If neither is provided, the material will be applied to all primitives.
+
+        :param material: The material to apply to the scene part.
+        :param indices: A list of specific primitive indices to update.
+        :param range_start: The start of the range of indices to update.
+        :param range_stop: The end of the range of indices to update.
+        :type material: Material
+        :type indices: Optional[list[int]]
+        :type range_start: Optional[int]
+        :type range_stop: Optional[int]
         """
         if indices is not None:
             self._apply_material_to_indices(material, indices)
@@ -466,14 +622,24 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
+    """Class representing a static scene. A scene is composed of multiple scene parts, which can be transformed independently and have different materials.
+    
+    :param scene_parts: The scene parts that make up the scene.
+    :type scene_parts: Tuple[ScenePart, ...]
+    """
     scene_parts: Tuple[ScenePart, ...] = ()
 
     @property
     def bbox(self) -> BoundingBox:
+        """The axis-aligned bounding box of the scene."""
         return BoundingBox._from_cpp(self._cpp_object.bbox)
 
     def add_scene_part(self, scene_part: ScenePart):
-        """Add a scene part to the scene."""
+        """Add a scene part to the scene.
+        
+        :param scene_part: The scene part to add to the scene.
+        :type scene_part: ScenePart
+        """
         self.scene_parts = self.scene_parts + (scene_part,)
         _helios.add_scene_part_to_scene(self._cpp_object, scene_part._cpp_object)
 
@@ -515,6 +681,11 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     @classonlymethod
     @validate_call
     def from_xml(cls, scene_file: AssetPath):
+        """Load the scene from an XML file.
+        
+        :param scene_file: The path to the XML file to load the scene from.
+        :type scene_file: AssetPath
+        """
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
@@ -530,11 +701,25 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     @classonlymethod
     @validate_call
     def from_binary(cls, binary_file: AssetPath):
+        """
+        Load the scene from a binary file.
+
+        :param binary_file: The path to the binary file to load the scene from.
+        :type binary_file: AssetPath
+        """
         _cpp_scene = _helios.StaticScene.from_binary(str(binary_file))
         return cls._from_cpp(_cpp_scene)
 
     @validate_call
     def to_binary(self, binary_file: Path, compression_level: CompressionLevel = 6):
+        """
+        Save the scene to a binary file.
+
+        :param binary_file: The path to the binary file to save the scene to.
+        :param compression_level: The compression level to use for the binary file.
+        :type binary_file: Path
+        :type compression_level: CompressionLevel
+        """
         # Ensure primitives and KD data exist before persisting.
         self._finalize()
         self._cpp_object.to_binary(

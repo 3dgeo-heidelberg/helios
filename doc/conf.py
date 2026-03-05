@@ -25,7 +25,7 @@ def _read_local_version():
     return match.group(1)
 
 
-project = "Helios++"
+project = "HELIOS++"
 copyright = "2026, HELIOS++ dev team"
 author = "HELIOS++ dev team"
 release = _read_local_version()

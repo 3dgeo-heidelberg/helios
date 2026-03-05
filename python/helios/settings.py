@@ -26,20 +26,40 @@ else:
 
 
 class ParallelizationStrategy(IntEnum):
+    """Enum representing the parallelization strategy to use for processing the survey.
+    
+    See also: https://doi.org/10.1109/ACCESS.2022.3211072
+    """
     CHUNK = 0
+    """chunk"""
+    
     WAREHOUSE = 1
+    """warehouse"""
 
 
 class LogVerbosity(IntEnum):
+    """
+    Enum representing the logging verbosity level to use for processing the survey.
+    """
     SILENT = 0b000000
+    "No logging output will be produced."
+    
     QUIET = 0b100000
+    "Only error messages will be logged."
+    
     TIME = 0b101000
+    "Log timing information."
+    
     DEFAULT = 0b111000
+    "Default logging level."
+    
     VERBOSE = 0b111100
+    "Verbose logging output."
+    
     VERY_VERBOSE = 0b111111
+    "Very verbose logging output."
 
     def apply(self) -> None:
-        """Call the corresponding C++ logging-level setter."""
         match self:
             case LogVerbosity.SILENT:
                 _helios.logging_silent()
@@ -56,30 +76,87 @@ class LogVerbosity(IntEnum):
 
 
 class KDTreeFactoryType(IntEnum):
+    """Enum representing the type of KDTree factory to use for building the KDTree.
+    
+    See also: https://doi.org/10.1109/ACCESS.2022.3211072
+    """
+    
     SIMPLE = 1
+    """Simple KDTree based on median balancing"""
+    
     SAH = 2
+    """Surface Area Heuristic (SAH) based KDTree"""
+
     SAH_BEST_AXIS = 3
+    """SAH based KDTree with best axis criteria"""
+    
     SAH_APPROXIMATION = 4
+    """fast approximation of SAH based KDTree (default)"""
 
 
 class OutputFormat(StrEnum):
+    """
+    Enum representing the output format to use for writing the point clouds.
+    """
     LAS = "las"
+    """LAS format (v1.4)."""
     LAZ = "laz"
+    """LAZ format (v1.4, compressed)."""
+
     XYZ = "xyz"
+    """Plain text format with x, y, z coordinates and additional attributes as columns."""
+
     NPY = "npy"
+    """Structured numpy array with fields for x, y, z coordinates and additional attributes."""
+
     LASPY = "laspy"
+    """laspy format"""
 
     # TODO: Determine whether we want formats las10 and laz10 or whether this
     #       is exactly the time to abolish them.
 
 
 class ForceOnGroundStrategy(IntEnum):
+    """Enum representing the strategy to use for forcing points on the ground."""
+
     NONE = 0
+    """Do not force points on the ground."""
+
     LEAST_COMPLEX = 1
+    """Use the minimum z vertex to calculate ground translation. Least computationally accurate."""
+
     MOST_COMPLEX = -1
+    """Force on ground with optimum vertex (the one which is closest to the ground plane). Optimum solution guaranteed, but computationally expensive."""
 
 
 class ExecutionSettings(Model, UpdateableMixin):
+    """Class representing the execution settings for a HELIOS++ survey.
+
+    :param parallelization: The parallelization strategy to use for processing the survey.
+    :param num_threads: The number of threads to use for processing the survey. If None, the number of hardware threads will be used.
+    :param chunk_size: The chunk size to use for processing the survey. Only used if the parallelization strategy is set to CHUNK.
+    :param warehouse_factor: The warehouse factor to use for processing the survey. Only used if the parallelization strategy is set to WAREHOUSE.
+    :param log_file: Whether to write a log file for the survey. If true, a log file will be written to the output directory.
+    :param log_file_only: Whether to write only a log file for the survey. If true, no logging output will be written to the console.
+    :param verbosity: The logging verbosity level to use for processing the survey.
+    :param factory_type: The type of KDTree factory to use for building the KDTree.
+    :param kdt_num_threads: The number of threads to use for building the KDTree. If None, the number of hardware threads will be used.
+    :param kdt_geom_num_threads: The number of threads to use for building the geometry of the KDTree. If None, the number of hardware threads will be used.
+    :param sah_nodes: The number of nodes to use for the SAH approximation. Only used if the factory type is set to SAH_APPROXIMATION.
+    :param discard_shutdown: Whether to discard the shutdown message when the survey is finished.
+    :type parallelization: ParallelizationStrategy
+    :type num_threads: Optional[ThreadCount]
+    :type chunk_size: PositiveInt
+    :type warehouse_factor: PositiveInt
+    :type log_file: bool
+    :type log_file_only: bool
+    :type verbosity: LogVerbosity
+    :type factory_type: KDTreeFactoryType
+    :type kdt_num_threads: Optional[ThreadCount]
+    :type kdt_geom_num_threads: Optional[ThreadCount]
+    :type sah_nodes: PositiveInt
+    :type discard_shutdown: bool
+    """
     parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
     num_threads: ThreadCount = None
     chunk_size: PositiveInt = 32
@@ -95,6 +172,22 @@ class ExecutionSettings(Model, UpdateableMixin):
 
 
 class OutputSettings(Model, UpdateableMixin):
+    """
+    Class representing the output settings for a HELIOS++ survey.
+
+    :param format: The output format to use for writing the point clouds.
+    :param split_by_channel: Whether to split the output point clouds by channel.
+    :param output_dir: The output directory to write the point clouds to.
+    :param write_waveform: Whether to write the waveform data for the points.
+    :param write_pulse: Whether to write the pulse data for the points.
+    :param las_scale: The scale to use for writing LAS files. Only used if the output format is set to LAS or LAZ.
+    :type format: OutputFormat
+    :type split_by_channel: bool
+    :type output_dir: CreatedDirectory
+    :type write_waveform: bool
+    :type write_pulse: bool
+    :type las_scale: Length
+    """
     format: OutputFormat = OutputFormat.NPY
     split_by_channel: bool = False
     output_dir: CreatedDirectory = "output"
@@ -104,6 +197,17 @@ class OutputSettings(Model, UpdateableMixin):
 
 
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
+    """Class representing the settings for full waveform processing.
+    
+    :param bin_size: The size of the bins to use for full waveform processing in seconds. Default is 0.25 ns.
+    :param beam_sample_quality: The beam sample quality to use for full waveform processing. Default is 3.
+    :param win_size: The size of the window to use for full waveform processing in seconds. Default is 1.0 ns.
+    :param max_fullwave_range: The maximum range to use for full waveform processing in seconds. Default is 0.0 ns (no maximum range).
+    :type bin_size: TimeInterval
+    :type beam_sample_quality: PositiveInt
+    :type win_size: TimeInterval
+    :type max_fullwave_range: TimeInterval
+    """
     bin_size: TimeInterval = 0.25 * units.ns
     beam_sample_quality: PositiveInt = 3
     win_size: TimeInterval = 1.0 * units.ns
@@ -236,7 +340,7 @@ def compose_output_settings(
 
 
 def apply_log_writing(execution_settings: ExecutionSettings):
-    """Apply the chosen log writing mode to c++ part"""
+    # Apply the chosen log writing mode to c++ part
     config: dict[str, str] = {}
 
     if execution_settings.log_file_only or execution_settings.log_file:

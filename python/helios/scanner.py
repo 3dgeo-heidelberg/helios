@@ -23,6 +23,37 @@ class ScannerSettingsBase(Model, UpdateableMixin, cpp_class=_helios.ScannerSetti
 
 
 class ScannerSettings(ScannerSettingsBase):
+    """
+    Class representing the settings for a scanner.
+    These can be set for each leg of a survey.
+
+    :param is_active: Whether the scanner is active during the leg. If false, no points will be recorded during this leg.
+    :param head_rotation: The rotation speed of the scanner head in radians per second. For scanners with rotating head.
+    :param rotation_start_angle: The start angle of the scanner head rotation in radians. For scanners with rotating head.
+    :param rotation_stop_angle: The stop angle of the scanner head rotation in radians. For scanners with rotating head.
+    :param pulse_frequency: The pulse frequency of the scanner in Hz.
+    :param scan_angle: The scan angle of the scanner in radians. May be ignored for some scanner types (e.g. optics = risley).
+    :param min_vertical_angle: The minimum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
+    :param max_vertical_angle: The maximum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
+    :param scan_frequency: The scan frequency of the scanner in Hz.
+    :param beam_divergence_angle: The beam divergence angle of the scanner in radians.
+    :param trajectory_time_interval: The time interval in seconds at which the trajectory points are written.
+    :param vertical_resolution: The vertical resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
+    :param horizontal_resolution: The horizontal resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
+    :type is_active: bool
+    :type head_rotation: AngleVelocity
+    :type rotation_start_angle: Angle
+    :type rotation_stop_angle: Angle
+    :type pulse_frequency: Frequency
+    :type scan_angle: Angle
+    :type min_vertical_angle: Angle
+    :type max_vertical_angle: Angle
+    :type scan_frequency: Frequency
+    :type beam_divergence_angle: Angle
+    :type trajectory_time_interval: TimeInterval
+    :type vertical_resolution: Angle
+    :type horizontal_resolution: Angle
+    """
     is_active: bool = True
     head_rotation: AngleVelocity = 0
     rotation_start_angle: Angle = 0
@@ -70,7 +101,13 @@ class Scanner(Model, cpp_class=_helios.Scanner):
     @classonlymethod
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
-        """Classmethod to load a scanner from an XML file. The XML file should conform to the schema defined in "xsd/scanner.xsd". The scanner_id parameter can be used to specify which scanner to load if the XML file contains multiple scanners. The method validates the XML file against the schema before loading the scanner."""
+        """Classmethod to load a scanner from an XML file. The XML file should conform to the schema defined in "xsd/scanner.xsd". The scanner_id parameter can be used to specify which scanner to load if the XML file contains multiple scanners. The method validates the XML file against the schema before loading the scanner.
+        
+        :param scanner_file: The path to the XML file containing the scanner definition.
+        :param scanner_id: The ID of the scanner to load from the XML file.
+        :type scanner_file: AssetPath
+        :type scanner_id: str
+        """
 
         # Validate the XML
         validate_xml_file(scanner_file, "xsd/scanner.xsd")
@@ -129,7 +166,11 @@ SCANNER_REGISTRY: dict[str, tuple[str, str]] = {
 
 
 def list_scanners() -> list[str]:
-    """List all predefined scanner names."""
+    """List all predefined scanner names.
+    
+    :return: A list of all predefined scanner names that can be used to create scanners with `scanner_from_name()`.
+    :rtype: list[str]
+    """
     return list(SCANNER_REGISTRY.keys())
 
 

@@ -80,21 +80,28 @@ def load_traj_csv(
     The parameters define how the csv is parsed.
     All the ..Index parameters define the column order of the csv.
 
-
-    Args:
-        csv: File path to csv to load.
-        tIndex: Column number of time field
-        xIndex: Column number of x coordinates
-        yIndex: Column number of y coordinates
-        zIndex: Column number of z coordinates
-        rollIndex: Column number of roll
-        pitchIndex: Column number of pitch
-        yawIndex: Column number of yaw
-        trajectory_separator: Char which separates columns.
-
-       Returns:
-        A structured numpy array with fields 't', 'x', 'y', 'z', 'roll', 'pitch', 'yaw'.
-        'roll', 'pitch', and 'yaw' are in radians
+    :param csv: File path to csv to load.
+    :param tIndex: Column number of time field
+    :param xIndex: Column number of x coordinates
+    :param yIndex: Column number of y coordinates
+    :param zIndex: Column number of z coordinates
+    :param rollIndex: Column number of roll
+    :param pitchIndex: Column number of pitch
+    :param yawIndex: Column number of yaw
+    :param trajectory_separator: Char which separates columns.
+    :param rpy_in_radians: Whether roll, pitch, and yaw in the csv are in radians. If false, they are assumed to be in degrees and will be converted to radians.
+    :type csv: AssetPath
+    :type tIndex: int
+    :type xIndex: int
+    :type yIndex: int
+    :type zIndex: int
+    :type rollIndex: int
+    :type pitchIndex: int
+    :type yawIndex: int
+    :type trajectory_separator: str
+    :type rpy_in_radians: bool
+    
+    :return: A structured numpy array with fields 't', 'x', 'y', 'z', 'roll', 'pitch', 'yaw'. 'roll', 'pitch', and 'yaw' are in radians.
     """
 
     indices = {
@@ -127,6 +134,12 @@ class PlatformSettingsBase(
 
 
 class TrajectorySettings(PlatformSettingsBase, cpp_class=_helios.TrajectorySettings):
+    """Class representing the settings for a trajectory. These can be set for each leg of a survey and are applied to the trajectory loaded in the `Platform` instance
+    
+    :param start_time: The time in seconds at which the trajectory starts. This is used to select a subset of the trajectory to be used for the leg by GPS time.
+    :param end_time: The time in seconds at which the trajectory ends. This is used to select a subset of the trajectory to be used for the leg by GPS time.
+    :param teleport_to_start: Whether to teleport to the start of the trajectory at the beginning of the leg. If false, the platform will start at the position of the end of the previous leg. If true, the platform will be teleported to the start of the trajectory at the beginning of the leg.
+    """
     start_time: float = 0
     end_time: float = 0
     teleport_to_start: bool = False
@@ -140,6 +153,9 @@ class PlatformSettings(PlatformSettingsBase):
     def do_force_on_ground(self, scene: StaticScene):
         """
         Move waypoint z coordinate to ground level
+
+        :param scene: The scene to query for the ground level.
+        :type scene: StaticScene
         """
 
         ground_point = scene._cpp_object.ground_point_at((self.x, self.y, self.z))
@@ -189,6 +205,7 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         is_roll_pitch_yaw_in_radians: bool = True,
     ):
         """Load a platform from an XML file with interpolation enabled.
+
         Args:
             trajectory: 1-D structured NumPy array of shape (n,).
             platform_file: File path to platform XML file.
@@ -238,13 +255,24 @@ PLATFORM_REGISTRY: dict[str, tuple[str, str]] = {
 
 
 def list_platforms() -> list[str]:
-    """List all predefined platform names."""
+    """List all predefined platform names.
+    
+    :return: A list of all predefined platform names that can be used to create platforms with `platform_from_name()`.
+    :rtype: list[str]
+    """
     return list(PLATFORM_REGISTRY.keys())
 
 
 @validate_call
 def platform_from_name(platform_name: str) -> Platform:
-    """Create a predefined platform by its string name."""
+    """Create a predefined platform by its string name.
+    
+    :param platform_name: The name of the predefined platform to create. Use `list_platforms()` to see all available platforms.
+    :type platform_name: str
+
+    :return: The created platform instance.
+    :rtype: Platform
+    """
     try:
         platform_file, platform_id = PLATFORM_REGISTRY[platform_name]
     except KeyError as exc:
