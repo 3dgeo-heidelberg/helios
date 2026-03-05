@@ -23,9 +23,9 @@ The following software is required for installation of HELIOS++:
 
 HELIOS++ can then be installed with:
 
-```bash
-conda install -c conda-forge helios
-```
+.. code-block:: bash
+    
+    conda install -c conda-forge helios
 
 .. _conda package manager: https://docs.conda.io/en/latest/
 .. _mamba: https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html
@@ -46,18 +46,18 @@ Development installation
 
 If you intend to contribute to the development of HELIOS++, we recommend a locally compiled version using these instructions:
 
-```bash
-git clone https://github.com/3dgeo-heidelberg/helios.git
-cd helios
-conda env create -f environment-dev.yml
-conda activate helios-dev
+.. code-block:: bash
 
-# On Linux, the following line is recommended, to go with a Conda-provided compiler.
-# We had issues with incompatible system compilers before.
-conda install -c conda-forge gcc gxx
+    git clone https://github.com/3dgeo-heidelberg/helios.git
+    cd helios
+    conda env create -f environment-dev.yml
+    conda activate helios-dev
 
-python -m pip install --no-build-isolation --config-settings=build-dir="build" -v -e .
-```
+    # On Linux, the following line is recommended, to go with a Conda-provided compiler.
+    # We had issues with incompatible system compilers before.
+    conda install -c conda-forge gcc gxx
+
+    python -m pip install --no-build-isolation --config-settings=build-dir="build" -v -e .
 
 This will install the HELIOS++ Python package in editable mode and expose the
 CMake build directory used as `build` (adapt as needed). Additional CMake variables
