@@ -352,6 +352,7 @@ The orientation of the mesh can be specified with the ``up`` parameter within a 
 However, some software (e.g., Blender) exports meshes with the y-axis pointing upwards per default, so here we would specify value="y".
 
 .. code-block:: xml
+
     <param type="string" key="up" value="y" /> <!-- the default is 'z', but if it is not set explicitly, we will print an info message -->
 
 Within the obj file, the line mtllib file.mat links to a material file. Multiple materials can be defined in one material file.
@@ -500,6 +501,7 @@ Scale
 This filter scales the geometry by a given factor.
 
 .. code-block:: xml
+    
     <filter type="scale">
         <param type="double" key="scale" value="0.5" />
     </filter>
@@ -509,4 +511,26 @@ This filter scales the geometry by a given factor.
 Materials
 ^^^^^^^^^
 
+HELIOS++ reads material properties from `MTL material library files`_. Following the standard, these files and their materials are linked to mesh faces using the ``mtllib`` and ``usemtl`` statements in the .OBJ file.
 
+For ``xyzloader``, ``geotiffloader``, and ``detailedVoxels``, materials can be specified in the XML file for each scenepart. The ``matfile`` parameter links to a specific material file, similar to the ``mtllib`` line in .obj files.
+The ``matname`` parameter specifies a specific material (here: "leaves") in the material file. It is the equivalent to the ``usemtl`` line in .obj files:
+
+.. code-block:: xml
+
+    <param type="string" key="matfile" value="data/sceneparts/arbaro/tree.mtl" />
+    <param type="string" key="matname" value="leaves" />
+
+Furthermore, voxel material also supports uniform randomization. For this, a number of random materials and a random range has to be specified:
+
+.. code-block:: xml
+
+    <param type="integer" key="randomMaterials" value="5" />
+    <param type="double" key="randomRange" value="0.1" />
+
+Read more about materials including custom HELIOS parameters on the page :doc:`Full waveform and intensity modelling <../intensity_fwf>`.
+
+.. _MTL material library files: http://paulbourke.net/dataformats/mtl/
+
+
+.. ToDO: Decide if platform and scanner definitions should go here or somewhere else
