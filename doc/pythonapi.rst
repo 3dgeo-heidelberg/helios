@@ -94,3 +94,10 @@ Settings
 
 .. autoclass:: helios.KDTreeFactoryType
    :members:
+
+Utils
+------
+
+.. autofunction:: helios.add_asset_directory
+
+.. autofunction:: helios.combine_parameters
