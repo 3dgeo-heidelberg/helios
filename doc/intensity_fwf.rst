@@ -59,12 +59,12 @@ The subrays are distributed evenly around the circle. The total number of subray
 For example, with ``beamSampleQuality = 3``, the subray distribution appears as follows (color represents relative amplitude, see next section):
 
 .. figure:: /img/polar_subsampling_grid.png
-
    :alt: Subray distribution for beamSampleQuality = 3
    :width: 60%
    :align: center
 
-   Subray layout for ``beamSampleQuality = 3``. Colors indicate relative amplitude.
+   Subray distribution.
+
 
 .. _amplitude_evaluation:
 
@@ -78,7 +78,7 @@ The received amplitude is derived from the LiDAR equation, considering the follo
 1. **Transmitted energy**  
    The energy of a subray at a radial offset :math:`r` from the central beam is determined by the beam profile. Key parameters are:
 
-   - :math:`w_0` ... beam waist radius (see :doc:`Scanners <Scanners>`),
+   - :math:`w_0` ... beam waist radius (see :doc:`Scanners and platforms <scanner_platforms>`),
    - :math:`\lambda` ... wavelength,
    - :math:`r` ... radial offset from center beam,
    - :math:`R` ... target range,
@@ -131,7 +131,6 @@ This function produces the characteristic pulse shape used in the simulation (Ca
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
-   :width: 60%
    :align: center
 
    Time-domain pulse shape :math:`P(t)` for a typical LiDAR pulse.
@@ -151,7 +150,7 @@ The local maxima of the waveform are indicated in the graphs, along with windows
 
 .. figure:: img/onevpeak.png
    :alt: Full waveform example with one peak
-   :width: 60%
+   :width: 100%
    :align: center
 
    Example of a full waveform with one peak. The central pulse and six subrays are cast at the same time, but due to different ranges and incidence angles, they return at different times and with different amplitudes. The resulting waveform is the sum of these returns, and the maximum is detected as the valid return.
@@ -162,7 +161,7 @@ In comparison, the result without full waveform and evaluation of only the centr
 
 .. figure:: img/threevpeaks.png
    :alt: Full waveform example with three peaks
-   :width: 60%
+   :width: 100%
    :align: center
 
    Example of a full waveform with three peaks. The subrays are returned at more distinct times, leading to a waveform with three local maxima. The two local maxima in the center are summarised to one return due to the window size.
@@ -260,7 +259,12 @@ Currently, for its calculation HELIOS++ takes the following factors into account
 Material files
 --------------
 
-HELIOS++ reads material properties from `MTL material library files`_. Following the standard, these files and their materials are linked to mesh faces using the ``mtllib`` and ``usemtl`` statements in the .OBJ file.
+HELIOS++ supports two ways of defining materials:
+
+1. Reading material properties from `MTL material library files`_. Following the standard, these files and their materials are linked to mesh faces using the ``mtllib`` and ``usemtl`` statements in the .OBJ file.
+2. Modifying materials using the ``Material`` interface of the Python API.
+
+.. Todo: Link to the respective section here
 
 The default material, in case no material file is provided, looks like this:
 
@@ -275,22 +279,8 @@ The default material, in case no material file is provided, looks like this:
     helios_reflectance 50
     helios_isGround true
 
-For ``xyzloader``, ``geotiffloader``, and ``detailedVoxels``, materials can be specified in the XML file for each scenepart. The ``matfile`` parameter links to a specific material file, similar to the ``mtllib`` line in .obj files.
-The ``matname`` parameter specifies a specific material (here: "leaves") in the material file. It is the equivalent to the ``usemtl`` line in .obj files:
-
-.. code-block:: xml
-
-    <param type="string" key="matfile" value="data/sceneparts/arbaro/tree.mtl" />
-    <param type="string" key="matname" value="leaves" />
-
-Furthermore, voxel material also supports uniform randomization. For this, a number of random materials and a random range has to be specified:
-
-.. code-block:: xml
-
-    <param type="integer" key="randomMaterials" value="5" />
-    <param type="double" key="randomRange" value="0.1" />
-
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/
+
 
 HELIOS-specific parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
