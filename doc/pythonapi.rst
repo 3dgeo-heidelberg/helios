@@ -101,3 +101,5 @@ Utils
 .. autofunction:: helios.add_asset_directory
 
 .. autofunction:: helios.combine_parameters
+
+.. autofunction:: helios.utils.set_rng_seed
