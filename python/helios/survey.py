@@ -66,7 +66,6 @@ class Survey(Model, cpp_class=_helios.Survey):
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
-    trajectory: Optional[NDArray] = None
 
     @validate_call
     def run(
