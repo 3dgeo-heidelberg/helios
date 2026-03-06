@@ -10,6 +10,9 @@ see the repository ``README.md``.
 
 .. _3DGeo Research Group: https://uni-heidelberg.de/3dgeo
 
+Official website: https://uni-heidelberg.de/helios
+
+
 Installation
 ------------
 
@@ -24,7 +27,7 @@ The following software is required for installation of HELIOS++:
 HELIOS++ can then be installed with:
 
 .. code-block:: bash
-    
+
     conda install -c conda-forge helios
 
 .. _conda package manager: https://docs.conda.io/en/latest/
@@ -61,5 +64,27 @@ If you intend to contribute to the development of HELIOS++, we recommend a local
 
 This will install the HELIOS++ Python package in editable mode and expose the
 CMake build directory used as `build` (adapt as needed). Additional CMake variables
-can be passed with e.g. `--config-settings=cmake.define.BUILD_TESTING="ON"`.
+can be passed with e.g. ``--config-settings=cmake.define.BUILD_TESTING="ON"``.
 
+How to cite HELIOS++
+--------------------
+
+If you use HELIOS++ in your research, please cite
+
+  Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2022): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. Remote Sensing of Environment, 269, https://doi.org/10.1016/j.rse.2021.112772.
+
+BibTeX:
+
+.. code-block:: bibtex
+
+    @article{heliosPlusPlus,
+    title = {Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning},
+    journal = {Remote Sensing of Environment},
+    year = {2022},
+    volume = {269},
+    issn = {0034-4257},
+    doi = {https://doi.org/10.1016/j.rse.2021.112772},
+    url = {https://www.sciencedirect.com/science/article/pii/S0034425721004922},
+    author = {Lukas Winiwarter and Alberto Manuel {Esmorís Pena} and Hannah Weiser and Katharina Anders and Jorge {Martínez Sánchez} and Mark Searle and Bernhard Höfle},
+    keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Vegetation modelling, Diffuse media}
+    } 
