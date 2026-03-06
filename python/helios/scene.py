@@ -401,7 +401,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         
         :param xyz_file: The path to the XYZ file to load the scene part from. Can potentially contain wildcards ('*').
         :param voxel_size: The voxel size to use for voxelizing the XYZ point cloud so that it can be converted to a 3D model with surfaces that can be scanned.
-        :param separator: The separator used in the XYZ file.
+        :param separator: The separator used in the XYZ file. If not provided, the separator will be automatically detected.
         :param max_color_value: The maximum color value used for normalizing RGB values in the XYZ file.
         :param default_normal: The default normal to use for points in the XYZ file that do not have a normal.
         :param sparse: Whether to use a sparse voxel grid for the conversion of the XYZ point cloud to a 3D model. If false, a dense voxel grid will be used, which can lead to higher memory usage.
