@@ -564,3 +564,217 @@ getMaterialsMap(const std::shared_ptr<ScenePart>& part)
   }
   return out;
 }
+
+std::shared_ptr<ScenePart>
+readNumpyScenePart(const double* data,
+                   std::size_t nrows,
+                   std::size_t ncols,
+                   std::ptrdiff_t rowStrideElems,
+                   std::ptrdiff_t colStrideElems,
+                   std::vector<std::string> assetsPath,
+                   double voxelSize,
+                   double maxColorValue,
+                   glm::dvec3 defaultNormal,
+                   bool sparse,
+                   bool estimate_normals,
+                   int normalXIndex,
+                   int normalYIndex,
+                   int normalZIndex,
+                   int rgbRIndex,
+                   int rgbGIndex,
+                   int rgbBIndex,
+                   bool snapNeighborNormal)
+{
+  XYZPointCloudFileLoader loader;
+
+  if (!data)
+    throw std::runtime_error("rows data is null");
+  if (ncols < 3)
+    throw std::runtime_error("rows must have at least 3 columns: x,y,z");
+  const std::size_t N = nrows;
+  const std::size_t C = ncols;
+
+  loader.setAssetsDir(assetsPath);
+  loader.params["voxelSize"] = voxelSize;
+  loader.params["sparse"] = sparse;
+
+  const double effectiveMaxColorValue =
+    (maxColorValue != 0.0) ? maxColorValue : 255.0;
+  loader.params["maxColorValue"] = effectiveMaxColorValue;
+
+  const bool hasDefaultNormal =
+    defaultNormal.x != std::numeric_limits<double>::max() &&
+    defaultNormal.y != std::numeric_limits<double>::max() &&
+    defaultNormal.z != std::numeric_limits<double>::max();
+  if (hasDefaultNormal) {
+    loader.params["defaultNormal"] = defaultNormal;
+    loader.defaultNormal = glm::normalize(defaultNormal);
+    loader.assignDefaultNormal = true;
+  }
+  if (normalXIndex != 3) {
+    loader.params["normalXIndex"] = normalXIndex;
+    loader.params["normalYIndex"] = normalYIndex;
+    loader.params["normalZIndex"] = normalZIndex;
+  }
+
+  if (rgbRIndex != 6) {
+    loader.params["rgbRIndex"] = rgbRIndex;
+    loader.params["rgbGIndex"] = rgbGIndex;
+    loader.params["rgbBIndex"] = rgbBIndex;
+  }
+  if (snapNeighborNormal) {
+    loader.params["snapNeighborNormal"] = true;
+    loader.snapNeighborNormal = true;
+  }
+
+  auto at = [&](std::size_t i, std::size_t j) -> double {
+    return *(data + i * rowStrideElems + j * colStrideElems);
+  };
+
+  loader.primsOut = new ScenePart();
+  std::shared_ptr<Material> mat = std::make_shared<Material>();
+  mat->name = "default";
+  loader.materials[mat->name] = mat;
+
+  loader.minX = loader.minY = loader.minZ = std::numeric_limits<double>::max();
+  loader.maxX = loader.maxY = loader.maxZ =
+    std::numeric_limits<double>::lowest();
+
+  for (std::size_t i = 0; i < N; ++i) {
+    const double x = at(i, 0);
+    const double y = at(i, 1);
+    const double z = at(i, 2);
+
+    loader.minX = std::min(loader.minX, x);
+    loader.minY = std::min(loader.minY, y);
+    loader.minZ = std::min(loader.minZ, z);
+
+    loader.maxX = std::max(loader.maxX, x);
+    loader.maxY = std::max(loader.maxY, y);
+    loader.maxZ = std::max(loader.maxZ, z);
+  }
+
+  double halfVoxelSize = voxelSize * 0.5;
+  int estimateNormalsForLoader = estimate_normals ? 1 : 0;
+  loader.prepareVoxelsGrid(estimateNormalsForLoader, halfVoxelSize);
+
+  const int nxI = normalXIndex;
+  const int nyI = normalYIndex;
+  const int nzI = normalZIndex;
+
+  const int rI = rgbRIndex;
+  const int gI = rgbGIndex;
+  const int bI = rgbBIndex;
+  const bool rgbInBounds =
+    (rI >= 0 && gI >= 0 && bI >= 0 && rI < C && gI < C && bI < C);
+  const bool nInBounds =
+    (nxI >= 0 && nyI >= 0 && nzI >= 0 && nxI < C && nyI < C && nzI < C);
+
+  std::vector<std::size_t> idx_of_row;
+  if (estimate_normals) {
+    idx_of_row.resize(N);
+    std::size_t I, J, K;
+    for (std::size_t i = 0; i < N; ++i) {
+      idx_of_row[i] =
+        loader.indexFromCoordinates(at(i, 0), at(i, 1), at(i, 2), I, J, K);
+    }
+  }
+
+  for (std::size_t i = 0; i < N; ++i) {
+    const double x = at(i, 0);
+    const double y = at(i, 1);
+    const double z = at(i, 2);
+
+    double rr = 0.0, gg = 0.0, bb = 0.0;
+    if (rgbInBounds) {
+      rr = at(i, rI) / effectiveMaxColorValue;
+      gg = at(i, gI) / effectiveMaxColorValue;
+      bb = at(i, bI) / effectiveMaxColorValue;
+    }
+
+    double xnorm = 0.0, ynorm = 0.0, znorm = 0.0;
+    if (!estimate_normals) {
+      if (nInBounds) {
+        xnorm = at(i, nxI);
+        ynorm = at(i, nyI);
+        znorm = at(i, nzI);
+        if (!loader.correctNormal(xnorm, ynorm, znorm))
+          continue;
+      } else if (hasDefaultNormal) {
+        xnorm = loader.defaultNormal.x;
+        ynorm = loader.defaultNormal.y;
+        znorm = loader.defaultNormal.z;
+      }
+    }
+    loader.digestVoxel(estimateNormalsForLoader,
+                       halfVoxelSize,
+                       x,
+                       y,
+                       z,
+                       rr,
+                       gg,
+                       bb,
+                       xnorm,
+                       ynorm,
+                       znorm);
+  }
+
+  loader.warnAboutPotentialErrors("numpy");
+  loader.postProcess(mat->name, estimateNormalsForLoader);
+  if (estimate_normals) {
+
+    std::size_t startIdx = 0;
+    while (startIdx < loader.maxNVoxels) {
+      std::size_t pointsCount = 0;
+      std::size_t endIdx = startIdx;
+
+      for (; endIdx < loader.maxNVoxels; ++endIdx) {
+        if (!loader.voxelGrid->hasVoxel(endIdx))
+          continue;
+
+        const std::size_t voxelNumPoints =
+          loader.voxelGrid->getVoxel(endIdx)->numPoints;
+        if (pointsCount + voxelNumPoints > loader.batchSize) {
+          if (pointsCount > 0)
+            break;
+
+          loader.voxelGrid->setMatrix(endIdx,
+                                      new arma::Mat<double>(3, voxelNumPoints));
+          loader.voxelGrid->setCursor(endIdx, 0);
+          pointsCount = voxelNumPoints;
+          ++endIdx;
+          break;
+        }
+
+        pointsCount += voxelNumPoints;
+        loader.voxelGrid->setMatrix(endIdx,
+                                    new arma::Mat<double>(3, voxelNumPoints));
+        loader.voxelGrid->setCursor(endIdx, 0);
+      }
+      if (pointsCount == 0 || endIdx == startIdx)
+        break;
+
+      for (std::size_t row = 0; row < N; ++row) {
+        const std::size_t IDX = idx_of_row[row];
+        if (IDX < startIdx || IDX >= endIdx)
+          continue;
+        loader.voxelGrid->setNextMatrixCol(
+          IDX, at(row, 0), at(row, 1), at(row, 2));
+      }
+
+      loader._estimateNormals(startIdx, endIdx);
+      loader.voxelGrid->deleteMatrices();
+      startIdx = endIdx;
+    }
+  }
+
+  loader.voxelsGridToScenePart();
+  loader.loadMaterial();
+
+  std::shared_ptr<ScenePart> sp(loader.primsOut);
+  for (auto p : sp->mPrimitives)
+    p->part = sp;
+
+  loader.primsOut = nullptr;
+  return sp;
+}

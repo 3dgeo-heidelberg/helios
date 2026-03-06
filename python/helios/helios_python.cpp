@@ -3221,5 +3221,57 @@ PYBIND11_MODULE(_helios, m)
   m.def("apply_material_to_primitives_range", &applyMaterialToPrimitivesRange);
   m.def("change_material_instance", &changeMaterialInstance);
   m.def("get_materials_map", &getMaterialsMap);
+  m.def("read_numpy_scene_part",
+        [](py::array rows,
+           std::vector<std::string> assetsPath,
+           double voxelSize,
+           double maxColorValue,
+           glm::dvec3 defaultNormal,
+           bool sparse,
+           bool estimate_normals,
+           int normalXIndex,
+           int normalYIndex,
+           int normalZIndex,
+           int rgbRIndex,
+           int rgbGIndex,
+           int rgbBIndex,
+           bool snapNeighborNormal) {
+          if (rows.ndim() != 2)
+            throw py::value_error("rows must be 2D (N x C)");
+
+          py::array_t<double, py::array::c_style | py::array::forcecast> arr(
+            rows);
+          py::buffer_info info = arr.request();
+
+          const std::size_t nrows = static_cast<std::size_t>(info.shape[0]);
+          const std::size_t ncols = static_cast<std::size_t>(info.shape[1]);
+          if (ncols < 3)
+            throw py::value_error("rows must have >= 3 columns");
+
+          const auto* data = static_cast<const double*>(info.ptr);
+          const std::ptrdiff_t rowStrideElems =
+            static_cast<std::ptrdiff_t>(info.strides[0] / sizeof(double));
+          const std::ptrdiff_t colStrideElems =
+            static_cast<std::ptrdiff_t>(info.strides[1] / sizeof(double));
+
+          return readNumpyScenePart(data,
+                                    nrows,
+                                    ncols,
+                                    rowStrideElems,
+                                    colStrideElems,
+                                    std::move(assetsPath),
+                                    voxelSize,
+                                    maxColorValue,
+                                    defaultNormal,
+                                    sparse,
+                                    estimate_normals,
+                                    normalXIndex,
+                                    normalYIndex,
+                                    normalZIndex,
+                                    rgbRIndex,
+                                    rgbGIndex,
+                                    rgbBIndex,
+                                    snapNeighborNormal);
+        });
 }
 }

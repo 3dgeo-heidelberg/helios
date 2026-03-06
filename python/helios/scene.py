@@ -8,6 +8,7 @@ from helios.utils import (
     get_asset_directories,
     detect_separator,
     is_xml_loaded,
+    _validate_points_array_and_get_indices,
 )
 
 from helios.validation import (
@@ -390,6 +391,49 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             intersection_argument if intersection_argument is not None else 0.0,
             random_shift,
             ladlut_path if ladlut_path is not None else "",
+        )
+
+        return cls._from_cpp(_cpp_part)
+
+    @classonlymethod
+    @validate_call
+    def from_numpy_array(
+        cls,
+        points: NDArray,
+        voxel_size: PositiveFloat,
+        *,
+        normals_file_columns: Optional[list[NonNegativeInt]] = None,
+        rgb_file_columns: Optional[list[NonNegativeInt]] = None,
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: R3Vector = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
+        sparse: bool = True,
+        estimate_normals: bool = False,
+        snap_neighbor_normal: bool = False,
+    ):
+        """Load the scene part from a numpy array."""
+
+        ncols, rcols = _validate_points_array_and_get_indices(
+            points,
+            normals_file_columns=normals_file_columns,
+            rgb_file_columns=rgb_file_columns,
+        )
+        _cpp_part = _helios.read_numpy_scene_part(
+            points,
+            [str(p) for p in get_asset_directories()],
+            voxel_size,
+            max_color_value,
+            default_normal,
+            sparse,
+            estimate_normals,
+            ncols[0],
+            ncols[1],
+            ncols[2],
+            rcols[0],
+            rcols[1],
+            rcols[2],
+            snap_neighbor_normal,
         )
 
         return cls._from_cpp(_cpp_part)

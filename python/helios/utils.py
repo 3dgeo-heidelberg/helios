@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
+from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING, Optional, Tuple
 from numpydantic import NDArray, Shape
 from numpy.lib import recfunctions as rfn
 import functools
@@ -348,6 +348,61 @@ def _prepare_trajectory_array(trajectory: np.ndarray) -> np.ndarray:
             )
 
     return trajectory
+
+
+def _parse_triplet(
+    name: str, ncols: int, cols: Optional[Sequence[int]]
+) -> Tuple[int, int, int]:
+    if cols is None:
+        return (-1, -1, -1)
+    if len(cols) != 3:
+        raise ValueError(f"`{name}` must be 3 indices or None. Got: {cols}")
+    t = (int(cols[0]), int(cols[1]), int(cols[2]))
+    if any(i < 0 for i in t):
+        raise ValueError(f"`{name}` indices must be >= 0. Got: {t}")
+    if any(i >= ncols for i in t):
+        raise ValueError(f"`{name}` indices out of bounds for C={ncols}. Got: {t}")
+    if len(set(t)) != 3:
+        raise ValueError(f"`{name}` indices must be distinct. Got: {t}")
+    if set(t) & {0, 1, 2}:
+        raise ValueError(f"`{name}` must not overlap xyz columns 0,1,2. Got: {t}")
+    return t
+
+
+def _validate_points_array_and_get_indices(
+    points: np.ndarray,
+    *,
+    normals_file_columns: Optional[Sequence[int]],
+    rgb_file_columns: Optional[Sequence[int]],
+) -> tuple[tuple[int, int, int], tuple[int, int, int]]:
+    """Validate the points array and extract the indices for position, normals, and RGB columns."""
+    if not isinstance(points, np.ndarray):
+        raise TypeError(f"Points must be a NumPy ndarray. Got {type(points)!r}.")
+    if points.ndim != 2:
+        raise ValueError(
+            f"Points array must be 2-dimensional. Got {points.ndim} dimensions."
+        )
+    if points.shape[1] < 3:
+        raise ValueError(
+            f"Points array must have at least 3 columns for x, y, z coordinates. Got {points.shape[1]} columns."
+        )
+
+    _, ncols = points.shape
+    normals_indices = _parse_triplet(
+        "normals_file_columns", ncols, normals_file_columns
+    )
+    rgb_indices = _parse_triplet("rgb_file_columns", ncols, rgb_file_columns)
+
+    if (
+        normals_indices != (-1, -1, -1)
+        and rgb_indices != (-1, -1, -1)
+        and (set(normals_indices) & set(rgb_indices))
+    ):
+        raise ValueError(
+            f"Normals and RGB columns must not overlap. normals={normals_indices}, rgb={rgb_indices}"
+        )
+
+    return normals_indices, rgb_indices
 
 
 def is_finalized(obj) -> bool:
