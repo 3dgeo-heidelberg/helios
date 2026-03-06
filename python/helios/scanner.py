@@ -6,6 +6,7 @@ from helios.validation import (
     Frequency,
     Length,
     Model,
+    ScanFrequency,
     units,
     UpdateableMixin,
     TimeInterval,
@@ -31,7 +32,7 @@ class ScannerSettings(ScannerSettingsBase):
     scan_angle: Angle = 0
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
-    scan_frequency: Frequency = 200
+    scan_frequency: ScanFrequency = 200
     beam_divergence_angle: Angle = 0.003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Angle = 0
@@ -80,6 +81,12 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         )
         scanner = cls._from_cpp(_cpp_scanner)
         scanner._is_loaded_from_xml = True
+        scanner._disable_yaml_serialization_for_descendants()
+        scanner._set_constructor_provenance(
+            "from_xml",
+            scanner_file=scanner_file,
+            scanner_id=scanner_id,
+        )
         return scanner
 
 

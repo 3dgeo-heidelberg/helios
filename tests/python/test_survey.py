@@ -101,6 +101,40 @@ def test_add_leg_parameters():
         survey.add_leg(foobar=12)
 
 
+def test_add_leg_updates_provided_leg_with_explicit_settings(survey):
+    from helios.leg import Leg
+
+    existing_leg = Leg(
+        platform_settings=PlatformSettings(x=1, y=2, z=3),
+        scanner_settings=ScannerSettings(pulse_frequency=100),
+        trajectory_settings=TrajectorySettings(
+            start_time=0, end_time=1, teleport_to_start=False
+        ),
+    )
+    platform_settings = PlatformSettings(x=11, y=22, z=33)
+    scanner_settings = ScannerSettings(pulse_frequency=777)
+    trajectory_settings = TrajectorySettings(
+        start_time=10, end_time=20, teleport_to_start=True
+    )
+
+    survey.add_leg(
+        leg=existing_leg,
+        platform_settings=platform_settings,
+        scanner_settings=scanner_settings,
+        trajectory_settings=trajectory_settings,
+    )
+
+    appended = survey.legs[-1]
+    assert appended is existing_leg
+    assert appended.platform_settings.x == 11
+    assert appended.platform_settings.y == 22
+    assert appended.platform_settings.z == 33
+    assert appended.scanner_settings.pulse_frequency == 777
+    assert appended.trajectory_settings.start_time == 10
+    assert appended.trajectory_settings.end_time == 20
+    assert appended.trajectory_settings.teleport_to_start is True
+
+
 def test_survey_run_numpy_output(survey):
     points, trajectory = survey.run(format=OutputFormat.NPY)
 

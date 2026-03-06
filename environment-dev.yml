@@ -20,8 +20,10 @@ dependencies:
   - numpydantic
   - pint
   - pip
+  - pyyaml
   - pybind11
   - pydantic
+  - jsonschema
   - python
   - scikit-build-core
   - setuptools_scm
