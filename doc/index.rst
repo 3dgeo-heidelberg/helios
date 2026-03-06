@@ -8,7 +8,9 @@ Home
    intro
    cli
    python
+   scanner_platforms
    intensity_fwf
+   error_randomness
    notebooks
    pythonapi
    cppapi
