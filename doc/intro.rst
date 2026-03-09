@@ -12,6 +12,7 @@ see the repository ``README.md``.
 
 Official website: https://uni-heidelberg.de/helios
 
+.. ToDo: Nice HELIOS figure here? 
 
 Installation
 ------------
