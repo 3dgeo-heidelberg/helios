@@ -8,7 +8,7 @@ Home
    intro
    cli
    python
-   scanner_platforms
+   scanners_platforms
    intensity_fwf
    error_randomness
    notebooks
