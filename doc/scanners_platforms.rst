@@ -2,14 +2,14 @@
 Scanners and platforms
 ======================
 
-HELIOS comes with a list of pre-defined scanners and platforms that are configured using XML files. These can be found in ``
+HELIOS comes with a list of pre-defined scanners and platforms that are configured using XML files. These can be found in `python\helios\data`.
 Users can also create their own scanners by definining them via XML files and providing the asset path where HELIOS can find them.
 They can then be selected by their unique ID at creation of the survey, either in the Python API or in the survey XML file.
 
 Scanner system definitions
 --------------------------
 
-Built-in scanners are defined in the two XML files `scanners_als.xml`` and `scanners_tls.xml` that are shipped with the Python package.
+Built-in scanners are defined in the two XML files ``scanners_als.xml`` and ``scanners_tls.xml`` that are shipped with the Python package.
 Here is an example definition for the RIEGL VUX-1UAV:
 
 
