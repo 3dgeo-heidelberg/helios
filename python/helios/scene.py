@@ -524,16 +524,19 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     ):
         """Load the scene part from a VOX file.
         
-        param vox_file: The path to the VOX file to load the scene part from.
-        param intersection_mode: The mode to use for calculating the intersection of rays with the voxels ['transmittive', 'fixed', 'scaled'].
-        param intersection_argument: Scaling factor; only used for intersection mode 'scaled'.
-        param random_shift: Whether to apply a random shift to the scaled cubes within the original voxel resolution; only used for intersection mode 'scaled'.
-        param ladlut_path: The path to the txt file with look-up-tables (LUTs) for custom leaf angle distributions (LADs). See `data/lut` for examples.
-        type vox_file: AssetPath
-        type intersection_mode: Literal["scaled", "fixed", "transmittive"]
-        type intersection_argument: Optional[float]
-        type random_shift: bool
-        type ladlut_path: Optional[str]
+        :param vox_file: The path to the VOX file to load the scene part from.
+        :param intersection_mode: The mode to use for calculating the intersection of rays with the voxels ['transmittive', 'fixed', 'scaled'].
+        :param intersection_argument: Scaling factor; only used for intersection mode 'scaled'.
+        :param random_shift: Whether to apply a random shift to the scaled cubes within the original voxel resolution; only used for intersection mode 'scaled'.
+        :param ladlut_path: The path to the txt file with look-up-tables (LUTs) for custom leaf angle distributions (LADs). See `data/lut` for examples.
+        :type vox_file: AssetPath
+        :type intersection_mode: Literal["scaled", "fixed", "transmittive"]
+        :type intersection_argument: Optional[float]
+        :type random_shift: bool
+        :type ladlut_path: Optional[str]
+
+        :return: The loaded scene part.
+        :rtype: ScenePart
         """
 
         if intersection_mode == "fixed" and intersection_argument is not None:
