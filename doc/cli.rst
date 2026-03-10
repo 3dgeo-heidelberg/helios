@@ -395,7 +395,7 @@ Several parameters can be added:
 
 .. ToDo: Insert example with many/all of these parameters specified.
 .. ToDo: Maybe insert the respective ray incidence angle figure.
-.. ToDo: Keep the explanation below of refer to notebook for the new API, where this is explained (since it is not XML-specific but general for HELIOS++)
+.. ToDo: Keep the explanation below or refer to notebook for the new API, where this is explained (since it is not XML-specific but general for HELIOS++)
 
 To obtain ray incidence angles for voxels for the calculation of return intensity, HELIOS++ uses normals. For point cloud based voxel models, there are different options to determine these normals:
 
@@ -439,8 +439,9 @@ The file (as of version 1.4.3) uses space as separator and has six header lines.
 - Line 4 gives the number of voxels in x, y and z direction (``#split``).
 - Line 5 defines the resolution (``#res``), the leaf angle distribution type (``#lad_type``) and the maximum plant area density value (``#max_pad``). It can furthermore contain additional information which are not read by HELIOS++.
 - Line 6 contains the column names. The following are relevant for HELIOS++:
-    - ``i``, ``j``, ``k``: The voxel indices in x, y and z direction.
-    - ``PADBVTotal`` is the plant area density (m2/m3). This parameter is used by HELIOS++ in the transmittive mode to calculate the return and in the scaled mode to determine the size of each voxel (see next sections)
+    
+  - ``i``, ``j``, ``k``: The voxel indices in x, y and z direction.
+  - ``PADBVTotal`` is the plant area density (m2/m3). This parameter is used by HELIOS++ in the transmittive mode to calculate the return and in the scaled mode to determine the size of each voxel (see next sections)
 
 More in-depth explanations are given in the `AMAPVox 1.0.1 user guide`_ (page 28) and in the AMAPVox GUI tooltips.
 
@@ -450,7 +451,12 @@ All following lines contain the voxel values with each line representing one vox
 
 There are three modes available for handling ray intersections with DetailedVoxels.
 
-.. ToDo: add here or somewhere else
+1. Transmittive mode (``<param type="string" key="intersectionMode" value="transmittive" />``)
+2. Scaled mode (``<param type="string" key="intersectionMode" value="scaled" />`` with a scaling factor defined like ``<param type="double" key="intersectionArgument" value="0.5" />``)
+3. Fixed mode (``<param type="string" key="intersectionMode" value="fixed" />``)
+
+
+For detailed information, refer to the Python documentation (Python API overview).
 
 
 Coordinate transformations
