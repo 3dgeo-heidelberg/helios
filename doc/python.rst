@@ -8,3 +8,5 @@ The following notebooks give an overview of the Python API of HELIOS++.
    quickstart
    scanners_and_platforms
    scene
+   survey
+   utils
