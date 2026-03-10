@@ -294,7 +294,12 @@ def test_interpolated_traj_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(
         Path("data") / "surveys" / "demo" / "als_interpolated_trajectory.xml",
         output_dir,
-        options=["--lasOutput", "--zipOutput", "--gpsStartTime", "2022-01-01 00:00:00+01:00"],
+        options=[
+            "--lasOutput",
+            "--zipOutput",
+            "--gpsStartTime",
+            "2022-01-01 00:00:00+01:00",
+        ],
     )
     eval_interpolated_traj(regression_data, dirname_exe)
 
