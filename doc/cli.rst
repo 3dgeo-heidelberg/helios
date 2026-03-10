@@ -538,5 +538,3 @@ Read more about materials including custom HELIOS parameters on the page :doc:`F
 
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/
 
-
-.. ToDO: Decide if platform and scanner definitions should go here or somewhere else

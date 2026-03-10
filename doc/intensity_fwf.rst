@@ -78,7 +78,7 @@ The received amplitude is derived from the LiDAR equation, considering the follo
 1. **Transmitted energy**  
    The energy of a subray at a radial offset :math:`r` from the central beam is determined by the beam profile. Key parameters are:
 
-   - :math:`w_0` ... beam waist radius (see :doc:`Scanners and platforms <scanner_platforms>`),
+   - :math:`w_0` ... beam waist radius (see :doc:`Scanners and platforms <scanners_platforms>`),
    - :math:`\lambda` ... wavelength,
    - :math:`r` ... radial offset from center beam,
    - :math:`R` ... target range,

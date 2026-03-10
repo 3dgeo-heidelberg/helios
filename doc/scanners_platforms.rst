@@ -2,7 +2,7 @@
 Scanners and platforms
 ======================
 
-HELIOS comes with a list of pre-defined scanners and platforms that are configured using XML files. These can be found in `python\helios\data`.
+HELIOS comes with a list of pre-defined scanners and platforms that are configured using XML files. These can be found in `python/helios/data`.
 Users can also create their own scanners by definining them via XML files and providing the asset path where HELIOS can find them.
 They can then be selected by their unique ID at creation of the survey, either in the Python API or in the survey XML file.
 
@@ -114,7 +114,7 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
     :align: center
     :alt: Default scanner orientation
 
-The rotation can be given in ``local`` mode by setting ``<beamOrigin [...] rotations="local">``, where axes are rotated. By default, axes are kept fixed in the ``global`` mode. Also see the :ref:`rotations` section for platforms.
+The rotation can be given in ``local`` mode by setting ``<beamOrigin [...] rotations="local">``, where axes are rotated. By default, axes are kept fixed in the ``global`` mode. Also see the :ref:`scanner-mount` section for platforms.
 
 The x, y, z coordinates of the position of the origin of the laser beam are set in the following coordinate system: 
 
@@ -178,7 +178,7 @@ Therefore, it does not support channels with different pulse frequencies.
         </channels>
     </scanner>
 
-The output setting ``split_by_channel`` (`--splitByChannel` CLI argument) can be used to make multi-channel scanners write their output point clouds to a different file per channel.
+The output setting ``split_by_channel`` (``--splitByChannel`` CLI argument) can be used to make multi-channel scanners write their output point clouds to a different file per channel.
 
 
 Platform definition
@@ -207,6 +207,7 @@ For more complex trajectories, interpolated trajectories can be used as demonstr
 
 .. ToDo: Link to notebooks here?
 
+.. _scanner-mount:
 Scanner mount
 ^^^^^^^^^^^^^^
 
