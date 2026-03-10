@@ -101,7 +101,7 @@ The received amplitude is derived from the LiDAR equation, considering the follo
    .. math::
       I = I_0 \exp\left(-\frac{2r^2}{w^2}\right)
 
-   This model follows Carlsson et al. (2001).
+   This model follows `Carlsson et al., 2001`_.
 
 2. **Material reflectance**  
    The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BDRF) (Phong, 1975). 
@@ -127,7 +127,7 @@ where:
 - :math:`t_\tau = t / \tau`,
 - :math:`\tau = \text{pulseLength} / 1.75`.
 
-This function produces the characteristic pulse shape used in the simulation (Carlsson et al., 2001):
+This function produces the characteristic pulse shape used in the simulation (`Carlsson et al., 2001`_):
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
@@ -327,7 +327,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 3. **Received Intensity via Lidar-Radar Equation**
 
-   The received intensity :math:`I` is computed using the lidar-radar equation, including atmospheric attenuation (Carlsson et al., 2001):
+   The received intensity :math:`I` is computed using the lidar-radar equation, including atmospheric attenuation (`Carlsson et al., 2001`_):
 
    .. math::
       I = \frac{I_0 \cdot D_r^2 \cdot \eta_{\text{sys}} \cdot \sigma}{4\pi \cdot R^4 \cdot B_t^2 \cdot \exp\left( \frac{2\pi^2 r^2 w_0^2}{\lambda^2 (R_0^2 + R^2)} + 2 R a_e \right)} \cdot 10^9
@@ -359,3 +359,5 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
       \end{cases}
 
    where :math:`V_M` is the atmospheric visibility.
+
+.. _Carlsson et al., 2001: https://www.foi.se/rest-api/report/FOI-R--0163--SE

@@ -412,10 +412,11 @@ DetailedVoxels
 
     <filter type="detailedvoxels">
 
-This loader reads voxel models in a text format with .vox extension, inspired by the format used in the software `AMAPVox`_ software (Vincent et al. 2017).
+This loader reads voxel models in a text format with .vox extension, inspired by the format used in the software `AMAPVox`_ software (`Vincent et al. 2017`_).
 The primary purpose of DetailedVoxels is to model vegetation with given leaf properties.
 
 .. _AMAPVox: https://amap-dev.cirad.fr/projects/amapvox
+.. _Vincent et al. 2017: http://dx.doi.org/10.1016/j.rse.2017.05.034
 
 .. ToDo: Maybe move this to a general explanation instead of keeping this in the XML section, since it is not XML-specific. Then only link here.
 

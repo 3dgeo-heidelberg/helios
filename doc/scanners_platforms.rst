@@ -76,12 +76,14 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
     - **(b)** fiber array (``line``)
         - with the optional parameter ``numFibers``
     - **(c)** oscillating mirror (``oscillating``) 
-        - with the optional parameter ``scanProduct``. The maximum scan product determines the maximum scanner velocity. It is the product of the maximum scan rate and maximum scan angle, which are inversely proportional to each other (Ussyshkin et al. 2008). 
+        - with the optional parameter ``scanProduct``. The maximum scan product determines the maximum scanner velocity. It is the product of the maximum scan rate and maximum scan angle, which are inversely proportional to each other (`Ussyshkin et al. 2008`_). 
     - **(d)** conic mirror (``conic``)
         - note that the parameter scan angle in the scanner settings of a survey XML is not used for this beam deflector because this scanner type does not have a selectable scan angle. The ``maxScanAngle_deg`` defined in the scanner XML is used as half-opening angle of the cone.
     - **(e)** risley prims (``risley``)
         - with the parameters ``rotorFreq1_Hz``, ``rotorFreq2_Hz`` and ``rotorFreq3_Hz``, i.e., the rotational speeds of the two prisms, ``angle1_deg``, ``angle2_deg`` and ``angle3_deg``, i.e., the prism angles, and ``refrIndex1``, ``refrIndex2``, ``refrIndex3`` and ``refrIndex_air``.
         - note that the parameters ``scanFreq_Hz`` and ``scanAngle_deg`` are not used for this deflector.
+
+.. _Ussyshkin et al. 2008: https://www.isprs.org/proceedings/xxxvii/congress/1_pdf/30.pdf
 
 .. figure:: img/deflectors.png
     :align: center
@@ -124,7 +126,7 @@ The x, y, z coordinates of the position of the origin of the laser beam are set 
 
 **FWF settings**:
 
-These are defined in a separate tag ``<FWFSettings>``, see :doc:`fwf_settings <intensity_fwf>`.
+These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform and intensity modelling <intensity_fwf>`.
 
 - ``beamSampleQuality``
 - ``binSize_ns``
