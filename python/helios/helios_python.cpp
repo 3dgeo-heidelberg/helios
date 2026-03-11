@@ -3273,5 +3273,96 @@ PYBIND11_MODULE(_helios, m)
                                     rgbBIndex,
                                     snapNeighborNormal);
         });
+  m.def(
+    "read_open3d_mesh_scene_part",
+    [](py::array_t<double, py::array::c_style | py::array::forcecast> vertices,
+       py::array triangles,
+       py::object normalsObj,
+       py::object colorsObj,
+       std::vector<std::string> assetsPath,
+       std::string upaxis) {
+      // ---- vertices ----
+      py::buffer_info vinfo = vertices.request();
+      if (vinfo.ndim != 2 || vinfo.shape[1] != 3)
+        throw py::value_error("vertices must have shape (N, 3)");
+
+      const auto* verticesData = static_cast<const double*>(vinfo.ptr);
+      const std::size_t nVertices = static_cast<std::size_t>(vinfo.shape[0]);
+      const std::ptrdiff_t vertexRowStrideElems =
+        static_cast<std::ptrdiff_t>(vinfo.strides[0] / sizeof(double));
+
+      // ---- triangles ----
+      py::array_t<int, py::array::c_style | py::array::forcecast> triangles32(
+        triangles);
+      py::buffer_info tinfo = triangles32.request();
+      if (tinfo.ndim != 2 || tinfo.shape[1] != 3)
+        throw py::value_error("triangles must have shape (M, 3)");
+
+      const auto* trianglesData = static_cast<const int*>(tinfo.ptr);
+      const std::size_t nTriangles = static_cast<std::size_t>(tinfo.shape[0]);
+      const std::ptrdiff_t triangleRowStrideElems =
+        static_cast<std::ptrdiff_t>(tinfo.strides[0] / sizeof(int));
+
+      // ---- optional normals ----
+      const double* normalsData = nullptr;
+      std::ptrdiff_t normalRowStrideElems = 0;
+      std::optional<
+        py::array_t<double, py::array::c_style | py::array::forcecast>>
+        normalsArr;
+
+      if (!normalsObj.is_none()) {
+        normalsArr.emplace(
+          normalsObj.cast<
+            py::array_t<double, py::array::c_style | py::array::forcecast>>());
+        py::buffer_info ninfo = normalsArr->request();
+        if (ninfo.ndim != 2 || ninfo.shape[1] != 3 ||
+            ninfo.shape[0] != vinfo.shape[0])
+          throw py::value_error(
+            "normals must have shape (N, 3) matching vertices");
+        normalsData = static_cast<const double*>(ninfo.ptr);
+        normalRowStrideElems =
+          static_cast<std::ptrdiff_t>(ninfo.strides[0] / sizeof(double));
+      }
+
+      // ---- optional colors ----
+      const double* colorsData = nullptr;
+      std::ptrdiff_t colorRowStrideElems = 0;
+      std::optional<
+        py::array_t<double, py::array::c_style | py::array::forcecast>>
+        colorsArr;
+
+      if (!colorsObj.is_none()) {
+        colorsArr.emplace(
+          colorsObj.cast<
+            py::array_t<double, py::array::c_style | py::array::forcecast>>());
+        py::buffer_info cinfo = colorsArr->request();
+        if (cinfo.ndim != 2 || cinfo.shape[1] != 3 ||
+            cinfo.shape[0] != vinfo.shape[0])
+          throw py::value_error(
+            "colors must have shape (N, 3) matching vertices");
+        colorsData = static_cast<const double*>(cinfo.ptr);
+        colorRowStrideElems =
+          static_cast<std::ptrdiff_t>(cinfo.strides[0] / sizeof(double));
+      }
+
+      return readOpen3DMeshScenePart(verticesData,
+                                     nVertices,
+                                     vertexRowStrideElems,
+                                     trianglesData,
+                                     nTriangles,
+                                     triangleRowStrideElems,
+                                     normalsData,
+                                     normalRowStrideElems,
+                                     colorsData,
+                                     colorRowStrideElems,
+                                     std::move(assetsPath),
+                                     std::move(upaxis));
+    },
+    py::arg("vertices"),
+    py::arg("triangles"),
+    py::arg("normals") = py::none(),
+    py::arg("colors") = py::none(),
+    py::arg("assetsPath"),
+    py::arg("upaxis") = "z");
 }
 }
