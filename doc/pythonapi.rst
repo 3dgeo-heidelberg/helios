@@ -7,99 +7,99 @@ Surveys and legs
 ------------------
 
 
-.. autoclass:: helios.Survey
+.. autoapiclass:: helios.Survey
    :members:
 
-.. autoclass:: helios.Leg
+.. autoapiclass:: helios.Leg
    :members:
 
 Scanner and scanner settings
 ----------------------------
 
-.. autoclass:: helios.Scanner
+.. autoapiclass:: helios.Scanner
    :members:
 
-.. autoclass:: helios.ScannerSettings
+.. autoapiclass:: helios.ScannerSettings
    :members:
 
-.. autofunction:: helios.list_scanners
+.. autoapifunction:: helios.list_scanners
 
-.. autofunction:: helios.scanner_from_name
+.. autoapifunction:: helios.scanner_from_name
 
 Platform, platform settings and trajectories
 --------------------------------------------
 
-.. autoclass:: helios.Platform
+.. autoapiclass:: helios.Platform
    :members:
 
-.. autoclass:: helios.PlatformSettings
+.. autoapiclass:: helios.PlatformSettings
    :members:
 
-.. autoclass:: helios.StaticPlatformSettings
+.. autoapiclass:: helios.StaticPlatformSettings
    :members:
 
-.. autoclass:: helios.DynamicPlatformSettings
+.. autoapiclass:: helios.DynamicPlatformSettings
    :members:
 
-.. autoclass:: helios.TrajectorySettings
+.. autoapiclass:: helios.TrajectorySettings
    :members:
 
-.. autofunction:: helios.load_traj_csv
+.. autoapifunction:: helios.load_traj_csv
 
-.. autofunction:: helios.list_platforms
+.. autoapifunction:: helios.list_platforms
 
-.. autofunction:: helios.platform_from_name
+.. autoapifunction:: helios.platform_from_name
 
 Scene
 ------
 
-.. autoclass:: helios.StaticScene
+.. autoapiclass:: helios.StaticScene
    :members:
 
-.. autoclass:: helios.ScenePart
+.. autoapiclass:: helios.ScenePart
    :members:
 
-.. autoclass:: helios.scene.Material
+.. autoapiclass:: helios.scene.Material
    :members:
 
-.. autoclass:: helios.ForceOnGroundStrategy
+.. autoapiclass:: helios.ForceOnGroundStrategy
    :members:
 
-.. autoclass:: helios.scene.MaterialDict
+.. autoapiclass:: helios.scene.MaterialDict
    :members:
 
-.. autoclass:: helios.scene.BoundingBox
+.. autoapiclass:: helios.scene.BoundingBox
    :members:
 
 Settings
 --------
 
-.. autoclass:: helios.ExecutionSettings
+.. autoapiclass:: helios.ExecutionSettings
    :members:
 
-.. autoclass:: helios.OutputSettings
+.. autoapiclass:: helios.OutputSettings
    :members:
 
-.. autoclass:: helios.OutputFormat
+.. autoapiclass:: helios.OutputFormat
    :members:
 
-.. autoclass:: helios.FullWaveformSettings
+.. autoapiclass:: helios.FullWaveformSettings
    :members:
 
-.. autoclass:: helios.LogVerbosity
+.. autoapiclass:: helios.LogVerbosity
    :members:
 
-.. autoclass:: helios.ParallelizationStrategy
+.. autoapiclass:: helios.ParallelizationStrategy
    :members:
 
-.. autoclass:: helios.KDTreeFactoryType
+.. autoapiclass:: helios.KDTreeFactoryType
    :members:
 
 Utils
 ------
 
-.. autofunction:: helios.add_asset_directory
+.. autoapifunction:: helios.add_asset_directory
 
-.. autofunction:: helios.combine_parameters
+.. autoapifunction:: helios.combine_parameters
 
-.. autofunction:: helios.utils.set_rng_seed
+.. autoapifunction:: helios.utils.set_rng_seed

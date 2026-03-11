@@ -32,12 +32,18 @@ release = _read_local_version()
 
 extensions = [
     "sphinx.ext.autodoc",
+    "autoapi.extension",
     "breathe",
     "nbsphinx",
     "nbsphinx_link",
     "sphinx_mdinclude",
     "sphinx_rtd_theme",
 ]
+
+autoapi_dirs = ["../python/helios"]
+autoapi_add_toctree_entry = False
+autoapi_generate_api_docs = False
+autoapi_keep_files = True
 
 templates_path = []
 exclude_patterns = ["_build"]
