@@ -778,3 +778,118 @@ readNumpyScenePart(const double* data,
   loader.primsOut = nullptr;
   return sp;
 }
+
+std::shared_ptr<ScenePart>
+readOpen3DMeshScenePart(const double* verticesData,
+                        std::size_t nVertices,
+                        std::ptrdiff_t vertexRowStrideElems,
+
+                        const int* trianglesData,
+                        std::size_t nTriangles,
+                        std::ptrdiff_t triangleRowStrideElems,
+
+                        const double* vertexNormalsData,
+                        std::ptrdiff_t normalRowStrideElems,
+
+                        const double* vertexColorsData,
+                        std::ptrdiff_t colorRowStrideElems,
+
+                        std::vector<std::string> assetsPath,
+                        std::string upaxis)
+{
+  if (!verticesData)
+    throw std::invalid_argument("verticesData is null");
+  if (!trianglesData)
+    throw std::invalid_argument("trianglesData is null");
+
+  WavefrontObjFileLoader loader;
+  loader.setAssetsDir(assetsPath);
+
+  const bool hasNormals = (vertexNormalsData != nullptr);
+  const bool hasColors = (vertexColorsData != nullptr);
+
+  bool yIsUp = false;
+  if (upaxis == "y") {
+    yIsUp = true;
+  } else if (upaxis != "z") {
+    throw std::runtime_error("up-axis must be either 'y' or 'z'");
+  }
+
+  auto mapPos = [&](std::size_t i) -> glm::dvec3 {
+    const double x = *(verticesData + i * vertexRowStrideElems + 0);
+    const double y = *(verticesData + i * vertexRowStrideElems + 1);
+    const double z = *(verticesData + i * vertexRowStrideElems + 2);
+    return yIsUp ? glm::dvec3(x, -z, y) : glm::dvec3(x, y, z);
+  };
+
+  auto mapNormal = [&](std::size_t i) -> glm::dvec3 {
+    const double x = *(vertexNormalsData + i * normalRowStrideElems + 0);
+    const double y = *(vertexNormalsData + i * normalRowStrideElems + 1);
+    const double z = *(vertexNormalsData + i * normalRowStrideElems + 2);
+    return yIsUp ? glm::dvec3(x, -z, y) : glm::dvec3(x, y, z);
+  };
+
+  auto mapColor = [&](std::size_t i) -> Color4f {
+    const float r =
+      static_cast<float>(*(vertexColorsData + i * colorRowStrideElems + 0));
+    const float g =
+      static_cast<float>(*(vertexColorsData + i * colorRowStrideElems + 1));
+    const float b =
+      static_cast<float>(*(vertexColorsData + i * colorRowStrideElems + 2));
+    return Color4f(r, g, b, 1.0f);
+  };
+
+  auto mat = std::make_shared<Material>();
+  mat->name = "default";
+  mat->useVertexColors = hasColors;
+  loader.materials[mat->name] = mat;
+
+  loader.primsOut->mPrimitives.reserve(nTriangles);
+
+  for (std::size_t fi = 0; fi < nTriangles; ++fi) {
+    const int i0 = *(trianglesData + fi * triangleRowStrideElems + 0);
+    const int i1 = *(trianglesData + fi * triangleRowStrideElems + 1);
+    const int i2 = *(trianglesData + fi * triangleRowStrideElems + 2);
+
+    if (i0 < 0 || i1 < 0 || i2 < 0 ||
+        static_cast<std::size_t>(i0) >= nVertices ||
+        static_cast<std::size_t>(i1) >= nVertices ||
+        static_cast<std::size_t>(i2) >= nVertices) {
+      std::stringstream ss;
+      ss << "Open3D mesh loader: triangle index out of bounds at face " << fi
+         << ": [" << i0 << ", " << i1 << ", " << i2
+         << "], nVertices=" << nVertices;
+      throw std::out_of_range(ss.str());
+    }
+
+    Vertex v0, v1, v2;
+    v0.pos = mapPos(static_cast<std::size_t>(i0));
+    v1.pos = mapPos(static_cast<std::size_t>(i1));
+    v2.pos = mapPos(static_cast<std::size_t>(i2));
+
+    if (hasNormals) {
+      v0.normal = mapNormal(static_cast<std::size_t>(i0));
+      v1.normal = mapNormal(static_cast<std::size_t>(i1));
+      v2.normal = mapNormal(static_cast<std::size_t>(i2));
+    }
+
+    if (hasColors) {
+      v0.color = mapColor(static_cast<std::size_t>(i0));
+      v1.color = mapColor(static_cast<std::size_t>(i1));
+      v2.color = mapColor(static_cast<std::size_t>(i2));
+    }
+
+    Triangle* tri = new Triangle(v0, v1, v2);
+    tri->material = mat;
+    loader.primsOut->mPrimitives.push_back(tri);
+  }
+
+  loader.primsOut->subpartLimit.push_back(loader.primsOut->mPrimitives.size());
+
+  std::shared_ptr<ScenePart> sp(loader.primsOut);
+  for (auto p : sp->mPrimitives)
+    p->part = sp;
+
+  loader.primsOut = nullptr;
+  return sp;
+}

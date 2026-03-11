@@ -120,3 +120,21 @@ readNumpyScenePart(const double* data,
                    int rgbGIndex,
                    int rgbBIndex,
                    bool snapNeighborNormal);
+
+std::shared_ptr<ScenePart>
+readOpen3DMeshScenePart(const double* verticesData,
+                        std::size_t nVertices,
+                        std::ptrdiff_t vertexRowStrideElems,
+
+                        const int* trianglesData,
+                        std::size_t nTriangles,
+                        std::ptrdiff_t triangleRowStrideElems,
+
+                        const double* vertexNormalsData,
+                        std::ptrdiff_t normalRowStrideElems,
+
+                        const double* vertexColorsData,
+                        std::ptrdiff_t colorRowStrideElems,
+
+                        std::vector<std::string> assetsPath,
+                        std::string upaxis);
