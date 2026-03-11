@@ -9,6 +9,8 @@ from helios.utils import (
     detect_separator,
     is_xml_loaded,
     _validate_points_array_and_get_indices,
+    _as_array,
+    _validate_same_shape,
 )
 
 from helios.validation import (
@@ -495,13 +497,66 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
-    @classonlymethod
-    @validate_call
-    def from_open3d(
+    @classmethod
+    def _compose_from_o3d_triangle_mesh(
         cls,
         geometry,
-        voxel_size: PositiveFloat,
         *,
+        up_axis: Literal["y", "z"] = "z",
+    ):
+        if up_axis not in ("y", "z"):
+            raise ValueError("`up_axis` must be either 'y' or 'z'.")
+
+        vertices = _as_array(
+            geometry.vertices, dtype=np.float64, name="Open3D mesh vertices"
+        )
+        triangles = _as_array(
+            geometry.triangles, dtype=np.int32, name="Open3D mesh triangles"
+        )
+
+        if vertices.shape[0] == 0:
+            raise ValueError("Open3D mesh is empty.")
+        if triangles.shape[0] == 0:
+            raise ValueError("Open3D triangle mesh has no triangles.")
+
+        normals = None
+        if geometry.has_vertex_normals():
+            normals = _as_array(
+                geometry.vertex_normals,
+                dtype=np.float64,
+                name="Open3D mesh vertex normals",
+            )
+            normals = _validate_same_shape(
+                normals, "vertices", vertices, "Open3D mesh vertex normals"
+            )
+
+        colors = None
+        if geometry.has_vertex_colors():
+            colors = _as_array(
+                geometry.vertex_colors,
+                dtype=np.float64,
+                name="Open3D mesh vertex colors",
+            )
+            colors = _validate_same_shape(
+                colors, "vertices", vertices, "Open3D mesh vertex colors"
+            )
+
+        _cpp_part = _helios.read_open3d_mesh_scene_part(
+            vertices,
+            triangles,
+            normals,
+            colors,
+            up_axis,
+        )
+
+        return cls._from_cpp(_cpp_part)
+
+    @classmethod
+    def _compose_from_o3d_pointcloud(
+        cls,
+        geometry,
+        *,
+        voxel_size: PositiveFloat,
         max_color_value: NonNegativeFloat = 0.0,
         default_normal: R3Vector = np.array(
             [np.finfo(np.float64).max] * 3, dtype=np.float64
@@ -510,44 +565,37 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         estimate_normals: bool = False,
         snap_neighbor_normal: bool = False,
     ):
-        """Load the scene part from an Open3D geometry."""
-        try:
-            import open3d
-        except ImportError:
-            raise ImportError(
-                "Open3D is required for `ScenePart.from_o3d`, but can't be installed via conda. Install it with `pip install open3d`."
+        points = _as_array(
+            geometry.points, dtype=np.float64, name="Open3D point cloud points"
+        )
+        normals = (
+            _as_array(
+                geometry.normals, dtype=np.float64, name="Open3D point cloud normals"
             )
+            if geometry.has_normals()
+            else None
+        )
+        colors = (
+            _as_array(
+                geometry.colors, dtype=np.float64, name="Open3D point cloud colors"
+            )
+            if geometry.has_colors()
+            else None
+        )
 
-        if isinstance(geometry, open3d.geometry.PointCloud):
-            points = np.asarray(geometry.points, dtype=np.float64)
-            normals = (
-                np.asarray(geometry.normals, dtype=np.float64)
-                if geometry.has_normals()
-                else None
-            )
-            colors = np.asarray(geometry.colors) if geometry.has_colors() else None
-        else:
-            raise TypeError(
-                "At the moment, only Open3D PointCloud geometries are supported for loading into a ScenePart. Support for other geometry types will be added in the future."
-            )
-
-        if points.ndim != 2 or points.shape[1] != 3:
-            raise ValueError(
-                f"Open3D point cloud points must have shape (N, 3). Got {points.shape}."
-            )
         if points.shape[0] == 0:
             raise ValueError("Open3D point cloud is empty.")
 
         combined_array = [points]
-        col_amnt = 3
+        column_count = 3
         if normals is not None:
             if normals.shape != points.shape:
                 raise ValueError(
                     "The number of normals must match the number of points."
                 )
             combined_array.append(normals)
-            normals_indices = [col_amnt, col_amnt + 1, col_amnt + 2]
-            col_amnt += 3
+            normals_indices = [column_count, column_count + 1, column_count + 2]
+            column_count += 3
 
         if colors is not None:
             if colors.shape != points.shape:
@@ -555,11 +603,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                     "The number of colors must match the number of points."
                 )
             combined_array.append(colors)
-            rgb_file_columns = [col_amnt, col_amnt + 1, col_amnt + 2]
-            col_amnt += 3
+            rgb_file_columns = [column_count, column_count + 1, column_count + 2]
+            column_count += 3
 
-        if max_color_value == 0.0:
-            max_color_value = 1.0
+        effective_max_color_value = (
+            1.0 if colors is not None and max_color_value == 0.0 else max_color_value
+        )
+
         result_array = np.hstack(combined_array)
 
         return cls.from_numpy_array(
@@ -567,11 +617,31 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             voxel_size=voxel_size,
             normals_file_columns=normals_indices if normals is not None else None,
             rgb_file_columns=rgb_file_columns if colors is not None else None,
-            max_color_value=max_color_value,
+            max_color_value=effective_max_color_value,
             default_normal=default_normal,
             sparse=sparse,
             estimate_normals=estimate_normals,
             snap_neighbor_normal=snap_neighbor_normal,
+        )
+
+    @classonlymethod
+    @validate_call
+    def from_open3d(cls, geometry, **kwargs):
+        """Load the scene part from an Open3D geometry."""
+        try:
+            import open3d
+        except ImportError:
+            raise ImportError(
+                "Open3D is required for `ScenePart.from_open3d`, but can't be installed via conda. Install it with `pip install open3d`."
+            )
+        if isinstance(geometry, open3d.geometry.TriangleMesh):
+            return cls._compose_from_o3d_triangle_mesh(geometry, **kwargs)
+        if isinstance(geometry, open3d.geometry.PointCloud):
+            return cls._compose_from_o3d_pointcloud(geometry, **kwargs)
+
+        raise TypeError(
+            "Unsupported geometry type for `ScenePart.from_o3d`. "
+            f"Expected open3d.geometry.TriangleMesh or open3d.geometry.PointCloud, got {type(geometry)}."
         )
 
     @validate_call
