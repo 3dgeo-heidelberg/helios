@@ -190,8 +190,6 @@ PyHeliosSimulation::start()
                                               exportToFile,
                                               true,
                                               fms);
-  playback->callback = callback;
-  playback->setCallbackFrequency(callbackFrequency);
   thread = new std::thread(std::bind(&SurveyPlayback::start, playback));
 
   started = true;
@@ -263,7 +261,7 @@ PyHeliosSimulation::isRunning()
   return started && !paused && !stopped && !playback->finished;
 }
 
-py::tuple
+pybind11::tuple
 PyHeliosSimulation::join()
 {
   // Status control
@@ -279,26 +277,6 @@ PyHeliosSimulation::join()
       survey->scanner->fms->write.getMeasurementWriterOutputPath().string();
   }
 
-  // Callback concurrency handling (NON BLOCKING MODE)
-  if (callbackFrequency != 0 && callback != nullptr) {
-    if (!playback->finished) {
-      // Return empty vectors if the simulation is not finished yet
-      return py::make_tuple(std::vector<Measurement>{},
-                            std::vector<Trajectory>{},
-                            mwOutPath,
-                            std::vector<std::string>{ mwOutPath },
-                            false);
-    } else {
-      // Return collected data if the simulation is finished
-      finished = true;
-      return py::make_tuple(*survey->scanner->allMeasurements,
-                            *survey->scanner->allTrajectories,
-                            mwOutPath,
-                            *survey->scanner->allOutputPaths,
-                            true);
-    }
-  }
-
   // Join (BLOCKING MODE)
   if (thread && thread->joinable()) {
     thread->join();
@@ -310,17 +288,17 @@ PyHeliosSimulation::join()
 
   // Final output (BLOCKING MODE)
   if (!finalOutput) {
-    return py::make_tuple(std::vector<Measurement>{},
-                          std::vector<Trajectory>{},
-                          mwOutPath,
-                          std::vector<std::string>{},
-                          false);
+    return pybind11::make_tuple(std::vector<Measurement>{},
+                                std::vector<Trajectory>{},
+                                mwOutPath,
+                                std::vector<std::string>{},
+                                false);
   }
-  return py::make_tuple(*survey->scanner->allMeasurements,
-                        *survey->scanner->allTrajectories,
-                        mwOutPath,
-                        *survey->scanner->allOutputPaths,
-                        true);
+  return pybind11::make_tuple(*survey->scanner->allMeasurements,
+                              *survey->scanner->allTrajectories,
+                              mwOutPath,
+                              *survey->scanner->allOutputPaths,
+                              true);
 }
 
 // ***  SIMULATION CONFIGURATION FUNCTIONS  *** //
@@ -413,12 +391,10 @@ PyHeliosSimulation::copy()
   phs->outputPath = this->outputPath;
   phs->numThreads = this->numThreads;
   phs->finalOutput = this->finalOutput;
-  phs->callback = this->callback;
   phs->lasOutput = this->lasOutput;
   phs->las10 = this->las10;
   phs->zipOutput = this->zipOutput;
   phs->exportToFile = this->exportToFile;
-  phs->setCallbackFrequency(getCallbackFrequency());
   phs->survey = std::make_shared<Survey>(*survey);
   phs->survey->scanner->initializeSequentialGenerators();
   // Track copies
@@ -429,24 +405,6 @@ PyHeliosSimulation::copy()
   copies.push_back(phs);
   // Return
   return phs;
-}
-
-void
-PyHeliosSimulation::setCallback(pybind11::object pyCallback)
-{
-  callback = std::make_shared<SimulationCycleCallbackWrap>(pyCallback);
-
-  if (survey->scanner->cycleMeasurements == nullptr) {
-    survey->scanner->cycleMeasurements =
-      std::make_shared<std::vector<Measurement>>(0);
-  }
-  if (survey->scanner->cycleTrajectories == nullptr) {
-    survey->scanner->cycleTrajectories =
-      std::make_shared<std::vector<Trajectory>>(0);
-  }
-  if (survey->scanner->cycleMeasurementsMutex == nullptr) {
-    survey->scanner->cycleMeasurementsMutex = std::make_shared<std::mutex>();
-  }
 }
 
 // ***  INTERNAL USE  *** //

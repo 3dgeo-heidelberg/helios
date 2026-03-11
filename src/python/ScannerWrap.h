@@ -49,22 +49,9 @@ public:
   {
   }
 
-  std::shared_ptr<std::mutex> get_cycle_measurements_mutex()
-  {
-    return Scanner::cycleMeasurementsMutex;
-  }
-
   std::shared_ptr<std::mutex> get_all_measurements_mutex()
   {
     return Scanner::allMeasurementsMutex;
-  }
-  void set_cycle_measurements_mutex(std::shared_ptr<std::mutex> mutex = nullptr)
-  {
-    if (!mutex) {
-      Scanner::cycleMeasurementsMutex = std::make_shared<std::mutex>();
-    } else {
-      Scanner::cycleMeasurementsMutex = std::move(mutex);
-    }
   }
 
   void set_all_measurements_mutex(std::shared_ptr<std::mutex> mutex = nullptr)

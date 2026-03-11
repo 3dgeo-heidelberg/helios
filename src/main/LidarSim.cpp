@@ -155,9 +155,6 @@ LidarSim::release(std::shared_ptr<SurveyPlayback> sp)
   sc->allMeasurements = nullptr;
   sc->allTrajectories = nullptr;
   sc->allMeasurementsMutex = nullptr;
-  sc->cycleMeasurements = nullptr;
-  sc->cycleTrajectories = nullptr;
-  sc->cycleMeasurementsMutex = nullptr;
   // Release file management system
   sc->fms = nullptr;
   sp->fms = nullptr;

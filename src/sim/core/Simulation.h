@@ -5,8 +5,8 @@
 #include <PulseTaskDropper.h>
 #include <PulseThreadPoolInterface.h>
 #include <Scanner.h>
-#include <SimulationCycleCallback.h>
 #include <SimulationStepLoop.h>
+#include <SurveyHooks.h>
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_Recorder.h>
 #include <dataanalytics/HDA_StateJSONReporter.h>
@@ -14,7 +14,10 @@
 #include <SimulationPlayer.h>
 #include <SimulationReporter.h>
 
+#include <atomic>
 #include <chrono>
+#include <exception>
+#include <vector>
 
 /**
  * @brief Class representing a simulation
@@ -66,10 +69,29 @@ protected:
   SimulationStepLoop stepLoop;
 
   /**
-   * @brief The callback frequency. It specifies how many steps must elapse
-   *  between consecutive callbacks
+   * @brief Hook registrations configured for this simulation.
    */
-  size_t callbackFrequency = 0;
+  std::vector<SurveyHookRegistration> hookRegistrations;
+  /**
+   * @brief 1-based simulation step index within current play.
+   */
+  uint64_t hookStepIndex = 0;
+  /**
+   * @brief 0-based play index within current Survey.run invocation.
+   */
+  uint32_t hookPlayIndex = 0;
+  /**
+   * @brief Hook failure flag set when any callback throws.
+   */
+  std::atomic<bool> hookFailed{ false };
+  /**
+   * @brief Captured callback exception to be rethrown after simulation joins.
+   */
+  std::exception_ptr hookException;
+  /**
+   * @brief Mutex guarding assignment of hookException.
+   */
+  std::mutex hookExceptionMutex;
 
   /**
    * @brief Mutex to handle simulation pause and iterations on a
@@ -159,8 +181,6 @@ public:
    */
   bool finished = false;
 
-  std::shared_ptr<SimulationCycleCallback> callback = nullptr;
-
   /**
    * @brief Simulation player to handle the simulation loop from the outside.
    *
@@ -208,6 +228,41 @@ public:
   virtual void onLegComplete() = 0;
 
   /**
+   * @brief Register a hook for this simulation run.
+   */
+  void addHook(SurveyHookRegistration reg);
+  /**
+   * @brief Remove all configured hooks.
+   */
+  void clearHooks();
+  /**
+   * @brief Initialize hook state at start of a Survey.run invocation.
+   */
+  void initializeHooksForRun();
+  /**
+   * @brief Emit leg start hooks for currently active leg.
+   */
+  void emitLegStartHook();
+  /**
+   * @brief Emit leg end hooks for currently active leg.
+   */
+  void emitLegEndHook();
+  /**
+   * @brief Emit timed hooks for given simulation time.
+   */
+  void emitTimedHooks(double simTime_s);
+  /**
+   * @brief Emit a final periodic payload hook pass at leg completion.
+   *
+   * This currently flushes pending payload for periodic SINCE_LAST hooks.
+   */
+  void emitPeriodicTailHooks(double simTime_s);
+  /**
+   * @brief Dispatch one hook registration.
+   */
+  void dispatchHook(SurveyHookRegistration& reg, HookContext const& ctx);
+
+  /**
    * @brief Start the simmulation
    */
   void start();
@@ -246,6 +301,15 @@ public:
    * @return Current GPS time (nanoseconds)
    */
   double calcCurrentGpsTime();
+
+  /**
+   * @brief Check whether a hook callback has failed.
+   */
+  inline bool hasHookFailure() const { return hookFailed.load(); }
+  /**
+   * @brief Return captured hook callback exception.
+   */
+  inline std::exception_ptr getHookException() const { return hookException; }
 
   // ***  GETTERS and SETTERS  *** //
   // ***************************** //
@@ -308,24 +372,6 @@ public:
   inline void setSimFrequency(size_t const simFrequency)
   {
     stepLoop.setFrequency(simFrequency);
-  }
-  /**
-   * @brief Get the callback frequency. It is, how many steps must elapse
-   *  between consecutive callbacks
-   * @return Callback frequency
-   * @see Simulation::callbackFrequency
-   * @see Simulation::setCallbackFrequency
-   */
-  inline size_t getCallbackFrequency() const { return callbackFrequency; }
-  /**
-   * @brief Set the new callback frequency
-   * @param callbackFrequency New callback frequency
-   * @see Simulation::callbackFrequency
-   * @see Simulation::getCallbackFrequency
-   */
-  inline void setCallbackFrequency(size_t const callbackFrequency)
-  {
-    this->callbackFrequency = callbackFrequency;
   }
   /**
    * @brief Get the simulation step loop of the simulation

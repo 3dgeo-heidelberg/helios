@@ -262,6 +262,14 @@ SurveyPlayback::onLegComplete()
 {
   // Do scanning pulse process handling of on leg complete, if any
   mScanner->onLegComplete();
+  emitPeriodicTailHooks(stepLoop.getCurrentTime());
+  if (hasHookFailure()) {
+    return;
+  }
+  emitLegEndHook();
+  if (hasHookFailure()) {
+    return;
+  }
 
   // Start next leg
   elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
@@ -388,6 +396,8 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
     platform->writeNextTrajectory = true;
     logging::DEBUG("Output prepared for current leg.");
   }
+
+  emitLegStartHook();
 }
 
 void

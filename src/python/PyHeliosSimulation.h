@@ -11,8 +11,6 @@
 #include <HeliosException.h>
 #include <Leg.h>
 #include <Measurement.h>
-#include <SimulationCycleCallback.h>
-#include <SimulationCycleCallbackWrap.h>
 #include <Survey.h>
 #include <SurveyPlayback.h>
 #include <Trajectory.h>
@@ -41,14 +39,12 @@ private:
   bool stopped = false;
   bool finished = false;
   size_t numThreads = 0;
-  size_t callbackFrequency = 0;
   std::string surveyPath = "NULL";
   std::vector<std::string> assetsPath;
   std::string outputPath = "NULL";
   std::shared_ptr<Survey> survey = nullptr;
   std::shared_ptr<SurveyPlayback> playback = nullptr;
   std::thread* thread = nullptr;
-  std::shared_ptr<SimulationCycleCallback> callback = nullptr;
   std::string fixedGpsTimeStart = "";
   bool lasOutput = false;
   bool las10 = false;
@@ -219,12 +215,6 @@ public:
   bool assocLegWithScanningStrip(Leg& leg,
                                  std::shared_ptr<ScanningStrip> strip);
   /**
-   * @brief Obtain callback frequency
-   *
-   * @return Callback frequency
-   */
-  size_t getCallbackFrequency() { return callbackFrequency; }
-  /**
    * @brief Obtain simulation frequency
    * @return Simulation frequenc
    */
@@ -245,13 +235,6 @@ public:
    */
   void setNumThreads(size_t numThreads) { this->numThreads = numThreads; }
   /**
-   * @brief Set the callback frequency
-   */
-  void setCallbackFrequency(size_t const callbackFrequency)
-  {
-    this->callbackFrequency = callbackFrequency;
-  }
-  /**
    * @brief Set the simulation frequency
    */
   void setSimFrequency(size_t const simFrequency)
@@ -266,20 +249,6 @@ public:
   {
     return _getDynScene()->setStepInterval(stepInterval);
   }
-  /**
-   * @brief Set the simulation callback to specified python object functor
-   */
-  void setCallback(py::object pyCallback);
-  /**
-   * @brief Clear simulation callback so it will no longer be invoked
-   */
-  void clearCallback()
-  {
-    playback->callback = nullptr;
-    survey->scanner->cycleMeasurements = nullptr;
-    survey->scanner->cycleMeasurementsMutex = nullptr;
-  }
-
   std::string getFixedGpsTimeStart() { return fixedGpsTimeStart; }
   void setFixedGpsTimeStart(std::string const fixedGpsTimeStart)
   {
@@ -411,7 +380,7 @@ public:
   /**
    * @brief Cause caller thread to wait until simulation has finished
    */
-  py::tuple join();
+  pybind11::tuple join();
 
   // ***  SIMULATION CONFIGURATION FUNCTIONS  *** //
   // ******************************************** //
