@@ -415,7 +415,7 @@ def _as_array(value, *, dtype, shape_second_dim: int = 3, name: str) -> np.ndarr
 
 
 def _validate_same_shape(
-        arr: np.ndarray, ref_name: str, ref: np.ndarray, name: str
+    arr: np.ndarray, ref_name: str, ref: np.ndarray, name: str
 ) -> None:
     if arr.shape != ref.shape:
         raise ValueError(
