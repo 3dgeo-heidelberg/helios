@@ -75,6 +75,21 @@ def register_migration(from_minor_version: int):
     return _register
 
 
+#
+# Minor version migrations. Add one per new minor version.
+#
+
+# Example first migration:
+# @register_migration(from_minor_version=0)
+# def _migrate_v0_to_v1(document: dict[str, Any]) -> dict[str, Any]:
+#     migrated = dict(document)
+#
+#     # Do something with migrated
+#
+#     migrated["serialization_minor_version"] = 1
+#     return migrated
+
+
 def _normalize_provenance_value(value: Any):
     """Convert runtime values into YAML-safe primitives."""
 
@@ -137,21 +152,6 @@ def _normalize_provenance_value(value: Any):
         return [_normalize_provenance_value(item) for item in value]
 
     return str(value)
-
-
-#
-# Minor version migrations. Add one per new minor version.
-#
-
-# Example first migration:
-# @register_migration(from_minor_version=0)
-# def _migrate_v0_to_v1(document: dict[str, Any]) -> dict[str, Any]:
-#     migrated = dict(document)
-#
-#     # Do something with migrated
-#
-#     migrated["serialization_minor_version"] = 1
-#     return migrated
 
 
 @dataclass
