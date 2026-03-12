@@ -18,6 +18,8 @@ import pytest
 from helios import HeliosException
 from helios.validation import CompressionLevel
 
+o3d = pytest.importorskip("open3d")
+
 
 def _write_xyz_file(path: Path, separator: str = " ") -> None:
     rows = [
@@ -1304,3 +1306,119 @@ def test_scene_part_from_numpy_material_update():
     scene_part.update_material(mat)
 
     assert len(scene_part.materials) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_open3d():
+    """Test creating scene part from Open3D point cloud."""
+
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    colors = np.array(
+        [
+            [255, 0, 0],
+            [0, 255, 0],
+            [0, 0, 255],
+            [255, 255, 0],
+        ]
+    )
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)
+    pcd.colors = o3d.utility.Vector3dVector(colors)
+    scene_part = ScenePart.from_open3d(pcd, voxel_size=1.0, max_color_value=255.0)
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_open3d_points_only():
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)
+
+    scene_part = ScenePart.from_open3d(pcd, voxel_size=1.0)
+
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_open3d_with_colors_and_normals():
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    normals = np.array([[0.0, 0.0, 1.0]] * 4)
+    colors = np.array(
+        [
+            [255.0, 0.0, 0.0],
+            [0.0, 255.0, 0.0],
+            [0.0, 0.0, 255.0],
+            [255.0, 255.0, 0.0],
+        ]
+    )
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)
+    pcd.normals = o3d.utility.Vector3dVector(normals)
+    pcd.colors = o3d.utility.Vector3dVector(colors)
+
+    scene_part = ScenePart.from_open3d(pcd, voxel_size=1.0, max_color_value=255.0)
+
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_open3d_defaults_max_color_value_zero():
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+        ]
+    )
+    colors = np.array(
+        [
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 1.0],
+        ]
+    )
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)
+    pcd.colors = o3d.utility.Vector3dVector(colors)
+
+    scene_part = ScenePart.from_open3d(pcd, voxel_size=1.0)
+
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_open3d_rejects_empty_point_cloud():
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(np.empty((0, 3)))
+
+    with pytest.raises(ValueError, match="empty"):
+        ScenePart.from_open3d(pcd, voxel_size=1.0)
+
+
+@pytest.mark.open3d
+def test_scene_part_from_open3d_rejects_non_point_cloud():
+    mesh = o3d.geometry.LineSet()
+
+    with pytest.raises(TypeError, match="only Open3D PointCloud geometries"):
+        ScenePart.from_open3d(mesh, voxel_size=1.0)

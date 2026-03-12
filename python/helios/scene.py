@@ -438,6 +438,85 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         return cls._from_cpp(_cpp_part)
 
+    @classonlymethod
+    @validate_call
+    def from_open3d(
+        cls,
+        geometry,
+        voxel_size: PositiveFloat,
+        *,
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: R3Vector = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
+        sparse: bool = True,
+        estimate_normals: bool = False,
+        snap_neighbor_normal: bool = False,
+    ):
+        """Load the scene part from an Open3D geometry."""
+        try:
+            import open3d
+        except ImportError:
+            raise ImportError(
+                "Open3D is required for `ScenePart.from_o3d`, but can't be installed via conda. Install it with `pip install open3d`."
+            )
+
+        if isinstance(geometry, open3d.geometry.PointCloud):
+            points = np.asarray(geometry.points, dtype=np.float64)
+            normals = (
+                np.asarray(geometry.normals, dtype=np.float64)
+                if geometry.has_normals()
+                else None
+            )
+            colors = np.asarray(geometry.colors) if geometry.has_colors() else None
+        else:
+            raise TypeError(
+                "At the moment, only Open3D PointCloud geometries are supported for loading into a ScenePart. Support for other geometry types will be added in the future."
+            )
+
+        if points.ndim != 2 or points.shape[1] != 3:
+            raise ValueError(
+                f"Open3D point cloud points must have shape (N, 3). Got {points.shape}."
+            )
+        if points.shape[0] == 0:
+            raise ValueError("Open3D point cloud is empty.")
+
+        combined_array = [points]
+        col_amnt = 3
+        if normals is not None:
+            if normals.shape != points.shape:
+                raise ValueError(
+                    "The number of normals must match the number of points."
+                )
+            combined_array.append(normals)
+            normals_indices = [col_amnt, col_amnt + 1, col_amnt + 2]
+            col_amnt += 3
+
+        if colors is not None:
+            if colors.shape != points.shape:
+                raise ValueError(
+                    "The number of colors must match the number of points."
+                )
+            combined_array.append(colors)
+            rgb_file_columns = [col_amnt, col_amnt + 1, col_amnt + 2]
+            col_amnt += 3
+
+        if max_color_value == 0.0:
+            max_color_value = 1.0
+        result_array = np.hstack(combined_array)
+
+        return cls.from_numpy_array(
+            points=result_array,
+            voxel_size=voxel_size,
+            normals_file_columns=normals_indices if normals is not None else None,
+            rgb_file_columns=rgb_file_columns if colors is not None else None,
+            max_color_value=max_color_value,
+            default_normal=default_normal,
+            sparse=sparse,
+            estimate_normals=estimate_normals,
+            snap_neighbor_normal=snap_neighbor_normal,
+        )
+
     @validate_call
     def _apply_material_to_all_primitives(self, material: Material):
         """Apply a material to all primitives in the scene part."""
