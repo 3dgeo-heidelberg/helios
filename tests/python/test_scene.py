@@ -47,6 +47,48 @@ def _write_only_points_xyz_file(path: Path) -> None:
             handle.write("\n")
 
 
+@pytest.mark.open3d
+def _write_o3d_mesh_file(path) -> None:
+    vertices = np.array(
+        [
+            [50, -50, 50],
+            [50, -50, -50],
+            [-50, -50, 50],
+            [-50, -50, -50],
+            [50, 50, 50],
+            [50, 50, -50],
+            [-50, 50, 50],
+            [-50, 50, -50],
+        ],
+        dtype=np.float64,
+    )
+
+    triangles = np.array(
+        [
+            [0, 4, 6],
+            [0, 6, 2],
+            [3, 2, 6],
+            [3, 6, 7],
+            [7, 6, 4],
+            [7, 4, 5],
+            [5, 1, 3],
+            [5, 3, 7],
+            [1, 0, 2],
+            [1, 2, 3],
+            [5, 4, 0],
+            [5, 0, 1],
+        ],
+        dtype=np.int32,
+    )
+
+    mesh = o3d.geometry.TriangleMesh()
+    mesh.vertices = o3d.utility.Vector3dVector(vertices)
+    mesh.triangles = o3d.utility.Vector3iVector(triangles)
+
+    mesh.compute_vertex_normals()
+    o3d.io.write_triangle_mesh(str(path), mesh)
+
+
 @pytest.fixture
 def xyz_file(tmp_path) -> Path:
     path = tmp_path / "small.xyz"
@@ -74,6 +116,13 @@ def xyz_parts_dir(tmp_path) -> Path:
     _write_xyz_file(tmp_path / "part2.xyz")
     _write_xyz_file(tmp_path / "part3_sepcomma.xyz", separator=",")
     return tmp_path
+
+
+@pytest.fixture
+def o3d_mesh_file(tmp_path) -> Path:
+    path = tmp_path / "mesh.ply"
+    _write_o3d_mesh_file(path)
+    return path
 
 
 def _configure_fast_survey_legs(survey: Survey) -> Survey:
@@ -1350,7 +1399,6 @@ def test_scene_part_from_open3d_points_only():
     pcd.points = o3d.utility.Vector3dVector(points)
 
     scene_part = ScenePart.from_open3d(pcd, voxel_size=1.0)
-
     assert len(scene_part._cpp_object.primitives) > 0
 
 
@@ -1413,7 +1461,7 @@ def test_scene_part_from_open3d_rejects_empty_point_cloud():
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(np.empty((0, 3)))
 
-    with pytest.raises(ValueError, match="empty"):
+    with pytest.raises(ValueError, match="must contain at least one row"):
         ScenePart.from_open3d(pcd, voxel_size=1.0)
 
 
@@ -1421,5 +1469,93 @@ def test_scene_part_from_open3d_rejects_empty_point_cloud():
 def test_scene_part_from_open3d_rejects_non_point_cloud():
     mesh = o3d.geometry.LineSet()
 
-    with pytest.raises(TypeError, match="only Open3D PointCloud geometries"):
+    with pytest.raises(TypeError, match="open3d.geometry.PointCloud"):
         ScenePart.from_open3d(mesh, voxel_size=1.0)
+
+
+def test_scene_part_from_o3d_mesh_file(o3d_mesh_file):
+    """Test creating a scene part from an Open3D mesh file."""
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+    scene_part = ScenePart.from_open3d(geometry)
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+def test_scene_part_from_o3d_mesh_with_up_axis_y(o3d_mesh_file):
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+    scene_part = ScenePart.from_open3d(geometry, up_axis="y")
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_rejects_invalid_up_axis():
+    vertices = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+        ],
+        dtype=np.float64,
+    )
+    triangles = np.array([[0, 1, 2]], dtype=np.int32)
+
+    mesh = o3d.geometry.TriangleMesh()
+    mesh.vertices = o3d.utility.Vector3dVector(vertices)
+    mesh.triangles = o3d.utility.Vector3iVector(triangles)
+    with pytest.raises(ValueError, match="up_axis"):
+        ScenePart.from_open3d(mesh, up_axis="x")
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_rejects_empty_vertices():
+    mesh = o3d.geometry.TriangleMesh()
+    mesh.vertices = o3d.utility.Vector3dVector(np.empty((0, 3), dtype=np.float64))
+    mesh.triangles = o3d.utility.Vector3iVector(np.array([[0, 1, 2]], dtype=np.int32))
+
+    with pytest.raises(ValueError, match="must contain at least one row"):
+        ScenePart.from_open3d(mesh)
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_rejects_no_triangles():
+    mesh = o3d.geometry.TriangleMesh()
+    mesh.vertices = o3d.utility.Vector3dVector(
+        np.array(
+            [
+                [0.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+            ],
+            dtype=np.float64,
+        )
+    )
+    mesh.triangles = o3d.utility.Vector3iVector(np.empty((0, 3), dtype=np.int32))
+
+    with pytest.raises(ValueError, match="must contain at least one row"):
+        ScenePart.from_open3d(mesh)
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_accepts_vertex_normals_and_colors(o3d_mesh_file):
+    normals = np.array(
+        [
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, 1.0],
+        ],
+        dtype=np.float64,
+    )
+    colors = np.array(
+        [
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 1.0],
+        ],
+        dtype=np.float64,
+    )
+
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+    geometry.vertex_normals = o3d.utility.Vector3dVector(normals)
+    geometry.vertex_colors = o3d.utility.Vector3dVector(colors)
+
+    scene_part = ScenePart.from_open3d(geometry)
+    assert len(scene_part._cpp_object.primitives) > 0
