@@ -8,6 +8,16 @@ from helios.platforms import (
 )
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
+from helios.callbacks import (
+    CPP_HOOK_END_OF_LEG_POLICY_MAP,
+    CPP_HOOK_PAYLOAD_MAP,
+    CPP_HOOK_POINT_MAP,
+    HookEndOfLegPolicy,
+    HookPayload,
+    HookPoint,
+    SurveyHook,
+    build_progressbar_callbacks,
+)
 from helios.settings import (
     ExecutionSettings,
     FullWaveformSettings,
@@ -29,16 +39,14 @@ from helios.utils import (
 from helios.validation import (
     AssetPath,
     Model,
-    TimeInterval,
     validate_xml_file,
 )
 
 from datetime import datetime, timezone
-from enum import StrEnum
 from numpydantic import NDArray
 from pathlib import Path
-from pydantic import BaseModel, ConfigDict, Field, model_validator, validate_call
-from typing import Annotated, Callable, Optional, Tuple
+from pydantic import Field, validate_call
+from typing import Annotated, Optional, Sequence, Tuple
 import threading
 
 import numpy as np
@@ -46,75 +54,6 @@ import tempfile
 import laspy
 
 import _helios
-
-
-class HookPoint(StrEnum):
-    LEG_START = "leg_start"
-    LEG_END = "leg_end"
-    SIM_TIME_ONCE = "sim_time_once"
-    SIM_TIME_PERIODIC = "sim_time_periodic"
-
-
-class HookPayload(StrEnum):
-    METADATA_ONLY = "metadata_only"
-    SINCE_LAST = "since_last"
-    ALL_POINTS = "all_points"
-
-
-class HookEndOfLegPolicy(StrEnum):
-    NONE = "none"
-    FLUSH = "flush"
-    FLUSH_AND_RESET = "flush_and_reset"
-
-
-class SurveyHook(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    point: HookPoint
-    callback: Callable
-    barrier: bool = False
-    payload: HookPayload = HookPayload.METADATA_ONLY
-    end_of_leg_policy: Optional[HookEndOfLegPolicy] = None
-    sim_time_s: Optional[TimeInterval] = None
-    period_s: Optional[TimeInterval] = None
-
-    @model_validator(mode="after")
-    def _validate_trigger_shape(self):
-        if not callable(self.callback):
-            raise ValueError("callback must be callable")
-
-        if self.point == HookPoint.SIM_TIME_ONCE:
-            if self.sim_time_s is None:
-                raise ValueError("sim_time_s is required for SIM_TIME_ONCE")
-            if self.period_s is not None:
-                raise ValueError("period_s is invalid for SIM_TIME_ONCE")
-            if self.end_of_leg_policy not in (None, HookEndOfLegPolicy.NONE):
-                raise ValueError(
-                    "end_of_leg_policy is only valid for SIM_TIME_PERIODIC"
-                )
-            if self.end_of_leg_policy is None:
-                self.end_of_leg_policy = HookEndOfLegPolicy.NONE
-        elif self.point == HookPoint.SIM_TIME_PERIODIC:
-            if self.period_s is None:
-                raise ValueError("period_s is required for SIM_TIME_PERIODIC")
-            if self.period_s <= 0:
-                raise ValueError("period_s must be > 0 for SIM_TIME_PERIODIC")
-            if self.sim_time_s is None:
-                self.sim_time_s = 0.0
-            if self.end_of_leg_policy is None:
-                self.end_of_leg_policy = HookEndOfLegPolicy.FLUSH
-        else:
-            if self.sim_time_s is not None or self.period_s is not None:
-                raise ValueError(
-                    "time trigger fields are only valid for timed hook points"
-                )
-            if self.end_of_leg_policy not in (None, HookEndOfLegPolicy.NONE):
-                raise ValueError(
-                    "end_of_leg_policy is only valid for SIM_TIME_PERIODIC"
-                )
-            if self.end_of_leg_policy is None:
-                self.end_of_leg_policy = HookEndOfLegPolicy.NONE
-        return self
 
 
 def _start_playback_interruptible(playback, poll_interval=0.1):
@@ -139,28 +78,6 @@ def _start_playback_interruptible(playback, poll_interval=0.1):
         raise error[0]
 
 
-_CPP_HOOK_POINT_MAP = {
-    HookPoint.LEG_START: _helios.CppHookPoint.LEG_START,
-    HookPoint.LEG_END: _helios.CppHookPoint.LEG_END,
-    HookPoint.SIM_TIME_ONCE: _helios.CppHookPoint.SIM_TIME_ONCE,
-    HookPoint.SIM_TIME_PERIODIC: _helios.CppHookPoint.SIM_TIME_PERIODIC,
-}
-
-
-_CPP_HOOK_PAYLOAD_MAP = {
-    HookPayload.METADATA_ONLY: _helios.CppHookPayload.METADATA_ONLY,
-    HookPayload.SINCE_LAST: _helios.CppHookPayload.SINCE_LAST,
-    HookPayload.ALL_POINTS: _helios.CppHookPayload.ALL_POINTS,
-}
-
-
-_CPP_HOOK_END_OF_LEG_POLICY_MAP = {
-    HookEndOfLegPolicy.NONE: _helios.CppHookEndOfLegPolicy.NONE,
-    HookEndOfLegPolicy.FLUSH: _helios.CppHookEndOfLegPolicy.FLUSH,
-    HookEndOfLegPolicy.FLUSH_AND_RESET: _helios.CppHookEndOfLegPolicy.FLUSH_AND_RESET,
-}
-
-
 class Survey(Model, cpp_class=_helios.Survey):
     scanner: Scanner
     platform: Platform
@@ -176,7 +93,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         self,
         execution_settings: Optional[ExecutionSettings] = None,
         output_settings: Optional[OutputSettings] = None,
-        callbacks: Optional[tuple[SurveyHook, ...] | list[SurveyHook]] = None,
+        callbacks: Optional[Sequence[SurveyHook]] = None,
         **parameters,
     ):
         # TODO: Options that need to be incorporated:
@@ -185,6 +102,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
         callbacks = tuple(callbacks or ())
+        progressbar_controller = None
 
         # Update logs settings
         apply_log_writing(execution_settings)
@@ -273,26 +191,36 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.scanner._cpp_object.all_output_paths = np.empty((0,))
         self.scanner._cpp_object.all_measurements_mutex = None
 
+        progressbar_callbacks, progressbar_controller = build_progressbar_callbacks(
+            strategy=execution_settings.progressbar,
+            num_legs=len(self.legs),
+        )
+        callbacks = callbacks + progressbar_callbacks
+
         for hook in callbacks:
             registration = _helios.SurveyHookRegistration()
-            registration.point = _CPP_HOOK_POINT_MAP[hook.point]
-            registration.payload = _CPP_HOOK_PAYLOAD_MAP[hook.payload]
+            registration.point = CPP_HOOK_POINT_MAP[hook.point]
+            registration.payload = CPP_HOOK_PAYLOAD_MAP[hook.payload]
             end_of_leg_policy = hook.end_of_leg_policy or HookEndOfLegPolicy.NONE
-            registration.end_of_leg_policy = _CPP_HOOK_END_OF_LEG_POLICY_MAP[
+            registration.end_of_leg_policy = CPP_HOOK_END_OF_LEG_POLICY_MAP[
                 end_of_leg_policy
             ]
             registration.barrier = hook.barrier
             registration.callback = hook.callback
             registration.sim_time_s = (
-                float(hook.sim_time_s) if hook.sim_time_s is not None else 0.0
+                float(hook.sim_time) if hook.sim_time is not None else 0.0
             )
             registration.period_s = (
-                float(hook.period_s) if hook.period_s is not None else 0.0
+                float(hook.period) if hook.period is not None else 0.0
             )
             playback.add_hook(registration)
 
         # Start simulating the survey
-        _start_playback_interruptible(playback)
+        try:
+            _start_playback_interruptible(playback)
+        finally:
+            if progressbar_controller is not None:
+                progressbar_controller.close()
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required

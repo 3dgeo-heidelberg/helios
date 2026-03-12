@@ -743,6 +743,23 @@ PYBIND11_MODULE(_helios, m)
     .def_property_readonly(
       "gps_time_s", [](HookContext const& self) { return self.gpsTime_s; })
     .def_property_readonly(
+      "survey_progress",
+      [](HookContext const& self) { return self.surveyProgress; })
+    .def_property_readonly(
+      "leg_progress", [](HookContext const& self) { return self.legProgress; })
+    .def_property_readonly(
+      "elapsed_time_s",
+      [](HookContext const& self) { return self.elapsedTime_s; })
+    .def_property_readonly(
+      "remaining_time_s",
+      [](HookContext const& self) { return self.remainingTime_s; })
+    .def_property_readonly(
+      "leg_elapsed_time_s",
+      [](HookContext const& self) { return self.legElapsedTime_s; })
+    .def_property_readonly(
+      "leg_remaining_time_s",
+      [](HookContext const& self) { return self.legRemainingTime_s; })
+    .def_property_readonly(
       "output_path", [](HookContext const& self) { return self.outputPath; })
     .def_property_readonly(
       "total_points", [](HookContext const& self) { return self.totalPoints; })
@@ -771,6 +788,23 @@ PYBIND11_MODULE(_helios, m)
       "simTime_s", [](HookContext const& self) { return self.simTime_s; })
     .def_property_readonly(
       "gpsTime_s", [](HookContext const& self) { return self.gpsTime_s; })
+    .def_property_readonly(
+      "surveyProgress",
+      [](HookContext const& self) { return self.surveyProgress; })
+    .def_property_readonly(
+      "legProgress", [](HookContext const& self) { return self.legProgress; })
+    .def_property_readonly(
+      "elapsedTime_s",
+      [](HookContext const& self) { return self.elapsedTime_s; })
+    .def_property_readonly(
+      "remainingTime_s",
+      [](HookContext const& self) { return self.remainingTime_s; })
+    .def_property_readonly(
+      "legElapsedTime_s",
+      [](HookContext const& self) { return self.legElapsedTime_s; })
+    .def_property_readonly(
+      "legRemainingTime_s",
+      [](HookContext const& self) { return self.legRemainingTime_s; })
     .def_property_readonly(
       "outputPath", [](HookContext const& self) { return self.outputPath; })
     .def_property_readonly(

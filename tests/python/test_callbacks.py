@@ -1,7 +1,10 @@
 import pytest
 
+import helios.callbacks as callbacks_module
+
 from helios import HookEndOfLegPolicy, HookPayload, HookPoint, Survey, SurveyHook
-from helios.settings import ExecutionSettings, OutputFormat
+from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
+from tqdm.std import tqdm as tqdm_std
 
 
 def _make_short_survey(scanner, tripod, scene, legs=1):
@@ -58,7 +61,7 @@ def test_sim_time_once_fires_once(tls_scanner, tripod, scene):
             SurveyHook(
                 point=HookPoint.SIM_TIME_ONCE,
                 callback=on_once,
-                sim_time_s=0.02,
+                sim_time=0.02,
             ),
         ),
     )
@@ -80,8 +83,8 @@ def test_sim_time_periodic_skips_missed_intervals(tls_scanner, tripod, scene):
             SurveyHook(
                 point=HookPoint.SIM_TIME_PERIODIC,
                 callback=on_periodic,
-                sim_time_s=0.0,
-                period_s=0.0001,
+                sim_time=0.0,
+                period=0.0001,
             ),
         ),
     )
@@ -136,8 +139,8 @@ def test_payload_since_last_non_overlapping_points_and_trajectories(
                 point=HookPoint.SIM_TIME_PERIODIC,
                 callback=on_periodic,
                 payload=HookPayload.SINCE_LAST,
-                sim_time_s=0.0,
-                period_s=0.0001,
+                sim_time=0.0,
+                period=0.0001,
             ),
         ),
     )
@@ -160,8 +163,8 @@ def test_payload_since_last_periodic_tail_flushes_remaining_points(tls_survey):
                 point=HookPoint.SIM_TIME_PERIODIC,
                 callback=on_periodic,
                 payload=HookPayload.SINCE_LAST,
-                sim_time_s=1000.0,
-                period_s=1000.0,
+                sim_time=1000.0,
+                period=1000.0,
                 end_of_leg_policy=HookEndOfLegPolicy.FLUSH,
             ),
         ),
@@ -186,8 +189,8 @@ def test_periodic_end_of_leg_policy_none_disables_tail_flush(tls_survey):
                 point=HookPoint.SIM_TIME_PERIODIC,
                 callback=on_periodic,
                 payload=HookPayload.SINCE_LAST,
-                sim_time_s=1000.0,
-                period_s=1000.0,
+                sim_time=1000.0,
+                period=1000.0,
                 end_of_leg_policy=HookEndOfLegPolicy.NONE,
             ),
         ),
@@ -228,8 +231,8 @@ def test_periodic_end_of_leg_policy_flush_and_reset_resets_timer(
                 point=HookPoint.SIM_TIME_PERIODIC,
                 callback=on_periodic,
                 payload=HookPayload.SINCE_LAST,
-                sim_time_s=0.0,
-                period_s=1.5,
+                sim_time=0.0,
+                period=1.5,
                 end_of_leg_policy=HookEndOfLegPolicy.FLUSH_AND_RESET,
             ),
         ),
@@ -257,8 +260,8 @@ def test_payload_all_points_and_trajectories_grows(tls_scanner, tripod, scene):
                 point=HookPoint.SIM_TIME_PERIODIC,
                 callback=on_periodic,
                 payload=HookPayload.ALL_POINTS,
-                sim_time_s=0.0,
-                period_s=0.01,
+                sim_time=0.0,
+                period=0.01,
             ),
         ),
     )
@@ -287,7 +290,7 @@ def test_barrier_true_includes_pending_points(tls_scanner, tripod, scene):
                 callback=on_once,
                 payload=HookPayload.SINCE_LAST,
                 barrier=True,
-                sim_time_s=0.05,
+                sim_time=0.05,
             ),
         ),
     )
@@ -311,7 +314,7 @@ def test_barrier_true_includes_pending_trajectories(tls_scanner, tripod, scene):
                 callback=on_once,
                 payload=HookPayload.SINCE_LAST,
                 barrier=True,
-                sim_time_s=0.05,
+                sim_time=0.05,
             ),
         ),
     )
@@ -333,7 +336,302 @@ def test_callback_exception_stops_and_propagates(tls_scanner, tripod, scene):
                 SurveyHook(
                     point=HookPoint.SIM_TIME_ONCE,
                     callback=on_once,
-                    sim_time_s=0.01,
+                    sim_time=0.01,
                 ),
             ),
         )
+
+
+def test_progressbar_callbacks_append_and_close(
+    monkeypatch, tls_scanner, tripod, scene
+):
+    survey = _make_short_survey(tls_scanner, tripod, scene, legs=2)
+    closed = []
+    bars = []
+
+    class FakeTqdm:
+        def __init__(
+            self,
+            total=None,
+            desc="",
+            unit="it",
+            bar_format=None,
+            dynamic_ncols=True,
+            position=0,
+            leave=True,
+        ):
+            self.total = total
+            self.desc = desc
+            self.unit = unit
+            self.bar_format = bar_format
+            self.dynamic_ncols = dynamic_ncols
+            self.position = position
+            self.leave = leave
+            self.n = 0.0
+            bars.append(self)
+
+        def update(self, delta):
+            self.n += float(delta)
+
+        def refresh(self):
+            return None
+
+        def close(self):
+            closed.append(self)
+
+        def reset(self, total=None):
+            self.total = total
+            self.n = 0.0
+
+        def set_description(self, desc):
+            self.desc = desc
+
+        def __bool__(self):
+            if self.total is None:
+                raise TypeError("bool() undefined when iterable == total == None")
+            return True
+
+    monkeypatch.setattr("helios.callbacks.tqdm", FakeTqdm)
+
+    user_leg_end = []
+
+    def on_end(ctx, points=None, trajectories=None):
+        user_leg_end.append(ctx.leg_index)
+
+    survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=ExecutionSettings(
+            num_threads=1, progressbar=ProgressBarStrategy.LEGS_TIME
+        ),
+        callbacks=(SurveyHook(point=HookPoint.LEG_END, callback=on_end),),
+    )
+
+    assert user_leg_end == [0, 1]
+    assert len(bars) == 2
+    assert len(closed) == 2
+    assert [bar.unit for bar in closed] == ["leg", "s"]
+
+    legs_bar = next(bar for bar in bars if bar.unit == "leg")
+    time_bar = next(bar for bar in bars if bar.unit == "s")
+    assert legs_bar.total == 2
+    assert legs_bar.n == pytest.approx(2.0)
+    assert time_bar.total is not None
+    assert time_bar.total > 0
+    assert time_bar.n > 0
+
+
+def test_per_leg_progressbar_resets_on_each_leg(
+    monkeypatch, tls_scanner, tripod, scene
+):
+    survey = _make_short_survey(tls_scanner, tripod, scene, legs=2)
+    bars = []
+
+    class FakeTqdm:
+        def __init__(
+            self,
+            total=None,
+            desc="",
+            unit="it",
+            bar_format=None,
+            dynamic_ncols=True,
+            position=0,
+            leave=True,
+        ):
+            self.total = total
+            self.desc = desc
+            self.unit = unit
+            self.bar_format = bar_format
+            self.dynamic_ncols = dynamic_ncols
+            self.position = position
+            self.leave = leave
+            self.n = 0.0
+            self.reset_count = 0
+            bars.append(self)
+
+        def update(self, delta):
+            self.n += float(delta)
+
+        def refresh(self):
+            return None
+
+        def close(self):
+            return None
+
+        def reset(self, total=None):
+            self.total = total
+            self.n = 0.0
+            self.reset_count += 1
+
+        def set_description(self, desc):
+            self.desc = desc
+
+        def __bool__(self):
+            if self.total is None:
+                raise TypeError("bool() undefined when iterable == total == None")
+            return True
+
+    monkeypatch.setattr("helios.callbacks.tqdm", FakeTqdm)
+
+    survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=ExecutionSettings(
+            num_threads=1, progressbar=ProgressBarStrategy.PER_LEG_TIME
+        ),
+    )
+
+    legs_bar = next(bar for bar in bars if bar.unit == "leg")
+    leg_time_bar = next(bar for bar in bars if bar.unit == "s")
+    assert legs_bar.n == pytest.approx(2.0)
+    assert leg_time_bar.reset_count == 2
+    assert leg_time_bar.total is not None
+    assert leg_time_bar.total > 0
+
+
+def test_per_leg_progressbar_handles_unknown_totals_without_bool(monkeypatch):
+    class FakeTqdm:
+        def __init__(
+            self,
+            total=None,
+            desc="",
+            unit="it",
+            bar_format=None,
+            dynamic_ncols=True,
+            position=0,
+            leave=True,
+        ):
+            self.total = total
+            self.bar_format = bar_format
+            self.n = 0.0
+
+        def update(self, delta):
+            self.n += float(delta)
+
+        def refresh(self):
+            return None
+
+        def close(self):
+            return None
+
+        def reset(self, total=None):
+            self.total = total
+            self.n = 0.0
+
+        def set_description(self, desc):
+            return None
+
+        def __bool__(self):
+            if self.total is None:
+                raise TypeError("bool() undefined when iterable == total == None")
+            return True
+
+    monkeypatch.setattr("helios.callbacks.tqdm", FakeTqdm)
+
+    bars = callbacks_module._ProgressBarCallbacks(
+        strategy=ProgressBarStrategy.PER_LEG_TIME,
+        num_legs=1,
+    )
+    try:
+        bars._time_bar.total = None
+        bars._apply_event("leg_start", 0, 0.0, None, 0.0, None)
+        bars._apply_event("time", 0, 0.5, None, 0.5, None)
+        assert bars._time_bar.n == pytest.approx(0.5)
+    finally:
+        bars.close()
+
+
+def test_set_bar_value_formats_seconds_with_two_decimals():
+    class FakeBar:
+        def __init__(self):
+            self.total = None
+            self.n = 0.0
+            self.unit = "s"
+            self.bar_format = None
+
+        def reset(self, total=None):
+            self.total = total
+            self.n = 0.0
+
+        def update(self, delta):
+            self.n += float(delta)
+
+        def refresh(self):
+            return None
+
+    bar = FakeBar()
+    callbacks_module._ProgressBarCallbacks._set_bar_value(
+        bar=bar,
+        current_value=0.0056981950000000005,
+        previous_value=0.0,
+        total_value=0.0056981950000000005,
+    )
+
+    rendered = tqdm_std.format_meter(
+        n=bar.n,
+        total=bar.total,
+        elapsed=0.1,
+        unit=bar.unit,
+        bar_format=bar.bar_format,
+    )
+    assert "0.01/0.01" in rendered
+    assert "0.0056981950000000005" not in rendered
+
+
+def test_set_bar_value_resets_when_total_changes():
+    class FakeBar:
+        def __init__(self):
+            self.total = 0.1
+            self.n = 0.1
+            self.unit = "s"
+            self.bar_format = None
+            self.reset_calls = []
+
+        def reset(self, total=None):
+            self.reset_calls.append(total)
+            self.total = total
+            self.n = 0.0
+
+        def update(self, delta):
+            self.n += float(delta)
+
+        def refresh(self):
+            return None
+
+    bar = FakeBar()
+    callbacks_module._ProgressBarCallbacks._set_bar_value(
+        bar=bar,
+        current_value=0.2,
+        previous_value=0.1,
+        total_value=0.2,
+    )
+
+    assert bar.reset_calls == [pytest.approx(0.2)]
+    assert bar.total == pytest.approx(0.2)
+    assert bar.n == pytest.approx(0.2)
+
+
+def test_hook_context_exposes_elapsed_remaining_time(tls_scanner, tripod, scene):
+    survey = _make_short_survey(tls_scanner, tripod, scene)
+    seen = []
+
+    def on_end(ctx, points=None, trajectories=None):
+        seen.append(
+            (
+                ctx.elapsed_time_s,
+                ctx.remaining_time_s,
+                ctx.leg_elapsed_time_s,
+                ctx.leg_remaining_time_s,
+            )
+        )
+
+    survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=ExecutionSettings(num_threads=1),
+        callbacks=(SurveyHook(point=HookPoint.LEG_END, callback=on_end),),
+    )
+
+    assert len(seen) == 1
+    elapsed, remaining, leg_elapsed, leg_remaining = seen[0]
+    assert elapsed >= 0.0
+    assert remaining >= 0.0
+    assert leg_elapsed >= 0.0
+    assert leg_remaining >= 0.0

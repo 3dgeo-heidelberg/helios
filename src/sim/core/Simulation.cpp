@@ -159,6 +159,7 @@ Simulation::emitLegStartHook()
     ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
     ctx.scheduledTime_s = simTime_s;
     ctx.lag_s = 0.0;
+    enrichHookContext(ctx);
 
     dispatchHook(reg, ctx);
     if (hasHookFailure()) {
@@ -194,6 +195,7 @@ Simulation::emitLegEndHook()
     ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
     ctx.scheduledTime_s = simTime_s;
     ctx.lag_s = 0.0;
+    enrichHookContext(ctx);
 
     dispatchHook(reg, ctx);
     if (hasHookFailure()) {
@@ -229,6 +231,7 @@ Simulation::emitTimedHooks(double simTime_s)
       ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
       ctx.scheduledTime_s = reg.simTime_s;
       ctx.lag_s = simTime_s - reg.simTime_s;
+      enrichHookContext(ctx);
 
       dispatchHook(reg, ctx);
       if (hasHookFailure()) {
@@ -255,6 +258,7 @@ Simulation::emitTimedHooks(double simTime_s)
       ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
       ctx.scheduledTime_s = scheduledTime_s;
       ctx.lag_s = simTime_s - scheduledTime_s;
+      enrichHookContext(ctx);
 
       dispatchHook(reg, ctx);
       if (hasHookFailure()) {
@@ -306,6 +310,7 @@ Simulation::emitPeriodicTailHooks(double simTime_s)
       ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
       ctx.scheduledTime_s = simTime_s;
       ctx.lag_s = 0.0;
+      enrichHookContext(ctx);
 
       dispatchHook(reg, ctx);
       if (hasHookFailure()) {
@@ -318,6 +323,12 @@ Simulation::emitPeriodicTailHooks(double simTime_s)
       reg.nextFire_s = simTime_s + reg.period_s;
     }
   }
+}
+
+void
+Simulation::enrichHookContext(HookContext& ctx) const
+{
+  (void)ctx;
 }
 
 void

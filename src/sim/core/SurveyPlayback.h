@@ -70,7 +70,7 @@ private:
   /**
    * @brief Expected remaining time (nanoseconds) for survey simulation
    */
-  long long remainingTime_ns;
+  long long remainingTime_ns = 0;
   /**
    * @brief Elapsed time (nanoseconds) since current leg started
    */
@@ -78,7 +78,7 @@ private:
   /**
    * @brief Expected remaining time (nanoseconds) for current leg completion
    */
-  long long legRemainingTime_ns;
+  long long legRemainingTime_ns = 0;
   /**
    * Flag to specify whether the shutdown process
    *  after finishing a simulation must be finished or not. It is mostly
@@ -120,13 +120,10 @@ public:
    * @brief Time estimation for the entire simulation and current leg.
    *  NOTICE this function is called from trackProgress
    * @param legCurrentProgress Current leg progress
-   * @param onGround Not used at the moment
    * @param legElapsedLength Elapsed length for current leg
    * @see SurveyPlayback::trackProgress
    */
-  void estimateTime(int legCurrentProgress,
-                    bool onGround,
-                    double legElapsedLength);
+  void estimateTime(int legCurrentProgress, double legElapsedLength);
   /**
    * @brief Estimate the leg progress from linear space progress.
    *
@@ -181,6 +178,10 @@ public:
    */
   void trackProgress();
   /**
+   * @brief Enrich HookContext with progress and time estimates.
+   */
+  void enrichHookContext(HookContext& ctx) const override;
+  /**
    * @brief Perform computations for current simulation step
    */
   void doSimStep() override;
@@ -221,14 +222,6 @@ public:
    * @see Scanner::AbstractDetector
    */
   void shutdown() override;
-  /**
-   * @brief Translate milliseconds to time stamp string
-   *
-   * @param millis
-   * @return Time stamp string corresponding to given milliseconds. Its
-   *  format is "DD HH:MM:SS"
-   */
-  std::string milliToString(long millis);
   /**
    * @brief Perform stop and turn operation to advance to next leg
    *

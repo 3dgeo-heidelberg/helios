@@ -277,16 +277,6 @@ The demo simulation can be executed as follows:
 helios data/surveys/demo/tls_arbaro_demo.xml
 ```
 
-### Live visualization
-
-To visualize a survey while running it, we can use the `helios-live` entrypoint.
-Requirements: `open3d` (currently only supported for Python versions 3.8, 3.9, 3.10 and 3.11)
-
-```
-helios-live data/surveys/demo/tls_arbaro_demo.xml -o3d
-```
-
-
 ## :gift: Related projects and Contributions
 
 ### :rocket: helios launcher

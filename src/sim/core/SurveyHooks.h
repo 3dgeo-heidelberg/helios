@@ -38,6 +38,12 @@ struct HookContext
   int legIndex = 0;
   double simTime_s = 0.0;
   double gpsTime_s = 0.0;
+  double surveyProgress = 0.0;
+  double legProgress = 0.0;
+  double elapsedTime_s = 0.0;
+  double remainingTime_s = 0.0;
+  double legElapsedTime_s = 0.0;
+  double legRemainingTime_s = 0.0;
   std::string outputPath;
   size_t totalPoints = 0;
   size_t payloadPoints = 0;

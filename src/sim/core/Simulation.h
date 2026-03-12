@@ -261,6 +261,13 @@ public:
    * @brief Dispatch one hook registration.
    */
   void dispatchHook(SurveyHookRegistration& reg, HookContext const& ctx);
+  /**
+   * @brief Enrich hook context with simulation-specific metadata.
+   *
+   * Base implementation is a no-op. Derived simulations can override this
+   * method to expose additional state through HookContext.
+   */
+  virtual void enrichHookContext(HookContext& ctx) const;
 
   /**
    * @brief Start the simmulation
