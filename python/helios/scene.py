@@ -514,11 +514,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             geometry.triangles, dtype=np.int32, name="Open3D mesh triangles"
         )
 
-        if vertices.shape[0] == 0:
-            raise ValueError("Open3D mesh is empty.")
-        if triangles.shape[0] == 0:
-            raise ValueError("Open3D triangle mesh has no triangles.")
-
         normals = None
         if geometry.has_vertex_normals():
             normals = _as_array(
@@ -582,9 +577,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             if geometry.has_colors()
             else None
         )
-
-        if points.shape[0] == 0:
-            raise ValueError("Open3D point cloud is empty.")
 
         combined_array = [points]
         column_count = 3

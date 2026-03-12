@@ -459,16 +459,23 @@ def _validate_points_array_and_get_indices(
 
 
 def _as_array(value, *, dtype, shape_second_dim: int = 3, name: str) -> np.ndarray:
-    arr = np.asarray(value, dtype=dtype)
+    try:
+        arr = np.asarray(value)
+    except ValueError as e:
+        raise ValueError(f"{name} could not be converted to a NumPy array.") from e
+
     if arr.ndim != 2 or arr.shape[1] != shape_second_dim:
         raise ValueError(
             f"{name} must have shape (N, {shape_second_dim}). Got {arr.shape}."
         )
+    if arr.shape[0] == 0:
+        raise ValueError(f"{name} must contain at least one row.")
+
     return np.ascontiguousarray(arr, dtype=dtype)
 
 
 def _validate_same_shape(
-        arr: np.ndarray, ref_name: str, ref: np.ndarray, name: str
+    arr: np.ndarray, ref_name: str, ref: np.ndarray, name: str
 ) -> None:
     if arr.shape != ref.shape:
         raise ValueError(
