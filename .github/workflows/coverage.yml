@@ -45,6 +45,10 @@ jobs:
         run: |
           sudo apt install lcov
 
+      - name: Install Open3D 
+        run: |
+          python -m pip install -U -f https://www.open3d.org/docs/latest/getting_started.html --only-binary open3d open3d
+
       - name: Install Helios (editable)
         run: |
           python -m pip install --no-build-isolation --config-settings=cmake.build-type="Debug" --config-settings=build-dir="build" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage" -v -e .
