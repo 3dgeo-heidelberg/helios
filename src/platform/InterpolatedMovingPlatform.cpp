@@ -45,18 +45,16 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
       break;
     case RotationSpec::ARINC_705:
       calcAttitude = [](arma::Col<double> const x) -> Rotation {
-        return Rotation(Directions::right, -x[0])
-          .applyTo(Rotation(Directions::forward, -x[1]))
-          .applyTo(Rotation(Directions::up, -x[2]));
+        return Rotation(Directions::yaw, x[2])
+          .applyTo(Rotation(Directions::roll, x[0]))
+          .applyTo(Rotation(Directions::pitch, x[1]));
       };
       _getRollPitchYaw = [](double& roll,
                             double& pitch,
                             double& yaw,
                             Rotation& attitude) -> void {
-        attitude.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
-        roll = -roll;
-        pitch = -pitch;
-        yaw = -yaw;
+        attitude.getAngles(&RotationOrder::ZYX, yaw, roll, pitch);
+        yaw = (yaw < M_PI) ? -yaw : PI_2 - yaw;
       };
       break;
     default:
