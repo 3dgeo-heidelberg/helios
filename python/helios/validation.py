@@ -422,7 +422,7 @@ class Model(metaclass=ValidatedModelMetaClass):
         return f"{Path(self._serialization_filename()).stem}.bin"
 
     @validate_call
-    def to_yaml(self, path: Path, shallow: bool = True):
+    def to_yaml(self, path: Path, shallow: bool = False):
         """Serialize this model instance to YAML.
 
         Parameters
@@ -431,7 +431,7 @@ class Model(metaclass=ValidatedModelMetaClass):
             Destination YAML file path or destination directory.
         shallow : bool, optional
             If ``True``, nested models are serialized into separate files and linked
-            by references. If ``False``, nested models are inlined.
+            by references. If ``False`` (default), nested models are inlined.
 
         Returns
         -------
