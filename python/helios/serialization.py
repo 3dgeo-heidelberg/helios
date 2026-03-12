@@ -50,12 +50,25 @@ _MIGRATIONS: dict[int, Migration] = {}
 
 
 def register_migration(from_minor_version: int):
-    """Decorator for registering a migration from minor version N to N+1."""
+    """Register a migration function from a given minor version to the next one.
+
+    Parameters
+    ----------
+    from_minor_version : int
+        Source serialization minor version handled by the decorated migration.
+
+    Returns
+    -------
+    Callable[[Migration], Migration]
+        A decorator that stores the migration for upgrade application.
+    """
 
     if from_minor_version < 0:
         raise ValueError("Migration source minor version must be non-negative.")
 
     def _register(migration: Migration) -> Migration:
+        """Store the given migration under its source minor version key."""
+
         _MIGRATIONS[from_minor_version] = migration
         return migration
 
@@ -169,7 +182,23 @@ class _BundleCopyContext:
 
 
 def serialize_model_to_yaml(model: Model, path: Path, shallow: bool = True) -> Path:
-    """Serialize a model instance into YAML."""
+    """Serialize a model to YAML.
+
+    Parameters
+    ----------
+    model : Model
+        Model instance to serialize.
+    path : Path
+        Destination YAML file path or destination directory.
+    shallow : bool, optional
+        If ``True``, referenced models are serialized into separate YAML files and
+        represented via references. If ``False``, nested models are inlined.
+
+    Returns
+    -------
+    Path
+        Absolute path to the written root YAML file.
+    """
 
     root_file, _ = _serialize_model_to_yaml_with_context(
         model=model,
@@ -222,7 +251,25 @@ def _serialize_model_to_yaml_with_context(
 def serialize_model_to_bundle(
     model: Model, path: Path, binary: bool = False, force: bool = False
 ) -> Path:
-    """Serialize a model and copy referenced files into a relocatable bundle."""
+    """Serialize a model into a relocatable directory bundle.
+
+    Parameters
+    ----------
+    model : Model
+        Model instance to serialize.
+    path : Path
+        Target directory for bundle contents.
+    binary : bool, optional
+        If ``True``, serialize the model payload via ``to_binary`` sidecar files
+        where available.
+    force : bool, optional
+        If ``True``, clear an existing non-empty target directory before writing.
+
+    Returns
+    -------
+    Path
+        Path to the root YAML file inside the created bundle.
+    """
 
     bundle_dir = path.expanduser()
     _prepare_bundle_directory(bundle_dir, force=force)
@@ -241,7 +288,20 @@ def serialize_model_to_bundle(
 
 
 def deserialize_model_from_yaml(cls: Type[Model], path: Path) -> Model:
-    """Deserialize a model instance from YAML."""
+    """Deserialize a model instance from YAML.
+
+    Parameters
+    ----------
+    cls : Type[Model]
+        Expected model type.
+    path : Path
+        Path to a YAML model document.
+
+    Returns
+    -------
+    Model
+        Deserialized model instance of type ``cls``.
+    """
 
     source = path.expanduser().resolve()
     if not source.exists():
@@ -271,6 +331,8 @@ def _write_model_document(model: Model, filename: str, context: _SerializationCo
 
 
 def _prepare_bundle_directory(path: Path, force: bool) -> None:
+    """Create a writable bundle directory, optionally clearing prior contents."""
+
     if path.exists() and not path.is_dir():
         raise ValueError(f"Bundle path must be a directory: {path}")
 
@@ -296,6 +358,8 @@ def _rewrite_bundle_provenance_paths(
     bundle_dir: Path,
     model_documents: Optional[dict[str, Model]] = None,
 ) -> None:
+    """Rewrite provenance file references to point at copied bundle assets."""
+
     context = _BundleCopyContext(
         bundle_dir=bundle_dir.resolve(),
         used_filenames={
@@ -319,6 +383,8 @@ def _rewrite_bundle_provenance_paths(
 
 
 def _load_bundle_documents(root_yaml: Path) -> dict[Path, dict[str, Any]]:
+    """Load all YAML documents reachable from the root model reference graph."""
+
     docs: dict[Path, dict[str, Any]] = {}
     queue = [root_yaml.resolve()]
     seen: set[Path] = set()
@@ -343,6 +409,8 @@ def _load_bundle_documents(root_yaml: Path) -> dict[Path, dict[str, Any]]:
 
 
 def _iter_model_references(value: Any):
+    """Yield nested model reference filenames from a serialized value tree."""
+
     if (
         isinstance(value, Mapping)
         and set(value.keys()) == {_MODEL_REFERENCE_KEY}
@@ -366,6 +434,8 @@ def _copy_referenced_files_in_provenance(
     context: _BundleCopyContext,
     source_model: Optional[Model] = None,
 ) -> bool:
+    """Copy provenance file references into the bundle and rewrite paths in place."""
+
     provenance = document.get("provenance")
     if not isinstance(provenance, Mapping):
         return False
@@ -398,6 +468,8 @@ def _register_obj_material_sources(
     source_model: Optional[Model],
     context: _BundleCopyContext,
 ) -> None:
+    """Record OBJ-linked material files that must keep their original names."""
+
     if source_model is None:
         return
 
@@ -423,6 +495,8 @@ def _collect_scene_part_material_sources(
     obj_dir: Path,
     bundle_dir: Path,
 ) -> list[Path]:
+    """Collect MTL sources referenced by scene-part materials loaded from OBJ."""
+
     materials = getattr(source_model, "materials", None)
     if materials is None or not hasattr(materials, "values"):
         return []
@@ -449,6 +523,8 @@ def _collect_scene_part_material_sources(
 
 
 def _rewrite_provenance_value(value: Any, context: _BundleCopyContext) -> bool:
+    """Rewrite nested provenance strings to bundled filenames where possible."""
+
     changed = False
 
     if isinstance(value, dict):
@@ -477,6 +553,8 @@ def _rewrite_provenance_value(value: Any, context: _BundleCopyContext) -> bool:
 
 
 def _copy_file_reference_to_bundle(value: str, context: _BundleCopyContext) -> str:
+    """Copy one file reference into the bundle and return its bundled filename."""
+
     if not value:
         return value
 
@@ -513,6 +591,8 @@ def _copy_asset_with_dependencies(
     context: _BundleCopyContext,
     copied_sources: set[Path],
 ) -> None:
+    """Copy an asset into the bundle, recursively including known dependencies."""
+
     source = source.resolve()
     if source in copied_sources:
         return
@@ -536,6 +616,8 @@ def _copy_asset_with_dependencies(
 
 
 def _resolve_reference_source(reference: Path, bundle_dir: Path) -> Optional[Path]:
+    """Resolve a referenced file from absolute paths, bundle paths, or assets."""
+
     source: Optional[Path] = None
     if reference.is_absolute():
         if reference.exists() and reference.is_file():
@@ -556,6 +638,8 @@ def _reserve_bundle_filename(
     context: _BundleCopyContext,
     preferred: Optional[str] = None,
 ) -> str:
+    """Reserve and memoize a collision-free filename for a bundled source file."""
+
     source = source.resolve()
     existing = context.source_to_target.get(source)
     if existing is not None:
@@ -569,6 +653,8 @@ def _reserve_bundle_filename(
 
 
 def _sanitize_bundle_filename(filename: str) -> str:
+    """Normalize a filename for safe bundle-local usage."""
+
     candidate = filename.replace("\\", "_").replace("/", "_")
     candidate = "_".join(candidate.split())
     return candidate or "asset"
@@ -577,6 +663,8 @@ def _sanitize_bundle_filename(filename: str) -> str:
 def _resolve_dependency_reference(
     reference: str, base_dir: Path, bundle_dir: Path
 ) -> Optional[Path]:
+    """Resolve dependent assets relative to source, bundle, or asset directories."""
+
     ref_path = Path(reference).expanduser()
     if ref_path.is_absolute():
         if ref_path.exists() and ref_path.is_file():
@@ -603,6 +691,8 @@ def _copy_obj_with_dependencies(
     context: _BundleCopyContext,
     copied_sources: set[Path],
 ) -> None:
+    """Copy an OBJ and required material dependencies into the bundle."""
+
     target.parent.mkdir(parents=True, exist_ok=True)
     if source != target.resolve():
         shutil.copy2(source, target)
@@ -633,6 +723,8 @@ def _copy_mtl_with_dependencies(
     context: _BundleCopyContext,
     copied_sources: set[Path],
 ) -> None:
+    """Copy an MTL file while rewriting texture references to bundled assets."""
+
     content = source.read_text(encoding="utf-8", errors="ignore")
     lines = content.splitlines()
     trailing_newline = content.endswith("\n")
@@ -649,6 +741,8 @@ def _rewrite_mtl_line(
     context: _BundleCopyContext,
     copied_sources: set[Path],
 ) -> str:
+    """Rewrite one MTL directive line so copied textures use bundle-local names."""
+
     stripped = line.strip()
     if not stripped or stripped.startswith("#"):
         return line
@@ -680,6 +774,8 @@ def _rewrite_mtl_line(
 
 
 def _write_text_asset(target: Path, lines: list[str], trailing_newline: bool) -> None:
+    """Write plain-text asset lines, preserving trailing newline semantics."""
+
     target.parent.mkdir(parents=True, exist_ok=True)
     content = "\n".join(lines)
     if trailing_newline:
@@ -688,6 +784,8 @@ def _write_text_asset(target: Path, lines: list[str], trailing_newline: bool) ->
 
 
 def _mtl_texture_directives() -> set[str]:
+    """Return lowercase MTL directives that point to texture map files."""
+
     texture_directives = {
         "map_ka",
         "map_kd",
@@ -758,6 +856,8 @@ def _build_model_document(
 
 
 def _uses_from_binary_constructor_provenance(model: Model) -> bool:
+    """Return whether model provenance already records a ``from_binary`` constructor."""
+
     provenance = getattr(model, "_provenance", None)
     if not isinstance(provenance, Mapping):
         return False

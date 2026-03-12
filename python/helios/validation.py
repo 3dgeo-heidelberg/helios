@@ -213,6 +213,8 @@ def get_all_defaults(cls, dct):
 
 
 def _iter_models_in_value(value: Any):
+    """Yield nested ``Model`` instances from mappings and iterable values."""
+
     if isinstance(value, Model):
         yield value
         return
@@ -421,6 +423,22 @@ class Model(metaclass=ValidatedModelMetaClass):
 
     @validate_call
     def to_yaml(self, path: Path, shallow: bool = True):
+        """Serialize this model instance to YAML.
+
+        Parameters
+        ----------
+        path : Path
+            Destination YAML file path or destination directory.
+        shallow : bool, optional
+            If ``True``, nested models are serialized into separate files and linked
+            by references. If ``False``, nested models are inlined.
+
+        Returns
+        -------
+        Path
+            Path to the generated root YAML file.
+        """
+
         from helios.serialization import serialize_model_to_yaml
 
         if not getattr(self, "_yaml_serializable", True):
@@ -433,6 +451,23 @@ class Model(metaclass=ValidatedModelMetaClass):
 
     @validate_call
     def to_bundle(self, path: Path, binary: bool = False, force: bool = False):
+        """Serialize this model into a relocatable directory bundle.
+
+        Parameters
+        ----------
+        path : Path
+            Target bundle directory.
+        binary : bool, optional
+            If ``True``, use binary sidecar serialization where supported.
+        force : bool, optional
+            If ``True``, clear an existing non-empty bundle directory.
+
+        Returns
+        -------
+        Path
+            Path to the root YAML file inside the bundle.
+        """
+
         from helios.serialization import serialize_model_to_bundle
 
         return serialize_model_to_bundle(
@@ -442,6 +477,19 @@ class Model(metaclass=ValidatedModelMetaClass):
     @classmethod
     @validate_call
     def from_yaml(cls, path: Path):
+        """Load an instance of this model class from a YAML file.
+
+        Parameters
+        ----------
+        path : Path
+            Path to a serialized YAML document.
+
+        Returns
+        -------
+        Model
+            Deserialized instance of ``cls``.
+        """
+
         from helios.serialization import deserialize_model_from_yaml
 
         return deserialize_model_from_yaml(cls, path=path.expanduser())
@@ -449,6 +497,22 @@ class Model(metaclass=ValidatedModelMetaClass):
     @classmethod
     @validate_call
     def from_bundle(cls, path: Path, filename: Optional[Path] = None):
+        """Load a model instance from a serialized bundle directory.
+
+        Parameters
+        ----------
+        path : Path
+            Bundle directory path.
+        filename : Optional[Path], optional
+            Relative path to the root YAML file within the bundle. If omitted, the
+            class default serialization filename is used.
+
+        Returns
+        -------
+        Model
+            Deserialized instance of ``cls``.
+        """
+
         bundle_dir = path.expanduser().resolve()
         if not bundle_dir.exists():
             raise FileNotFoundError(f"Bundle directory not found: {bundle_dir}")
@@ -540,6 +604,8 @@ class Model(metaclass=ValidatedModelMetaClass):
             info[value] = self
 
     def _set_yaml_serializable(self, value: bool, recursive: bool = False, _seen=None):
+        """Set YAML-serializable state on this model and optionally descendants."""
+
         self._yaml_serializable = value
 
         if not recursive:
@@ -558,6 +624,8 @@ class Model(metaclass=ValidatedModelMetaClass):
                 model._set_yaml_serializable(value, recursive=True, _seen=_seen)
 
     def _disable_yaml_serialization_for_descendants(self, _seen=None):
+        """Disable YAML serialization recursively for descendant model fields."""
+
         if _seen is None:
             _seen = set()
 
@@ -571,6 +639,8 @@ class Model(metaclass=ValidatedModelMetaClass):
                 model._set_yaml_serializable(False, recursive=True, _seen=_seen)
 
     def _set_constructor_provenance(self, method: str, **kwargs):
+        """Initialize constructor provenance metadata for this model instance."""
+
         from helios.serialization import _normalize_provenance_value
 
         self._provenance = {
@@ -585,6 +655,8 @@ class Model(metaclass=ValidatedModelMetaClass):
         }
 
     def _append_operation_provenance(self, method: str, **kwargs):
+        """Append one operation entry to this model's provenance metadata."""
+
         from helios.serialization import _normalize_provenance_value
 
         provenance = getattr(self, "_provenance", None)
