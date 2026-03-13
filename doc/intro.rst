@@ -12,7 +12,13 @@ see the repository ``README.md``.
 
 Official website: https://uni-heidelberg.de/helios
 
-.. ToDo: Nice HELIOS figure here? 
+.. figure:: /img/vls.png
+   :alt: Virtual laser scanning
+   :width: 100%
+   :align: center
+
+   Virtual laser scanning
+
 
 Installation
 ------------

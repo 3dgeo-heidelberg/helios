@@ -6,7 +6,12 @@ This has been the main interface for HELIOS++ before version 3.0 and is still av
 In this interface, all components of the simulation (scanners, platforms, scenes, surveys) are defined via configuration files in XML format.
 In the HELIOS++ repo, you will find a ``data`` folder with a number of example surveys and scenes.
 
-.. ToDo: Add the XML-based HELIOS figure (cf. proposal)
+.. figure:: /img/HELIOS_figure.png
+   :alt: Typical workflow of a simulation with HELIOS++ (using XML files as input)
+   :width: 100%
+   :align: center
+
+   Typical workflow of a simulation with HELIOS++ (using XML files as input)
 
 CLI usage
 =========
@@ -368,8 +373,6 @@ GeoTIFF Loader
 
 This loader reads a terrain elevation map in the GeoTIFF format and converts it into a triangle mesh. The centers of the pixels are used as data points.
 If all points are valid (following the invalid value definition from the GeoTiff header), two triangles are built up: Current point - right neighbor - upper right neighbor and current point - upper neighbor - upper right neighbor.
-
-.. ToDo: Maybe add figure here?
 
 If any of the three points has an invalid value, the triangle is omitted.
 
