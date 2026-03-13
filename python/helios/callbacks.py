@@ -1,16 +1,22 @@
 from helios.settings import ProgressBarStrategy
 from helios.validation import TimeInterval
 
-from enum import StrEnum
 from pydantic import BaseModel, model_validator
 from typing import Callable, Optional
 import math
 import queue
+import sys
 import threading
 
 from tqdm.auto import tqdm
 
 import _helios
+
+# StrEnum is Python >= 3.11, so we use a conda-forge packaged backport
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    from backports.strenum import StrEnum
 
 
 class HookPoint(StrEnum):
