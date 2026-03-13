@@ -576,17 +576,15 @@ def test_set_bar_value_formats_seconds_with_two_decimals():
     assert "0.0056981950000000005" not in rendered
 
 
-def test_set_bar_value_resets_when_total_changes():
+def test_set_bar_value_updates_when_total_changes():
     class FakeBar:
         def __init__(self):
             self.total = 0.1
             self.n = 0.1
             self.unit = "s"
             self.bar_format = None
-            self.reset_calls = []
 
         def reset(self, total=None):
-            self.reset_calls.append(total)
             self.total = total
             self.n = 0.0
 
@@ -604,7 +602,6 @@ def test_set_bar_value_resets_when_total_changes():
         total_value=0.2,
     )
 
-    assert bar.reset_calls == [pytest.approx(0.2)]
     assert bar.total == pytest.approx(0.2)
     assert bar.n == pytest.approx(0.2)
 
