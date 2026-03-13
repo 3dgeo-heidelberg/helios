@@ -43,7 +43,56 @@ class classonlymethod:
         return self._cm.__get__(None, owner)
 
 
-def add_asset_directory(directory: Path) -> None:
+class _AssetDirectoryRegistration:
+    """Handle returned by add_asset_directory, usable as a context manager."""
+
+    def __init__(self, directory: Path, inserted: bool):
+        """Store directory registration state for optional later cleanup."""
+
+        self.directory = directory
+        self._inserted = inserted
+        self._closed = False
+
+    def __enter__(self):
+        """Return the registered directory path when entering a context block."""
+
+        return self.directory
+
+    def __exit__(self, exc_type, exc, tb):
+        """Remove the temporary registration when leaving a context block."""
+
+        self.close()
+        return False
+
+    def close(self) -> None:
+        """Remove this directory from the custom search path if still registered."""
+
+        if self._closed:
+            return
+        if self._inserted and self.directory in _custom_asset_directories:
+            _custom_asset_directories.remove(self.directory)
+        self._closed = True
+
+    def __repr__(self) -> str:
+        """Render as an empty string to keep REPL output quiet."""
+
+        # Keep add_asset_directory(...) silent when used as a plain function in REPLs.
+        return ""
+
+    def _repr_pretty_(self, p, cycle) -> None:
+        """Suppress pretty-printer output for this registration handle."""
+
+        # IPython pretty-printer hook: intentionally render nothing.
+        return None
+
+    def _ipython_display_(self) -> None:
+        """Suppress rich display output for this registration handle."""
+
+        # IPython rich-display hook: intentionally render nothing.
+        return None
+
+
+def add_asset_directory(directory: Path) -> _AssetDirectoryRegistration:
     """
     Add a directory to the list of directories that will be searched for assets.
 
@@ -53,8 +102,12 @@ def add_asset_directory(directory: Path) -> None:
 
     directory = Path(directory)
 
+    inserted = False
     if directory not in _custom_asset_directories:
         _custom_asset_directories.append(directory)
+        inserted = True
+
+    return _AssetDirectoryRegistration(directory, inserted)
 
 
 def get_asset_directories() -> list[Path]:
