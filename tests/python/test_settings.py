@@ -22,6 +22,12 @@ def test_execution_settings_defaults():
     assert isinstance(settings.kdt_geom_num_threads, int)
     assert settings.kdt_geom_num_threads >= 1
     assert settings.sah_nodes == 32
+    assert settings.progressbar == ProgressBarStrategy.PER_LEG_TIME
+
+
+def test_execution_settings_progressbar_accepts_strategy_strings():
+    settings = ExecutionSettings(progressbar="legs+time")
+    assert settings.progressbar == ProgressBarStrategy.LEGS_TIME
 
 
 def test_compose_execution_settings():

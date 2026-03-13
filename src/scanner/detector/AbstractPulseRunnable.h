@@ -77,17 +77,11 @@ public:
    * point if requested
    * @param allMeasurementsMutex Mutex to handle concurrent access to
    * vector of all measurements
-   * @param cycleMeasurements Vector of current cycle measurements to store
-   * captured point if requested
-   * @param cycleMeasurementsMutex Mutex to handle concurrent access to
-   * vector of current cycle measurements
    */
   void capturePoint(Measurement& m,
                     RandomnessGenerator<double>& rg,
                     std::vector<Measurement>* allMeasurements,
-                    std::mutex* allMeasurementsMutex,
-                    std::vector<Measurement>* cycleMeasurements,
-                    std::mutex* cycleMeasurementsMutex
+                    std::mutex* allMeasurementsMutex
 #if DATA_ANALYTICS >= 2
                     ,
                     std::vector<double>& calcIntensityRecord,

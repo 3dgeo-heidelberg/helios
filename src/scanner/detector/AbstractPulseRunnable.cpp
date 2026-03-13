@@ -52,9 +52,7 @@ AbstractPulseRunnable::capturePoint(
   Measurement& m,
   RandomnessGenerator<double>& rg,
   std::vector<Measurement>* allMeasurements,
-  std::mutex* allMeasurementsMutex,
-  std::vector<Measurement>* cycleMeasurements,
-  std::mutex* cycleMeasurementsMutex
+  std::mutex* allMeasurementsMutex
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<double>& calcIntensityRecord,
@@ -86,11 +84,6 @@ AbstractPulseRunnable::capturePoint(
     std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
     allMeasurements->push_back(m);
     (allMeasurements->end() - 1)->position += scene.getShift();
-  }
-  if (cycleMeasurements != nullptr) {
-    std::unique_lock<std::mutex> lock(*cycleMeasurementsMutex);
-    cycleMeasurements->push_back(m);
-    (cycleMeasurements->end() - 1)->position += scene.getShift();
   }
   if (detector->pcloudYielder != nullptr)
     detector->pcloudYielder->push(m);
