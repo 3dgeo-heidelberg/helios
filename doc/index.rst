@@ -6,11 +6,11 @@ Home
    :caption: Contents
 
    intro
-   cli
-   python
    scanners_platforms
    intensity_fwf
    error_randomness
+   python
    notebooks
+   cli
    pythonapi
    cppapi
