@@ -208,7 +208,7 @@
             maxNOR                     = "2"
             headRotatePerSecMax_deg    = "7200">
 
-    <headRotateAxis x="0" y="1" z="0"/>
+    <headRotateAxis x="0" y="0" z="1"/>
     <FWFSettings beamSampleQuality="3"/>  <!-- set to one for fast simulations -->
     <channels>
       <channel id="0">
@@ -295,6 +295,7 @@
 
   </scanner>
   <!-- ##### END Velodyne VLP-16 ("Puck") ##### -->
+
 
   <!-- ##### BEGIN Velodyne HDL-64E S2 ##### -->
   <!-- Beam divergence specified in datasheet as 2 mrad = 0.002 rad. We assume this is provided at FWHM, which at the 1/e2 point corresponds to 0.0034 mrad
