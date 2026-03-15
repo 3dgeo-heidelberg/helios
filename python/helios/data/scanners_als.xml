@@ -369,7 +369,7 @@
       <channel id="0">
         <FWFSettings beamSampleQuality="3"/>
         <beamOrigin x="0" y="0" z="0">
-          <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
+          <rot axis="x" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
         </beamOrigin>
         <!-- scan plane is defined by the central ray -->
       </channel>
@@ -382,7 +382,7 @@
       <channel id="2">
         <FWFSettings beamSampleQuality="3"/>
         <beamOrigin x="0" y="0" z="0">
-          <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
+          <rot axis="x" angle_deg="30"/> <!-- cone center looking right 30 deg -->
         </beamOrigin>
       </channel>
     </channels>
