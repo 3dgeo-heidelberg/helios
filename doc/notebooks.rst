@@ -19,3 +19,4 @@ These demo notebooks showcase various simulation scenarios.
    11-als_toyblock_multi_scanner_livox
    12-multi_scanner_puck
    13-interpolated_trajectory
+   17-dji-zenmuse-l2_demo
