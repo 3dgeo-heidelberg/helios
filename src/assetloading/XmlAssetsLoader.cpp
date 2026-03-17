@@ -61,6 +61,13 @@ XmlAssetsLoader::XmlAssetsLoader(std::string& filePath,
   , sceneLoader(assetsDir)
 {
   auto xmlFile = locateAssetFile(filePath);
+  if (!fs::exists(xmlFile)) {
+    std::stringstream ss;
+    ss << "Provided filepath was not found among the asset directories: "
+       << filePath;
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
 
   xmlDocFilename = xmlFile.filename().string();
   xmlDocFilePath = xmlFile.parent_path().string();
@@ -70,6 +77,7 @@ XmlAssetsLoader::XmlAssetsLoader(std::string& filePath,
   tinyxml2::XMLError result = doc.LoadFile(xmlFile.string().c_str());
   if (result != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: loading " + filePath + " failed.");
+    throw HeliosException("ERROR: loading " + filePath + " failed.");
   }
 
   makeDefaultTemplates();
@@ -84,7 +92,7 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
 {
   if (assetNode == nullptr) {
     logging::ERR("ERROR: Asset definition XML node is null!");
-    exit(-1);
+    throw HeliosException("Asset definition XML node is null!");
   }
 
   std::shared_ptr<Asset> result = nullptr;
@@ -106,7 +114,7 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
       std::dynamic_pointer_cast<Asset>(createFWFSettingsFromXml(assetNode));
   } else {
     logging::ERR("ERROR: Unknown asset type: " + type);
-    exit(-1);
+    throw HeliosException("Unknown asset type: " + type);
   }
 
   // Read "asset" properties:
@@ -132,7 +140,7 @@ XmlAssetsLoader::createProceduralAssetFromXml(std::string const& type,
       procedurallyCreatePlatformFromXml(type, id));
   } else {
     logging::ERR("ERROR: Unknown procedurally created asset type: " + type);
-    exit(-1);
+    throw HeliosException("Unknown procedurally created asset type: " + type);
   }
   return result;
 }
@@ -371,7 +379,8 @@ XmlAssetsLoader::procedurallyCreatePlatformFromXml(std::string const& type,
     return createInterpolatedMovingPlatform();
   else {
     logging::ERR("Unexpected procedurally creatable platform type: " + type);
-    std::exit(-1);
+    throw HeliosException("Unexpected procedurally creatable platform type: " +
+                          type);
   }
 }
 std::shared_ptr<Platform>
@@ -404,7 +413,9 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
   if (leg == nullptr) {
     logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
                  "There is no leg in the Survey XML document");
-    std::exit(-1);
+    throw HeliosException(
+      "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+      "There is no leg in the Survey XML document");
   }
   // Iterate over legs, to obtain indices
   while (leg != nullptr) {
@@ -414,12 +425,16 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
     if (ps == nullptr) {
       logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
                    "There is no platformSettings in the leg");
-      std::exit(-1);
+      throw HeliosException(
+        "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+        "There is no platformSettings in the leg");
     }
     if (!XmlUtils::hasAttribute(ps, "trajectory")) {
       logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
                    "The platformSettings element has no trajectory attribute");
-      std::exit(-1);
+      throw HeliosException(
+        "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+        "The platformSettings element has no trajectory attribute");
     }
     // Get the trajectory path
     string const trajectoryPath = ps->Attribute("trajectory");
@@ -442,7 +457,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
              << "Unexpected interpolation domain: \"" << interpolationDomain
              << "\"";
           logging::ERR(ss.str());
-          std::exit(-1);
+          throw HeliosException(ss.str());
         }
         interpDom = interpolationDomain;
       } else if (interpDom != interpolationDomain) {
@@ -454,7 +469,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
            << "But then, interpolation domain \"" << interpolationDomain
            << "\" was given.";
         logging::ERR(ss.str());
-        std::exit(-1);
+        throw HeliosException(ss.str());
       }
       firstInterpDom = false;
     }
@@ -471,7 +486,11 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                      "\nIndices were specified more than once for the same "
                      "trajectory:\n\"" +
                      trajectoryPath + "\"");
-        std::exit(-1);
+        throw HeliosException(
+          "XmlAssetsLoader::createInterpolatedMovingPlatform failed."
+          "\nIndices were specified more than once for the same "
+          "trajectory:\n\"" +
+          trajectoryPath + "\"");
       }
       indices.emplace(
         trajectoryPath,
@@ -539,7 +558,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                              "MovingPlatform failed\n"
                              "Unexpected column \"" +
                              names[i] + "\"");
-                std::exit(-1);
+                throw HeliosException("XmlAssetsLoader::createInterpolated"
+                                      "MovingPlatform failed\n"
+                                      "Unexpected column \"" +
+                                      names[i] + "\"");
               }
             }
             platform->tdm->swapColumns(inds);
@@ -564,7 +586,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                              "MovingPlatform failed\n"
                              "Unexpected column \"" +
                              names[i] + "\"");
-                std::exit(-1);
+                throw HeliosException("XmlAssetsLoader::createInterpolated"
+                                      "MovingPlatform failed\n"
+                                      "Unexpected column \"" +
+                                      names[i] + "\"");
               }
             }
             platform->tdm->swapColumns(inds);
@@ -619,7 +644,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                              "MovingPlatform failed\n"
                              "Unexpected column \"" +
                              names[i] + "\"");
-                std::exit(-1);
+                throw HeliosException("XmlAssetsLoader::createInterpolated"
+                                      "MovingPlatform failed\n"
+                                      "Unexpected column \"" +
+                                      names[i] + "\"");
               }
             }
             tdm->swapColumns(inds);
@@ -644,7 +672,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                              "MovingPlatform failed\n"
                              "Unexpected column \"" +
                              names[i] + "\"");
-                std::exit(-1);
+                throw HeliosException("XmlAssetsLoader::createInterpolated"
+                                      "MovingPlatform failed\n"
+                                      "Unexpected column \"" +
+                                      names[i] + "\"");
               }
             }
             tdm->swapColumns(inds);
@@ -699,7 +730,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
     ss << "XmlAssetsLoader::createInterpolatedMovingPlatform got an "
        << "unexpected rotation specification: \"" << rotspec << "\"";
     logging::ERR(ss.str());
-    std::exit(3);
+    throw HeliosException(ss.str());
   }
 
   // Configure scanner mount
@@ -1001,7 +1032,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
     ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
        << "'. Aborting.";
     logging::ERR(ss.str());
-    exit(1);
+    throw HeliosException(ss.str());
   }
   // Return built beam deflector
   return beamDeflector;
@@ -1143,7 +1174,10 @@ XmlAssetsLoader::createScannerSettingsFromXml(
       logging::ERR(std::string("XML Assets Loader: Error: ") +
                    "Head Rotation Stop angle must be larger than start angle " +
                    "if rotation speed is positive!");
-      exit(-1);
+      throw HeliosException(
+        std::string("XML Assets Loader: Error: ") +
+        "Head Rotation Stop angle must be larger than start " +
+        "angle if rotation speed is positive!");
     }
 
     // Make sure that rotation stop angle is larger than rotation start angle if
@@ -1154,7 +1188,10 @@ XmlAssetsLoader::createScannerSettingsFromXml(
         std::string("XML Assets Loader: Error: ") +
         "Head Rotation Stop angle must be smaller than start angle if " +
         "rotation speed is negative!");
-      exit(-1);
+      throw HeliosException(
+        std::string("XML Assets Loader: Error: ") +
+        "Head Rotation Stop angle must be smaller than start " +
+        "angle if rotation speed is negative!");
     }
 
     settings->headRotateStop_rad = hrStop_rad;
@@ -1533,12 +1570,20 @@ XmlAssetsLoader::getAssetById(std::string type,
                               void* extraOutput)
 {
   std::string errorMsg = "# DEF ERR MSG #";
+  if (type.empty() || id.empty()) {
+    std::stringstream ss;
+    ss << "ERROR: Invalid asset type or id for " << type << ":" << id;
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
+
   XmlUtils::assertDocumentForAssetLoading(doc,
                                           xmlDocFilename,
                                           xmlDocFilePath,
                                           type,
                                           id,
                                           "XmlAssetsLoader::getAssetById");
+
   try {
     tinyxml2::XMLElement* assetNodes =
       doc.FirstChild()->NextSiblingElement()->FirstChildElement(type.c_str());
@@ -1552,7 +1597,6 @@ XmlAssetsLoader::getAssetById(std::string type,
       if (str.compare(id) == 0) {
         return createAssetFromXml(type, assetNodes, extraOutput);
       }
-
       assetNodes = assetNodes->NextSiblingElement(type.c_str());
     }
 
@@ -1563,8 +1607,9 @@ XmlAssetsLoader::getAssetById(std::string type,
        << "\nExecution aborted!";
     errorMsg = ss.str();
     logging::ERR(errorMsg);
+    throw HeliosException(errorMsg);
 
-  } catch (std::exception& e) {
+  } catch (const std::exception& e) {
     std::stringstream ss;
     ss << "ERROR: Failed to read " << type
        << " asset definition: " << this->xmlDocFilePath
@@ -1572,9 +1617,8 @@ XmlAssetsLoader::getAssetById(std::string type,
        << "\nEXCEPTION: " << e.what() << "\nExecution aborted!";
     errorMsg = ss.str();
     logging::ERR(errorMsg);
+    throw HeliosException(errorMsg);
   }
-
-  throw HeliosException(errorMsg);
 }
 
 std::shared_ptr<Asset>

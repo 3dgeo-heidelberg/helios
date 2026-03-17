@@ -60,7 +60,7 @@ XYZPointCloudFileLoader::run()
       std::stringstream ss;
       ss << "File not found: " << filePath << std::endl;
       logging::ERR(ss.str());
-      exit(1);
+      throw HeliosException(ss.str());
     }
     lastNumVoxels = primsOut->mPrimitives.size();
     parse(filePath);
@@ -97,7 +97,8 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
   } catch (std::exception& e) {
     logging::ERR("Failed to open xyz point cloud file: " + filePath +
                  "\nEXCEPTION: " + e.what());
-    exit(-1);
+    throw HeliosException("Failed to open xyz point cloud file: " + filePath +
+                          "\nEXCEPTION: " + e.what());
   }
 
   // First pass
@@ -567,7 +568,7 @@ XYZPointCloudFileLoader::estimateNormals(std::ifstream& ifs)
           "EXCEPTION: "
        << e.what();
     logging::ERR(ss.str());
-    exit(-1);
+    throw HeliosException(ss.str());
   }
 
   // Estimate normals
@@ -640,7 +641,7 @@ XYZPointCloudFileLoader::estimateNormalsBatch(std::ifstream& ifs)
             "file \nEXCEPTION: "
          << e.what();
       logging::ERR(ss.str());
-      exit(-1);
+      throw HeliosException(ss.str());
     }
 
     // Estimate normals for current batch
