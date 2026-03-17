@@ -789,12 +789,17 @@ readOpen3DMeshScenePart(const double* verticesData,
                         std::ptrdiff_t triangleRowStrideElems,
 
                         const double* vertexNormalsData,
-                        std::ptrdiff_t normalRowStrideElems,
+                        std::ptrdiff_t vertexNormalRowStrideElems,
+
+                        const double* triangleNormalsData,
+                        std::ptrdiff_t triangleNormalRowStrideElems,
 
                         const double* vertexColorsData,
                         std::ptrdiff_t colorRowStrideElems,
 
-                        std::vector<std::string> assetsPath,
+                        const double* triangleUvsData,
+                        std::ptrdiff_t triangleUvRowStrideElems,
+
                         std::string upaxis)
 {
   if (!verticesData)
@@ -803,10 +808,11 @@ readOpen3DMeshScenePart(const double* verticesData,
     throw std::invalid_argument("trianglesData is null");
 
   WavefrontObjFileLoader loader;
-  loader.setAssetsDir(assetsPath);
 
-  const bool hasNormals = (vertexNormalsData != nullptr);
+  const bool hasVertexNormals = (vertexNormalsData != nullptr);
   const bool hasColors = (vertexColorsData != nullptr);
+  const bool hasTriangleNormals = (triangleNormalsData != nullptr);
+  const bool hasTextures = (triangleUvsData != nullptr);
 
   bool yIsUp = false;
   if (upaxis == "y") {
@@ -822,10 +828,20 @@ readOpen3DMeshScenePart(const double* verticesData,
     return yIsUp ? glm::dvec3(x, -z, y) : glm::dvec3(x, y, z);
   };
 
-  auto mapNormal = [&](std::size_t i) -> glm::dvec3 {
-    const double x = *(vertexNormalsData + i * normalRowStrideElems + 0);
-    const double y = *(vertexNormalsData + i * normalRowStrideElems + 1);
-    const double z = *(vertexNormalsData + i * normalRowStrideElems + 2);
+  auto mapVertexNormal = [&](std::size_t i) -> glm::dvec3 {
+    const double x = *(vertexNormalsData + i * vertexNormalRowStrideElems + 0);
+    const double y = *(vertexNormalsData + i * vertexNormalRowStrideElems + 1);
+    const double z = *(vertexNormalsData + i * vertexNormalRowStrideElems + 2);
+    return yIsUp ? glm::dvec3(x, -z, y) : glm::dvec3(x, y, z);
+  };
+
+  auto mapTriangleNormal = [&](std::size_t i) -> glm::dvec3 {
+    const double x =
+      *(triangleNormalsData + i * triangleNormalRowStrideElems + 0);
+    const double y =
+      *(triangleNormalsData + i * triangleNormalRowStrideElems + 1);
+    const double z =
+      *(triangleNormalsData + i * triangleNormalRowStrideElems + 2);
     return yIsUp ? glm::dvec3(x, -z, y) : glm::dvec3(x, y, z);
   };
 
@@ -837,6 +853,12 @@ readOpen3DMeshScenePart(const double* verticesData,
     const float b =
       static_cast<float>(*(vertexColorsData + i * colorRowStrideElems + 2));
     return Color4f(r, g, b, 1.0f);
+  };
+
+  auto mapTriangleUv = [&](std::size_t i) -> glm::dvec2 {
+    const double u = *(triangleUvsData + i * triangleUvRowStrideElems + 0);
+    const double v = *(triangleUvsData + i * triangleUvRowStrideElems + 1);
+    return glm::dvec2(u, v);
   };
 
   auto mat = std::make_shared<Material>();
@@ -867,16 +889,28 @@ readOpen3DMeshScenePart(const double* verticesData,
     v1.pos = mapPos(static_cast<std::size_t>(i1));
     v2.pos = mapPos(static_cast<std::size_t>(i2));
 
-    if (hasNormals) {
-      v0.normal = mapNormal(static_cast<std::size_t>(i0));
-      v1.normal = mapNormal(static_cast<std::size_t>(i1));
-      v2.normal = mapNormal(static_cast<std::size_t>(i2));
+    if (hasVertexNormals) {
+      v0.normal = mapVertexNormal(static_cast<std::size_t>(i0));
+      v1.normal = mapVertexNormal(static_cast<std::size_t>(i1));
+      v2.normal = mapVertexNormal(static_cast<std::size_t>(i2));
+    } else if (hasTriangleNormals) {
+      glm::dvec3 triNormal = mapTriangleNormal(fi);
+      v0.normal = triNormal;
+      v1.normal = triNormal;
+      v2.normal = triNormal;
     }
 
     if (hasColors) {
       v0.color = mapColor(static_cast<std::size_t>(i0));
       v1.color = mapColor(static_cast<std::size_t>(i1));
       v2.color = mapColor(static_cast<std::size_t>(i2));
+    }
+
+    if (hasTextures) {
+      const std::size_t uvBase = 3 * fi;
+      v0.texcoords = mapTriangleUv(uvBase + 0);
+      v1.texcoords = mapTriangleUv(uvBase + 1);
+      v2.texcoords = mapTriangleUv(uvBase + 2);
     }
 
     Triangle* tri = new Triangle(v0, v1, v2);
