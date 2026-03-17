@@ -1536,26 +1536,87 @@ def test_scene_part_from_o3d_mesh_rejects_no_triangles():
 
 @pytest.mark.open3d
 def test_scene_part_from_o3d_mesh_accepts_vertex_normals_and_colors(o3d_mesh_file):
-    normals = np.array(
-        [
-            [0.0, 0.0, 1.0],
-            [0.0, 0.0, 1.0],
-            [0.0, 0.0, 1.0],
-        ],
-        dtype=np.float64,
-    )
-    colors = np.array(
-        [
-            [1.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0],
-            [0.0, 0.0, 1.0],
-        ],
-        dtype=np.float64,
-    )
-
     geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+
+    n_vertices = np.asarray(geometry.vertices).shape[0]
+    normals = np.tile(np.array([[0.0, 0.0, 1.0]], dtype=np.float64), (n_vertices, 1))
+    colors = np.tile(np.array([[1.0, 0.0, 0.0]], dtype=np.float64), (n_vertices, 1))
+
     geometry.vertex_normals = o3d.utility.Vector3dVector(normals)
     geometry.vertex_colors = o3d.utility.Vector3dVector(colors)
+
+    scene_part = ScenePart.from_open3d(geometry)
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_accepts_triangle_normals(o3d_mesh_file):
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+
+    n_triangles = np.asarray(geometry.triangles).shape[0]
+    triangle_normals = np.tile(
+        np.array([[0.0, 0.0, 1.0]], dtype=np.float64), (n_triangles, 1)
+    )
+
+    geometry.triangle_normals = o3d.utility.Vector3dVector(triangle_normals)
+
+    scene_part = ScenePart.from_open3d(geometry)
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_accepts_triangle_uvs(o3d_mesh_file):
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+
+    n_triangles = np.asarray(geometry.triangles).shape[0]
+    triangle_uvs = np.tile(
+        np.array(
+            [
+                [0.0, 0.0],
+                [1.0, 0.0],
+                [0.0, 1.0],
+            ],
+            dtype=np.float64,
+        ),
+        (n_triangles, 1),
+    )
+
+    geometry.triangle_uvs = o3d.utility.Vector2dVector(triangle_uvs)
+
+    scene_part = ScenePart.from_open3d(geometry)
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
+@pytest.mark.open3d
+def test_scene_part_from_o3d_mesh_accepts_all_supported_mesh_attributes(o3d_mesh_file):
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+
+    n_vertices = np.asarray(geometry.vertices).shape[0]
+    n_triangles = np.asarray(geometry.triangles).shape[0]
+
+    vertex_normals = np.tile(
+        np.array([[0.0, 0.0, 1.0]], dtype=np.float64), (n_vertices, 1)
+    )
+    triangle_normals = np.tile(
+        np.array([[0.0, 1.0, 0.0]], dtype=np.float64), (n_triangles, 1)
+    )
+    colors = np.tile(np.array([[1.0, 0.0, 0.0]], dtype=np.float64), (n_vertices, 1))
+    triangle_uvs = np.tile(
+        np.array(
+            [
+                [0.0, 0.0],
+                [1.0, 0.0],
+                [0.0, 1.0],
+            ],
+            dtype=np.float64,
+        ),
+        (n_triangles, 1),
+    )
+
+    geometry.vertex_normals = o3d.utility.Vector3dVector(vertex_normals)
+    geometry.triangle_normals = o3d.utility.Vector3dVector(triangle_normals)
+    geometry.vertex_colors = o3d.utility.Vector3dVector(colors)
+    geometry.triangle_uvs = o3d.utility.Vector2dVector(triangle_uvs)
 
     scene_part = ScenePart.from_open3d(geometry)
     assert len(scene_part._cpp_object.primitives) > 0
