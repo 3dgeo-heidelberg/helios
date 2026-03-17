@@ -11,6 +11,7 @@ from helios.utils import (
     _validate_points_array_and_get_indices,
     _as_array,
     _validate_same_shape,
+    _validate_triangle_uvs,
 )
 
 from helios.validation import (
@@ -514,15 +515,26 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             geometry.triangles, dtype=np.int32, name="Open3D mesh triangles"
         )
 
-        normals = None
+        vertex_normals = None
         if geometry.has_vertex_normals():
-            normals = _as_array(
+            vertex_normals = _as_array(
                 geometry.vertex_normals,
                 dtype=np.float64,
                 name="Open3D mesh vertex normals",
             )
-            normals = _validate_same_shape(
-                normals, "vertices", vertices, "Open3D mesh vertex normals"
+            vertex_normals = _validate_same_shape(
+                vertex_normals, "vertices", vertices, "Open3D mesh vertex normals"
+            )
+
+        triangle_normals = None
+        if geometry.has_triangle_normals():
+            triangle_normals = _as_array(
+                geometry.triangle_normals,
+                dtype=np.float64,
+                name="Open3D mesh triangle normals",
+            )
+            triangle_normals = _validate_same_shape(
+                triangle_normals, "triangles", triangles, "Open3D mesh triangle normals"
             )
 
         colors = None
@@ -536,11 +548,25 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                 colors, "vertices", vertices, "Open3D mesh vertex colors"
             )
 
+        triangle_uvs = None
+        if geometry.has_triangle_uvs():
+            triangle_uvs = _as_array(
+                geometry.triangle_uvs,
+                dtype=np.float64,
+                shape_second_dim=2,
+                name="Open3D mesh triangle uvs",
+            )
+            triangle_uvs = _validate_triangle_uvs(
+                triangle_uvs, triangles, "Open3D mesh triangle uvs"
+            )
+
         _cpp_part = _helios.read_open3d_mesh_scene_part(
             vertices,
             triangles,
-            normals,
+            vertex_normals,
+            triangle_normals,
             colors,
+            triangle_uvs,
             up_axis,
         )
 

@@ -131,10 +131,15 @@ readOpen3DMeshScenePart(const double* verticesData,
                         std::ptrdiff_t triangleRowStrideElems,
 
                         const double* vertexNormalsData,
-                        std::ptrdiff_t normalRowStrideElems,
+                        std::ptrdiff_t vertexNormalRowStrideElems,
+
+                        const double* triangleNormalsData,
+                        std::ptrdiff_t triangleNormalRowStrideElems,
 
                         const double* vertexColorsData,
                         std::ptrdiff_t colorRowStrideElems,
 
-                        std::vector<std::string> assetsPath,
+                        const double* triangleUvsData,
+                        std::ptrdiff_t triangleUvRowStrideElems,
+
                         std::string upaxis);

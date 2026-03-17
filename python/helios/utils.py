@@ -476,13 +476,24 @@ def _as_array(value, *, dtype, shape_second_dim: int = 3, name: str) -> np.ndarr
 
 def _validate_same_shape(
     arr: np.ndarray, ref_name: str, ref: np.ndarray, name: str
-) -> None:
+) -> np.ndarray:
     if arr.shape != ref.shape:
         raise ValueError(
             f"{name} must have the same shape as {ref_name}. "
             f"Got {name}={arr.shape}, {ref_name}={ref.shape}."
         )
     return np.ascontiguousarray(arr, dtype=arr.dtype)
+
+
+def _validate_triangle_uvs(
+    triangle_uvs: np.ndarray, triangles: np.ndarray, name: str
+) -> np.ndarray:
+    if triangle_uvs.shape[0] != 3 * triangles.shape[0]:
+        raise ValueError(
+            f"{name} must have shape (3 * n_triangles, 2). "
+            f"Got {triangle_uvs.shape}, triangles={triangles.shape}."
+        )
+    return np.ascontiguousarray(triangle_uvs, dtype=triangle_uvs.dtype)
 
 
 def is_finalized(obj) -> bool:

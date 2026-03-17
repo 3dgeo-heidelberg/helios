@@ -3277,9 +3277,10 @@ PYBIND11_MODULE(_helios, m)
     "read_open3d_mesh_scene_part",
     [](py::array_t<double, py::array::c_style | py::array::forcecast> vertices,
        py::array triangles,
-       py::object normalsObj,
+       py::object vertexNormalsObj,
+       py::object triangleNormalsObj,
        py::object colorsObj,
-       std::vector<std::string> assetsPath,
+       py::object triangleUvsObj,
        std::string upaxis) {
       // ---- vertices ----
       py::buffer_info vinfo = vertices.request();
@@ -3303,25 +3304,47 @@ PYBIND11_MODULE(_helios, m)
       const std::ptrdiff_t triangleRowStrideElems =
         static_cast<std::ptrdiff_t>(tinfo.strides[0] / sizeof(int));
 
-      // ---- optional normals ----
-      const double* normalsData = nullptr;
-      std::ptrdiff_t normalRowStrideElems = 0;
+      // ---- optional vertex normals ----
+      const double* vertexNormalsData = nullptr;
+      std::ptrdiff_t vertexNormalRowStrideElems = 0;
       std::optional<
         py::array_t<double, py::array::c_style | py::array::forcecast>>
-        normalsArr;
+        vertexNormalsArr;
 
-      if (!normalsObj.is_none()) {
-        normalsArr.emplace(
-          normalsObj.cast<
+      if (!vertexNormalsObj.is_none()) {
+        vertexNormalsArr.emplace(
+          vertexNormalsObj.cast<
             py::array_t<double, py::array::c_style | py::array::forcecast>>());
-        py::buffer_info ninfo = normalsArr->request();
+        py::buffer_info ninfo = vertexNormalsArr->request();
         if (ninfo.ndim != 2 || ninfo.shape[1] != 3 ||
             ninfo.shape[0] != vinfo.shape[0])
           throw py::value_error(
-            "normals must have shape (N, 3) matching vertices");
-        normalsData = static_cast<const double*>(ninfo.ptr);
-        normalRowStrideElems =
+            "Vertex normals must have shape (N, 3) matching vertices");
+        vertexNormalsData = static_cast<const double*>(ninfo.ptr);
+        vertexNormalRowStrideElems =
           static_cast<std::ptrdiff_t>(ninfo.strides[0] / sizeof(double));
+      }
+
+      // ---- optional triangle normals ----
+      const double* triangleNormalsData = nullptr;
+      std::ptrdiff_t triangleNormalRowStrideElems = 0;
+      std::optional<
+        py::array_t<double, py::array::c_style | py::array::forcecast>>
+        triangleNormalsArr;
+
+      if (!triangleNormalsObj.is_none()) {
+        triangleNormalsArr.emplace(
+          triangleNormalsObj.cast<
+            py::array_t<double, py::array::c_style | py::array::forcecast>>());
+        py::buffer_info tninfo = triangleNormalsArr->request();
+        if (tninfo.ndim != 2 || tninfo.shape[1] != 3 ||
+            tninfo.shape[0] != tinfo.shape[0]) {
+          throw py::value_error(
+            "triangle_normals must have shape (M, 3) matching triangles");
+        }
+        triangleNormalsData = static_cast<const double*>(tninfo.ptr);
+        triangleNormalRowStrideElems =
+          static_cast<std::ptrdiff_t>(tninfo.strides[0] / sizeof(double));
       }
 
       // ---- optional colors ----
@@ -3345,24 +3368,50 @@ PYBIND11_MODULE(_helios, m)
           static_cast<std::ptrdiff_t>(cinfo.strides[0] / sizeof(double));
       }
 
+      // ---- optional triangle UVs ----
+      const double* triangleUvsData = nullptr;
+      std::ptrdiff_t triangleUvRowStrideElems = 0;
+      std::optional<
+        py::array_t<double, py::array::c_style | py::array::forcecast>>
+        triangleUvsArr;
+
+      if (!triangleUvsObj.is_none()) {
+        triangleUvsArr.emplace(
+          triangleUvsObj.cast<
+            py::array_t<double, py::array::c_style | py::array::forcecast>>());
+        py::buffer_info tuinfo = triangleUvsArr->request();
+        if (tuinfo.ndim != 2 || tuinfo.shape[1] != 2 ||
+            tuinfo.shape[0] != 3 * tinfo.shape[0]) {
+          throw py::value_error("triangle_uvs must have shape (3*M, 2) where M "
+                                "is number of triangles");
+        }
+        triangleUvsData = static_cast<const double*>(tuinfo.ptr);
+        triangleUvRowStrideElems =
+          static_cast<std::ptrdiff_t>(tuinfo.strides[0] / sizeof(double));
+      }
+
       return readOpen3DMeshScenePart(verticesData,
                                      nVertices,
                                      vertexRowStrideElems,
                                      trianglesData,
                                      nTriangles,
                                      triangleRowStrideElems,
-                                     normalsData,
-                                     normalRowStrideElems,
+                                     vertexNormalsData,
+                                     vertexNormalRowStrideElems,
+                                     triangleNormalsData,
+                                     triangleNormalRowStrideElems,
                                      colorsData,
                                      colorRowStrideElems,
-                                     std::move(assetsPath),
+                                     triangleUvsData,
+                                     triangleUvRowStrideElems,
                                      std::move(upaxis));
     },
     py::arg("vertices"),
     py::arg("triangles"),
-    py::arg("normals") = py::none(),
+    py::arg("vertex_normals") = py::none(),
+    py::arg("triangle_normals") = py::none(),
     py::arg("colors") = py::none(),
-    py::arg("assetsPath"),
+    py::arg("triangle_uvs") = py::none(),
     py::arg("upaxis") = "z");
 }
 }
