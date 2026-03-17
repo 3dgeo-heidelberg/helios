@@ -125,8 +125,6 @@ struct BenchmarkContext
     // Avoid vector growth affecting timings.
     if (scanner->allMeasurements)
       scanner->allMeasurements->reserve(1024);
-    if (scanner->cycleMeasurements)
-      scanner->cycleMeasurements->reserve(1024);
   }
 
   static SimulatedPulse makePulse()
@@ -195,8 +193,6 @@ fullwaveform_digest_intersections_benchmark(benchmark::State& state)
     // Keep capture buffers stable.
     if (ctx.scanner->allMeasurements)
       ctx.scanner->allMeasurements->clear();
-    if (ctx.scanner->cycleMeasurements)
-      ctx.scanner->cycleMeasurements->clear();
 
     ctx.runnable.digestIntersections(ctx.apMatrix,
                                      ctx.randGen1,

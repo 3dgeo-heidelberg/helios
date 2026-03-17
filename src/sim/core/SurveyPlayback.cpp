@@ -1,5 +1,4 @@
 #include "logging.hpp"
-#include <iomanip>
 #include <string>
 
 #include <chrono>
@@ -106,9 +105,7 @@ SurveyPlayback::SurveyPlayback(
 }
 
 void
-SurveyPlayback::estimateTime(int legCurrentProgress,
-                             bool onGround,
-                             double legElapsedLength)
+SurveyPlayback::estimateTime(int legCurrentProgress, double legElapsedLength)
 {
   if (legCurrentProgress >
       legProgress) { // Do stuff only if leg progress incremented at least 1%
@@ -131,22 +128,6 @@ SurveyPlayback::estimateTime(int legCurrentProgress,
     elapsedTime_ns = currentTime - timeStart_ns;
     remainingTime_ns =
       (long long)((100 - progress) / progress * elapsedTime_ns.count());
-
-    if (legProgress == 99) {
-      std::stringstream ss;
-      ss << "Final yaw = " << mSurvey->scanner->platform->getHeadingRad();
-      logging::TRACE(ss.str());
-    }
-    ostringstream oss;
-    oss << std::fixed << std::setprecision(2);
-    oss << "Survey " << progress << "%\tElapsed "
-        << milliToString(elapsedTime_ns.count() / 1000000L) << " Remaining "
-        << milliToString(remainingTime_ns / 1000000L) << "\n";
-    oss << "Leg" << (mCurrentLegIndex + 1) << "/" << (numEffectiveLegs) << " "
-        << legProgress << "%\tElapsed "
-        << milliToString(legElapsedTime_ns.count() / 1000000L) << " Remaining "
-        << milliToString(legRemainingTime_ns / 1000000L);
-    logging::INFO(oss.str());
   }
 }
 
@@ -182,7 +163,7 @@ SurveyPlayback::trackProgress()
       std::fabs(getScanner()->getScannerHead()->getRotateStart() -
                 getScanner()->getScannerHead()->getExactRotateCurrent());
     int const legProgress = estimateAngularLegProgress(legElapsedAngle);
-    estimateTime(legProgress, true, 0);
+    estimateTime(legProgress, 0);
   } else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
     double const legElapsedLength =
       glm::distance(getCurrentLeg()->mPlatformSettings->getPosition(),
@@ -190,8 +171,21 @@ SurveyPlayback::trackProgress()
     int const legProgress = platform->isInterpolated()
                               ? estimateTemporalLegProgress()
                               : estimateSpatialLegProgress(legElapsedLength);
-    estimateTime(legProgress, false, legElapsedLength);
+    estimateTime(legProgress, legElapsedLength);
   }
+}
+
+void
+SurveyPlayback::enrichHookContext(HookContext& ctx) const
+{
+  ctx.surveyProgress = progress;
+  ctx.legProgress = legProgress;
+  ctx.elapsedTime_s = std::max(0.0, elapsedTime_ns.count() * 1e-9);
+  ctx.remainingTime_s =
+    std::max(0.0, static_cast<double>(remainingTime_ns) * 1e-9);
+  ctx.legElapsedTime_s = std::max(0.0, legElapsedTime_ns.count() * 1e-9);
+  ctx.legRemainingTime_s =
+    std::max(0.0, static_cast<double>(legRemainingTime_ns) * 1e-9);
 }
 
 void
@@ -262,6 +256,14 @@ SurveyPlayback::onLegComplete()
 {
   // Do scanning pulse process handling of on leg complete, if any
   mScanner->onLegComplete();
+  emitPeriodicTailHooks(stepLoop.getCurrentTime());
+  if (hasHookFailure()) {
+    return;
+  }
+  emitLegEndHook();
+  if (hasHookFailure()) {
+    return;
+  }
 
   // Start next leg
   elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
@@ -388,6 +390,8 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
     platform->writeNextTrajectory = true;
     logging::DEBUG("Output prepared for current leg.");
   }
+
+  emitLegStartHook();
 }
 
 void
@@ -415,17 +419,6 @@ SurveyPlayback::shutdown()
     mSurvey->scanner->getDetector()->shutdown();
     mSurvey->scanner->platform->scene->shutdown();
   }
-}
-
-string
-SurveyPlayback::milliToString(long millis)
-{
-  long seconds = (millis / 1000) % 60;
-  long minutes = (millis / (60000)) % 60;
-  long hours = (millis / (3600000)) % 24;
-  long days = millis / 86400000;
-  return boost::str(boost::format("%02d %02d:%02d:%02d") % days % hours %
-                    minutes % seconds);
 }
 
 void

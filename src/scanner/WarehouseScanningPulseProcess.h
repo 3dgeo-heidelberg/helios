@@ -121,6 +121,7 @@ public:
    *  dropper
    */
   void onLegComplete() override;
+  void flushPending() override;
   /**
    * @brief Handle shutdown of warehouse thread pool (final join)
    * @see WarehouseThreadPool::finish

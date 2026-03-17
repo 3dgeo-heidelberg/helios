@@ -676,9 +676,7 @@ FullWaveformPulseRunnable::exportOutput(
       capturePoint(pm,
                    randGen,
                    scanner->allMeasurements.get(),
-                   scanner->allMeasurementsMutex.get(),
-                   scanner->cycleMeasurements.get(),
-                   scanner->cycleMeasurementsMutex.get()
+                   scanner->allMeasurementsMutex.get()
 #if DATA_ANALYTICS >= 2
                      ,
                    calcIntensityRecords[i],

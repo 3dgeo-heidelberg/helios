@@ -61,7 +61,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <scene/primitives/Primitive.h>
 #include <scene/primitives/Triangle.h>
 #include <scene/primitives/Vertex.h>
-#include <sim/comps/SimulationCycleCallback.h>
+#include <sim/core/SurveyHooks.h>
 
 #include <DynMovingObject.h>
 #include <DynObject.h>
@@ -129,6 +129,59 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 using helios::filems::FMSFacadeFactory;
 
 namespace helios {
+
+namespace {
+struct PySurveyHookRegistration
+{
+  HookPoint point = HookPoint::LEG_START;
+  HookPayload payload = HookPayload::METADATA_ONLY;
+  HookEndOfLegPolicy end_of_leg_policy = HookEndOfLegPolicy::FLUSH;
+  bool barrier = false;
+  double sim_time_s = 0.0;
+  double period_s = 0.0;
+  py::object callback = py::none();
+};
+
+SurveyHookRegistration
+toCoreSurveyHookRegistration(PySurveyHookRegistration const& pyReg)
+{
+  if (pyReg.callback.is_none()) {
+    throw std::invalid_argument("SurveyHookRegistration.callback is required.");
+  }
+
+  if (!PyCallable_Check(pyReg.callback.ptr())) {
+    throw std::invalid_argument(
+      "SurveyHookRegistration.callback must be callable.");
+  }
+
+  SurveyHookRegistration reg;
+  reg.point = pyReg.point;
+  reg.payload = pyReg.payload;
+  reg.endOfLegPolicy = pyReg.end_of_leg_policy;
+  reg.barrier = pyReg.barrier;
+  reg.simTime_s = pyReg.sim_time_s;
+  reg.period_s = pyReg.period_s;
+
+  reg.fn = [py_cb = py::object(pyReg.callback)](
+             HookContext const& ctx,
+             std::vector<Measurement> const* pointsPayload,
+             std::vector<Trajectory> const* trajectoriesPayload) {
+    py::gil_scoped_acquire gil;
+    py::object pyCtx = py::cast(ctx);
+    py::object pyPoints = py::none();
+    if (pointsPayload != nullptr) {
+      pyPoints = detail::measurements_to_numpy(*pointsPayload);
+    }
+    py::object pyTrajectories = py::none();
+    if (trajectoriesPayload != nullptr) {
+      pyTrajectories = detail::trajectories_to_numpy(*trajectoriesPayload);
+    }
+    py_cb(pyCtx, pyPoints, pyTrajectories);
+  };
+
+  return reg;
+}
+}
 
 PYBIND11_MODULE(_helios, m)
 {
@@ -659,32 +712,127 @@ PYBIND11_MODULE(_helios, m)
     .def("has", py::overload_cast<int>(&ScanningStrip::has))
     .def("has", py::overload_cast<Leg&>(&ScanningStrip::has));
 
-  py::class_<SimulationCycleCallback,
-             SimulationCycleCallbackWrap,
-             std::shared_ptr<SimulationCycleCallback>>
-    simulation_cycle_callback(m, "SimulationCycleCallback");
-  simulation_cycle_callback.def(py::init<py::object>())
-    .def("__call__",
-         [](SimulationCycleCallback& callback,
-            py::list measurements,
-            py::list trajectories,
-            const std::string& outpath) {
-           py::gil_scoped_acquire acquire;
+  py::enum_<HookPoint>(m, "CppHookPoint")
+    .value("LEG_START", HookPoint::LEG_START)
+    .value("LEG_END", HookPoint::LEG_END)
+    .value("SIM_TIME_ONCE", HookPoint::SIM_TIME_ONCE)
+    .value("SIM_TIME_PERIODIC", HookPoint::SIM_TIME_PERIODIC);
 
-           // Convert Python lists to std::shared_ptr<std::vector<Measurement>>
-           // and std::shared_ptr<std::vector<Trajectory>>
-           auto measurements_vec = std::make_shared<std::vector<Measurement>>();
-           for (auto item : measurements) {
-             measurements_vec->push_back(item.cast<Measurement>());
-           }
+  py::enum_<HookPayload>(m, "CppHookPayload")
+    .value("METADATA_ONLY", HookPayload::METADATA_ONLY)
+    .value("SINCE_LAST", HookPayload::SINCE_LAST)
+    .value("ALL_POINTS", HookPayload::ALL_POINTS);
 
-           auto trajectories_vec = std::make_shared<std::vector<Trajectory>>();
-           for (auto item : trajectories) {
-             trajectories_vec->push_back(item.cast<Trajectory>());
-           }
+  py::enum_<HookEndOfLegPolicy>(m, "CppHookEndOfLegPolicy")
+    .value("NONE", HookEndOfLegPolicy::NONE)
+    .value("FLUSH", HookEndOfLegPolicy::FLUSH)
+    .value("FLUSH_AND_RESET", HookEndOfLegPolicy::FLUSH_AND_RESET);
 
-           callback(*measurements_vec, *trajectories_vec, outpath);
-         });
+  py::class_<HookContext> hook_context(m, "HookContext");
+  hook_context
+    .def_property_readonly("point",
+                           [](HookContext const& self) { return self.point; })
+    .def_property_readonly(
+      "step_index", [](HookContext const& self) { return self.stepIndex; })
+    .def_property_readonly(
+      "play_index", [](HookContext const& self) { return self.playIndex; })
+    .def_property_readonly(
+      "leg_index", [](HookContext const& self) { return self.legIndex; })
+    .def_property_readonly(
+      "sim_time_s", [](HookContext const& self) { return self.simTime_s; })
+    .def_property_readonly(
+      "gps_time_s", [](HookContext const& self) { return self.gpsTime_s; })
+    .def_property_readonly(
+      "survey_progress",
+      [](HookContext const& self) { return self.surveyProgress; })
+    .def_property_readonly(
+      "leg_progress", [](HookContext const& self) { return self.legProgress; })
+    .def_property_readonly(
+      "elapsed_time_s",
+      [](HookContext const& self) { return self.elapsedTime_s; })
+    .def_property_readonly(
+      "remaining_time_s",
+      [](HookContext const& self) { return self.remainingTime_s; })
+    .def_property_readonly(
+      "leg_elapsed_time_s",
+      [](HookContext const& self) { return self.legElapsedTime_s; })
+    .def_property_readonly(
+      "leg_remaining_time_s",
+      [](HookContext const& self) { return self.legRemainingTime_s; })
+    .def_property_readonly(
+      "output_path", [](HookContext const& self) { return self.outputPath; })
+    .def_property_readonly(
+      "total_points", [](HookContext const& self) { return self.totalPoints; })
+    .def_property_readonly(
+      "payload_points",
+      [](HookContext const& self) { return self.payloadPoints; })
+    .def_property_readonly(
+      "total_trajectories",
+      [](HookContext const& self) { return self.totalTrajectories; })
+    .def_property_readonly(
+      "payload_trajectories",
+      [](HookContext const& self) { return self.payloadTrajectories; })
+    .def_property_readonly(
+      "scheduled_time_s",
+      [](HookContext const& self) { return self.scheduledTime_s; })
+    .def_property_readonly("lag_s",
+                           [](HookContext const& self) { return self.lag_s; })
+    // camelCase aliases for direct correspondence with C++ fields
+    .def_property_readonly(
+      "stepIndex", [](HookContext const& self) { return self.stepIndex; })
+    .def_property_readonly(
+      "playIndex", [](HookContext const& self) { return self.playIndex; })
+    .def_property_readonly(
+      "legIndex", [](HookContext const& self) { return self.legIndex; })
+    .def_property_readonly(
+      "simTime_s", [](HookContext const& self) { return self.simTime_s; })
+    .def_property_readonly(
+      "gpsTime_s", [](HookContext const& self) { return self.gpsTime_s; })
+    .def_property_readonly(
+      "surveyProgress",
+      [](HookContext const& self) { return self.surveyProgress; })
+    .def_property_readonly(
+      "legProgress", [](HookContext const& self) { return self.legProgress; })
+    .def_property_readonly(
+      "elapsedTime_s",
+      [](HookContext const& self) { return self.elapsedTime_s; })
+    .def_property_readonly(
+      "remainingTime_s",
+      [](HookContext const& self) { return self.remainingTime_s; })
+    .def_property_readonly(
+      "legElapsedTime_s",
+      [](HookContext const& self) { return self.legElapsedTime_s; })
+    .def_property_readonly(
+      "legRemainingTime_s",
+      [](HookContext const& self) { return self.legRemainingTime_s; })
+    .def_property_readonly(
+      "outputPath", [](HookContext const& self) { return self.outputPath; })
+    .def_property_readonly(
+      "totalPoints", [](HookContext const& self) { return self.totalPoints; })
+    .def_property_readonly(
+      "payloadPoints",
+      [](HookContext const& self) { return self.payloadPoints; })
+    .def_property_readonly(
+      "totalTrajectories",
+      [](HookContext const& self) { return self.totalTrajectories; })
+    .def_property_readonly(
+      "payloadTrajectories",
+      [](HookContext const& self) { return self.payloadTrajectories; })
+    .def_property_readonly("scheduledTime_s", [](HookContext const& self) {
+      return self.scheduledTime_s;
+    });
+
+  py::class_<PySurveyHookRegistration> survey_hook_registration(
+    m, "SurveyHookRegistration");
+  survey_hook_registration.def(py::init<>())
+    .def_readwrite("point", &PySurveyHookRegistration::point)
+    .def_readwrite("payload", &PySurveyHookRegistration::payload)
+    .def_readwrite("end_of_leg_policy",
+                   &PySurveyHookRegistration::end_of_leg_policy)
+    .def_readwrite("barrier", &PySurveyHookRegistration::barrier)
+    .def_readwrite("sim_time_s", &PySurveyHookRegistration::sim_time_s)
+    .def_readwrite("period_s", &PySurveyHookRegistration::period_s)
+    .def_readwrite("callback", &PySurveyHookRegistration::callback);
 
   py::class_<FWFSettings, std::shared_ptr<FWFSettings>> fwf_settings(
     m, "FWFSettings");
@@ -1684,6 +1832,7 @@ PYBIND11_MODULE(_helios, m)
          py::overload_cast<>(&Scanner::calcAbsoluteBeamAttitude))
     .def("handle_sim_step_noise", &Scanner::handleSimStepNoise)
     .def("on_leg_complete", &Scanner::onLegComplete)
+    .def("flush_pending_pulse_tasks", &Scanner::flushPendingPulseTasks)
     .def("on_simulation_finished", &Scanner::onSimulationFinished)
     .def("handle_trajectory_output", &Scanner::handleTrajectoryOutput)
     .def("track_output_path", &Scanner::trackOutputPath)
@@ -1931,30 +2080,6 @@ PYBIND11_MODULE(_helios, m)
         self.allTrajectories =
           std::make_shared<std::vector<Trajectory>>(std::move(vec));
       })
-    .def_property(
-      "cycle_measurements",
-      [](Scanner& self) -> py::array {
-        if (!self.cycleMeasurements || self.cycleMeasurements->empty())
-          throw std::runtime_error("cycleMeasurements is null");
-        return detail::measurements_to_numpy(*(self.cycleMeasurements));
-      },
-      [](Scanner& self, py::array arr) {
-        std::vector<Measurement> vec = detail::numpy_to_measurements(arr);
-        self.cycleMeasurements =
-          std::make_shared<std::vector<Measurement>>(std::move(vec));
-      })
-    .def_property(
-      "cycle_trajectories",
-      [](Scanner& self) -> py::array {
-        if (!self.cycleTrajectories || self.cycleTrajectories->empty())
-          throw std::runtime_error("cycleTrajectories is null");
-        return detail::trajectories_to_numpy(*(self.cycleTrajectories));
-      },
-      [](Scanner& self, py::array arr) {
-        std::vector<Trajectory> vec = detail::numpy_to_trajectories(arr);
-        self.cycleTrajectories =
-          std::make_shared<std::vector<Trajectory>>(std::move(vec));
-      })
 
     .def_property("num_rays",
                   py::overload_cast<>(&Scanner::getNumRays, py::const_),
@@ -2053,24 +2178,6 @@ PYBIND11_MODULE(_helios, m)
     .def_property_readonly("num_devices", &Scanner::getNumDevices)
     .def_property_readonly("time_wave",
                            py::overload_cast<>(&Scanner::getTimeWave))
-
-    .def_property(
-      "cycle_measurements_mutex",
-      [](ScannerWrap& self) {
-        if (!self.get_cycle_measurements_mutex()) {
-          self.set_cycle_measurements_mutex(std::make_shared<std::mutex>());
-        }
-        return self.get_cycle_measurements_mutex();
-      },
-      [](ScannerWrap& self, py::object mutex_obj) {
-        if (mutex_obj.is_none()) {
-          self.set_cycle_measurements_mutex(nullptr);
-        } else {
-          auto mutex_ptr = mutex_obj.cast<std::shared_ptr<std::mutex>>();
-          self.set_cycle_measurements_mutex(mutex_ptr);
-        }
-      },
-      "A shared mutex for synchronized operations")
     .def_property(
       "all_measurements_mutex",
       [](ScannerWrap& self) {
@@ -2155,7 +2262,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("z"),
          py::arg("partId"))
     .def("copy", &PyHeliosSimulation::copy)
-    .def("callback", &PyHeliosSimulation::setCallback)
     .def("assoc_leg_with_scanning_strip",
          &PyHeliosSimulation::assocLegWithScanningStrip)
     .def("remove_leg", &PyHeliosSimulation::removeLeg)
@@ -2166,7 +2272,6 @@ PYBIND11_MODULE(_helios, m)
          &PyHeliosSimulation::newLegFromTemplate,
          py::return_value_policy::reference)
     .def("new_scanning_strip", &PyHeliosSimulation::newScanningStrip)
-    .def("clear_callback", &PyHeliosSimulation::clearCallback)
     .def("get_leg",
          &PyHeliosSimulation::getLeg,
          py::return_value_policy::reference)
@@ -2203,9 +2308,6 @@ PYBIND11_MODULE(_helios, m)
     .def_property("num_threads",
                   &PyHeliosSimulation::getNumThreads,
                   &PyHeliosSimulation::setNumThreads)
-    .def_property("callback_frequency",
-                  &PyHeliosSimulation::getCallbackFrequency,
-                  &PyHeliosSimulation::setCallbackFrequency)
     .def_property("simulation_frequency",
                   &PyHeliosSimulation::getSimFrequency,
                   &PyHeliosSimulation::setSimFrequency)
@@ -2805,7 +2907,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("legacyEnergyModel") = false)
 
     .def_readwrite("current_leg_index", &Simulation::mCurrentLegIndex)
-    .def_readwrite("callback", &Simulation::callback)
     .def_readwrite("is_finished", &Simulation::finished)
 
     .def_property("sim_speed_factor",
@@ -2815,9 +2916,12 @@ PYBIND11_MODULE(_helios, m)
     .def_property("simulation_frequency",
                   &Simulation::getSimFrequency,
                   &Simulation::setSimFrequency)
-    .def_property("callback_frequency",
-                  &Simulation::getCallbackFrequency,
-                  &Simulation::setCallbackFrequency)
+    .def_property_readonly("hook_failed", &Simulation::hasHookFailure)
+    .def("add_hook",
+         [](Simulation& self, PySurveyHookRegistration const& reg) {
+           self.addHook(toCoreSurveyHookRegistration(reg));
+         })
+    .def("clear_hooks", &Simulation::clearHooks)
 
     .def("start", &Simulation::start, py::call_guard<py::gil_scoped_release>())
     .def("pause", &Simulation::pause)
@@ -3014,6 +3118,7 @@ PYBIND11_MODULE(_helios, m)
     .def("handle_pulse_computation",
          &ScanningPulseProcess::handlePulseComputation)
     .def("on_leg_complete", &ScanningPulseProcess::onLegComplete)
+    .def("flush_pending", &ScanningPulseProcess::flushPending)
     .def("on_simulation_finished", &ScanningPulseProcess::onSimulationFinished)
     .def("get_scanner", &ScanningPulseProcess::getScanner)
     .def("is_write_waveform", &ScanningPulseProcess::isWriteWaveform)
@@ -3023,12 +3128,6 @@ PYBIND11_MODULE(_helios, m)
          py::return_value_policy::reference_internal)
     .def("get_all_measurements_mutex",
          &ScanningPulseProcess::getAllMeasurementsMutex,
-         py::return_value_policy::reference_internal)
-    .def("get_cycle_measurements",
-         &ScanningPulseProcess::getCycleMeasurements,
-         py::return_value_policy::reference_internal)
-    .def("get_cycle_measurements_mutex",
-         &ScanningPulseProcess::getCycleMeasurementsMutex,
          py::return_value_policy::reference_internal);
 
   py::class_<BuddingScanningPulseProcess,
@@ -3060,6 +3159,7 @@ PYBIND11_MODULE(_helios, m)
     .def("handle_pulse_computation",
          &BuddingScanningPulseProcess::handlePulseComputation)
     .def("on_leg_complete", &BuddingScanningPulseProcess::onLegComplete)
+    .def("flush_pending", &BuddingScanningPulseProcess::flushPending)
     .def("on_simulation_finished",
          &BuddingScanningPulseProcess::onSimulationFinished);
 
@@ -3092,6 +3192,7 @@ PYBIND11_MODULE(_helios, m)
     .def("handle_pulse_computation",
          &WarehouseScanningPulseProcess::handlePulseComputation)
     .def("on_leg_complete", &WarehouseScanningPulseProcess::onLegComplete)
+    .def("flush_pending", &WarehouseScanningPulseProcess::flushPending)
     .def("on_simulation_finished",
          &WarehouseScanningPulseProcess::onSimulationFinished);
 

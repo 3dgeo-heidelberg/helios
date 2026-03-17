@@ -44,6 +44,12 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
 void
 WarehouseScanningPulseProcess::onLegComplete()
 {
+  flushPending();
+}
+
+void
+WarehouseScanningPulseProcess::flushPending()
+{
   // Consume pending dropper, if any
   dropper.drop(apMatrix,
                randGen1,

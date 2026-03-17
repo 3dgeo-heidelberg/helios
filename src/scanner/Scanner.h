@@ -120,27 +120,6 @@ public:
    * @see Scanner::alTrajectories
    */
   std::shared_ptr<std::mutex> allMeasurementsMutex = nullptr;
-  /**
-   * @brief Vector of measurements performed by the scanner at current cycle
-   *
-   * It can be nullptr when no tracking of measurements by cycle is requested
-   */
-  std::shared_ptr<std::vector<Measurement>> cycleMeasurements = nullptr;
-  /**
-   * @brief Vector of trajectory points recorded by the scanner
-   *
-   * It can be nullptr when no tracking of trajectory points by cycle is
-   * requested
-   */
-  std::shared_ptr<std::vector<Trajectory>> cycleTrajectories = nullptr;
-  /**
-   * @brief Mutex to handle concurrent access to vector of measurements and
-   * vector of trajectory points by cycle
-   *
-   * @see Scanner::cycleMeasurements
-   * @see Scanner::cycleTrajectories
-   */
-  std::shared_ptr<std::mutex> cycleMeasurementsMutex = nullptr;
 
   // Trajectory output processing interval
   /**
@@ -495,16 +474,24 @@ public:
    */
   virtual void onLegComplete() { spp->onLegComplete(); }
   /**
+   * @brief Flush pending pulse tasks in scanning pulse process, if any.
+   */
+  inline void flushPendingPulseTasks()
+  {
+    if (spp != nullptr) {
+      spp->flushPending();
+    }
+  }
+  /**
    * @brief Exposes ScanningPulseProcess::onSimulationFinished method of the
    *  scanning pulse process defining this scanner
    */
   void inline onSimulationFinished() { spp->onSimulationFinished(); }
   /**
-   * @brief Handle trajectory output whatever it is to output file, to
-   * all trajectories vector or to cycle trajectories vector
+   * @brief Handle trajectory output whatever it is to output file or all
+   * trajectories vector.
    * @param currentGpsTime Current GPS time (nanoseconds)
    * @see Scanner::allTrajectories
-   * @see Scanner::cycleTrajectories
    */
   void handleTrajectoryOutput(double const currentGpsTime);
   /**
