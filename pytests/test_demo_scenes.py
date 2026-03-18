@@ -298,7 +298,7 @@ def test_interpolated_traj_exe(regression_data, output_dir):
             "--lasOutput",
             "--zipOutput",
             "--gpsStartTime",
-            "2022-01-01 00:00:00+01:00",
+            "2022-01-01 00:00:00",
         ],
     )
     eval_interpolated_traj(regression_data, dirname_exe)
@@ -310,7 +310,7 @@ def test_interpolated_traj_pyh(regression_data, output_dir):
         Path("data") / "surveys" / "demo" / "als_interpolated_trajectory.xml",
         output=output_dir,
         zip_output=True,
-        start_time="2022-01-01 00:00:00+01:00",
+        start_time="2022-01-01 00:00:00",
     )
     eval_interpolated_traj(regression_data, dirname_pyh)
 
