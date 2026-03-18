@@ -318,10 +318,12 @@
   <!-- ##### END RIEGL VQ-1560i - Combined ##### -->
 
   <!-- ##### LIVOX Mid-70 -->
+  <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
+       We use the value for the semi-minor axis -->
   <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°) -->
   <scanner  id                         = "livox_mid-70"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0005"
+            beamDivergence_rad         = "0.00089"
             name                       = "Livox Mid-70"
             optics                     = "risley"
             pulseFreqs_Hz              = "100000"
@@ -348,9 +350,11 @@
   <!--######## END LIVOX Mid-70 ####### -->
 
   <!-- ##### LIVOX Mid-100 -->
+  <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
+       We use the value for the semi-minor axis -->
   <scanner  id                         = "livox-mid-100"
             accuracy_m                = "0.02"
-            beamDivergence_rad        = "0.0005" 
+            beamDivergence_rad        = "0.00089" 
             name                      = "Livox Mid-100" 
             optics                    = "risley" 
             pulseFreqs_Hz             = "100000" 
@@ -397,14 +401,14 @@
        elliptical beam divergence, we use the value for the semi-minor axis -->
   <scanner  id                         = "livox-zenmuse-l1-non-repetitive"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0005"
+            beamDivergence_rad         = "0.00089"
             name                       = "DJI Zenmuse L1 = Livox Avia (non-repetitive)" 
             optics                     = "risley" 
             pulseFreqs_Hz              = "40000" 
             pulseLength_ns             = "4" 
             rangeMin_m                 = "1"
             maxNOR                     = "3"
-            wavelength_nm              = "905" 
+            wavelength_nm              = "905"
             rotorFreq1_Hz              = "-131.5463" 
             rotorFreq2_Hz              = "40.8032" 
             rotorFreq3_Hz              = "213.1611" 
@@ -441,6 +445,7 @@
 
 
   <!--######## BEGIN DJI Zenmuse L2 (REPETITIVE) ####### -->
+  <!-- elliptical beam divergence: horizontal 0.2 mrad x vertical 0.6 mrad at FWHM. At the 1/e2 point, this corresponds to 0.34 mrad x 1.02 mrad (mean: 0.68 mrad). We use the value for the semi-minor axis as beam divergence.-->
   <scanner  id                         = "dji-zenmuse-l2-repetitive"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.00034"
@@ -489,6 +494,7 @@
   <!--######## END DJI Zenmuse L2 (REPETITIVE) ####### -->
 
   <!--######## BEGIN DJI Zenmuse L2 (NON-REPETITIVE) ####### -->
+  <!-- elliptical beam divergence: horizontal 0.2 mrad x vertical 0.6 mrad at FWHM. At the 1/e2 point, this corresponds to 0.34 mrad x 1.02 mrad (mean: 0.68 mrad). We use the value for the semi-minor axis as beam divergence.-->
   <scanner  id                         = "dji-zenmuse-l2-non-repetitive"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.00034"
