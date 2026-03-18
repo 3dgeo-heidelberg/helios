@@ -86,7 +86,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
   bool success = scene->finalizeLoading();
   if (!success) {
     logging::ERR("Finalizing the scene failed.");
-    exit(-1);
+    throw HeliosException("Finalizing the scene failed.");
   }
   scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
 
