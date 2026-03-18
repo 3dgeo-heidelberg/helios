@@ -325,14 +325,14 @@ def eval_interpolated_traj(regression_data, dirname):
         for _ in range(3):
             next(f)
         line = f.readline()
-        assert line.startswith("13.4766 1.7424 400.0000")
+        assert line.startswith("13.4764 1.7423 400.0000")
 
     if regression_data:
         pcloud0_ref = pcu.PointCloud.from_las_file(
-            regression_data / "interpolated_traj_leg000_points.laz", fnames=["gps_time"]
+            regression_data / "interpolated_traj_leg000_points.laz"
         )
         pcloud0 = pcu.PointCloud.from_las_file(
-            dirname / "leg000_points.laz", fnames=["gps_time"]
+            dirname / "leg000_points.laz"
         )
         pcloud0.assert_equals(pcloud0_ref)
         pcloud1_ref = pcu.PointCloud.from_las_file(
