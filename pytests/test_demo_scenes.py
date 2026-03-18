@@ -331,9 +331,7 @@ def eval_interpolated_traj(regression_data, dirname):
         pcloud0_ref = pcu.PointCloud.from_las_file(
             regression_data / "interpolated_traj_leg000_points.laz"
         )
-        pcloud0 = pcu.PointCloud.from_las_file(
-            dirname / "leg000_points.laz"
-        )
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / "leg000_points.laz")
         pcloud0.assert_equals(pcloud0_ref)
         pcloud1_ref = pcu.PointCloud.from_las_file(
             regression_data / "interpolated_traj_leg001_points.laz"
