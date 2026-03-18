@@ -4,7 +4,6 @@
 
 #include <chrono>
 #include <ctime>
-#include <stdexcept>
 
 using namespace std::chrono;
 
@@ -13,8 +12,7 @@ using namespace std::chrono;
 long
 DateTimeUtils::dateTimeStrToSeconds(std::string const str)
 {
-
-  std::tm t = {};
+  std::tm t;
   t.tm_year = stoi(str.substr(0, 4)) - 1900;
   t.tm_mon = stoi(str.substr(5, 2)) - 1;
   t.tm_mday = stoi(str.substr(8, 2));
