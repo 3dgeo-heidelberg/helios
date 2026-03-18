@@ -66,7 +66,7 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
     std::stringstream ss;
     ss << "Voxel file not found: " << pathString;
     logging::ERR(ss.str());
-    exit(1);
+    throw HeliosException(ss.str());
   }
   // Prepare default material
   Material mat;

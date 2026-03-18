@@ -17,7 +17,7 @@ LadLutLoader::load(std::string const& path, std::string const separator)
     ss << "Failed to open ladlut file at \"" << path << "\"\n"
        << "EXCEPTION: " << e.what();
     logging::ERR(ss.str());
-    exit(-1);
+    throw HeliosException(ss.str());
   }
 
   // Create LadLut

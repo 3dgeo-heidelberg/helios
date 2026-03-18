@@ -49,7 +49,7 @@ GeoTiffFileLoader::run()
        << "\n\tException: " << e.what() << "\n"
        << "Aborting load attempt.";
     logging::ERR(ss.str());
-    exit(1);
+    throw HeliosException(ss.str());
   }
 
   // Close tiff
@@ -114,7 +114,7 @@ GeoTiffFileLoader::obtainEnvelope(GDALDataset* tiff)
       ss << "ERROR at GeoTiffFileLoader::run when "
          << "retrieving envelope from layer.";
       logging::ERR(ss.str());
-      exit(1);
+      throw HeliosException(ss.str());
     }
     ss << "WARNING! Unexpected secenario at GeoTiffFileLoader when "
        << "obtaining envelope";

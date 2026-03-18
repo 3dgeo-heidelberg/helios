@@ -229,7 +229,7 @@ XmlUtils::getAttribute(tinyxml2::XMLElement* element,
       ss << "ERROR: No default value specified for attribute '" << attrName
          << "'. Aborting.";
       logging::ERR(ss.str());
-      exit(-1);
+      throw HeliosException(ss.str());
     }
   }
 
