@@ -4,8 +4,8 @@ import pooch
 import pytest
 import shutil
 
-TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2025-07-31/data.tar.gz"
-TEST_DATA_CHECKSUM = "9b5ddcdb401b3c9b8b6e5b9bef22ead199d765b465997966d7faa0570087730d"
+TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2026-03-06/data.tar.gz"
+TEST_DATA_CHECKSUM = "95ff3295a413ad2ef55bff3dc4418aa96a6cb6c2013abeb665900617b99429d2"
 
 
 @pytest.fixture
