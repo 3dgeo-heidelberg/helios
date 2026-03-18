@@ -96,23 +96,6 @@ Scanner::Scanner(Scanner& s)
   else
     this->allMeasurementsMutex = std::make_shared<std::mutex>();
 
-  if (s.cycleMeasurements == nullptr)
-    this->cycleMeasurements = nullptr;
-  else {
-    this->cycleMeasurements =
-      std::make_shared<std::vector<Measurement>>(*s.cycleMeasurements);
-  }
-  if (s.cycleTrajectories == nullptr)
-    this->cycleTrajectories = nullptr;
-  else {
-    this->cycleTrajectories =
-      std::make_shared<std::vector<Trajectory>>(*s.cycleTrajectories);
-  }
-  if (s.cycleMeasurementsMutex == nullptr)
-    this->cycleMeasurementsMutex = nullptr;
-  else
-    this->cycleMeasurementsMutex = std::make_shared<std::mutex>();
-
   /*
    * Randomness generators must be initialized outside,
    * because DEFAULT_RG might not be instantiated at construction time
@@ -159,23 +142,6 @@ Scanner::_clone(Scanner& sc) const
     sc.allMeasurementsMutex = nullptr;
   } else {
     sc.allMeasurementsMutex = std::make_shared<std::mutex>();
-  }
-  if (cycleMeasurements == nullptr) {
-    sc.cycleMeasurements = nullptr;
-  } else {
-    sc.cycleMeasurements =
-      std::make_shared<std::vector<Measurement>>(*cycleMeasurements);
-  }
-  if (cycleTrajectories == nullptr) {
-    sc.cycleTrajectories = nullptr;
-  } else {
-    sc.cycleTrajectories =
-      std::make_shared<std::vector<Trajectory>>(*cycleTrajectories);
-  }
-  if (cycleMeasurementsMutex == nullptr) {
-    sc.cycleMeasurementsMutex = nullptr;
-  } else {
-    sc.cycleMeasurementsMutex = std::make_shared<std::mutex>();
   }
   sc.trajectoryTimeInterval_ns = trajectoryTimeInterval_ns;
   sc.lastTrajectoryTime = lastTrajectoryTime;
@@ -350,12 +316,6 @@ Scanner::handleTrajectoryOutput(double const currentGpsTime)
   if (allTrajectories != nullptr) {
     std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
     allTrajectories->push_back(trajectory);
-  }
-
-  // Add trajectory to cycle trajectories vector
-  if (cycleTrajectories != nullptr) {
-    std::unique_lock<std::mutex> lock(*cycleMeasurementsMutex);
-    cycleTrajectories->push_back(trajectory);
   }
 
   // Avoid repeating trajectory for non-moving platforms

@@ -39,15 +39,3 @@ ScanningPulseProcess::getAllMeasurementsMutex() const
 {
   return scanner->allMeasurementsMutex;
 }
-
-std::shared_ptr<std::vector<Measurement>>&
-ScanningPulseProcess::getCycleMeasurements() const
-{
-  return scanner->cycleMeasurements;
-}
-
-std::shared_ptr<std::mutex>&
-ScanningPulseProcess::getCycleMeasurementsMutex() const
-{
-  return scanner->cycleMeasurementsMutex;
-}

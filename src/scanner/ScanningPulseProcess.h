@@ -59,6 +59,12 @@ public:
    */
   virtual inline void onLegComplete() {}
   /**
+   * @brief Flush pending pulse tasks to reach a quiescent computation state.
+   *
+   * Default implementation does nothing.
+   */
+  virtual inline void flushPending() {}
+  /**
    * @brief Handle behavior of scanning pulse process once simulation has
    *  finished.
    *
@@ -101,16 +107,4 @@ public:
    * @see ScanningPulseProcess::allMeasurementsMutex
    */
   std::shared_ptr<std::mutex>& getAllMeasurementsMutex() const;
-  /**
-   * @brief Obtain the scanner's cycle measurements vector
-   * @return Scanner's cycle measurements vector
-   * @see ScanningPulseProcess::cycleMeasurements
-   */
-  std::shared_ptr<std::vector<Measurement>>& getCycleMeasurements() const;
-  /**
-   * @brief Obtain the scanner's cycle measurements mutex
-   * @return Scanner's cycle measurements mutex
-   * @see ScanningPulseProcess::cycleMeasurementsMutex
-   */
-  std::shared_ptr<std::mutex>& getCycleMeasurementsMutex() const;
 };

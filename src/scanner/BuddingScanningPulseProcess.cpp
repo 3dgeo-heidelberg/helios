@@ -52,6 +52,12 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
 void
 BuddingScanningPulseProcess::onLegComplete()
 {
+  flushPending();
+}
+
+void
+BuddingScanningPulseProcess::flushPending()
+{
   // If there is a pending chunk of tasks, sequentially compute it
   dropper.drop(apMatrix,
                randGen1,

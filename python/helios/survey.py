@@ -8,6 +8,16 @@ from helios.platforms import (
 )
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
+from helios.callbacks import (
+    CPP_HOOK_END_OF_LEG_POLICY_MAP,
+    CPP_HOOK_PAYLOAD_MAP,
+    CPP_HOOK_POINT_MAP,
+    HookEndOfLegPolicy,
+    HookPayload,
+    HookPoint,
+    SurveyHook,
+    build_progressbar_callbacks,
+)
 from helios.settings import (
     ExecutionSettings,
     FullWaveformSettings,
@@ -36,7 +46,7 @@ from datetime import datetime, timezone
 from numpydantic import NDArray
 from pathlib import Path
 from pydantic import Field, validate_call
-from typing import Annotated, Optional, Tuple
+from typing import Annotated, Optional, Sequence, Tuple
 import threading
 
 import numpy as np
@@ -47,7 +57,15 @@ import _helios
 
 
 def _start_playback_interruptible(playback, poll_interval=0.1):
-    worker = threading.Thread(target=playback.start)
+    error = []
+
+    def _run():
+        try:
+            playback.start()
+        except BaseException as exc:
+            error.append(exc)
+
+    worker = threading.Thread(target=_run)
     worker.start()
     try:
         while worker.is_alive():
@@ -56,6 +74,8 @@ def _start_playback_interruptible(playback, poll_interval=0.1):
         playback.stop()
         worker.join()
         raise
+    if error:
+        raise error[0]
 
 
 class Survey(Model, cpp_class=_helios.Survey):
@@ -86,13 +106,13 @@ class Survey(Model, cpp_class=_helios.Survey):
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
-    trajectory: Optional[NDArray] = None    
 
     @validate_call
     def run(
         self,
         execution_settings: Optional[ExecutionSettings] = None,
         output_settings: Optional[OutputSettings] = None,
+        callbacks: Optional[Sequence[SurveyHook]] = None,
         **parameters,
     ):
         """
@@ -110,6 +130,8 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Update the settings to use
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
+        callbacks = tuple(callbacks or ())
+        progressbar_controller = None
 
         # Update logs settings
         apply_log_writing(execution_settings)
@@ -193,17 +215,41 @@ class Survey(Model, cpp_class=_helios.Survey):
             execution_settings.discard_shutdown,
             fms,
         )
-        playback.callback_frequency = 0
-
-        self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
-        self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
-        self.scanner._cpp_object.cycle_measurements_mutex = None
         self.scanner._cpp_object.all_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.all_output_paths = np.empty((0,))
         self.scanner._cpp_object.all_measurements_mutex = None
+
+        progressbar_callbacks, progressbar_controller = build_progressbar_callbacks(
+            strategy=execution_settings.progressbar,
+            num_legs=len(self.legs),
+        )
+        callbacks = callbacks + progressbar_callbacks
+
+        for hook in callbacks:
+            registration = _helios.SurveyHookRegistration()
+            registration.point = CPP_HOOK_POINT_MAP[hook.point]
+            registration.payload = CPP_HOOK_PAYLOAD_MAP[hook.payload]
+            end_of_leg_policy = hook.end_of_leg_policy or HookEndOfLegPolicy.NONE
+            registration.end_of_leg_policy = CPP_HOOK_END_OF_LEG_POLICY_MAP[
+                end_of_leg_policy
+            ]
+            registration.barrier = hook.barrier
+            registration.callback = hook.callback
+            registration.sim_time_s = (
+                float(hook.sim_time) if hook.sim_time is not None else 0.0
+            )
+            registration.period_s = (
+                float(hook.period) if hook.period is not None else 0.0
+            )
+            playback.add_hook(registration)
+
         # Start simulating the survey
-        _start_playback_interruptible(playback)
+        try:
+            _start_playback_interruptible(playback)
+        finally:
+            if progressbar_controller is not None:
+                progressbar_controller.close()
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
@@ -343,6 +389,8 @@ class Survey(Model, cpp_class=_helios.Survey):
         survey = cls._from_cpp(_cpp_survey)
         survey._is_loaded_from_xml = True
         survey.scene._is_loaded_from_xml = True
+        survey._disable_yaml_serialization_for_descendants()
+        survey._set_constructor_provenance("from_xml", survey_file=survey_file)
 
         return survey
 

@@ -145,6 +145,7 @@ public:
    *  dropper
    */
   void onLegComplete() override;
+  void flushPending() override;
   /**
    * @brief Handle closing of output file stream for budding metrics when
    *  it is called with -DBUDDING_METRICS=1

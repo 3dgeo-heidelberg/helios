@@ -8,6 +8,10 @@ from helios.utils import (
     get_asset_directories,
     detect_separator,
     is_xml_loaded,
+    _validate_points_array_and_get_indices,
+    _as_array,
+    _validate_same_shape,
+    _validate_triangle_uvs,
 )
 
 from helios.validation import (
@@ -88,6 +92,11 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
             str(material_file), [str(p) for p in get_asset_directories()], material_id
         )
         material = cls._from_cpp(_cpp_material)
+        material._set_constructor_provenance(
+            "from_file",
+            material_file=material_file,
+            material_id=material_id,
+        )
         return material
 
 
@@ -255,14 +264,24 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         # Maybe shift by the rotation center
         if rotation_center is not None:
-            self.translate(-rotation_center)
+            _helios.translate_scene_part(self._cpp_object, -rotation_center)
 
         # Perform the actual rotation
         _helios.rotate_scene_part(self._cpp_object, rot)
 
         # Undo the shift by the rotation center
         if rotation_center is not None:
-            self.translate(rotation_center)
+            _helios.translate_scene_part(self._cpp_object, rotation_center)
+
+        self._append_operation_provenance(
+            "rotate",
+            quaternion=quaternion,
+            axis=axis,
+            angle=angle,
+            from_axis=from_axis,
+            to_axis=to_axis,
+            rotation_center=rotation_center,
+        )
 
         return self
 
@@ -275,6 +294,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
 
         _helios.scale_scene_part(self._cpp_object, factor)
+        self._append_operation_provenance("scale", factor=factor)
         return self
 
     @validate_call
@@ -286,6 +306,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """
 
         _helios.translate_scene_part(self._cpp_object, offset)
+        self._append_operation_provenance("translate", offset=offset)
         return self
 
     @classonlymethod
@@ -299,6 +320,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
         scene_part = cls._from_cpp(_cpp_scene_part)
         scene_part._is_loaded_from_xml = True
+        scene_part._disable_yaml_serialization_for_descendants()
+        scene_part._set_constructor_provenance(
+            "from_xml",
+            scene_part_file=scene_part_file,
+            id=id,
+        )
         return scene_part
 
     @classonlymethod
@@ -321,7 +348,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(obj_file), [str(p) for p in get_asset_directories()], up_axis
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_obj",
+            obj_file=obj_file,
+            up_axis=up_axis,
+        )
+        return scene_part
 
     @classonlymethod
     @validate_call
@@ -341,7 +374,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(tiff_file), [str(p) for p in get_asset_directories()]
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_tiff",
+            tiff_file=tiff_file,
+        )
+        return scene_part
 
     @classonlymethod
     @validate_call
@@ -445,7 +483,21 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             snap_neighbor_normal,
         )
 
-        return cls._from_cpp(_cpp_part)
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_xyz",
+            xyz_file=xyz_file,
+            voxel_size=voxel_size,
+            separator=separator,
+            max_color_value=max_color_value,
+            default_normal=default_normal,
+            sparse=sparse,
+            estimate_normals=estimate_normals,
+            normals_file_columns=normals_file_columns,
+            rgb_file_columns=rgb_file_columns,
+            snap_neighbor_normal=snap_neighbor_normal,
+        )
+        return scene_part
 
     @classonlymethod
     @validate_call
@@ -553,7 +605,223 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             ladlut_path if ladlut_path is not None else "",
         )
 
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part._set_constructor_provenance(
+            "from_vox",
+            vox_file=vox_file,
+            intersection_mode=intersection_mode,
+            intersection_argument=intersection_argument,
+            random_shift=random_shift,
+            ladlut_path=ladlut_path,
+        )
+        return scene_part
+
+    @classonlymethod
+    @validate_call
+    def from_numpy_array(
+        cls,
+        points: NDArray,
+        voxel_size: PositiveFloat,
+        *,
+        normals_file_columns: Optional[list[NonNegativeInt]] = None,
+        rgb_file_columns: Optional[list[NonNegativeInt]] = None,
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: R3Vector = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
+        sparse: bool = True,
+        estimate_normals: bool = False,
+        snap_neighbor_normal: bool = False,
+    ):
+        """Load the scene part from a numpy array."""
+
+        ncols, rcols = _validate_points_array_and_get_indices(
+            points,
+            normals_file_columns=normals_file_columns,
+            rgb_file_columns=rgb_file_columns,
+        )
+        _cpp_part = _helios.read_numpy_scene_part(
+            points,
+            [str(p) for p in get_asset_directories()],
+            voxel_size,
+            max_color_value,
+            default_normal,
+            sparse,
+            estimate_normals,
+            ncols[0],
+            ncols[1],
+            ncols[2],
+            rcols[0],
+            rcols[1],
+            rcols[2],
+            snap_neighbor_normal,
+        )
+
         return cls._from_cpp(_cpp_part)
+
+    @classmethod
+    def _compose_from_o3d_triangle_mesh(
+        cls,
+        geometry,
+        *,
+        up_axis: Literal["y", "z"] = "z",
+    ):
+        if up_axis not in ("y", "z"):
+            raise ValueError("`up_axis` must be either 'y' or 'z'.")
+
+        vertices = _as_array(
+            geometry.vertices, dtype=np.float64, name="Open3D mesh vertices"
+        )
+        triangles = _as_array(
+            geometry.triangles, dtype=np.int32, name="Open3D mesh triangles"
+        )
+
+        vertex_normals = None
+        if geometry.has_vertex_normals():
+            vertex_normals = _as_array(
+                geometry.vertex_normals,
+                dtype=np.float64,
+                name="Open3D mesh vertex normals",
+            )
+            vertex_normals = _validate_same_shape(
+                vertex_normals, "vertices", vertices, "Open3D mesh vertex normals"
+            )
+
+        triangle_normals = None
+        if geometry.has_triangle_normals():
+            triangle_normals = _as_array(
+                geometry.triangle_normals,
+                dtype=np.float64,
+                name="Open3D mesh triangle normals",
+            )
+            triangle_normals = _validate_same_shape(
+                triangle_normals, "triangles", triangles, "Open3D mesh triangle normals"
+            )
+
+        colors = None
+        if geometry.has_vertex_colors():
+            colors = _as_array(
+                geometry.vertex_colors,
+                dtype=np.float64,
+                name="Open3D mesh vertex colors",
+            )
+            colors = _validate_same_shape(
+                colors, "vertices", vertices, "Open3D mesh vertex colors"
+            )
+
+        triangle_uvs = None
+        if geometry.has_triangle_uvs():
+            triangle_uvs = _as_array(
+                geometry.triangle_uvs,
+                dtype=np.float64,
+                shape_second_dim=2,
+                name="Open3D mesh triangle uvs",
+            )
+            triangle_uvs = _validate_triangle_uvs(
+                triangle_uvs, triangles, "Open3D mesh triangle uvs"
+            )
+
+        _cpp_part = _helios.read_open3d_mesh_scene_part(
+            vertices,
+            triangles,
+            vertex_normals,
+            triangle_normals,
+            colors,
+            triangle_uvs,
+            up_axis,
+        )
+
+        return cls._from_cpp(_cpp_part)
+
+    @classmethod
+    def _compose_from_o3d_pointcloud(
+        cls,
+        geometry,
+        *,
+        voxel_size: PositiveFloat,
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: R3Vector = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
+        sparse: bool = True,
+        estimate_normals: bool = False,
+        snap_neighbor_normal: bool = False,
+    ):
+        points = _as_array(
+            geometry.points, dtype=np.float64, name="Open3D point cloud points"
+        )
+        normals = (
+            _as_array(
+                geometry.normals, dtype=np.float64, name="Open3D point cloud normals"
+            )
+            if geometry.has_normals()
+            else None
+        )
+        colors = (
+            _as_array(
+                geometry.colors, dtype=np.float64, name="Open3D point cloud colors"
+            )
+            if geometry.has_colors()
+            else None
+        )
+
+        combined_array = [points]
+        column_count = 3
+        if normals is not None:
+            if normals.shape != points.shape:
+                raise ValueError(
+                    "The number of normals must match the number of points."
+                )
+            combined_array.append(normals)
+            normals_indices = [column_count, column_count + 1, column_count + 2]
+            column_count += 3
+
+        if colors is not None:
+            if colors.shape != points.shape:
+                raise ValueError(
+                    "The number of colors must match the number of points."
+                )
+            combined_array.append(colors)
+            rgb_file_columns = [column_count, column_count + 1, column_count + 2]
+            column_count += 3
+
+        effective_max_color_value = (
+            1.0 if colors is not None and max_color_value == 0.0 else max_color_value
+        )
+
+        result_array = np.hstack(combined_array)
+
+        return cls.from_numpy_array(
+            points=result_array,
+            voxel_size=voxel_size,
+            normals_file_columns=normals_indices if normals is not None else None,
+            rgb_file_columns=rgb_file_columns if colors is not None else None,
+            max_color_value=effective_max_color_value,
+            default_normal=default_normal,
+            sparse=sparse,
+            estimate_normals=estimate_normals,
+            snap_neighbor_normal=snap_neighbor_normal,
+        )
+
+    @classonlymethod
+    @validate_call
+    def from_open3d(cls, geometry, **kwargs):
+        """Load the scene part from an Open3D geometry."""
+        try:
+            import open3d
+        except ImportError:
+            raise ImportError(
+                "Open3D is required for `ScenePart.from_open3d`, but can't be installed via conda. Install it with `pip install open3d`."
+            )
+        if isinstance(geometry, open3d.geometry.TriangleMesh):
+            return cls._compose_from_o3d_triangle_mesh(geometry, **kwargs)
+        if isinstance(geometry, open3d.geometry.PointCloud):
+            return cls._compose_from_o3d_pointcloud(geometry, **kwargs)
+
+        raise TypeError(
+            "Unsupported geometry type for `ScenePart.from_o3d`. "
+            f"Expected open3d.geometry.TriangleMesh or open3d.geometry.PointCloud, got {type(geometry)}."
+        )
 
     @validate_call
     def _apply_material_to_all_primitives(self, material: Material):
@@ -711,6 +979,8 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         )
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
+        scene._disable_yaml_serialization_for_descendants()
+        scene._set_constructor_provenance("from_xml", scene_file=scene_file)
         return scene
 
     @classonlymethod
@@ -723,7 +993,9 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         :type binary_file: AssetPath
         """
         _cpp_scene = _helios.StaticScene.from_binary(str(binary_file))
-        return cls._from_cpp(_cpp_scene)
+        scene = cls._from_cpp(_cpp_scene)
+        scene._set_constructor_provenance("from_binary", binary_file=binary_file)
+        return scene
 
     @validate_call
     def to_binary(self, binary_file: Path, compression_level: CompressionLevel = 6):

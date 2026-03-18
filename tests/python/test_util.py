@@ -1,9 +1,9 @@
 from helios.utils import *
-from helios.utils import _prepare_trajectory_array
-
+from helios.utils import _prepare_trajectory_array, _as_array, _validate_same_shape
 from pathlib import Path
 
 import pytest
+import numpy as np
 
 
 def test_get_asset_directories():
@@ -43,6 +43,23 @@ def test_custom_asset_directory(tmp_path):
     file.touch()
 
     assert find_file("test_file") == file
+
+
+def test_add_asset_directory_context_manager(tmp_path):
+    assert tmp_path not in get_asset_directories()
+
+    with add_asset_directory(tmp_path):
+        assert tmp_path in get_asset_directories()
+
+    assert tmp_path not in get_asset_directories()
+
+
+def test_add_asset_directory_repr_is_silent(tmp_path):
+    handle = add_asset_directory(tmp_path)
+    try:
+        assert repr(handle) == ""
+    finally:
+        handle.close()
 
 
 def test_combine_empty():
@@ -253,3 +270,66 @@ def test_prepare_trajectory_array_wrong_dtype():
 
     with pytest.raises(ValueError):
         _prepare_trajectory_array(np.zeros(10))
+
+
+def test_as_array_converts_dtype_and_contiguous():
+    arr = _as_array([[1, 2, 3], [4, 5, 6]], dtype=np.float64, name="x")
+    assert isinstance(arr, np.ndarray)
+    assert arr.dtype == np.float64
+    assert arr.flags["C_CONTIGUOUS"]
+    assert arr.shape == (2, 3)
+
+
+def test_as_array_accepts_custom_second_dim():
+    arr = _as_array(
+        [[0, 1, 2], [3, 4, 5]], dtype=np.int32, shape_second_dim=3, name="triangles"
+    )
+    assert arr.dtype == np.int32
+    assert arr.shape == (2, 3)
+
+
+def test_as_array_rejects_unconvertible_input():
+    arr = [
+        [1, 2, 3],
+        [[[1, 2, 3]]],
+        [[1, 2], [3, 4]],
+    ]
+    with pytest.raises(ValueError, match="could not be converted to a NumPy array"):
+        _as_array(arr, dtype=np.float64, name="bad")
+
+
+def test_as_array_rejects_1d_input():
+    with pytest.raises(ValueError, match=r"must have shape \(N, 3\)"):
+        _as_array([1, 2, 3], dtype=np.float64, name="x")
+
+
+def test_as_array_rejects_wrong_second_dimension():
+    arr = [[1, 2], [3, 4]]
+
+    with pytest.raises(ValueError, match=r"must have shape \(N, 3\)"):
+        _as_array(arr, dtype=np.float64, name="x")
+
+
+def test_as_array_rejects_empty_rows():
+    arr = np.empty((0, 3))
+
+    with pytest.raises(ValueError, match="must contain at least one row"):
+        _as_array(arr, dtype=np.float64, name="x")
+
+
+def test_validate_same_shape_ok():
+    ref = np.zeros((4, 3), dtype=np.float64)
+    arr = np.ones((4, 3), dtype=np.float64)
+
+    result = _validate_same_shape(arr, "vertices", ref, "normals")
+    assert isinstance(result, np.ndarray)
+    assert result.shape == (4, 3)
+    assert result.dtype == np.float64
+
+
+def test_validate_same_shape_raises_on_mismatch():
+    ref = np.zeros((4, 3), dtype=np.float64)
+    arr = np.ones((5, 3), dtype=np.float64)
+
+    with pytest.raises(ValueError, match="must have the same shape as vertices"):
+        _validate_same_shape(arr, "vertices", ref, "normals")

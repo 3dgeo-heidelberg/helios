@@ -116,6 +116,14 @@ class OutputFormat(StrEnum):
     #       is exactly the time to abolish them.
 
 
+class ProgressBarStrategy(StrEnum):
+    NONE = "none"
+    LEGS = "legs"
+    TIME = "time"
+    LEGS_TIME = "legs+time"
+    PER_LEG_TIME = "per_leg_time"
+
+
 class ForceOnGroundStrategy(IntEnum):
     """Enum representing the strategy to use for forcing points on the ground."""
 
@@ -169,6 +177,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     kdt_geom_num_threads: ThreadCount = None
     sah_nodes: PositiveInt = 32
     discard_shutdown: bool = True
+    progressbar: ProgressBarStrategy = ProgressBarStrategy.PER_LEG_TIME
 
 
 class OutputSettings(Model, UpdateableMixin):

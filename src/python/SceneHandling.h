@@ -100,3 +100,46 @@ changeMaterialInstance(std::shared_ptr<ScenePart> scenePart,
 
 std::vector<std::pair<std::string, std::shared_ptr<Material>>>
 getMaterialsMap(const std::shared_ptr<ScenePart>& part);
+
+std::shared_ptr<ScenePart>
+readNumpyScenePart(const double* data,
+                   std::size_t nrows,
+                   std::size_t ncols,
+                   std::ptrdiff_t rowStrideElems,
+                   std::ptrdiff_t colStrideElems,
+                   std::vector<std::string> assetsPath,
+                   double voxelSize,
+                   double maxColorValue,
+                   glm::dvec3 defaultNormal,
+                   bool sparse,
+                   bool estimate_normals,
+                   int normalXIndex,
+                   int normalYIndex,
+                   int normalZIndex,
+                   int rgbRIndex,
+                   int rgbGIndex,
+                   int rgbBIndex,
+                   bool snapNeighborNormal);
+
+std::shared_ptr<ScenePart>
+readOpen3DMeshScenePart(const double* verticesData,
+                        std::size_t nVertices,
+                        std::ptrdiff_t vertexRowStrideElems,
+
+                        const int* trianglesData,
+                        std::size_t nTriangles,
+                        std::ptrdiff_t triangleRowStrideElems,
+
+                        const double* vertexNormalsData,
+                        std::ptrdiff_t vertexNormalRowStrideElems,
+
+                        const double* triangleNormalsData,
+                        std::ptrdiff_t triangleNormalRowStrideElems,
+
+                        const double* vertexColorsData,
+                        std::ptrdiff_t colorRowStrideElems,
+
+                        const double* triangleUvsData,
+                        std::ptrdiff_t triangleUvRowStrideElems,
+
+                        std::string upaxis);

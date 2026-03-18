@@ -24,6 +24,14 @@ public:
     );
   }
 
+  void flushPending() override
+  {
+    PYBIND11_OVERRIDE(void,                 // Return type
+                      ScanningPulseProcess, // Parent class
+                      flushPending          // Function name
+    );
+  }
+
   // Override onSimulationFinished in Python
   void onSimulationFinished() override
   {

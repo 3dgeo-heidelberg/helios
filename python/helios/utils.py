@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING
+from typing import Union, Sequence, TypeVar, List, TYPE_CHECKING, Optional, Tuple
 from numpydantic import NDArray, Shape
 from numpy.lib import recfunctions as rfn
 import functools
@@ -44,7 +44,56 @@ class classonlymethod:
         return self._cm.__get__(None, owner)
 
 
-def add_asset_directory(directory: Path) -> None:
+class _AssetDirectoryRegistration:
+    """Handle returned by add_asset_directory, usable as a context manager."""
+
+    def __init__(self, directory: Path, inserted: bool):
+        """Store directory registration state for optional later cleanup."""
+
+        self.directory = directory
+        self._inserted = inserted
+        self._closed = False
+
+    def __enter__(self):
+        """Return the registered directory path when entering a context block."""
+
+        return self.directory
+
+    def __exit__(self, exc_type, exc, tb):
+        """Remove the temporary registration when leaving a context block."""
+
+        self.close()
+        return False
+
+    def close(self) -> None:
+        """Remove this directory from the custom search path if still registered."""
+
+        if self._closed:
+            return
+        if self._inserted and self.directory in _custom_asset_directories:
+            _custom_asset_directories.remove(self.directory)
+        self._closed = True
+
+    def __repr__(self) -> str:
+        """Render as an empty string to keep REPL output quiet."""
+
+        # Keep add_asset_directory(...) silent when used as a plain function in REPLs.
+        return ""
+
+    def _repr_pretty_(self, p, cycle) -> None:
+        """Suppress pretty-printer output for this registration handle."""
+
+        # IPython pretty-printer hook: intentionally render nothing.
+        return None
+
+    def _ipython_display_(self) -> None:
+        """Suppress rich display output for this registration handle."""
+
+        # IPython rich-display hook: intentionally render nothing.
+        return None
+
+
+def add_asset_directory(directory: Path) -> _AssetDirectoryRegistration:
     """
     Add a directory to the list of directories that will be searched for assets.
 
@@ -54,8 +103,12 @@ def add_asset_directory(directory: Path) -> None:
 
     directory = Path(directory)
 
+    inserted = False
     if directory not in _custom_asset_directories:
         _custom_asset_directories.append(directory)
+        inserted = True
+
+    return _AssetDirectoryRegistration(directory, inserted)
 
 
 def get_asset_directories() -> list[Path]:
@@ -364,6 +417,99 @@ def _prepare_trajectory_array(trajectory: np.ndarray) -> np.ndarray:
             )
 
     return trajectory
+
+
+def _parse_triplet(
+    name: str, ncols: int, cols: Optional[Sequence[int]]
+) -> Tuple[int, int, int]:
+    if cols is None:
+        return (-1, -1, -1)
+    if len(cols) != 3:
+        raise ValueError(f"`{name}` must be 3 indices or None. Got: {cols}")
+    t = (int(cols[0]), int(cols[1]), int(cols[2]))
+    if any(i < 0 for i in t):
+        raise ValueError(f"`{name}` indices must be >= 0. Got: {t}")
+    if any(i >= ncols for i in t):
+        raise ValueError(f"`{name}` indices out of bounds for C={ncols}. Got: {t}")
+    if len(set(t)) != 3:
+        raise ValueError(f"`{name}` indices must be distinct. Got: {t}")
+    if set(t) & {0, 1, 2}:
+        raise ValueError(f"`{name}` must not overlap xyz columns 0,1,2. Got: {t}")
+    return t
+
+
+def _validate_points_array_and_get_indices(
+    points: np.ndarray,
+    *,
+    normals_file_columns: Optional[Sequence[int]],
+    rgb_file_columns: Optional[Sequence[int]],
+) -> tuple[tuple[int, int, int], tuple[int, int, int]]:
+    """Validate the points array and extract the indices for position, normals, and RGB columns."""
+    if not isinstance(points, np.ndarray):
+        raise TypeError(f"Points must be a NumPy ndarray. Got {type(points)!r}.")
+    if points.ndim != 2:
+        raise ValueError(
+            f"Points array must be 2-dimensional. Got {points.ndim} dimensions."
+        )
+    if points.shape[1] < 3:
+        raise ValueError(
+            f"Points array must have at least 3 columns for x, y, z coordinates. Got {points.shape[1]} columns."
+        )
+
+    _, ncols = points.shape
+    normals_indices = _parse_triplet(
+        "normals_file_columns", ncols, normals_file_columns
+    )
+    rgb_indices = _parse_triplet("rgb_file_columns", ncols, rgb_file_columns)
+
+    if (
+        normals_indices != (-1, -1, -1)
+        and rgb_indices != (-1, -1, -1)
+        and (set(normals_indices) & set(rgb_indices))
+    ):
+        raise ValueError(
+            f"Normals and RGB columns must not overlap. normals={normals_indices}, rgb={rgb_indices}"
+        )
+
+    return normals_indices, rgb_indices
+
+
+def _as_array(value, *, dtype, shape_second_dim: int = 3, name: str) -> np.ndarray:
+    try:
+        arr = np.asarray(value)
+    except ValueError as e:
+        raise ValueError(f"{name} could not be converted to a NumPy array.") from e
+
+    if arr.ndim != 2 or arr.shape[1] != shape_second_dim:
+        raise ValueError(
+            f"{name} must have shape (N, {shape_second_dim}). Got {arr.shape}."
+        )
+    if arr.shape[0] == 0:
+        raise ValueError(f"{name} must contain at least one row.")
+
+    return np.ascontiguousarray(arr, dtype=dtype)
+
+
+def _validate_same_shape(
+    arr: np.ndarray, ref_name: str, ref: np.ndarray, name: str
+) -> np.ndarray:
+    if arr.shape != ref.shape:
+        raise ValueError(
+            f"{name} must have the same shape as {ref_name}. "
+            f"Got {name}={arr.shape}, {ref_name}={ref.shape}."
+        )
+    return np.ascontiguousarray(arr, dtype=arr.dtype)
+
+
+def _validate_triangle_uvs(
+    triangle_uvs: np.ndarray, triangles: np.ndarray, name: str
+) -> np.ndarray:
+    if triangle_uvs.shape[0] != 3 * triangles.shape[0]:
+        raise ValueError(
+            f"{name} must have shape (3 * n_triangles, 2). "
+            f"Got {triangle_uvs.shape}, triangles={triangles.shape}."
+        )
+    return np.ascontiguousarray(triangle_uvs, dtype=triangle_uvs.dtype)
 
 
 def is_finalized(obj) -> bool:

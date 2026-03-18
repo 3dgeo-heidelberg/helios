@@ -20,8 +20,10 @@ dependencies:
   - numpydantic
   - pint
   - pip
+  - pyyaml
   - pybind11
   - pydantic
+  - jsonschema
   - python
   - scikit-build-core
   - setuptools_scm
@@ -39,6 +41,7 @@ dependencies:
   - pandas
   - scipy
   - pooch
+  - tqdm
   - ninja
   - pytest-cov
   - catch2

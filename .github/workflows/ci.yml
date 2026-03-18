@@ -55,6 +55,11 @@ jobs:
         run: |
           conda install -y -c conda-forge gcc gxx
 
+      - name: Install open3d test dependencies
+        if: matrix.python != '3.14'
+        run: |
+          python -m pip install open3d
+
       - name: Install Helios
         run: |
           python -m pip install --no-build-isolation --config-settings=cmake.build-type="Release" --config-settings=build-dir="build" --config-settings=cmake.define.BUILD_TESTING="ON" --config-settings=cmake.define.BUILD_BENCHMARKS="ON" -v .

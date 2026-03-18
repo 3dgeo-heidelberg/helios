@@ -21,6 +21,21 @@ using helios::analytics::HDA_StateJSONReporter;
 #include <TimeWatcher.h>
 #include <filems/facade/FMSFacade.h>
 
+#include <algorithm>
+#include <stdexcept>
+
+namespace {
+std::string
+resolveMeasurementOutputPath(const std::shared_ptr<Scanner>& scanner,
+                             bool const exportToFile)
+{
+  if (!exportToFile || scanner == nullptr || scanner->fms == nullptr) {
+    return "";
+  }
+  return scanner->fms->write.getMeasurementWriterOutputPath().string();
+}
+}
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Simulation::Simulation(
@@ -86,6 +101,334 @@ Simulation::doSimStep()
 }
 
 void
+Simulation::addHook(SurveyHookRegistration reg)
+{
+  hookRegistrations.push_back(std::move(reg));
+}
+
+void
+Simulation::clearHooks()
+{
+  hookRegistrations.clear();
+}
+
+void
+Simulation::initializeHooksForRun()
+{
+  hookStepIndex = 0;
+  hookPlayIndex = 0;
+  hookFailed.store(false);
+
+  {
+    std::lock_guard<std::mutex> lock(hookExceptionMutex);
+    hookException = nullptr;
+  }
+
+  for (auto& reg : hookRegistrations) {
+    reg.firedOnce = false;
+    reg.nextFire_s = reg.simTime_s;
+    reg.lastMeasurementIndex = 0;
+    reg.lastTrajectoryIndex = 0;
+  }
+}
+
+void
+Simulation::emitLegStartHook()
+{
+  if (hookRegistrations.empty()) {
+    return;
+  }
+
+  hookPlayIndex = (simPlayer != nullptr)
+                    ? static_cast<uint32_t>(simPlayer->getNumComputedPlays())
+                    : 0;
+
+  double const simTime_s = stepLoop.getCurrentTime();
+  for (auto& reg : hookRegistrations) {
+    if (reg.point != HookPoint::LEG_START) {
+      continue;
+    }
+
+    HookContext ctx;
+    ctx.point = HookPoint::LEG_START;
+    ctx.stepIndex = hookStepIndex;
+    ctx.playIndex = hookPlayIndex;
+    ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+    ctx.simTime_s = simTime_s;
+    ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
+    ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
+    ctx.scheduledTime_s = simTime_s;
+    ctx.lag_s = 0.0;
+    enrichHookContext(ctx);
+
+    dispatchHook(reg, ctx);
+    if (hasHookFailure()) {
+      return;
+    }
+  }
+}
+
+void
+Simulation::emitLegEndHook()
+{
+  if (hookRegistrations.empty()) {
+    return;
+  }
+
+  hookPlayIndex = (simPlayer != nullptr)
+                    ? static_cast<uint32_t>(simPlayer->getNumComputedPlays())
+                    : 0;
+
+  double const simTime_s = stepLoop.getCurrentTime();
+  for (auto& reg : hookRegistrations) {
+    if (reg.point != HookPoint::LEG_END) {
+      continue;
+    }
+
+    HookContext ctx;
+    ctx.point = HookPoint::LEG_END;
+    ctx.stepIndex = hookStepIndex;
+    ctx.playIndex = hookPlayIndex;
+    ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+    ctx.simTime_s = simTime_s;
+    ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
+    ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
+    ctx.scheduledTime_s = simTime_s;
+    ctx.lag_s = 0.0;
+    enrichHookContext(ctx);
+
+    dispatchHook(reg, ctx);
+    if (hasHookFailure()) {
+      return;
+    }
+  }
+}
+
+void
+Simulation::emitTimedHooks(double simTime_s)
+{
+  if (hookRegistrations.empty()) {
+    return;
+  }
+
+  hookPlayIndex = (simPlayer != nullptr)
+                    ? static_cast<uint32_t>(simPlayer->getNumComputedPlays())
+                    : 0;
+
+  for (auto& reg : hookRegistrations) {
+    if (reg.point == HookPoint::SIM_TIME_ONCE) {
+      if (reg.firedOnce || simTime_s < reg.simTime_s) {
+        continue;
+      }
+
+      HookContext ctx;
+      ctx.point = HookPoint::SIM_TIME_ONCE;
+      ctx.stepIndex = hookStepIndex;
+      ctx.playIndex = hookPlayIndex;
+      ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+      ctx.simTime_s = simTime_s;
+      ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
+      ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
+      ctx.scheduledTime_s = reg.simTime_s;
+      ctx.lag_s = simTime_s - reg.simTime_s;
+      enrichHookContext(ctx);
+
+      dispatchHook(reg, ctx);
+      if (hasHookFailure()) {
+        return;
+      }
+      reg.firedOnce = true;
+      continue;
+    }
+
+    if (reg.point == HookPoint::SIM_TIME_PERIODIC) {
+      if (reg.period_s <= 0.0 || simTime_s < reg.nextFire_s) {
+        continue;
+      }
+
+      double const scheduledTime_s = reg.nextFire_s;
+
+      HookContext ctx;
+      ctx.point = HookPoint::SIM_TIME_PERIODIC;
+      ctx.stepIndex = hookStepIndex;
+      ctx.playIndex = hookPlayIndex;
+      ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+      ctx.simTime_s = simTime_s;
+      ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
+      ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
+      ctx.scheduledTime_s = scheduledTime_s;
+      ctx.lag_s = simTime_s - scheduledTime_s;
+      enrichHookContext(ctx);
+
+      dispatchHook(reg, ctx);
+      if (hasHookFailure()) {
+        return;
+      }
+      reg.nextFire_s += reg.period_s;
+    }
+  }
+}
+
+void
+Simulation::emitPeriodicTailHooks(double simTime_s)
+{
+  if (hookRegistrations.empty()) {
+    return;
+  }
+
+  hookPlayIndex = (simPlayer != nullptr)
+                    ? static_cast<uint32_t>(simPlayer->getNumComputedPlays())
+                    : 0;
+
+  for (auto& reg : hookRegistrations) {
+    if (reg.point != HookPoint::SIM_TIME_PERIODIC ||
+        reg.endOfLegPolicy == HookEndOfLegPolicy::NONE) {
+      continue;
+    }
+
+    bool shouldFlush = true;
+    if (reg.payload == HookPayload::SINCE_LAST) {
+      shouldFlush = true;
+      if (mScanner != nullptr && mScanner->allMeasurements != nullptr &&
+          mScanner->allTrajectories != nullptr &&
+          mScanner->allMeasurementsMutex != nullptr) {
+        std::unique_lock<std::mutex> lock(*mScanner->allMeasurementsMutex);
+        shouldFlush =
+          reg.lastMeasurementIndex < mScanner->allMeasurements->size() ||
+          reg.lastTrajectoryIndex < mScanner->allTrajectories->size();
+      }
+    }
+
+    if (shouldFlush) {
+      HookContext ctx;
+      ctx.point = HookPoint::SIM_TIME_PERIODIC;
+      ctx.stepIndex = hookStepIndex;
+      ctx.playIndex = hookPlayIndex;
+      ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+      ctx.simTime_s = simTime_s;
+      ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
+      ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
+      ctx.scheduledTime_s = simTime_s;
+      ctx.lag_s = 0.0;
+      enrichHookContext(ctx);
+
+      dispatchHook(reg, ctx);
+      if (hasHookFailure()) {
+        return;
+      }
+    }
+
+    if (reg.endOfLegPolicy == HookEndOfLegPolicy::FLUSH_AND_RESET &&
+        reg.period_s > 0.0) {
+      reg.nextFire_s = simTime_s + reg.period_s;
+    }
+  }
+}
+
+void
+Simulation::enrichHookContext(HookContext& ctx) const
+{
+  (void)ctx;
+}
+
+void
+Simulation::dispatchHook(SurveyHookRegistration& reg, HookContext const& ctx)
+{
+  if (hasHookFailure() || !reg.fn) {
+    return;
+  }
+
+  if (reg.barrier && mScanner != nullptr) {
+    mScanner->flushPendingPulseTasks();
+  }
+
+  HookContext localCtx = ctx;
+  std::vector<Measurement> pointsPayload;
+  std::vector<Trajectory> trajectoriesPayload;
+  std::vector<Measurement> const* pointsPayloadPtr = nullptr;
+  std::vector<Trajectory> const* trajectoriesPayloadPtr = nullptr;
+  size_t nextMeasurementIndex = reg.lastMeasurementIndex;
+  size_t nextTrajectoryIndex = reg.lastTrajectoryIndex;
+
+  bool const needsPayload = reg.payload != HookPayload::METADATA_ONLY;
+  bool const canSnapshot = mScanner != nullptr &&
+                           mScanner->allMeasurements != nullptr &&
+                           mScanner->allTrajectories != nullptr &&
+                           mScanner->allMeasurementsMutex != nullptr;
+
+  if (needsPayload && !canSnapshot) {
+    {
+      std::lock_guard<std::mutex> lock(hookExceptionMutex);
+      if (!hookException) {
+        hookException = std::make_exception_ptr(
+          std::runtime_error("Hook payload requested but scanner tracking "
+                             "buffers are unavailable."));
+      }
+    }
+    hookFailed.store(true);
+    stop();
+    return;
+  }
+
+  if (canSnapshot) {
+    std::unique_lock<std::mutex> lock(*mScanner->allMeasurementsMutex);
+
+    size_t const totalPoints = mScanner->allMeasurements->size();
+    size_t const totalTrajectories = mScanner->allTrajectories->size();
+
+    localCtx.totalPoints = totalPoints;
+    localCtx.totalTrajectories = totalTrajectories;
+
+    if (reg.payload == HookPayload::SINCE_LAST) {
+      size_t const firstPoint = std::min(reg.lastMeasurementIndex, totalPoints);
+      size_t const firstTrajectory =
+        std::min(reg.lastTrajectoryIndex, totalTrajectories);
+
+      pointsPayload.assign(mScanner->allMeasurements->cbegin() + firstPoint,
+                           mScanner->allMeasurements->cend());
+      trajectoriesPayload.assign(mScanner->allTrajectories->cbegin() +
+                                   firstTrajectory,
+                                 mScanner->allTrajectories->cend());
+
+      nextMeasurementIndex = totalPoints;
+      nextTrajectoryIndex = totalTrajectories;
+      pointsPayloadPtr = &pointsPayload;
+      trajectoriesPayloadPtr = &trajectoriesPayload;
+    } else if (reg.payload == HookPayload::ALL_POINTS) {
+      pointsPayload.assign(mScanner->allMeasurements->cbegin(),
+                           mScanner->allMeasurements->cend());
+      trajectoriesPayload.assign(mScanner->allTrajectories->cbegin(),
+                                 mScanner->allTrajectories->cend());
+
+      pointsPayloadPtr = &pointsPayload;
+      trajectoriesPayloadPtr = &trajectoriesPayload;
+    }
+  }
+
+  localCtx.payloadPoints =
+    pointsPayloadPtr != nullptr ? pointsPayload.size() : 0;
+  localCtx.payloadTrajectories =
+    trajectoriesPayloadPtr != nullptr ? trajectoriesPayload.size() : 0;
+
+  try {
+    reg.fn(localCtx, pointsPayloadPtr, trajectoriesPayloadPtr);
+    if (reg.payload == HookPayload::SINCE_LAST) {
+      reg.lastMeasurementIndex = nextMeasurementIndex;
+      reg.lastTrajectoryIndex = nextTrajectoryIndex;
+    }
+  } catch (...) {
+    {
+      std::lock_guard<std::mutex> lock(hookExceptionMutex);
+      if (!hookException) {
+        hookException = std::current_exception();
+      }
+    }
+    hookFailed.store(true);
+    stop();
+  }
+}
+
+void
 Simulation::pause(bool pause)
 {
   if (pause == this->mPaused)
@@ -104,15 +447,6 @@ void
 Simulation::shutdown()
 {
   finished = true;
-  if (callback != nullptr && getCallbackFrequency() > 0) {
-    std::string const mwOutPath =
-      (exportToFile)
-        ? mScanner->fms->write.getMeasurementWriterOutputPath().string()
-        : "";
-    std::unique_lock<std::mutex> lock(*mScanner->cycleMeasurementsMutex);
-    (*callback)(
-      *mScanner->cycleMeasurements, *mScanner->cycleTrajectories, mwOutPath);
-  }
 }
 
 void
@@ -123,6 +457,7 @@ Simulation::start()
 
   // Prepare to execute the main loop of simulation
   prepareSimulation(mScanner->getPulseFreq_Hz());
+  initializeHooksForRun();
   timeStart_ns =
     duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
 
@@ -134,9 +469,22 @@ Simulation::start()
 
   // Play simulation
   simPlayer = std::make_unique<SimulationPlayer>(*this);
+  if (simPlayer->hasPendingPlays()) {
+    emitLegStartHook();
+  }
   int simLoopIndex = 0;
   std::stringstream ss;
   while (simPlayer->hasPendingPlays()) {
+    hookPlayIndex = static_cast<uint32_t>(simPlayer->getNumComputedPlays());
+    hookStepIndex = 0;
+    for (auto& reg : hookRegistrations) {
+      if (reg.point == HookPoint::SIM_TIME_ONCE ||
+          reg.point == HookPoint::SIM_TIME_PERIODIC) {
+        reg.firedOnce = false;
+        reg.nextFire_s = reg.simTime_s;
+      }
+    }
+
     ss.str("");
     ss << "Starting simulation loop " << simLoopIndex + 1 << " ...";
     logging::INFO(ss.str());
@@ -145,6 +493,11 @@ Simulation::start()
       ssr
 #endif
     );
+
+    if (hasHookFailure()) {
+      break;
+    }
+
     // NOTE there is no need for a sync. barrier after the last iteration
     // because end of simulation will handle it.
     ss.str("");
@@ -184,6 +537,18 @@ Simulation::start()
   // Shutdown the simulation (e.g. close all file output streams. Implemented in
   // derived classes.)
   shutdown();
+
+  if (hasHookFailure()) {
+    std::exception_ptr ex;
+    {
+      std::lock_guard<std::mutex> lock(hookExceptionMutex);
+      ex = hookException;
+    }
+    if (ex) {
+      std::rethrow_exception(ex);
+    }
+    throw std::runtime_error("Simulation hook callback failed.");
+  }
 }
 
 void
@@ -196,32 +561,20 @@ Simulation::doSimLoop(
 #ifdef DATA_ANALYTICS
   HDA_SimStepRecorder& ssr = static_cast<HDA_SimStepRecorder&>(_ssr);
 #endif
-  size_t iter = 1;
   // Execute the main loop of the simulation
   while (!isStopped()) {
-    if (iter == 1) { // TODO Pending : Does this lock make sense?
-      std::unique_lock<std::mutex> lock(mutex);
-    }
-
     stepLoop.doStep();
-
-    iter++;
-    if (iter - 1 == getCallbackFrequency()) { // TODO Pending : iter-1 by iter?
-      if (callback != nullptr) {
-        std::string const mwOutPath =
-          (exportToFile)
-            ? mScanner->fms->write.getMeasurementWriterOutputPath().string()
-            : "";
-        std::unique_lock<std::mutex> lock(*mScanner->cycleMeasurementsMutex);
-        (*callback)(*mScanner->cycleMeasurements,
-                    *mScanner->cycleTrajectories,
-                    mwOutPath);
-        mScanner->cycleMeasurements->clear();
-        mScanner->cycleTrajectories->clear();
-      }
-      iter = 1;
-      condvar.notify_all();
+    if (hasHookFailure()) {
+      break;
     }
+
+    ++hookStepIndex;
+    emitTimedHooks(stepLoop.getCurrentTime());
+    if (hasHookFailure()) {
+      break;
+    }
+
+    condvar.notify_all();
 
 #ifdef DATA_ANALYTICS
     ssr.record();
