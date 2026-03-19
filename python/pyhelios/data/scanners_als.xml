@@ -340,7 +340,7 @@
             refrIndex_air              = "1.0">
 
     <FWFSettings beamSampleQuality="3"/>
-    <!-- Height to mirror is 0.0324 m, add as z offset if needed -->
+    <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0">
       <rot axis="x" angle_deg="90" />
       <rot axis="z" angle_deg="90" />
@@ -370,7 +370,7 @@
             refrIndex1                = "1.51" 
             refrIndex2                = "1.51" 
             refrIndex_air             = "1.0">
-    <!-- Height to mirror is 0.0547 m, add as z offset to beam origin if needed -->
+    <!-- height to beam origin is 0.0547 m, add as z offset to beam origin if needed -->
     <beamOrigin x="0" y="0" z="0"/>
     <channels>
       <channel id="0">
@@ -422,7 +422,7 @@
             refrIndex3                 = "1.51" 
             refrIndex_air              = "1.0">
 
-    <!-- Height to mirror is 0.0324 m, add as z offset if needed -->
+    <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
     <FWFSettings beamSampleQuality="3" />
         <channels>

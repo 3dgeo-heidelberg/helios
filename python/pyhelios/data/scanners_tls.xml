@@ -151,7 +151,7 @@
             refrIndex_air             = "1.0">
 
     <FWFSettings beamSampleQuality="3" />
-    <!-- Height to mirror is 0.0547 m, add as z offset if needed -->
+    <!-- height to beam origin is 0.0547 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
   </scanner>
 
@@ -181,7 +181,7 @@
             refrIndex_air              = "1.0">
 
     <FWFSettings beamSampleQuality="3"/>
-    <!-- Height to mirror is 0.0324 m, add as z offset if needed -->
+    <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
   </scanner>
 
@@ -209,7 +209,7 @@
             refrIndex2                = "1.51" 
             refrIndex_air             = "1.0">
 
-    <!-- Height to mirror is 0.0547 m, add as z offset if needed -->
+    <!-- height to beam origin is 0.0547 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
     <channels>
       <channel id="0">
@@ -262,7 +262,7 @@
             refrIndex3                 = "1.51" 
             refrIndex_air              = "1.0">
 
-    <!-- Height to mirror is 0.0324 m, add as z offset if needed -->
+    <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
     <FWFSettings beamSampleQuality="3" />
         <channels>
