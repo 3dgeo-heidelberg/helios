@@ -151,11 +151,8 @@
             refrIndex_air             = "1.0">
 
     <FWFSettings beamSampleQuality="3" />
-        <channels>
-            <channel id="0">
-                <incidentBeam x="0.0" y="1.0" z="0" />
-            </channel>
-        </channels>
+    <!-- Height to mirror is 0.0547 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
   </scanner>
 
   <!--######## END LIVOX Mid-40 ####### -->
@@ -184,11 +181,8 @@
             refrIndex_air              = "1.0">
 
     <FWFSettings beamSampleQuality="3"/>
-    <beamOrigin x="0" y="0" z="0">
-      <rot axis="z" angle_deg="-90" />
-    </beamOrigin>
-
-    <headRotateAxis x="1" y="0" z="0" />
+    <!-- Height to mirror is 0.0324 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
   </scanner>
 
   <!--######## END LIVOX Mid-70 ####### -->
@@ -215,6 +209,8 @@
             refrIndex2                = "1.51" 
             refrIndex_air             = "1.0">
 
+    <!-- Height to mirror is 0.0547 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
     <channels>
       <channel id="0">
         <FWFSettings beamSampleQuality="3"/>
@@ -266,6 +262,8 @@
             refrIndex3                 = "1.51" 
             refrIndex_air              = "1.0">
 
+    <!-- Height to mirror is 0.0324 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
     <FWFSettings beamSampleQuality="3" />
         <channels>
             <channel id="0">
