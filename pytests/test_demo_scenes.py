@@ -294,7 +294,12 @@ def test_interpolated_traj_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(
         Path("data") / "surveys" / "demo" / "als_interpolated_trajectory.xml",
         output_dir,
-        options=["--lasOutput", "--zipOutput", "--gpsStartTime", "2022-01-01 00:00:00"],
+        options=[
+            "--lasOutput",
+            "--zipOutput",
+            "--gpsStartTime",
+            "2022-01-01 00:00:00",
+        ],
     )
     eval_interpolated_traj(regression_data, dirname_exe)
 
@@ -324,11 +329,9 @@ def eval_interpolated_traj(regression_data, dirname):
 
     if regression_data:
         pcloud0_ref = pcu.PointCloud.from_las_file(
-            regression_data / "interpolated_traj_leg000_points.laz", fnames=["gps_time"]
+            regression_data / "interpolated_traj_leg000_points.laz"
         )
-        pcloud0 = pcu.PointCloud.from_las_file(
-            dirname / "leg000_points.laz", fnames=["gps_time"]
-        )
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / "leg000_points.laz")
         pcloud0.assert_equals(pcloud0_ref)
         pcloud1_ref = pcu.PointCloud.from_las_file(
             regression_data / "interpolated_traj_leg001_points.laz"
