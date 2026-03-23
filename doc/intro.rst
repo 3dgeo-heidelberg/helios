@@ -4,9 +4,9 @@ Introduction
 HELIOS++ is a general-purpose Python package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the `3DGeo Research Group`_ at Heidelberg University.
 
-This documentation contains the API references and notebook-based examples for Helios++.
+This documentation contains the full HELIOS++ documentation, including API references and notebook-based examples.
 For project usage details, installation instructions, and extended background material,
-see the repository ``README.md``.
+see the repository ``README.md`` at https://github.com/3dgeo-heidelberg/helios.
 
 .. _3DGeo Research Group: https://uni-heidelberg.de/3dgeo
 
