@@ -812,11 +812,11 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         In case of a triangle mesh, the behaviour is similar to 'ScenePart.from_obj()', in case of a point cloud, the behaviour is similar to 'ScenePart.from_xyz()' and the provided point cloud data will be voxelized.
         See below for the specific additional parameters that can be provided for each geometry type.
                 
-        :param geometry: The Open3D geometry to load the scene part from. Must be either an open3d.geometry.TriangleMesh or an open3d.geometry.PointCloud.
+        :param geometry: The Open3D geometry to load the scene part from.
         :type geometry: open3d.geometry.TriangleMesh | open3d.geometry.PointCloud
-        :param kwargs: Additional parameters to use for loading the scene part.
-            for open3d.geometry.TriangleMesh: `up_axis`
-            for open3d.geometry.PointCloud: `voxel_size`, `max_color_value`, `default_normal`, `sparse`, `estimate_normals`, `snap_neighbor_normal`
+        :param kwargs: Additional parameters to use for loading the scene part, depending on the provided geometry:
+            a) for open3d.geometry.TriangleMesh: `up_axis`;
+            b) for open3d.geometry.PointCloud: `voxel_size`, `max_color_value`, `default_normal`, `sparse`, `estimate_normals`, `snap_neighbor_normal`
 
         :returns: The loaded scene part.
         :rtype: ScenePart
