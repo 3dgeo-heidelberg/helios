@@ -806,7 +806,21 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @classonlymethod
     @validate_call
     def from_open3d(cls, geometry, **kwargs):
-        """Load the scene part from an Open3D geometry."""
+        """
+        Load the scene part from an Open3D geometry.
+        The geometry can be either an open3d.geometry.TriangleMesh or an open3d.geometry.PointCloud. 
+        In case of a triangle mesh, the behaviour is similar to 'ScenePart.from_obj()', in case of a point cloud, the behaviour is similar to 'ScenePart.from_xyz()' and the provided point cloud data will be voxelized.
+        See below for the specific additional parameters that can be provided for each geometry type.
+                
+        :param geometry: The Open3D geometry to load the scene part from. Must be either an open3d.geometry.TriangleMesh or an open3d.geometry.PointCloud.
+        :type geometry: open3d.geometry.TriangleMesh | open3d.geometry.PointCloud
+        :param kwargs: Additional parameters to use for loading the scene part.
+            for open3d.geometry.TriangleMesh: `up_axis`
+            for open3d.geometry.PointCloud: `voxel_size`, `max_color_value`, `default_normal`, `sparse`, `estimate_normals`, `snap_neighbor_normal`
+
+        :returns: The loaded scene part.
+        :rtype: ScenePart
+        """
         try:
             import open3d
         except ImportError:
