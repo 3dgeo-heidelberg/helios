@@ -9,7 +9,7 @@ on:
         # It would be nice to somehow extract this from the actual
         # latest version of Helios, but that would require a Python
         # script to perform `conda repoquery search helios --json` etc.
-        default: '2.1.0'
+        default: '2.2.0'
 
 jobs:
   build-installer:
@@ -33,12 +33,13 @@ jobs:
         shell: bash -l {0}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Create constructor dev environment
         uses: conda-incubator/setup-miniconda@v3
         with:
           conda-remove-defaults: true
+          channels: conda-forge
 
       - name: Install constructor and menuinst
         run: |
@@ -58,7 +59,7 @@ jobs:
           constructor . --output-dir dist --verbose
 
       - name: Upload installer
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: installer-${{ matrix.platform }}
           path: dist/*
@@ -87,7 +88,7 @@ jobs:
 
     steps:
       - name: Download installer
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: installer-${{ matrix.platform }}
           path: dist
@@ -100,6 +101,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           conda-remove-defaults: true
+          channels: conda-forge
           auto-activate: true
           activate-environment: ""
           installer-url: file://${{ github.workspace }}/dist/${{ env.INSTALLER }}
@@ -116,7 +118,7 @@ jobs:
 
     steps:
       - name: Download all installers
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: installer-*
           path: dist
@@ -126,7 +128,7 @@ jobs:
           sha256sum $(find ./dist -type f) > checksums.txt
 
       - name: Upload checksums
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: checksums
           path: checksums.txt
