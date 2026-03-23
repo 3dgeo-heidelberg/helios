@@ -71,7 +71,14 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
 
   // Load scene
   std::string sceneString = surveyNode->Attribute("scene");
-  survey->scanner->platform->scene = loadScene(sceneString);
+  try {
+    survey->scanner->platform->scene = loadScene(sceneString);
+  } catch (const std::exception& e) {
+    std::stringstream ss;
+    ss << "Failed to load scene '" << sceneString << "': " << e.what();
+    logging::ERR(ss.str());
+    throw; // Re-throw to propagate the error properly
+  }
   SpectralLibrary spectralLibrary = SpectralLibrary(
     (float)survey->scanner->getWavelength(), assetsDir, "spectra");
   spectralLibrary.readReflectances();
@@ -183,23 +190,37 @@ std::shared_ptr<Scene>
 XmlSurveyLoader::loadScene(std::string sceneString)
 {
   logging::INFO("Loading Scene...");
-
+  if (sceneString.empty()) {
+    std::stringstream ss;
+    ss << "ERROR: Empty scene string provided";
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
   std::shared_ptr<Scene> scene;
   TimeWatcher tw;
   tw.start();
   try {
     scene = std::dynamic_pointer_cast<Scene>(
       getAssetByLocation("scene", sceneString));
+    if (scene == nullptr) {
+      std::stringstream ss;
+      ss << "ERROR: Cannot load scene from string: " << sceneString;
+      logging::ERR(ss.str());
+      throw HeliosException(ss.str());
+    }
     scene->buildKDGroveWithLog();
   } catch (std::exception& e) {
     std::stringstream ss;
     ss << "EXCEPTION at XmlSurveyLoader::loadScene:\n\t" << e.what();
-    logging::WARN(ss.str());
-  }
-
-  if (scene == nullptr) {
-    logging::ERR("Error: Cannot load scene");
-    exit(1);
+    logging::ERR(ss.str());
+    throw;
+  } catch (...) {
+    // Catch any other exceptions that might occur
+    std::stringstream ss;
+    ss << "UNKNOWN EXCEPTION at XmlSurveyLoader::loadScene for scene: "
+       << sceneString;
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
   }
 
   tw.stop();
@@ -214,6 +235,11 @@ void
 XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
                                 std::shared_ptr<Survey> survey)
 {
+  if (surveyNode == nullptr || survey == nullptr) {
+    throw HeliosException(
+      "Invalid survey node or survey pointer in loadSurveyCore");
+  }
+
   // Load survey fields
   survey->name =
     XmlUtils::getAttributeCast<string>(surveyNode, "name", xmlDocFilename);
@@ -223,11 +249,27 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
     surveyNode, "scanner", std::string(""));
   survey->scanner = std::dynamic_pointer_cast<Scanner>(
     getAssetByLocation("scanner", scannerAssetLocation));
+
+  if (survey->scanner == nullptr) {
+    std::stringstream ss;
+    ss << "ERROR: Cannot load scanner from location: " << scannerAssetLocation;
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
+
   // Load platform
   std::string platformAssetLocation = XmlUtils::getAttributeCast<std::string>(
     surveyNode, "platform", std::string(""));
   survey->scanner->platform = std::dynamic_pointer_cast<Platform>(
     getAssetByLocation("platform", platformAssetLocation));
+
+  if (survey->scanner->platform == nullptr) {
+    std::stringstream ss;
+    ss << "ERROR: Cannot load platform from location: "
+       << platformAssetLocation;
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
+  }
   // Load fullwave form
   tinyxml2::XMLElement* scannerFWFSettingsNode =
     surveyNode->FirstChildElement("FWFSettings");
@@ -347,7 +389,9 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
       if (leg->mTrajectorySettings == nullptr) {
         logging::ERR("XmlSurveyLoader::loadLegs failed because a leg without "
                      "trajectory settings could not be interpolated");
-        std::exit(-1);
+        throw HeliosException(
+          "XmlSurveyLoader::loadLegs failed because a leg without "
+          "trajectory settings could not be interpolated");
       }
       // Configure start
       arma::Col<double> xStart;
@@ -551,7 +595,6 @@ XmlSurveyLoader::integrateSurveyAndLegs(std::shared_ptr<Survey> survey)
 void
 XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey)
 {
-  int const FORCED_EXIT_STATUS = 3; // Exit code for forced exits
   for (std::shared_ptr<Leg> leg : survey->legs) {
     int const legId = leg->getSerialId();
     ScannerSettings const& ss = leg->getScannerSettings();
@@ -570,7 +613,7 @@ XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey)
         << "frequency (potentially via the requested scan resolution) "
         << "or the scanner specification.";
       logging::ERR(s.str());
-      std::exit(FORCED_EXIT_STATUS);
+      throw HeliosException(s.str());
     }
     // Check scanFreq_Hz is not above the maximum threshold
     if (ss.scanFreq_Hz > delf->cfg_device_scanFreqMax_Hz &&
@@ -587,7 +630,7 @@ XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey)
         << "frequency (potentially via the requested scan resolution) "
         << "or the scanner specification.";
       logging::ERR(s.str());
-      std::exit(FORCED_EXIT_STATUS);
+      throw HeliosException(s.str());
     }
   }
 }

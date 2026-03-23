@@ -263,7 +263,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
   if (!fs::exists(filePath)) {
     ss << "File not found: " << pathString << std::endl;
     logging::ERR(ss.str());
-    exit(1);
+    throw HeliosException(ss.str());
   }
   try {
     helios::filems::BufferedLineFileReader lfr(pathString);

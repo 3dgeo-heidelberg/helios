@@ -3,7 +3,7 @@
 #include <LadLut.h>
 #include <memory>
 #include <string>
-
+#include <util/HeliosException.h>
 /**
  * @brief Loader for Leaf Angle Distribution Look Up Tables
  */

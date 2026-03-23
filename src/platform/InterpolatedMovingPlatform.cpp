@@ -65,8 +65,7 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
          << "failed to construct because an unexpected RotationSpec "
          << "was given";
       logging::ERR(ss.str());
-      std::exit(3);
-      break;
+      throw HeliosException(ss.str());
   }
   // Configure update function to be computed once at each sim step
   switch (scope) {
