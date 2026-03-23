@@ -21,7 +21,6 @@ For more complex noise models that depend on range and incidence angle, measurem
 The univariate expression is defined in the survey XML in a ``distanceMeasurementError`` attribute within the ``detectorSettings`` tag.
 These expressions are expected as infix expressions (infix notation).
 
-.. ToDo: Maybe ad more explanation
 
 Fullwave noise
 ^^^^^^^^^^^^^^

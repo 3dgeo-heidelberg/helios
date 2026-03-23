@@ -207,7 +207,8 @@ This platform type simply moves on a straight line from one waypoint (`leg`) to 
 
 For more complex trajectories, interpolated trajectories can be used as demonstrated in the following notebooks: 
 
-.. ToDo: Link to notebooks here?
+- `06-als_hd_height_above_ground <06-als_hd_height_above_ground.ipynb>`_
+- `13-interpolated_trajectory <13-interpolated_trajectory.ipynb>`_
 
 .. _scanner-mount:
 Scanner mount
@@ -312,4 +313,4 @@ and for the local mode, this definition is correct:
 Note that an **additional rotation** is applied in the scanner's ``beamOrigin`` tag, which uses the same syntax.
 We suggest to use the ``beamOrigin`` rotation to point the scanner downwards and scan left-to-right (as this is the most common usecase) and the ``scannerMount`` (which is applied thereafter) for specialized mounts such as 23° off-nadir for airborne bathymetry (although this is usually solved by using a conical scan pattern with an opening angle of 46°).
 
-.. ToDo: Platform noise?
+It is also possible to specify platform noise, which is described in :doc:`Error sources and randomness control <error_randomness>`.

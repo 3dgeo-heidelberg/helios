@@ -396,10 +396,6 @@ Several parameters can be added:
 * Normal indices can be explicitly defined with the parameters ``normalXIndex``, ``normalYIndex``, and ``normalZIndex``.
 * Estimation of normals, in case they are not provided, can be controlled with the ``estimateNormals`` parameter. Additional parameters ``defaultNormal`` and ``snapNeighborNormals`` can be used to control the normal estimation (see below).
 
-.. ToDo: Insert example with many/all of these parameters specified.
-.. ToDo: Maybe insert the respective ray incidence angle figure.
-.. ToDo: Keep the explanation below or refer to notebook for the new API, where this is explained (since it is not XML-specific but general for HELIOS++)
-
 To obtain ray incidence angles for voxels for the calculation of return intensity, HELIOS++ uses normals. For point cloud based voxel models, there are different options to determine these normals:
 
 - If the point cloud does not contain point normals, normals will always be calculated using Singular Value Decomposition (SVD). This is also possible if the input file contains normals by explicitly specifiying ``<param type="int" key="estimateNormals" value="1" />`` or ``<param type="bool" key="estimateNormals" value="2" />``. In mode 1, all normal computations are performed at once in memory, which is working well for small point clouds. Mode 2 handles the computations in separate batches with a batch size of 10,000,000 points. This is slower than mode 1 but recommended for large point clouds.
@@ -421,46 +417,13 @@ The primary purpose of DetailedVoxels is to model vegetation with given leaf pro
 .. _AMAPVox: https://amap-dev.cirad.fr/projects/amapvox
 .. _Vincent et al. 2017: http://dx.doi.org/10.1016/j.rse.2017.05.034
 
-.. ToDo: Maybe move this to a general explanation instead of keeping this in the XML section, since it is not XML-specific. Then only link here.
-
-.. code-block:: xml
-
-    VOXEL SPACE
-    #min_corner: 12.464750289916992 -10.332499504089355 243.5574951171875
-    #max_corner: 21.312000274658203 -1.6010000705718994 272.84124755859375
-    #split: 36 35 118
-    #res:0.25 #nsubvoxel:8 #nrecordmax:0 #fraction-digits:7 #lad_type:Spherical #type:TLS #max_pad:5.0 #build-version:1.4.3
-    i j k PadBVTotal angleMean bsEntering bsIntercepted bsPotential ground_distance lMeanTotal lgTotal nbEchos nbSampling transmittance attenuation attenuationBiasCorrection
-    0 0 0 0 86.3137164 0.4989009 0 2.8475497 0.1240837 0.1632028 693.775004 0 4251 1 0 0
-    0 0 1 0 86.989336 1.011544 0 2.840831 0.3722511 0.1784628 1292.784752 0 7244 1 0 0
-    0 0 2 0 87.2224845 1.1786434 0 2.835464 0.6204185 0.1828753 1434.1079874 0 7842 1 0 0
-    0 0 3 0 87.1534196 0.9608315 0 2.8170681 0.8685859 0.1816032 1186.2322972 0 6532 1 0 0
-    0 0 4 0 87.2968587 0.8746295 0 2.8187793 1.1167532 0.1841085 1201.8604542 0 6528 1 0 0
-    0 0 5 0 87.1479655 0.9425028 0 2.8363264 1.3649206 0.1747828 1195.6891804 0 6841 1 0 0
-
-The file (as of version 1.4.3) uses space as separator and has six header lines.
-- Lines 2 and 3 define the axis aligned bounding box with the xyz coordinates of the minimum and maximum corners (``#min_corner`` and ``#max_corner``).
-- Line 4 gives the number of voxels in x, y and z direction (``#split``).
-- Line 5 defines the resolution (``#res``), the leaf angle distribution type (``#lad_type``) and the maximum plant area density value (``#max_pad``). It can furthermore contain additional information which are not read by HELIOS++.
-- Line 6 contains the column names. The following are relevant for HELIOS++:
-    
-  - ``i``, ``j``, ``k``: The voxel indices in x, y and z direction.
-  - ``PADBVTotal`` is the plant area density (m2/m3). This parameter is used by HELIOS++ in the transmittive mode to calculate the return and in the scaled mode to determine the size of each voxel (see next sections)
-
-More in-depth explanations are given in the `AMAPVox 1.0.1 user guide`_ (page 28) and in the AMAPVox GUI tooltips.
-
-.. _AMAPVox 1.0.1 user guide: https://amap-dev.cirad.fr/attachments/download/1499/AMAPVox-1.0.1_userguide.pdf
-
-All following lines contain the voxel values with each line representing one voxel. Empty voxels (``PADBVTotal`` = 0 and ``transmittance`` = 1) may or may not be explicitly defined.
-
 There are three modes available for handling ray intersections with DetailedVoxels.
 
 1. Transmittive mode (``<param type="string" key="intersectionMode" value="transmittive" />``)
 2. Scaled mode (``<param type="string" key="intersectionMode" value="scaled" />`` with a scaling factor defined like ``<param type="double" key="intersectionArgument" value="0.5" />``)
 3. Fixed mode (``<param type="string" key="intersectionMode" value="fixed" />``)
 
-
-For detailed information, refer to the Python documentation (Python API overview).
+For detailed information about the VOX file format and the different intersection modes, refer to the Python documentation: `Scene - VOX files <scene.ipynb#4)-VOX-files>`_
 
 
 Coordinate transformations
@@ -516,7 +479,7 @@ This filter scales the geometry by a given factor.
         <param type="double" key="scale" value="0.5" />
     </filter>
 
-.. _materials:
+.. _materials_cli:
 
 Materials
 ^^^^^^^^^

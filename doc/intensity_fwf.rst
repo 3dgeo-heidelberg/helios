@@ -189,7 +189,7 @@ Intensity modelling
 
 The laser return intensity values are calculated using the laser radar equation.
 
-Currently, for its calculation HELIOS++ takes the following factors into account:
+Currently, for its calculation HELIOS++ takes the following factors into account (wide table, use the scroll bar):
 
 .. list-table:: Factors used for intensity modelling
    :widths: 20 35 20 25
@@ -246,7 +246,7 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - 50% (dimensionless)
 
    * - Specularity
-     - Specularity of the target surface<br>
+     - Specularity of the target surface.
        Calculated as: :math:`\sum k_d / \sum (k_d + k_s)`
      - User: ``ks`` and ``kd`` in material file (`.mtl`)
      - —
@@ -264,7 +264,10 @@ HELIOS++ supports two ways of defining materials:
 1. Reading material properties from `MTL material library files`_. Following the standard, these files and their materials are linked to mesh faces using the ``mtllib`` and ``usemtl`` statements in the .OBJ file.
 2. Modifying materials using the ``Material`` interface of the Python API.
 
-.. Todo: Link to the respective section here
+Further explanations can be found here:
+
+- Python API: `Scene - Material properties <scene.ipynb#Material-properties>`_
+- Legacy XML definitions: :ref:`materials_cli`
 
 The default material, in case no material file is provided, looks like this:
 
@@ -320,7 +323,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 2. **Lidar Cross Section Calculation**
 
-   The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following `Wagner (2010), Eq. 14 <https://doi.org/10.1016/j.isprsjprs.2010.06.007>`_. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
+   The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following `Wagner (2010) <https://doi.org/10.1016/j.isprsjprs.2010.06.007>`_, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
 
    .. math::
       \sigma = 4\pi \cdot \text{BDRF}_r \cdot A \cdot \cos(\varphi)
