@@ -46,3 +46,5 @@ dependencies:
   - pytest-cov
   - catch2
   - benchmark
+  - pip:
+    - clickqt-utils

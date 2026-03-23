@@ -1,4 +1,5 @@
 import click
+from click_utils import PathWithExtensions
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
 from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
 from helios.survey import Survey
@@ -6,7 +7,15 @@ from helios.utils import add_asset_directory, set_rng_seed
 
 
 @click.command()
-@click.argument("survey_file_path", required=True)
+@click.argument(
+    "survey_file_path",
+    type=PathWithExtensions(
+        file_okay=True,
+        file_extensions={("xml",): "XML Files", ("yml", "yaml"): "YAML Files"},
+    ),
+    required=True,
+    help="The Helios++ Survey file",
+)
 @optgroup.group("Input")
 @optgroup.option(
     "--assets",
