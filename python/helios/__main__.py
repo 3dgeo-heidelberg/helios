@@ -28,6 +28,14 @@ from helios.utils import add_asset_directory, set_rng_seed
         "By default: './assets/' and the Python package installation directory."
     ),
 )
+@optgroup.option(
+    "--seed",
+    type=click.INT,
+    help=(
+        "Specify the seed for randomness generation. It must be an intenger"
+        "By default: a random seed is generated."
+    ),
+)
 @optgroup.group("Output")
 @optgroup.option(
     "--output",
@@ -109,14 +117,6 @@ from helios.utils import add_asset_directory, set_rng_seed
     help=(
         "Use this flag to use fixed incidence angle. Fixed incidence angle of "
         "exactly 0.0 will be considered for all intersection"
-    ),
-)
-@optgroup.option(
-    "--seed",
-    type=click.INT,
-    help=(
-        "Specify the seed for randomness generation. It must be an intenger"
-        "By default: a random seed is generated."
     ),
 )
 @optgroup.option(
