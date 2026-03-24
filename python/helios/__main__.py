@@ -14,7 +14,6 @@ from helios.utils import add_asset_directory, set_rng_seed
         file_extensions={("xml",): "XML Files", ("yml", "yaml"): "YAML Files"},
     ),
     required=True,
-    help="The Helios++ Survey file",
 )
 @optgroup.group("Input")
 @optgroup.option(
@@ -236,6 +235,8 @@ from helios.utils import add_asset_directory, set_rng_seed
 @optgroup.option("--vt", is_flag=True, help="Report time and errors.")
 @click.version_option()
 def cli(**kw):
+    """Runs a single Helios++ survey specified in SURVEY_FILE_PATH"""
+
     for asset in kw["assets"]:
         add_asset_directory(asset)
 
