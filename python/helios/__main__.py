@@ -36,6 +36,15 @@ from helios.utils import add_asset_directory, set_rng_seed
         "By default: a random seed is generated."
     ),
 )
+@optgroup.option(
+    "--gpsStartTime",
+    type=click.STRING,
+    help=(
+        "Specify a fixed start time for GPS. It can be either a posix timestamp "
+        "or a 'YYYY-MM-DD hh:mm:ss+00:00' date time string, including "
+        "the timezone. By default: The current system time is used."
+    ),
+)
 @optgroup.group("Output")
 @optgroup.option(
     "--output",
@@ -94,31 +103,6 @@ from helios.utils import add_asset_directory, set_rng_seed
 )
 @optgroup.group("Execution")
 @optgroup.option(
-    "--calcEchowidth",
-    is_flag=True,
-    help=(
-        "Use this flag to enable full waveform fitting. "
-        "By default the full waveform is NOT fitted"
-    ),
-)
-@optgroup.option(
-    "--fixedIncidenceAngle",
-    is_flag=True,
-    help=(
-        "Use this flag to use fixed incidence angle. Fixed incidence angle of "
-        "exactly 0.0 will be considered for all intersection"
-    ),
-)
-@optgroup.option(
-    "--gpsStartTime",
-    type=click.STRING,
-    help=(
-        "Specify a fixed start time for GPS. It can be either a posix timestamp "
-        "or a 'YYYY-MM-DD hh:mm:ss+00:00' date time string, including "
-        "the timezone. By default: The current system time is used."
-    ),
-)
-@optgroup.option(
     "--parallelization",
     type=click.INT,
     default=0,
@@ -160,22 +144,6 @@ from helios.utils import add_asset_directory, set_rng_seed
         "Specify the warehouse factor. The number of tasks in the warehouse "
         "would be k times the number of workers. The greater the factor, theless "
         "the probability of idle cores but the greater the memory consumption."
-    ),
-)
-@optgroup.option(
-    "--disablePlatformNoise",
-    is_flag=True,
-    help=(
-        "Disable platform noise, no matter what is specified on XML files. "
-        "By default: XML specifications are considered "
-    ),
-)
-@optgroup.option(
-    "--disableLegNoise",
-    is_flag=True,
-    help=(
-        "Disable leg noise, no matter what is specified on XML files. "
-        "By default: XML specifications are considered "
     ),
 )
 @optgroup.option(
@@ -268,15 +236,6 @@ from helios.utils import add_asset_directory, set_rng_seed
 @optgroup.option("--vt", is_flag=True, help="Report time and errors.")
 @click.version_option()
 def cli(**kw):
-
-    # TODO:
-    # The following parameters are defined but not yet implemented:
-    # * disableLegNoise
-    # * disablePlatformNoise
-    # * fixedIncidenceAngle
-    # * calcEchowidth
-    # * fullwaveNoise
-
     for asset in kw["assets"]:
         add_asset_directory(asset)
 
