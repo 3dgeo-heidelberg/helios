@@ -1,5 +1,5 @@
 import click
-from click_utils import PathWithExtensions
+from clickqt_utils.extensions import PathWithExtensions
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
 from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
 from helios.survey import Survey
