@@ -80,17 +80,10 @@ from helios.utils import add_asset_directory, set_rng_seed
 )
 @optgroup.option(
     "--format",
+    type=click.Choice(["las", "laz", "xyz"]),
     default="laz",
     show_default=True,
-    help="Output format, can be las, laz, xyz, npy, or laspy.",
-)
-@optgroup.option(
-    "--lasOutput",
-    is_flag=True,
-    help="Use this flag to generate the output point cloud in LAS format (v 1.4)",
-)
-@optgroup.option(
-    "--las10", is_flag=True, help="Use this flag to write in LAS format (v 1.0)"
+    help="Output format, can be las, laz, xyz",
 )
 @optgroup.option(
     "--lasScale",
@@ -98,9 +91,6 @@ from helios.utils import add_asset_directory, set_rng_seed
     default=0.0001,
     show_default=True,
     help="Specify the decimal scale factor for LAS output",
-)
-@optgroup.option(
-    "--zipOutput", is_flag=True, help=("Use this flag to generate compressed output")
 )
 @optgroup.group("Execution")
 @optgroup.option(
@@ -285,8 +275,6 @@ def cli(**kw):
     # * disablePlatformNoise
     # * fixedIncidenceAngle
     # * calcEchowidth
-    # * zipOutput
-    # * las10
     # * fullwaveNoise
 
     for asset in kw["assets"]:
