@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<scene id="toyblocks_scene" name="ToyblocksScene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="80" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="efilepath" value="data/sceneparts/toyblocks/.*.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-40.0;0.0;0" />
+			</filter>
+        </part>
+    </scene>
+</document>
