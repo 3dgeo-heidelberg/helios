@@ -1,4 +1,5 @@
 #include "GeoTiffFileLoader.h"
+#include <FileUtils.h>
 #include <Triangle.h>
 #include <Vertex.h>
 #include <boost/variant/get.hpp>
@@ -6,14 +7,18 @@
 #include <logging.hpp>
 #include <ogrsf_frmts.h>
 #include <sstream>
-
 // ***  R U N  *** //
 // *************** //
 ScenePart*
 GeoTiffFileLoader::run()
 {
-  std::string const& filePathString =
-    boost::get<std::string const&>(params["filepath"]);
+  auto filePaths = FileUtils::handleFilePath(params, assetsDir);
+  if (filePaths.empty()) {
+    throw HeliosException(
+      "GeoTiffFileLoader could not resolve any file path from params.");
+  }
+  const std::string& filePathString = filePaths.front();
+
   std::stringstream ss;
   ss << "Reading 3D model from GeoTiff file '" << filePathString << "'...";
   logging::INFO(ss.str());
@@ -24,8 +29,12 @@ GeoTiffFileLoader::run()
 
   try {
     // Extract data from tiff file
-    file.open(filePathString, std::fstream::in);
-    tiff = (GDALDataset*)GDALOpen(filePathString.data(), GA_ReadOnly);
+    tiff =
+      static_cast<GDALDataset*>(GDALOpen(filePathString.c_str(), GA_ReadOnly));
+    if (!tiff) {
+      ss << "GDALOpen failed for file: " << filePathString << "\n";
+      throw HeliosException(ss.str());
+    }
 
     // Obtain coordinate reference system, layer, raster and envelope
     obtainCRS(tiff);
