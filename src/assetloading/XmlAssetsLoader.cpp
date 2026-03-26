@@ -526,12 +526,24 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
       ps, "trajectory_seperator", string(","));
     // Handle trajectory itself
     string const trajectoryPath = ps->Attribute("trajectory");
+    fs::path const resolvedTrajectoryPath = locateAssetFile(trajectoryPath);
+    if (!fs::exists(resolvedTrajectoryPath)) {
+      std::string const msg =
+        "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+        "Trajectory file \"" +
+        trajectoryPath +
+        "\" was not found in asset directories or as a direct path";
+      logging::ERR(msg);
+      throw HeliosException(msg);
+    }
+
     bool const alreadyLoaded =
       trajectoryFiles.find(trajectoryPath) != trajectoryFiles.end();
     if (!alreadyLoaded) { // Load trajectory data if not already loaded
       if (platform->tdm == nullptr) { // First loaded trajectory
         if (indices.find(trajectoryPath) != indices.end()) { // XML inds
-          fluxionum::DesignMatrix<double> dm(trajectoryPath, sep);
+          fluxionum::DesignMatrix<double> dm(resolvedTrajectoryPath.string(),
+                                             sep);
           dm.swapColumns(indices[trajectoryPath]);
           platform->tdm =
             std::make_shared<fluxionum::TemporalDesignMatrix<double, double>>(
@@ -539,7 +551,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
         } else { // Trajectory file indices
           platform->tdm =
             std::make_shared<fluxionum::TemporalDesignMatrix<double, double>>(
-              trajectoryPath, sep);
+              resolvedTrajectoryPath.string(), sep);
           if (interpDom == "position") { // t, x, y, z from header
             vector<unsigned long long> inds({ 0, 1, 2 });
             vector<string> const& names = platform->tdm->getColumnNames();
@@ -613,10 +625,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
         }
       } else {
         // Not first loaded, so merge with previous data
-        auto resolved_path = locateAssetFile(trajectoryPath).string();
         std::unique_ptr<fluxionum::TemporalDesignMatrix<double, double>> tdm;
         if (indices.find(trajectoryPath) != indices.end()) { // XML inds
-          fluxionum::DesignMatrix<double> dm(resolved_path, sep);
+          fluxionum::DesignMatrix<double> dm(resolvedTrajectoryPath.string(),
+                                             sep);
           dm.swapColumns(indices[trajectoryPath]);
           tdm =
             std::unique_ptr<fluxionum::TemporalDesignMatrix<double, double>>(
@@ -624,8 +636,8 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
         } else { // Trajectory file indices
           tdm =
             std::unique_ptr<fluxionum::TemporalDesignMatrix<double, double>>(
-              new fluxionum::TemporalDesignMatrix<double, double>(resolved_path,
-                                                                  sep));
+              new fluxionum::TemporalDesignMatrix<double, double>(
+                resolvedTrajectoryPath.string(), sep));
           if (interpDom == "position") { // t, x, y, z from header
             vector<unsigned long long> inds({ 0, 1, 2 });
             vector<string> const& names = tdm->getColumnNames();
