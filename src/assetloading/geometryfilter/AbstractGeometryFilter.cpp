@@ -43,8 +43,7 @@ AbstractGeometryFilter::parseMaterials()
   }
 
   // Pick material
-  std::string matfile = boost::get<std::string>(params["matfile"]);
-  auto mats = MaterialsFileReader::loadMaterials(matfile);
+  auto mats = MaterialsFileReader::loadMaterials(matfilePath.string());
   std::vector<std::shared_ptr<Material>> matvec(0);
   if (params.find("matname") != params.end()) { // Pick by name
     std::string matname = boost::get<std::string>(params["matname"]);
@@ -52,7 +51,7 @@ AbstractGeometryFilter::parseMaterials()
     if (it == mats.end()) {
       std::stringstream ss;
       ss << "Material with name '" << matname
-         << "' was not found in material file: " << matfile;
+         << "' was not found in material file: " << matfilePath.string();
       logging::ERR(ss.str());
       throw HeliosException(ss.str());
     }
