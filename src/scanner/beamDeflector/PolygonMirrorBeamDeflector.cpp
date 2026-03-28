@@ -49,8 +49,10 @@ PolygonMirrorBeamDeflector::applySettings(
 
   std::stringstream ss;
   ss << "Applying settings for PolygonMirrorBeamDeflector...\n";
-  ss << "Vertical angle min/max " << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMin_rad) << "/"
-     << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMax_rad) << " degrees";
+  ss << "Vertical angle min/max "
+     << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMin_rad) << "/"
+     << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMax_rad)
+     << " degrees";
 
   // if not set, use the ones from the scanAngleEffectiveMax or scanAngle
   // (whichever is lower)
@@ -70,16 +72,19 @@ PolygonMirrorBeamDeflector::applySettings(
        << " degrees";
   }
 
-  // ensure that the range between min and max vertical angle is not bigger than the effective scan angle
+  // ensure that the range between min and max vertical angle is not bigger than
+  // the effective scan angle
   double verticalAngleRange_rad =
     cfg_setting_verticalAngleMax_rad - cfg_setting_verticalAngleMin_rad;
-  if (verticalAngleRange_rad > cfg_device_scanAngleEffectiveMax_rad*2) {
+  if (verticalAngleRange_rad > cfg_device_scanAngleEffectiveMax_rad * 2) {
     // rase an error and exit
     std::stringstream ss;
     ss << "Error: The range between verticalAngleMin and verticalAngleMax ("
        << MathConverter::radiansToDegrees(verticalAngleRange_rad)
-       << " degrees) cannot be bigger than the effective maximum scan angle (scanAngleEffectiveMax) of the device ("
-       << MathConverter::radiansToDegrees(cfg_device_scanAngleEffectiveMax_rad*2)
+       << " degrees) cannot be bigger than the effective maximum scan angle "
+          "(scanAngleEffectiveMax) of the device ("
+       << MathConverter::radiansToDegrees(cfg_device_scanAngleEffectiveMax_rad *
+                                          2)
        << " degrees). Please adjust the settings.";
     logging::ERR(ss.str());
     throw HeliosException(ss.str());

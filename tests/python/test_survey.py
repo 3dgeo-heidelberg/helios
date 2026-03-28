@@ -595,7 +595,9 @@ def test_survey_run_with_hor_ver_resolution(scene):
     assert trajectory.shape[0] > 0
 
 
-def test_survey_run_with_non_symmetric_vert_angle_limits_and_max_larger_than_effective_max_scan_angle(wall_scene):
+def test_survey_run_with_non_symmetric_vert_angle_limits_and_max_larger_than_effective_max_scan_angle(
+    wall_scene,
+):
     """
     Test that the simulated output has the correct extent when vertical angle limits are not symmetric around zero
     and the max vertical angle is larger than the effecte max scan angle.
