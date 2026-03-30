@@ -1,5 +1,5 @@
 #include "PolygonMirrorBeamDeflector.h"
-
+#include <HeliosException.h>
 #include "maths/Directions.h"
 #include <iostream>
 #include <logging.hpp>
