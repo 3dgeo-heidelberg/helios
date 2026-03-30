@@ -82,7 +82,7 @@ PolygonMirrorBeamDeflector::applySettings(
        << MathConverter::radiansToDegrees(cfg_device_scanAngleEffectiveMax_rad*2)
        << " degrees). Please adjust the settings.";
     logging::ERR(ss.str());
-    exit(1);
+    throw HeliosException(ss.str());
   }
   state_currentBeamAngle_rad = 0;
   logging::INFO(ss.str());
