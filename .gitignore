@@ -235,3 +235,6 @@ cython_debug/
 *.exe
 *.out
 *.app
+
+# Benchmark results and comparison scripts
+benchmarks/compare/*

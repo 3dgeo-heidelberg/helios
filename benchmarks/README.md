@@ -10,7 +10,7 @@ This directory provides several benchmarks for performance analyses using the [G
     ```
     mkdir build
     cd build
-    cmake -DBUILD_BENCHMARKS=ON ..
+    cmake -DBUILD_BENCHMARKS=ON -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer ..
     make
     cd ..
     ```
@@ -44,7 +44,7 @@ Comparison workflow of benchmark executable <benchmark_executable_name> from <br
 6. ```./build/benchmarks/<benchmark_executable_name> --benchmark_repetitions=27 --benchmark_out=<outfile_name_branch_b> --benchmark_out_format=json```
 7. ```cp <outfile_name_branch_a> <outfile_name_branch_b> <path_to_benchmark_installation/tools/>```. **Note that the file is copied to the ```tools``` folder**
 8. ```conda activate benchmark-compare```
-9. ```python compare.py benchmarks <outfile_name_branch_a> <outfile_name_branch_b>```
+9. ```python compare.py -d compare_out.json benchmarks <outfile_name_branch_a> <outfile_name_branch_b>```
 
 The output from ```compare.py``` includes the following information:
 
