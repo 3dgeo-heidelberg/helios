@@ -46,13 +46,16 @@ run_comparison() {
 
 		# parse the command line arguments
 		jobs="$(nproc)"
+		repetitions=30
 		positional=()
 
 		while [[ $# -gt 0 ]]; do
 			case "$1" in
 				-j) jobs="$2"; shift 2 ;;
 				-j*) jobs="${1#-j}"; shift ;;   # supports -j8
-				-h|--help) echo "Usage: $prog_name [-j jobs] <branch_a> <branch_b>" >&2; exit 0 ;;
+				-r) repetitions="$2"; shift 2 ;;
+				-r*) repetitions="${1#-r}"; shift ;;   # supports -r30
+				-h|--help) echo "Usage: $prog_name [-j jobs] [-r repetitions] <branch_a> <branch_b>" >&2; exit 0 ;;
 				--) shift; positional+=("$@"); break ;;
 				-*) echo "Unknown option: $1" >&2; exit 2 ;;
 				*) positional+=("$1"); shift ;;
@@ -60,14 +63,18 @@ run_comparison() {
 		done
 
 		set -- "${positional[@]}"
-		[[ $# -eq 2 ]] || { echo "Usage: $prog_name [-j jobs] <branch_a> <branch_b>" >&2; exit 2; }
+		[[ $# -eq 2 ]] || { echo "Usage: $prog_name [-j jobs] [-r repetitions] <branch_a> <branch_b>" >&2; exit 2; }
+
+		if [[ ! "$repetitions" =~ ^[0-9]+$ ]] || [[ "$repetitions" -lt 1 ]]; then
+			die "Invalid -r/--benchmark_repetitions value: '$repetitions' (expected integer >= 1)"
+		fi
 
 		branch_a="$1"
 		branch_b="$2"
 		branch_a_safe="$(sanitize_branch_for_filename "$branch_a")"
 		branch_b_safe="$(sanitize_branch_for_filename "$branch_b")"
 
-		echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs"
+		echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions"
 
 		# find the benchmark directory where this script is located
 		script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -86,34 +93,44 @@ run_comparison() {
 			git checkout "$branch" || die "Failed to checkout branch: $branch"
 
 			branch_safe="$(sanitize_branch_for_filename "$branch")"
+			build_dir="$repo_root/build_bench_${branch_safe}"
+			echo "Using build directory: $build_dir"
 
-			# remove build directory if it exists
-			rm -rf build
-			# create build directory
-			mkdir build
-			cd build || die "Failed to cd into build directory"
-			# run cmake and build the benchmarks
+			mkdir -p "$build_dir" || die "Failed to create build directory: $build_dir"
+			cd "$build_dir" || die "Failed to cd into build directory: $build_dir"
+			# run cmake and build the benchmarks (incremental; directory is preserved across runs)
 			cmake -DBUILD_BENCHMARKS=ON -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer ..
 			make -j"$jobs"
 
 			cd .. || die "Failed to cd back to repo root directory"
 
 			# loop over all benchmark executables and run them, saving the results in the compare directory with the branch name in the filename
-			for bench_exe in build/benchmarks/*_b; do
+			for bench_exe in "$build_dir"/benchmarks/*_b; do
 				[[ -x "$bench_exe" ]] || continue
 				bench_name="$(basename "$bench_exe")"
 				echo "Running benchmark: $bench_name for branch: $branch"
-				"$bench_exe" --benchmark_repetitions=30 --benchmark_out_format=json --benchmark_out="benchmarks/compare/${bench_name}_${branch_safe}.json"
+				"$bench_exe" --benchmark_repetitions="$repetitions" --benchmark_out_format=json --benchmark_out="benchmarks/compare/${bench_name}_${branch_safe}.json"
 			done
 		done
 
 		# run the comparison script for every benchmark
 		cd benchmarks/compare || die "Failed to cd into compare directory"
-		for bench_exe in ../build/benchmarks/*_b; do
+		build_dir_a="$repo_root/build_bench_${branch_a_safe}"
+		for bench_exe in "$build_dir_a"/benchmarks/*_b; do
 			[[ -x "$bench_exe" ]] || continue
 			bench_name="$(basename "$bench_exe")"
+			json_a="${bench_name}_${branch_a_safe}.json"
+			json_b="${bench_name}_${branch_b_safe}.json"
+			if [[ ! -f "$json_a" ]]; then
+				echo "Skipping comparison for $bench_name: missing $json_a" >&2
+				continue
+			fi
+			if [[ ! -f "$json_b" ]]; then
+				echo "Skipping comparison for $bench_name: missing $json_b" >&2
+				continue
+			fi
 
-			python3 compare.py -d "comparison_output_${bench_name}.json" benchmarks "${bench_name}_${branch_a_safe}.json" "${bench_name}_${branch_b_safe}.json"
+			python3 compare.py -d "comparison_output_${bench_name}.json" benchmarks "$json_a" "$json_b"
 		done
 
 		echo "Benchmark comparison workflow complete. Results saved in compare directory with filenames: comparison_output_<benchmark_name>.json"

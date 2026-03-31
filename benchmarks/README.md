@@ -1,8 +1,8 @@
 # Benchmarking setup
 
-This directory provides several benchmarks for performance analyses using the [Google Benchmark](https://github.com/google/benchmark) libary. Benchmarks related to the same part of the Helios simulation are grouped together in one benchmark executable. A list of benchmarks and executables can be found at the bottom of this README.
+This directory provides several benchmarks for performance analyses using the [Google Benchmark](https://github.com/google/benchmark) libary. It also provides a helper script for comparing the benchmark performance of two branches. An guide for setup and usage, as well as a list of benchmarks and executables can be found in this README.
 
-## Setup and basic usage
+## Manual setup and basic usage
 
 1. If not already done, set up a Helios development installation as desribed in the [Helios Package README](https://github.com/3dgeo-heidelberg/helios/blob/alpha-dev/README.md#development-installation)
 2. Compile helios using CMake instead of pip: 
@@ -21,30 +21,40 @@ This directory provides several benchmarks for performance analyses using the [G
 
 ## Workflow for comparing branches
 
-To analyze the performance changes from one branch to another, it is useful to compare benchmark outputs in a more systematic manner. Google Benchmark provides a comparison python script for this task. If benchmark was installed via conda-forge, the comparison script as well as the required gbench package are not installed with it. The easiest setup is to clone the google benchmark repository to another location and set up an environment for running comparisons:
+To analyze the performance changes from one branch to another, it is useful to compare benchmark outputs in a more systematic manner. Google Benchmark provides a comparison python script for this task.
 
-```
-git clone https://github.com/google/benchmark.git
-cd benchmark
-conda create --name benchmark-compare --file requirements.txt
-```
+For a more convenient usage of the comparison script, this directory provides two helper scripts: ```initial_setup.sh```, which has to be executed once to download the necessary files and create the directory structure, and ```comparison_workflow.sh```, which executes and compares benchmarks for two different branches, and stores the results.
 
-We will also make use of the following options for running benchmark executables:
-- ```--benchmark_out_format=json```: Sets the output mode to json
-- ```--benchmark_out=<outfile_name>```: Specifies the json output file name
-- ```--benchmark_repetitions=<N>```: Sets the amount of repetitions to be done for each benchmark.
+### ```initial_setup.sh```
 
-Comparison workflow of benchmark executable <benchmark_executable_name> from <branch_a> compared to <branch_b>:
+This script can be executed via ```./initial_setup.sh```, and it does the following:
 
-1. ```git checkout <branch_a>```
-2. Recompile helios on branch a using CMake with the respective flags as above
-3. ```./build/benchmarks/<benchmark_executable_name> --benchmark_repetitions=27 --benchmark_out=<outfile_name_branch_a> --benchmark_out_format=json```
-4. ```git checkout <branch_b>```
-5. Recompile helios on branch b using CMake with the respective flags as above
-6. ```./build/benchmarks/<benchmark_executable_name> --benchmark_repetitions=27 --benchmark_out=<outfile_name_branch_b> --benchmark_out_format=json```
-7. ```cp <outfile_name_branch_a> <outfile_name_branch_b> <path_to_benchmark_installation/tools/>```. **Note that the file is copied to the ```tools``` folder**
-8. ```conda activate benchmark-compare```
-9. ```python compare.py -d compare_out.json benchmarks <outfile_name_branch_a> <outfile_name_branch_b>```
+- Creates the ```benchmarks/compare/``` directory
+- Downloads the ```compare.py``` script, as well as its ```gbench``` dependencies from [Google Benchmark Tools GitHub](https://github.com/google/benchmark/tree/main/tools)
+
+The comparison script requries ```scipy``` and ```numpy``` to run, which are also dependencies of helios, so make sure to have a development conda environment set up.
+
+### ```comparison_workflow.sh```
+
+#### Description
+
+This script can be executed via ```./comparison_workflow.sh <branch_a> <branch_b>```, and it does the following:
+
+- For each branch <branch_a> and <branch_b>:
+    - Git checkout to branch
+    - Recompiles with cmake as described above
+    - Runs all benchmarks with ```<benchmark_exe_name> --benchmark_repetitions="$repetitions" --benchmark_out_format=json --benchmark_out="benchmarks/compare/<out_file_name>.json"```, which repeats the benchmark and stores the output in a json file
+- For each benchmark:
+    - Runs the comparison script via ```python3 compare.py -d "<comparison_out_file_name>.json" benchmarks "<out_file_branch_a>" "<out_file_branch_b>"```, which also stores the comparison output in a json file
+
+#### Options
+
+The ```comparison_workflow.sh``` script provides the following options:\
+
+- ```-j``` : Number of procs for the ```make``` command, defaults to ```nprocs```
+- ```-n``` : Number of repetitions to do for each benchmark. The higher the number of repetitions, the more reliable the result of the comparison will be. Defaults to 30
+
+#### Output Explanation
 
 The output from ```compare.py``` includes the following information:
 
