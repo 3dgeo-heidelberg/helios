@@ -47,6 +47,7 @@ run_comparison() {
 		# parse the command line arguments
 		jobs="$(nproc)"
 		repetitions=30
+		benchmark_filter=""
 		positional=()
 
 		while [[ $# -gt 0 ]]; do
@@ -55,7 +56,9 @@ run_comparison() {
 				-j*) jobs="${1#-j}"; shift ;;   # supports -j8
 				-r) repetitions="$2"; shift 2 ;;
 				-r*) repetitions="${1#-r}"; shift ;;   # supports -r30
-				-h|--help) echo "Usage: $prog_name [-j jobs] [-r repetitions] <branch_a> <branch_b>" >&2; exit 0 ;;
+				-f) benchmark_filter="$2"; shift 2 ;;
+				-f*) benchmark_filter="${1#-f}"; shift ;;   # supports -fregex
+				-h|--help) echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] <branch_a> <branch_b>" >&2; exit 0 ;;
 				--) shift; positional+=("$@"); break ;;
 				-*) echo "Unknown option: $1" >&2; exit 2 ;;
 				*) positional+=("$1"); shift ;;
@@ -63,7 +66,7 @@ run_comparison() {
 		done
 
 		set -- "${positional[@]}"
-		[[ $# -eq 2 ]] || { echo "Usage: $prog_name [-j jobs] [-r repetitions] <branch_a> <branch_b>" >&2; exit 2; }
+		[[ $# -eq 2 ]] || { echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] <branch_a> <branch_b>" >&2; exit 2; }
 
 		if [[ ! "$repetitions" =~ ^[0-9]+$ ]] || [[ "$repetitions" -lt 1 ]]; then
 			die "Invalid -r/--benchmark_repetitions value: '$repetitions' (expected integer >= 1)"
@@ -74,7 +77,11 @@ run_comparison() {
 		branch_a_safe="$(sanitize_branch_for_filename "$branch_a")"
 		branch_b_safe="$(sanitize_branch_for_filename "$branch_b")"
 
-		echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions"
+		if [[ -n "$benchmark_filter" ]]; then
+			echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions (filter: $benchmark_filter)"
+		else
+			echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions"
+		fi
 
 		# find the benchmark directory where this script is located
 		script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -122,10 +129,18 @@ run_comparison() {
 				[[ -x "$bench_exe" ]] || continue
 				bench_name="$(basename "$bench_exe")"
 				echo "Running benchmark: $bench_name for branch: $branch"
-				"$bench_exe" \
-					--benchmark_repetitions="$repetitions" \
-					--benchmark_out_format=json \
-					--benchmark_out="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
+				if [[ -n "$benchmark_filter" ]]; then
+					"$bench_exe" \
+						--benchmark_filter="$benchmark_filter" \
+						--benchmark_repetitions="$repetitions" \
+						--benchmark_out_format=json \
+						--benchmark_out="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
+				else
+					"$bench_exe" \
+						--benchmark_repetitions="$repetitions" \
+						--benchmark_out_format=json \
+						--benchmark_out="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
+				fi
 			done
 		done
 
