@@ -67,7 +67,7 @@ run_comparison() {
 					benchmark_filter="$2"; shift 2
 					;;
 				-f*) benchmark_filter="${1#-f}"; shift ;;   # supports -fregex
-				-h|--help) echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] <branch_a> <branch_b>" >&2; exit 0 ;;
+				-h|--help) echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] [<branch_a>] <branch_b>" >&2; exit 0 ;;
 				--) shift; positional+=("$@"); break ;;
 				-*) echo "Unknown option: $1" >&2; exit 2 ;;
 				*) positional+=("$1"); shift ;;
@@ -75,21 +75,24 @@ run_comparison() {
 		done
 
 		set -- "${positional[@]}"
-		[[ $# -eq 2 ]] || { echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] <branch_a> <branch_b>" >&2; exit 2; }
+		if [[ $# -lt 1 || $# -gt 2 ]]; then
+			echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] [<branch_a>] <branch_b>" >&2
+			exit 2
+		fi
+
+		one_branch_mode=0
+		branch_a_input=""
+		branch_b_input=""
+		if [[ $# -eq 1 ]]; then
+			one_branch_mode=1
+			branch_b_input="$1"
+		else
+			branch_a_input="$1"
+			branch_b_input="$2"
+		fi
 
 		if [[ ! "$repetitions" =~ ^[0-9]+$ ]] || [[ "$repetitions" -lt 1 ]]; then
 			die "Invalid -r/--benchmark_repetitions value: '$repetitions' (expected integer >= 1)"
-		fi
-
-		branch_a="$1"
-		branch_b="$2"
-		branch_a_safe="$(sanitize_branch_for_filename "$branch_a")"
-		branch_b_safe="$(sanitize_branch_for_filename "$branch_b")"
-
-		if [[ -n "$benchmark_filter" ]]; then
-			echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions (filter: $benchmark_filter)"
-		else
-			echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions"
 		fi
 
 		# find the benchmark directory where this script is located
@@ -113,34 +116,73 @@ run_comparison() {
 
 		require_clean_tracked_tree
 
+		if [[ $one_branch_mode -eq 1 ]]; then
+			current_branch="$(git -C "$repo_root" symbolic-ref -q --short HEAD || true)"
+			if [[ -n "$current_branch" ]]; then
+				branch_a="$current_branch"
+			else
+				branch_a="$(git -C "$repo_root" rev-parse --short HEAD)"
+			fi
+			branch_b="$branch_b_input"
+		else
+			branch_a="$branch_a_input"
+			branch_b="$branch_b_input"
+		fi
+
+		branch_a_safe="$(sanitize_branch_for_filename "$branch_a")"
+		branch_b_safe="$(sanitize_branch_for_filename "$branch_b")"
+
+		use_repo_build_dir=0
+		repo_build_dir="$repo_root/build"
+		if [[ $one_branch_mode -eq 1 ]]; then
+			if [[ -d "$repo_build_dir" ]] && [[ -n "$(find "$repo_build_dir" -mindepth 1 -print -quit 2>/dev/null || true)" ]]; then
+				use_repo_build_dir=1
+			fi
+		fi
+
+		if [[ -n "$benchmark_filter" ]]; then
+			echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions (filter: $benchmark_filter)"
+		else
+			echo "Comparing benchmarks for branches: $branch_a and $branch_b with $jobs parallel jobs and $repetitions repetitions"
+		fi
+		if [[ $use_repo_build_dir -eq 1 ]]; then
+			echo "Using existing build directory for current branch '$branch_a': $repo_build_dir (skipping rebuild)"
+		fi
+
 		# checkout the two branches and build the benchmarks for each branch
 		for branch in "$branch_a" "$branch_b"; do
 			require_clean_tracked_tree
-			echo "Checking out branch: $branch"
-			git checkout "$branch" || die "Failed to checkout branch: $branch"
 
 			branch_safe="$(sanitize_branch_for_filename "$branch")"
-			build_dir="$repo_root/build_bench_${branch_safe}"
-			echo "Using build directory: $build_dir"
+			if [[ $use_repo_build_dir -eq 1 && "$branch" == "$branch_a" ]]; then
+				build_dir="$repo_build_dir"
+				echo "Using build directory: $build_dir (skipping rebuild)"
+			else
+				echo "Checking out branch: $branch"
+				git checkout "$branch" || die "Failed to checkout branch: $branch"
 
-			# if the build directory already exists, clear it beforehand
-			if [[ -d "$build_dir" ]]; then
-				case "$build_dir" in
-					""|"."|".."|./*|../*|.*)
-						die "Refusing to clear build directory with suspicious dot-prefixed path: '$build_dir'"
-						;;
-				esac
-				echo "Clearing existing build directory: $build_dir"
-				rm -rf -- "$build_dir" || die "Failed to clear existing build directory: $build_dir"
+				build_dir="$repo_root/build_bench_${branch_safe}"
+				echo "Using build directory: $build_dir"
+
+				# if the build directory already exists, clear it beforehand
+				if [[ -d "$build_dir" ]]; then
+					case "$build_dir" in
+						""|"."|".."|./*|../*|.*)
+							die "Refusing to clear build directory with suspicious dot-prefixed path: '$build_dir'"
+							;;
+					esac
+					echo "Clearing existing build directory: $build_dir"
+					rm -rf -- "$build_dir" || die "Failed to clear existing build directory: $build_dir"
+				fi
+
+				mkdir -p "$build_dir" || die "Failed to create build directory: $build_dir"
+				cd "$build_dir" || die "Failed to cd into build directory: $build_dir"
+				# run cmake and build the benchmarks (incremental; directory is preserved across runs)
+				cmake -DBUILD_BENCHMARKS=ON -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer ..
+				make -j"$jobs"
+
+				cd .. || die "Failed to cd back to repo root directory"
 			fi
-
-			mkdir -p "$build_dir" || die "Failed to create build directory: $build_dir"
-			cd "$build_dir" || die "Failed to cd into build directory: $build_dir"
-			# run cmake and build the benchmarks (incremental; directory is preserved across runs)
-			cmake -DBUILD_BENCHMARKS=ON -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer ..
-			make -j"$jobs"
-
-			cd .. || die "Failed to cd back to repo root directory"
 
 			# loop over all benchmark executables and run them, saving the results in the compare directory with the branch name in the filename
 			for bench_exe in "$build_dir"/benchmarks/*_b; do
