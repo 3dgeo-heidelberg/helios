@@ -42,7 +42,7 @@ This script can be executed via ```./comparison_workflow.sh <branch_a> <branch_b
 
 - For each branch <branch_a> and <branch_b>:
     - Git checkout to branch
-    - Recompiles with cmake as described above
+    - Recompiles with cmake as described above, in a new build directory ```build_<branch_name>```. If a build directory with said name already exists, it is cleared.
     - Runs all benchmarks with ```<benchmark_exe_name> --benchmark_repetitions="$repetitions" --benchmark_out_format=json --benchmark_out="benchmarks/compare/<out_file_name>.json"```, which repeats the benchmark and stores the output in a json file
 - For each benchmark:
     - Runs the comparison script via ```python3 compare.py -d "<comparison_out_file_name>.json" benchmarks "<out_file_branch_a>" "<out_file_branch_b>"```, which also stores the comparison output in a json file

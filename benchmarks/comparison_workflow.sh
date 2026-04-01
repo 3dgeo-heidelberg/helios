@@ -83,6 +83,8 @@ run_comparison() {
 
 		# go to root directory
 		cd "$repo_root" || die "Failed to cd into repo root directory: $repo_root"
+		compare_dir="$repo_root/benchmarks/compare"
+		mkdir -p "$compare_dir" || die "Failed to create compare directory: $compare_dir"
 
 		require_clean_tracked_tree
 
@@ -95,6 +97,17 @@ run_comparison() {
 			branch_safe="$(sanitize_branch_for_filename "$branch")"
 			build_dir="$repo_root/build_bench_${branch_safe}"
 			echo "Using build directory: $build_dir"
+
+			# if the build directory already exists, clear it beforehand
+			if [[ -d "$build_dir" ]]; then
+				case "$build_dir" in
+					""|"."|".."|./*|../*|.*)
+						die "Refusing to clear build directory with suspicious dot-prefixed path: '$build_dir'"
+						;;
+				esac
+				echo "Clearing existing build directory: $build_dir"
+				rm -rf -- "$build_dir" || die "Failed to clear existing build directory: $build_dir"
+			fi
 
 			mkdir -p "$build_dir" || die "Failed to create build directory: $build_dir"
 			cd "$build_dir" || die "Failed to cd into build directory: $build_dir"
@@ -109,22 +122,26 @@ run_comparison() {
 				[[ -x "$bench_exe" ]] || continue
 				bench_name="$(basename "$bench_exe")"
 				echo "Running benchmark: $bench_name for branch: $branch"
-				"$bench_exe" --benchmark_repetitions="$repetitions" --benchmark_out_format=json --benchmark_out="benchmarks/compare/${bench_name}_${branch_safe}.json"
+				"$bench_exe" \
+					--benchmark_repetitions="$repetitions" \
+					--benchmark_out_format=json \
+					--benchmark_out="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
 			done
 		done
 
 		# run the comparison script for every benchmark
 		cd benchmarks/compare || die "Failed to cd into compare directory"
-		build_dir_a="$repo_root/build_bench_${branch_a_safe}"
-		for bench_exe in "$build_dir_a"/benchmarks/*_b; do
-			[[ -x "$bench_exe" ]] || continue
-			bench_name="$(basename "$bench_exe")"
-			json_a="${bench_name}_${branch_a_safe}.json"
-			json_b="${bench_name}_${branch_b_safe}.json"
-			if [[ ! -f "$json_a" ]]; then
-				echo "Skipping comparison for $bench_name: missing $json_a" >&2
-				continue
-			fi
+		shopt -s nullglob
+		json_a_files=( "bench__"*"__branch__${branch_a_safe}.json" )
+		shopt -u nullglob
+		if [[ ${#json_a_files[@]} -eq 0 ]]; then
+			die "No benchmark output JSON files found for branch '$branch_a' (expected files like: bench__<benchmark>__branch__${branch_a_safe}.json)"
+		fi
+
+		for json_a in "${json_a_files[@]}"; do
+			bench_name="${json_a#bench__}"
+			bench_name="${bench_name%__branch__${branch_a_safe}.json}"
+			json_b="bench__${bench_name}__branch__${branch_b_safe}.json"
 			if [[ ! -f "$json_b" ]]; then
 				echo "Skipping comparison for $bench_name: missing $json_b" >&2
 				continue
