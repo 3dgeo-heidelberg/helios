@@ -3,10 +3,12 @@
 # This script executes the benchmark comparison workflow for two different branches using the google benchmark tools.
 # For more information see README.md
 
+# Function for checking if the script is being sourced or executed directly
 is_sourced() {
 	[[ "${BASH_SOURCE[0]}" != "$0" ]]
 }
 
+# Function for printing error messages and exiting
 die() {
 	printf 'Error: %s\n' "$*" >&2
 	if is_sourced; then
@@ -15,10 +17,12 @@ die() {
 	exit 1
 }
 
+# Function for checking if a required command is available in PATH
 require_cmd() {
 	command -v "$1" >/dev/null 2>&1 || die "Required command not found in PATH: $1"
 }
 
+# Function for running the benchmark comparison workflow
 run_comparison() {
 	(
 		set -euo pipefail
@@ -31,6 +35,7 @@ run_comparison() {
 		require_cmd make
 		require_cmd nproc
 
+		# Function for sanitizing branch names to be used in filenames (replacing slashes and spaces with underscores)
 		sanitize_branch_for_filename() {
 			local branch_name="$1"
 			branch_name="${branch_name//\//_}"
@@ -38,13 +43,14 @@ run_comparison() {
 			printf '%s' "$branch_name"
 		}
 
+		# Function for ensuring the git working tree is clean (no unstaged or staged changes)
 		require_clean_tracked_tree() {
 			# Avoid failing on untracked benchmark output JSON files.
 			git diff --quiet --ignore-submodules -- || die "Working tree has unstaged changes. Commit/stash them before running: git stash -u"
 			git diff --cached --quiet --ignore-submodules -- || die "Working tree has staged changes. Commit/stash them before running: git stash -u"
 		}
 
-		# parse the command line arguments
+		# Parse the command line arguments
 		jobs="$(nproc)"
 		repetitions=30
 		benchmark_filter=""
@@ -80,6 +86,7 @@ run_comparison() {
 			exit 2
 		fi
 
+		# Determine if we're in one-branch mode (comparing current branch to a specified branch) or two-branch mode (comparing two specified branches)
 		one_branch_mode=0
 		branch_a_input=""
 		branch_b_input=""
@@ -117,6 +124,7 @@ run_comparison() {
 			rm -f -- "${old_json_files[@]}" || die "Failed to clear existing benchmark JSON outputs in: $compare_dir"
 		fi
 
+		# Determine the two branches to compare
 		if [[ $one_branch_mode -eq 1 ]]; then
 			current_branch="$(git -C "$repo_root" symbolic-ref -q --short HEAD || true)"
 			if [[ -n "$current_branch" ]]; then
@@ -130,9 +138,11 @@ run_comparison() {
 			branch_b="$branch_b_input"
 		fi
 
+		# Sanitize branch names for use in filenames
 		branch_a_safe="$(sanitize_branch_for_filename "$branch_a")"
 		branch_b_safe="$(sanitize_branch_for_filename "$branch_b")"
 
+		# Check if the current branch's build directory can be reused (only in one-branch mode and if the build directory exists and is not empty)
 		use_repo_build_dir=0
 		repo_build_dir="$repo_root/build"
 		if [[ $one_branch_mode -eq 1 ]]; then
@@ -150,21 +160,25 @@ run_comparison() {
 			echo "Using existing build directory for current branch '$branch_a': $repo_build_dir (skipping rebuild)"
 		fi
 
-		# checkout the two branches and build the benchmarks for each branch
+		# Checkout the two branches and execute benchmarks for each branch, saving the results in the compare directory with the branch name in the filename
 		for branch in "$branch_a" "$branch_b"; do
 			require_clean_tracked_tree
 
 			branch_safe="$(sanitize_branch_for_filename "$branch")"
 			if [[ $use_repo_build_dir -eq 1 && "$branch" == "$branch_a" ]]; then
+				# Reuse existing build directory for active branch
 				build_dir="$repo_build_dir"
 				echo "Using build directory: $build_dir (skipping rebuild)"
 			else
+				# Checkout the branch
 				echo "Checking out branch: $branch"
 				git checkout "$branch" || die "Failed to checkout branch: $branch"
 
 				build_dir="$repo_root/build_bench_${branch_safe}"
 				echo "Using build directory: $build_dir"
 
+				# Check if the build directory exists and is not empty
+				# If not, recompile
 				need_build=1
 				if [[ -d "$build_dir" ]] && [[ -n "$(find "$build_dir" -mindepth 1 -print -quit 2>/dev/null || true)" ]]; then
 					need_build=0
@@ -182,7 +196,7 @@ run_comparison() {
 				fi
 			fi
 
-			# loop over all benchmark executables and run them, saving the results in the compare directory with the branch name in the filename
+			# Loop over all benchmark executables and run them, saving the results in the compare directory with the branch name in the filename
 			for bench_exe in "$build_dir"/benchmarks/*_b; do
 				[[ -x "$bench_exe" ]] || continue
 				bench_name="$(basename "$bench_exe")"
@@ -210,7 +224,7 @@ run_comparison() {
 			done
 		done
 
-		# run the comparison script for every benchmark
+		# Run the comparison script for every benchmark output json file produced before
 		cd benchmarks/compare || die "Failed to cd into compare directory"
 		shopt -s nullglob
 		json_a_files=( "bench__"*"__branch__${branch_a_safe}.json" )
