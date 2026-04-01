@@ -70,7 +70,7 @@ In order to reproduce simulation runs, (pseudo)random numbers are controlled usi
 A seed can be specified using the function ``helios.util.set_rng_seed()`` or with the CLI argument: ``--seed <seed>``.
 If no seed is specified, the simulation is using a randomly computed seed.
 
-The seed can be an integer or a datetime.
+The seed can be an integer or a datetime string.
 
 Despite controlling the seed for random numbers, the concurrent nature of the simulation still generates output with no guaranteed order. 
 By **limiting the number of jobs to 1**, the order is guaranteed and the output should be exactly the same for different executions. 
