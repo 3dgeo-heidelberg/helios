@@ -38,12 +38,12 @@ The comparison script requries ```scipy``` and ```numpy``` to run, which are als
 
 #### Description
 
-This script can be executed via ```./comparison_workflow.sh <branch_a> <branch_b>```, and it does the following:
+This script can be executed via ```./comparison_workflow.sh [<branch_a>] <branch_b>```. If only one branch was passed to the script, the current branch will be used as branch a. The script executes the following steps:
 
-- Deletes any previous .json files found in ```benchmarks/compare/```. Make sure to copy any comparison results that you want to keep to a different directory.
+- Deletes any previous .json files found in ```benchmarks/compare/```. Make sure to copy any comparison results that you want to keep to a different directory
 - For each branch <branch_a> and <branch_b>:
     - Git checkout to branch
-    - Recompiles with cmake as described above, in a new build directory ```build_<branch_name>```. If a build directory with said name already exists, it is cleared.
+    - If no valid build directory for this branch is found, recompiles with cmake as described above, in a new build directory ```build_<branch_name>```. If a build directory with said name already exists, it is used instead. If the current branch is used as the first branch, the ```build``` directory is used instead
     - Runs all benchmarks with ```<benchmark_exe_name> --benchmark_repetitions="$repetitions" --benchmark_out_format=json --benchmark_out="benchmarks/compare/<out_file_name>.json"```, which repeats the benchmark and stores the output in a json file
 - For each produced benchmark output:
     - Runs the comparison script via ```python3 compare.py -d "<comparison_out_file_name>.json" benchmarks "<out_file_branch_a>" "<out_file_branch_b>"```, which also stores the comparison output in a json file
