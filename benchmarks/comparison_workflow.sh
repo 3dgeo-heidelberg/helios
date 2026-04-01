@@ -102,8 +102,11 @@ run_comparison() {
 
 		# go to root directory
 		cd "$repo_root" || die "Failed to cd into repo root directory: $repo_root"
+
 		compare_dir="$repo_root/benchmarks/compare"
 		mkdir -p "$compare_dir" || die "Failed to create compare directory: $compare_dir"
+
+		require_clean_tracked_tree
 
 		# clear old benchmark output JSONs before writing new ones
 		shopt -s nullglob
@@ -113,8 +116,6 @@ run_comparison() {
 			echo "Clearing existing benchmark JSON outputs in: $compare_dir"
 			rm -f -- "${old_json_files[@]}" || die "Failed to clear existing benchmark JSON outputs in: $compare_dir"
 		fi
-
-		require_clean_tracked_tree
 
 		if [[ $one_branch_mode -eq 1 ]]; then
 			current_branch="$(git -C "$repo_root" symbolic-ref -q --short HEAD || true)"
