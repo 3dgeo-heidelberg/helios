@@ -93,6 +93,15 @@ run_comparison() {
 		compare_dir="$repo_root/benchmarks/compare"
 		mkdir -p "$compare_dir" || die "Failed to create compare directory: $compare_dir"
 
+		# clear old benchmark output JSONs before writing new ones
+		shopt -s nullglob
+		old_json_files=( "$compare_dir"/*.json )
+		shopt -u nullglob
+		if [[ ${#old_json_files[@]} -gt 0 ]]; then
+			echo "Clearing existing benchmark JSON outputs in: $compare_dir"
+			rm -f -- "${old_json_files[@]}" || die "Failed to clear existing benchmark JSON outputs in: $compare_dir"
+		fi
+
 		require_clean_tracked_tree
 
 		# checkout the two branches and build the benchmarks for each branch
