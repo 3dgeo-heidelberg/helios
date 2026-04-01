@@ -137,18 +137,26 @@ run_comparison() {
 			for bench_exe in "$build_dir"/benchmarks/*_b; do
 				[[ -x "$bench_exe" ]] || continue
 				bench_name="$(basename "$bench_exe")"
+				out_json="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
 				echo "Running benchmark: $bench_name for branch: $branch"
 				if [[ -n "$benchmark_filter" ]]; then
 					"$bench_exe" \
 						--benchmark_filter="$benchmark_filter" \
 						--benchmark_repetitions="$repetitions" \
 						--benchmark_out_format=json \
-						--benchmark_out="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
+						--benchmark_out="$out_json"
 				else
 					"$bench_exe" \
 						--benchmark_repetitions="$repetitions" \
 						--benchmark_out_format=json \
-						--benchmark_out="$compare_dir/bench__${bench_name}__branch__${branch_safe}.json"
+						--benchmark_out="$out_json"
+				fi
+
+				# When the filter matches nothing, some benchmark binaries can leave an empty JSON file behind.
+				# Delete it so the comparison step only sees valid benchmark JSONs.
+				if [[ -f "$out_json" && ! -s "$out_json" ]]; then
+					rm -f -- "$out_json" || die "Failed to remove empty benchmark JSON output: $out_json"
+					echo "Skipping $bench_name for branch $branch: filter produced no benchmarks" >&2
 				fi
 			done
 		done
@@ -163,11 +171,20 @@ run_comparison() {
 		fi
 
 		for json_a in "${json_a_files[@]}"; do
+			if [[ ! -s "$json_a" ]]; then
+				echo "Skipping comparison: empty JSON output $json_a" >&2
+				continue
+			fi
+
 			bench_name="${json_a#bench__}"
 			bench_name="${bench_name%__branch__${branch_a_safe}.json}"
 			json_b="bench__${bench_name}__branch__${branch_b_safe}.json"
 			if [[ ! -f "$json_b" ]]; then
 				echo "Skipping comparison for $bench_name: missing $json_b" >&2
+				continue
+			fi
+			if [[ ! -s "$json_b" ]]; then
+				echo "Skipping comparison for $bench_name: empty $json_b" >&2
 				continue
 			fi
 
