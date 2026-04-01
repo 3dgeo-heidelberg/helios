@@ -52,11 +52,20 @@ run_comparison() {
 
 		while [[ $# -gt 0 ]]; do
 			case "$1" in
-				-j) jobs="$2"; shift 2 ;;
+				-j)
+					[[ $# -ge 2 ]] || die "-j requires an argument"
+					jobs="$2"; shift 2
+					;;
 				-j*) jobs="${1#-j}"; shift ;;   # supports -j8
-				-r) repetitions="$2"; shift 2 ;;
+				-r)
+					[[ $# -ge 2 ]] || die "-r requires an argument"
+					repetitions="$2"; shift 2
+					;;
 				-r*) repetitions="${1#-r}"; shift ;;   # supports -r30
-				-f) benchmark_filter="$2"; shift 2 ;;
+				-f)
+					[[ $# -ge 2 ]] || die "-f requires an argument"
+					benchmark_filter="$2"; shift 2
+					;;
 				-f*) benchmark_filter="${1#-f}"; shift ;;   # supports -fregex
 				-h|--help) echo "Usage: $prog_name [-j jobs] [-r repetitions] [-f benchmark_filter] <branch_a> <branch_b>" >&2; exit 0 ;;
 				--) shift; positional+=("$@"); break ;;

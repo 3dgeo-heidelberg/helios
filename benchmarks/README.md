@@ -40,18 +40,20 @@ The comparison script requries ```scipy``` and ```numpy``` to run, which are als
 
 This script can be executed via ```./comparison_workflow.sh <branch_a> <branch_b>```, and it does the following:
 
+- Deletes any previous .json files found in ```benchmarks/compare/```. Make sure to copy any comparison results that you want to keep to a different directory.
 - For each branch <branch_a> and <branch_b>:
     - Git checkout to branch
     - Recompiles with cmake as described above, in a new build directory ```build_<branch_name>```. If a build directory with said name already exists, it is cleared.
     - Runs all benchmarks with ```<benchmark_exe_name> --benchmark_repetitions="$repetitions" --benchmark_out_format=json --benchmark_out="benchmarks/compare/<out_file_name>.json"```, which repeats the benchmark and stores the output in a json file
-- For each benchmark:
+- For each produced benchmark output:
     - Runs the comparison script via ```python3 compare.py -d "<comparison_out_file_name>.json" benchmarks "<out_file_branch_a>" "<out_file_branch_b>"```, which also stores the comparison output in a json file
 
 #### Options
 
 The ```comparison_workflow.sh``` script provides the following options:\
 
-- ```-j``` : Number of procs for the ```make``` command, defaults to ```nprocs```
+- ```-f``` : Regex filter to be passed to the benchmark executables. For example, if only fullwaveform_digest_intersections_benchmark and base_energy_model_compute_power_benchmark should be compared, pass ```-f"fullwaveform_digest|base_energy"``` or a similar regex to this argument. Benchmark executables which do not contain a matching benchmark are skipped
+- ```-j``` : Number of procs for the ```make``` command. Defaults to ```nprocs```
 - ```-n``` : Number of repetitions to do for each benchmark. The higher the number of repetitions, the more reliable the result of the comparison will be. Defaults to 30
 
 #### Output Explanation
