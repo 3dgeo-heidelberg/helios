@@ -165,24 +165,21 @@ run_comparison() {
 				build_dir="$repo_root/build_bench_${branch_safe}"
 				echo "Using build directory: $build_dir"
 
-				# if the build directory already exists, clear it beforehand
-				if [[ -d "$build_dir" ]]; then
-					case "$build_dir" in
-						""|"."|".."|./*|../*|.*)
-							die "Refusing to clear build directory with suspicious dot-prefixed path: '$build_dir'"
-							;;
-					esac
-					echo "Clearing existing build directory: $build_dir"
-					rm -rf -- "$build_dir" || die "Failed to clear existing build directory: $build_dir"
+				need_build=1
+				if [[ -d "$build_dir" ]] && [[ -n "$(find "$build_dir" -mindepth 1 -print -quit 2>/dev/null || true)" ]]; then
+					need_build=0
 				fi
 
-				mkdir -p "$build_dir" || die "Failed to create build directory: $build_dir"
-				cd "$build_dir" || die "Failed to cd into build directory: $build_dir"
-				# run cmake and build the benchmarks (incremental; directory is preserved across runs)
-				cmake -DBUILD_BENCHMARKS=ON -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer ..
-				make -j"$jobs"
-
-				cd .. || die "Failed to cd back to repo root directory"
+				if [[ $need_build -eq 1 ]]; then
+					mkdir -p "$build_dir" || die "Failed to create build directory: $build_dir"
+					cd "$build_dir" || die "Failed to cd into build directory: $build_dir"
+					# run cmake and build the benchmarks
+					cmake -DBUILD_BENCHMARKS=ON -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer ..
+					make -j"$jobs"
+					cd .. || die "Failed to cd back to repo root directory"
+				else
+					echo "Reusing existing build directory (skipping rebuild): $build_dir"
+				fi
 			fi
 
 			# loop over all benchmark executables and run them, saving the results in the compare directory with the branch name in the filename
