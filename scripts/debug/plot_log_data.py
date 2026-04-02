@@ -13,7 +13,6 @@ import pandas as pd
 import sys
 import os
 
-
 # ---  CONFIGURATION CONSTANTS  --- #
 # --------------------------------- #
 markOptimumTime = False  # If True, plots will mark optimum time point

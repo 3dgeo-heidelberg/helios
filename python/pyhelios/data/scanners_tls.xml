@@ -50,6 +50,33 @@
   </scanner>
   <!-- ##### END RIEGL VZ-1000 ##### -->
 
+
+	<!-- ##### BEGIN RIEGL VZ-2000i ##### -->	
+	<scanner 	id 							          = "riegl_vz2000i"
+            name                      = "RIEGL VZ-2000i"
+            accuracy_m                = "0.005"
+            beamDivergence_rad        = "0.00027"
+            headRotatePerSecMax_deg   = "150"
+            optics                    = "rotating"
+            pulseFreqs_Hz             = "50000,100000,300000,600000,1200000"
+            pulseLength_ns            = "5"
+            rangeMin_m                = "1.5"
+            scanAngleMax_deg          = "120"
+            scanAngleEffectiveMax_deg = "50"
+            scanFreqMin_Hz            = "3"
+            scanFreqMax_Hz            = "240">
+        
+      <FWFSettings beamSampleQuality="3"/>	
+        <beamOrigin x="0" y="0" z="0.2">
+          <rot axis="y" angle_deg="0" />
+          <rot axis="z" angle_deg="0" />
+          <rot axis="x" angle_deg="0" />
+        </beamOrigin>
+        <headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+  <!-- ##### END RIEGL VZ-2000i ##### -->
+
+
   <!-- ##### BEGIN RIEGL VZ-600i ##### -->    
   <scanner  id                         = "riegl_vz600i"
             name                       = "RIEGL VZ-600i"
@@ -102,45 +129,48 @@
 
 
   <!--######## BEGIN LIVOX Mid 40 ####### -->
-  <!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->
-  <scanner  id                         = "livox_mid-40"
-            accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0027"
-            name                       = "Livox Mid-40"
-            optics                     = "risley"
-            pulseFreqs_Hz              = "100000"
-            pulseLength_ns             = "4"
-            rangeMin_m                 = "2"
-            wavelength_nm              = "905"
-            rotorFreq1_Hz              = "-77.733333333"
-            rotorFreq2_Hz              = "121.566666666"
-            angle1_deg                 = "-18.0"
-            angle2_deg                 = "18.0"
-            refrIndex1                 = "1.5095"
-            refrIndex2                 = "1.5095"
-            refrIndex_air              = "1.0">
+  <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
+       We use the value for the semi-minor axis -->
+  <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
+  <scanner  id                        = "livox_mid-40" 
+            accuracy_m                = "0.01"
+            beamDivergence_rad        = "0.00089" 
+            name                      = "Livox Mid-40" 
+            optics                    = "risley" 
+            pulseFreqs_Hz             = "100000" 
+            pulseLength_ns            = "4" 
+            rangeMin_m                = "1"
+            maxNOR                    = "2"
+            wavelength_nm             = "905" 
+            rotorFreq1_Hz             = "-121.5657" 
+            rotorFreq2_Hz             = "77.7430" 
+            angle1_deg                = "18.7481" 
+            angle2_deg                = "17.9634" 
+            refrIndex1                = "1.51" 
+            refrIndex2                = "1.51" 
+            refrIndex_air             = "1.0">
 
-    <FWFSettings beamSampleQuality="3"/>
-    <beamOrigin x="0" y="0" z="0">
-      <rot axis="z" angle_deg="-90" />
-    </beamOrigin>
-
-    <headRotateAxis x="1" y="0" z="0" />
+    <FWFSettings beamSampleQuality="3" />
+    <!-- height to beam origin is 0.0547 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
   </scanner>
 
   <!--######## END LIVOX Mid-40 ####### -->
 
 
-  <!--######## BEGIN LIVOX Mid 70 ####### -->
-  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°) -->
+  <!--######## BEGIN LIVOX Mid-70 ####### -->
+  <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
+       We use the value for the semi-minor axis -->
+  <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°). -->
   <scanner  id                         = "livox_mid-70"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0027"
+            beamDivergence_rad         = "0.00089"
             name                       = "Livox Mid-70"
             optics                     = "risley"
             pulseFreqs_Hz              = "100000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2"
+            maxNOR                     = "2"
             wavelength_nm              = "905"
             rotorFreq1_Hz              = "-77.733333333"
             rotorFreq2_Hz              = "121.566666666"
@@ -151,14 +181,113 @@
             refrIndex_air              = "1.0">
 
     <FWFSettings beamSampleQuality="3"/>
-    <beamOrigin x="0" y="0" z="0">
-      <rot axis="z" angle_deg="-90" />
-    </beamOrigin>
-
-    <headRotateAxis x="1" y="0" z="0" />
+    <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
   </scanner>
 
   <!--######## END LIVOX Mid-70 ####### -->
+
+
+  <!-- ##### LIVOX Mid-100 -->
+  <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
+       We use the value for the semi-minor axis -->
+  <scanner  id                         = "livox_mid-100"
+            accuracy_m                = "0.02"
+            beamDivergence_rad        = "0.00089" 
+            name                      = "Livox Mid-100" 
+            optics                    = "risley" 
+            pulseFreqs_Hz             = "100000" 
+            pulseLength_ns            = "4" 
+            rangeMin_m                = "1"
+            maxNOR                    = "2" 
+            wavelength_nm             = "905" 
+            rotorFreq1_Hz             = "-121.5657" 
+            rotorFreq2_Hz             = "77.7430" 
+            angle1_deg                = "18.7481" 
+            angle2_deg                = "17.9634" 
+            refrIndex1                = "1.51" 
+            refrIndex2                = "1.51" 
+            refrIndex_air             = "1.0">
+
+    <!-- height to beam origin is 0.0547 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
+    <channels>
+      <channel id="0">
+        <FWFSettings beamSampleQuality="3"/>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
+        </beamOrigin>
+        <!-- scan plane is defined by the central ray -->
+      </channel>
+      <channel id="1">
+        <FWFSettings beamSampleQuality="3"/>
+        <beamOrigin x="0" y="0" z="0">
+          <!-- central cone -->
+        </beamOrigin>
+      </channel>
+      <channel id="2">
+        <FWFSettings beamSampleQuality="3"/>
+        <beamOrigin x="0" y="0" z="0">
+          <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
+        </beamOrigin>
+      </channel>
+    </channels>
+    <FWFSettings beamSampleQuality="3"/>
+  </scanner>
+  <!--######## END LIVOX Mid-100 ####### -->
+
+
+  <!--######## BEGIN LIVOX Avia (NON-REPETITIVE) ####### -->
+  <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
+       We use the value for the semi-minor axis -->
+  <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
+  <scanner  id                         = "livox-avia-non-repetitive"
+            accuracy_m                 = "0.01" 
+            beamDivergence_rad         = "0.00089" 
+            name                       = "Livox Avia (non-repetitive)" 
+            optics                     = "risley" 
+            pulseFreqs_Hz              = "40000" 
+            pulseLength_ns             = "4" 
+            rangeMin_m                 = "1"
+            maxNOR                     = "3"
+            wavelength_nm              = "905" 
+            rotorFreq1_Hz              = "-131.5463" 
+            rotorFreq2_Hz              = "40.8032" 
+            rotorFreq3_Hz              = "213.1611" 
+            angle1_deg                 = "30.8856" 
+            angle2_deg                 = "29.7735" 
+            angle3_deg                 = "3.1351" 
+            refrIndex1                 = "1.51" 
+            refrIndex2                 = "1.51" 
+            refrIndex3                 = "1.51" 
+            refrIndex_air              = "1.0">
+
+    <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
+    <beamOrigin x="0" y="0" z="0.0"/>
+    <FWFSettings beamSampleQuality="3" />
+        <channels>
+            <channel id="0">
+                <incidentBeam x="-0.05216070" y="0.99863870" z="0" />
+            </channel>
+            <channel id="1">
+                <incidentBeam x="-0.03237635" y="0.99947575" z="0" />
+            </channel>
+            <channel id="2">
+                <incidentBeam x="-0.01079672" y="0.99994171" z="0" />
+            </channel>
+            <channel id="3">
+                <incidentBeam x="0.01079672" y="0.99994171" z="0" />
+            </channel>
+            <channel id="4">
+                <incidentBeam x="0.03237635" y="0.99947575" z="0" />
+            </channel>
+            <channel id="5">
+                <incidentBeam x="0.05300785" y="0.99859410" z="0" />
+            </channel>
+        </channels>
+  </scanner>
+
+  <!--######## END LIVOX Avia ####### -->
 
 
   <!-- ##### BEGIN Velodyne VLP-16 ("Puck") ##### -->
@@ -181,7 +310,7 @@
             maxNOR                     = "2"
             headRotatePerSecMax_deg    = "7200">
 
-    <headRotateAxis x="0" y="1" z="0"/>
+    <headRotateAxis x="0" y="0" z="1"/>
     <FWFSettings beamSampleQuality="3"/>  <!-- set to one for fast simulations -->
     <channels>
       <channel id="0">

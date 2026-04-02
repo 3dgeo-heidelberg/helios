@@ -43,12 +43,8 @@ def read_obj(path, logging=False):
 
     # If a face with four vertices exists, create copy of obj and write modified faces to new obj
     if four_verts:
-        print(
-            "{} contains at least one face with 4 vertices. \
-        Converting obj to triangles for use in o3d visualisation....".format(
-                path
-            )
-        )
+        print("{} contains at least one face with 4 vertices. \
+        Converting obj to triangles for use in o3d visualisation....".format(path))
         with tempfile.NamedTemporaryFile(mode="w", suffix=".obj", delete=False) as f:
             tempname = f.name
             for line in lines:

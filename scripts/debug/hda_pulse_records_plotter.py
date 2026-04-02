@@ -9,14 +9,12 @@ import matplotlib as mpl
 # ---  FUNCTIONS  --- #
 # ------------------- #
 def print_help():
-    print(
-        """
+    print("""
 Input arguments:
     1 -> Path to the first directory containing simulation records
     2 -> Path to the second directory containing simulation records
     3 -> Path to the directory where plots will be stored
-"""
-    )
+""")
 
 
 def parse_args(helpf=print_help):
