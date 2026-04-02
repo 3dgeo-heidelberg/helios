@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cctype>
 
 // *** PUBLIC METHODS *** //
 // ********************** //
