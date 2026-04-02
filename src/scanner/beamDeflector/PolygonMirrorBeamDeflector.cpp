@@ -50,9 +50,9 @@ PolygonMirrorBeamDeflector::applySettings(
 
   std::stringstream ss;
   ss << "Vertical angle min/max "
-    << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMin_rad) << "/"
-    << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMax_rad)
-    << " degrees";
+     << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMin_rad) << "/"
+     << MathConverter::radiansToDegrees(cfg_setting_verticalAngleMax_rad)
+     << " degrees";
 
   // if not set, use the ones from the scanAngleEffectiveMax or scanAngle
   // (whichever is lower)
