@@ -1,8 +1,8 @@
 #include <ArgumentsParser.h>
 
 #include <algorithm>
-#include <iostream>
 #include <cctype>
+#include <iostream>
 
 // *** PUBLIC METHODS *** //
 // ********************** //
