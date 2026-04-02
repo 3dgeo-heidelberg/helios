@@ -283,10 +283,10 @@
   <!-- ##### END RIEGL LMS VQ-880-G II ##### -->
 
   <!-- ##### BEGIN RIEGL LMS VQ-840-GE ##### -->
-
+  <!-- Note: Beam divergence is selectable (1 up to 6 mrad, current setting is 1 mrad) -->
   <scanner  id                         = "riegl_vq-840-ge"
             accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.0006"
+            beamDivergence_rad         = "0.001"
             name                       = "RIEGL VQ-840-GE"
             optics                     = "elliptical-conic"
             pulseFreqs_Hz              = "50000,10000,200000"
@@ -332,7 +332,6 @@
     </channels>
 
   </scanner>
-
 
   <!-- ##### END RIEGL VQ-1560i - Combined ##### -->
 
