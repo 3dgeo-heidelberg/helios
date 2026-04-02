@@ -13,6 +13,7 @@ from helios.scene import StaticScene, ScenePart
 from helios.settings import ExecutionSettings
 from helios.survey import *
 from helios.utils import set_rng_seed
+from helios import HeliosException
 
 import copy
 import laspy
@@ -657,6 +658,5 @@ def test_survey_run_with_invalid_vert_angle_limits(scene):
         rotation_stop_angle="1 deg",
     )
 
-    # TODO: Do we need to add the check whether the range of vertical angle limits is larger than the effective max scan angle in the Python code as well?
-    with pytest.raises(RuntimeError):
+    with pytest.raises(HeliosException):
         survey.run(format=OutputFormat.NPY)
