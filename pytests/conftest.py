@@ -4,8 +4,8 @@ import pooch
 import pytest
 import shutil
 
-TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2026-03-06/data.tar.gz"
-TEST_DATA_CHECKSUM = "407f4ed76684d3eb6457f4fc64ed799f54cf7f98aeaece5459f03551a7a45296"
+TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2026-04-02/data.tar.gz"
+TEST_DATA_CHECKSUM = "83c5a1dc14677da692c2a05212e462011a0fbc774f9606dfa703f9352727caab"
 
 
 @pytest.fixture
@@ -56,5 +56,5 @@ def pytest_addoption(parser):
         "--delete-output",
         action="store_true",
         default=False,
-        help="run regression tests",
+        help="delete output directory after tests",
     )
