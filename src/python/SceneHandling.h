@@ -5,11 +5,14 @@
 #include <StaticScene.h>
 #include <Survey.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
+#include <pybind11/numpy.h>
+#include <pybind11/pybind11.h>
 #include <scene/Material.h>
 
 #include <memory>
 #include <string>
 #include <vector>
+namespace py = pybind11;
 
 void
 invalidateStaticScene(std::shared_ptr<StaticScene> scene);
@@ -143,3 +146,13 @@ readOpen3DMeshScenePart(const double* verticesData,
                         std::ptrdiff_t triangleUvRowStrideElems,
 
                         std::string upaxis);
+
+struct ScenePartVisualizationBuffers
+{
+  py::array_t<double> triangle_vertices;
+  py::array_t<int> triangle_indices;
+  py::array_t<double> voxel_centers;
+};
+
+ScenePartVisualizationBuffers
+extractScenePartVisualizationBuffers(ScenePart const& sp);
