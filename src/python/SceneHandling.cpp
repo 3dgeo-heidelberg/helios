@@ -976,18 +976,19 @@ extractScenePartVisualizationBuffers(ScenePart const& sp)
     }
   }
 
-  ssize_t const numTriangleVertices =
-    static_cast<ssize_t>(triangleVerticesFlat.size() / 3);
-  ssize_t const numTriangles =
-    static_cast<ssize_t>(triangleIndicesFlat.size() / 3);
-  ssize_t const numVoxelCenters =
-    static_cast<ssize_t>(voxelCentersFlat.size() / 3);
+  std::size_t const numTriangleVertices =
+    static_cast<std::size_t>(triangleVerticesFlat.size() / 3);
+  std::size_t const numTriangles =
+    static_cast<std::size_t>(triangleIndicesFlat.size() / 3);
+  std::size_t const numVoxelCenters =
+    static_cast<std::size_t>(voxelCentersFlat.size() / 3);
 
   py::array_t<double> triangleVertices(
-    { numTriangleVertices, static_cast<ssize_t>(3) });
-  py::array_t<int> triangleIndices({ numTriangles, static_cast<ssize_t>(3) });
+    { numTriangleVertices, static_cast<std::size_t>(3) });
+  py::array_t<int> triangleIndices(
+    { numTriangles, static_cast<std::size_t>(3) });
   py::array_t<double> voxelCenters(
-    { numVoxelCenters, static_cast<ssize_t>(3) });
+    { numVoxelCenters, static_cast<std::size_t>(3) });
 
   if (!triangleVerticesFlat.empty()) {
     std::memcpy(triangleVertices.mutable_data(),
