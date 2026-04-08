@@ -282,6 +282,11 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   logging::INFO(oss.str());
   mLegStarted = false;
   mCurrentLegIndex = legIndex;
+  legProgress = 0;
+  legStartTime_ns =
+    duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+  legElapsedTime_ns = nanoseconds::zero();
+  legRemainingTime_ns = 0;
   shared_ptr<Leg> leg = getCurrentLeg();
 
   // Apply scanner settings:

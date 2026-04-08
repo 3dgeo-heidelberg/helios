@@ -445,10 +445,11 @@ def test_per_leg_progressbar_resets_on_each_leg(
             self.position = position
             self.leave = leave
             self.n = 0.0
-            self.reset_count = 0
+            self.n_before_first_update = {}
             bars.append(self)
 
         def update(self, delta):
+            self.n_before_first_update.setdefault(self.desc, self.n)
             self.n += float(delta)
 
         def refresh(self):
@@ -460,7 +461,6 @@ def test_per_leg_progressbar_resets_on_each_leg(
         def reset(self, total=None):
             self.total = total
             self.n = 0.0
-            self.reset_count += 1
 
         def set_description(self, desc):
             self.desc = desc
@@ -482,9 +482,10 @@ def test_per_leg_progressbar_resets_on_each_leg(
     legs_bar = next(bar for bar in bars if bar.unit == "leg")
     leg_time_bar = next(bar for bar in bars if bar.unit == "s")
     assert legs_bar.n == pytest.approx(2.0)
-    assert leg_time_bar.reset_count == 2
     assert leg_time_bar.total is not None
     assert leg_time_bar.total > 0
+    assert leg_time_bar.n_before_first_update["Leg 1 time"] == pytest.approx(0.0)
+    assert leg_time_bar.n_before_first_update["Leg 2 time"] == pytest.approx(0.0)
 
 
 def test_per_leg_progressbar_handles_unknown_totals_without_bool(monkeypatch):
@@ -606,6 +607,36 @@ def test_set_bar_value_updates_when_total_changes():
     assert bar.n == pytest.approx(0.2)
 
 
+def test_set_bar_value_keeps_current_value_when_total_becomes_known():
+    class FakeBar:
+        def __init__(self):
+            self.total = None
+            self.n = 7.0
+            self.unit = "s"
+            self.bar_format = None
+
+        def reset(self, total=None):
+            self.total = total
+            self.n = 0.0
+
+        def update(self, delta):
+            self.n += float(delta)
+
+        def refresh(self):
+            return None
+
+    bar = FakeBar()
+    callbacks_module._ProgressBarCallbacks._set_bar_value(
+        bar=bar,
+        current_value=0.2,
+        previous_value=0.0,
+        total_value=0.3,
+    )
+
+    assert bar.total == pytest.approx(0.3)
+    assert bar.n == pytest.approx(0.2)
+
+
 def test_hook_context_exposes_elapsed_remaining_time(tls_scanner, tripod, scene):
     survey = _make_short_survey(tls_scanner, tripod, scene)
     seen = []
@@ -632,3 +663,29 @@ def test_hook_context_exposes_elapsed_remaining_time(tls_scanner, tripod, scene)
     assert remaining >= 0.0
     assert leg_elapsed >= 0.0
     assert leg_remaining >= 0.0
+
+
+def test_leg_start_hook_resets_per_leg_time_state(tls_scanner, tripod, scene):
+    survey = _make_short_survey(tls_scanner, tripod, scene, legs=2)
+    seen = []
+
+    def on_start(ctx, points=None, trajectories=None):
+        seen.append(
+            (
+                ctx.leg_index,
+                ctx.leg_progress,
+                ctx.leg_elapsed_time_s,
+                ctx.leg_remaining_time_s,
+            )
+        )
+
+    survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=ExecutionSettings(num_threads=1),
+        callbacks=(SurveyHook(point=HookPoint.LEG_START, callback=on_start),),
+    )
+
+    assert seen == [
+        (0, pytest.approx(0.0), pytest.approx(0.0), pytest.approx(0.0)),
+        (1, pytest.approx(0.0), pytest.approx(0.0), pytest.approx(0.0)),
+    ]
