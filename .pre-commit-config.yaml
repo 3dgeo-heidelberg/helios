@@ -18,7 +18,7 @@ repos:
   - id: mixed-line-ending
 
 - repo: https://github.com/rhysd/actionlint
-  rev: v1.7.11
+  rev: v1.7.12
   hooks:
   # GitHub Actions Workflow linter
   - id: actionlint
@@ -36,7 +36,7 @@ repos:
   - id: validate-pyproject
 
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v22.1.1
+  rev: v22.1.2
   hooks:
   # Format C/C++/Objective-C code with clang-format
   - id: clang-format
