@@ -323,8 +323,8 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
    Please note:
 
-   - If `K_s` is 0, the material is fully diffuse and the BDRF simplifies to :math:`\text{BDRF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
-   - If both `K_d` and `K_s` are 0, the material reflectance is direction-independent and the BDRF simplifies to :math:`\text{BDRF}_r = \rho`.
+   - If ``ks`` is 0, the material is fully diffuse and the BDRF simplifies to :math:`\text{BDRF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
+   - If both ``kd`` and ``ks`` are 0, the material reflectance is direction-independent and the BDRF simplifies to :math:`\text{BDRF}_r = \rho`.
 
 
 2. **Lidar Cross Section Calculation**
