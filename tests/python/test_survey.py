@@ -13,6 +13,7 @@ from helios.scene import StaticScene, ScenePart
 from helios.settings import ExecutionSettings
 from helios.survey import *
 from helios.utils import set_rng_seed
+from helios import HeliosException
 
 import copy
 import laspy
@@ -593,3 +594,69 @@ def test_survey_run_with_hor_ver_resolution(scene):
 
     assert points.shape[0] > 0
     assert trajectory.shape[0] > 0
+
+
+def test_survey_run_with_non_symmetric_vert_angle_limits_and_max_larger_than_effective_max_scan_angle(
+    wall_scene,
+):
+    """
+    Test that the simulated output has the correct extent when vertical angle limits are not symmetric around zero
+    and the max vertical angle is larger than the effecte max scan angle.
+    """
+    scanner_settings = ScannerSettings(
+        pulse_frequency=300_000,
+        vertical_resolution="0.05 deg",
+        horizontal_resolution="0.05 deg",
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+    )
+
+    scanner = riegl_vz_400()
+    platform = tripod()
+
+    survey = Survey(scanner=scanner, platform=platform, scene=wall_scene)
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        x=0.0,
+        y=0.0,
+        z=-1.7,
+        rotation_start_angle="-1 deg",
+        rotation_stop_angle="1 deg",
+    )
+
+    points, _ = survey.run(format=OutputFormat.NPY)
+
+    eps = 0.1
+    assert abs(np.max(points["position"][:, 2]) - 86.6) < eps
+    assert abs(np.min(points["position"][:, 2]) - (-41.95)) < eps
+
+
+def test_survey_run_with_invalid_vert_angle_limits(scene):
+    """
+    Test that an error is raised if the range of vertical angle limits is larger than the effective max scan angle of the device.
+    """
+    scanner_settings = ScannerSettings(
+        pulse_frequency=300_000,
+        vertical_resolution="0.05 deg",
+        horizontal_resolution="0.05 deg",
+        min_vertical_angle="-50 deg",
+        max_vertical_angle="60 deg",
+    )
+
+    scanner = riegl_vz_400()
+    platform = tripod()
+
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        x=0.0,
+        y=0.0,
+        z=-1.7,
+        rotation_start_angle="-1 deg",
+        rotation_stop_angle="1 deg",
+    )
+
+    with pytest.raises(HeliosException):
+        survey.run(format=OutputFormat.NPY)
