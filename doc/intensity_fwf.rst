@@ -321,6 +321,12 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    .. math::
       \text{spec} = \frac{k_s[0] + k_s[1] + k_s[2]}{k_d[0] + k_d[1] + k_d[2] + k_s[0] + k_s[1] + k_s[2]}
 
+   Please note:
+
+   - If `K_s` is 0, the material is fully diffuse and the BDRF simplifies to :math:`\text{BDRF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
+   - If both `K_d` and `K_s` are 0, the material reflectance is direction-independent and the BDRF simplifies to :math:`\text{BDRF}_r = \rho`.
+
+
 2. **Lidar Cross Section Calculation**
 
    The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following `Wagner (2010) <https://doi.org/10.1016/j.isprsjprs.2010.06.007>`_, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
