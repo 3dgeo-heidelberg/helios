@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import helios
 from helios.platforms import tripod as tripod_platform, sr22
 from helios.scanner import (
     leica_als50,
@@ -86,8 +87,28 @@ def box(box_f):
 
 
 @pytest.fixture
+def wall_f():
+    return (
+        lambda: ScenePart.from_obj("data/sceneparts/basic/plane/plane.obj")
+        .scale(200)
+        .rotate(angle=90 * helios.units.deg, axis=(1, 0, 0))
+        .translate([0, 50, 0])
+    )
+
+
+@pytest.fixture
+def wall(wall_f):
+    return wall_f()
+
+
+@pytest.fixture
 def scene(box):
     return StaticScene(scene_parts=[box])
+
+
+@pytest.fixture
+def wall_scene(wall):
+    return StaticScene(scene_parts=[wall])
 
 
 @pytest.fixture

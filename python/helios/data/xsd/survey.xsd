@@ -155,6 +155,7 @@
                                                         <xs:attribute type="xs:boolean" name="syncGPSTime" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="teleportToStart" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="toRadians" use="optional"/>
+                                                        <xs:attribute type="xs:string" name="interpolationDomain" use="optional"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
