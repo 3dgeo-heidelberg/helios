@@ -323,10 +323,13 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
           if (lineParts.size() < 2) {
             logging::WARN("Encountered 'mtllib' without a material filename.");
           } else {
-            // Join all parts after "mtllib" to support filenames with spaces.
-            const std::string mtlFileName = boost::algorithm::join(
-              std::vector<std::string>(lineParts.begin() + 1, lineParts.end()),
-              " ");
+            std::string mtlFileName;
+            for (std::size_t i = 1; i < lineParts.size(); ++i) {
+              if (i > 1) {
+                mtlFileName += ' ';
+              }
+              mtlFileName += lineParts[i];
+            }
 
             const fs::path matPath = filePath.parent_path() / mtlFileName;
             auto mats = MaterialsFileReader::loadMaterials(matPath.string());
