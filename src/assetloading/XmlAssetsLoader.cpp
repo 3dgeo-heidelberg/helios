@@ -315,7 +315,8 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
     node, "y", template1->y, defaultPlatformSettingsMsg);
   settings->z = XmlUtils::getAttributeCast<double>(
     node, "z", template1->z, defaultPlatformSettingsMsg);
-  tinyxml2::XMLElement* scannerMountNode = node->FirstChildElement("scannerMount");
+  tinyxml2::XMLElement* scannerMountNode =
+    node->FirstChildElement("scannerMount");
   if (scannerMountNode != nullptr) {
     settings->relativeMountPosition =
       XmlUtils::createVec3dFromXml(scannerMountNode, "");

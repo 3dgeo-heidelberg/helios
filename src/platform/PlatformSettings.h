@@ -287,12 +287,10 @@ public:
        << "yawAtDepartureSpecified = " << yawAtDepartureSpecified << "\n"
        << "yawAtDeparture = " << yawAtDeparture << "\n"
        << "relativeMountPosition = (" << relativeMountPosition.x << ", "
-       << relativeMountPosition.y << ", " << relativeMountPosition.z
-       << ")\n"
+       << relativeMountPosition.y << ", " << relativeMountPosition.z << ")\n"
        << "relativeMountAttitude = (" << relativeMountAttitude.getQ0() << ", "
-       << relativeMountAttitude.getQ1() << ", "
-       << relativeMountAttitude.getQ2() << ", "
-       << relativeMountAttitude.getQ3() << ")\n"
+       << relativeMountAttitude.getQ1() << ", " << relativeMountAttitude.getQ2()
+       << ", " << relativeMountAttitude.getQ3() << ")\n"
        << "onGround = " << onGround << "\n"
        << "stopAndTurn = " << stopAndTurn << "\n"
        << "smoothTurn = " << smoothTurn << "\n"
