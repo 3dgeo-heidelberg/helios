@@ -115,7 +115,8 @@ PyHeliosSimulation::newLeg(int index)
   if (survey != nullptr && survey->scanner != nullptr) {
     leg->mScannerSettings = survey->scanner->retrieveCurrentSettings();
     if (survey->scanner->platform != nullptr) {
-      leg->mPlatformSettings = survey->scanner->platform->retrieveCurrentSettings();
+      leg->mPlatformSettings =
+        survey->scanner->platform->retrieveCurrentSettings();
     }
   }
   if (leg->mScannerSettings == nullptr) {

@@ -22,15 +22,17 @@ namespace fs = boost::filesystem;
 
 namespace {
 void
-normalizeUnsupportedPulseFrequency(std::shared_ptr<Scanner> const& scanner,
-                                   std::shared_ptr<ScannerSettings> const& settings,
-                                   int const legSerialId)
+normalizeUnsupportedPulseFrequency(
+  std::shared_ptr<Scanner> const& scanner,
+  std::shared_ptr<ScannerSettings> const& settings,
+  int const legSerialId)
 {
   if (scanner == nullptr || settings == nullptr) {
     return;
   }
 
-  std::list<int> const& supportedPulseFreqs = scanner->getSupportedPulseFreqs_Hz();
+  std::list<int> const& supportedPulseFreqs =
+    scanner->getSupportedPulseFreqs_Hz();
   if (supportedPulseFreqs.empty()) {
     return;
   }

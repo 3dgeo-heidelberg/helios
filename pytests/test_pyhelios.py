@@ -337,7 +337,9 @@ def test_programmatic_new_leg_inherits_scanner_defaults(output_dir, tmp_path):
         encoding="utf-8",
     )
 
-    sim_builder = pyhelios.SimulationBuilder(str(survey_path), "assets/", str(output_dir))
+    sim_builder = pyhelios.SimulationBuilder(
+        str(survey_path), "assets/", str(output_dir)
+    )
     sim_builder.setFinalOutput(False)
     sim_builder.setLasOutput(False)
     sim_builder.setZipOutput(False)

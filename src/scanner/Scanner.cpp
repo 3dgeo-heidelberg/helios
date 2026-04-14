@@ -261,8 +261,8 @@ Scanner::setPulseFreq_Hz(int pulseFreq_Hz)
       int const fallbackPulseFreq_Hz = supportedPulseFreqs.front();
       std::stringstream ws;
       ws << "WARNING: Specified pulse frequency " << pulseFreq_Hz
-         << " is not supported by this device. Using "
-         << fallbackPulseFreq_Hz << " Hz from the scanner definition instead.";
+         << " is not supported by this device. Using " << fallbackPulseFreq_Hz
+         << " Hz from the scanner definition instead.";
       logging::WARN(ws.str());
       pulseFreq_Hz = fallbackPulseFreq_Hz;
     } else {
