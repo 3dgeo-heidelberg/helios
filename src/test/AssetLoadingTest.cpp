@@ -1,5 +1,8 @@
+#include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
+#include <filesystem>
+#include <fstream>
 #undef WARN
 #undef INFO
 #include "logging.hpp"
@@ -8,6 +11,7 @@ bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
   logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
   logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
+#include <WavefrontObjFileLoader.h>
 #include <assetloading/XmlAssetsLoader.h>
 #include <assetloading/XmlSceneLoader.h>
 #include <assetloading/XmlSurveyLoader.h>
@@ -532,5 +536,72 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(std::fabs(mpdiff[0]) <= eps);
     REQUIRE(std::fabs(mpdiff[1]) <= eps);
     REQUIRE(std::fabs(mpdiff[2]) <= eps);
+  }
+
+  SECTION("Test reading material from a .mtl file with spaces in the filename")
+  {
+    namespace fs = std::filesystem;
+
+    const fs::path tempDir =
+      fs::temp_directory_path() / "helios_wavefront_obj_space_mtl_test";
+    fs::create_directories(tempDir);
+
+    const fs::path mtlPath = tempDir / "my material file.mtl";
+    const fs::path objPath = tempDir / "test_file.obj";
+    {
+      std::ofstream mtlOut(mtlPath);
+      REQUIRE(mtlOut.is_open());
+
+      mtlOut << "newmtl SpaceMat\n"
+                "Ka 0.10 0.20 0.30\n"
+                "Kd 0.40 0.50 0.60\n"
+                "Ks 0.70 0.80 0.90\n";
+    }
+
+    {
+      std::ofstream objOut(objPath);
+      REQUIRE(objOut.is_open());
+
+      objOut << "mtllib my material file.mtl\n"
+                "usemtl SpaceMat\n"
+                "v 0 0 0\n"
+                "v 1 0 0\n"
+                "v 0 1 0\n"
+                "f 1 2 3\n";
+    }
+    WavefrontObjFileLoader loader;
+    std::vector<std::string> assetsDir = { tempDir.string() };
+    loader.setAssetsDir(assetsDir);
+
+    std::map<std::string, ObjectT> params;
+    params["filepath"] = objPath.filename().string();
+    params["up"] = std::string("z");
+    params["recomputeVertexNormals"] = false;
+    loader.params = params;
+
+    ScenePart* scenePart = loader.run();
+    REQUIRE(scenePart != nullptr);
+    REQUIRE(scenePart->mPrimitives.size() == 1);
+
+    auto* tri = dynamic_cast<Triangle*>(scenePart->mPrimitives[0]);
+    REQUIRE(tri != nullptr);
+    REQUIRE(tri->material != nullptr);
+    REQUIRE(tri->material->matFilePath == mtlPath.string());
+    REQUIRE(tri->material->name == "SpaceMat");
+    const float eps = 1e-5f;
+
+    REQUIRE(tri->material->ka[0] == Catch::Approx(0.10f).margin(eps));
+    REQUIRE(tri->material->ka[1] == Catch::Approx(0.20f).margin(eps));
+    REQUIRE(tri->material->ka[2] == Catch::Approx(0.30f).margin(eps));
+
+    REQUIRE(tri->material->kd[0] == Catch::Approx(0.40f).margin(eps));
+    REQUIRE(tri->material->kd[1] == Catch::Approx(0.50f).margin(eps));
+    REQUIRE(tri->material->kd[2] == Catch::Approx(0.60f).margin(eps));
+
+    REQUIRE(tri->material->ks[0] == Catch::Approx(0.70f).margin(eps));
+    REQUIRE(tri->material->ks[1] == Catch::Approx(0.80f).margin(eps));
+    REQUIRE(tri->material->ks[2] == Catch::Approx(0.90f).margin(eps));
+
+    fs::remove_all(tempDir);
   }
 }
