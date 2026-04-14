@@ -354,8 +354,8 @@ def test_programmatic_new_leg_inherits_scanner_defaults(output_dir, tmp_path):
     assert leg.getScannerSettings().active is True
 
 
-def test_unsupported_pulse_frequency_is_overwritten_in_survey(test_sim, tmp_path):
-    """Unsupported survey pulse frequencies should fall back to the scanner definition."""
+def test_missing_pulse_frequency_uses_scanner_defaults_in_survey(test_sim, tmp_path):
+    """Missing survey pulse frequencies should inherit the scanner definition."""
     survey_path = tmp_path / "livox_unsupported_pulse_freq.xml"
     survey_path.write_text(
         """<?xml version="1.0" encoding="UTF-8"?>
@@ -363,7 +363,7 @@ def test_unsupported_pulse_frequency_is_overwritten_in_survey(test_sim, tmp_path
     <survey name="test_scan" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#livox_mid-70">
         <leg>
             <platformSettings x="0.0" y="0.0" z="0.0" />
-            <scannerSettings active="true" pulseFreq_hz="300000" trajectoryTimeInterval_s="0.01" />
+            <scannerSettings active="true" trajectoryTimeInterval_s="0.01" />
         </leg>
     </survey>
 </document>

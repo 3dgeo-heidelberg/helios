@@ -253,23 +253,11 @@ Scanner::setPulseFreq_Hz(int pulseFreq_Hz)
   }
 
   // Check if requested pulse freq is supported by device:
-  std::list<int> const& supportedPulseFreqs = getSupportedPulseFreqs_Hz();
-  if (std::find(supportedPulseFreqs.begin(),
-                supportedPulseFreqs.end(),
-                pulseFreq_Hz) == supportedPulseFreqs.end()) {
-    if (!supportedPulseFreqs.empty()) {
-      int const fallbackPulseFreq_Hz = supportedPulseFreqs.front();
-      std::stringstream ws;
-      ws << "WARNING: Specified pulse frequency " << pulseFreq_Hz
-         << " is not supported by this device. Using " << fallbackPulseFreq_Hz
-         << " Hz from the scanner definition instead.";
-      logging::WARN(ws.str());
-      pulseFreq_Hz = fallbackPulseFreq_Hz;
-    } else {
-      logging::WARN("WARNING: Specified pulse frequency is not supported "
-                    "by this device and no supported fallback was declared. "
-                    "We'll set it nevertheless.\n");
-    }
+  if (std::find(getSupportedPulseFreqs_Hz().begin(),
+                getSupportedPulseFreqs_Hz().end(),
+                pulseFreq_Hz) == getSupportedPulseFreqs_Hz().end()) {
+    logging::WARN("WARNING: Specified pulse frequency is not supported "
+                  "by this device. We'll set it nevertheless.\n");
   }
 
   // Set new pulse frequency:
