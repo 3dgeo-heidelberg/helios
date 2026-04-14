@@ -324,6 +324,57 @@ def test_create_survey(output_dir):
     )
 
 
+def test_programmatic_new_leg_inherits_scanner_defaults(output_dir, tmp_path):
+    """Programmatically created legs should inherit scanner defaults."""
+    survey_path = tmp_path / "livox_programmatic_leg.xml"
+    survey_path.write_text(
+        """<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="test_scan" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#livox_mid-70">
+    </survey>
+</document>
+""",
+        encoding="utf-8",
+    )
+
+    sim_builder = pyhelios.SimulationBuilder(str(survey_path), "assets/", str(output_dir))
+    sim_builder.setFinalOutput(False)
+    sim_builder.setLasOutput(False)
+    sim_builder.setZipOutput(False)
+    sim_builder.setRebuildScene(True)
+    sim_builder.setNumThreads(1)
+    sim_builder.setKDTJobs(1)
+
+    sim_build = sim_builder.build()
+    leg = sim_build.sim.newLeg(0)
+
+    assert leg.getScannerSettings().pulseFreq == 100_000
+    assert leg.getScannerSettings().active is True
+
+
+def test_unsupported_pulse_frequency_is_overwritten_in_survey(test_sim, tmp_path):
+    """Unsupported survey pulse frequencies should fall back to the scanner definition."""
+    survey_path = tmp_path / "livox_unsupported_pulse_freq.xml"
+    survey_path.write_text(
+        """<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="test_scan" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#livox_mid-70">
+        <leg>
+            <platformSettings x="0.0" y="0.0" z="0.0" />
+            <scannerSettings active="true" pulseFreq_hz="300000" trajectoryTimeInterval_s="0.01" />
+        </leg>
+    </survey>
+</document>
+""",
+        encoding="utf-8",
+    )
+
+    sim = test_sim(survey_path, las_output=False, zip_output=False)
+    leg = sim.sim.getLeg(0)
+
+    assert leg.getScannerSettings().pulseFreq == 100_000
+
+
 def test_material(test_sim):
     """Test accessing material properties of a primitive in a scene"""
     sim = test_sim(Path("data") / "surveys" / "toyblocks" / "als_toyblocks.xml")

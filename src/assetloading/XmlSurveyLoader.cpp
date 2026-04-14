@@ -13,11 +13,44 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 
+#include <algorithm>
 #include <chrono>
 #include <memory>
 #include <unordered_set>
 
 namespace fs = boost::filesystem;
+
+namespace {
+void
+normalizeUnsupportedPulseFrequency(std::shared_ptr<Scanner> const& scanner,
+                                   std::shared_ptr<ScannerSettings> const& settings,
+                                   int const legSerialId)
+{
+  if (scanner == nullptr || settings == nullptr) {
+    return;
+  }
+
+  std::list<int> const& supportedPulseFreqs = scanner->getSupportedPulseFreqs_Hz();
+  if (supportedPulseFreqs.empty()) {
+    return;
+  }
+
+  if (std::find(supportedPulseFreqs.begin(),
+                supportedPulseFreqs.end(),
+                settings->pulseFreq_Hz) != supportedPulseFreqs.end()) {
+    return;
+  }
+
+  int const fallbackPulseFreq_Hz = supportedPulseFreqs.front();
+  std::stringstream ss;
+  ss << "Scanner settings of leg " << legSerialId
+     << " requested unsupported pulse frequency " << settings->pulseFreq_Hz
+     << " Hz. Using " << fallbackPulseFreq_Hz
+     << " Hz from the scanner definition instead.";
+  logging::INFO(ss.str());
+  settings->pulseFreq_Hz = fallbackPulseFreq_Hz;
+}
+}
 
 std::shared_ptr<Survey>
 XmlSurveyLoader::load(bool legNoiseDisabled, bool rebuildScene)
@@ -577,6 +610,10 @@ XmlSurveyLoader::integrateSurveyAndLegs(std::shared_ptr<Survey> survey)
 {
   // Obtain legs
   std::vector<std::shared_ptr<Leg>>& legs = survey->legs;
+  for (std::shared_ptr<Leg> const& leg : legs) {
+    normalizeUnsupportedPulseFrequency(
+      survey->scanner, leg->mScannerSettings, leg->getSerialId());
+  }
 
   // Handle scanAngleMax/scanAngleEffectiveMax != 1
   std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
