@@ -404,7 +404,8 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
           platformSettings->yawAtDepartureSpecified) {
         effectivePlatformFields.insert("yawAtDepartureSpecified");
       }
-      if (rawPlatformSettings->yawAtDeparture != platformSettings->yawAtDeparture)
+      if (rawPlatformSettings->yawAtDeparture !=
+          platformSettings->yawAtDeparture)
         effectivePlatformFields.insert("yawAtDeparture");
       if (!sameVec3(rawPlatformSettings->relativeMountPosition,
                     platformSettings->relativeMountPosition)) {
@@ -428,14 +429,14 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
         effectivePlatformFields.insert("movePerSec_m");
     }
     effectivePlatformFields.erase("baseTemplate");
-    leg->mPlatformSettings =
-      platformSettings->cherryPick(rawPlatformSettings, effectivePlatformFields);
+    leg->mPlatformSettings = platformSettings->cherryPick(
+      rawPlatformSettings, effectivePlatformFields);
     if (hasCustomPlatformTemplate) {
       leg->mPlatformSettings->baseTemplate = rawPlatformSettings->baseTemplate;
     }
     // Add originWaypoint shift to waypoint coordinates:
-    leg->mPlatformSettings->setPosition(
-      leg->mPlatformSettings->getPosition() + origin);
+    leg->mPlatformSettings->setPosition(leg->mPlatformSettings->getPosition() +
+                                        origin);
     // Cherry-picking of ScannerSettings
     std::unordered_set<std::string> templateFields;
     if (leg->mScannerSettings->baseTemplate != nullptr) {
