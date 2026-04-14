@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <platformSettings id="tilted_mount">
+        <scannerMount x="0.0" y="0.0" z="1.8">
+            <rot axis="z" angle_deg="45"/>
+        </scannerMount>
+    </platformSettings>
+    <survey name="tls_leg_scanner_mount"
+            scene="data/scenes/demo/box_scene.xml#box_scene"
+            platform="data/platforms.xml#tripod"
+            scanner="data/scanners_tls.xml#livox_mid-70">
+        <leg maxDuration_s="0.1">
+            <platformSettings x="0.0" y="0.0" z="0.0" template="tilted_mount"/>
+            <scannerSettings active="true"
+                             pulseFreq_hz="100000"
+                             trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg maxDuration_s="0.1">
+            <platformSettings x="0.0" y="0.0" z="0.0">
+                <scannerMount x="0.25" y="0.0" z="2.0">
+                    <rot axis="x" angle_deg="20"/>
+                </scannerMount>
+            </platformSettings>
+            <scannerSettings active="true"
+                             pulseFreq_hz="100000"
+                             trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg maxDuration_s="0.1">
+            <platformSettings x="0.0" y="0.0" z="0.0"/>
+            <scannerSettings active="true"
+                             pulseFreq_hz="100000"
+                             trajectoryTimeInterval_s="0.01"/>
+        </leg>
+    </survey>
+</document>

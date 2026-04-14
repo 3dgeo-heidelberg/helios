@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+#include "maths/Rotation.h"
+
 #include <functional>
 #include <memory>
 #include <sstream>
@@ -48,6 +50,14 @@ public:
    * @brief Yaw angle (in radians) at platform departure
    */
   double yawAtDeparture = 0.0;
+  /**
+   * @brief Scanner mount position relative to the platform
+   */
+  glm::dvec3 relativeMountPosition = glm::dvec3(0, 0, 0);
+  /**
+   * @brief Scanner mount attitude relative to the platform
+   */
+  Rotation relativeMountAttitude = Rotation(glm::dvec3(1, 0, 0), 0);
 
   /**
    * @brief On ground flag
@@ -99,6 +109,8 @@ public:
     this->z = other->z;
     this->yawAtDepartureSpecified = other->yawAtDepartureSpecified;
     this->yawAtDeparture = other->yawAtDeparture;
+    this->relativeMountPosition = other->relativeMountPosition;
+    this->relativeMountAttitude = other->relativeMountAttitude;
     this->onGround = other->onGround;
     this->stopAndTurn = other->stopAndTurn;
     this->smoothTurn = other->smoothTurn;
@@ -149,6 +161,10 @@ public:
       settings->yawAtDepartureSpecified = cherries->yawAtDepartureSpecified;
     if (hasCherry("yawAtDeparture"))
       settings->yawAtDeparture = cherries->yawAtDeparture;
+    if (hasCherry("relativeMountPosition"))
+      settings->relativeMountPosition = cherries->relativeMountPosition;
+    if (hasCherry("relativeMountAttitude"))
+      settings->relativeMountAttitude = cherries->relativeMountAttitude;
     if (hasCherry("onGround"))
       settings->onGround = cherries->onGround;
     if (hasCherry("stopAndTurn"))
@@ -187,6 +203,32 @@ public:
     this->y = y;
     this->z = z;
   }
+  /**
+   * @brief Obtain scanner mount position relative to the platform
+   * @return Scanner mount position relative to the platform
+   */
+  glm::dvec3& getRelativeMountPosition() { return relativeMountPosition; }
+  /**
+   * @brief Set scanner mount position relative to the platform
+   * @param pos Scanner mount position relative to the platform
+   */
+  void setRelativeMountPosition(glm::dvec3 const& pos)
+  {
+    relativeMountPosition = pos;
+  }
+  /**
+   * @brief Obtain scanner mount attitude relative to the platform
+   * @return Scanner mount attitude relative to the platform
+   */
+  Rotation& getRelativeMountAttitude() { return relativeMountAttitude; }
+  /**
+   * @brief Set scanner mount attitude relative to the platform
+   * @param att Scanner mount attitude relative to the platform
+   */
+  void setRelativeMountAttitude(Rotation const& att)
+  {
+    relativeMountAttitude = att;
+  }
 
   /**
    * @brief Check if this PlatformSettings has an associated template (true)
@@ -223,6 +265,15 @@ public:
          << baseTemplate->yawAtDepartureSpecified << "\n"
          << "\ttemplate.yawAtDeparture = " << baseTemplate->yawAtDeparture
          << "\n"
+         << "\ttemplate.relativeMountPosition = ("
+         << baseTemplate->relativeMountPosition.x << ", "
+         << baseTemplate->relativeMountPosition.y << ", "
+         << baseTemplate->relativeMountPosition.z << ")\n"
+         << "\ttemplate.relativeMountAttitude = ("
+         << baseTemplate->relativeMountAttitude.getQ0() << ", "
+         << baseTemplate->relativeMountAttitude.getQ1() << ", "
+         << baseTemplate->relativeMountAttitude.getQ2() << ", "
+         << baseTemplate->relativeMountAttitude.getQ3() << ")\n"
          << "\ttemplate.onGround = " << baseTemplate->onGround << "\n"
          << "\ttemplate.stopAndTurn = " << baseTemplate->stopAndTurn << "\n"
          << "\ttemplate.smoothTurn = " << baseTemplate->smoothTurn << "\n"
@@ -235,6 +286,13 @@ public:
        << "z = " << z << "\n"
        << "yawAtDepartureSpecified = " << yawAtDepartureSpecified << "\n"
        << "yawAtDeparture = " << yawAtDeparture << "\n"
+       << "relativeMountPosition = (" << relativeMountPosition.x << ", "
+       << relativeMountPosition.y << ", " << relativeMountPosition.z
+       << ")\n"
+       << "relativeMountAttitude = (" << relativeMountAttitude.getQ0() << ", "
+       << relativeMountAttitude.getQ1() << ", "
+       << relativeMountAttitude.getQ2() << ", "
+       << relativeMountAttitude.getQ3() << ")\n"
        << "onGround = " << onGround << "\n"
        << "stopAndTurn = " << stopAndTurn << "\n"
        << "smoothTurn = " << smoothTurn << "\n"

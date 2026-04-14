@@ -558,6 +558,8 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry("y", ps.y, d2) << craftEntry("z", ps.z, d2)
      << craftEntry("yawAtDepartureSpecified", ps.yawAtDepartureSpecified, d2)
      << craftEntry("yawAtDeparture", ps.yawAtDeparture, d2)
+     << craftEntry("relativeMountPosition", ps.relativeMountPosition, d2)
+     << craftEntry("relativeMountAttitude", ps.relativeMountAttitude, d2)
      << craftEntry("onGround", ps.onGround, d2)
      << craftEntry("stopAndTurn", ps.stopAndTurn, d2)
      << craftEntry("smoothTurn", ps.smoothTurn, d2)

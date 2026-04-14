@@ -34,13 +34,20 @@ MovingPlatform::applySettings(std::shared_ptr<PlatformSettings> settings,
                               bool manual)
 {
   cfg_settings_movePerSec_m = settings->movePerSec_m;
+  onGround = settings->onGround;
   stopAndTurn = settings->stopAndTurn;
   smoothTurn = settings->smoothTurn;
   slowdownEnabled = settings->slowdownEnabled;
+  cfg_device_relativeMountPosition = settings->relativeMountPosition;
+  cfg_device_relativeMountAttitude = settings->relativeMountAttitude;
 
-  // Set platform position:
+  // Refresh absolute mount attitude cache before applying the leg position.
+  setAttitude(attitude);
+
   if (manual) {
     setPosition(settings->getPosition());
+  } else {
+    setPosition(position);
   }
 }
 

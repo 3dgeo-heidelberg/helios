@@ -235,6 +235,26 @@ BOOST_PYTHON_MODULE(_pyhelios)
     .add_property("x", &PlatformSettings::x, &PlatformSettings::x)
     .add_property("y", &PlatformSettings::y, &PlatformSettings::y)
     .add_property("z", &PlatformSettings::z, &PlatformSettings::z)
+    .def("getRelativeMountPosition",
+         +[](PlatformSettings& ps) {
+           return new PythonDVec3(&ps.relativeMountPosition);
+         },
+         return_value_policy<manage_new_object>())
+    .def("getRelativeMountAttitude",
+         +[](PlatformSettings& ps) -> Rotation& {
+           return ps.relativeMountAttitude;
+         },
+         return_internal_reference<>())
+    .def("getScannerMountPosition",
+         +[](PlatformSettings& ps) {
+           return new PythonDVec3(&ps.relativeMountPosition);
+         },
+         return_value_policy<manage_new_object>())
+    .def("getScannerMountAttitude",
+         +[](PlatformSettings& ps) -> Rotation& {
+           return ps.relativeMountAttitude;
+         },
+         return_internal_reference<>())
     .add_property(
       "onGround", &PlatformSettings::onGround, &PlatformSettings::onGround)
     .add_property("stopAndTurn",

@@ -68,6 +68,14 @@ Platform::applySettings(std::shared_ptr<PlatformSettings> settings, bool manual)
 {
   cfg_settings_movePerSec_m = settings->movePerSec_m;
   onGround = settings->onGround;
+  stopAndTurn = settings->stopAndTurn;
+  smoothTurn = settings->smoothTurn;
+  slowdownEnabled = settings->slowdownEnabled;
+  cfg_device_relativeMountPosition = settings->relativeMountPosition;
+  cfg_device_relativeMountAttitude = settings->relativeMountAttitude;
+
+  // Refresh absolute mount cache using the current platform attitude.
+  setAttitude(attitude);
 
   // Set platform position:
   setPosition(settings->getPosition());
@@ -80,6 +88,11 @@ Platform::retrieveCurrentSettings()
   // Settings from Platform
   settings->movePerSec_m = cfg_settings_movePerSec_m;
   settings->onGround = onGround;
+  settings->stopAndTurn = stopAndTurn;
+  settings->smoothTurn = smoothTurn;
+  settings->slowdownEnabled = slowdownEnabled;
+  settings->relativeMountPosition = cfg_device_relativeMountPosition;
+  settings->relativeMountAttitude = cfg_device_relativeMountAttitude;
   settings->setPosition(getPosition());
   // Return settings
   return settings;
