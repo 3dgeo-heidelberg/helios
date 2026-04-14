@@ -146,7 +146,7 @@ XmlSurveyLoader::createLegFromXML(
     legNode->FirstChildElement("platformSettings");
   if (platformSettingsNode != nullptr) {
     leg->mPlatformSettings =
-      createPlatformSettingsFromXml(platformSettingsNode);
+      createPlatformSettingsFromXml(platformSettingsNode, platformFields);
   }
 
   // Scanner settings
@@ -375,11 +375,67 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
     std::unordered_set<std::string> platformFields;
     std::shared_ptr<Leg> leg(
       createLegFromXML(legNodes, &scannerFields, &platformFields));
-    // Add originWaypoint shift to waypoint coordinates:
-    if (leg->mPlatformSettings != nullptr /* && originWaypoint != null*/) {
-      leg->mPlatformSettings->setPosition(
-        leg->mPlatformSettings->getPosition() + origin);
+    // Cherry-picking of PlatformSettings
+    if (leg->mPlatformSettings == nullptr) {
+      leg->mPlatformSettings = std::make_shared<PlatformSettings>();
     }
+    std::shared_ptr<PlatformSettings> rawPlatformSettings =
+      leg->mPlatformSettings;
+    std::unordered_set<std::string> effectivePlatformFields = platformFields;
+    bool const hasCustomPlatformTemplate =
+      rawPlatformSettings->baseTemplate != nullptr &&
+      rawPlatformSettings->baseTemplate->id != defaultPlatformTemplate->id;
+    if (hasCustomPlatformTemplate) {
+      auto sameVec3 = [](glm::dvec3 const& a, glm::dvec3 const& b) -> bool {
+        return a.x == b.x && a.y == b.y && a.z == b.z;
+      };
+      auto sameRotation = [](Rotation const& a, Rotation const& b) -> bool {
+        return a.getQ0() == b.getQ0() && a.getQ1() == b.getQ1() &&
+               a.getQ2() == b.getQ2() && a.getQ3() == b.getQ3();
+      };
+
+      if (rawPlatformSettings->x != platformSettings->x)
+        effectivePlatformFields.insert("x");
+      if (rawPlatformSettings->y != platformSettings->y)
+        effectivePlatformFields.insert("y");
+      if (rawPlatformSettings->z != platformSettings->z)
+        effectivePlatformFields.insert("z");
+      if (rawPlatformSettings->yawAtDepartureSpecified !=
+          platformSettings->yawAtDepartureSpecified) {
+        effectivePlatformFields.insert("yawAtDepartureSpecified");
+      }
+      if (rawPlatformSettings->yawAtDeparture != platformSettings->yawAtDeparture)
+        effectivePlatformFields.insert("yawAtDeparture");
+      if (!sameVec3(rawPlatformSettings->relativeMountPosition,
+                    platformSettings->relativeMountPosition)) {
+        effectivePlatformFields.insert("relativeMountPosition");
+      }
+      if (!sameRotation(rawPlatformSettings->relativeMountAttitude,
+                        platformSettings->relativeMountAttitude)) {
+        effectivePlatformFields.insert("relativeMountAttitude");
+      }
+      if (rawPlatformSettings->onGround != platformSettings->onGround)
+        effectivePlatformFields.insert("onGround");
+      if (rawPlatformSettings->stopAndTurn != platformSettings->stopAndTurn)
+        effectivePlatformFields.insert("stopAndTurn");
+      if (rawPlatformSettings->smoothTurn != platformSettings->smoothTurn)
+        effectivePlatformFields.insert("smoothTurn");
+      if (rawPlatformSettings->slowdownEnabled !=
+          platformSettings->slowdownEnabled) {
+        effectivePlatformFields.insert("slowdownEnabled");
+      }
+      if (rawPlatformSettings->movePerSec_m != platformSettings->movePerSec_m)
+        effectivePlatformFields.insert("movePerSec_m");
+    }
+    effectivePlatformFields.erase("baseTemplate");
+    leg->mPlatformSettings =
+      platformSettings->cherryPick(rawPlatformSettings, effectivePlatformFields);
+    if (hasCustomPlatformTemplate) {
+      leg->mPlatformSettings->baseTemplate = rawPlatformSettings->baseTemplate;
+    }
+    // Add originWaypoint shift to waypoint coordinates:
+    leg->mPlatformSettings->setPosition(
+      leg->mPlatformSettings->getPosition() + origin);
     // Cherry-picking of ScannerSettings
     std::unordered_set<std::string> templateFields;
     if (leg->mScannerSettings->baseTemplate != nullptr) {
