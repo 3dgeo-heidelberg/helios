@@ -8,4 +8,5 @@ Home
    intro
    notebooks
    pythonapi
+   serialization
    cppapi
