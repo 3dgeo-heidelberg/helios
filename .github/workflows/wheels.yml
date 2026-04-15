@@ -1,0 +1,83 @@
+# Note: This is merely a proof-of-concept right now. Please do not redistribute
+#       any of the generated wheels unless you have double-checked that you meet
+#       all licensing criteria.
+
+# Note: This workflow is currently located in this repository, but we might
+#       actually move it to a blender add-on release workflow in the future,
+#       because that is what is was developed for.
+
+# Note: This workflow builds Windows wheels. These are not currently used
+#       as the main installation methods, because they are not available on
+#       all platforms and we just made a decision to go with conda. However,
+#       this workflow still exists because it allows to bundle Helios into
+#       Blender.
+
+name: Build Windows wheels
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          # Linux: Not really possible due to ABI incompatibilities between manylinux
+          #        and conda-forge provided dependencies. The only way to build Linux
+          #        wheels would be to manually compile the full stack (GDAL, urgh)
+          # MacOS: Not tried due to lack of priority
+          - os: windows-2022
+          
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.4.1
+        env:
+          # For now, we only build 3.11 and 3.13 wheels because these are the two that would go
+          # into Blender 4 and 5 extensions respectively.
+          CIBW_BUILD: "cp311-* cp313-*"
+          # This builds 64-bit x86 wheels. Support for Windows ARM could be added here, if it gets a thing.
+          CIBW_ARCHS_WINDOWS: AMD64
+          CIBW_TEST_COMMAND: "helios --version"
+          CIBW_ENVIRONMENT_WINDOWS: >-
+            SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT=120
+            CONDA_PREFIX=C:/helios-conda
+            MAMBA_ROOT_PREFIX=C:/helios-micromamba-root
+            PATH="C:/helios-conda/Library/bin;C:/helios-micromamba/Library/bin;$PATH"
+            CMAKE_PREFIX_PATH="C:/helios-conda;C:/helios-conda/Library"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >-
+            python -m delvewheel repair
+            --add-path C:/helios-conda/Library/bin
+            -w {dest_dir} {wheel}
+          CIBW_BEFORE_ALL_WINDOWS: >-
+            python -c "import os, shutil, urllib.request;
+            root = 'C:/helios-micromamba';
+            archive = os.path.join(root, 'micromamba.tar.bz2');
+            os.makedirs(root, exist_ok=True);
+            urllib.request.urlretrieve('https://micro.mamba.pm/api/micromamba/win-64/latest', archive);
+            shutil.unpack_archive(archive, root)"
+            && micromamba --version
+          CIBW_BEFORE_BUILD_WINDOWS: >-
+            python -m pip install delvewheel &&
+            python -c "import os, shutil, subprocess;
+            prefix = os.environ['CONDA_PREFIX'];
+            shutil.rmtree(prefix, ignore_errors=True);
+            subprocess.check_call(['micromamba', 'create', '-y',
+            '-p', prefix, '-f', 'environment-dev.yml', 'python=3.11'])"
+        with:
+          output-dir: wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
