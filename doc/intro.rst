@@ -17,7 +17,7 @@ Official website: https://uni-heidelberg.de/helios
    :width: 100%
    :align: center
 
-   Virtual laser scanning
+   Concept of virtual laser scanning (modified from [Winiwarter et al., 2022](https://doi.org/10.1016/j.rse.2021.112772)).
 
 
 Installation
