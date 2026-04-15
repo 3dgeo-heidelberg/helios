@@ -27,7 +27,7 @@ Alternatively, if you are not interested in local Doxygen builds, you can also
 call Sphinx directly and ignore the Doxygen-related error message:
 
 ```
-sphinx-build -b html <src-foc-folder> <target-output-directory>
+sphinx-build -b html doc <target-output-directory>
 ```
 
 ## Serve
