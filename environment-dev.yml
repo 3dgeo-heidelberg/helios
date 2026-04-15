@@ -24,6 +24,7 @@ dependencies:
   - pybind11
   - pydantic
   - jsonschema
+  - pooch
   - python
   - scikit-build-core
   - setuptools_scm
@@ -40,7 +41,6 @@ dependencies:
   - lazrs-python
   - pandas
   - scipy
-  - pooch
   - tqdm
   - ninja
   - pytest-cov

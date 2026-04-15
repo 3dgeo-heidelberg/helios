@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 import numpy as np
+import pooch
 import pytest
 import yaml
 
@@ -294,6 +295,91 @@ def test_deserialize_model_from_yaml_rejects_non_instance_result(tmp_path, monke
         match="Expected YAML to deserialize into DynamicPlatformSettings, got list",
     ):
         serialization.deserialize_model_from_yaml(DynamicPlatformSettings, yaml_path)
+
+
+def test_from_doi_downloads_bundle_then_loads_root_yaml(tmp_path, monkeypatch):
+    source_bundle = tmp_path / "source_bundle"
+    source_bundle.mkdir()
+    root = DynamicPlatformSettings(
+        trajectory_settings=TrajectorySettings(
+            start_time=2.5, end_time=9.5, teleport_to_start=True
+        ),
+        speed_m_s=12.0,
+        x=4.0,
+        y=5.0,
+        z=6.0,
+    )
+    root.to_yaml(source_bundle, shallow=True)
+
+    cache_root = tmp_path / "cache_root"
+    created = {}
+    fetched = []
+
+    class FakePooch:
+        def __init__(self, path, base_url, registry=None):
+            self.path = Path(path)
+            self.base_url = base_url
+            self.registry = {} if registry is None else dict(registry)
+
+        def load_registry_from_doi(self):
+            self.registry = {
+                str(path.relative_to(source_bundle)).replace("\\", "/"): None
+                for path in source_bundle.rglob("*")
+                if path.is_file()
+            }
+
+        def fetch(self, fname, processor=None, downloader=None, progressbar=False):
+            fetched.append((fname, progressbar))
+            source = source_bundle / Path(fname)
+            target = self.path / Path(fname)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            return str(target)
+
+    def _fake_create(
+        path,
+        base_url,
+        version=None,
+        version_dev="master",
+        env=None,
+        registry=None,
+        urls=None,
+        retry_if_failed=0,
+        allow_updates=True,
+    ):
+        created["path"] = Path(path)
+        created["base_url"] = base_url
+        return FakePooch(path=path, base_url=base_url, registry=registry)
+
+    monkeypatch.setattr(pooch, "os_cache", lambda _name: cache_root)
+    monkeypatch.setattr(pooch, "create", _fake_create)
+
+    loaded = DynamicPlatformSettings.from_doi("doi:10.5281/zenodo.1234567")
+
+    assert loaded.speed_m_s == 12.0
+    assert loaded.x == 4.0
+    assert loaded.y == 5.0
+    assert loaded.z == 6.0
+    assert loaded.trajectory_settings.start_time == 2.5
+    assert loaded.trajectory_settings.end_time == 9.5
+    assert loaded.trajectory_settings.teleport_to_start is True
+    assert created["base_url"] == "doi:10.5281/zenodo.1234567"
+    assert created["path"].parent == cache_root / "doi"
+    assert sorted(name for name, _ in fetched) == sorted(
+        str(path.relative_to(source_bundle)).replace("\\", "/")
+        for path in source_bundle.rglob("*")
+        if path.is_file()
+    )
+    assert all(progressbar is False for _, progressbar in fetched)
+
+
+def test_from_doi_rejects_absolute_bundle_filename(tmp_path):
+    with pytest.raises(
+        ValueError, match="DOI bundle filename must be relative to cache directory"
+    ):
+        SerializationRoot.from_doi(
+            "10.5281/zenodo.1234567", filename=tmp_path / "root.helios.yaml"
+        )
 
 
 def test_binary_deserialization_requires_existing_loader(tmp_path):
