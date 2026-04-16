@@ -57,9 +57,16 @@ public:
     : AbstractBeamDeflector(scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz)
     , acrossTrackAngle(acrossTrackAngle_rad)
     , alongTrackAngle(alongTrackAngle_rad)
-    , ellipticalMode(true) // Enable elliptical mode
+    , ellipticalMode(true)
   {
-    // ToDo: Should we validate that angles are positive??
+    if (!std::isfinite(acrossTrackAngle_rad) ||
+        !std::isfinite(alongTrackAngle_rad) || acrossTrackAngle_rad < 0.0 ||
+        alongTrackAngle_rad < 0.0) {
+      std::stringstream ss;
+      ss << "ConicBeamDeflector::ConicBeamDeflector(double, double, double, "
+         << "double, double) received invalid elliptical cone angles.";
+      throw std::invalid_argument(ss.str());
+    }
   }
 
   std::shared_ptr<AbstractBeamDeflector> clone() override;
@@ -82,26 +89,5 @@ public:
   std::string getOpticsType() const override
   {
     return ellipticalMode ? "ELLIPTICAL_CONIC" : "CONIC";
-  }
-
-  /**
-   * @brief Set elliptical parameters
-   */
-  void setEllipticalParams(double acrossTrackAngle_rad,
-                           double alongTrackAngle_rad)
-  {
-    acrossTrackAngle = acrossTrackAngle_rad;
-    alongTrackAngle = alongTrackAngle_rad;
-    ellipticalMode = true;
-  }
-
-  /**
-   * @brief Set circular mode
-   */
-  void setCircularMode()
-  {
-    ellipticalMode = false;
-    acrossTrackAngle = cfg_setting_scanAngle_rad;
-    alongTrackAngle = cfg_setting_scanAngle_rad;
   }
 };
