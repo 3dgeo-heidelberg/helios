@@ -315,6 +315,17 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
     node, "y", template1->y, defaultPlatformSettingsMsg);
   settings->z = XmlUtils::getAttributeCast<double>(
     node, "z", template1->z, defaultPlatformSettingsMsg);
+  tinyxml2::XMLElement* scannerMountNode =
+    node->FirstChildElement("scannerMount");
+  if (scannerMountNode != nullptr) {
+    settings->relativeMountPosition =
+      XmlUtils::createVec3dFromXml(scannerMountNode, "");
+    settings->relativeMountAttitude =
+      XmlUtils::createRotationFromXml(scannerMountNode);
+  } else {
+    settings->relativeMountPosition = template1->relativeMountPosition;
+    settings->relativeMountAttitude = template1->relativeMountAttitude;
+  }
 
   // Read if platform should be put on ground, ignoring z coordinate:
   settings->onGround = XmlUtils::getAttributeCast<bool>(
@@ -1728,6 +1739,13 @@ XmlAssetsLoader::trackNonDefaultPlatformSettings(
   std::string const defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
+  auto sameVec3 = [](glm::dvec3 const& a, glm::dvec3 const& b) -> bool {
+    return a.x == b.x && a.y == b.y && a.z == b.z;
+  };
+  auto sameRotation = [](Rotation const& a, Rotation const& b) -> bool {
+    return a.getQ0() == b.getQ0() && a.getQ1() == b.getQ1() &&
+           a.getQ2() == b.getQ2() && a.getQ3() == b.getQ3();
+  };
   if (ref->id != defaultTemplateId)
     fields.insert("baseTemplate");
   if (base->x != ref->x)
@@ -1740,6 +1758,10 @@ XmlAssetsLoader::trackNonDefaultPlatformSettings(
     fields.insert("yawAtDepartureSpecified");
   if (base->yawAtDeparture != ref->yawAtDeparture)
     fields.insert("yawAtDeparture");
+  if (!sameVec3(base->relativeMountPosition, ref->relativeMountPosition))
+    fields.insert("relativeMountPosition");
+  if (!sameRotation(base->relativeMountAttitude, ref->relativeMountAttitude))
+    fields.insert("relativeMountAttitude");
   if (base->onGround != ref->onGround)
     fields.insert("onGround");
   if (base->stopAndTurn != ref->stopAndTurn)

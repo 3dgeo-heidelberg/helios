@@ -224,6 +224,74 @@ def test_templates(test_sim):
     assert ps_templ.movePerSec == 30
 
 
+def test_leg_platform_settings_can_override_scanner_mount(test_sim):
+    """Test per-leg scannerMount overrides through platformSettings."""
+    sim = test_sim(
+        Path("data") / "test" / "tls_leg_scanner_mount.xml",
+        las_output=False,
+        zip_output=False,
+    )
+
+    templated_ps = sim.sim.getLeg(0).getPlatformSettings()
+    templated_mount_pos = templated_ps.getRelativeMountPosition()
+    templated_mount_att = templated_ps.getRelativeMountAttitude()
+    templated_axis = templated_mount_att.getAxis()
+
+    assert templated_mount_pos.x == pytest.approx(0.0)
+    assert templated_mount_pos.y == pytest.approx(0.0)
+    assert templated_mount_pos.z == pytest.approx(1.8)
+    assert abs(templated_axis.x) == pytest.approx(0.0)
+    assert abs(templated_axis.y) == pytest.approx(0.0)
+    assert abs(templated_axis.z) == pytest.approx(1.0)
+    assert templated_mount_att.getAngle() == pytest.approx(np.deg2rad(45.0))
+
+    inline_ps = sim.sim.getLeg(1).getPlatformSettings()
+    inline_mount_pos = inline_ps.getRelativeMountPosition()
+    inline_mount_att = inline_ps.getRelativeMountAttitude()
+    inline_axis = inline_mount_att.getAxis()
+
+    assert inline_mount_pos.x == pytest.approx(0.25)
+    assert inline_mount_pos.y == pytest.approx(0.0)
+    assert inline_mount_pos.z == pytest.approx(2.0)
+    assert abs(inline_axis.x) == pytest.approx(1.0)
+    assert abs(inline_axis.y) == pytest.approx(0.0)
+    assert abs(inline_axis.z) == pytest.approx(0.0)
+    assert inline_mount_att.getAngle() == pytest.approx(np.deg2rad(20.0))
+
+    default_ps = sim.sim.getLeg(2).getPlatformSettings()
+    default_mount_pos = default_ps.getRelativeMountPosition()
+    default_mount_att = default_ps.getRelativeMountAttitude()
+
+    assert default_mount_pos.x == pytest.approx(0.0)
+    assert default_mount_pos.y == pytest.approx(0.0)
+    assert default_mount_pos.z == pytest.approx(1.5)
+    assert default_mount_att.getAngle() == pytest.approx(0.0)
+
+
+def test_new_leg_uses_current_platform_mount_defaults(test_sim):
+    """Test new legs inherit the current platform mount as their base settings."""
+    sim = test_sim(
+        Path("data") / "test" / "tls_leg_scanner_mount.xml",
+        las_output=False,
+        zip_output=False,
+    )
+    platform = sim.sim.getPlatform()
+    base_mount_pos = platform.getRelativePosition()
+    base_mount_att = platform.getRelativeAttitude()
+
+    leg = sim.sim.newLeg(sim.sim.getNumLegs())
+    leg_mount_pos = leg.getPlatformSettings().getRelativeMountPosition()
+    leg_mount_att = leg.getPlatformSettings().getRelativeMountAttitude()
+
+    assert leg_mount_pos.x == pytest.approx(base_mount_pos.x)
+    assert leg_mount_pos.y == pytest.approx(base_mount_pos.y)
+    assert leg_mount_pos.z == pytest.approx(base_mount_pos.z)
+    assert leg_mount_att.q0 == pytest.approx(base_mount_att.q0)
+    assert leg_mount_att.q1 == pytest.approx(base_mount_att.q1)
+    assert leg_mount_att.q2 == pytest.approx(base_mount_att.q2)
+    assert leg_mount_att.q3 == pytest.approx(base_mount_att.q3)
+
+
 def test_survey_characteristics(test_sim):
     """Test accessing survey characteristics (name, length)"""
     path_to_survey = Path("data") / "surveys" / "toyblocks" / "als_toyblocks.xml"

@@ -113,7 +113,13 @@ PyHeliosSimulation::newLeg(int index)
     index = n;
   std::shared_ptr<Leg> leg = std::make_shared<Leg>();
   leg->mScannerSettings = std::make_shared<ScannerSettings>();
-  leg->mPlatformSettings = std::make_shared<PlatformSettings>();
+  if (survey != nullptr && survey->scanner != nullptr &&
+      survey->scanner->platform != nullptr) {
+    leg->mPlatformSettings =
+      survey->scanner->platform->retrieveCurrentSettings();
+  } else {
+    leg->mPlatformSettings = std::make_shared<PlatformSettings>();
+  }
   survey->addLeg(index, leg);
   return *leg;
 }
