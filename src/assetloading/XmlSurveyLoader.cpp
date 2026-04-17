@@ -577,7 +577,6 @@ XmlSurveyLoader::integrateSurveyAndLegs(std::shared_ptr<Survey> survey)
 {
   // Obtain legs
   std::vector<std::shared_ptr<Leg>>& legs = survey->legs;
-
   // Handle scanAngleMax/scanAngleEffectiveMax != 1
   std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
     std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(

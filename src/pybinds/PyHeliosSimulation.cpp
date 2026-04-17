@@ -114,6 +114,9 @@ PyHeliosSimulation::newLeg(int index)
   std::shared_ptr<Leg> leg = std::make_shared<Leg>();
   leg->mScannerSettings = std::make_shared<ScannerSettings>();
   leg->mPlatformSettings = std::make_shared<PlatformSettings>();
+  if (survey != nullptr && survey->scanner != nullptr) {
+    leg->mScannerSettings->pulseFreq_Hz = survey->scanner->getPulseFreq_Hz();
+  }
   survey->addLeg(index, leg);
   return *leg;
 }
