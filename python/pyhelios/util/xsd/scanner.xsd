@@ -18,6 +18,7 @@
             <xs:enumeration value="line"/>
             <xs:enumeration value="oscillating"/>
             <xs:enumeration value="conic"/>
+            <xs:enumeration value="elliptical-conic"/>
             <xs:enumeration value="risley"/>
         </xs:restriction>
     </xs:simpleType>
@@ -159,6 +160,8 @@
                                             <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
                                             <xs:attribute type="xs:float" name="atmosphericVisibility_km" use="optional"/>
                                             <xs:attribute type="xs:float" name="headRotatePerSecMax_deg" use="optional"/>
+                                            <xs:attribute type="xs:float" name="acrossTrackAngle_deg" use="optional"/>
+                                            <xs:attribute type="xs:float" name="alongTrackAngle_deg" use="optional"/>
                                         </xs:complexType>
                                         </xs:element>
                                     </xs:choice>
@@ -197,6 +200,8 @@
                         <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
                         <xs:attribute type="xs:float" name="atmosphericVisibility_km" use="optional"/>
                         <xs:attribute type="xs:float" name="headRotatePerSecMax_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="acrossTrackAngle_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="alongTrackAngle_deg" use="optional"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
