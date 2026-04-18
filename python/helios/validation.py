@@ -496,6 +496,62 @@ class Model(metaclass=ValidatedModelMetaClass):
 
     @classmethod
     @validate_call
+    def from_doi(cls, doi: str, filename: Optional[Path] = None):
+        """Load a model instance from a DOI-hosted serialized bundle.
+
+        Parameters
+        ----------
+        doi : str
+            DOI pointing to the serialized bundle contents.
+        filename : Optional[Path], optional
+            Relative path to the root YAML file within the DOI bundle. If omitted,
+            the class default serialization filename is used.
+
+        Returns
+        -------
+        Model
+            Deserialized instance of ``cls``.
+        """
+
+        import hashlib
+
+        try:
+            import pooch
+        except ImportError as exc:
+            raise ImportError(
+                "Model.from_doi requires the optional 'pooch' dependency."
+            ) from exc
+
+        normalized_doi = doi.removeprefix("doi:").strip()
+        if not normalized_doi:
+            raise ValueError("DOI must not be empty.")
+
+        if filename is None:
+            probe = object.__new__(cls)
+            root_filename = Path(cls._serialization_filename(probe))
+            if root_filename.suffix == "":
+                root_filename = Path(f"{root_filename}.helios.yaml")
+        else:
+            root_filename = filename.expanduser()
+            if root_filename.is_absolute():
+                raise ValueError(
+                    "DOI bundle filename must be relative to cache directory: "
+                    f"{root_filename}"
+                )
+
+        cache_key = hashlib.sha256(normalized_doi.encode("utf-8")).hexdigest()
+        cache_dir = Path(pooch.os_cache("helios")) / "doi" / cache_key
+        downloader = pooch.create(
+            path=cache_dir, base_url=f"doi:{normalized_doi}", registry=None
+        )
+        downloader.load_registry_from_doi()
+        for bundle_file in downloader.registry:
+            downloader.fetch(bundle_file)
+
+        return cls.from_bundle(cache_dir, filename=root_filename)
+
+    @classmethod
+    @validate_call
     def from_bundle(cls, path: Path, filename: Optional[Path] = None):
         """Load a model instance from a serialized bundle directory.
 
