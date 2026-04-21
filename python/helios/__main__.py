@@ -1,4 +1,5 @@
 import click
+from clickqt_utils.extensions import PathWithExtensions
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
 from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
 from helios.survey import Survey
@@ -6,7 +7,14 @@ from helios.utils import add_asset_directory, set_rng_seed
 
 
 @click.command()
-@click.argument("survey_file_path", required=True)
+@click.argument(
+    "survey_file_path",
+    type=PathWithExtensions(
+        file_okay=True,
+        file_extensions={("xml",): "XML Files", ("yml", "yaml"): "YAML Files"},
+    ),
+    required=True,
+)
 @optgroup.group("Input")
 @optgroup.option(
     "--assets",
@@ -17,6 +25,23 @@ from helios.utils import add_asset_directory, set_rng_seed
         "Specify the path(s) to assets/data directory. To specify multiple "
         "paths, duplicate the argument,e.g. --assets path1 --assets path2. "
         "By default: './assets/' and the Python package installation directory."
+    ),
+)
+@optgroup.option(
+    "--seed",
+    type=click.INT,
+    help=(
+        "Specify the seed for randomness generation. It must be an intenger"
+        "By default: a random seed is generated."
+    ),
+)
+@optgroup.option(
+    "--gpsStartTime",
+    type=click.STRING,
+    help=(
+        "Specify a fixed start time for GPS. It can be either a posix timestamp "
+        "or a 'YYYY-MM-DD hh:mm:ss+00:00' date time string, including "
+        "the timezone. By default: The current system time is used."
     ),
 )
 @optgroup.group("Output")
@@ -63,17 +88,10 @@ from helios.utils import add_asset_directory, set_rng_seed
 )
 @optgroup.option(
     "--format",
+    type=click.Choice(["las", "laz", "xyz"]),
     default="laz",
     show_default=True,
-    help="Output format, can be las, laz, xyz, npy, or laspy.",
-)
-@optgroup.option(
-    "--lasOutput",
-    is_flag=True,
-    help="Use this flag to generate the output point cloud in LAS format (v 1.4)",
-)
-@optgroup.option(
-    "--las10", is_flag=True, help="Use this flag to write in LAS format (v 1.0)"
+    help="Output format, can be las, laz, xyz",
 )
 @optgroup.option(
     "--lasScale",
@@ -82,43 +100,7 @@ from helios.utils import add_asset_directory, set_rng_seed
     show_default=True,
     help="Specify the decimal scale factor for LAS output",
 )
-@optgroup.option(
-    "--zipOutput", is_flag=True, help=("Use this flag to generate compressed output")
-)
 @optgroup.group("Execution")
-@optgroup.option(
-    "--calcEchowidth",
-    is_flag=True,
-    help=(
-        "Use this flag to enable full waveform fitting. "
-        "By default the full waveform is NOT fitted"
-    ),
-)
-@optgroup.option(
-    "--fixedIncidenceAngle",
-    is_flag=True,
-    help=(
-        "Use this flag to use fixed incidence angle. Fixed incidence angle of "
-        "exactly 0.0 will be considered for all intersection"
-    ),
-)
-@optgroup.option(
-    "--seed",
-    type=click.INT,
-    help=(
-        "Specify the seed for randomness generation. It must be an intenger"
-        "By default: a random seed is generated."
-    ),
-)
-@optgroup.option(
-    "--gpsStartTime",
-    type=click.STRING,
-    help=(
-        "Specify a fixed start time for GPS. It can be either a posix timestamp "
-        "or a 'YYYY-MM-DD hh:mm:ss+00:00' date time string, including "
-        "the timezone. By default: The current system time is used."
-    ),
-)
 @optgroup.option(
     "--parallelization",
     type=click.INT,
@@ -161,22 +143,6 @@ from helios.utils import add_asset_directory, set_rng_seed
         "Specify the warehouse factor. The number of tasks in the warehouse "
         "would be k times the number of workers. The greater the factor, theless "
         "the probability of idle cores but the greater the memory consumption."
-    ),
-)
-@optgroup.option(
-    "--disablePlatformNoise",
-    is_flag=True,
-    help=(
-        "Disable platform noise, no matter what is specified on XML files. "
-        "By default: XML specifications are considered "
-    ),
-)
-@optgroup.option(
-    "--disableLegNoise",
-    is_flag=True,
-    help=(
-        "Disable leg noise, no matter what is specified on XML files. "
-        "By default: XML specifications are considered "
     ),
 )
 @optgroup.option(
@@ -269,16 +235,7 @@ from helios.utils import add_asset_directory, set_rng_seed
 @optgroup.option("--vt", is_flag=True, help="Report time and errors.")
 @click.version_option()
 def cli(**kw):
-
-    # TODO:
-    # The following parameters are defined but not yet implemented:
-    # * disableLegNoise
-    # * disablePlatformNoise
-    # * fixedIncidenceAngle
-    # * calcEchowidth
-    # * zipOutput
-    # * las10
-    # * fullwaveNoise
+    """Runs a single Helios++ survey specified in SURVEY_FILE_PATH"""
 
     for asset in kw["assets"]:
         add_asset_directory(asset)
