@@ -29,6 +29,8 @@ dependencies = [
     "tqdm",
     "typing-extensions",
     "xmlschema",
+    "vedo",
+    "vtk",
 ]
 maintainers = [
     { name = "HELIOS++ dev team", email = "helios@uni-heidelberg.de" },
