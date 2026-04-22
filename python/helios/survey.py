@@ -41,7 +41,7 @@ from helios.validation import (
     Model,
     validate_xml_file,
 )
-from helios.live import Open3DLiveViewer
+from helios.live import LiveViewer
 
 from datetime import datetime, timezone
 from numpydantic import NDArray
@@ -84,12 +84,12 @@ def _resolve_live_session(live):
         return None
 
     if live is True:
-        return Open3DLiveViewer()
+        return LiveViewer()
 
-    if isinstance(live, Open3DLiveViewer):
+    if isinstance(live, LiveViewer):
         return live
 
-    raise TypeError("live must be False, True, or Open3DLiveViewer instance")
+    raise TypeError("live must be False, True, or LiveViewer instance")
 
 
 class Survey(Model, cpp_class=_helios.Survey):
@@ -107,7 +107,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings: Optional[ExecutionSettings] = None,
         output_settings: Optional[OutputSettings] = None,
         callbacks: Optional[Sequence[SurveyHook]] = None,
-        live: bool | Open3DLiveViewer = False,
+        live: bool | LiveViewer = False,
         **parameters,
     ):
         # TODO: Options that need to be incorporated:
