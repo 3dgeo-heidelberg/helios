@@ -438,3 +438,171 @@ def test_survey_run_closes_live_input(monkeypatch, survey):
         ("start", None),
         ("close_producer_input", None),
     ]
+
+
+def test_start_requires_attached_scene(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+
+    with pytest.raises(RuntimeError, match="Call attach_to_survey"):
+        viewer.start()
+
+
+def test_start_times_out(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+    viewer.scene = SimpleNamespace(scene_parts=[])
+
+    monkeypatch.setattr(viewer, "_ensure_scene_actors", lambda: None)
+    monkeypatch.setattr(viewer, "_start_viewer_thread", lambda: None)
+    monkeypatch.setattr(viewer._ready_event, "wait", lambda timeout: False)
+
+    with pytest.raises(RuntimeError, match="failed to start"):
+        viewer.start()
+
+
+def test_start_propagates_viewer_error(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+    viewer.scene = SimpleNamespace(scene_parts=[])
+
+    monkeypatch.setattr(viewer, "_ensure_scene_actors", lambda: None)
+
+    def _fake_start_thread():
+        viewer._error = RuntimeError("viewer boom")
+        viewer._ready_event.set()
+
+    monkeypatch.setattr(viewer, "_start_viewer_thread", _fake_start_thread)
+    monkeypatch.setattr(viewer._ready_event, "wait", lambda timeout: True)
+
+    with pytest.raises(RuntimeError, match="viewer boom"):
+        viewer.start()
+
+
+def test_close_producer_input_closes_producer(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+    assert not viewer.producer.closed.is_set()
+
+    viewer.close_producer_input()
+
+    assert viewer.producer.closed.is_set()
+
+
+def test_stop_thread_event_joins_thread(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+
+    joined = []
+
+    class _FakeThread:
+        def join(self, timeout=None):
+            joined.append(timeout)
+
+    viewer._viewer_thread = _FakeThread()
+    viewer._stop_thread_event()
+
+    assert joined == [0.5]
+    assert viewer._viewer_thread is None
+
+
+def test_window_is_closed_handles_interactor_error(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+
+    class _BadInteractor:
+        def GetDone(self):
+            raise RuntimeError("bad interactor")
+
+    viewer.plotter = SimpleNamespace(interactor=_BadInteractor())
+
+    assert viewer._window_is_closed() is True
+    assert isinstance(viewer._error, RuntimeError)
+    assert viewer._stop_event.is_set()
+
+
+def test_viewer_main_processes_and_renders(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+    viewer._viewer_started = True
+
+    calls = {"setup": 0, "consume": 0, "render": 0, "closed": 0}
+
+    monkeypatch.setattr(
+        viewer, "_viewer_setup", lambda: calls.__setitem__("setup", calls["setup"] + 1)
+    )
+
+    window_states = [False, False, True]
+    monkeypatch.setattr(viewer, "_window_is_closed", lambda: window_states.pop(0))
+
+    def _consume():
+        calls["consume"] += 1
+        return 1 if calls["consume"] == 1 else 0
+
+    monkeypatch.setattr(viewer, "_consume_pending", _consume)
+    monkeypatch.setattr(
+        viewer, "_render_once", lambda: calls.__setitem__("render", calls["render"] + 1)
+    )
+    monkeypatch.setattr(viewer.producer, "wait_for_data", lambda timeout: True)
+    monkeypatch.setattr(
+        viewer,
+        "_viewer_close",
+        lambda: calls.__setitem__("closed", calls["closed"] + 1),
+    )
+
+    viewer._viewer_main()
+
+    assert calls["setup"] == 1
+    assert calls["consume"] >= 1
+    assert calls["render"] >= 1
+    assert calls["closed"] == 1
+    assert viewer._viewer_started is False
+
+
+def test_viewer_main_waits_when_no_data(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+    viewer._viewer_started = True
+
+    calls = {"wait": []}
+
+    monkeypatch.setattr(viewer, "_viewer_setup", lambda: None)
+
+    window_states = [False, True]
+    monkeypatch.setattr(viewer, "_window_is_closed", lambda: window_states.pop(0))
+    monkeypatch.setattr(viewer, "_consume_pending", lambda: 0)
+    monkeypatch.setattr(viewer, "_render_once", lambda: None)
+    monkeypatch.setattr(
+        viewer.producer, "wait_for_data", lambda timeout: calls["wait"].append(timeout)
+    )
+    monkeypatch.setattr(viewer, "_viewer_close", lambda: None)
+
+    viewer._viewer_main()
+
+    assert calls["wait"] == [0.005]
+    assert viewer._viewer_started is False
+
+
+def test_viewer_main_resets_started_on_exception(monkeypatch):
+    from helios.live import LiveViewer
+
+    viewer = LiveViewer()
+    viewer._viewer_started = True
+
+    monkeypatch.setattr(
+        viewer, "_viewer_setup", lambda: (_ for _ in ()).throw(RuntimeError("boom"))
+    )
+    monkeypatch.setattr(viewer, "_viewer_close", lambda: None)
+
+    viewer._viewer_main()
+
+    assert viewer._viewer_started is False
+    assert isinstance(viewer._error, RuntimeError)
