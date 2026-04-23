@@ -1620,3 +1620,14 @@ def test_scene_part_from_o3d_mesh_accepts_all_supported_mesh_attributes(o3d_mesh
 
     scene_part = ScenePart.from_open3d(geometry)
     assert len(scene_part._cpp_object.primitives) > 0
+
+
+def test_take_vis_buffer_from_scene_part():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    buffers = part.get_visualization_buffers()
+    triangle_vertices = np.asarray(buffers.triangle_vertices, dtype=np.float32)
+    triangle_indices = np.asarray(buffers.triangle_indices, dtype=np.int32)
+
+    assert triangle_vertices.shape[0] > 0
+    assert triangle_vertices.shape[1] == 3
+    assert triangle_indices.shape[0] > 0
