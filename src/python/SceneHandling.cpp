@@ -927,3 +927,90 @@ readOpen3DMeshScenePart(const double* verticesData,
   loader.primsOut = nullptr;
   return sp;
 }
+
+ScenePartVisualizationBuffers
+extractScenePartVisualizationBuffers(ScenePart const& sp)
+{
+  std::vector<double> triangleVerticesFlat;
+  std::vector<int> triangleIndicesFlat;
+  std::vector<double> voxelCentersFlat;
+
+  triangleVerticesFlat.reserve(sp.mPrimitives.size() * 9);
+  triangleIndicesFlat.reserve(sp.mPrimitives.size() * 3);
+  voxelCentersFlat.reserve(sp.mPrimitives.size() * 3);
+
+  int nextVertexIndex = 0;
+
+  for (Primitive* primitive : sp.mPrimitives) {
+    if (primitive == nullptr) {
+      continue;
+    }
+
+    if (auto const* tri = dynamic_cast<Triangle const*>(primitive)) {
+      for (int i = 0; i < 3; ++i) {
+        Vertex const& v = tri->verts[i];
+        triangleVerticesFlat.push_back(v.pos.x);
+        triangleVerticesFlat.push_back(v.pos.y);
+        triangleVerticesFlat.push_back(v.pos.z);
+      }
+
+      triangleIndicesFlat.push_back(nextVertexIndex + 0);
+      triangleIndicesFlat.push_back(nextVertexIndex + 1);
+      triangleIndicesFlat.push_back(nextVertexIndex + 2);
+      nextVertexIndex += 3;
+      continue;
+    }
+
+    if (auto const* dv = dynamic_cast<DetailedVoxel const*>(primitive)) {
+      voxelCentersFlat.push_back(dv->v.pos.x);
+      voxelCentersFlat.push_back(dv->v.pos.y);
+      voxelCentersFlat.push_back(dv->v.pos.z);
+      continue;
+    }
+
+    if (auto const* voxel = dynamic_cast<Voxel const*>(primitive)) {
+      voxelCentersFlat.push_back(voxel->v.pos.x);
+      voxelCentersFlat.push_back(voxel->v.pos.y);
+      voxelCentersFlat.push_back(voxel->v.pos.z);
+      continue;
+    }
+  }
+
+  std::size_t const numTriangleVertices =
+    static_cast<std::size_t>(triangleVerticesFlat.size() / 3);
+  std::size_t const numTriangles =
+    static_cast<std::size_t>(triangleIndicesFlat.size() / 3);
+  std::size_t const numVoxelCenters =
+    static_cast<std::size_t>(voxelCentersFlat.size() / 3);
+
+  py::array_t<double> triangleVertices(
+    { numTriangleVertices, static_cast<std::size_t>(3) });
+  py::array_t<int> triangleIndices(
+    { numTriangles, static_cast<std::size_t>(3) });
+  py::array_t<double> voxelCenters(
+    { numVoxelCenters, static_cast<std::size_t>(3) });
+
+  if (!triangleVerticesFlat.empty()) {
+    std::memcpy(triangleVertices.mutable_data(),
+                triangleVerticesFlat.data(),
+                triangleVerticesFlat.size() * sizeof(double));
+  }
+
+  if (!triangleIndicesFlat.empty()) {
+    std::memcpy(triangleIndices.mutable_data(),
+                triangleIndicesFlat.data(),
+                triangleIndicesFlat.size() * sizeof(int));
+  }
+
+  if (!voxelCentersFlat.empty()) {
+    std::memcpy(voxelCenters.mutable_data(),
+                voxelCentersFlat.data(),
+                voxelCentersFlat.size() * sizeof(double));
+  }
+
+  return ScenePartVisualizationBuffers{
+    std::move(triangleVertices),
+    std::move(triangleIndices),
+    std::move(voxelCenters),
+  };
+}

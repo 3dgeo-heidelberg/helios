@@ -41,6 +41,7 @@ from helios.validation import (
     Model,
     validate_xml_file,
 )
+from helios.live import LiveViewer
 
 from datetime import datetime, timezone
 from numpydantic import NDArray
@@ -78,6 +79,19 @@ def _start_playback_interruptible(playback, poll_interval=0.1):
         raise error[0]
 
 
+def _resolve_live_session(live):
+    if live is False or live is None:
+        return None
+
+    if live is True:
+        return LiveViewer()
+
+    if isinstance(live, LiveViewer):
+        return live
+
+    raise TypeError("live must be False, True, or LiveViewer instance")
+
+
 class Survey(Model, cpp_class=_helios.Survey):
     scanner: Scanner
     platform: Platform
@@ -87,12 +101,13 @@ class Survey(Model, cpp_class=_helios.Survey):
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
 
-    @validate_call
+    @validate_call(config={"arbitrary_types_allowed": True})
     def run(
         self,
         execution_settings: Optional[ExecutionSettings] = None,
         output_settings: Optional[OutputSettings] = None,
         callbacks: Optional[Sequence[SurveyHook]] = None,
+        live: bool | LiveViewer = False,
         **parameters,
     ):
         # TODO: Options that need to be incorporated:
@@ -163,6 +178,9 @@ class Survey(Model, cpp_class=_helios.Survey):
                 self._cpp_object,
             )
 
+        live_session = _resolve_live_session(live)
+        if live_session is not None:
+            live_session.attach_to_survey(self)
         # Set up internal data structures for the execution
 
         accuracy = self.scanner._cpp_object.detector.accuracy
@@ -195,6 +213,8 @@ class Survey(Model, cpp_class=_helios.Survey):
             num_legs=len(self.legs),
         )
         callbacks = callbacks + progressbar_callbacks
+        if live_session is not None:
+            callbacks = callbacks + live_session.callbacks()
 
         for hook in callbacks:
             registration = _helios.SurveyHookRegistration()
@@ -216,10 +236,14 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # Start simulating the survey
         try:
+            if live_session is not None:
+                live_session.start()
             _start_playback_interruptible(playback)
         finally:
             if progressbar_controller is not None:
                 progressbar_controller.close()
+            if live_session is not None:
+                live_session.close_producer_input()
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required

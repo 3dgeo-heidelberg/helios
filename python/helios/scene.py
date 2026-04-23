@@ -662,6 +662,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             f"Expected open3d.geometry.TriangleMesh or open3d.geometry.PointCloud, got {type(geometry)}."
         )
 
+    def get_visualization_buffers(self):
+        """Return raw visualization buffers for live rendering."""
+        return self._cpp_object.visualization_buffers()
+
     @validate_call
     def _apply_material_to_all_primitives(self, material: Material):
         """Apply a material to all primitives in the scene part."""

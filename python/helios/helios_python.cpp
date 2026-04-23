@@ -1117,7 +1117,10 @@ PYBIND11_MODULE(_helios, m)
     .def("compute_centroid_w_bound",
          &ScenePart::computeCentroid,
          py::arg("computeBound") = true)
-    .def("compute_transform", &ScenePart::computeTransformations);
+    .def("compute_transform", &ScenePart::computeTransformations)
+    .def("visualization_buffers", [](ScenePart const& sp) {
+      return extractScenePartVisualizationBuffers(sp);
+    });
 
   py::enum_<ScenePart::ObjectType>(m, "ObjectType")
     .value("STATIC_OBJECT", ScenePart::STATIC_OBJECT)
@@ -3282,6 +3285,14 @@ PYBIND11_MODULE(_helios, m)
              std::shared_ptr<FastSAHKDTreeGeometricStrategy>>(
     m, "FastSAHKDTreeGeometricStrategy")
     .def(py::init<FastSAHKDTreeFactory&>(), py::arg("kdtf"));
+
+  py::class_<ScenePartVisualizationBuffers>(m, "ScenePartVisualizationBuffers")
+    .def_readonly("triangle_vertices",
+                  &ScenePartVisualizationBuffers::triangle_vertices)
+    .def_readonly("triangle_indices",
+                  &ScenePartVisualizationBuffers::triangle_indices)
+    .def_readonly("voxel_centers",
+                  &ScenePartVisualizationBuffers::voxel_centers);
 
   m.def("calc_time_propagation",
         &calcTimePropagation,
