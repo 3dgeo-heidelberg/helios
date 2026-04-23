@@ -534,9 +534,9 @@ def apply_scene_shift(
     setattr(survey, "_scene_shift_done", True)
 
 
-def extract_position(arr: Optional[np.ndarray]) -> np.ndarray:
+def extract_position(arr: Optional[np.ndarray]) -> Optional[np.ndarray]:
     if arr is None or len(arr) == 0:
-        return np.empty((0, 3), dtype=np.float64)
+        return None
     return arr["position"]
 
 
