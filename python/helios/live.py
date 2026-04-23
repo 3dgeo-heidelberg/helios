@@ -18,7 +18,6 @@ import vedo
 from vedo import Mesh, Plotter, Points, Line
 
 from collections import deque
-from IPython import get_ipython
 
 
 @dataclass(slots=True)
@@ -218,14 +217,19 @@ class LiveViewer:
 
     def _is_in_jupyter(self) -> bool:
         try:
-            ip = get_ipython()
-            if ip is None:
-                return False
+            from IPython import get_ipython
+        except ImportError:
+            return False
 
-            shell_name = ip.__class__.__name__
-            return shell_name == "ZMQInteractiveShell"
+        try:
+            ip = get_ipython()
         except Exception:
             return False
+
+        if ip is None:
+            return False
+
+        return ip.__class__.__name__ == "ZMQInteractiveShell"
 
     def _ensure_scene_actors(self) -> None:
         if self.scene is None:
