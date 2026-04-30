@@ -312,7 +312,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    where :math:`BDRF` follows the formulation by `Jutzi & Gross (2009) <https://doi.org/10.24406/publica-fhg-362664>`_:
 
    .. math::
-      BDRF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(\varphi^*) \right|^{N_s}
+      BDRF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
 
    with :math:`\varphi^* = \varphi - \pi/2` if :math:`\varphi > \pi/2`, otherwise :math:`\varphi^* = \varphi`.
 

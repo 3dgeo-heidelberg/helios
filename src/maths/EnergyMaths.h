@@ -288,7 +288,7 @@ public:
    *  defined in Material::setSpecularity
    *
    * \f[
-   *  \mathrm{BDRF}_{\mathrm{PHONG}} = \bigl(1-K_s\bigr) +
+   *  \mathrm{BDRF}_{\mathrm{PHONG}} = \bigl(1-K_s\bigr) \cos(\varphi) +
    *      K_s {\cos(2\varphi)}^{N_s}
    * \f]
    *
@@ -297,7 +297,7 @@ public:
    *
    * \f[
    *  \mathrm{BDRF} = \rho \mathrm{BDRF}_{\mathrm{PHONG}} = \rho \biggl(
-   *      \bigl(1-K_s\bigr) + K_s {\cos(2\varphi)}^{N_s} \biggr)
+   *      \bigl(1-K_s\bigr) \cos(\varphi) + K_s {\cos(2\varphi)}^{N_s} \biggr)
    * \f]
    *
    */

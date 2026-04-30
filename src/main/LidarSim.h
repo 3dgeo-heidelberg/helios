@@ -82,7 +82,7 @@ public:
             size_t kdtJobs = 1,
             size_t kdtGeomJobs = 1,
             size_t sahLossNodes = 21,
-            bool legacyEnergyModel = true);
+            bool legacyEnergyModel = false);
 
   /**
    * @brief Release the resources of the lidar simulation (typically this
