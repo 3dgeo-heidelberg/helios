@@ -57,7 +57,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v2-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('environment-dev.yml') }}
@@ -129,7 +129,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v2-${{ runner.os }}-py3.10-${{ hashFiles('environment-dev.yml') }}
