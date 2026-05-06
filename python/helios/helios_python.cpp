@@ -431,6 +431,7 @@ PYBIND11_MODULE(_helios, m)
       "max_vertex",
       [](AABB& aabb) { return &(aabb.vertices[1]); },
       py::return_value_policy::reference)
+    .def_property_readonly("centroid", &AABB::getCentroid)
     .def("__str__", &AABB::toString);
 
   py::class_<DetailedVoxel, std::shared_ptr<DetailedVoxel>, Primitive>
@@ -1118,8 +1119,8 @@ PYBIND11_MODULE(_helios, m)
          &ScenePart::computeCentroid,
          py::arg("computeBound") = true)
     .def("compute_transform", &ScenePart::computeTransformations)
-    .def("visualization_buffers", [](ScenePart const& sp) {
-      return extractScenePartVisualizationBuffers(sp);
+    .def("visualization_buffers", [](ScenePart const& sp, glm::dvec3 diff) {
+      return extractScenePartVisualizationBuffers(sp, diff);
     });
 
   py::enum_<ScenePart::ObjectType>(m, "ObjectType")

@@ -155,4 +155,4 @@ struct ScenePartVisualizationBuffers
 };
 
 ScenePartVisualizationBuffers
-extractScenePartVisualizationBuffers(ScenePart const& sp);
+extractScenePartVisualizationBuffers(ScenePart const& sp, glm::dvec3 diff);

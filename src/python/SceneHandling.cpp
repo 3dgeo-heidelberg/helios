@@ -929,16 +929,50 @@ readOpen3DMeshScenePart(const double* verticesData,
 }
 
 ScenePartVisualizationBuffers
-extractScenePartVisualizationBuffers(ScenePart const& sp)
+extractScenePartVisualizationBuffers(ScenePart const& sp, glm::dvec3 diff)
 {
-  std::vector<double> triangleVerticesFlat;
-  std::vector<int> triangleIndicesFlat;
-  std::vector<double> voxelCentersFlat;
+  const double dx = diff.x;
+  const double dy = diff.y;
+  const double dz = diff.z;
+  std::size_t numPrimitives = sp.mPrimitives.size();
+  py::array_t<double> triangleVertices(
+    { static_cast<py::ssize_t>(numPrimitives * 3),
+      static_cast<py::ssize_t>(3) });
+  py::array_t<int> triangleIndices(
+    { static_cast<py::ssize_t>(numPrimitives), static_cast<py::ssize_t>(3) });
+  py::array_t<double> voxelCenters(
+    { static_cast<py::ssize_t>(numPrimitives), static_cast<py::ssize_t>(3) });
+  enum class PrimitiveType
+  {
+    None,
+    Triangle,
+    DetailedVoxel,
+    Voxel
+  };
 
-  triangleVerticesFlat.reserve(sp.mPrimitives.size() * 9);
-  triangleIndicesFlat.reserve(sp.mPrimitives.size() * 3);
-  voxelCentersFlat.reserve(sp.mPrimitives.size() * 3);
+  PrimitiveType kind = PrimitiveType::None;
+  for (Primitive* primitive : sp.mPrimitives) {
+    if (primitive == nullptr) {
+      continue;
+    }
 
+    if (dynamic_cast<Triangle const*>(primitive) != nullptr) {
+      kind = PrimitiveType::Triangle;
+    } else if (dynamic_cast<DetailedVoxel const*>(primitive) != nullptr) {
+      kind = PrimitiveType::DetailedVoxel;
+    } else if (dynamic_cast<Voxel const*>(primitive) != nullptr) {
+      kind = PrimitiveType::Voxel;
+    }
+    break;
+  }
+
+  double* triangleVerticesData = triangleVertices.mutable_data();
+  int* triangleIndicesData = triangleIndices.mutable_data();
+  double* voxelCentersData = voxelCenters.mutable_data();
+
+  std::size_t triangleVertexOffset = 0;
+  std::size_t triangleIndexOffset = 0;
+  std::size_t voxelCenterOffset = 0;
   int nextVertexIndex = 0;
 
   for (Primitive* primitive : sp.mPrimitives) {
@@ -946,71 +980,61 @@ extractScenePartVisualizationBuffers(ScenePart const& sp)
       continue;
     }
 
-    if (auto const* tri = dynamic_cast<Triangle const*>(primitive)) {
+    if (kind == PrimitiveType::Triangle) {
+      auto const* tri = static_cast<Triangle const*>(primitive);
+
       for (int i = 0; i < 3; ++i) {
         Vertex const& v = tri->verts[i];
-        triangleVerticesFlat.push_back(v.pos.x);
-        triangleVerticesFlat.push_back(v.pos.y);
-        triangleVerticesFlat.push_back(v.pos.z);
+        triangleVerticesData[triangleVertexOffset++] = v.pos.x + dx;
+        triangleVerticesData[triangleVertexOffset++] = v.pos.y + dy;
+        triangleVerticesData[triangleVertexOffset++] = v.pos.z + dz;
       }
 
-      triangleIndicesFlat.push_back(nextVertexIndex + 0);
-      triangleIndicesFlat.push_back(nextVertexIndex + 1);
-      triangleIndicesFlat.push_back(nextVertexIndex + 2);
+      triangleIndicesData[triangleIndexOffset++] = nextVertexIndex + 0;
+      triangleIndicesData[triangleIndexOffset++] = nextVertexIndex + 1;
+      triangleIndicesData[triangleIndexOffset++] = nextVertexIndex + 2;
       nextVertexIndex += 3;
-      continue;
-    }
-
-    if (auto const* dv = dynamic_cast<DetailedVoxel const*>(primitive)) {
-      voxelCentersFlat.push_back(dv->v.pos.x);
-      voxelCentersFlat.push_back(dv->v.pos.y);
-      voxelCentersFlat.push_back(dv->v.pos.z);
-      continue;
-    }
-
-    if (auto const* voxel = dynamic_cast<Voxel const*>(primitive)) {
-      voxelCentersFlat.push_back(voxel->v.pos.x);
-      voxelCentersFlat.push_back(voxel->v.pos.y);
-      voxelCentersFlat.push_back(voxel->v.pos.z);
-      continue;
+    } else if (kind == PrimitiveType::DetailedVoxel) {
+      auto const* dv = static_cast<DetailedVoxel const*>(primitive);
+      voxelCentersData[voxelCenterOffset++] = dv->v.pos.x + dx;
+      voxelCentersData[voxelCenterOffset++] = dv->v.pos.y + dy;
+      voxelCentersData[voxelCenterOffset++] = dv->v.pos.z + dz;
+    } else if (kind == PrimitiveType::Voxel) {
+      auto const* voxel = static_cast<Voxel const*>(primitive);
+      voxelCentersData[voxelCenterOffset++] = voxel->v.pos.x + dx;
+      voxelCentersData[voxelCenterOffset++] = voxel->v.pos.y + dy;
+      voxelCentersData[voxelCenterOffset++] = voxel->v.pos.z + dz;
     }
   }
+  auto triangleVerticesView = triangleVertices.mutable_unchecked<2>();
+  auto triangleIndicesView = triangleIndices.mutable_unchecked<2>();
+  auto voxelCentersView = voxelCenters.mutable_unchecked<2>();
 
-  std::size_t const numTriangleVertices =
-    static_cast<std::size_t>(triangleVerticesFlat.size() / 3);
-  std::size_t const numTriangles =
-    static_cast<std::size_t>(triangleIndicesFlat.size() / 3);
-  std::size_t const numVoxelCenters =
-    static_cast<std::size_t>(voxelCentersFlat.size() / 3);
+  py::array_t<double> triangleVerticesFinal(
+    { static_cast<py::ssize_t>(triangleVertexOffset / 3),
+      static_cast<py::ssize_t>(3) });
+  py::array_t<int> triangleIndicesFinal(
+    { static_cast<py::ssize_t>(triangleIndexOffset / 3),
+      static_cast<py::ssize_t>(3) });
+  py::array_t<double> voxelCentersFinal(
+    { static_cast<py::ssize_t>(voxelCenterOffset / 3),
+      static_cast<py::ssize_t>(3) });
 
-  py::array_t<double> triangleVertices(
-    { numTriangleVertices, static_cast<std::size_t>(3) });
-  py::array_t<int> triangleIndices(
-    { numTriangles, static_cast<std::size_t>(3) });
-  py::array_t<double> voxelCenters(
-    { numVoxelCenters, static_cast<std::size_t>(3) });
+  std::memcpy(triangleVerticesFinal.mutable_data(),
+              triangleVerticesData,
+              triangleVertexOffset * sizeof(double));
 
-  if (!triangleVerticesFlat.empty()) {
-    std::memcpy(triangleVertices.mutable_data(),
-                triangleVerticesFlat.data(),
-                triangleVerticesFlat.size() * sizeof(double));
-  }
+  std::memcpy(triangleIndicesFinal.mutable_data(),
+              triangleIndicesData,
+              triangleIndexOffset * sizeof(int));
 
-  if (!triangleIndicesFlat.empty()) {
-    std::memcpy(triangleIndices.mutable_data(),
-                triangleIndicesFlat.data(),
-                triangleIndicesFlat.size() * sizeof(int));
-  }
-
-  if (!voxelCentersFlat.empty()) {
-    std::memcpy(voxelCenters.mutable_data(),
-                voxelCentersFlat.data(),
-                voxelCentersFlat.size() * sizeof(double));
-  }
+  std::memcpy(voxelCentersFinal.mutable_data(),
+              voxelCentersData,
+              voxelCenterOffset * sizeof(double));
 
   return ScenePartVisualizationBuffers{
-    std::move(triangleVertices),
-    std::move(triangleIndices),
-    std::move(voxelCenters),
+    std::move(triangleVerticesFinal),
+    std::move(triangleIndicesFinal),
+    std::move(voxelCentersFinal),
   };
 }
