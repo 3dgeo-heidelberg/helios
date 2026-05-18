@@ -63,7 +63,8 @@ Scene::Scene(Scene& s)
     }
     for (ScenePart* sp :
          _parts) { // Handle primitives associated with ScenePart
-      std::shared_ptr<ScenePart> spc = std::make_shared<ScenePart>(*sp);
+      std::shared_ptr<ScenePart> spc =
+        std::make_shared<ScenePart>(*sp, false, false);
       for (Primitive* p : spc->mPrimitives) {
         p->part = spc;
         this->primitives.push_back(p);
@@ -128,7 +129,10 @@ Scene::finalizeLoading(bool const safe)
   for (Primitive* p : primitives) {
     Vertex* v = p->getVertices();
     for (std::size_t i = 0; i < p->getNumVertices(); i++) {
-      v[i].pos = v[i].pos - diff;
+      if (!v[i].posOrigin.has_value()) {
+        v[i].posOrigin = v[i].pos;
+      }
+      v[i].pos = *v[i].posOrigin - diff;
     }
     p->update();
   }

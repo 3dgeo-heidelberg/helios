@@ -165,7 +165,9 @@ public:
     : primitiveType(PrimitiveType::NONE)
   {
   }
-  ScenePart(ScenePart const& sp, bool const shallowPrimitives = false);
+  ScenePart(ScenePart const& sp,
+            bool const shallowPrimitives = false,
+            bool const resetVerticesToCanonicalPosition = true);
   virtual ~ScenePart() {}
 
   // ***  COPY / MOVE OPERATORS  *** //
