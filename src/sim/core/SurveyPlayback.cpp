@@ -213,7 +213,10 @@ SurveyPlayback::doSimStep()
   }
 
   trackProgress();
-
+  auto legId = (mCurrentLegIndex < mSurvey->legs.size())
+                 ? mSurvey->legs.at(mCurrentLegIndex)->getSerialId()
+                 : 65535;
+  Simulation::currentLegSerialId = legId;
   // if(legProgress <= 20) // Profiling only (uncomment for profiling)
   Simulation::doSimStep();
   // else onLegComplete(); // Profiling only (uncomment for profiling)

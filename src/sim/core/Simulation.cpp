@@ -134,7 +134,7 @@ Simulation::doSimStep()
   }
   // Perform simulation step
   mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
-  mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns, getScene());
+  mScanner->doSimStep(currentLegSerialId, currentGpsTime_ns, getScene());
   getScene().doSimStep();
   currentGpsTime_ns += stepGpsTime_ns;
   if (currentGpsTime_ns > 604800000000000.)
