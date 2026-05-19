@@ -10,7 +10,9 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-ScenePart::ScenePart(ScenePart const& sp, bool const shallowPrimitives)
+ScenePart::ScenePart(ScenePart const& sp,
+                     bool const shallowPrimitives,
+                     bool const resetVerticesToCanonicalPosition)
 {
   this->centroid = sp.centroid;
   this->bound = sp.bound;
@@ -26,6 +28,7 @@ ScenePart::ScenePart(ScenePart const& sp, bool const shallowPrimitives)
   this->mEnv = nullptr; // TODO Copy this too
 
   this->primitiveType = sp.primitiveType;
+  this->subpartLimit = sp.subpartLimit;
   this->mPrimitives = std::vector<Primitive*>(0);
   Primitive* p;
 
@@ -33,15 +36,23 @@ ScenePart::ScenePart(ScenePart const& sp, bool const shallowPrimitives)
     for (size_t i = 0; i < sp.mPrimitives.size(); ++i) {
       this->mPrimitives.push_back(sp.mPrimitives[i]);
     }
-  } else {
-    for (size_t i = 0; i < sp.mPrimitives.size(); ++i) {
-      p = sp.mPrimitives[i]->clone();
-      p->part = sp.mPrimitives[i]->part;
-      this->mPrimitives.push_back(p);
-    }
+    return;
   }
+  for (Primitive* src : sp.mPrimitives) {
+    Primitive* p = src->clone();
+    if (resetVerticesToCanonicalPosition) {
+      Vertex* v = p->getVertices();
+      for (std::size_t i = 0; i < p->getNumVertices(); ++i) {
 
-  this->subpartLimit = sp.subpartLimit;
+        v[i].reset_to_canonical_position();
+      }
+      p->update();
+    }
+
+    p->part = nullptr;
+
+    this->mPrimitives.push_back(p);
+  }
 }
 
 // ***  COPY / MOVE OPERATORS  *** //

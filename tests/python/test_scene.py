@@ -1622,6 +1622,70 @@ def test_scene_part_from_o3d_mesh_accepts_all_supported_mesh_attributes(o3d_mesh
     assert len(scene_part._cpp_object.primitives) > 0
 
 
+def test_survey_measurement_and_trajectory_positions_are_reproducible():
+    groundplane = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    )
+    cube = ScenePart.from_obj("data/sceneparts/toyblocks/sphere.obj")
+
+    scanner0 = scanner_from_name("riegl_vz_400")
+    platform0 = platform_from_name("tripod")
+
+    fwf_settings = FullWaveformSettings(
+        bin_size=0.1 * units.ns,
+    )
+
+    scanner_settings = ScannerSettings(
+        pulse_frequency=300_000 * units.Hz,
+        vertical_resolution=0.03 * units.deg,
+        horizontal_resolution=0.03 * units.deg,
+        min_vertical_angle=-40 * units.deg,
+        max_vertical_angle=60 * units.deg,
+    )
+
+    def run_survey(scene, scanner, platform):
+        survey = Survey(
+            scanner=scanner,
+            platform=platform,
+            scene=scene,
+            full_waveform_settings=fwf_settings,
+        )
+        survey.add_leg(
+            x=0,
+            y=-10,
+            z=0,
+            scanner_settings=scanner_settings,
+            rotation_start_angle=-45 * units.deg,
+            rotation_stop_angle=45 * units.deg,
+        )
+        return survey.run()
+
+    scene_0 = StaticScene([groundplane, cube])
+    meas0, traj0 = run_survey(scene_0, scanner0, platform0)
+
+    scene_1 = StaticScene([copy.deepcopy(groundplane), copy.deepcopy(cube)])
+    meas1, traj1 = run_survey(
+        scene_1,
+        copy.deepcopy(scanner0),
+        copy.deepcopy(platform0),
+    )
+
+    scene_2 = copy.deepcopy(scene_0)
+    meas2, traj2 = run_survey(
+        scene_2,
+        copy.deepcopy(scanner0),
+        copy.deepcopy(platform0),
+    )
+
+    assert len(meas0) == len(meas1) == len(meas2)
+    assert len(traj0) == len(traj1) == len(traj2)
+
+    assert np.allclose(meas0["position"][0], meas1["position"][0], rtol=1e-1, atol=1e-1)
+    assert np.allclose(meas0["position"][0], meas2["position"][0], rtol=1e-1, atol=1e-1)
+    assert np.allclose(traj0["position"][0], traj1["position"][0], rtol=1e-1, atol=1e-1)
+    assert np.allclose(traj0["position"][0], traj2["position"][0], rtol=1e-1, atol=1e-1)
+
+
 def test_take_vis_buffer_from_scene_part():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
     buffers = part._get_visualization_buffers()

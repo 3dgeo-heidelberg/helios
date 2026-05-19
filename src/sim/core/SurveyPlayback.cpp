@@ -213,7 +213,6 @@ SurveyPlayback::doSimStep()
   }
 
   trackProgress();
-
   // if(legProgress <= 20) // Profiling only (uncomment for profiling)
   Simulation::doSimStep();
   // else onLegComplete(); // Profiling only (uncomment for profiling)
@@ -288,17 +287,20 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
     return;
   }
 
-  ostringstream oss;
-  oss << "Starting leg " << legIndex << endl;
-  logging::INFO(oss.str());
   mLegStarted = false;
   mCurrentLegIndex = legIndex;
+  syncCurrentLegSerialId();
   legProgress = 0;
   legStartTime_ns =
     duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
   legElapsedTime_ns = nanoseconds::zero();
   legRemainingTime_ns = 0;
   shared_ptr<Leg> leg = getCurrentLeg();
+  ostringstream oss;
+  oss << "Starting leg with serial ID: " << leg->getSerialId() << " and role: "
+      << (leg->getRole() == Leg::LegRole::SOURCE     ? "SOURCE"
+          : leg->getRole() == Leg::LegRole::TELEPORT ? "TELEPORT"
+                                                     : "STOP");
 
   // Apply scanner settings:
   if (leg->mScannerSettings != nullptr) {
@@ -357,7 +359,10 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
           nextLeg->mPlatformSettings->getPosition());
       }
       stringstream ss;
-      ss << "Leg" << legIndex << " waypoints:\n"
+      ss << (leg->getRole() == Leg::LegRole::SOURCE     ? "SOURCE"
+             : leg->getRole() == Leg::LegRole::TELEPORT ? "TELEPORT"
+                                                        : "STOP")
+         << " Leg with serial ID:" << leg->getSerialId() << " waypoints:\n"
          << "\tOrigin: (" << platform->originWaypoint.x << ", "
          << platform->originWaypoint.y << ", " << platform->originWaypoint.z
          << ")\n"

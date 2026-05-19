@@ -65,6 +65,13 @@ public:
    */
   inline void appendStaticObject(std::shared_ptr<ScenePart> obj)
   {
+    if (obj == nullptr)
+      return;
+    for (Primitive* p : obj->mPrimitives) {
+      if (p == nullptr)
+        continue;
+      p->part = obj;
+    }
     staticObjs.push_back(obj);
   }
   /**

@@ -186,6 +186,10 @@ public:
   unsigned int mCurrentLegIndex = 0;
 
   /**
+   * @brief Serial ID of leg at current simulation stage
+   */
+  unsigned int currentLegSerialId = 65535; // Default value for "no leg"
+  /**
    * @brief Flag specifying if simulation output must be exported to a file
    *  (true) or not (false)
    */
@@ -418,4 +422,10 @@ public:
    * @see SimulationStepLoop
    */
   SimulationStepLoop& getStepLoop() { return stepLoop; }
+
+  int getCurrentLegSerialId() const
+  {
+    return currentLegSerialId == 65535 ? -1
+                                       : static_cast<int>(currentLegSerialId);
+  }
 };

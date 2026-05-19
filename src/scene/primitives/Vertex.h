@@ -1,10 +1,10 @@
 #pragma once
 
+#include "Color4f.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
+#include <optional>
 #include <ostream>
-
-#include "Color4f.h"
 
 /**
  * @brief Class representing a vertex
@@ -18,6 +18,10 @@ public:
    * @brief Vertex 3D position
    */
   glm::dvec3 pos;
+  /**
+   * @brief Original vertex position before translation to origin
+   */
+  std::optional<glm::dvec3> posOrigin;
   /**
    * @brief Vertex normal vector
    */
@@ -93,6 +97,17 @@ public:
    */
   inline double getZ() const { return this->pos.z; }
 
+  /**
+   * @brief Reset vertex position to its original position after copy
+   * @see Vertex::posOrigin
+   */
+  inline void reset_to_canonical_position()
+  {
+    if (posOrigin.has_value()) {
+      pos = *posOrigin;
+      posOrigin.reset();
+    }
+  }
   /**
    * @brief Compare if two vertex are equal
    *

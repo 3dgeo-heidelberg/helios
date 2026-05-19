@@ -8,6 +8,9 @@ Vertex::Vertex(const Vertex& v)
   this->normal = glm::dvec3(v.normal);
   this->color = Color4f(v.color);
   this->texcoords = glm::dvec2(v.texcoords);
+  if (v.posOrigin.has_value()) {
+    this->posOrigin = glm::dvec3(*v.posOrigin);
+  }
 }
 
 // ***  M E T H O D S  *** //

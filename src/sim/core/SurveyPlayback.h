@@ -236,6 +236,17 @@ public:
    */
   void stopAndTurn(unsigned int legIndex, std::shared_ptr<Leg> leg);
 
+  /**
+   * Specify the current leg index for a proper hook updates
+   */
+  void syncCurrentLegSerialId()
+  {
+    currentLegSerialId = (mCurrentLegIndex < mSurvey->legs.size() &&
+                          mSurvey->legs.at(mCurrentLegIndex))
+                           ? mSurvey->legs.at(mCurrentLegIndex)->getSerialId()
+                           : 65535;
+  }
+
   // ***  GETTERS and SETTERS  *** //
   // ***************************** //
   /**
