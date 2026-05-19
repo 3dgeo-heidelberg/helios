@@ -194,7 +194,7 @@ Simulation::emitLegStartHook()
     ctx.point = HookPoint::LEG_START;
     ctx.stepIndex = hookStepIndex;
     ctx.playIndex = hookPlayIndex;
-    ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+    ctx.legIndex = getCurrentLegSerialId();
     ctx.simTime_s = simTime_s;
     ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
     ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
@@ -230,7 +230,7 @@ Simulation::emitLegEndHook()
     ctx.point = HookPoint::LEG_END;
     ctx.stepIndex = hookStepIndex;
     ctx.playIndex = hookPlayIndex;
-    ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+    ctx.legIndex = getCurrentLegSerialId();
     ctx.simTime_s = simTime_s;
     ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
     ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
@@ -266,7 +266,7 @@ Simulation::emitTimedHooks(double simTime_s)
       ctx.point = HookPoint::SIM_TIME_ONCE;
       ctx.stepIndex = hookStepIndex;
       ctx.playIndex = hookPlayIndex;
-      ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+      ctx.legIndex = getCurrentLegSerialId();
       ctx.simTime_s = simTime_s;
       ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
       ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
@@ -293,7 +293,7 @@ Simulation::emitTimedHooks(double simTime_s)
       ctx.point = HookPoint::SIM_TIME_PERIODIC;
       ctx.stepIndex = hookStepIndex;
       ctx.playIndex = hookPlayIndex;
-      ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+      ctx.legIndex = getCurrentLegSerialId();
       ctx.simTime_s = simTime_s;
       ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
       ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);
@@ -345,7 +345,7 @@ Simulation::emitPeriodicTailHooks(double simTime_s)
       ctx.point = HookPoint::SIM_TIME_PERIODIC;
       ctx.stepIndex = hookStepIndex;
       ctx.playIndex = hookPlayIndex;
-      ctx.legIndex = static_cast<int>(mCurrentLegIndex);
+      ctx.legIndex = getCurrentLegSerialId();
       ctx.simTime_s = simTime_s;
       ctx.gpsTime_s = currentGpsTime_ns * 1e-9;
       ctx.outputPath = resolveMeasurementOutputPath(mScanner, exportToFile);

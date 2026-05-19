@@ -14,6 +14,12 @@ class ScanningStrip;
 class Leg
 {
 public:
+  enum class LegRole
+  {
+    SOURCE,
+    TELEPORT,
+    STOP
+  };
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**
@@ -38,6 +44,12 @@ public:
   bool wasProcessed{};
 
 private:
+  /**
+   * @brief The role of the leg. It is SOURCE by default, but it can be
+   *  TELEPORT or STOP when the leg is a teleport leg or a stop leg,
+   *  respectively.
+   */
+  LegRole role = LegRole::SOURCE;
   /**
    * @brief Distance to the next leg
    */
@@ -150,4 +162,18 @@ public:
    * @return True if the leg belongs to a strip, false otherwise
    */
   inline bool isContainedInAStrip() const { return strip != nullptr; }
+  /**
+   * @brief Get the leg's role
+   * * @return The leg's role
+   * @see Leg::role
+   * @see LegRole
+   */
+  inline LegRole getRole() const { return role; }
+  /**
+   * @brief Set the leg's role
+   * @param role The leg's new role
+   * @see Leg::role
+   * @see LegRole
+   */
+  inline void setRole(LegRole role) { this->role = role; }
 };

@@ -422,4 +422,10 @@ public:
    * @see SimulationStepLoop
    */
   SimulationStepLoop& getStepLoop() { return stepLoop; }
+
+  int getCurrentLegSerialId() const
+  {
+    return currentLegSerialId == 65535 ? -1
+                                       : static_cast<int>(currentLegSerialId);
+  }
 };

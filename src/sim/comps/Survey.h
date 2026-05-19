@@ -5,6 +5,7 @@
 #include <Leg.h>
 #include <Scanner.h>
 #include <Scene.h>
+#include <unordered_set>
 
 class SurveyPlayback;
 
@@ -116,4 +117,23 @@ public:
    * @see InterpolatedMovingPlatformEgg
    */
   void hatch(SurveyPlayback& sp);
+
+  int getNumUniqueLegSerialIds() const
+  {
+    std::unordered_set<int> ids;
+
+    for (auto const& leg : legs) {
+      if (leg == nullptr) {
+        continue;
+      }
+
+      int const serialId = leg->getSerialId();
+
+      if (serialId >= 0) {
+        ids.insert(serialId);
+      }
+    }
+
+    return static_cast<int>(ids.size());
+  }
 };
