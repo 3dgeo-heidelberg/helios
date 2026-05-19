@@ -426,6 +426,7 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
       }
       // Insert stop leg
       std::shared_ptr<Leg> stopLeg = std::make_shared<Leg>(*leg);
+      stopLeg->setRole(Leg::LegRole::STOP);
       stopLeg->mScannerSettings =
         std::make_shared<ScannerSettings>(*leg->mScannerSettings);
       stopLeg->mScannerSettings->active = false;
@@ -439,6 +440,7 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
       // Insert teleport to start leg (after stop leg), if requested
       if (leg->mTrajectorySettings->teleportToStart) {
         std::shared_ptr<Leg> startLeg = std::make_shared<Leg>(*stopLeg);
+        startLeg->setRole(Leg::LegRole::TELEPORT);
         startLeg->mPlatformSettings->x = leg->mPlatformSettings->x;
         startLeg->mPlatformSettings->y = leg->mPlatformSettings->y;
         startLeg->mPlatformSettings->z = leg->mPlatformSettings->z;

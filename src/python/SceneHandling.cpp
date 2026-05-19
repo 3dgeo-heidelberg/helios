@@ -350,6 +350,7 @@ makeInterpolatedShift(Survey& survey,
 
     // Insert stop leg
     auto stopLeg = std::make_shared<Leg>(leg);
+    stopLeg->setRole(Leg::LegRole::STOP);
     stopLeg->mScannerSettings =
       std::make_shared<ScannerSettings>(*leg.mScannerSettings);
     stopLeg->mScannerSettings->active = false;
@@ -365,6 +366,7 @@ makeInterpolatedShift(Survey& survey,
     // Insert teleport to start leg (after stop leg), if requested
     if (leg.mTrajectorySettings->teleportToStart) {
       auto startLeg = std::make_shared<Leg>(*stopLeg);
+      startLeg->setRole(Leg::LegRole::TELEPORT);
       startLeg->mPlatformSettings->x = leg.mPlatformSettings->x;
       startLeg->mPlatformSettings->y = leg.mPlatformSettings->y;
       startLeg->mPlatformSettings->z = leg.mPlatformSettings->z;
