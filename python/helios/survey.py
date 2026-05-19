@@ -208,10 +208,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.all_output_paths = np.empty((0,))
         self.scanner._cpp_object.all_measurements_mutex = None
+        num_source_legs = self._cpp_object.num_source_legs
 
         progressbar_callbacks, progressbar_controller = build_progressbar_callbacks(
             strategy=execution_settings.progressbar,
-            num_legs=len(self.legs),
+            num_legs=num_source_legs,
         )
         callbacks = callbacks + progressbar_callbacks
         if live_session is not None:

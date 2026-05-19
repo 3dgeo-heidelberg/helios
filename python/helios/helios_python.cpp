@@ -979,7 +979,10 @@ PYBIND11_MODULE(_helios, m)
       [](Survey& s) { return s.simSpeedFactor; },
       [](Survey& s, double simSpeedFactor) {
         s.simSpeedFactor = simSpeedFactor;
-      });
+      })
+    .def_property_readonly("num_source_legs", [](Survey& self) {
+      return self.getNumUniqueLegSerialIds();
+    });
 
   // The following properties exist for ease of use in the Python API.
   // A better solution would be to sort out object ownership on the C++
