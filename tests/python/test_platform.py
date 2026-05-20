@@ -1,7 +1,8 @@
 from helios.platforms import *
-from helios.scanner import riegl_vz_400
+from helios.scanner import *
 from helios.scene import ScenePart, StaticScene
 from helios.survey import *
+from helios.utils import *
 
 import copy
 import math
@@ -350,3 +351,102 @@ def test_trajectory_settings_clone_and_deepcopy():
         )
         assert points.shape[0] > 0
         assert trajectory.shape[0] > 0
+
+
+def make_dummy_trajectory():
+    traj = np.zeros(
+        4,
+        dtype=traj_csv_dtype,
+    )
+
+    traj["t"] = [0.0, 1.0, 2.0, 3.0]
+
+    traj["roll"] = np.radians([10.0, 20.0, 30.0, 40.0])
+    traj["pitch"] = np.radians([5.0, -10.0, 15.0, -20.0])
+    traj["yaw"] = np.radians([15.0, 35.0, -25.0, 60.0])
+
+    traj["x"] = [0.0, 10.0, 20.0, 30.0]
+    traj["y"] = [0.0, 0.0, 0.0, 0.0]
+    traj["z"] = [100.0, 100.0, 100.0, 100.0]
+
+    return traj
+
+
+def run_interpolated_survey(
+    *,
+    trajectory,
+    interpolation_method: str,
+):
+    scanner = scanner_from_name("riegl_lms_q560")
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene(scene_parts=[box])
+
+    platform = Platform.load_interpolate_platform(
+        trajectory=trajectory,
+        platform_file="data/platforms.xml",
+        platform_id="sr22",
+        sync_gps_time=True,
+        interpolation_method=interpolation_method,
+        is_roll_pitch_yaw_in_radians=True,
+    )
+
+    scanner_settings = ScannerSettings(
+        is_active=True,
+        pulse_frequency=10_000 * units.Hz,
+        scan_frequency=20 * units.Hz,
+        trajectory_time_interval=0.01,
+    )
+
+    trajectory_settings = TrajectorySettings(
+        start_time=0.0,
+        end_time=3.0,
+    )
+
+    survey = Survey(
+        scanner=scanner,
+        platform=platform,
+        scene=scene,
+    )
+
+    survey.add_leg(
+        scanner_settings=scanner_settings,
+        trajectory_settings=trajectory_settings,
+    )
+
+    points, traj = survey.run()
+    return points, traj
+
+
+def test_canonical_and_arinc_differ_for_mixed_roll_pitch_yaw():
+    trajectory = make_dummy_trajectory()
+
+    canonical_points, canonical_traj = run_interpolated_survey(
+        trajectory=trajectory,
+        interpolation_method="CANONICAL",
+    )
+
+    arinc_points, arinc_traj = run_interpolated_survey(
+        trajectory=trajectory,
+        interpolation_method="ARINC 705",
+    )
+
+    np.testing.assert_allclose(
+        canonical_traj["position"],
+        arinc_traj["position"],
+        rtol=0.0,
+        atol=1e-9,
+    )
+
+    assert not np.allclose(
+        canonical_points["beam_direction"][:2],
+        arinc_points["beam_direction"][:2],
+        rtol=1e-7,
+        atol=1e-9,
+    )
+
+    assert not np.allclose(
+        canonical_points["position"][:2],
+        arinc_points["position"][:2],
+        rtol=1e-7,
+        atol=1e-9,
+    )
