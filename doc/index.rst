@@ -12,5 +12,7 @@ Home
    python
    notebooks
    cli
+   research_using_helios
    pythonapi
    cppapi
+   
