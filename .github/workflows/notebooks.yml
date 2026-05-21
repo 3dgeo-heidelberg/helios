@@ -57,13 +57,13 @@ jobs:
 
       - name: Commit notebook updates
         run: |
-          if git diff --quiet -- doc/*.ipynb; then
+          if git diff --quiet -- example_notebooks/*.ipynb; then
             echo "No notebook changes to commit."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add doc/*.ipynb
+          git add example_notebooks/*.ipynb
           git commit -m "Refresh documentation notebooks"
           git push origin HEAD:${{ github.ref_name }}
