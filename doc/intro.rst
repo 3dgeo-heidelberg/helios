@@ -30,6 +30,7 @@ Conda installation
 The recommended way to install HELIOS is via the  `conda package manager`_.
 
 The following software is required for installation of HELIOS:
+
 * a Conda installation. We recommend `mamba`_, `micromamba`_, or `miniconda`_.
 
 HELIOS can then be installed with:
