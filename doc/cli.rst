@@ -65,7 +65,7 @@ Survey XML
 The survey XML file contains references to the components needed to build a simulation: The scene, the platform and the scanner. 
 It also contains waypoint information needed to define the scan positions or trajectory.
 
-Linking to the different components is done by specifying the absolute or relative path of the respective XML file in the <survey> tag, followed by a hash (#) and the ID of the entry:
+Linking to the different components is done by specifying the absolute or relative path of the respective XML file in the ``<survey>`` tag, followed by a hashtag (#) and the ID of the entry:
 
 .. code-block:: xml
 
@@ -74,7 +74,7 @@ Linking to the different components is done by specifying the absolute or relati
         scanner="data/scanners_als.xml#riegl_vq-880g"
         scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
 
-The platform attribute of the <survey> tag can also be set to "interpolated".
+The ``platform``  attribute of the ``<survey>`` tag can also be set to "interpolated".
 In this case, the platform behavior will be defined by a function obtained through interpolation of given trajectory data, see :ref:`interpolated-trajectories`
 
 Scanner settings and platform settings

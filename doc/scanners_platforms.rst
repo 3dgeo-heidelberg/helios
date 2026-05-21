@@ -196,7 +196,7 @@ Static platforms
 Terrestrial laser scanning (TLS) simulations are conducted from static platforms, e.g., the `` tripod``. Per default, the ``tripod`` is mounted at a height of 1.5 m.
 Each leg is considered a single scan position.
 
-Note that for static surveys, the `` force_on_ground`` parameter (``onGround`` in the survey XML) comes in handy.
+Note that for static surveys, the ``force_on_ground`` parameter (``onGround`` in the survey XML) comes in handy.
 It forces the platform to be placed at ground level, where the ground is defined via the material properties.
 
 Dynamic platforms

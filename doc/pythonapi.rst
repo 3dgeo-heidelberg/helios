@@ -103,3 +103,10 @@ Utils
 .. autoapifunction:: helios.combine_parameters
 
 .. autoapifunction:: helios.utils.set_rng_seed
+
+Validation
+----------
+
+.. autoapiclass:: helios.validation.Model
+   :members:
+

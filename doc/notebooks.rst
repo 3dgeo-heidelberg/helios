@@ -12,7 +12,7 @@ These demo notebooks showcase various simulation scenarios.
    04-uls_toyblocks
    05-als_hd_demo
    06-als_hd_height_above_ground
-   07_tls-sphere_xyzloader
+   07-tls_sphere_xyzloader
    08-als_uls_detailed_voxel
    09-tls_livox_demo
    10-uls_toyblocks_livox
