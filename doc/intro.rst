@@ -1,7 +1,7 @@
 Introduction
 ============
 
-HELIOS (*H*eidelberg *LI*DAR *O*perations *S*imulator) is a general-purpose Python package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
+HELIOS (\ **H**\ eidelberg **LI**\ DAR **O**\ perations **S**\ imulator) is a general-purpose Python package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the `3DGeo Research Group`_ at Heidelberg University.
 
 This documentation contains the full HELIOS documentation, including API references and notebook-based examples.
@@ -28,10 +28,7 @@ Conda installation
 ^^^^^^^^^^^^^^^^^^
 
 The recommended way to install HELIOS is via the  `conda package manager`_.
-
-The following software is required for installation of HELIOS:
-
-* a Conda installation. We recommend `mamba`_, `micromamba`_, or `miniconda`_.
+As conda installer, we recommend `mamba`_, `micromamba`_, or `miniconda`_.
 
 HELIOS can then be installed with:
 
