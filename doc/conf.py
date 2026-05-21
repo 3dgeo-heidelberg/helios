@@ -9,7 +9,7 @@ from pybtex.style.formatting import toplevel
 from pybtex.style.formatting.plain import Style as PlainStyle
 from pybtex.style.formatting.unsrt import pages
 from pybtex.style.sorting import BaseSortingStyle
-from pybtex.style.template import field, join, names, optional, optional_field, sentence, tag
+from pybtex.style.template import field, join, names, optional, optional_field, sentence, tag, words
 
 from importlib import metadata as importlib_metadata
 
@@ -123,6 +123,71 @@ class ApaStyle(PlainStyle):
                 self.format_edition(e),
             ],
             optional[sentence[self.format_isbn(e)]],
+            sentence[optional_field("note")],
+            self.format_web_refs(e),
+        ]
+
+    def get_inproceedings_template(self, e):
+        return toplevel[
+            self.format_names("author"),
+            join["(", field("year"), ")."],
+            self.format_title(e, "title"),
+            words[
+                "In",
+                sentence[
+                    optional[self.format_editor(e, as_sentence=False)],
+                    self.format_btitle(e, "booktitle", as_sentence=False),
+                    self.format_volume_and_series(e, as_sentence=False),
+                    optional[pages],
+                ],
+            ],
+            sentence[
+                optional_field("publisher"),
+                optional_field("address"),
+                self.format_edition(e),
+            ],
+            sentence[optional_field("note")],
+            self.format_web_refs(e),
+        ]
+
+    def get_incollection_template(self, e):
+        return toplevel[
+            self.format_names("author"),
+            join["(", field("year"), ")."],
+            self.format_title(e, "title"),
+            words[
+                "In",
+                sentence[
+                    optional[self.format_editor(e, as_sentence=False)],
+                    self.format_btitle(e, "booktitle", as_sentence=False),
+                    self.format_volume_and_series(e, as_sentence=False),
+                    self.format_chapter_and_pages(e),
+                ],
+            ],
+            sentence[
+                optional_field("publisher"),
+                optional_field("address"),
+                self.format_edition(e),
+            ],
+            sentence[optional_field("note")],
+            self.format_web_refs(e),
+        ]
+
+    def get_misc_template(self, e):
+        return toplevel[
+            optional[sentence[self.format_names("author")]],
+            join["(", field("year"), ")."],
+            optional[self.format_title(e, "title")],
+            sentence[
+                optional[words[
+                    optional_field("archiveprefix"),
+                    "preprint",
+                    field("eprint"),
+                    optional["[", field("primaryclass"), "]"],
+                ]],
+                optional_field("howpublished"),
+                optional_field("publisher"),
+            ],
             sentence[optional_field("note")],
             self.format_web_refs(e),
         ]
