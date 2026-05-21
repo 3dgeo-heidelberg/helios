@@ -42,7 +42,7 @@ jobs:
 
       - name: Install notebook execution dependencies
         run: |
-          conda install -y -c conda-forge ipykernel nbconvert lxml-html-clean
+          conda install -y -c conda-forge ipykernel nbconvert lxml-html-clean ipywidgets
 
       - name: Install Helios
         run: |
