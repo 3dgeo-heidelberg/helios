@@ -7,6 +7,7 @@ from helios.scanner import (
     riegl_vq_1560i,
     riegl_vz_400,
     vlp16,
+    livox_mid100,
 )
 from helios.scene import ScenePart, StaticScene
 from helios.settings import (
@@ -138,6 +139,36 @@ def light_als_multiscanner_survey():
         leg.scanner_settings.pulse_frequency = 2000
         leg.scanner_settings.scan_frequency = 20
         leg.scanner_settings.trajectory_time_interval = 0.2
+    return survey
+
+
+@pytest.fixture(scope="session")
+def light_als_multiscanner_survey_py():
+    platform = sr22()
+    scanner = livox_mid100()
+    groundplane = helios.ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj").scale(70).translate([20, 0, 0])
+    cube = helios.ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    cube2 = helios.ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj").rotate(axis=(0, 0, 1), angle=45 * helios.units.deg).scale(0.5).translate([-45, 10, 10])
+    scene = StaticScene(scene_parts=[groundplane, cube, cube2])
+    survey = helios.Survey(scanner=scanner, platform=platform, scene=scene)
+    positions = [
+        (-30, -50, 100, 1),
+        (70, -50, 100, 0),
+        (70, 0, 100, 1),
+        (-30, 0, 100, 0),
+    ]
+    for x, y, z, active in positions:
+        survey.add_leg(
+            x=x,
+            y=y,
+            z=z,
+            pulse_frequency=2000,
+            scan_angle="20 deg",
+            scan_frequency=20,
+            trajectory_time_interval=0.2,
+            speed_m_s=30,
+            is_active=active,
+        )
     return survey
 
 
