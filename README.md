@@ -100,7 +100,7 @@ BibTeX:
 
 ## 🎮 Examples
 
-### XML demos
+### Demo Notebooks
 |                                                                                                                                                      |   |
 |------------------------------------------------------------------------------------------------------------------------------------------------------|---|
 | [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/1-tls_arbaro.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/2-mls_wheat.ipynb)            |
@@ -114,35 +114,20 @@ BibTeX:
 [![Example 17](img/example17_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/17-dji-zenmuse-l2_demo.ipynb) |  |
 
 
-
-
-### pyhelios
-|                                                                                                                                                      |   |
-|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Tutorial I](img/tutorial_I_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/I-getting-started.ipynb)   | [![Tutorial II](img/tutorial_II_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/II-the-survey.ipynb)            |
-| [![Tutorial III](img/tutorial_III_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/III-pyhelios_sim_and_vis.ipynb)   | [![Tutorial IV](img/tutorial_IV_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/IV-live_trajectory_plot.ipynb)            |
-
-
-### Further examples
-
-|                                                                                                                                                      |   |
-|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/A-arboretum_notebook.ipynb)   |             |
-
-
-
-
-
 ## ⌨ Usage
 
-HELIOS++ can be invoked with following syntax:
+### Python API
+
+The recommended way to use HELIOS++ is via Python, as documented on ReadTheDocs: https://heliospp.readthedocs.io/
+
+
+### Command line interface
+
+From the command line, HELIOS++ can be invoked with following syntax:
 
 ```
 helios --help
     Show the help for helios++ usage
-
-helios --test
-    Perform necessary tests to check everything works as expected
     
 helios --version
     Show the HELIOS++ version details
@@ -152,129 +137,10 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
     NOTICE specifying the path to the survey specification file is mandatory
 ```
 
-```
-Available general OPTIONAL ARGUMENTS are:
-
-        --assets <directory_path>
-            Specify the path to assets directory/directories
-            To specify multiple paths, duplicate the argument, 
-            e.g. --assets path/one --assets path/two
-        --output <directory_path>
-            Specify the path to output directory
-        --splitByChannel
-            Enable the one-file-per-device writing mode when using a
-            multi-channel scanner
-        --writeWaveform
-            Specify the full waveform must be written
-        --writePulse
-            Specify pulse-wise data must be written
-        --calcEchowidth
-            Specify the full waveform must be fitted
-        --fullwaveNoise
-            Enable random noise at full waveform computation
-        --fixedIncidenceAngle
-            Sets incidence angle to exactly 1.0 for all intersections
-        --seed <seed>
-            Specify the seed to be used for randomness generation.
-            The seed can be an integer number, a decimal number or a timestamp
-            string with format "YYYY-mm-DD HH:MM:SS"
-        --gpsStartTime <string>
-            Specify the GPS start time. By default it is an empty string "",
-            which means using current system time.
-            It can be given as both, a posix timestamp as string or a datetime
-            string with format "YYYY-MM-DD hh:mm:ss"
-        --lasOutput
-            Specify the output point cloud must be generated using LAS format
-        --las10
-            Specify to write in LAS format v1.0
-        --zipOutput
-            Specify the output point cloud and fullwave must be zipped
-        --lasScale
-            Specify the scale factor used to generate LAS output
-        --parallelization <integer>
-            Specify the parallelization strategy. Where 0 leads to a simple
-            static/dynamic chunk based strategy and 1 leads to a warehouse
-            based strategy
-        -j OR --njobs OR --nthreads <integer>
-            Specify the number of simultaneous threads to be used to compute
-            the simulation
-            If it is not specified or it is specified as 0, then all available
-            threads will be used to compute the simulation
-        --chunkSize <integer>
-            Specify the chunk size. If it is positive, it will be used as a
-            fixed size but if it is negative the absolute value will be used
-            as starting size of a dynamic chunk-size based strategy.
-        --warehouseFactor <integer>
-            The number of tasks in the warehouse would be k times the number
-            of workers. Greater factor implies less probability of idle cores
-            at expenses of greater memory consumption.
-        --rebuildScene
-            Force scene rebuild even when a previosly built scene is available
-        --noSceneWriting
-            Prevent scene from being written to .scene file.
-        --kdt <integer>
-            Specify the type of KDTree to be built for the scene.
-            Using 1 leads to the simple KDTree based on median balancing,
-            2 to the SAH based KDTree, 3 for the SAH with best axis criteria
-            and 4 (the default) to the fast approximation of SAH
-        --kdtJobs <integer>
-            Specify the number of threads to be used for building the KDTree.
-            Using 1 forces sequential building, 0 as many threads as available
-            cores and n>1 implies using exactly n threads.
-            Using more cores than required might degrade performance due to
-            overhead.
-        --kdtGeomJobs <integer>
-            Specify the number of threads to be used for upper levels of
-            KDTree building.
-            By default it is 0, which means as many jobs as --kdtJobs
-            Using 1, means no geometry-level parallelization will be used when
-            building the KDTree
-            Using >1, means exactly n threads will be used at geometry-level
-            KDTree building
-        --sahNodes <integer>
-            Either how many nodes must be used by the Surface Area Heuristic
-            or the number of bins for the fast approximation of SAH
-        --disablePlatformNoise
-            Disable platform noise, no matter what is specified on XML files
-        --disableLegNoise
-            Disable leg noise, no matter what is specified on XML files
-
-    Available logging verbosity OPTIONAL ARGUMENTS are:
-        --silent
-            Nothing will be reported
-        -q OR --quiet
-            Only errors will be reported
-        -vt
-            Time and errors will be reported
-        -v
-            Errors, information and warnings will be reported
-        -vv OR -v2
-            Everything will be reported
-        IF NONE IS SPECIFIED
-            Errors and information will be reported by default
-
-    Available logging output mode OPTIONAL ARGUMENTS are:
-        --logFile
-            Reports will be emitted through standard output and output file
-        --logFileOnly
-            Reports will be emitted through output file only
-        IF NONE IS SPECIFIED
-            Reports will be emitted through standard output only
-
-    Unzip compressed output:
-        --unzip <input_path> <output_path>
-            When helios++ is executed with --zipOutput flag, output files are
-            compressed. They can be decompressed using --unzip.
-            The path to a readable helios++ compressed output file must be
-            given through input path.
-            The path to a writable file/location must be given through
-            output path.
-```
-
-The demo simulation can be executed as follows:
+Example to run the arboretum demo survey:
 
 ```
-helios data/surveys/demo/tls_arbaro_demo.xml
+helios data/surveys/demo/tls_arbaro_demo.xml --format laz
 ```
 
 ## :gift: Related projects and Contributions
