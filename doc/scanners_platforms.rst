@@ -70,18 +70,32 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
 
 **Deflector**:
 
-- ``optics``: Laser beam deflector. The supported deflectors are:
+- ``scanAngleMax_deg``: Maximum possible scan angle [deg], defined as half-angle. For conic ("Palmer-") scanners, this parameter determines the half-opening angle of the conical scan pattern.
+- ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``: Minimum and maximum values to define the possible scan frequency range [Hz]
+- ``optics``: Laser beam deflector. Supported deflectors and the deflector parameters that are used to define their patterns are listed below. Settings specific to a deflector type are marked as **specific**.
+
     - **(a)** rotating mirror (``rotating``)
-        - with the optional parameter ``scanAngleEffectiveMax_deg``
+        - ``scanAngleMax_deg``
+        - ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``
+        - ``scanAngleEffectiveMax_deg`` (**specific**): Effective maximum possible scan angle [deg]. If a data sheet provides an "effective measurement rate" different from the pulse repetition rate (PRR) (pulse frequency), obtain the ratio of PRR to effective measurement rate. Multiply the maximum scan angle (as in the data sheet) with this ratio to obtain the ``scanAngleMax_deg`` and supply the maximum scan angle (as in the data sheet) as ``scanAngleEffectiveMax_deg``. Background: For rotating mirrors, the actual output window might be smaller than the maximum output window. The reason not to utilize the full available angular domain is that the beam has a finite size, i.e., the spot on the mirror will not "jump" from one face of the deflector to the next - resulting in scattering in not-well defined directions. The available angular domain may further be contrained by occlusions, e.g., by the casing or mounting of the scanner.
     - **(b)** fiber array (``line``)
-        - with the optional parameter ``numFibers``
-    - **(c)** oscillating mirror (``oscillating``) 
-        - with the optional parameter ``scanProduct``. The maximum scan product determines the maximum scanner velocity. It is the product of the maximum scan rate and maximum scan angle, which are inversely proportional to each other (`Ussyshkin et al. 2008`_). 
+        - ``scanAngleMax_deg``
+        - ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``
+        - ``numFibers`` (**specific**): Number of fibers in the array.
+    - **(c)** oscillating mirror (``oscillating``)
+        - ``scanAngleMax_deg``
+        - ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``
+        - ``scanProduct`` (**specific**): The maximum scan product determines the maximum scanner velocity. It is the product of the maximum scan rate and maximum scan angle, which are inversely proportional to each other (`Ussyshkin et al. 2008`_). 
     - **(d)** conic mirror (``conic``)
-        - note that the parameter scan angle in the scanner settings of a survey XML is not used for this beam deflector because this scanner type does not have a selectable scan angle. The ``maxScanAngle_deg`` defined in the scanner XML is used as half-opening angle of the cone.
+        - ``scanAngleMax_deg``
+        - ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``
+        - **note**: the parameter scan angle in the scanner settings of a survey XML is not used for this beam deflector because this scanner type does not have a selectable scan angle. The ``maxScanAngle_deg`` defined in the scanner XML is used as half-opening angle of the cone.
     - **(e)** risley prims (``risley``)
-        - with the parameters ``rotorFreq1_Hz``, ``rotorFreq2_Hz`` and ``rotorFreq3_Hz``, i.e., the rotational speeds of the two prisms, ``angle1_deg``, ``angle2_deg`` and ``angle3_deg``, i.e., the prism angles, and ``refrIndex1``, ``refrIndex2``, ``refrIndex3`` and ``refrIndex_air``.
-        - note that the parameters ``scanFreq_Hz`` and ``scanAngle_deg`` are not used for this deflector.
+        - ``rotorFreq1_Hz``, ``rotorFreq2_Hz``, and ``rotorFreq3_Hz`` (**specific**): rotational speeds of the three prisms [Hz].
+        - ``angle1_deg``, ``angle2_deg``, and ``angle3_deg`` (**specific**): prism apex angles [deg].
+        - ``refrIndex1``, ``refrIndex2``, and ``refrIndex3`` (**specific**): refractive indices of the three prisms.
+        - ``refrIndex_air`` (**specific**): refractive index of air.
+        - **note**: the parameters ``scanFreq_Hz`` and ``scanAngle_deg`` are not used for this deflector.
 
 .. _Ussyshkin et al. 2008: https://www.isprs.org/proceedings/xxxvii/congress/1_pdf/30.pdf
 
@@ -94,10 +108,6 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
     :alt: Risley prism deflector
 
     Figure: Different scan patterns supported by HELIOS++.
-
-- ``scanAngleMax_deg``: Maximum possible scan angle [deg], defined as half-angle. For conic ("Palmer-") scanners, this parameter determines the half-opening angle of the conical scan pattern.
-- ``scanAngleEffectiveMax_deg``: Effective maximum possible scan angle [deg] - only for rotating mirrors. If a data sheet provides an "effective measurement rate" different from the pulse repetition rate (PRR) (pulse frequency), obtain the ratio of PRR to effective measurement rate. Multiply the maximum scan angle (as in the data sheet) with this ratio to obtain the ``scanAngleMax_deg`` and supply the maximum scan angle (as in the data sheet) as ``scanAngleEffectiveMax_deg``. Background: For rotating mirrors, the actual output window might be smaller than the maximum output window. The reason not to utilize the full available angular domain is that the beam has a finite size, i.e., the spot on the mirror will not "jump" from one face of the deflector to the next - resulting in scattering in not-well defined directions. The available angular domain may further be contrained by occlusions, e.g., by the casing or mounting of the scanner.
-- ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``: Minimum and maximum values to define the possible scan frequency range [Hz]
 
 
 **Detector**:
