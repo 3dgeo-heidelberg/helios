@@ -270,7 +270,7 @@ def test_survey_run_trajectory_for_all_scanner_types(light_als_multiscanner_surv
 
 
 # commented because this test is currently not working as intended
-#def test_full_waveform_settings_effect(light_als_multiscanner_survey):
+# def test_full_waveform_settings_effect(light_als_multiscanner_survey):
 #    points1, _ = light_als_multiscanner_survey.run(format=OutputFormat.NPY)
 #
 #    light_als_multiscanner_survey.full_waveform_settings.beam_sample_quality = 5
