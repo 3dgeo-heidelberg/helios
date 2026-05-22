@@ -111,10 +111,6 @@ SCANNER_REGISTRY: dict[str, tuple[str, str]] = {
     "riegl_vq_1560i": ("data/scanners_als.xml", "riegl_vq-1560i"),
     "livox_mid70": ("data/scanners_als.xml", "livox_mid-70"),
     "livox_mid100": ("data/scanners_als.xml", "livox-mid-100"),
-    "livox_mid100a": ("data/scanners_als.xml", "livox-mid-100a"),
-    "livox_mid100b": ("data/scanners_als.xml", "livox-mid-100b"),
-    "livox_mid100c": ("data/scanners_als.xml", "livox-mid-100c"),
-    "livox_mid100c": ("data/scanners_als.xml", "livox-mid-100c"),
     "dji_zenmuse_l2_repetitive": ("data/scanners_als.xml", "dji-zenmuse-l2-repetitive"),
     "dji_zenmuse_l2_non_repetitive": (
         "data/scanners_als.xml",
