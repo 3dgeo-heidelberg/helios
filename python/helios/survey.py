@@ -97,7 +97,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     """
     The main class representing the survey. It combines all the information about the survey, including the scanner, platform.
     Legs can be added using the `add_leg` method. The survey can be executed using the `run` method.
-    
+
     :param scanner: The scanner to use for the survey.
     :param platform: The platform to use for the survey.
     :param scene: The scene to use for the survey.
@@ -113,7 +113,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     :type gps_time: datetime
     :type full_waveform_settings: FullWaveformSettings
     """
-    
+
     scanner: Scanner
     platform: Platform
     scene: StaticScene
@@ -132,7 +132,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         **parameters,
     ):
         """
-        Run the survey with the given execution and output settings. 
+        Run the survey with the given execution and output settings.
         The settings can be provided as class instances or directly as the individual parameters of those classes.
 
         :param execution_settings: The execution settings to use for the survey.
@@ -402,7 +402,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         survey_file: AssetPath,
     ):
         """Construct the survey object from an XML file.
-        
+
         :param survey_file: The path to the XML file containing the survey definition. The XML file should conform to the schema defined in "xsd/survey.xsd".
         :type survey_file: AssetPath
         """

@@ -55,6 +55,7 @@ class ScannerSettings(ScannerSettingsBase):
     :type vertical_resolution: Angle
     :type horizontal_resolution: Angle
     """
+
     is_active: bool = True
     head_rotation: AngleVelocity = 0
     rotation_start_angle: Angle = 0
@@ -103,7 +104,7 @@ class Scanner(Model, cpp_class=_helios.Scanner):
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
         """Classmethod to load a scanner from an XML file. The XML file should conform to the schema defined in "xsd/scanner.xsd". The scanner_id parameter can be used to specify which scanner to load if the XML file contains multiple scanners. The method validates the XML file against the schema before loading the scanner.
-        
+
         :param scanner_file: The path to the XML file containing the scanner definition.
         :param scanner_id: The ID of the scanner to load from the XML file.
         :type scanner_file: AssetPath
@@ -174,7 +175,7 @@ SCANNER_REGISTRY: dict[str, tuple[str, str]] = {
 
 def list_scanners() -> list[str]:
     """List all predefined scanner names.
-    
+
     :return: A list of all predefined scanner names that can be used to create scanners with `scanner_from_name()`.
     :rtype: list[str]
     """

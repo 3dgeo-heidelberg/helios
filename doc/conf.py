@@ -9,7 +9,16 @@ from pybtex.style.formatting import toplevel
 from pybtex.style.formatting.plain import Style as PlainStyle
 from pybtex.style.formatting.unsrt import pages
 from pybtex.style.sorting import BaseSortingStyle
-from pybtex.style.template import field, join, names, optional, optional_field, sentence, tag, words
+from pybtex.style.template import (
+    field,
+    join,
+    names,
+    optional,
+    optional_field,
+    sentence,
+    tag,
+    words,
+)
 
 from importlib import metadata as importlib_metadata
 
@@ -44,7 +53,7 @@ extensions = [
     "nbsphinx_link",
     "sphinx_mdinclude",
     "sphinx_rtd_theme",
-    "sphinxcontrib.bibtex"
+    "sphinxcontrib.bibtex",
 ]
 
 autoapi_dirs = ["../python/helios"]
@@ -52,8 +61,7 @@ autoapi_add_toctree_entry = False
 autoapi_generate_api_docs = False
 autoapi_keep_files = True
 
-bibtex_bibfiles = ["refs.bib",
-                   "refs_using_helios.bib"]
+bibtex_bibfiles = ["refs.bib", "refs_using_helios.bib"]
 bibtex_default_style = "apa"
 
 templates_path = []
@@ -179,12 +187,14 @@ class ApaStyle(PlainStyle):
             join["(", field("year"), ")."],
             optional[self.format_title(e, "title")],
             sentence[
-                optional[words[
-                    optional_field("archiveprefix"),
-                    "preprint",
-                    field("eprint"),
-                    optional["[", field("primaryclass"), "]"],
-                ]],
+                optional[
+                    words[
+                        optional_field("archiveprefix"),
+                        "preprint",
+                        field("eprint"),
+                        optional["[", field("primaryclass"), "]"],
+                    ]
+                ],
                 optional_field("howpublished"),
                 optional_field("publisher"),
             ],
@@ -218,5 +228,7 @@ class YearDescendingSortingStyle(BaseSortingStyle):
 
 class ApaRecentStyle(ApaStyle):
     default_sorting_style = "year_desc"
+
+
 register_plugin("pybtex.style.sorting", "year_desc", YearDescendingSortingStyle)
 register_plugin("pybtex.style.formatting", "apa_recent", ApaRecentStyle)

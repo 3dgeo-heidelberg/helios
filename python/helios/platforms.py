@@ -100,7 +100,7 @@ def load_traj_csv(
     :type yawIndex: int
     :type trajectory_separator: str
     :type rpy_in_radians: bool
-    
+
     :return: A structured numpy array with fields 't', 'x', 'y', 'z', 'roll', 'pitch', 'yaw'. 'roll', 'pitch', and 'yaw' are in radians.
     """
 
@@ -135,11 +135,12 @@ class PlatformSettingsBase(
 
 class TrajectorySettings(PlatformSettingsBase, cpp_class=_helios.TrajectorySettings):
     """Class representing the settings for a trajectory. These can be set for each leg of a survey and are applied to the trajectory loaded in the `Platform` instance
-    
+
     :param start_time: The time in seconds at which the trajectory starts. This is used to select a subset of the trajectory to be used for the leg by GPS time.
     :param end_time: The time in seconds at which the trajectory ends. This is used to select a subset of the trajectory to be used for the leg by GPS time.
     :param teleport_to_start: Whether to teleport to the start of the trajectory at the beginning of the leg. If false, the platform will start at the position of the end of the previous leg. If true, the platform will be teleported to the start of the trajectory at the beginning of the leg.
     """
+
     start_time: float = 0
     end_time: float = 0
     teleport_to_start: bool = False
@@ -260,7 +261,7 @@ PLATFORM_REGISTRY: dict[str, tuple[str, str]] = {
 
 def list_platforms() -> list[str]:
     """List all predefined platform names.
-    
+
     :return: A list of all predefined platform names that can be used to create platforms with `platform_from_name()`.
     :rtype: list[str]
     """
@@ -270,7 +271,7 @@ def list_platforms() -> list[str]:
 @validate_call
 def platform_from_name(platform_name: str) -> Platform:
     """Create a predefined platform by its string name.
-    
+
     :param platform_name: The name of the predefined platform to create. Use `list_platforms()` to see all available platforms.
     :type platform_name: str
 

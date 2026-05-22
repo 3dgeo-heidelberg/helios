@@ -8,7 +8,6 @@ import _helios
 
 
 class Leg(Model, cpp_class=_helios.Leg):
-
     """
     Class representing a leg of a survey. A leg is a combination of platform settings (defining the platform position and, if moving, the speed),
     scanner settings and trajectory settings.

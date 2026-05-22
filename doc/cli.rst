@@ -504,4 +504,3 @@ Furthermore, voxel material also supports uniform randomization. For this, a num
 Read more about materials including custom HELIOS parameters on the page :doc:`Full waveform and intensity modelling <../intensity_fwf>`.
 
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/
-

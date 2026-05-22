@@ -68,6 +68,7 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
     :type diffuse_components: NDArray[Shape["4"], np.float64]
     :type specular_components: NDArray[Shape["4"], np.float64]
     """
+
     name: str = ""
     is_ground: bool = False
     spectra: str = ""
@@ -157,6 +158,7 @@ class BoundingBox(Model, cpp_class=_helios.AABB):
     """
     Class representing an axis-aligned bounding box. Used for representing the bounds of scene parts and scenes.
     """
+
     @property
     def bounds(self) -> tuple[R3Vector, R3Vector]:
         """The lower left and upper right corner of the bounding box."""
@@ -180,6 +182,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     :param force_on_ground: The strategy to use for forcing the scene part on the ground. This is used to position legs with 'force_on_ground' strategy on the ground level of the scene.
     :type force_on_ground: Union[ForceOnGroundStrategy, PositiveInt]
     """
+
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
@@ -192,7 +195,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @property
     def materials(self) -> MaterialDict:
         """Dictionary-like access to materials in the scene part.
-        
+
         :return: A dictionary-like object for accessing and modifying materials in the scene part via their names.
         :rtype: MaterialDict
         """
@@ -211,7 +214,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Rotate the scene part.
 
         The rotation can be specified as one of the following parameters:
-        
+
         * A quaternion
         * An axis and an angle
         * An origin and an image vector
@@ -288,7 +291,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @validate_call
     def scale(self, factor: PositiveFloat):
         """Scale the scene part by a factor.
-        
+
         :param factor: The factor to scale the scene part by.
         :type factor: PositiveFloat
         """
@@ -300,7 +303,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @validate_call
     def translate(self, offset: R3Vector):
         """Translate the scene part by an offset.
-        
+
         :param offset: The offset to translate the scene part by.
         :type offset: R3Vector
         """
@@ -360,12 +363,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @validate_call
     def from_tiff(cls, tiff_file: AssetPath):
         """Load the scene part from a TIFF file.
-        
+
         For paths (potentially) containing wildcards, use 'ScenePart.from_tiffs()' instead!
-        
+
         :param tiff_file: The path to the TIFF file to load the scene part from.
         :type tiff_file: AssetPath
-        
+
         :return: The loaded scene part.
         :rtype: ScenePart
         """
@@ -436,7 +439,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     ):
         """
         Load the scene part from an XYZ file.
-        
+
         :param xyz_file: The path to the XYZ file to load the scene part from. Can potentially contain wildcards ('*').
         :param voxel_size: The voxel size to use for voxelizing the XYZ point cloud so that it can be converted to a 3D model with surfaces that can be scanned.
         :param separator: The separator used in the XYZ file. If not provided, the separator will be automatically detected.
@@ -575,7 +578,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         ladlut_path: Optional[str] = None,
     ):
         """Load the scene part from a VOX file.
-        
+
         :param vox_file: The path to the VOX file to load the scene part from.
         :param intersection_mode: The mode to use for calculating the intersection of rays with the voxels ['transmittive', 'fixed', 'scaled'].
         :param intersection_argument: Scaling factor; only used for intersection mode 'scaled'.
@@ -808,10 +811,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     def from_open3d(cls, geometry, **kwargs):
         """
         Load the scene part from an Open3D geometry.
-        The geometry can be either an open3d.geometry.TriangleMesh or an open3d.geometry.PointCloud. 
+        The geometry can be either an open3d.geometry.TriangleMesh or an open3d.geometry.PointCloud.
         In case of a triangle mesh, the behaviour is similar to 'ScenePart.from_obj()', in case of a point cloud, the behaviour is similar to 'ScenePart.from_xyz()' and the provided point cloud data will be voxelized.
         See below for the specific additional parameters that can be provided for each geometry type.
-                
+
         :param geometry: The Open3D geometry to load the scene part from.
         :type geometry: open3d.geometry.TriangleMesh | open3d.geometry.PointCloud
         :param kwargs: Additional parameters to use for loading the scene part, depending on the provided geometry:
@@ -926,10 +929,11 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
     """Class representing a static scene. A scene is composed of multiple scene parts, which can be transformed independently and have different materials.
-    
+
     :param scene_parts: The scene parts that make up the scene.
     :type scene_parts: Tuple[ScenePart, ...]
     """
+
     scene_parts: Tuple[ScenePart, ...] = ()
 
     @property
@@ -939,7 +943,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
     def add_scene_part(self, scene_part: ScenePart):
         """Add a scene part to the scene.
-        
+
         :param scene_part: The scene part to add to the scene.
         :type scene_part: ScenePart
         """
@@ -985,7 +989,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     @validate_call
     def from_xml(cls, scene_file: AssetPath):
         """Load the scene from an XML file.
-        
+
         :param scene_file: The path to the XML file to load the scene from.
         :type scene_file: AssetPath
         """

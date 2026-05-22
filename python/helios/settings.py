@@ -27,12 +27,13 @@ else:
 
 class ParallelizationStrategy(IntEnum):
     """Enum representing the parallelization strategy to use for processing the survey.
-    
+
     See also: https://doi.org/10.1109/ACCESS.2022.3211072
     """
+
     CHUNK = 0
     """chunk"""
-    
+
     WAREHOUSE = 1
     """warehouse"""
 
@@ -41,21 +42,22 @@ class LogVerbosity(IntEnum):
     """
     Enum representing the logging verbosity level to use for processing the survey.
     """
+
     SILENT = 0b000000
     "No logging output will be produced."
-    
+
     QUIET = 0b100000
     "Only error messages will be logged."
-    
+
     TIME = 0b101000
     "Log timing information."
-    
+
     DEFAULT = 0b111000
     "Default logging level."
-    
+
     VERBOSE = 0b111100
     "Verbose logging output."
-    
+
     VERY_VERBOSE = 0b111111
     "Very verbose logging output."
 
@@ -77,19 +79,19 @@ class LogVerbosity(IntEnum):
 
 class KDTreeFactoryType(IntEnum):
     """Enum representing the type of KDTree factory to use for building the KDTree.
-    
+
     See also: https://doi.org/10.1109/ACCESS.2022.3211072
     """
-    
+
     SIMPLE = 1
     """Simple KDTree based on median balancing"""
-    
+
     SAH = 2
     """Surface Area Heuristic (SAH) based KDTree"""
 
     SAH_BEST_AXIS = 3
     """SAH based KDTree with best axis criteria"""
-    
+
     SAH_APPROXIMATION = 4
     """fast approximation of SAH based KDTree (default)"""
 
@@ -98,6 +100,7 @@ class OutputFormat(StrEnum):
     """
     Enum representing the output format to use for writing the point clouds.
     """
+
     LAS = "las"
     """LAS format (v1.4)."""
     LAZ = "laz"
@@ -165,6 +168,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     :type sah_nodes: PositiveInt
     :type discard_shutdown: bool
     """
+
     parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
     num_threads: ThreadCount = None
     chunk_size: PositiveInt = 32
@@ -197,6 +201,7 @@ class OutputSettings(Model, UpdateableMixin):
     :type write_pulse: bool
     :type las_scale: Length
     """
+
     format: OutputFormat = OutputFormat.NPY
     split_by_channel: bool = False
     output_dir: CreatedDirectory = "output"
@@ -207,7 +212,7 @@ class OutputSettings(Model, UpdateableMixin):
 
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     """Class representing the settings for full waveform processing.
-    
+
     :param bin_size: The size of the bins to use for full waveform processing in seconds. Default is 0.25 ns.
     :param beam_sample_quality: The beam sample quality to use for full waveform processing. Default is 3.
     :param win_size: The size of the window to use for full waveform processing in seconds. Default is 1.0 ns.
@@ -217,6 +222,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     :type win_size: TimeInterval
     :type max_fullwave_range: TimeInterval
     """
+
     bin_size: TimeInterval = 0.25 * units.ns
     beam_sample_quality: PositiveInt = 3
     win_size: TimeInterval = 1.0 * units.ns

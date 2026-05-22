@@ -297,6 +297,7 @@ def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters
 
     return result
 
+
 def display_xml(path, item=None):
     """
     Utility function to display the content of an XML file or a specific item within it.
@@ -310,7 +311,6 @@ def display_xml(path, item=None):
     for e in tree:
         if "id" in e.attrib and e.attrib["id"] == item:
             return ET.tostring(e, encoding="unicode")
-
 
 
 @validate_call
