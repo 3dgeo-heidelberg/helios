@@ -137,9 +137,13 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         :param execution_settings: The execution settings to use for the survey.
         :param output_settings: The output settings to use for the survey.
+        :param callbacks: The callbacks to use for the survey execution.
+        :param live: Whether to use a live viewer for the survey execution. If True, a LiveViewer instance will be created and used. If False, no live viewer will be used. If a LiveViewer instance is provided, it will be used.
         :param parameters: Individual parameters to set on the execution and output settings. These will override the settings provided in the execution_settings and output_settings parameters.
         :type execution_settings: Optional[ExecutionSettings]
         :type output_settings: Optional[OutputSettings]
+        :type callbacks: Optional[Sequence[SurveyHook]]
+        :type live: bool | LiveViewer
         """
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
