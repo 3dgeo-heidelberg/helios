@@ -5,7 +5,7 @@ on:
   # With the alpha-doc branch merged, this could be removed entirely or changed to a different trigger.
   push:
     branches:
-      - alpha-doc
+      - alpha-dev
   workflow_dispatch:
 
 permissions:
