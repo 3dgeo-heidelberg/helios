@@ -101,10 +101,10 @@ The received amplitude is derived from the LiDAR equation, considering the follo
    .. math::
       I = I_0 \exp\left(-\frac{2r^2}{w^2}\right)
 
-   This model follows `Carlsson et al., 2001`_.
+   This model follows :cite:t:`Carlsson.2001`.
 
 2. **Material reflectance**  
-   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BDRF) (Phong, 1975). 
+   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BDRF) :cite:p:`Phong.1975`. 
 
 3. **Target cross section**  
    The effective cross section is computed based on the area illuminated by the subray and the local incidence angle.
@@ -127,7 +127,7 @@ where:
 - :math:`t_\tau = t / \tau`,
 - :math:`\tau = \text{pulseLength} / 1.75`.
 
-This function produces the characteristic pulse shape used in the simulation (`Carlsson et al., 2001`_):
+This function produces the characteristic pulse shape used in the simulation :cite:p:`Carlsson.2001`:
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
@@ -309,7 +309,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    .. math::
       \text{BDRF}_r = \rho \cdot BDRF(\varphi, \text{spec}, N_s)
 
-   where :math:`BDRF` follows the formulation by `Jutzi & Gross (2009) <https://doi.org/10.24406/publica-fhg-362664>`_:
+   where :math:`BDRF` follows the formulation by :cite:t:`JutziGross.2022`:
 
    .. math::
       BDRF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
@@ -329,14 +329,14 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 2. **Lidar Cross Section Calculation**
 
-   The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following `Wagner (2010) <https://doi.org/10.1016/j.isprsjprs.2010.06.007>`_, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
+   The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following :cite:p:`Wagner.2010`, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
 
    .. math::
       \sigma = 4\pi \cdot \text{BDRF}_r \cdot A \cdot \cos(\varphi)
 
 3. **Received Intensity via Lidar-Radar Equation**
 
-   The received intensity :math:`I` is computed using the lidar-radar equation, including atmospheric attenuation (`Carlsson et al., 2001`_):
+   The received intensity :math:`I` is computed using the lidar-radar equation, including atmospheric attenuation :cite:p:`Carlsson.2001`:
 
    .. math::
       I = \frac{I_0 \cdot D_r^2 \cdot \eta_{\text{sys}} \cdot \sigma}{4\pi \cdot R^4 \cdot B_t^2 \cdot \exp\left( \frac{2\pi^2 r^2 w_0^2}{\lambda^2 (R_0^2 + R^2)} + 2 R a_e \right)} \cdot 10^9
@@ -369,4 +369,10 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
    where :math:`V_M` is the atmospheric visibility.
 
-.. _Carlsson et al., 2001: https://www.foi.se/rest-api/report/FOI-R--0163--SE
+
+References
+----------
+
+.. bibliography:: refs.bib
+   :style: apa_recent
+   :filter: docname in docnames

@@ -62,7 +62,10 @@ autoapi_generate_api_docs = False
 autoapi_keep_files = True
 
 bibtex_bibfiles = ["refs.bib", "refs_using_helios.bib"]
-bibtex_default_style = "apa"
+bibtex_reference_style = "author_year"
+bibtex_foot_reference_style = "author_year"
+
+suppress_warnings = ["bibtex.duplicate_label"]
 
 templates_path = []
 exclude_patterns = ["_build"]

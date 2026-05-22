@@ -85,7 +85,7 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
     - **(c)** oscillating mirror (``oscillating``)
         - ``scanAngleMax_deg``
         - ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``
-        - ``scanProduct`` (**specific**): The maximum scan product determines the maximum scanner velocity. It is the product of the maximum scan rate and maximum scan angle, which are inversely proportional to each other (`Ussyshkin et al. 2008`_). 
+        - ``scanProduct`` (**specific**): The maximum scan product determines the maximum scanner velocity. It is the product of the maximum scan rate and maximum scan angle, which are inversely proportional to each other :cite:p:`Ussyshkin.2008`. 
     - **(d)** conic mirror (``conic``)
         - ``scanAngleMax_deg``
         - ``scanFreqMin_Hz`` and ``scanFreqMax_Hz``
@@ -97,7 +97,6 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
         - ``refrIndex_air`` (**specific**): refractive index of air.
         - **note**: the parameters ``scanFreq_Hz`` and ``scanAngle_deg`` are not used for this deflector.
 
-.. _Ussyshkin et al. 2008: https://www.isprs.org/proceedings/xxxvii/congress/1_pdf/30.pdf
 
 .. figure:: img/deflectors.png
     :align: center
@@ -152,9 +151,9 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
 
   and is assumed to occur at the minimum range (as defined in the scanner configuration). Do not confuse with ``beamSampleQuality``, which defines the number of subrays used (default: 1.0).
 
-- ``opticalEfficiency``: Efficiency of the scanner, i.e. :math:`\eta_{\text{Sys}}` in the LiDAR equation (Höfle & Pfeifer, 2007) (default: 0.99).
+- ``opticalEfficiency``: Efficiency of the scanner, i.e. :math:`\eta_{\text{Sys}}` in the LiDAR equation :cite:p:`HoeflePfeifer.2007` (default: 0.99).
 
-- ``atmosphericVisibility_km``: Used to calculate atmospheric attenuation, i.e. :math:`\eta_{\text{Atm}}`, following Carlsson et al. (2001). The calculation depends on the scanner's wavelength (default: 23.0 km).
+- ``atmosphericVisibility_km``: Used to calculate atmospheric attenuation, i.e. :math:`\eta_{\text{Atm}}`, following :cite:t:`Carlsson.2001`. The calculation depends on the scanner's wavelength (default: 23.0 km).
 
 - ``receiverDiameter_m``: Unused parameter (default: 0.15 m).
 
@@ -221,6 +220,7 @@ For more complex trajectories, interpolated trajectories can be used as demonstr
 - `13-interpolated_trajectory <13-interpolated_trajectory.ipynb>`_
 
 .. _scanner-mount:
+
 Scanner mount
 ^^^^^^^^^^^^^^
 
@@ -324,3 +324,10 @@ Note that an **additional rotation** is applied in the scanner's ``beamOrigin`` 
 We suggest to use the ``beamOrigin`` rotation to point the scanner downwards and scan left-to-right (as this is the most common usecase) and the ``scannerMount`` (which is applied thereafter) for specialized mounts such as 23° off-nadir for airborne bathymetry (although this is usually solved by using a conical scan pattern with an opening angle of 46°).
 
 It is also possible to specify platform noise, which is described in :doc:`Error sources and randomness control <error_randomness>`.
+
+References
+----------
+
+.. bibliography:: refs.bib
+   :style: apa_recent
+   :filter: docname in docnames
