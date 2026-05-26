@@ -94,6 +94,26 @@ def _resolve_live_session(live):
 
 
 class Survey(Model, cpp_class=_helios.Survey):
+    """
+    The main class representing the survey. It combines all the information about the survey, including the scanner, platform.
+    Legs can be added using the `add_leg` method. The survey can be executed using the `run` method.
+
+    :param scanner: The scanner to use for the survey.
+    :param platform: The platform to use for the survey.
+    :param scene: The scene to use for the survey.
+    :param legs: The legs to use for the survey. Legs can also be added using the `add_leg` method.
+    :param name: The name of the survey.
+    :param gps_time: The GPS start time for the survey. If none is specified, the current time will be used.
+    :param full_waveform_settings: The settings for the full waveform recording. If none is specified, the default settings will be used.
+    :type scanner: Scanner
+    :type platform: Platform
+    :type scene: StaticScene
+    :type legs: Tuple[Leg, ...]
+    :type name: str
+    :type gps_time: datetime
+    :type full_waveform_settings: FullWaveformSettings
+    """
+
     scanner: Scanner
     platform: Platform
     scene: StaticScene
@@ -111,6 +131,20 @@ class Survey(Model, cpp_class=_helios.Survey):
         live: bool | LiveViewer = False,
         **parameters,
     ):
+        """
+        Run the survey with the given execution and output settings.
+        The settings can be provided as class instances or directly as the individual parameters of those classes.
+
+        :param execution_settings: The execution settings to use for the survey.
+        :param output_settings: The output settings to use for the survey.
+        :param callbacks: The callbacks to use for the survey execution.
+        :param live: Whether to use a live viewer for the survey execution. If True, a LiveViewer instance will be created and used. If False, no live viewer will be used. If a LiveViewer instance is provided, it will be used.
+        :param parameters: Individual parameters to set on the execution and output settings. These will override the settings provided in the execution_settings and output_settings parameters.
+        :type execution_settings: Optional[ExecutionSettings]
+        :type output_settings: Optional[OutputSettings]
+        :type callbacks: Optional[Sequence[SurveyHook]]
+        :type live: bool | LiveViewer
+        """
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
         # Update the settings to use
@@ -298,6 +332,17 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         It can either be already constructed or it will be constructed
         from the provided settings.
+
+        The settings can be provided as class instances or directly as the individual parameters of those classes.
+
+        :param leg: The leg to add. If none is specified, a leg will be constructed from the provided settings.
+        :param platform_settings: The settings for the platform for this leg.
+        :param scanner_settings: The settings for the scanner for this leg.
+        :param trajectory_settings: The settings for the trajectory for this leg.
+        :type leg: Optional[Leg]
+        :type platform_settings: Optional[PlatformSettings]
+        :type scanner_settings: Optional[ScannerSettings]
+        :type trajectory_settings: Optional[TrajectorySettings]
         """
 
         copy_platform_settings = (
@@ -356,7 +401,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         cls,
         survey_file: AssetPath,
     ):
-        """Construct the survey object from an XML file."""
+        """Construct the survey object from an XML file.
+
+        :param survey_file: The path to the XML file containing the survey definition. The XML file should conform to the schema defined in "xsd/survey.xsd".
+        :type survey_file: AssetPath
+        """
 
         # Validate the XML
         validate_xml_file(survey_file, "xsd/survey.xsd")

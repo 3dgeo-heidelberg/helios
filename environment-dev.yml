@@ -33,6 +33,8 @@ dependencies:
   - zlib
   # These are additional ones only used in development builds
   - pcl
+  # These dependency are used in the example notebooks provided
+  - rasterio
   # The following packages are not dependencies, but required
   # for development workflows e.g. local testing
   - doxygen
