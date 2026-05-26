@@ -334,7 +334,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @classonlymethod
     @validate_call
     def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
-        """Load the scene part from an OBJ file.
+        """
+        Load the scene part from an OBJ file.
 
         For paths (potentially) containing wildcards, use 'ScenePart.from_objs()' instead!
 
