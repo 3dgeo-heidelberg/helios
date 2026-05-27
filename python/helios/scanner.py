@@ -41,6 +41,8 @@ class ScannerSettings(ScannerSettingsBase):
     :param trajectory_time_interval: The time interval in seconds at which the trajectory points are written.
     :param vertical_resolution: The vertical resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
     :param horizontal_resolution: The horizontal resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
+    :param max_duration: The maximum simulated duration of the leg in seconds.
+    :param optics_warmup_phase: The simulated optics warmup phase in seconds before the first pulse.
     :type is_active: bool
     :type head_rotation: AngleVelocity
     :type rotation_start_angle: Angle
@@ -54,6 +56,8 @@ class ScannerSettings(ScannerSettingsBase):
     :type trajectory_time_interval: TimeInterval
     :type vertical_resolution: Angle
     :type horizontal_resolution: Angle
+    :type max_duration: TimeInterval
+    :type optics_warmup_phase: TimeInterval
     """
 
     is_active: bool = True
@@ -69,6 +73,8 @@ class ScannerSettings(ScannerSettingsBase):
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Angle = 0
     horizontal_resolution: Angle = 0
+    max_duration: TimeInterval = 0
+    optics_warmup_phase: TimeInterval = 0
 
 
 # TODO: Requires expert input
