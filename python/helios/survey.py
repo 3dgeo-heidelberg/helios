@@ -388,7 +388,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                 leg.scanner_settings.update_from_object(copy_scanner_settings)
             if trajectory_settings is not None:
                 leg.trajectory_settings.update_from_object(copy_trajectory_settings)
-                
+
         if max_duration is not None:
             leg.scanner_settings.max_duration = max_duration
         # Update with the rest of the given parameters
