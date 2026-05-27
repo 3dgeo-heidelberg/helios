@@ -1160,6 +1160,8 @@ PYBIND11_MODULE(_helios, m)
                    &ScannerSettings::verticalResolution_rad)
     .def_readwrite("horizontal_resolution",
                    &ScannerSettings::horizontalResolution_rad)
+    .def_readwrite("max_duration", &ScannerSettings::maxDuration_s)
+    .def_readwrite("optics_warmup_phase", &ScannerSettings::opticsWarmupPhase_s)
 
     .def_property_readonly("base_template",
                            &ScannerSettings::getTemplate,
