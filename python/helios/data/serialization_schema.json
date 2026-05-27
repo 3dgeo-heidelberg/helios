@@ -670,7 +670,9 @@
         "beam_divergence_angle": {},
         "trajectory_time_interval": {},
         "vertical_resolution": {},
-        "horizontal_resolution": {}
+        "horizontal_resolution": {},
+        "max_duration": {},
+        "optics_warmup_phase": {}
       }
     },
     "fields_helios_scanner_ScannerSettingsBase": {
