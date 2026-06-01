@@ -44,7 +44,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
@@ -116,7 +116,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
