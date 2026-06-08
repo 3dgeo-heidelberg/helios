@@ -450,3 +450,41 @@ def test_canonical_and_arinc_differ_for_mixed_roll_pitch_yaw():
         rtol=1e-7,
         atol=1e-9,
     )
+
+
+def expected_position_from_input(input_traj, t):
+    matches = input_traj[np.isclose(input_traj["t"], t, rtol=0.0, atol=1e-12)]
+    assert len(matches) == 1
+
+    row = matches[0]
+    return np.array([row["x"], row["y"], row["z"]], dtype=float)
+
+
+@pytest.mark.parametrize("interpolation_method", ["CANONICAL", "ARINC 705"])
+def test_interpolated_trajectory_positions_match_input_at_frontier_times(
+    interpolation_method,
+):
+    trajectory = make_dummy_trajectory()
+
+    _, output_traj = run_interpolated_survey(
+        trajectory=trajectory,
+        interpolation_method=interpolation_method,
+    )
+
+    for t in [0.0, 1.0, 2.0]:
+        idx = np.argmin(np.abs(output_traj["gps_time"] - t))
+        actual = output_traj[idx]
+
+        np.testing.assert_allclose(
+            actual["gps_time"],
+            t,
+            rtol=0.0,
+            atol=2e-4,
+        )
+
+        np.testing.assert_allclose(
+            actual["position"],
+            expected_position_from_input(trajectory, t),
+            rtol=0.0,
+            atol=2e-3,
+        )
