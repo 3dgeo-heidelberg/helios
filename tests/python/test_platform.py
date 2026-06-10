@@ -148,9 +148,7 @@ def test_load_csv_traj_reordering():
         "x",
         "y",
         "z",
-    ), (
-        f"Expected names: ('t', 'roll', 'pitch', 'yaw', 'x', 'y', 'z'), got {trajectory.dtype.names}"
-    )
+    ), f"Expected names: ('t', 'roll', 'pitch', 'yaw', 'x', 'y', 'z'), got {trajectory.dtype.names}"
 
 
 def test_load_interpolate_platform_invalid_id():
