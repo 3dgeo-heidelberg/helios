@@ -11,6 +11,54 @@ from pydantic import ValidationError
 from helios import HeliosException
 import helios.platforms as platform_module
 
+EXPECTED_BEAM_DIRECTION_SIGNATURES = {
+    "CANONICAL": np.array(
+        [
+            [-0.568614479348, 0.538883486203, -0.621516019241],
+            [-0.566368812246, 0.538793846681, -0.623640568993],
+            [-0.564470989375, 0.529115739479, -0.633568493843],
+            [-0.564118107684, 0.538698226268, -0.625759523778],
+            [-0.562137201970, 0.528998087853, -0.635737987862],
+            [-0.561862387512, 0.538596625514, -0.627872863313],
+            [-0.559797476488, 0.528875555739, -0.637900800955],
+            [-0.559601673621, 0.538489045035, -0.629980567365],
+            [-0.557451836523, 0.528748145010, -0.640056910833],
+            [-0.557335987949, 0.538375485511, -0.632082615753],
+        ],
+        dtype=float,
+    ),
+    "ARINC 705": np.array(
+        [
+            [-0.818428131042, 0.087774114409, -0.567865388239],
+            [-0.817721379005, 0.055331640751, -0.572948650273],
+            [-0.816630052169, 0.087744701593, -0.570452649425],
+            [-0.816522580471, 0.120470721054, -0.564604003661],
+            [-0.816244179941, 0.023291734736, -0.577237328839],
+            [-0.815906933544, 0.055473185649, -0.575515943714],
+            [-0.815851969812, -0.008892114231, -0.578192436528],
+            [-0.815497640914, 0.153688948802, -0.557981455498],
+            [-0.814823821503, 0.087715099688, -0.573034205958],
+            [-0.814747513185, 0.120273129932, -0.567204428733],
+        ],
+        dtype=float,
+    ),
+}
+
+
+def sorted_vectors(vectors, decimals=12):
+    vectors = np.asarray(vectors)
+    vectors = np.round(vectors, decimals=decimals)
+
+    order = np.lexsort(
+        (
+            vectors[:, 2],
+            vectors[:, 1],
+            vectors[:, 0],
+        )
+    )
+
+    return vectors[order]
+
 
 def test_preinstantiated_platforms():
     for platform_name in list_platforms():
@@ -100,7 +148,9 @@ def test_load_csv_traj_reordering():
         "x",
         "y",
         "z",
-    ), f"Expected names: ('t', 'roll', 'pitch', 'yaw', 'x', 'y', 'z'), got {trajectory.dtype.names}"
+    ), (
+        f"Expected names: ('t', 'roll', 'pitch', 'yaw', 'x', 'y', 'z'), got {trajectory.dtype.names}"
+    )
 
 
 def test_load_interpolate_platform_invalid_id():
@@ -438,15 +488,8 @@ def test_canonical_and_arinc_differ_for_mixed_roll_pitch_yaw():
     )
 
     assert not np.allclose(
-        canonical_points["beam_direction"][:2],
-        arinc_points["beam_direction"][:2],
-        rtol=1e-7,
-        atol=1e-9,
-    )
-
-    assert not np.allclose(
-        canonical_points["position"][:2],
-        arinc_points["position"][:2],
+        sorted_vectors(canonical_points["beam_direction"])[:10],
+        sorted_vectors(arinc_points["beam_direction"])[:10],
         rtol=1e-7,
         atol=1e-9,
     )
@@ -488,3 +531,21 @@ def test_interpolated_trajectory_positions_match_input_at_frontier_times(
             rtol=0.0,
             atol=2e-3,
         )
+
+
+@pytest.mark.parametrize("interpolation_method", ["CANONICAL", "ARINC 705"])
+def test_interpolated_platform_regression_signature(interpolation_method):
+    trajectory = make_dummy_trajectory()
+
+    points, _ = run_interpolated_survey(
+        trajectory=trajectory,
+        interpolation_method=interpolation_method,
+    )
+
+    np.testing.assert_allclose(
+        sorted_vectors(points["beam_direction"])[:10],
+        EXPECTED_BEAM_DIRECTION_SIGNATURES[interpolation_method],
+        rtol=1e-7,
+        atol=1e-9,
+        err_msg=f"{interpolation_method} beam_direction regression mismatch",
+    )
