@@ -40,7 +40,6 @@ from helios.utils import (
 from helios.validation import (
     AssetPath,
     Model,
-    TimeInterval,
     validate_xml_file,
 )
 from helios.live import LiveViewer
@@ -327,7 +326,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         platform_settings: Optional[PlatformSettings] = None,
         scanner_settings: Optional[ScannerSettings] = None,
         trajectory_settings: Optional[TrajectorySettings] = None,
-        max_duration: Optional[TimeInterval] = None,
         **parameters,
     ):
         """Add a new leg to the survey.
@@ -341,12 +339,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         :param platform_settings: The settings for the platform for this leg.
         :param scanner_settings: The settings for the scanner for this leg.
         :param trajectory_settings: The settings for the trajectory for this leg.
-        :param max_duration: The maximum simulated duration of this leg.
         :type leg: Optional[Leg]
         :type platform_settings: Optional[PlatformSettings]
         :type scanner_settings: Optional[ScannerSettings]
         :type trajectory_settings: Optional[TrajectorySettings]
-        :type max_duration: Optional[TimeInterval]
         """
 
         copy_platform_settings = (
@@ -389,8 +385,6 @@ class Survey(Model, cpp_class=_helios.Survey):
             if trajectory_settings is not None:
                 leg.trajectory_settings.update_from_object(copy_trajectory_settings)
 
-        if max_duration is not None:
-            leg.scanner_settings.max_duration = max_duration
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
