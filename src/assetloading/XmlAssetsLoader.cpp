@@ -1724,7 +1724,7 @@ XmlAssetsLoader::makeDefaultTemplates()
   defaultScannerTemplate->verticalAngleMin_rad = NAN;
   defaultScannerTemplate->verticalAngleMax_rad = NAN;
   defaultScannerTemplate->scanFreq_Hz = 0;
-  defaultScannerTemplate->maxDuration_s = -1.0;
+  defaultScannerTemplate->maxDuration_s = 0.0;
   defaultScannerTemplate->opticsWarmupPhase_s = 0.0;
 
   // Make default platform settings template

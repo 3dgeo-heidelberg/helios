@@ -303,8 +303,8 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
                                                      : "STOP");
 
   getScanner()->setMaxDuration(
-    -1.0); // Reset maxDuration_s at the beginning of each leg, to avoid
-           // unintended carryover from previous leg
+    0.0); // Reset maxDuration_s at the beginning of each leg, to avoid
+          // unintended carryover from previous leg
   // Apply scanner settings:
   if (leg->mScannerSettings != nullptr) {
     mSurvey->scanner->applySettings(leg->mScannerSettings);

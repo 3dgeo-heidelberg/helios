@@ -75,7 +75,7 @@ protected:
    * When a scanner is not active, it is not sensing
    */
   bool state_isActive = true;
-  double maxDuration_s = -1.0;
+  double maxDuration_s = 0.0;
 
 public:
   Scanner(...);

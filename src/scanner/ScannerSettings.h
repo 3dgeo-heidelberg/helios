@@ -80,7 +80,7 @@ public:
   /**
    * @brief Optional maximum duration (seconds) for a leg; <=0 disables
    */
-  double maxDuration_s = -1.0;
+  double maxDuration_s = 0.0;
   /**
    * @brief Optional warmup phase (seconds) applied before the first pulse.
    * Deflectors that support this can initialize their internal simulation
