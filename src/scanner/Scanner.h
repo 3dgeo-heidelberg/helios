@@ -75,17 +75,18 @@ protected:
    * When a scanner is not active, it is not sensing
    */
   bool state_isActive = true;
-  bool maxTimeElapsed(double currentGpsTime_ns, double startGpsTime_ns);
-  double maxDuration_s = -1.0;
+  double maxDuration_s = 0.0;
 
 public:
   Scanner(...);
   virtual ~Scanner();
 
   void applySettings(...);
-  bool checkMaxTimeElapsed(double currentGpsTime_ns, double startGpsTime_ns)
+  bool checkMaxTimeElapsed(double currentGpsTime_ns,
+                           double startGpsTime_ns) const
   {
-    return maxTimeElapsed(currentGpsTime_ns, startGpsTime_ns);
+    return hasMaxDuration() &&
+           ((currentGpsTime_ns - startGpsTime_ns) * 1e-9 >= maxDuration_s);
   }
 
   /**
@@ -517,8 +518,12 @@ public:
   // *************************** //
 
 public:
+  /** @brief Getter, setter and checker for maxDuration_s.
+   * @see Scanner::maxDuration_s
+   */
   void setMaxDuration(double v) { maxDuration_s = v; }
   double getMaxDuration() const { return maxDuration_s; }
+  bool hasMaxDuration() const { return maxDuration_s > 0.0; }
 
   /**
    * @brief Obtain the requested scanning device.
