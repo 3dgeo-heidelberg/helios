@@ -176,13 +176,7 @@ XmlSurveyLoader::createLegFromXML(
     XmlUtils::getAttributeCast<double>(legNode, "maxDuration_s", -1.0);
 
   if (maxDuration > 0.0) {
-
-    // Ensure trajectory settings exist
-    if (!leg->mTrajectorySettings)
-      leg->mTrajectorySettings = std::make_shared<TrajectorySettings>();
-
-    // Store in trajectory
-    leg->mTrajectorySettings->maxDuration_s = maxDuration;
+    leg->mScannerSettings->maxDuration_s = maxDuration;
   }
 
   return leg;

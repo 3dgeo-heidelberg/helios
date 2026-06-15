@@ -306,14 +306,10 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   if (leg->mScannerSettings != nullptr) {
     mSurvey->scanner->applySettings(leg->mScannerSettings);
   }
-  // Apply maxDuration_s to scanner (prefer trajectory override, then scanner
-  // settings)
+  // Apply maxDuration_s to scanner
   double maxDuration_s = -1.0;
-  if (leg->mTrajectorySettings != nullptr &&
-      leg->mTrajectorySettings->maxDuration_s > 0.0) {
-    maxDuration_s = leg->mTrajectorySettings->maxDuration_s;
-  } else if (leg->mScannerSettings != nullptr &&
-             leg->mScannerSettings->maxDuration_s > 0.0) {
+  if (leg->mScannerSettings != nullptr &&
+      leg->mScannerSettings->maxDuration_s > 0.0) {
     maxDuration_s = leg->mScannerSettings->maxDuration_s;
   }
   getScanner()->setMaxDuration(maxDuration_s);
