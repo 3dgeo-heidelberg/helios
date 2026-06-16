@@ -151,3 +151,22 @@ def test_specialized_scanner_settings_clone_and_deepcopy(settings_cls):
         assert isinstance(copied, settings_cls)
         assert copied._cpp_object is not settings._cpp_object
         assert not hasattr(copied, "runtime_note")
+
+
+def test_scanner_settings_max_duration_from_xml():
+    survey = Survey.from_xml("data/surveys/demo/tls_livox.xml")
+    points, _ = survey.run()
+    assert points.shape[0] > 0
+    leg1_duration = (
+        points[points["point_source_id"] == 0][-1]["gps_time"]
+        - points[points["point_source_id"] == 0][0]["gps_time"]
+    )
+    leg2_duration = (
+        points[points["point_source_id"] == 1][-1]["gps_time"]
+        - points[points["point_source_id"] == 1][0]["gps_time"]
+    )
+    # for leg1 maxDuration_s is set to 0.2 in the xml, so the duration should be around that
+    assert leg1_duration < 0.2 and leg1_duration > 0.18
+    assert (
+        leg2_duration != leg1_duration
+    )  # leg2 should not be affected by leg1's maxDuration_s
