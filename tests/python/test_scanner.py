@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 
 import helios.scanner as scanner_module
-from helios.platforms import tripod
+from helios.platforms import tripod, PlatformSettings
 from helios.scene import ScenePart, StaticScene
 from helios.settings import ExecutionSettings, OutputFormat
 from helios.scanner import *
@@ -170,3 +170,31 @@ def test_scanner_settings_max_duration_from_xml():
     assert (
         leg2_duration != leg1_duration
     )  # leg2 should not be affected by leg1's maxDuration_s
+
+
+def test_scanner_settings_max_duration_manual():
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene([box])
+    scanner = scanner_from_name("livox_mid40")
+    platform = tripod()
+    plat_set1 = PlatformSettings(x=0, y=0, z=0)
+    plat_set2 = PlatformSettings(x=0, y=0, z=0)
+    scan_set1 = ScannerSettings(pulse_frequency=100000, max_duration=0.4)
+    scan_set2 = ScannerSettings(pulse_frequency=100000, max_duration=5.2)
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey.add_leg(scanner_settings=scan_set1, platform_settings=plat_set1)
+    survey.add_leg(scanner_settings=scan_set2, platform_settings=plat_set2)
+    points, _ = survey.run()
+    assert points.shape[0] > 0
+    leg1_duration = (
+        points[points["point_source_id"] == 0][-1]["gps_time"]
+        - points[points["point_source_id"] == 0][0]["gps_time"]
+    )
+    leg2_duration = (
+        points[points["point_source_id"] == 1][-1]["gps_time"]
+        - points[points["point_source_id"] == 1][0]["gps_time"]
+    )
+
+    assert leg1_duration < 0.4 and leg1_duration > 0.38
+    assert leg2_duration != leg1_duration
+    assert leg2_duration > 5.0
