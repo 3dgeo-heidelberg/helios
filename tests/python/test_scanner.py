@@ -294,7 +294,12 @@ def test_optics_warmup_phase(case):
     scan_set1 = ScannerSettings(
         **settings, optics_warmup_phase=0.002, max_duration=0.01
     )
-    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene1, gps_time="2022-01-01 00:00:00")
+    survey1 = Survey(
+        scanner=scanner1,
+        platform=platform1,
+        scene=scene1,
+        gps_time="2022-01-01 00:00:00",
+    )
     survey1.add_leg(scanner_settings=scan_set1, platform_settings=plat_set1)
 
     box2 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
@@ -303,7 +308,12 @@ def test_optics_warmup_phase(case):
     platform2 = tripod()
     plat_set2 = StaticPlatformSettings(x=0, y=0, z=0, force_on_ground=False)
     scan_set2 = ScannerSettings(**settings, optics_warmup_phase=0, max_duration=0.012)
-    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2, gps_time="2022-01-01 00:00:00")
+    survey2 = Survey(
+        scanner=scanner2,
+        platform=platform2,
+        scene=scene2,
+        gps_time="2022-01-01 00:00:00",
+    )
     survey2.add_leg(scanner_settings=scan_set2, platform_settings=plat_set2)
 
     points_warmup, _ = survey1.run()
@@ -342,9 +352,11 @@ def test_optics_warmup_phase(case):
         point_warmup = points_warmup[idx]["position"]
         point_nowarmup = points_nowarmup_clipped[idx]["position"]
         distance = np.linalg.norm(
-            [point_warmup[0] - point_nowarmup[0],
-             point_warmup[1] - point_nowarmup[1],
-             point_warmup[2] - point_nowarmup[2]]
+            [
+                point_warmup[0] - point_nowarmup[0],
+                point_warmup[1] - point_nowarmup[1],
+                point_warmup[2] - point_nowarmup[2],
+            ]
         )
         # mild distance threshold to account for ranging noise (see device accuracy_m)
         assert distance < 0.1
