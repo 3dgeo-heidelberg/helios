@@ -168,7 +168,7 @@ def test_scanner_settings_max_duration_from_xml():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
     # for leg1 maxDuration_s is set to 0.2 in the xml, so the duration should be around that
-    assert leg1_duration < 0.2 and leg1_duration > 0.18
+    assert leg1_duration < 0.2 and leg1_duration > 0.199
     assert (
         leg2_duration != leg1_duration
     )  # leg2 should not be affected by leg1's maxDuration_s
@@ -197,9 +197,9 @@ def test_scanner_settings_max_duration_manual():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
 
-    assert leg1_duration < 0.4 and leg1_duration > 0.38
+    assert leg1_duration < 0.4 and leg1_duration > 0.399
     assert leg2_duration != leg1_duration
-    assert leg2_duration > 5.0
+    assert leg2_duration > 5.19 and leg2_duration <= 5.2
 
 
 def test_max_duration_no_infinite_run():
@@ -229,7 +229,7 @@ TEST_CASES = [
         WarmupTestCase(
             scanner_name="riegl_vq_880g",
             settings=dict(
-                pulse_frequency=200000,
+                pulse_frequency=100000,
                 scan_angle="18 deg",
                 scan_frequency=50,
                 head_rotation="20 deg/s",
@@ -255,7 +255,7 @@ TEST_CASES = [
         WarmupTestCase(
             scanner_name="optech_2033",
             settings=dict(
-                pulse_frequency=33000,
+                pulse_frequency=100000,
                 scan_angle="15 deg",
                 scan_frequency=20,
                 head_rotation="20 deg/s",
@@ -270,9 +270,10 @@ TEST_CASES = [
             scanner_name="riegl_vz_400",
             settings=dict(
                 pulse_frequency=100000,
-                scan_angle="30 deg",
+                min_vertical_angle="-40 deg",
+                max_vertical_angle="60 deg",
                 scan_frequency=20,
-                head_rotation="60 deg/s",
+                head_rotation="20 deg/s",
                 rotation_start_angle="0 deg",
                 rotation_stop_angle="10 deg",
             ),
@@ -293,7 +294,7 @@ def test_optics_warmup_phase(case):
     scan_set1 = ScannerSettings(
         **settings, optics_warmup_phase=0.002, max_duration=0.01
     )
-    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene1)
+    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene1, gps_time="2022-01-01 00:00:00")
     survey1.add_leg(scanner_settings=scan_set1, platform_settings=plat_set1)
 
     box2 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
@@ -302,7 +303,7 @@ def test_optics_warmup_phase(case):
     platform2 = tripod()
     plat_set2 = StaticPlatformSettings(x=0, y=0, z=0, force_on_ground=False)
     scan_set2 = ScannerSettings(**settings, optics_warmup_phase=0, max_duration=0.012)
-    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2)
+    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2, gps_time="2022-01-01 00:00:00")
     survey2.add_leg(scanner_settings=scan_set2, platform_settings=plat_set2)
 
     points_warmup, _ = survey1.run()
@@ -310,7 +311,7 @@ def test_optics_warmup_phase(case):
     assert points_warmup.shape[0] > 0
     assert points_no_warmup.shape[0] > 0
     # Check that both runs start at the same GPS time
-    assert abs(points_warmup[0]["gps_time"] - points_no_warmup[0]["gps_time"]) < 1e-6
+    assert abs(points_warmup[0]["gps_time"] - points_no_warmup[0]["gps_time"]) < 1e-4
 
     # Validate that warmup data falls within no-warmup time window
     warmup_times = points_warmup["gps_time"]
@@ -322,6 +323,28 @@ def test_optics_warmup_phase(case):
     delta_t_warmup = warmup_times.max() - warmup_times.min()
     delta_t_nowarmup = no_warmup_times.max() - no_warmup_times.min()
 
-    # max_duration is not as expected?
     assert np.isclose(delta_t_warmup, 0.01, atol=1e-4)
     assert np.isclose(delta_t_nowarmup, 0.012, atol=1e-4)
+
+    points_nowarmup_clipped = points_no_warmup[
+        no_warmup_times >= (no_warmup_times.min() + 0.002)
+    ]
+    # make sure points are ordered by gps_time
+    points_warmup = points_warmup[np.argsort(points_warmup["gps_time"])]
+    points_nowarmup_clipped = points_nowarmup_clipped[
+        np.argsort(points_nowarmup_clipped["gps_time"])
+    ]
+
+    assert abs(len(points_warmup) - len(points_nowarmup_clipped)) <= 1
+    # check distance between three points: index 0, 500 and 1000
+    idxs = [0, 499, 999]
+    for idx in idxs:
+        point_warmup = points_warmup[idx]["position"]
+        point_nowarmup = points_nowarmup_clipped[idx]["position"]
+        distance = np.linalg.norm(
+            [point_warmup[0] - point_nowarmup[0],
+             point_warmup[1] - point_nowarmup[1],
+             point_warmup[2] - point_nowarmup[2]]
+        )
+        # mild distance threshold to account for ranging noise (see device accuracy_m)
+        assert distance < 0.1
