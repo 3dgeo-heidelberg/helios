@@ -1,14 +1,16 @@
 import copy
 import pytest
 import numpy as np
+from dataclasses import dataclass
 
 import helios.scanner as scanner_module
-from helios.platforms import tripod, PlatformSettings
+from helios.platforms import tripod, PlatformSettings, StaticPlatformSettings
 from helios.scene import ScenePart, StaticScene
 from helios.settings import ExecutionSettings, OutputFormat
 from helios.scanner import *
 from helios.survey import Survey
 from helios.utils import set_rng_seed
+from helios import HeliosException
 
 
 def test_preinstantiated_scanners():
@@ -198,3 +200,128 @@ def test_scanner_settings_max_duration_manual():
     assert leg1_duration < 0.4 and leg1_duration > 0.38
     assert leg2_duration != leg1_duration
     assert leg2_duration > 5.0
+
+
+def test_max_duration_no_infinite_run():
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene([box])
+    scanner = scanner_from_name("livox_mid70")
+    platform = tripod()
+    plat_set = PlatformSettings(x=0, y=0, z=10)
+    scan_set = ScannerSettings(pulse_frequency=50000, trajectory_time_interval=0.1)
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+    survey.add_leg(scanner_settings=scan_set, platform_settings=plat_set)
+    with pytest.raises(
+        HeliosException,
+        match="o platform movement, scanner head rotation or maximum duration set",
+    ):
+        survey.run()
+
+
+@dataclass
+class WarmupTestCase:
+    scanner_name: str
+    settings: dict
+
+
+TEST_CASES = [
+    pytest.param(
+        WarmupTestCase(
+            scanner_name="riegl_vq_880g",
+            settings=dict(
+                pulse_frequency=200000,
+                scan_angle="18 deg",
+                scan_frequency=50,
+                head_rotation="20 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+            ),
+        ),
+        id="riegl_vq_880g",
+    ),
+    pytest.param(
+        WarmupTestCase(
+            scanner_name="livox_mid70",
+            settings=dict(
+                pulse_frequency=100000,
+                head_rotation="20 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+            ),
+        ),
+        id="livox_mid70",
+    ),
+    pytest.param(
+        WarmupTestCase(
+            scanner_name="optech_2033",
+            settings=dict(
+                pulse_frequency=33000,
+                scan_angle="15 deg",
+                scan_frequency=20,
+                head_rotation="20 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+            ),
+        ),
+        id="optech_2033",
+    ),
+    pytest.param(
+        WarmupTestCase(
+            scanner_name="riegl_vz_400",
+            settings=dict(
+                pulse_frequency=100000,
+                scan_angle="30 deg",
+                scan_frequency=20,
+                head_rotation="60 deg/s",
+                rotation_start_angle="0 deg",
+                rotation_stop_angle="10 deg",
+            ),
+        ),
+        id="riegl_vz400",
+    ),
+]
+
+
+@pytest.mark.parametrize("case", TEST_CASES)
+def test_optics_warmup_phase(case):
+    box1 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene1 = StaticScene([box1])
+    scanner1 = scanner_from_name(case.scanner_name)
+    platform1 = tripod()
+    plat_set1 = StaticPlatformSettings(x=0, y=0, z=0, force_on_ground=False)
+    settings = case.settings.copy()
+    scan_set1 = ScannerSettings(
+        **settings, optics_warmup_phase=0.002, max_duration=0.01
+    )
+    survey1 = Survey(scanner=scanner1, platform=platform1, scene=scene1)
+    survey1.add_leg(scanner_settings=scan_set1, platform_settings=plat_set1)
+
+    box2 = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene2 = StaticScene([box2])
+    scanner2 = scanner_from_name(case.scanner_name)
+    platform2 = tripod()
+    plat_set2 = StaticPlatformSettings(x=0, y=0, z=0, force_on_ground=False)
+    scan_set2 = ScannerSettings(**settings, optics_warmup_phase=0, max_duration=0.012)
+    survey2 = Survey(scanner=scanner2, platform=platform2, scene=scene2)
+    survey2.add_leg(scanner_settings=scan_set2, platform_settings=plat_set2)
+
+    points_warmup, _ = survey1.run()
+    points_no_warmup, _ = survey2.run()
+    assert points_warmup.shape[0] > 0
+    assert points_no_warmup.shape[0] > 0
+    # Check that both runs start at the same GPS time
+    assert abs(points_warmup[0]["gps_time"] - points_no_warmup[0]["gps_time"]) < 1e-6
+
+    # Validate that warmup data falls within no-warmup time window
+    warmup_times = points_warmup["gps_time"]
+    no_warmup_times = points_no_warmup["gps_time"]
+
+    assert warmup_times.min() >= no_warmup_times.min()
+    assert warmup_times.max() <= no_warmup_times.max()
+
+    delta_t_warmup = warmup_times.max() - warmup_times.min()
+    delta_t_nowarmup = no_warmup_times.max() - no_warmup_times.min()
+
+    # max_duration is not as expected?
+    assert np.isclose(delta_t_warmup, 0.01, atol=1e-4)
+    assert np.isclose(delta_t_nowarmup, 0.012, atol=1e-4)
