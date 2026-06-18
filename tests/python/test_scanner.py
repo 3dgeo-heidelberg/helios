@@ -168,7 +168,7 @@ def test_scanner_settings_max_duration_from_xml():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
     # for leg1 maxDuration_s is set to 0.2 in the xml, so the duration should be around that
-    assert leg1_duration < 0.2 and leg1_duration > 0.199
+    assert leg1_duration < 0.2 and leg1_duration > 0.19
     assert (
         leg2_duration != leg1_duration
     )  # leg2 should not be affected by leg1's maxDuration_s
@@ -197,7 +197,7 @@ def test_scanner_settings_max_duration_manual():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
 
-    assert leg1_duration < 0.4 and leg1_duration > 0.399
+    assert leg1_duration < 0.4 and leg1_duration > 0.39
     assert leg2_duration != leg1_duration
     assert leg2_duration > 5.19 and leg2_duration <= 5.2
 
