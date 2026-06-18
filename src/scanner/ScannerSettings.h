@@ -80,7 +80,7 @@ public:
   /**
    * @brief Optional maximum duration (seconds) for a leg; <=0 disables
    */
-  double maxDuration_s = -1.0;
+  double maxDuration_s = 0.0;
   /**
    * @brief Optional warmup phase (seconds) applied before the first pulse.
    * Deflectors that support this can initialize their internal simulation
@@ -194,8 +194,6 @@ public:
       settings->beamDivAngle = cherries->beamDivAngle;
     if (hasCherry("trajectoryTimeInterval"))
       settings->trajectoryTimeInterval = cherries->trajectoryTimeInterval;
-    if (hasCherry("maxDuration_s"))
-      settings->maxDuration_s = cherries->maxDuration_s;
     if (hasCherry("opticsWarmupPhase_s"))
       settings->opticsWarmupPhase_s = cherries->opticsWarmupPhase_s;
     if (hasCherry("verticalResolution_rad"))
@@ -203,7 +201,9 @@ public:
     if (hasCherry("horizontalResolution_rad")) {
       settings->horizontalResolution_rad = cherries->horizontalResolution_rad;
     }
-
+    settings->maxDuration_s =
+      cherries->maxDuration_s; // it should always come to cherry, since it is
+                               // xml-only
     // Return settings from cherry picking
     return settings;
   }

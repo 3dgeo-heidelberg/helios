@@ -395,13 +395,3 @@ Scanner::buildScanningPulseProcess(
     throw HeliosException(ss.str());
   }
 }
-
-bool
-Scanner::maxTimeElapsed(double currentGpsTime_ns, double startGpsTime_ns)
-{
-  if (maxDuration_s <= 0.0)
-    return false;
-
-  double elapsed_s = (currentGpsTime_ns - startGpsTime_ns) * 1e-9;
-  return elapsed_s >= maxDuration_s;
-}

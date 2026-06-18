@@ -87,7 +87,7 @@ Simulation::prepareSimulation(int simFrequency_hz)
 void
 Simulation::doSimStep()
 {
-  if (mScanner->getMaxDuration() > 0.0 && maxDurationDeferredUntilFirstPulse) {
+  if (mScanner->hasMaxDuration() && maxDurationDeferredUntilFirstPulse) {
     int const currentPulseNumber = mScanner->getCurrentPulseNumber();
     if (currentPulseNumber <= maxDurationStartPulseNumber) {
       // Keep elapsed maxDuration_s at ~0 until first pulse is emitted.
@@ -116,7 +116,7 @@ Simulation::doSimStep()
      mScanner->getScannerHead(0)->getRotatePerSec_rad() == 0.0);
 
   // warn user if no movement nor rotation and no max duration
-  if (noMovementOrRotation && mScanner->getMaxDuration() < 0.0) {
+  if (noMovementOrRotation && !mScanner->hasMaxDuration()) {
     std::stringstream ss;
     ss << "ERROR: No platform movement, scanner head rotation or maximum "
           "duration set.\n"
