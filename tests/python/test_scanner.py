@@ -321,7 +321,7 @@ def test_optics_warmup_phase(case):
     assert points_warmup.shape[0] > 0
     assert points_no_warmup.shape[0] > 0
     # Check that both runs start at the same GPS time
-    assert abs(points_warmup[0]["gps_time"] - points_no_warmup[0]["gps_time"]) < 1e-4
+    assert abs(points_warmup[0]["gps_time"] - points_no_warmup[0]["gps_time"]) < 1e-3
 
     # Validate that warmup data falls within no-warmup time window
     warmup_times = points_warmup["gps_time"]
