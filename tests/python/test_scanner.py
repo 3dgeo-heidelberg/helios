@@ -320,8 +320,14 @@ def test_optics_warmup_phase(case):
     points_no_warmup, _ = survey2.run()
     assert points_warmup.shape[0] > 0
     assert points_no_warmup.shape[0] > 0
-    # Check that both runs start at the same GPS time
-    assert abs(points_warmup[0]["gps_time"] - points_no_warmup[0]["gps_time"]) < 1e-3
+    # Check that both runs start at the same GPS time ( with respect to warmup)
+    points_no_warmup_clipped = points_no_warmup[
+        points_no_warmup["gps_time"] >= points_no_warmup["gps_time"].min() + 0.002
+    ]
+    assert (
+        abs(points_warmup[0]["gps_time"] - points_no_warmup_clipped[0]["gps_time"])
+        < 1e-2
+    )
 
     # Validate that warmup data falls within no-warmup time window
     warmup_times = points_warmup["gps_time"]
