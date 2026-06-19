@@ -269,7 +269,6 @@ def test_survey_run_trajectory_for_all_scanner_types(light_als_multiscanner_surv
     assert trajectory.shape[0] > 0
 
 
-@pytest.mark.skip(reason="Currently not working as expected, needs investigation")
 def test_full_waveform_settings_effect(light_als_multiscanner_survey):
     points1, _ = light_als_multiscanner_survey.run(format=OutputFormat.NPY)
 
