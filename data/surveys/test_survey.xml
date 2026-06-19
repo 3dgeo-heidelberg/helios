@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-    <document>
-        <survey name="test_scan" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50">
-        </survey>
-    </document>
-    
