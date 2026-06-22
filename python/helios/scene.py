@@ -994,8 +994,8 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     def original_bbox(self) -> BoundingBox:
         """Original axis aligned bounding box defining scene boundaries before centering it.
         It is not accessble before _finalize."""
-        if not self._is_finalized:
-            raise ValueError(
+        if not getattr(self, "_is_finalized", False):
+            raise RuntimeError(
                 "The original bounding box is not available before the scene is finalized."
             )
         return BoundingBox._from_cpp(self._cpp_object.bbox_crs)
