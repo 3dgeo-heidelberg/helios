@@ -12,6 +12,7 @@ from helios.utils import (
     _as_array,
     _validate_same_shape,
     _validate_triangle_uvs,
+    _is_in_jupyter,
 )
 
 from helios.validation import (
@@ -36,8 +37,9 @@ from pydantic import (
     validate_call,
 )
 from pathlib import Path
-from typing import Literal, Optional, Union, Tuple
+from typing import Literal, Optional, Union, Tuple, Any
 import numpy as np
+import vedo
 
 import _helios
 
@@ -988,6 +990,16 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         """The axis-aligned bounding box of the scene."""
         return BoundingBox._from_cpp(self._cpp_object.bbox)
 
+    @property
+    def original_bbox(self) -> BoundingBox:
+        """Original axis aligned bounding box defining scene boundaries before centering it.
+        It is not accessble before _finalize."""
+        if not self._is_finalized:
+            raise ValueError(
+                "The original bounding box is not available before the scene is finalized."
+            )
+        return BoundingBox._from_cpp(self._cpp_object.bbox_crs)
+
     def add_scene_part(self, scene_part: ScenePart):
         """Add a scene part to the scene.
 
@@ -1083,3 +1095,63 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         self._cpp_object.to_binary(
             str(binary_file.expanduser()), compression_level=compression_level
         )
+
+    def show(
+        self,
+        title: str = "Helios Scene",
+        axes: int = 1,
+    ):
+        """
+        Render the scene with Vedo.
+
+        Creates a 3D visualization of the finalized scene by converting the
+        scene parts into Vedo actors and displaying them either in a notebook
+        backend or in a standard interactive window.
+
+        :param title: The title of the visualization window.
+        :param axes: Whether to show axes in the visualization (0 = no axes, 1 = show axes, 2 = show axes with labels, etc.). Works only in the interactive window backend, not in the notebook backend.
+        :type title: str
+        :type axes: int
+        """
+        if not getattr(self, "_is_finalized", False):
+            raise RuntimeError(
+                "The scene must be finalized before it can be visualized. Call '_finalize()' on the scene before visualizing it."
+            )
+
+        in_notebook = _is_in_jupyter()
+
+        diff = self.original_bbox.centroid
+        actors: list[Any] = []
+        for part in self.scene_parts:
+            buffers = part._get_visualization_buffers(diff)
+            triangle_vertices = np.asarray(buffers.triangle_vertices, dtype=np.float32)
+            triangle_indices = np.asarray(buffers.triangle_indices, dtype=np.int32)
+            if triangle_vertices.size > 0 and triangle_indices.size > 0:
+                mesh = vedo.Mesh([triangle_vertices, triangle_indices]).alpha(0.25)
+                mesh.pickable(False)
+                actors.append(mesh)
+
+            voxel_centers = np.asarray(buffers.voxel_centers, dtype=np.float32)
+            if voxel_centers.size > 0:
+                vox = vedo.Points(voxel_centers, r=2.0).c("gray").alpha(0.35)
+                vox.pickable(False)
+                actors.append(vox)
+
+        interactive = not in_notebook
+
+        plotter = vedo.Plotter(
+            title=title,
+            axes=axes,
+            interactive=interactive,
+            offscreen=False,
+        )
+
+        if in_notebook:
+            vedo.settings.default_backend = "trame"
+
+        if actors:
+            plotter.show(*actors, resetcam=True, interactive=interactive)
+        else:
+            plotter.show(resetcam=True, interactive=interactive)
+
+        return plotter

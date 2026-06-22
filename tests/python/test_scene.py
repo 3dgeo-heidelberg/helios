@@ -1698,6 +1698,14 @@ def test_take_vis_buffer_from_scene_part():
     assert triangle_indices.shape[0] > 0
 
 
+def test_scene_show_fails_wo_finalisation():
+    scene = StaticScene()
+    with pytest.raises(
+        RuntimeError, match="The scene must be finalized before it can be visualized."
+    ):
+        scene.show()
+
+
 def test_change_sp_id():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
     assert part.id == 0

@@ -556,6 +556,16 @@ def extract_position(arr: Optional[np.ndarray]) -> Optional[np.ndarray]:
     return arr["position"]
 
 
+def _is_in_jupyter() -> bool:
+    try:
+        from IPython import get_ipython
+
+        ip = get_ipython()
+        return ip is not None and ip.__class__.__name__ == "ZMQInteractiveShell"
+    except Exception:
+        return False
+
+
 meas_dtype = np.dtype(
     [
         ("channel_id", "u8"),
