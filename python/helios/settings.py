@@ -239,6 +239,16 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
 
         return fwf
 
+    def _post_set(self, field):
+        if field not in {"bin_size", "win_size"}:
+            return
+
+        if self._during_init and field != "win_size":
+            return
+
+        if self.win_size < 2 * self.bin_size:
+            raise ValueError("win_size must satisfy win_size >= 2 * bin_size.")
+
 
 # Storage for global settings
 _global_execution_settings: ExecutionSettings = ExecutionSettings()
