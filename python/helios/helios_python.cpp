@@ -2860,14 +2860,13 @@ PYBIND11_MODULE(_helios, m)
          &MultiScanner::getCurrentPulseNumber,
          py::arg("idx"))
 
-    .def("get_pulse_freqs",
-         &MultiScanner::getSupportedPulseFreqs_Hz,
-         py::arg("idx"))
-    .def("set_pulse_freqs",
-         &MultiScanner::setSupportedPulseFreqs_Hz,
-         py::arg("pulse_freqs_hz"),
-         py::arg("idx"))
-
+    .def_property(
+      "supported_pulse_freqs_hz",
+      [](MultiScanner& self) { return self.getSupportedPulseFreqs_Hz(0); },
+      [](MultiScanner& self, std::list<int> pulse_freqs) {
+        self.setSupportedPulseFreqs_Hz(pulse_freqs, 0);
+      },
+      py::return_value_policy::reference_internal)
     .def("get_max_nor", &MultiScanner::getMaxNOR, py::arg("idx"))
     .def("set_max_nor",
          &MultiScanner::setMaxNOR,

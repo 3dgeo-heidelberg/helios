@@ -20,7 +20,14 @@ import numpy as np
 
 
 class ScannerSettingsBase(Model, UpdateableMixin, cpp_class=_helios.ScannerSettings):
-    pass
+    def _resolve_for_scanner(self, scanner):
+        provided_fields = getattr(self, "_provided_fields", set())
+        supported = list(scanner._cpp_object.supported_pulse_freqs_hz)
+        if "pulse_frequency" not in provided_fields:
+            if supported and self.pulse_frequency not in supported:
+                self.pulse_frequency = supported[
+                    0
+                ]  # TODO add here log message after python log module implementation
 
 
 class ScannerSettings(ScannerSettingsBase):
@@ -60,6 +67,7 @@ class ScannerSettings(ScannerSettingsBase):
     :type optics_warmup_phase: TimeInterval
     """
 
+    _track_explicit_fields = True
     is_active: bool = True
     head_rotation: AngleVelocity = 0
     rotation_start_angle: Angle = 0
