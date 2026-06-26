@@ -56,6 +56,7 @@ def test_scanner_settings_clone_and_deepcopy():
         assert copied.head_rotation == settings.head_rotation
         assert not hasattr(copied, "_is_loaded_from_xml")
         assert not hasattr(copied, "runtime_note")
+        assert copied._provided_fields == settings._provided_fields
 
         copied.pulse_frequency = 2000
         assert settings.pulse_frequency == 1200
@@ -216,6 +217,99 @@ def test_max_duration_no_infinite_run():
         match="o platform movement, scanner head rotation or maximum duration set",
     ):
         survey.run()
+
+
+def test_scanner_settings_provided_fields():
+    settings = ScannerSettings(
+        pulse_frequency=1200,
+        scan_frequency=30,
+        head_rotation="12 deg/s",
+    )
+
+    assert settings._provided_fields == {
+        "pulse_frequency",
+        "scan_frequency",
+        "head_rotation",
+    }
+    assert settings.pulse_frequency == 1200
+    assert settings.scan_frequency == 30
+    target = ScannerSettings()
+    target.update_from_object(settings)
+    assert target.pulse_frequency == 1200
+    assert target.scan_frequency == 30
+
+
+def test_scanner_settings_uses_supported_scanner_frequency():
+    scanner = scanner_from_name("livox_mid40")
+
+    settings = ScannerSettings(
+        scan_frequency=20,
+        head_rotation="20 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="1 deg",
+    )
+
+    settings._resolve_for_scanner(scanner)
+
+    supported = list(scanner._cpp_object.supported_pulse_freqs_hz)
+    assert settings.pulse_frequency == supported[0]
+    assert settings._provided_fields == {
+        "scan_frequency",
+        "head_rotation",
+        "rotation_start_angle",
+        "rotation_stop_angle",
+    }
+
+
+def test_scanner_settings_resolve_for_scanner_keeps_explicit_pulse_frequency():
+    scanner = scanner_from_name("livox_mid40")
+
+    settings = ScannerSettings(
+        pulse_frequency=100000,
+        scan_frequency=20,
+        head_rotation="20 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="1 deg",
+    )
+
+    original = settings.pulse_frequency
+    settings._resolve_for_scanner(scanner)
+
+    assert settings.pulse_frequency == original
+    assert "pulse_frequency" in settings._provided_fields
+
+
+def test_survey_add_leg_resolves_scanner_pulse_frequency_when_not_provided():
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene([box])
+    scanner = scanner_from_name("livox_mid40")
+    platform = tripod()
+
+    survey = Survey(scanner=scanner, platform=platform, scene=scene)
+
+    settings = ScannerSettings(
+        scan_frequency=20,
+        head_rotation="20 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="1 deg",
+    )
+
+    survey.add_leg(
+        scanner_settings=settings,
+        platform_settings=PlatformSettings(x=0, y=0, z=0),
+    )
+    survey.add_leg(scan_frequency=120)
+    survey.add_leg(pulse_frequency=200000)
+
+    assert (
+        survey.legs[0].scanner_settings.pulse_frequency
+        == list(scanner._cpp_object.supported_pulse_freqs_hz)[0]
+    )
+    assert (
+        survey.legs[1].scanner_settings.pulse_frequency
+        == list(scanner._cpp_object.supported_pulse_freqs_hz)[0]
+    )
+    assert survey.legs[2].scanner_settings.pulse_frequency == 200000
 
 
 @dataclass
