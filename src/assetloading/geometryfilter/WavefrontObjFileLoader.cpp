@@ -34,6 +34,10 @@ WavefrontObjFileLoader::run()
 {
   // Determine filepath
   auto filePaths = FileUtils::handleFilePath(params, assetsDir);
+  if (filePaths.empty()) {
+    throw HeliosException("No .obj file was found for the specified path. "
+                          "Please check the assetsDir, filepath or efilepath.");
+  }
 
   // Determine up-axis
   bool yIsUp = false;

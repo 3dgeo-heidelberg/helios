@@ -39,6 +39,7 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
       std::stringstream ss;
       ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
       logging::ERR(ss.str());
+      throw HeliosException(ss.str());
     }
   }
 
@@ -58,6 +59,13 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
         break;
       }
     }
+  }
+  if (paths.empty()) {
+    std::stringstream ss;
+    ss << "Could not resolve file path: '" << path << "'. "
+       << "Please check the assetsDir, filepath or efilepath.";
+    logging::ERR(ss.str());
+    throw HeliosException(ss.str());
   }
 
   return paths;
