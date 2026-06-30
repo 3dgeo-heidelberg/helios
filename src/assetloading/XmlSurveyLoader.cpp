@@ -487,6 +487,7 @@ XmlSurveyLoader::applySceneShift(tinyxml2::XMLElement* surveyNode,
     // Shift platform settings, if any
     if (leg->mPlatformSettings != nullptr) {
       glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
+      leg->mPlatformSettings->setRawPosition(platformPos);
       leg->mPlatformSettings->setPosition(platformPos - shift);
 
       // If specified, move waypoint z coordinate to ground level

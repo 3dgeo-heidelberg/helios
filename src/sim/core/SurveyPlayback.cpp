@@ -327,22 +327,39 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
     if (nextLegIndex < mSurvey->legs.size()) {
       // Set destination to position of next leg:
       shared_ptr<Leg> nextLeg = mSurvey->legs.at(nextLegIndex);
+
+      glm::dvec3 rawOrigin;
+      glm::dvec3 rawTarget;
+      glm::dvec3 rawNext;
+      glm::dvec3 const currRaw = leg->mPlatformSettings->getRawPosition();
+      glm::dvec3 const nextRaw = nextLeg->mPlatformSettings->getRawPosition();
+      glm::dvec3 const afterRaw = (nextLegIndex + 1 < mSurvey->legs.size())
+                                    ? mSurvey->legs.at(nextLegIndex + 1)
+                                        ->mPlatformSettings->getRawPosition()
+                                    : nextRaw;
+
       if (leg->mTrajectorySettings != nullptr &&
           leg->mTrajectorySettings->teleportToStart) {
         platform->setPosition(nextLeg->mPlatformSettings->getPosition());
         platform->setOrigin(nextLeg->mPlatformSettings->getPosition());
         platform->setDestination(nextLeg->mPlatformSettings->getPosition());
+        rawOrigin = nextRaw;
+        rawTarget = nextRaw;
       } else {
         platform->setOrigin(leg->mPlatformSettings->getPosition());
+        rawOrigin = currRaw;
         if (nextLeg->mTrajectorySettings != nullptr &&
             nextLeg->mTrajectorySettings->teleportToStart) {
           // If next leg teleports to start, current leg is stop leg
           // Thus, set stop origin and destination to the same point
           platform->setDestination(leg->mPlatformSettings->getPosition());
+          rawTarget = currRaw;
         } else {
           platform->setDestination(nextLeg->mPlatformSettings->getPosition());
+          rawTarget = nextRaw;
         }
       }
+      rawNext = afterRaw;
       if (nextLegIndex + 1 < mSurvey->legs.size()) {
         platform->setAfterDestination(
           mSurvey->legs.at(nextLegIndex + 1)->mPlatformSettings->getPosition());
@@ -354,14 +371,16 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
       ss << (leg->getRole() == Leg::LegRole::SOURCE     ? "SOURCE"
              : leg->getRole() == Leg::LegRole::TELEPORT ? "TELEPORT"
                                                         : "STOP")
-         << " Leg with serial ID:" << leg->getSerialId() << " waypoints:\n"
-         << "\tOrigin: (" << platform->originWaypoint.x << ", "
+         << "\tOrigin: actual=(" << rawOrigin.x << ", " << rawOrigin.y << ", "
+         << rawOrigin.z << "), internal=(" << platform->originWaypoint.x << ", "
          << platform->originWaypoint.y << ", " << platform->originWaypoint.z
          << ")\n"
-         << "\tTarget: (" << platform->targetWaypoint.x << ", "
+         << "\tTarget: actual=(" << rawTarget.x << ", " << rawTarget.y << ", "
+         << rawTarget.z << "), internal=(" << platform->targetWaypoint.x << ", "
          << platform->targetWaypoint.y << ", " << platform->targetWaypoint.z
          << ")\n"
-         << "\tNext: (" << platform->nextWaypoint.x << ", "
+         << "\tNext: actual=(" << rawNext.x << ", " << rawNext.y << ", "
+         << rawNext.z << "), internal=(" << platform->nextWaypoint.x << ", "
          << platform->nextWaypoint.y << ", " << platform->nextWaypoint.z << ")"
          << std::endl;
       logging::INFO(ss.str());

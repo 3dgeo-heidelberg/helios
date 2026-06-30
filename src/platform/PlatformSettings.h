@@ -76,6 +76,11 @@ public:
    */
   double movePerSec_m = 70;
 
+  /**
+   * @brief Raw position, that keeps data before any scene shift is applied.
+   */
+  glm::dvec3 rawPosition = glm::dvec3(0, 0, 0);
+
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
   /**
@@ -188,6 +193,12 @@ public:
     this->z = z;
   }
 
+  /**
+   * @brief Obtain raw position as 3D vector
+   * @return Raw position as 3D vector
+   */
+  glm::dvec3 getRawPosition() { return rawPosition; }
+  void setRawPosition(glm::dvec3 pos) { rawPosition = pos; }
   /**
    * @brief Check if this PlatformSettings has an associated template (true)
    *  or not (false)

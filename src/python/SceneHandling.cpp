@@ -400,6 +400,7 @@ makeSceneShift(Survey& survey)
     // Shift platform settings, if any
     if (leg.mPlatformSettings) {
       glm::dvec3 platformPos = leg.mPlatformSettings->getPosition();
+      leg.mPlatformSettings->setRawPosition(platformPos);
       platformPos -= shift;
       // If specified, move waypoint z coordinate to ground level
       if (leg.mPlatformSettings->onGround) {
