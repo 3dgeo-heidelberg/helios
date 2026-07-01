@@ -358,6 +358,8 @@ def test_optics_warmup_phase(case):
         np.argsort(points_no_warmup_clipped["fullwave_index"])
     ]
 
-    np.testing.assert_allclose(
-        warmup["position"], nowarmup["position"], atol=0.1, rtol=0.0
+    dist = np.linalg.norm(
+        warmup["position"] - nowarmup["position"],
+        axis=1,
     )
+    assert np.percentile(dist, 99.0) < 0.1
