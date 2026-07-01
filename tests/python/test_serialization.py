@@ -991,7 +991,7 @@ def test_to_bundle_passes_binary_flag(tmp_path):
 
 def test_from_binary_stores_provenance(tmp_path):
     scene = StaticScene(
-        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")]
+        scene_parts=[ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", id=4)]
     )
     binary_path = tmp_path / "scene.bin"
     scene.to_binary(binary_path)
