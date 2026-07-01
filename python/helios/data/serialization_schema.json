@@ -705,6 +705,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "id": {},
         "force_on_ground": {}
       }
     },
