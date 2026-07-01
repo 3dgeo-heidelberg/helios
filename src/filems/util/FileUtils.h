@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <util/HeliosException.h>
 #include <util/typedef.h>
 
 /**
