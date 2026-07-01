@@ -168,7 +168,7 @@ def test_scanner_settings_max_duration_from_xml():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
     # for leg1 maxDuration_s is set to 0.2 in the xml, so the duration should be around that
-    assert leg1_duration < 0.2 and leg1_duration > 0.19
+    assert 0.19 < leg1_duration < 0.201
     assert (
         leg2_duration != leg1_duration
     )  # leg2 should not be affected by leg1's maxDuration_s
@@ -197,9 +197,9 @@ def test_scanner_settings_max_duration_manual():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
 
-    assert leg1_duration < 0.4 and leg1_duration > 0.39
+    assert 0.39 < leg1_duration < 0.401
     assert leg2_duration != leg1_duration
-    assert leg2_duration > 5.19 and leg2_duration <= 5.2
+    assert 5.19 < leg2_duration < 5.201
 
 
 def test_max_duration_no_infinite_run():
@@ -353,16 +353,11 @@ def test_optics_warmup_phase(case):
 
     assert abs(len(points_warmup) - len(points_nowarmup_clipped)) <= 1
     # check distance between three points: index 0, 500 and 1000
-    idxs = [0, 499, 999]
-    for idx in idxs:
-        point_warmup = points_warmup[idx]["position"]
-        point_nowarmup = points_nowarmup_clipped[idx]["position"]
-        distance = np.linalg.norm(
-            [
-                point_warmup[0] - point_nowarmup[0],
-                point_warmup[1] - point_nowarmup[1],
-                point_warmup[2] - point_nowarmup[2],
-            ]
-        )
-        # mild distance threshold to account for ranging noise (see device accuracy_m)
-        assert distance < 0.1
+    warmup = points_warmup[np.argsort(points_warmup["fullwave_index"])]
+    nowarmup = points_no_warmup_clipped[
+        np.argsort(points_no_warmup_clipped["fullwave_index"])
+    ]
+
+    np.testing.assert_allclose(
+        warmup["position"], nowarmup["position"], atol=0.1, rtol=0.0
+    )
