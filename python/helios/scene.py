@@ -183,6 +183,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     :type force_on_ground: Union[ForceOnGroundStrategy, PositiveInt]
     """
 
+    id: int | None = None
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
@@ -333,7 +334,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
     @classonlymethod
     @validate_call
-    def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
+    def from_obj(
+        cls,
+        obj_file: AssetPath,
+        up_axis: Literal["y", "z"] = "z",
+        id: Optional[int] = None,
+    ):
         """
         Load the scene part from an OBJ file.
 
@@ -341,8 +347,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         :param obj_file: The path to the OBJ file to load the scene part from. Can potentially contain wildcards ('*').
         :param up_axis: The up axis to use for the loaded scene part.
+        :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
         :type obj_file: AssetPath
         :type up_axis: Literal["y", "z"]
+        :type id: Optional[int]
 
         :return: The loaded scene part.
         :rtype: ScenePart
@@ -353,22 +361,26 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         scene_part = cls._from_cpp(_cpp_part)
+        scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_obj",
             obj_file=obj_file,
             up_axis=up_axis,
+            id=id,
         )
         return scene_part
 
     @classonlymethod
     @validate_call
-    def from_tiff(cls, tiff_file: AssetPath):
+    def from_tiff(cls, tiff_file: AssetPath, id: Optional[int] = None):
         """Load the scene part from a TIFF file.
 
         For paths (potentially) containing wildcards, use 'ScenePart.from_tiffs()' instead!
 
         :param tiff_file: The path to the TIFF file to load the scene part from.
+        :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
         :type tiff_file: AssetPath
+        :type id: Optional[int]
 
         :return: The loaded scene part.
         :rtype: ScenePart
@@ -379,15 +391,22 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         scene_part = cls._from_cpp(_cpp_part)
+        scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_tiff",
             tiff_file=tiff_file,
+            id=id,
         )
         return scene_part
 
     @classonlymethod
     @validate_call
-    def from_objs(cls, obj_files: MultiAssetPath, up_axis: Literal["y", "z"] = "z"):
+    def from_objs(
+        cls,
+        obj_files: MultiAssetPath,
+        up_axis: Literal["y", "z"] = "z",
+        shared_id: Optional[int] = None,
+    ):
         """Load multiple scene parts from OBJ files
 
         Expects a single Path containing some (or none) wildcards ('*').
@@ -395,31 +414,35 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         :param obj_files: The path to the OBJ files to load the scene parts from. Can potentially contain wildcards ('*').
         :param up_axis: The up axis to use for the loaded scene parts.
+        :param shared_id: Optional ID to assign to all loaded scene parts. If not provided, different IDs will be automatically assigned later.
         :type obj_files: MultiAssetPath
         :type up_axis: Literal["y", "z"]
+        :type shared_id: Optional[int]
 
         :return: The loaded scene parts.
         :rtype: list[ScenePart]
         """
-        return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
+        return [ScenePart.from_obj(obj, up_axis, shared_id) for obj in obj_files]
 
     @classonlymethod
     @validate_call
-    def from_tiffs(cls, tiff_files: MultiAssetPath):
+    def from_tiffs(cls, tiff_files: MultiAssetPath, shared_id: Optional[int] = None):
         """Load multiple scene parts from TIFF files
 
         Expects a single Path containing some (or none) wildcards ('*').
         Supports '**' for matching multiple directories.
 
         :param tiff_files: The path to the TIFF files to load the scene parts from. Can potentially contain wildcards ('*').
+        :param shared_id: Optional ID to assign to all loaded scene parts. If not provided, different IDs will be automatically assigned later.
         :type tiff_files: MultiAssetPath
+        :type shared_id: Optional[int]
         :return: The loaded scene parts.
         :rtype: list[ScenePart]
 
         :return: The loaded scene parts.
         :rtype: list[ScenePart]
         """
-        return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
+        return [ScenePart.from_tiff(tiff, shared_id) for tiff in tiff_files]
 
     @classonlymethod
     @validate_call
@@ -437,6 +460,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
         rgb_file_columns: list[NonNegativeInt] = [6, 7, 8],
         snap_neighbor_normal: bool = False,
+        id: Optional[int] = None,
     ):
         """
         Load the scene part from an XYZ file.
@@ -451,6 +475,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param normals_file_columns: The columns in the XYZ file to use for the normal components if the XYZ file contains normals. The default is [3, 4, 5].
         :param rgb_file_columns: The columns in the XYZ file to use for the RGB components if the XYZ file contains RGB values. The default is [6, 7, 8].
         :param snap_neighbor_normal: Whether to snap the normal of points in the XYZ file that do not have a normal to the normal of their nearest neighbor that has a normal.
+        :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
         :type xyz_file: AssetPath
         :type voxel_size: PositiveFloat
         :type separator: Optional[str]
@@ -461,6 +486,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :type normals_file_columns: list[NonNegativeInt]
         :type rgb_file_columns: list[NonNegativeInt]
         :type snap_neighbor_normal: bool
+        :type id: Optional[int]
 
         :return: The loaded scene part.
         :rtype: ScenePart
@@ -488,6 +514,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         scene_part = cls._from_cpp(_cpp_part)
+        scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_xyz",
             xyz_file=xyz_file,
@@ -500,6 +527,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             normals_file_columns=normals_file_columns,
             rgb_file_columns=rgb_file_columns,
             snap_neighbor_normal=snap_neighbor_normal,
+            id=id,
         )
         return scene_part
 
@@ -519,6 +547,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
         rgb_file_columns: list[NonNegativeInt] = [6, 7, 8],
         snap_neighbor_normal: bool = False,
+        shared_id: Optional[int] = None,
     ):
         """
         Load multiple scene parts from XYZ files.
@@ -538,6 +567,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param normals_file_columns: The columns in the XYZ file to use for the normal components if the XYZ file contains normals. The default is [3, 4, 5].
         :param rgb_file_columns: The columns in the XYZ file to use for the RGB components if the XYZ file contains RGB values. The default is [6, 7, 8].
         :param snap_neighbor_normal: Whether to snap the normal of points in the XYZ file that do not have a normal to the normal of their nearest neighbor that has a normal.
+        :param shared_id: Optional ID to assign to all loaded scene parts. If not provided, the ID will be automatically assigned later.
         :type xyz_file: AssetPath
         :type voxel_size: PositiveFloat
         :type separator: Optional[str]
@@ -548,6 +578,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :type normals_file_columns: list[NonNegativeInt]
         :type rgb_file_columns: list[NonNegativeInt]
         :type snap_neighbor_normal: bool
+        :type shared_id: Optional[int]
 
         :return: The loaded scene parts.
         :rtype: list[ScenePart]
@@ -564,6 +595,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                 normals_file_columns,
                 rgb_file_columns,
                 snap_neighbor_normal,
+                shared_id,
             )
             for xyz in xyz_files
         ]
@@ -577,6 +609,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         intersection_argument: Optional[float] = None,
         random_shift: bool = False,
         ladlut_path: Optional[str] = None,
+        id: Optional[int] = None,
     ):
         """Load the scene part from a VOX file.
 
@@ -585,11 +618,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param intersection_argument: Scaling factor; only used for intersection mode 'scaled'.
         :param random_shift: Whether to apply a random shift to the scaled cubes within the original voxel resolution; only used for intersection mode 'scaled'.
         :param ladlut_path: The path to the txt file with look-up-tables (LUTs) for custom leaf angle distributions (LADs). See `data/lut` for examples.
+        :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
         :type vox_file: AssetPath
         :type intersection_mode: Literal["scaled", "fixed", "transmittive"]
         :type intersection_argument: Optional[float]
         :type random_shift: bool
         :type ladlut_path: Optional[str]
+        :type id: Optional[int]
 
         :return: The loaded scene part.
         :rtype: ScenePart
@@ -610,6 +645,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         )
 
         scene_part = cls._from_cpp(_cpp_part)
+        scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_vox",
             vox_file=vox_file,
@@ -617,6 +653,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             intersection_argument=intersection_argument,
             random_shift=random_shift,
             ladlut_path=ladlut_path,
+            id=id,
         )
         return scene_part
 
@@ -636,6 +673,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         sparse: bool = True,
         estimate_normals: bool = False,
         snap_neighbor_normal: bool = False,
+        id: Optional[int] = None,
     ):
         """Load the scene part from a numpy array."""
 
@@ -660,8 +698,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             rcols[2],
             snap_neighbor_normal,
         )
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part.id = id
 
-        return cls._from_cpp(_cpp_part)
+        return scene_part
 
     @classmethod
     def _compose_from_o3d_triangle_mesh(
@@ -669,6 +709,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         geometry,
         *,
         up_axis: Literal["y", "z"] = "z",
+        id: Optional[int] = None,
     ):
         if up_axis not in ("y", "z"):
             raise ValueError("`up_axis` must be either 'y' or 'z'.")
@@ -734,7 +775,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             triangle_uvs,
             up_axis,
         )
-
+        scene_part = cls._from_cpp(_cpp_part)
+        scene_part.id = id
         return cls._from_cpp(_cpp_part)
 
     @classmethod
@@ -750,6 +792,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         sparse: bool = True,
         estimate_normals: bool = False,
         snap_neighbor_normal: bool = False,
+        id: Optional[int] = None,
     ):
         points = _as_array(
             geometry.points, dtype=np.float64, name="Open3D point cloud points"
@@ -805,11 +848,12 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             sparse=sparse,
             estimate_normals=estimate_normals,
             snap_neighbor_normal=snap_neighbor_normal,
+            id=id,
         )
 
     @classonlymethod
     @validate_call
-    def from_open3d(cls, geometry, **kwargs):
+    def from_open3d(cls, geometry, id: Optional[int] = None, **kwargs):
         """
         Load the scene part from an Open3D geometry.
         The geometry can be either an open3d.geometry.TriangleMesh or an open3d.geometry.PointCloud.
@@ -817,7 +861,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         See below for the specific additional parameters that can be provided for each geometry type.
 
         :param geometry: The Open3D geometry to load the scene part from.
+        :param id: The ID to assign to the loaded scene part.
         :type geometry: open3d.geometry.TriangleMesh | open3d.geometry.PointCloud
+        :type id: Optional[int]
         :param kwargs: Additional parameters to use for loading the scene part, depending on the provided geometry:
             a) for open3d.geometry.TriangleMesh: `up_axis`;
             b) for open3d.geometry.PointCloud: `voxel_size`, `max_color_value`, `default_normal`, `sparse`, `estimate_normals`, `snap_neighbor_normal`
@@ -832,9 +878,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                 "Open3D is required for `ScenePart.from_open3d`, but can't be installed via conda. Install it with `pip install open3d`."
             )
         if isinstance(geometry, open3d.geometry.TriangleMesh):
-            return cls._compose_from_o3d_triangle_mesh(geometry, **kwargs)
+            return cls._compose_from_o3d_triangle_mesh(geometry, id=id, **kwargs)
         if isinstance(geometry, open3d.geometry.PointCloud):
-            return cls._compose_from_o3d_pointcloud(geometry, **kwargs)
+            return cls._compose_from_o3d_pointcloud(geometry, id=id, **kwargs)
 
         raise TypeError(
             "Unsupported geometry type for `ScenePart.from_o3d`. "
