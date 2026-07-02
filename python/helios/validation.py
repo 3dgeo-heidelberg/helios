@@ -336,16 +336,22 @@ class ValidatedModelMetaClass(type):
 
             self._during_init = True
 
+            track_explicit_fields = getattr(cls, "_track_explicit_fields", False)
+            provided_fields = set() if track_explicit_fields else None
             # Iterate the fields in exactly the given order. When using a different order,
             # we risk that properties are instantiated in an incorrect order.
             for i, field in enumerate(annotations):
                 # Check whether we find this among positional arguments
                 if i < len(args):
+                    if track_explicit_fields:
+                        provided_fields.add(field)
                     setattr(self, field, args[i])
                     continue
 
                 # Check whether we find this among keyword arguments
                 if field in instance_kwargs:
+                    if track_explicit_fields:
+                        provided_fields.add(field)
                     setattr(self, field, instance_kwargs[field])
                     continue
 
@@ -372,6 +378,8 @@ class ValidatedModelMetaClass(type):
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {field}")
 
+            if track_explicit_fields:
+                self._provided_fields = provided_fields
             self._during_init = False
             instance_kwargs.pop("_cpp_object", None)
             invalid_fields = set(instance_kwargs) - set(annotations)
@@ -735,6 +743,8 @@ class Model(metaclass=ValidatedModelMetaClass):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
+            if hasattr(self, "_provided_fields"):
+                reconstructed._provided_fields = deepcopy(self._provided_fields, memo)
 
             return reconstructed
         else:
@@ -751,7 +761,8 @@ class Model(metaclass=ValidatedModelMetaClass):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
-
+            if hasattr(self, "_provided_fields"):
+                reconstructed._provided_fields = deepcopy(self._provided_fields, memo)
             return reconstructed
 
     def clone(self):
@@ -766,18 +777,26 @@ class Model(metaclass=ValidatedModelMetaClass):
 class UpdateableMixin:
     """Mixin for objects that can be updated from another object"""
 
-    def update_from_dict(self, kwargs, skip_exceptions=False):
+    def update_from_dict(
+        self, kwargs, skip_exceptions=False, track_provided_fields=True
+    ):
         """Update a ValidatedCppModel object from a dictionary of keyword arguments"""
 
         keys = list(kwargs.keys())
+        if track_provided_fields and not hasattr(self, "_provided_fields"):
+            self._provided_fields = set()
 
         anns = get_all_annotations(self.__class__)
         for key in keys:
             cls_attr = self.__class__.__dict__.get(key, None)
             if key in anns:
                 setattr(self, key, kwargs.pop(key))
+                if track_provided_fields:
+                    self._provided_fields.add(key)
             elif isinstance(cls_attr, property) and cls_attr.fset is not None:
                 setattr(self, key, kwargs.pop(key))
+                if track_provided_fields:
+                    self._provided_fields.add(key)
             elif not skip_exceptions:
                 raise ValueError(f"Invalid key: {key}")
 
@@ -790,4 +809,7 @@ class UpdateableMixin:
         parameters = {}
         for field in get_all_annotations(self.__class__).keys():
             parameters[field] = getattr(other, field)
-        self.update_from_dict(parameters, skip_exceptions=skip_exceptions)
+        self.update_from_dict(
+            parameters, skip_exceptions=skip_exceptions, track_provided_fields=False
+        )
+        self._provided_fields = set(getattr(other, "_provided_fields", set()))

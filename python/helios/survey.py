@@ -388,6 +388,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Update with the rest of the given parameters
         leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
         leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
+        leg.scanner_settings._resolve_for_scanner(self.scanner)
         # If there are parameters left, we raise an error
         if parameters:
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
