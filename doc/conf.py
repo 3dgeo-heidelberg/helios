@@ -67,10 +67,11 @@ bibtex_foot_reference_style = "author_year"
 
 suppress_warnings = ["bibtex.duplicate_label"]
 
-templates_path = []
+templates_path = ["_templates"]
 exclude_patterns = ["_build"]
 html_theme = "sphinx_rtd_theme"
 html_static_path = []
+html_favicon = '3dgeo.ico'
 
 autodoc_mock_imports = ["_helios"]
 nbsphinx_execute = "never"
