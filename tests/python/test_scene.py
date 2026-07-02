@@ -10,6 +10,7 @@ from helios.utils import *
 import copy
 import math
 from pathlib import Path
+from pydantic import ValidationError
 
 import _helios
 import laspy
@@ -196,11 +197,11 @@ def test_construct_scene_from_xml():
 
 
 def test_construct_scene_part_from_xml():
-    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
 
 
 def test_finalize_scene():
-    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
 
     scene = StaticScene(scene_parts=[part])
     assert len(scene._cpp_object.primitives) == 0
@@ -209,8 +210,8 @@ def test_finalize_scene():
 
 
 def test_scene_invalidation():
-    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
-    part2 = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
+    part2 = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
     scene = StaticScene(scene_parts=[part])
     scene._finalize()
 
@@ -876,7 +877,7 @@ def test_run_after_add_scene_part():
 def test_scenepart_flag_from_xml_set(xyz_file):
     from helios.utils import is_xml_loaded
 
-    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
     assert is_xml_loaded(part)
 
     part2 = ScenePart.from_vox(
@@ -1687,7 +1688,7 @@ def test_survey_measurement_and_trajectory_positions_are_reproducible():
 
 
 def test_take_vis_buffer_from_scene_part():
-    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
     buffers = part._get_visualization_buffers()
     triangle_vertices = np.asarray(buffers.triangle_vertices, dtype=np.float32)
     triangle_indices = np.asarray(buffers.triangle_indices, dtype=np.int32)
@@ -1695,3 +1696,114 @@ def test_take_vis_buffer_from_scene_part():
     assert triangle_vertices.shape[0] > 0
     assert triangle_vertices.shape[1] == 3
     assert triangle_indices.shape[0] > 0
+
+
+def test_change_sp_id():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
+    assert part.id == 0
+    part.id = 1
+    assert part.id == 1
+
+    part2 = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+    assert part2.id is None
+    part2.id = 5
+    assert part2.id == 5
+
+
+def test_provide_incorrect_id_type():
+    with pytest.raises(ValidationError):
+        ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj", id="not_an_int")
+    with pytest.raises(ValidationError):
+        ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj", id=3.14)
+
+
+def test_read_xyz_w_id(xyz_file_comma):
+    part = ScenePart.from_xyz(str(xyz_file_comma), separator=",", voxel_size=1.0, id=42)
+    assert part.id == 42
+
+
+def test_read_xyzs_w_id(xyz_parts_dir):
+    parts = ScenePart.from_xyzs(
+        str(xyz_parts_dir / "part[12].xyz"), voxel_size=1.0, shared_id=99
+    )
+    assert len(parts) > 1
+    assert all(part.id == 99 for part in parts)
+
+
+def test_read_obj_w_id():
+    part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj", id=7)
+    assert part.id == 7
+
+
+def test_read_objs_w_id():
+    parts = ScenePart.from_objs("data/sceneparts/basic/**/*.obj", shared_id=13)
+    assert all(part.id == 13 for part in parts)
+
+
+def test_read_vox_w_id():
+    part = ScenePart.from_vox(
+        "data/test/semitransparent_voxels.vox", intersection_mode="transmittive", id=21
+    )
+    assert part.id == 21
+
+
+def test_read_tiff_w_id():
+    part = ScenePart.from_tiff("data/test/dem_hd_sub.tif", id=55)
+    assert part.id == 55
+
+
+def test_read_tiffs_w_id():
+    parts = ScenePart.from_tiffs("data/test/dem_hd_sub.tif", shared_id=88)
+    assert all(part.id == 88 for part in parts)
+
+
+def test_read_numpy_w_id():
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0, 255, 0, 0],
+            [1.0, 0.0, 0.0, 0, 255, 0],
+            [0.0, 1.0, 0.0, 0, 0, 255],
+            [1.0, 1.0, 0.0, 255, 255, 0],
+        ]
+    )
+    scene_part = ScenePart.from_numpy_array(
+        points,
+        voxel_size=1.0,
+        max_color_value=255.0,
+        rgb_file_columns=[3, 4, 5],
+        default_normal=[0.0, 0.0, 1.0],
+        id=123,
+    )
+    assert scene_part.id == 123
+
+
+def test_read_o3d_pc_w_id():
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 0.0],
+        ]
+    )
+    colors = np.array(
+        [
+            [255, 0, 0],
+            [0, 255, 0],
+            [0, 0, 255],
+            [255, 255, 0],
+        ]
+    )
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)
+    pcd.colors = o3d.utility.Vector3dVector(colors)
+    scene_part = ScenePart.from_open3d(
+        pcd, voxel_size=1.0, max_color_value=255.0, id=456
+    )
+    assert scene_part.id == 456
+
+
+def test_read_o3d_mesh_w_id(o3d_mesh_file):
+    geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
+    scene_part = ScenePart.from_open3d(geometry, id=789)
+    assert scene_part.id == 789
