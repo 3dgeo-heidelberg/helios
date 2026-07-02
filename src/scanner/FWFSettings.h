@@ -71,6 +71,21 @@ public:
    */
   FWFSettings() {}
 
+  /**
+   * @brief Validate the binSize_ns and winSize_ns attributes to ensure they are
+   * valid
+   * @throws std::invalid_argument if any setting is invalid
+   */
+  void validate() const
+  {
+    if (binSize_ns <= 0.0)
+      throw std::invalid_argument("binSize_ns must be > 0");
+    if (winSize_ns <= 0.0)
+      throw std::invalid_argument("winSize_ns must be > 0");
+    if (winSize_ns < 2.0 * binSize_ns)
+      throw std::invalid_argument("winSize_ns must be >= 2 * binSize_ns");
+  }
+
   // ***  TO STRING  *** //
   // ******************* //
   /**

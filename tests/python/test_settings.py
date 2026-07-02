@@ -1,8 +1,9 @@
 from helios.settings import *
-from helios.survey import OutputFormat
+from helios.survey import OutputFormat, Survey
 
 import copy
 from pathlib import Path
+import pytest
 
 
 def test_execution_settings_defaults():
@@ -164,3 +165,44 @@ def test_full_waveform_settings_clone_and_deepcopy_run_survey(survey):
         )
         assert points.shape[0] > 0
         assert trajectory.shape[0] > 0
+
+
+def _write_invalid_survey_xml(path: Path) -> None:
+    path.write_text(
+        """<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="arbaro_demo_tls"
+            scene="data/scenes/demo/arbaro_demo.xml#arbaro_demo"
+            platform="data/platforms.xml#tripod"
+            scanner="data/scanners_tls.xml#riegl_vz400">
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" winSize_ns="0.3" />
+        <leg>
+            <platformSettings x="1.0" y="25.5" onGround="true" />
+            <scannerSettings template="profile1"
+                             verticalAngleMin_deg="-40.0"
+                             verticalAngleMax_deg="60"
+                             headRotateStart_deg="100"
+                             headRotateStop_deg="225"
+                             trajectoryTimeInterval_s="1.0"/>
+        </leg>
+    </survey>
+</document>
+""",
+        encoding="utf-8",
+    )
+
+
+def test_fullwaveform_settings_rejects_invalid_window_in_python():
+    with pytest.raises(ValueError, match="win_size must satisfy"):
+        FullWaveformSettings(
+            bin_size=0.2 * units.ns,
+            win_size=0.3 * units.ns,
+        )
+
+
+def test_fullwaveform_settings_rejects_invalid_window_from_xml(tmp_path):
+    xml_file = tmp_path / "invalid_survey.xml"
+    _write_invalid_survey_xml(xml_file)
+
+    with pytest.raises(ValueError, match="winSize_ns must be >="):
+        Survey.from_xml(xml_file)
