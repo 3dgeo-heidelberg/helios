@@ -676,7 +676,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         id: Optional[int] = None,
     ):
         """Load the scene part from a numpy array (similar to an XYZ file).
-        
+
         :param points: The numpy array containing the points. The array should have shape (N, 3) for points only, (N, 6) for points and normals, or (N, 9) for points, normals, and RGB values.
         :param voxel_size: The voxel size to use for voxelizing the point cloud so that it can be converted to a 3D model with surfaces that can be scanned.
         :param normals_file_columns: The columns in the numpy array to use for the normal components if the array contains normals. The default is [3, 4, 5].
