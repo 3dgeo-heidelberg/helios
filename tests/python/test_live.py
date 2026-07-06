@@ -9,8 +9,8 @@ import numpy as np
 import pytest
 
 from helios.settings import OutputFormat
-from helios.utils import extract_position, meas_dtype, traj_dtype
-from helios.scene import StaticScene
+from helios.utils import extract_position, meas_dtype, traj_dtype, _color_from_int
+from helios.scene import StaticScene, ScenePart
 import inspect
 
 
@@ -709,3 +709,38 @@ def test_scene_show_switches_to_trame_if_in_jupyter(monkeypatch):
     assert fake_plotter.shown
     assert fake_plotter.kwargs.get("title") == "Test Scene"
     assert fake_plotter.kwargs.get("axes") == 0
+
+
+def test_scene_show_raises_wo_sp_id():
+    groundplane = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    )
+    tree1 = ScenePart.from_obj(
+        "data/sceneparts/arbaro/black_tupelo_low.obj", up_axis="y"
+    )
+    tree2 = ScenePart.from_obj("data/sceneparts/arbaro/sassafras_low.obj", up_axis="y")
+    scene = StaticScene(scene_parts=[groundplane, tree1, tree2])
+    scene._is_finalized = True
+
+    with pytest.raises(ValueError, match="Scene part at index"):
+        scene.show(axes=1, color_by_id=True)
+
+
+def test_color_from_int_returns_different_colors_for_different_ints():
+    color1 = _color_from_int(1)
+    color2 = _color_from_int(2)
+    color3 = _color_from_int(1)
+
+    assert color1 != color2
+    assert color1 == color3
+
+
+def test_part_color_default_to_gray():
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene._finalize()
+    color1 = scene._part_color(scene.scene_parts[0], 0, False)
+    color2 = scene._part_color(scene.scene_parts[1], 1, False)
+
+    assert color1 != color2
+    assert color1 == "gray"
+    assert color2 == "lightgray"
