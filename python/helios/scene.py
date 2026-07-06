@@ -675,7 +675,32 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         snap_neighbor_normal: bool = False,
         id: Optional[int] = None,
     ):
-        """Load the scene part from a numpy array."""
+        """Load the scene part from a numpy array (similar to an XYZ file).
+        
+        :param points: The numpy array containing the points. The array should have shape (N, 3) for points only, (N, 6) for points and normals, or (N, 9) for points, normals, and RGB values.
+        :param voxel_size: The voxel size to use for voxelizing the point cloud so that it can be converted to a 3D model with surfaces that can be scanned.
+        :param normals_file_columns: The columns in the numpy array to use for the normal components if the array contains normals. The default is [3, 4, 5].
+        :param rgb_file_columns: The columns in the numpy array to use for the RGB components if the array contains RGB values. The default is [6, 7, 8].
+        :param max_color_value: The maximum color value used for normalizing RGB values in the numpy array.
+        :param default_normal: The default normal to use for points in the numpy array that do not have a normal.
+        :param sparse: Whether to use a sparse voxel grid for the conversion of the point cloud to a 3D model. If false, a dense voxel grid will be used, which can lead to higher memory usage.
+        :param estimate_normals: Whether to estimate normals. This can be used if the numpy array does not contain normals or if the provided normals are not reliable.
+        :param snap_neighbor_normal: Whether to snap the normal of points that do not have a normal to the normal of their nearest neighbor that has a normal.
+        :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
+        :type points: NDArray
+        :type voxel_size: PositiveFloat
+        :type normals_file_columns: Optional[list[NonNegativeInt]]
+        :type rgb_file_columns: Optional[list[NonNegativeInt]]
+        :type max_color_value: NonNegativeFloat
+        :type default_normal: R3Vector
+        :type sparse: bool
+        :type estimate_normals: bool
+        :type snap_neighbor_normal: bool
+        :type id: Optional[int]
+
+        :return: The loaded scene part.
+        :rtype: ScenePart
+        """
 
         ncols, rcols = _validate_points_array_and_get_indices(
             points,
