@@ -706,7 +706,7 @@ def test_leg_and_scanner_settings_thread_safety():
 def create_scene_part():
     # Create a ScenePart object
     scene_part = _helios.ScenePart()
-    scene_part.id = "TestPart"
+    scene_part.id = 0
     scene_part.origin = (1.0, 2.0, 3.0)
     scene_part.rotation = _helios.Rotation((0.0, 1.0, 0.0), 1.0)
     scene_part.origin = (1.0, 2.0, 3.0)
@@ -721,7 +721,7 @@ def test_scene_part():
     scene_part = create_scene_part()
 
     # Test properties
-    assert scene_part.id == "TestPart"
+    assert scene_part.id == 0
     assert scene_part.origin == (1.0, 2.0, 3.0)
     assert scene_part.rotation.axis == (0.0, 1.0, 0.0)
     assert scene_part.origin == (1.0, 2.0, 3.0)
@@ -730,14 +730,14 @@ def test_scene_part():
     assert scene_part.scale == 2.0
 
     # Modify properties
-    scene_part.id = "UpdatedPart"
+    scene_part.id = 2
     scene_part.origin = (4.0, 5.0, 6.0)
     scene_part.origin = (4.0, 5.0, 6.0)
     scene_part.rotation = _helios.Rotation((1.0, 0.0, 0.0), 2.0)
     scene_part.rotation = _helios.Rotation((1.0, 0.0, 0.0), 2.0)
     scene_part.scale = 3.0
 
-    assert scene_part.id == "UpdatedPart"
+    assert scene_part.id == 2
     assert scene_part.origin == (4.0, 5.0, 6.0)
     assert scene_part.rotation.axis == (1.0, 0.0, 0.0)
     assert scene_part.origin == (4.0, 5.0, 6.0)
@@ -776,7 +776,7 @@ def modify_scene_part_in_threads(scene_part, lock):
     def thread_function():
         with lock:
             for i in range(100):
-                scene_part.id = f"ThreadPart-{i}"
+                scene_part.id = i
                 scene_part.origin = (i, i + 1, i + 2)
                 # Assuming rotation is defined as (axis, angle)
                 axis = (i % 2, (i + 1) % 2, (i + 2) % 2)

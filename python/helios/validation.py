@@ -567,23 +567,30 @@ class Model(metaclass=ValidatedModelMetaClass):
     def _from_cpp(cls, value):
         params = {}
         for field, annot in get_all_annotations(cls).items():
-            if hasattr(value, field):
-                cpp_value = getattr(value, field)
-                if _is_optional(annot):
-                    T = _inner_optional_type(annot)
-                    params[field] = (
-                        None if cpp_value is None else T._from_cpp(cpp_value)
-                    )
-                    continue
+            if not hasattr(value, field):
+                continue
 
-                if not _is_iterable_annotation(annot):
-                    if hasattr(annot, "_from_cpp"):
-                        cpp_value = annot._from_cpp(cpp_value)
+            cpp_value = getattr(value, field)
+
+            if _is_optional(annot):
+                T = _inner_optional_type(annot)
+                if cpp_value is None:
+                    params[field] = None
+                elif hasattr(T, "_from_cpp"):
+                    params[field] = T._from_cpp(cpp_value)
                 else:
-                    args = get_args(annot)
-                    if hasattr(args[0], "_from_cpp"):
-                        cpp_value = [args[0]._from_cpp(v) for v in cpp_value]
-                params[field] = cpp_value
+                    params[field] = cpp_value
+                continue
+
+            if not _is_iterable_annotation(annot):
+                if hasattr(annot, "_from_cpp"):
+                    cpp_value = annot._from_cpp(cpp_value)
+            else:
+                args = get_args(annot)
+                if hasattr(args[0], "_from_cpp"):
+                    cpp_value = [args[0]._from_cpp(v) for v in cpp_value]
+
+            params[field] = cpp_value
 
         return cls(_cpp_object=value, **params)
 

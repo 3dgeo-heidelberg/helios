@@ -183,7 +183,8 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # also, for proper writing into the file, we need to set IDs for the scene parts
         for i, scene_part in enumerate(self.scene.scene_parts):
-            scene_part._cpp_object.id = str(i)
+            if scene_part.id is None:
+                scene_part.id = str(i)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False

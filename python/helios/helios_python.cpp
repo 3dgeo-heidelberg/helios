@@ -1055,7 +1055,29 @@ PYBIND11_MODULE(_helios, m)
         }
       })
     .def_property("centroid", &ScenePart::getCentroid, &ScenePart::setCentroid)
-    .def_property("id", &ScenePart::getId, &ScenePart::setId)
+    .def_property(
+      "id",
+      [](const ScenePart& self) -> py::object {
+        const std::string& value = self.getId();
+
+        if (value.empty()) {
+          return py::none();
+        }
+
+        try {
+          return py::int_(std::stoi(value));
+        } catch (...) {
+          throw py::value_error("ScenePart.id contains non-integer value: '" +
+                                value + "'");
+        }
+      },
+      [](ScenePart& self, py::object value) {
+        if (value.is_none()) {
+          self.setId("");
+        } else {
+          self.setId(std::to_string(value.cast<int>()));
+        }
+      })
     .def_property(
       "dyn_object_step",
       [](const ScenePart& self) -> size_t {
