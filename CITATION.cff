@@ -1,60 +1,20 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+title: HELIOS
+message: 'If you use this software, please cite it as below.'
+type: software
 authors:
-- family-names: "Winiwarter"
-  given-names: "Lukas"
-- family-names: "Esmorís Pena"
-  given-names: "Alberto Manuel"
-- family-names: "Yermo García"
-  given-names: "Miguel"
-- family-names: "Martínez Sánchez"
-  given-names: "Jorge"
-- family-names: "Searle"
-  given-names: "Mark"
-- family-names: "Weiser"
-  given-names: "Hannah"
-- family-names: "Anders"
-  given-names: "Katharina"
-- family-names: "Höfle"
-  given-names: "Bernhard"
-- family-names: "Kempf"
-  given-names: "Dominic"
-- family-names: "Kapitan"
-  given-names: "Dmitrii"
-- family-names: "Isensee"
-  given-names: "Thomas"
-- family-names: "Vijay"
-  given-names: "Kirthana"
-- family-names: "Meyer"
-  given-names: "Jannik"
-title: "HELIOS++"
-version: 2.2.0
-doi: 10.5281/zenodo.4452870
-date-released: 2026-03-20
-url: "https://github.com/3dgeo-heidelberg/helios"
-preferred-citation:
-  type: article
-  authors:
-  - family-names: "Winiwarter"
-    given-names: "Lukas"
-  - family-names: "Esmorís Pena"
-    given-names: "Alberto Manuel"
-  - family-names: "Weiser"
-    given-names: "Hannah"
-  - family-names: "Anders"
-    given-names: "Katharina"
-  - family-names: "Martínez Sánchez"
-    given-names: "Jorge"
-  - family-names: "Searle"
-    given-names: "Mark"
-  - family-names: "Höfle"
-    given-names: "Bernhard"
-  doi: "10.1016/j.rse.2021.112772"
-  journal: "Remote Sensing of Environment"
-  month: 2
-  start: 1 # First page number
-  end: 18 # Last page number
-  title: "Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning"
-  issue: 1
-  volume: 269
-  year: 2022
+  - family-names: Höfle
+    given-names: Bernhard
+  - family-names: Weiser
+    given-names: Hannah
+  - family-names: Kapitan
+    given-names: Dmitrii
+  - family-names: Kempf
+    given-names: Dominic
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.4452870
+    description: zenodo
+url: https://github.com/3dgeo-heidelberg/helios
+version: 3.0.0
+date-released: '2026-07-07'
