@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 import importlib_resources as resources
 import numpy as np
 import os
+import colorsys
 
 if TYPE_CHECKING:
     # only for static type checkers, never at runtime
@@ -564,6 +565,11 @@ def _is_in_jupyter() -> bool:
         return ip is not None and ip.__class__.__name__ == "ZMQInteractiveShell"
     except Exception:
         return False
+
+
+def _color_from_int(i: int) -> tuple[float, float, float]:
+    hue = (0.618033988749895 * i) % 1.0
+    return colorsys.hsv_to_rgb(hue, 0.65, 0.90)
 
 
 meas_dtype = np.dtype(

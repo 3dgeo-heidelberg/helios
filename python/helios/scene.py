@@ -13,6 +13,7 @@ from helios.utils import (
     _validate_same_shape,
     _validate_triangle_uvs,
     _is_in_jupyter,
+    _color_from_int,
 )
 
 from helios.validation import (
@@ -1096,10 +1097,28 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             str(binary_file.expanduser()), compression_level=compression_level
         )
 
+    def _part_color(
+        self,
+        part: ScenePart,
+        part_index: int,
+        color_by_id: bool,
+    ):
+        if not color_by_id:
+            return "gray" if part_index == 0 else "lightgray"
+
+        if part.id is None:
+            raise ValueError(
+                f"Scene part at index {part_index} does not have an ID assigned. "
+                "Please assign an ID before using color_by_id=True."
+            )
+
+        return _color_from_int(part.id)
+
     def show(
         self,
         title: str = "Helios Scene",
         axes: int = 1,
+        color_by_id=False,
     ):
         """
         Render the scene with Vedo.
@@ -1110,30 +1129,38 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
         :param title: The title of the visualization window.
         :param axes: Whether to show axes in the visualization (0 = no axes, 1 = show axes, 2 = show axes with labels, etc.). Works only in the interactive window backend, not in the notebook backend.
+        :param color_by_id: Whether to color the scene parts by their IDs.
         :type title: str
         :type axes: int
+        :type color_by_id: bool
         """
         if not getattr(self, "_is_finalized", False):
             raise RuntimeError(
                 "The scene must be finalized before it can be visualized. Call '_finalize()' on the scene before visualizing it."
             )
-
         in_notebook = _is_in_jupyter()
+        if in_notebook:
+            vedo.settings.default_backend = "trame"
 
         diff = self.original_bbox.centroid
         actors: list[Any] = []
-        for part in self.scene_parts:
+        for i, part in enumerate(self.scene_parts):
+            color = self._part_color(part=part, part_index=i, color_by_id=color_by_id)
             buffers = part._get_visualization_buffers(diff)
             triangle_vertices = np.asarray(buffers.triangle_vertices, dtype=np.float32)
             triangle_indices = np.asarray(buffers.triangle_indices, dtype=np.int32)
             if triangle_vertices.size > 0 and triangle_indices.size > 0:
-                mesh = vedo.Mesh([triangle_vertices, triangle_indices]).alpha(0.25)
+                mesh = (
+                    vedo.Mesh([triangle_vertices, triangle_indices])
+                    .c(color)
+                    .alpha(0.25)
+                )
                 mesh.pickable(False)
                 actors.append(mesh)
 
             voxel_centers = np.asarray(buffers.voxel_centers, dtype=np.float32)
             if voxel_centers.size > 0:
-                vox = vedo.Points(voxel_centers, r=2.0).c("gray").alpha(0.35)
+                vox = vedo.Points(voxel_centers, r=2.0).c(color).alpha(0.35)
                 vox.pickable(False)
                 actors.append(vox)
 
@@ -1146,11 +1173,8 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             offscreen=False,
         )
 
-        if in_notebook:
-            vedo.settings.default_backend = "trame"
-
         if actors:
-            plotter.show(*actors, resetcam=True, interactive=interactive)
+            plotter.show(*actors, resetcam=True, interactive=interactive, axes=axes)
         else:
             plotter.show(resetcam=True, interactive=interactive)
 
