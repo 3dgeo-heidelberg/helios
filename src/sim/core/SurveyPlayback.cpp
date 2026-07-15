@@ -1,6 +1,6 @@
-#include "logging.hpp"
 #include <algorithm>
 #include <iomanip>
+#include <logger_core.hpp>
 #include <string>
 
 #include <chrono>
@@ -225,7 +225,7 @@ SurveyPlayback::getCurrentLeg()
     return mSurvey->legs.at(mCurrentLegIndex);
   }
   // NOTE: This should never happen:
-  logging::ERR("ERROR getting current leg: Index out of bounds");
+  LOG_ERR("ERROR getting current leg: Index out of bounds");
   return nullptr;
 }
 
@@ -383,7 +383,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
          << rawNext.z << "), internal=(" << platform->nextWaypoint.x << ", "
          << platform->nextWaypoint.y << ", " << platform->nextWaypoint.z << ")"
          << std::endl;
-      logging::INFO(ss.str());
+      LOG_INFO(ss.str());
     }
 
     if (platform->canStopAndTurn() && leg->mPlatformSettings->stopAndTurn)
@@ -422,7 +422,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
 
     // ################ END Set platform destination ##################
     platform->prepareLeg(mScanner->getPulseFreq_Hz());
-    logging::DEBUG("Prepared platform for current leg.");
+    LOG_DEBUG("Prepared platform for current leg.");
   }
 
   // Restart deflector if previous leg was not active
@@ -431,12 +431,12 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
       leg->mScannerSettings->active) {
     mSurvey->scanner->getBeamDeflector()->restartDeflector();
   }
-  logging::DEBUG("Started deflector for current leg.");
+  LOG_DEBUG("Started deflector for current leg.");
 
   if (exportToFile) {
     prepareOutput();
     platform->writeNextTrajectory = true;
-    logging::DEBUG("Output prepared for current leg.");
+    LOG_DEBUG("Output prepared for current leg.");
   }
 
   emitLegStartHook();
@@ -498,7 +498,7 @@ SurveyPlayback::stopAndTurn(unsigned int legIndex, std::shared_ptr<Leg> leg)
   }
   std::stringstream ss;
   ss << "stop and turn yaw = " << angle;
-  logging::TRACE(ss.str());
+  LOG_TRACE(ss.str());
 }
 
 void
@@ -519,9 +519,9 @@ SurveyPlayback::prepareOutput()
   if (strip != nullptr) {
     lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
   }
-  logging::DEBUG(lastLegInStrip
-                   ? "Current leg was found to be the last in the strip."
-                   : "Current leg is not the last in the strip.");
+  LOG_DEBUG(lastLegInStrip
+              ? "Current leg was found to be the last in the strip."
+              : "Current leg is not the last in the strip.");
 
   // Configure output paths
   fms->write.configure(getLegOutputPrefix(),

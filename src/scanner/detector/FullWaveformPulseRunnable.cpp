@@ -2,7 +2,7 @@
 // Is this thread safe?
 #include "FullWaveformPulseRunnable.h"
 
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 #include <cmath>
 
@@ -60,7 +60,7 @@ FullWaveformPulseRunnable::operator()(
   HDA_GV.incrementGeneratedRaysBeforeEarlyAbortCount();
 #endif
   if (checkEarlyAbort(tMinMax)) {
-    logging::DEBUG("Early abort - beam does not intersect with the scene");
+    LOG_DEBUG("Early abort - beam does not intersect with the scene");
     scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
     return;
   }
@@ -634,7 +634,7 @@ FullWaveformPulseRunnable::handleFullWaveformBin(
         vector<double>{ 0, fullwave[binIndex], (double)binIndex, 1 });
       fit.fitData();
     } catch (std::exception& e) {
-      logging::ERR(e.what());
+      LOG_ERR(e.what());
       return true;
     }
     echoWidth = fit.getParameters()[3];

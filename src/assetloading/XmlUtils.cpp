@@ -9,7 +9,7 @@
 #include <assetloading/geometryfilter/XYZPointCloudFileLoader.h>
 #include <rigidmotion/RigidMotionR3Factory.h>
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <armadillo>
 #include <boost/algorithm/string.hpp>
@@ -27,8 +27,8 @@ XmlUtils::createColorFromXml(tinyxml2::XMLElement* node)
     float b = boost::lexical_cast<float>(node->Attribute("b"));
     col = Color4f(r, g, b, 1);
   } catch (std::exception& e) {
-    logging::INFO(std::string("Error creating color from xml.\nEXCEPTION: ") +
-                  e.what());
+    LOG_INFO(std::string("Error creating color from xml.\nEXCEPTION: ") +
+             e.what());
   }
   return col;
 }
@@ -80,8 +80,7 @@ XmlUtils::createParamsFromXml(tinyxml2::XMLElement* paramsNode)
         }
       }
     } catch (std::exception& e) {
-      logging::INFO(std::string("Failed to read filter parameter: ") +
-                    e.what());
+      LOG_INFO(std::string("Failed to read filter parameter: ") + e.what());
     }
 
     element = element->NextSiblingElement("param");
@@ -196,7 +195,7 @@ XmlUtils::getAttribute(tinyxml2::XMLElement* element,
       else {
         std::ostringstream s;
         s << "Attribute '" << attrName << "' does not exist!";
-        logging::WARN(s.str());
+        LOG_WARN(s.str());
         throw std::exception();
       }
     } else if (type == "int") {
@@ -208,14 +207,14 @@ XmlUtils::getAttribute(tinyxml2::XMLElement* element,
     } else if (type == "string") {
       result = attrVal;
     } else {
-      logging::ERR("ERROR: unknown type " + type);
+      LOG_ERR("ERROR: unknown type " + type);
     }
   } catch (std::exception& e) {
     std::stringstream ss;
     ss << "XML Assets Loader: Could not find attribute '" << attrName
        << "' of <" << element->Name() << "> element in line "
        << element->GetLineNum();
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
     ss.flush();
     ss.str("");
 
@@ -223,12 +222,12 @@ XmlUtils::getAttribute(tinyxml2::XMLElement* element,
       result = defaultVal;
       ss << defaultMsg << " '" << attrName
          << "' : " << boost::apply_visitor(stringVisitor{}, defaultVal);
-      logging::INFO(ss.str());
+      LOG_INFO(ss.str());
     } else {
       ss << "Exception:\n" << e.what() << "\n";
       ss << "ERROR: No default value specified for attribute '" << attrName
          << "'. Aborting.";
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
   }
@@ -445,14 +444,14 @@ XmlUtils::assertDocumentForAssetLoading(tinyxml2::XMLDocument& doc,
          << "\"" << path << "\"\n"
          << "Thus, it is not possible to load the asset \"" << type << "\":\""
          << id << "\"";
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
     } else {
       std::stringstream ss;
       ss << "It was not possible to load the asset \"" << type << "\":\"" << id
          << "\"\n"
          << "At least not from file \"" << filename << "\" at:\n"
          << "\"" << path << "\"";
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
     }
     std::stringstream ss;
     ss << caller << " failed due to a document error";
@@ -465,7 +464,7 @@ XmlUtils::assertDocumentForAssetLoading(tinyxml2::XMLDocument& doc,
     ss << "XML document '" << filename << "' at '" << path
        << "' does not start with an XML declaration (<?xml ...?>). Not a "
           "standard XML file.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     std::stringstream ss2;
     ss2 << caller << " failed due to missing XML declaration.";
     throw HeliosException(ss2.str());
@@ -476,7 +475,7 @@ XmlUtils::assertDocumentForAssetLoading(tinyxml2::XMLDocument& doc,
     std::stringstream ss;
     ss << "XML document '" << filename << "' at '" << path
        << "' does not contain a root element: empty XML file.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     std::stringstream ss2;
     ss2 << caller << " failed due to empty XML document.";
     throw HeliosException(ss2.str());
@@ -488,7 +487,7 @@ XmlUtils::assertDocumentForAssetLoading(tinyxml2::XMLDocument& doc,
     ss << "XML document '" << filename << "' at '" << path
        << "' root element is <" << root->Name()
        << "> but expected <document>. Not a standard XML file.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     std::stringstream ss2;
     ss2 << caller << " failed due to unexpected root element <" << root->Name()
         << ">.";

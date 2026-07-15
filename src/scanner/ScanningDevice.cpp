@@ -1,6 +1,6 @@
 #include <ScanningDevice.h>
 #include <cmath>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
 #include <maths/model/BaseEnergyModel.h>
@@ -190,7 +190,7 @@ ScanningDevice::calcRaysNumber()
   numRays = count;
   std::stringstream ss;
   ss << "Number of subsampling rays (" << id << "): " << numRays;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
