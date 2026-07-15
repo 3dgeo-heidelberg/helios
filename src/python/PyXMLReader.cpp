@@ -47,13 +47,13 @@ readSceneFromXml(std::string filePath,
 {
   tinyxml2::XMLDocument doc;
   if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
-    logging::ERR("ERROR: Failed to load XML file " + filePath);
+    LOG_ERR("ERROR: Failed to load XML file " + filePath);
     return nullptr;
   }
 
   tinyxml2::XMLNode* rootNode = doc.FirstChild();
   if (!rootNode) {
-    logging::ERR("ERROR: XML root not found in file " + filePath);
+    LOG_ERR("ERROR: XML root not found in file " + filePath);
     return nullptr;
   }
 
@@ -80,7 +80,7 @@ readSceneFromXml(std::string filePath,
         scene->buildKDGroveWithLog();
       return scene;
     } else {
-      logging::ERR("Error: Failed to create scene from XML");
+      LOG_ERR("Error: Failed to create scene from XML");
       return nullptr;
     }
   }
@@ -94,20 +94,20 @@ readScenePartFromXml(std::string filePath,
 {
   tinyxml2::XMLDocument doc;
   if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
-    logging::ERR("Failed to load file: " + filePath);
+    LOG_ERR("Failed to load file: " + filePath);
     return nullptr;
   }
 
   tinyxml2::XMLElement* root = doc.FirstChildElement("document");
   if (!root) {
-    logging::ERR("Invalid XML structure: Missing <document> root");
+    LOG_ERR("Invalid XML structure: Missing <document> root");
     return nullptr;
   }
 
   tinyxml2::XMLElement* scene = root->FirstChildElement("scene");
   if (!scene) {
 
-    logging::ERR("Invalid XML structure: Missing <scene> element");
+    LOG_ERR("Invalid XML structure: Missing <scene> element");
     return nullptr;
   }
 
@@ -129,8 +129,8 @@ readScenePartFromXml(std::string filePath,
           break;
         }
       } catch (std::invalid_argument& e) {
-        logging::ERR("Error: Invalid ID format in XML for part: " +
-                     std::string(partId));
+        LOG_ERR("Error: Invalid ID format in XML for part: " +
+                std::string(partId));
         return nullptr;
       }
     } else {
@@ -146,7 +146,7 @@ readScenePartFromXml(std::string filePath,
   }
 
   if (finalId.empty()) {
-    logging::ERR("Error: No matching part found for id: " + std::to_string(id));
+    LOG_ERR("Error: No matching part found for id: " + std::to_string(id));
     return nullptr;
   }
   XmlSceneLoader xmlSceneLoader(assetsPath);
@@ -166,7 +166,7 @@ readScenePartFromXml(std::string filePath,
     scenePart->primitiveType = ScenePart::VOXEL;
 
   if (!xmlSceneLoader.validateScenePart(scenePart, part)) {
-    logging::ERR("Error: Invalid scene part");
+    LOG_ERR("Error: Invalid scene part");
     return nullptr;
   }
 

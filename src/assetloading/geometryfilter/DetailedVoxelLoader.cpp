@@ -37,7 +37,7 @@ DetailedVoxelLoader::run()
   for (std::string filePath : filePaths) {
     std::stringstream ss;
     ss << "Reading detailed voxels from " << filePath;
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
   }
 
   // Load DV files
@@ -65,7 +65,7 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
   if (!fs::exists(pathString)) {
     std::stringstream ss;
     ss << "Voxel file not found: " << pathString;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
   // Prepare default material

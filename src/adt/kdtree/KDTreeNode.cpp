@@ -3,7 +3,7 @@
 #include "KDTreePrimitiveComparator.h"
 
 #include <iostream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
