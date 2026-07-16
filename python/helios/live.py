@@ -4,7 +4,7 @@ from helios.callbacks import (
     HookPayload,
     HookEndOfLegPolicy,
 )
-from helios.utils import extract_position
+from helios.utils import extract_position, _is_in_jupyter
 from helios.scene import StaticScene
 
 import numpy as np
@@ -223,22 +223,6 @@ class LiveViewer:
             self._viewer_close()
             self._viewer_started = False
 
-    def _is_in_jupyter(self) -> bool:
-        try:
-            from IPython import get_ipython
-        except ImportError:
-            return False
-
-        try:
-            ip = get_ipython()
-        except Exception:
-            return False
-
-        if ip is None:
-            return False
-
-        return ip.__class__.__name__ == "ZMQInteractiveShell"
-
     def _ensure_scene_actors(self) -> None:
         if self.scene is None:
             raise RuntimeError("Scene is not initialized")
@@ -250,7 +234,7 @@ class LiveViewer:
             raise RuntimeError("Scene is not initialized")
         vedo.settings.default_backend = "vtk"
 
-        if self._is_in_jupyter() and hasattr(vedo, "embedWindow"):
+        if _is_in_jupyter() and hasattr(vedo, "embedWindow"):
             try:
                 vedo.embedWindow("ipyvtk")
             except Exception:
@@ -277,7 +261,7 @@ class LiveViewer:
             return []
 
         actors: list[Any] = []
-        diff = self.scene._cpp_object.bbox_crs.centroid
+        diff = self.scene.bbox_crs.centroid
         for part in self.scene.scene_parts:
             buffers = part._get_visualization_buffers(diff)
 

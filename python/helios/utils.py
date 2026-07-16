@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 import importlib_resources as resources
 import numpy as np
 import os
+import colorsys
 
 if TYPE_CHECKING:
     # only for static type checkers, never at runtime
@@ -554,6 +555,21 @@ def extract_position(arr: Optional[np.ndarray]) -> Optional[np.ndarray]:
     if arr is None or len(arr) == 0:
         return None
     return arr["position"]
+
+
+def _is_in_jupyter() -> bool:
+    try:
+        from IPython import get_ipython
+
+        ip = get_ipython()
+        return ip is not None and ip.__class__.__name__ == "ZMQInteractiveShell"
+    except Exception:
+        return False
+
+
+def _color_from_int(i: int) -> tuple[float, float, float]:
+    hue = (0.618033988749895 * i) % 1.0
+    return colorsys.hsv_to_rgb(hue, 0.65, 0.90)
 
 
 meas_dtype = np.dtype(

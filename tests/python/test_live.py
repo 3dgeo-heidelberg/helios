@@ -9,7 +9,8 @@ import numpy as np
 import pytest
 
 from helios.settings import OutputFormat
-from helios.utils import extract_position, meas_dtype, traj_dtype
+from helios.utils import extract_position, meas_dtype, traj_dtype, _color_from_int
+from helios.scene import StaticScene, ScenePart
 import inspect
 
 
@@ -103,8 +104,13 @@ class _FakePlotter:
 def _import_modules_with_fake_vedo(monkeypatch):
     fake_plotter = _FakePlotter()
 
+    def _plotter_factory(*args, **kwargs):
+        fake_plotter.args = args
+        fake_plotter.kwargs = kwargs
+        return fake_plotter
+
     fake_vedo = SimpleNamespace(
-        Plotter=lambda *args, **kwargs: fake_plotter,
+        Plotter=_plotter_factory,
         Points=_FakePoints,
         Mesh=_FakeMesh,
         Line=_FakeLine,
@@ -265,11 +271,7 @@ def test_ensure_scene_actors_builds_static_scene(monkeypatch):
 
     viewer = live_module.LiveViewer()
     viewer.scene = SimpleNamespace(
-        _cpp_object=SimpleNamespace(
-            bbox_crs=SimpleNamespace(
-                centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
-            )
-        ),
+        bbox_crs=SimpleNamespace(centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)),
         scene_parts=[
             SimpleNamespace(
                 _get_visualization_buffers=lambda diff: SimpleNamespace(
@@ -312,11 +314,7 @@ def test_create_scene_actors_returns_mesh_and_points(monkeypatch):
 
     viewer = live_module.LiveViewer()
     viewer.scene = SimpleNamespace(
-        _cpp_object=SimpleNamespace(
-            bbox_crs=SimpleNamespace(
-                centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
-            )
-        ),
+        bbox_crs=SimpleNamespace(centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)),
         scene_parts=[
             SimpleNamespace(
                 _get_visualization_buffers=lambda diff: SimpleNamespace(
@@ -619,3 +617,130 @@ def test_viewer_main_resets_started_on_exception(monkeypatch):
 
     assert viewer._viewer_started is False
     assert isinstance(viewer._error, RuntimeError)
+
+
+def test_scene_show(monkeypatch):
+    _, _, fake_plotter = _import_modules_with_fake_vedo(monkeypatch)
+
+    scene_module = importlib.import_module("helios.scene")
+    monkeypatch.setattr(scene_module, "vedo", sys.modules["vedo"], raising=False)
+    monkeypatch.setattr(scene_module, "_is_in_jupyter", lambda: False, raising=False)
+
+    scene = StaticScene()
+    scene._is_finalized = True
+
+    fake_parts = [
+        SimpleNamespace(
+            _get_visualization_buffers=lambda diff: SimpleNamespace(
+                triangle_vertices=np.array(
+                    [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+                    dtype=np.float32,
+                ),
+                triangle_indices=np.array([[0, 1, 2]], dtype=np.int32),
+                voxel_centers=np.array([[5.0, 5.0, 5.0]], dtype=np.float32),
+            )
+        )
+    ]
+
+    monkeypatch.setattr(
+        type(scene),
+        "scene_parts",
+        property(lambda self: fake_parts),
+    )
+
+    monkeypatch.setattr(
+        type(scene),
+        "original_bbox",
+        property(
+            lambda self: SimpleNamespace(
+                centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
+            )
+        ),
+    )
+
+    plotter = scene.show(title="Test Scene", axes=0)
+
+    assert plotter is fake_plotter
+    assert fake_plotter.shown
+    assert fake_plotter.kwargs.get("title") == "Test Scene"
+    assert fake_plotter.kwargs.get("axes") == 0
+
+
+def test_scene_show_switches_to_trame_if_in_jupyter(monkeypatch):
+    _, _, fake_plotter = _import_modules_with_fake_vedo(monkeypatch)
+
+    scene_module = importlib.import_module("helios.scene")
+    monkeypatch.setattr(scene_module, "vedo", sys.modules["vedo"], raising=False)
+    monkeypatch.setattr(scene_module, "_is_in_jupyter", lambda: True, raising=False)
+
+    scene = StaticScene()
+    scene._is_finalized = True
+    fake_parts = [
+        SimpleNamespace(
+            _get_visualization_buffers=lambda diff: SimpleNamespace(
+                triangle_vertices=np.array(
+                    [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+                    dtype=np.float32,
+                ),
+                triangle_indices=np.array([[0, 1, 2]], dtype=np.int32),
+                voxel_centers=np.array([[5.0, 5.0, 5.0]], dtype=np.float32),
+            )
+        )
+    ]
+
+    monkeypatch.setattr(
+        type(scene),
+        "scene_parts",
+        property(lambda self: fake_parts),
+    )
+
+    monkeypatch.setattr(
+        type(scene),
+        "original_bbox",
+        property(
+            lambda self: SimpleNamespace(
+                centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
+            )
+        ),
+    )
+    plotter = scene.show(title="Test Scene", axes=0)
+    assert plotter is fake_plotter
+    assert sys.modules["vedo"].settings.default_backend == "trame"
+    assert fake_plotter.shown
+    assert fake_plotter.kwargs.get("title") == "Test Scene"
+    assert fake_plotter.kwargs.get("axes") == 0
+
+
+def test_scene_show_raises_wo_sp_id():
+    groundplane = ScenePart.from_obj(
+        "data/sceneparts/basic/groundplane/groundplane.obj"
+    )
+    tree1 = ScenePart.from_obj(
+        "data/sceneparts/arbaro/black_tupelo_low.obj", up_axis="y"
+    )
+    tree2 = ScenePart.from_obj("data/sceneparts/arbaro/sassafras_low.obj", up_axis="y")
+    scene = StaticScene(scene_parts=[groundplane, tree1, tree2])
+    scene._is_finalized = True
+
+    with pytest.raises(ValueError, match="Scene part at index"):
+        scene.show(axes=1, color_by_id=True)
+
+
+def test_color_from_int_returns_different_colors_for_different_ints():
+    color1 = _color_from_int(1)
+    color2 = _color_from_int(2)
+    color3 = _color_from_int(1)
+
+    assert color1 != color2
+    assert color1 == color3
+
+
+def test_part_color_default_to_gray():
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene._finalize()
+    color1 = scene._part_color(scene.scene_parts[0], 0, False)
+    color2 = scene._part_color(scene.scene_parts[1], 1, False)
+
+    assert color1 != color2
+    assert color1 == "gray"
+    assert color2 == "lightgray"

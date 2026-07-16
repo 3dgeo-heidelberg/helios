@@ -1698,6 +1698,14 @@ def test_take_vis_buffer_from_scene_part():
     assert triangle_indices.shape[0] > 0
 
 
+def test_scene_show_fails_wo_finalisation():
+    scene = StaticScene()
+    with pytest.raises(
+        RuntimeError, match="The scene must be finalized before it can be visualized."
+    ):
+        scene.show()
+
+
 def test_change_sp_id():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
     assert part.id == 0
@@ -1807,3 +1815,22 @@ def test_read_o3d_mesh_w_id(o3d_mesh_file):
     geometry = o3d.io.read_triangle_mesh(str(o3d_mesh_file))
     scene_part = ScenePart.from_open3d(geometry, id=789)
     assert scene_part.id == 789
+
+
+def test_original_bbox_wo_finalisation():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    scene = StaticScene(scene_parts=[part])
+    with pytest.raises(
+        RuntimeError,
+        match="The original bounding box is not available before the scene is finalized",
+    ):
+        _ = scene.original_bbox
+
+
+def test_scene_finalization_w_finalisation():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    scene = StaticScene(scene_parts=[part])
+    scene._finalize()
+    orig_bbox = scene.original_bbox
+    assert orig_bbox is not None
+    assert orig_bbox.centroid.shape == (3,)
