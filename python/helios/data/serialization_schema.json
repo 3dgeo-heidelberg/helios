@@ -105,6 +105,10 @@
       ],
       "additionalProperties": false,
       "properties": {
+        "$schema": {
+          "type": "string",
+          "format": "uri"
+        },
         "serialization_major_version": {
           "const": 0
         },

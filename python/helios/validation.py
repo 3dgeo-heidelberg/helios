@@ -422,7 +422,7 @@ class Model(metaclass=ValidatedModelMetaClass):
     def _serialization_filename(self) -> str:
         """Hook for naming YAML files in shallow serialization."""
 
-        return f"{self.__class__.__name__.lower()}.helios.yaml"
+        return f"{self.__class__.__name__.lower()}.yaml"
 
     def _serialization_binary_filename(self) -> str:
         """Hook for naming binary sidecar files."""
@@ -531,7 +531,7 @@ class Model(metaclass=ValidatedModelMetaClass):
             probe = object.__new__(cls)
             root_filename = Path(cls._serialization_filename(probe))
             if root_filename.suffix == "":
-                root_filename = Path(f"{root_filename}.helios.yaml")
+                root_filename = Path(f"{root_filename}.yaml")
         else:
             root_filename = filename.expanduser()
             if root_filename.is_absolute():

@@ -112,6 +112,10 @@ def test_roundtrip_yaml_inline(tmp_path):
 
     with yaml_path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
+    assert document["$schema"] == (
+        "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
+        "alpha-dev/python/helios/data/serialization_schema.json"
+    )
     assert "model_ref" not in str(document["fields"]["trajectory_settings"])
     assert document["serialization_major_version"] == 0
     assert document["serialization_minor_version"] == 0
@@ -135,12 +139,16 @@ def test_roundtrip_yaml_shallow_with_references(tmp_path):
     )
 
     root_yaml = root.to_yaml(tmp_path, shallow=True)
-    assert root_yaml == tmp_path / "dynamicplatformsettings.helios.yaml"
+    assert root_yaml == tmp_path / "dynamicplatformsettings.yaml"
 
     with root_yaml.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
     trajectory_ref = document["fields"]["trajectory_settings"]["model_ref"]
-    assert (tmp_path / trajectory_ref).exists()
+    trajectory_path = tmp_path / trajectory_ref
+    assert trajectory_path.exists()
+    with trajectory_path.open("r", encoding="utf-8") as handle:
+        trajectory_document = yaml.safe_load(handle)
+    assert trajectory_document["$schema"] == document["$schema"]
 
     loaded = DynamicPlatformSettings.from_yaml(root_yaml)
     assert loaded.speed_m_s == 33.0
@@ -193,7 +201,7 @@ def test_to_yaml_existing_non_yaml_path_gets_yaml_suffix(tmp_path):
     existing_non_yaml.write_text("placeholder", encoding="utf-8")
 
     written = root.to_yaml(existing_non_yaml, shallow=False)
-    assert written == tmp_path / "target.helios.yaml"
+    assert written == tmp_path / "target.yaml"
     assert written.exists()
 
 
