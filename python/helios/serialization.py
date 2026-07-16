@@ -36,6 +36,12 @@ SERIALIZATION_FORMAT_MAJOR_VERSION = 0
 # and add a new migration as described below.
 SERIALIZATION_FORMAT_MINOR_VERSION = 0
 
+
+SERIALIZATION_SCHEMA_URL = (
+    "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
+    "alpha-dev/python/helios/data/serialization_schema.json"
+)
+
 # The constant used to signal that a model field is serialized in a different file
 _MODEL_REFERENCE_KEY = "model_ref"
 
@@ -216,7 +222,7 @@ def _serialize_model_to_yaml_with_context(
     if binary and not shallow:
         raise ValueError("binary=True requires shallow=True.")
 
-    default_filename = _ensure_suffix(model._serialization_filename(), ".helios.yaml")
+    default_filename = _ensure_suffix(model._serialization_filename(), ".yaml")
     path = path.expanduser()
     if path.exists():
         if path.is_dir():
@@ -224,9 +230,7 @@ def _serialize_model_to_yaml_with_context(
         else:
             suffix = path.suffix.lower()
             root_file = (
-                path
-                if suffix in {".yaml", ".yml"}
-                else path.with_suffix(".helios.yaml")
+                path if suffix in {".yaml", ".yml"} else path.with_suffix(".yaml")
             )
     elif path.suffix.lower() in {".yaml", ".yml"}:
         root_file = path
@@ -322,7 +326,10 @@ def _write_model_document(model: Model, filename: str, context: _SerializationCo
     context.model_files[model_id] = filename
     context.document_models[filename] = model
 
-    document = _build_model_document(model, context)
+    document = {
+        "$schema": SERIALIZATION_SCHEMA_URL,
+        **_build_model_document(model, context),
+    }
     path = context.root_dir / filename
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -878,7 +885,7 @@ def _serialize_runtime_value(value: Any, context: _SerializationContext):
                 filename = context.model_files[model_id]
             else:
                 preferred = value._serialization_filename()
-                preferred = _ensure_suffix(Path(preferred).name, ".helios.yaml")
+                preferred = _ensure_suffix(Path(preferred).name, ".yaml")
                 filename = _reserve_unique_filename(
                     preferred, context.used_yaml_filenames
                 )
