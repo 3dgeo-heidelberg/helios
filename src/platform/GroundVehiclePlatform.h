@@ -1,9 +1,7 @@
 #pragma once
 
 #include "SimplePhysicsPlatform.h"
-
-#define _USE_MATH_DEFINES
-#include "math.h"
+#include "maths/MathConstants.h"
 
 /**
  * @brief Class representing a ground vehicle platform
@@ -29,7 +27,7 @@ private:
   /**
    * @brief Turning threshold in radians
    */
-  double mComplexTurnThreshold_rad = M_PI / 5;
+  double mComplexTurnThreshold_rad = PI / 5;
   /**
    * @brief Turn mode specification
    *

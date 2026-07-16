@@ -1,9 +1,9 @@
 #include "ConicBeamDeflector.h"
 
-#define _USE_MATH_DEFINES
 #include "math.h"
 
 #include "maths/Directions.h"
+#include "maths/MathConstants.h"
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 std::shared_ptr<AbstractBeamDeflector>
@@ -32,8 +32,7 @@ ConicBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
 {
   AbstractBeamDeflector::applySettings(settings);
   cached_angleBetweenPulses_rad =
-    (double)(this->cfg_device_scanFreqMax_Hz * M_PI * 2) /
-    settings->pulseFreq_Hz;
+    (double)(this->cfg_device_scanFreqMax_Hz * PI * 2) / settings->pulseFreq_Hz;
   r1 = Rotation(glm::dvec3(1, 0, 0), this->cfg_setting_scanAngle_rad);
 }
 
@@ -42,8 +41,8 @@ ConicBeamDeflector::doSimStep()
 {
   // ####### BEGIN Update mirror angle ########
   state_currentBeamAngle_rad += cached_angleBetweenPulses_rad;
-  if (state_currentBeamAngle_rad >= M_PI * 2) {
-    state_currentBeamAngle_rad = fmod(state_currentBeamAngle_rad, M_PI * 2);
+  if (state_currentBeamAngle_rad >= PI * 2) {
+    state_currentBeamAngle_rad = fmod(state_currentBeamAngle_rad, PI * 2);
   }
   // ####### END Update mirror angle ########
   Rotation r2 = Rotation(Directions::forward, state_currentBeamAngle_rad);

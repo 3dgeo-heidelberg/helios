@@ -35,16 +35,16 @@ public:
       return eps;    // eps
     }
     // Near -pi
-    if (phi > -M_PI - eps && phi < -M_PI + eps) {
-      if (phi < -M_PI)
-        return -M_PI - eps; // -pi-eps
-      return -M_PI + eps;   // -pi+eps
+    if (phi > -PI - eps && phi < -PI + eps) {
+      if (phi < -PI)
+        return -PI - eps; // -pi-eps
+      return -PI + eps;   // -pi+eps
     }
     // Near pi
-    if (phi > M_PI - eps && phi < M_PI + eps) {
-      if (phi < M_PI)
-        return M_PI - eps; // pi-eps
-      return M_PI + eps;   // pi+eps
+    if (phi > PI - eps && phi < PI + eps) {
+      if (phi < PI)
+        return PI - eps; // pi-eps
+      return PI + eps;   // pi+eps
     }
     // Near -2pi
     if (phi > -PI_2 - eps && phi < -PI_2 + eps) {

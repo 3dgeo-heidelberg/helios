@@ -485,7 +485,7 @@ bool
 RigidMotionTest::testPureRotationR2()
 {
   colvec center = R2X.col(2);
-  RigidMotion f = rm2f.makeRotation(-M_PI / 3, center);
+  RigidMotion f = rm2f.makeRotation(-PI / 3, center);
   mat Y = rme.apply(f, R2X);
   mat EY(2, 5);
   EY.at(0, 0) = 2.96410162;

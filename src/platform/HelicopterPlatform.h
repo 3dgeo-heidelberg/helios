@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 
+#include "maths/MathConstants.h"
 #include "maths/Rotation.h"
 
 /**
@@ -229,7 +230,7 @@ public:
    */
   void setHeadingRad(double rad) override
   {
-    yaw = stopAndTurn ? rad - M_PI : rad;
+    yaw = stopAndTurn ? rad - PI : rad;
   }
   /**
    * @see Platform::getHeadingRad

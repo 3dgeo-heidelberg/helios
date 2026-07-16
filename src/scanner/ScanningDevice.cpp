@@ -149,7 +149,7 @@ void
 ScanningDevice::configureBeam()
 {
   cached_Bt2 = beamDivergence_rad * beamDivergence_rad;
-  beamWaistRadius = (beamQuality * wavelength_m) / (M_PI * beamDivergence_rad);
+  beamWaistRadius = (beamQuality * wavelength_m) / (PI * beamDivergence_rad);
 }
 
 // Simulate energy loss from aerial particles (Carlsson et al., 2001)
@@ -182,7 +182,7 @@ ScanningDevice::calcRaysNumber()
   int count = 1;
   for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
        radiusStep++) {
-    int circleSteps = (int)(2 * M_PI) * radiusStep;
+    int circleSteps = (int)(2 * PI) * radiusStep;
     count += circleSteps;
   }
 
