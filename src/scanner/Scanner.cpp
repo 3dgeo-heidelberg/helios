@@ -362,7 +362,7 @@ Scanner::buildScanningPulseProcess(
 {
   if (parallelizationStrategy == 0) {
     spp = std::unique_ptr<ScanningPulseProcess>(new BuddingScanningPulseProcess(
-      getDetector(0)->scanner,
+      getDetector(0)->scanner.lock(),
       scene,
       dropper,
       *(std::static_pointer_cast<PulseThreadPool>(pool)),
@@ -377,7 +377,7 @@ Scanner::buildScanningPulseProcess(
   } else if (parallelizationStrategy == 1) {
     spp =
       std::unique_ptr<ScanningPulseProcess>(new WarehouseScanningPulseProcess(
-        getDetector(0)->scanner,
+        getDetector(0)->scanner.lock(),
         scene,
         dropper,
         *(std::static_pointer_cast<PulseWarehouseThreadPool>(pool)),

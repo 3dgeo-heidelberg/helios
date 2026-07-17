@@ -28,7 +28,7 @@ public:
   /**
    * @brief Scanner which the detector belongs to
    */
-  std::shared_ptr<Scanner> scanner = nullptr;
+  std::weak_ptr<Scanner> scanner;
 
 protected:
   /**
@@ -84,7 +84,7 @@ public:
     this->cfg_device_accuracy_m = accuracy_m;
     this->cfg_device_rangeMin_m = rangeMin_m;
     this->cfg_device_rangeMax_m = rangeMax_m;
-    this->scanner = std::move(scanner);
+    this->scanner = scanner;
     this->errorDistanceExpr = errorDistanceExpr;
   }
   virtual ~AbstractDetector() {}
