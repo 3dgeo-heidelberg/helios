@@ -5,6 +5,44 @@ import threading
 from unittest.mock import MagicMock, patch
 import pytest
 
+STATIC_SCENE_XML = "data/scenes/demo/box_scene.xml"
+DYNAMIC_SCENE_XML = "data/scenes/dyn/dyn_cube_scene.xml"
+
+
+def test_xml_scene_loader_preserves_runtime_scene_type():
+    static_scene = _helios.read_scene_from_xml(STATIC_SCENE_XML, ["."], False)
+    dynamic_scene = _helios.read_scene_from_xml(DYNAMIC_SCENE_XML, ["."], False)
+
+    assert type(static_scene) is _helios.StaticScene
+    assert type(dynamic_scene) is _helios.DynamicScene
+
+
+def test_checked_dynamic_scene_loader_accepts_dynamic_xml():
+    scene = _helios.read_dynamic_scene_from_xml(
+        file_path=DYNAMIC_SCENE_XML,
+        assets_path=["."],
+        build_kd_grove=False,
+    )
+
+    assert type(scene) is _helios.DynamicScene
+
+
+def test_checked_dynamic_scene_loader_rejects_static_xml():
+    with pytest.raises(_helios.HeliosException, match="produced a static scene"):
+        _helios.read_dynamic_scene_from_xml(STATIC_SCENE_XML, ["."], False)
+
+
+def test_checked_dynamic_scene_loader_rejects_null_result(tmp_path):
+    missing_scene = tmp_path / "missing.xml"
+
+    with pytest.raises(_helios.HeliosException, match="failed to load a scene"):
+        _helios.read_dynamic_scene_from_xml(str(missing_scene), ["."], False)
+
+
+def test_dynamic_scene_has_no_public_constructor():
+    with pytest.raises(TypeError):
+        _helios.DynamicScene()
+
 
 def tuple_to_dvec3(t):
     return _helios.dvec3(*t)

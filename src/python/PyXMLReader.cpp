@@ -1,3 +1,4 @@
+#include <HeliosException.h>
 #include <PyXMLReader.h>
 #include <SpectralLibrary.h>
 #include <XmlSurveyLoader.h>
@@ -85,6 +86,32 @@ readSceneFromXml(std::string filePath,
     }
   }
   return nullptr;
+}
+
+std::shared_ptr<DynScene>
+readDynamicSceneFromXml(std::string filePath,
+                        std::vector<std::string> assetsPath,
+                        bool buildKDGrove)
+{
+  std::shared_ptr<Scene> scene =
+    readSceneFromXml(filePath, assetsPath, buildKDGrove);
+  if (!scene) {
+    throw HeliosException(
+      "read_dynamic_scene_from_xml() failed to load a scene from XML file '" +
+      filePath + "'.");
+  }
+
+  std::shared_ptr<DynScene> dynamicScene =
+    std::dynamic_pointer_cast<DynScene>(scene);
+  if (!dynamicScene) {
+    throw HeliosException(
+      "read_dynamic_scene_from_xml() requires XML that produces a dynamic "
+      "scene, but '" +
+      filePath +
+      "' produced a static scene. Use read_scene_from_xml() instead.");
+  }
+
+  return dynamicScene;
 }
 
 std::shared_ptr<ScenePart>
