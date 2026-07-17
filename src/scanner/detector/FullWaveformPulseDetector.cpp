@@ -14,7 +14,7 @@ FullWaveformPulseDetector::clone()
 {
   std::shared_ptr<AbstractDetector> fwpd =
     std::make_shared<FullWaveformPulseDetector>(
-      scanner, cfg_device_accuracy_m, cfg_device_rangeMin_m);
+      scanner.lock(), cfg_device_accuracy_m, cfg_device_rangeMin_m);
   _clone(fwpd);
   return fwpd;
 }
@@ -38,6 +38,7 @@ void
 FullWaveformPulseDetector::shutdown()
 {
   AbstractDetector::shutdown();
-  if (fms != nullptr && scanner->isWriteWaveform())
+  auto owner = scanner.lock();
+  if (fms != nullptr && owner != nullptr && owner->isWriteWaveform())
     fms->write.finishFullWaveformWriter();
 }

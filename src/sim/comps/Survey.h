@@ -59,11 +59,7 @@ public:
    */
   Survey() = default;
   Survey(Survey& survey, bool const deepCopy = false);
-  ~Survey() override
-  {
-    if (scanner != nullptr)
-      scanner->setAllDetectors(nullptr);
-  }
+  ~Survey() override = default;
 
   // ***  M E T H O D S  *** //
   // *********************** //
