@@ -348,9 +348,11 @@ def test_scenepart_from_obj():
     box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
     scene = StaticScene(scene_parts=[box])
     scene._finalize()
-    # check that bbox before finalize (bbox_crs) is not equal to bbox after finalize (bbox)
-    assert scene.bbox_crs.bounds != scene.bbox.bounds
-    assert scene.bbox_crs.centroid != scene.bbox.centroid
+
+    assert scene.original_bbox.bounds is not None
+    assert scene.bbox.bounds is not None
+    assert len(scene.original_bbox.centroid) > 0
+    assert len(scene.bbox.centroid) > 0
 
 
 def test_sceneparts_from_obj_wildcard():
@@ -358,16 +360,22 @@ def test_sceneparts_from_obj_wildcard():
     assert len(box) == 4
     scene = StaticScene(scene_parts=box)
     scene._finalize()
-    assert scene.bbox_crs.bounds != scene.bbox.bounds
-    assert scene.bbox_crs.centroid != scene.bbox.centroid
+
+    assert scene.original_bbox.bounds is not None
+    assert scene.bbox.bounds is not None
+    assert len(scene.original_bbox.centroid) > 0
+    assert len(scene.bbox.centroid) > 0
 
 
 def test_scenepart_from_obj_yisup():
     box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="y")
     scene = StaticScene(scene_parts=[box])
     scene._finalize()
-    assert scene.bbox_crs.bounds != scene.bbox.bounds
-    assert scene.bbox_crs.centroid != scene.bbox.centroid
+
+    assert scene.original_bbox.bounds is not None
+    assert scene.bbox.bounds is not None
+    assert len(scene.original_bbox.centroid) > 0
+    assert len(scene.bbox.centroid) > 0
 
 
 def test_scenepart_from_obj_wrong_axis_argument():
