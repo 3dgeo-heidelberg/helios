@@ -37,6 +37,7 @@ from pydantic import (
     NonNegativeInt,
     validate_call,
 )
+from enum import Enum, auto
 from pathlib import Path
 from typing import Literal, Optional, Union, Tuple, Any
 import numpy as np
@@ -1229,6 +1230,12 @@ class StaticScene(_Scene, cpp_class=_helios.StaticScene):
         return plotter
 
 
+class _PlaybackState(Enum):
+    FRESH = auto()
+    RUNNING = auto()
+    CONSUMED = auto()
+
+
 class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
     """A dynamic scene loaded from an XML scene definition.
 
@@ -1244,6 +1251,35 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
                 "DynamicScene.from_xml(...)"
             )
         return super().__new__(cls, *args, **kwargs)
+
+    def _playback_state(self) -> _PlaybackState:
+        """Return the runtime-only playback lifecycle state."""
+
+        return getattr(self, "_dynamic_playback_state", _PlaybackState.FRESH)
+
+    def _ensure_fresh_for_playback(self):
+        """Reject reuse before survey execution causes any side effects."""
+
+        state = self._playback_state()
+        if state is _PlaybackState.RUNNING:
+            raise RuntimeError("This DynamicScene is already running in a survey.")
+        if state is _PlaybackState.CONSUMED:
+            raise RuntimeError(
+                "This DynamicScene has already been used and cannot be run again. "
+                "Dynamic-scene reset support is planned but not yet available; "
+                "load a fresh DynamicScene from XML for another run."
+            )
+
+    def _claim_for_playback(self):
+        """Mark playback as running immediately before it is started."""
+
+        self._ensure_fresh_for_playback()
+        self._dynamic_playback_state = _PlaybackState.RUNNING
+
+    def _consume_after_playback(self):
+        """Permanently consume the scene after a playback start attempt."""
+
+        self._dynamic_playback_state = _PlaybackState.CONSUMED
 
     @classonlymethod
     @validate_call
