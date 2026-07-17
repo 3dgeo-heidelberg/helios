@@ -6,13 +6,13 @@
 #       actually move it to a blender add-on release workflow in the future,
 #       because that is what is was developed for.
 
-# Note: This workflow builds Windows wheels. These are not currently used
+# Note: This workflow builds Windows and Linux wheels. These are not currently used
 #       as the main installation methods, because they are not available on
 #       all platforms and we just made a decision to go with conda. However,
 #       this workflow still exists because it allows to bundle Helios into
 #       Blender.
 
-name: Build Windows wheels
+name: Build wheels
 
 on:
   workflow_dispatch:
@@ -25,10 +25,8 @@ jobs:
     strategy:
       matrix:
         include:
-          # Linux: Not really possible due to ABI incompatibilities between manylinux
-          #        and conda-forge provided dependencies. The only way to build Linux
-          #        wheels would be to manually compile the full stack (GDAL, urgh)
           # MacOS: Not tried due to lack of priority
+          - os: ubuntu-24.04
           - os: windows-2022
           
 
@@ -46,7 +44,59 @@ jobs:
           CIBW_BUILD: "cp311-* cp313-*"
           # This builds 64-bit x86 wheels. Support for Windows ARM could be added here, if it gets a thing.
           CIBW_ARCHS_WINDOWS: AMD64
+          # Keep Linux on the same AlmaLinux 8/manylinux_2_28 base used by
+          # docker/manylinux.dockerfile.
+          CIBW_ARCHS_LINUX: x86_64
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_TEST_COMMAND: "helios --version"
+          CIBW_ENVIRONMENT_LINUX: >-
+            SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT=120
+            CMAKE_PREFIX_PATH="/opt/cmake-compat:/opt/tinyxml2:/opt/lastools:/usr"
+            LASTools_DIR="/opt/lastools"
+            PATH="/opt/lastools/bin:$PATH"
+            CMAKE_ARGS="-DBUILD_TESTING=OFF"
+          CIBW_BEFORE_ALL_LINUX: >-
+            dnf install -y
+            cmake
+            git
+            gdal-devel
+            glm-devel
+            zlib-devel
+            boost-devel
+            laszip-devel
+            armadillo-devel
+            lapack-devel
+            cereal-devel
+            && dnf clean all
+            && git clone --depth 1 --branch 10.0.0
+            https://github.com/leethomason/tinyxml2.git /tmp/tinyxml2
+            && cmake -S /tmp/tinyxml2 -B /tmp/tinyxml2/build
+            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_INSTALL_PREFIX=/opt/tinyxml2
+            -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+            -DBUILD_SHARED_LIBS=ON
+            -Dtinyxml2_BUILD_TESTING=OFF
+            && cmake --build /tmp/tinyxml2/build --parallel
+            && cmake --install /tmp/tinyxml2/build
+            && rm -rf /tmp/tinyxml2
+            && git clone --depth 1 --branch v2.0.5
+            https://github.com/LAStools/LAStools.git /tmp/LAStools
+            && cmake -S /tmp/LAStools -B /tmp/LAStools/build
+            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_INSTALL_PREFIX=/opt/lastools
+            && cmake --build /tmp/LAStools/build --parallel
+            && cmake --install /tmp/LAStools/build
+            && rm -rf /tmp/LAStools
+            && mkdir -p /opt/cmake-compat/GDAL /opt/cmake-compat/glm
+            && printf '%s\n'
+            'include("/usr/share/cmake/Modules/FindGDAL.cmake")'
+            > /opt/cmake-compat/GDAL/GDALConfig.cmake
+            && printf '%s\n'
+            'include("/usr/share/cmake/glm/glmConfig.cmake")'
+            'if(TARGET glm AND NOT TARGET glm::glm)'
+            '  add_library(glm::glm ALIAS glm)'
+            'endif()'
+            > /opt/cmake-compat/glm/glmConfig.cmake
           CIBW_ENVIRONMENT_WINDOWS: >-
             SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT=120
             CONDA_PREFIX=C:/helios-conda
