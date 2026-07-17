@@ -45,6 +45,7 @@ jobs:
           # For now, we only build 3.11 and 3.13 wheels because these are the two that would go
           # into Blender 4 and 5 extensions respectively.
           CIBW_BUILD: "cp311-* cp313-*"
+          CIBW_SKIP: "*-musllinux_*"
           # This builds 64-bit x86 wheels. Support for Windows ARM could be added here, if it gets a thing.
           CIBW_ARCHS_WINDOWS: AMD64
           # Keep Linux on the same AlmaLinux 8/manylinux_2_28 base used by
