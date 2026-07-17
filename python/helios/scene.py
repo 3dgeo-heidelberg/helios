@@ -1002,7 +1002,32 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             self._apply_material_to_all_primitives(material)
 
 
-class StaticScene(Model, cpp_class=_helios.StaticScene):
+class _Scene(Model, cpp_class=_helios.Scene):
+    """Private common wrapper for the polymorphic C++ scene hierarchy."""
+
+    def _set_reflectances(self, wavelength: float):
+        """Modify the scene's primitives with reflectances for a wavelength."""
+
+        _helios.set_scene_reflectances(
+            self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
+        )
+
+    @classmethod
+    def _from_cpp(cls, value):
+        if isinstance(value, _helios.DynamicScene):
+            wrapper_class = DynamicScene
+        elif isinstance(value, _helios.StaticScene):
+            wrapper_class = StaticScene
+        else:
+            raise TypeError(
+                "Unsupported C++ scene type: "
+                f"{type(value).__name__}. Expected StaticScene or DynamicScene."
+            )
+
+        return Model._from_cpp.__func__(wrapper_class, value)
+
+
+class StaticScene(_Scene, cpp_class=_helios.StaticScene):
     """Class representing a static scene. A scene is composed of multiple scene parts, which can be transformed independently and have different materials.
 
     :param scene_parts: The scene parts that make up the scene.
@@ -1052,13 +1077,6 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
                 execution_settings.sah_nodes,
             )
 
-    def _set_reflectances(self, wavelength: float):
-        """Modify the scene's primitives with correct reflectances for the given wavelength."""
-
-        _helios.set_scene_reflectances(
-            self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
-        )
-
     def _pre_set(self, field, value):
         if is_xml_loaded(self):
             raise RuntimeError("The scene loaded from XML cannot be modified.")
@@ -1086,6 +1104,11 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             [str(p) for p in get_asset_directories()],
             True,
         )
+        if isinstance(_cpp_scene, _helios.DynamicScene):
+            raise TypeError(
+                "StaticScene.from_xml() cannot load a dynamic scene; use "
+                "DynamicScene.from_xml() instead."
+            )
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
         scene._disable_yaml_serialization_for_descendants()
@@ -1204,3 +1227,37 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             plotter.show(resetcam=True, interactive=interactive)
 
         return plotter
+
+
+class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
+    """A dynamic scene loaded from an XML scene definition.
+
+    Dynamic behavior is defined entirely by the XML file and executed by the
+    C++ simulation. Dynamic scenes intentionally expose no scene-part mutation
+    API in the high-level Python interface.
+    """
+
+    def __new__(cls, *args, **kwargs):
+        if kwargs.get("_cpp_object") is None:
+            raise TypeError(
+                "DynamicScene cannot be constructed directly; use "
+                "DynamicScene.from_xml(...)"
+            )
+        return super().__new__(cls, *args, **kwargs)
+
+    @classonlymethod
+    @validate_call
+    def from_xml(cls, scene_file: AssetPath):
+        """Load a dynamic scene from an XML file."""
+
+        validate_xml_file(scene_file, "xsd/scene.xsd")
+        _cpp_scene = _helios.read_dynamic_scene_from_xml(
+            str(scene_file),
+            [str(p) for p in get_asset_directories()],
+            True,
+        )
+        scene = cls._from_cpp(_cpp_scene)
+        scene._is_loaded_from_xml = True
+        scene._disable_yaml_serialization_for_descendants()
+        scene._set_constructor_provenance("from_xml", scene_file=scene_file)
+        return scene
