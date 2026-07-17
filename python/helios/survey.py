@@ -8,7 +8,7 @@ from helios.platforms import (
     _specify_platform_settings_type,
 )
 from helios.scanner import Scanner, ScannerSettings
-from helios.scene import StaticScene
+from helios.scene import DynamicScene, StaticScene, _Scene
 from helios.callbacks import (
     CPP_HOOK_END_OF_LEG_POLICY_MAP,
     CPP_HOOK_PAYLOAD_MAP,
@@ -107,7 +107,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     :param full_waveform_settings: The settings for the full waveform recording. If none is specified, the default settings will be used.
     :type scanner: Scanner
     :type platform: Platform
-    :type scene: StaticScene
+    :type scene: StaticScene | DynamicScene
     :type legs: Tuple[Leg, ...]
     :type name: str
     :type gps_time: datetime
@@ -116,7 +116,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     scanner: Scanner
     platform: Platform
-    scene: StaticScene
+    scene: _Scene
     legs: Tuple[Leg, ...] = ()
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
@@ -145,6 +145,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         :type callbacks: Optional[Sequence[SurveyHook]]
         :type live: bool | LiveViewer
         """
+        scene = self.scene
+        if isinstance(scene, DynamicScene):
+            scene._ensure_fresh_for_playback()
+
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
         # Update the settings to use
@@ -162,10 +166,10 @@ class Survey(Model, cpp_class=_helios.Survey):
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
         # Ensure that the scene has been finalized
-        if not (is_xml_loaded(self) or is_xml_loaded(self.scene)):
-            self.scene._finalize(execution_settings)
+        if isinstance(scene, StaticScene) and not is_xml_loaded(scene):
+            scene._finalize(execution_settings)
 
-        self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
+        scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # we need to add serial IDs to the legs for proper process of writing into the file
         for i, leg in enumerate(self.legs):
@@ -182,9 +186,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         )
 
         # also, for proper writing into the file, we need to set IDs for the scene parts
-        for i, scene_part in enumerate(self.scene.scene_parts):
-            if scene_part.id is None:
-                scene_part.id = str(i)
+        if isinstance(scene, StaticScene):
+            for i, scene_part in enumerate(scene.scene_parts):
+                if scene_part.id is None:
+                    scene_part.id = str(i)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False
@@ -275,7 +280,14 @@ class Survey(Model, cpp_class=_helios.Survey):
         try:
             if live_session is not None:
                 live_session.start()
-            _start_playback_interruptible(playback)
+            if isinstance(scene, DynamicScene):
+                scene._claim_for_playback()
+                try:
+                    _start_playback_interruptible(playback)
+                finally:
+                    scene._consume_after_playback()
+            else:
+                _start_playback_interruptible(playback)
         finally:
             if progressbar_controller is not None:
                 progressbar_controller.close()

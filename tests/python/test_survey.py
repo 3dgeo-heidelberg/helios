@@ -9,10 +9,10 @@ from helios.platforms import (
     StaticPlatformSettings,
 )
 from helios.scanner import Scanner, riegl_lms_q560, riegl_vz_1000, riegl_vz_400
-from helios.scene import StaticScene, ScenePart
+from helios.scene import DynamicScene, StaticScene, ScenePart
 from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
 from helios.survey import *
-from helios.utils import set_rng_seed
+from helios.utils import meas_dtype, set_rng_seed, traj_dtype
 from helios import HeliosException
 
 import copy
@@ -29,6 +29,104 @@ def test_construct_survey_from_xml():
     assert isinstance(survey.platform, Platform)
     assert isinstance(survey.scanner, Scanner)
     assert isinstance(survey.scene, StaticScene)
+
+
+def test_construct_dynamic_survey_from_xml():
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+
+    assert isinstance(dynamic_survey.scene, DynamicScene)
+
+
+def test_dynamic_survey_is_one_shot(monkeypatch):
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+    starts = []
+
+    def record_start(playback):
+        starts.append(playback)
+        dynamic_survey.scanner._cpp_object.all_measurements = np.zeros(
+            (1,), dtype=meas_dtype
+        )
+        dynamic_survey.scanner._cpp_object.all_trajectories = np.zeros(
+            (1,), dtype=traj_dtype
+        )
+
+    monkeypatch.setattr(survey, "_start_playback_interruptible", record_start)
+    execution_settings = ExecutionSettings(
+        num_threads=1, progressbar=ProgressBarStrategy.NONE
+    )
+
+    dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+
+    assert len(starts) == 1
+    with pytest.raises(RuntimeError, match="reset support is planned"):
+        dynamic_survey.run(
+            format=OutputFormat.NPY, execution_settings=execution_settings
+        )
+    assert len(starts) == 1
+
+
+def test_pre_playback_validation_error_does_not_consume_dynamic_scene(monkeypatch):
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+    starts = []
+
+    def record_start(playback):
+        starts.append(playback)
+        dynamic_survey.scanner._cpp_object.all_measurements = np.zeros(
+            (1,), dtype=meas_dtype
+        )
+        dynamic_survey.scanner._cpp_object.all_trajectories = np.zeros(
+            (1,), dtype=traj_dtype
+        )
+
+    monkeypatch.setattr(survey, "_start_playback_interruptible", record_start)
+    execution_settings = ExecutionSettings(
+        num_threads=1, progressbar=ProgressBarStrategy.NONE
+    )
+
+    with pytest.raises(ValueError, match="Unknown parameters: unsupported_option"):
+        dynamic_survey.run(
+            format=OutputFormat.NPY,
+            execution_settings=execution_settings,
+            unsupported_option=True,
+        )
+
+    dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+    assert len(starts) == 1
+
+
+def test_programmatically_composed_dynamic_survey_runs_once():
+    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    dynamic_survey = Survey(
+        scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene
+    )
+    dynamic_survey.add_leg(
+        x=-30,
+        y=-30,
+        z=0,
+        force_on_ground=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        head_rotation="-10 deg/s",
+        rotation_start_angle="340 deg",
+        rotation_stop_angle="339 deg",
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+    )
+    execution_settings = ExecutionSettings(
+        num_threads=1, progressbar=ProgressBarStrategy.NONE
+    )
+
+    points, trajectory = dynamic_survey.run(
+        format=OutputFormat.NPY, execution_settings=execution_settings
+    )
+
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
+    assert points.dtype["hit_object_id"].kind in ("i", "u")
+    with pytest.raises(RuntimeError, match="reset support is planned"):
+        dynamic_survey.run(
+            format=OutputFormat.NPY, execution_settings=execution_settings
+        )
 
 
 def test_leg_clone_and_deepcopy(survey):
