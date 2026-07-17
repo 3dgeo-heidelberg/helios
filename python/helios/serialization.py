@@ -104,7 +104,7 @@ def _normalize_provenance_value(value: Any):
     if isinstance(value, Path):
         path = value.expanduser()
         if not path.is_absolute():
-            return str(path)
+            return path.as_posix()
 
         asset_dirs = [
             Path(directory).expanduser().resolve()
@@ -123,18 +123,20 @@ def _normalize_provenance_value(value: Any):
                 relative_candidates,
                 key=lambda candidate: (len(candidate.parts), len(str(candidate))),
             )
-            return str(shortest)
+            return shortest.as_posix()
 
         if asset_dirs:
             try:
-                return os.path.relpath(resolved_path, start=asset_dirs[0])
+                return Path(
+                    os.path.relpath(resolved_path, start=asset_dirs[0])
+                ).as_posix()
             except ValueError:
-                return str(resolved_path)
+                return resolved_path.as_posix()
 
         try:
-            return os.path.relpath(resolved_path, start=Path.cwd())
+            return Path(os.path.relpath(resolved_path, start=Path.cwd())).as_posix()
         except ValueError:
-            return str(resolved_path)
+            return resolved_path.as_posix()
 
     if isinstance(value, Enum):
         return value.value
