@@ -63,9 +63,9 @@ jobs:
         run: |
           conda install -y -c conda-forge gcc gxx
       
-      - name: Install LCov
+      - name: Install Linux test dependencies
         run: |
-          sudo apt install lcov
+          sudo apt-get install --yes lcov libegl1
 
       - name: Install Open3D 
         run: |

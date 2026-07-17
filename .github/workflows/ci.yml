@@ -78,6 +78,11 @@ jobs:
         run: |
           conda install -y -c conda-forge gcc gxx
 
+      - name: Install Linux Open3D system dependencies
+        if: runner.os == 'Linux' && matrix.python != '3.14'
+        run: |
+          sudo apt-get install --yes libegl1
+
       - name: Install open3d test dependencies
         if: matrix.python != '3.14'
         run: |
