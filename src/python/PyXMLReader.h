@@ -1,3 +1,4 @@
+#include <DynScene.h>
 #include <StaticScene.h>
 #include <Survey.h>
 
@@ -25,6 +26,11 @@ std::shared_ptr<Scene>
 readSceneFromXml(std::string filePath,
                  std::vector<std::string> assetsPath,
                  bool buildKDGrove = true);
+
+std::shared_ptr<DynScene>
+readDynamicSceneFromXml(std::string filePath,
+                        std::vector<std::string> assetsPath,
+                        bool buildKDGrove = true);
 
 std::shared_ptr<ScenePart>
 readScenePartFromXml(std::string filePath,
