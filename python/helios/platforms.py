@@ -1,4 +1,4 @@
-from helios.scene import StaticScene
+from helios.scene import DynamicScene, StaticScene
 from helios.utils import (
     classonlymethod,
     get_asset_directories,
@@ -151,12 +151,12 @@ class PlatformSettings(PlatformSettingsBase):
     y: float = 0
     z: float = 0
 
-    def do_force_on_ground(self, scene: StaticScene):
+    def do_force_on_ground(self, scene: StaticScene | DynamicScene):
         """
         Move waypoint z coordinate to ground level
 
         :param scene: The scene to query for the ground level.
-        :type scene: StaticScene
+        :type scene: StaticScene | DynamicScene
         """
 
         ground_point = scene._cpp_object.ground_point_at((self.x, self.y, self.z))

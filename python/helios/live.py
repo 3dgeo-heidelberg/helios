@@ -5,7 +5,7 @@ from helios.callbacks import (
     HookEndOfLegPolicy,
 )
 from helios.utils import extract_position, _is_in_jupyter
-from helios.scene import StaticScene
+from helios.scene import DynamicScene, StaticScene
 
 import numpy as np
 import threading
@@ -127,6 +127,11 @@ class LiveViewer:
     def attach_to_survey(self, survey) -> None:
         if self.scene is not None:
             raise RuntimeError("attach_to_survey already called")
+        if isinstance(survey.scene, DynamicScene):
+            raise NotImplementedError(
+                "Live viewing is not supported for DynamicScene because the "
+                "viewer cannot update moving geometry yet."
+            )
         self.scene = survey.scene
 
     def callbacks(self):

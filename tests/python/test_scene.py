@@ -228,6 +228,15 @@ def test_dynamic_scene_loader_rejects_static_xml():
         DynamicScene.from_xml("data/scenes/demo/box_scene.xml")
 
 
+def test_dynamic_scene_clone_and_deepcopy_are_rejected():
+    scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+
+    with pytest.raises(NotImplementedError, match="Cloning DynamicScene"):
+        scene.clone()
+    with pytest.raises(NotImplementedError, match="Deep copying DynamicScene"):
+        copy.deepcopy(scene)
+
+
 def test_construct_scene_part_from_xml():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
 
