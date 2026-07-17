@@ -57,8 +57,8 @@ def test_start_playback_interruptible_stops_on_keyboard_interrupt(monkeypatch):
     assert playback.stop_calls == 1
 
 
-def test_interrupted_dynamic_survey_is_consumed(monkeypatch):
-    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+def test_interrupted_dynamic_survey_is_consumed(monkeypatch, xml_dynamic_test_survey):
+    dynamic_survey = xml_dynamic_test_survey
     starts = []
 
     def interrupt_start(playback):

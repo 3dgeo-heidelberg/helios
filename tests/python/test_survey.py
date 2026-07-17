@@ -18,6 +18,7 @@ from helios import HeliosException
 import copy
 import gc
 import laspy
+import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
 import weakref
@@ -33,10 +34,8 @@ def test_construct_survey_from_xml():
     assert isinstance(survey.scene, StaticScene)
 
 
-def test_construct_dynamic_survey_from_xml():
-    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
-
-    assert isinstance(dynamic_survey.scene, DynamicScene)
+def test_construct_dynamic_survey_from_xml(xml_dynamic_test_survey):
+    assert isinstance(xml_dynamic_test_survey.scene, DynamicScene)
 
 
 def test_dynamic_survey_is_one_shot(monkeypatch):
@@ -96,39 +95,72 @@ def test_pre_playback_validation_error_does_not_consume_dynamic_scene(monkeypatc
     assert len(starts) == 1
 
 
-def test_programmatically_composed_dynamic_survey_runs_once():
-    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
-    dynamic_survey = Survey(
-        scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene
-    )
-    dynamic_survey.add_leg(
-        x=-30,
-        y=-30,
-        z=0,
-        force_on_ground=True,
-        pulse_frequency=100000,
-        scan_frequency=120,
-        head_rotation="-10 deg/s",
-        rotation_start_angle="340 deg",
-        rotation_stop_angle="339 deg",
-        min_vertical_angle="-40 deg",
-        max_vertical_angle="60 deg",
-    )
-    execution_settings = ExecutionSettings(
-        num_threads=1, progressbar=ProgressBarStrategy.NONE
+def test_dynamic_survey_moves_scene_and_callbacks_preserve_one_shot(
+    dynamic_test_survey,
+    dynamic_test_static_control_survey,
+    dynamic_test_execution_settings,
+):
+    callback_times = []
+
+    def record_time(context, points=None, trajectories=None):
+        callback_times.append(context.sim_time_s)
+
+    set_rng_seed(42)
+    points, _ = dynamic_test_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+        callbacks=(
+            helios.SurveyHook(
+                point=helios.HookPoint.SIM_TIME_PERIODIC,
+                callback=record_time,
+                sim_time=0,
+                period=0.2,
+            ),
+        ),
     )
 
-    points, trajectory = dynamic_survey.run(
-        format=OutputFormat.NPY, execution_settings=execution_settings
+    set_rng_seed(42)
+    static_points, _ = dynamic_test_static_control_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
     )
 
     assert points.shape[0] > 0
-    assert trajectory.shape[0] > 0
     assert points.dtype["hit_object_id"].kind in ("i", "u")
+    assert 2 in points["hit_object_id"]
+    assert callback_times == sorted(callback_times)
+    assert len(callback_times) >= 2
+
+    dynamic_cube = points[points["hit_object_id"] == 2]
+    static_cube = static_points[static_points["hit_object_id"] == 2]
+    assert dynamic_cube.shape[0] > 0
+    assert static_cube.shape[0] > 0
+    assert (
+        dynamic_cube["position"][:, 0].mean() > static_cube["position"][:, 0].mean() + 4
+    )
+
     with pytest.raises(RuntimeError, match="reset support is planned"):
-        dynamic_survey.run(
-            format=OutputFormat.NPY, execution_settings=execution_settings
+        dynamic_test_survey.run(
+            format=OutputFormat.NPY,
+            execution_settings=dynamic_test_execution_settings,
         )
+
+
+def test_dynamic_survey_las_output_accepts_numeric_dynamic_object_id(
+    tmp_path, xml_dynamic_test_survey, dynamic_test_execution_settings
+):
+    output_path = xml_dynamic_test_survey.run(
+        format=OutputFormat.LAS,
+        output_dir=tmp_path,
+        execution_settings=dynamic_test_execution_settings,
+    )
+
+    files = list(output_path.rglob("*.las"))
+    assert len(files) == 1
+    las = laspy.read(files[0])
+    assert len(las.points) > 0
+    assert las.hitObjectId.dtype.kind in ("i", "u")
+    assert 2 in las.hitObjectId
 
 
 def test_dynamic_scene_cannot_be_shared_between_surveys():
