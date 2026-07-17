@@ -16,6 +16,9 @@ name: Build wheels
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - linux-wheels
 
 jobs:
   build-wheels:
