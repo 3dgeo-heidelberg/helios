@@ -1,6 +1,5 @@
 #include "Triangle.h"
 
-#define _USE_MATH_DEFINES
 #include "math.h"
 #include <MathConstants.h>
 
@@ -82,7 +81,7 @@ Triangle::getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                                 const glm::dvec3& intersectionPoint)
 {
   double const angle = glm::angle(faceNormal, rayDir);
-  return (angle > PI_HALF) ? M_PI - angle : angle; // Return min. angle
+  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
   // If (PI_HALF - min. angle), then 0 rad does no longer mean orthogonal
 }
 

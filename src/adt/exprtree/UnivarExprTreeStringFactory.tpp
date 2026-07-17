@@ -418,7 +418,7 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::
   if (symstr == "pi") {
     Symbol symbol;
     symbol.type = UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
-    symbol.str = stringFromNumber(M_PI);
+    symbol.str = stringFromNumber(PI);
     lastReadIsOpenPriorityOrSeparator = false;
     return symbol;
   }
@@ -426,7 +426,7 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::
   if (symstr == "e") {
     Symbol symbol;
     symbol.type = UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
-    symbol.str = stringFromNumber(M_E);
+    symbol.str = stringFromNumber(EULER_NUMBER);
     lastReadIsOpenPriorityOrSeparator = false;
     return symbol;
   }

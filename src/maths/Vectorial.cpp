@@ -14,9 +14,9 @@ double
 Vectorial::shortestRotationSign(double theta)
 {
   double sign = -1.0;
-  if (theta > M_PI)
+  if (theta > PI)
     sign = 1.0;
-  if (theta < 0.0 && theta > -M_PI)
+  if (theta < 0.0 && theta > -PI)
     sign = 1.0;
   return sign;
 }
