@@ -30,7 +30,7 @@ jobs:
         include:
           # MacOS: Not tried due to lack of priority
           - os: ubuntu-24.04
-          - os: windows-2022
+          #- os: windows-2022
           
 
     steps:
