@@ -55,7 +55,7 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
                             double& yaw,
                             Rotation& attitude) -> void {
         attitude.getAngles(&RotationOrder::ZYX, yaw, roll, pitch);
-        yaw = (yaw < M_PI) ? -yaw : PI_2 - yaw;
+        yaw = (yaw < PI) ? -yaw : PI_2 - yaw;
       };
       break;
     default:

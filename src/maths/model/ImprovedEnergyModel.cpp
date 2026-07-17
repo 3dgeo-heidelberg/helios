@@ -12,10 +12,10 @@ ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const& sd)
   , negRadiiSquaredx2(sd.FWF_settings.beamSampleQuality + 1)
   , w0Squared((sd.beamQuality * sd.wavelength_m) *
               (sd.beamQuality * sd.wavelength_m) /
-              ((M_PI * sd.beamDivergence_rad) * (M_PI * sd.beamDivergence_rad)))
-  , totPower(2 * sd.averagePower_w / (M_PI * w0Squared))
-  , omegaCacheSquared((sd.wavelength_m / (M_PI * w0Squared)) *
-                      (sd.wavelength_m / (M_PI * w0Squared)))
+              ((PI * sd.beamDivergence_rad) * (PI * sd.beamDivergence_rad)))
+  , totPower(2 * sd.averagePower_w / (PI * w0Squared))
+  , omegaCacheSquared((sd.wavelength_m / (PI * w0Squared)) *
+                      (sd.wavelength_m / (PI * w0Squared)))
   , targetAreaCache(sd.FWF_settings.beamSampleQuality)
   , deviceConstantExpression(sd.FWF_settings.beamSampleQuality)
 {
@@ -29,9 +29,9 @@ ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const& sd)
     radii[i + 1] = sd.beamDivergence_rad * (i + 0.5) / (2 * (BSQ - 0.5));
     radiiSquared[i + 1] = radii[i + 1] * radii[i + 1];
     negRadiiSquaredx2[i + 1] = -2.0 * radiiSquared[i + 1];
-    targetAreaCache[i] = M_PI / ((double)subraysAtRing);
+    targetAreaCache[i] = PI / ((double)subraysAtRing);
     deviceConstantExpression[i] =
-      M_PI * totPower * w0Squared / (2.0 * ((double)subraysAtRing));
+      PI * totPower * w0Squared / (2.0 * ((double)subraysAtRing));
   }
 }
 
