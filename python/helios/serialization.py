@@ -814,6 +814,12 @@ def _build_model_document(
 ) -> dict[str, Any]:
     """Create the serialized document payload for one model."""
 
+    if context.binary and getattr(model, "_provenance_only_serialization", False):
+        raise NotImplementedError(
+            f"Binary serialization is not supported for {model.__class__.__name__}; "
+            "use a non-binary YAML bundle instead."
+        )
+
     binary_info = None
     include_fields = not _uses_from_binary_constructor_provenance(model)
     if context.binary and callable(getattr(model, "to_binary", None)):
