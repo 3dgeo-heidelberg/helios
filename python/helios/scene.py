@@ -1245,6 +1245,10 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
     API in the high-level Python interface.
     """
 
+    # Dynamic geometry and runtime playback state must never be written through
+    # the generic binary bundle path. YAML stores only from_xml provenance.
+    _provenance_only_serialization = True
+
     def __new__(cls, *args, **kwargs):
         if kwargs.get("_cpp_object") is None:
             raise TypeError(
