@@ -42,6 +42,7 @@ from pathlib import Path
 from typing import Literal, Optional, Union, Tuple, Any
 import numpy as np
 import vedo
+import weakref
 
 import _helios
 
@@ -1257,6 +1258,25 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
 
         return getattr(self, "_dynamic_playback_state", _PlaybackState.FRESH)
 
+    def _claim_owner(self, survey):
+        """Claim this scene for one live high-level survey wrapper."""
+
+        owner_ref = getattr(self, "_dynamic_owner_ref", None)
+        owner = owner_ref() if owner_ref is not None else None
+        if owner is not None and owner is not survey:
+            raise ValueError(
+                "This DynamicScene is already owned by another Survey; "
+                "one DynamicScene instance cannot be shared between surveys."
+            )
+        self._dynamic_owner_ref = weakref.ref(survey)
+
+    def _release_owner(self, survey):
+        """Release this scene if ``survey`` is its current owner."""
+
+        owner_ref = getattr(self, "_dynamic_owner_ref", None)
+        if owner_ref is not None and owner_ref() is survey:
+            del self._dynamic_owner_ref
+
     def _ensure_fresh_for_playback(self):
         """Reject reuse before survey execution causes any side effects."""
 
@@ -1280,6 +1300,22 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
         """Permanently consume the scene after a playback start attempt."""
 
         self._dynamic_playback_state = _PlaybackState.CONSUMED
+
+    def clone(self):
+        """Reject cloning until the complete C++ dynamic graph is independent."""
+
+        raise NotImplementedError(
+            "Cloning DynamicScene is not supported; load a fresh "
+            "DynamicScene from XML instead."
+        )
+
+    def __deepcopy__(self, memo):
+        """Reject deep copying until dynamic-scene cloning is proven safe."""
+
+        raise NotImplementedError(
+            "Deep copying DynamicScene is not supported; load a fresh "
+            "DynamicScene from XML instead."
+        )
 
     @classonlymethod
     @validate_call

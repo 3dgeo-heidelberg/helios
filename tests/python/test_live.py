@@ -10,7 +10,7 @@ import pytest
 
 from helios.settings import OutputFormat
 from helios.utils import extract_position, meas_dtype, traj_dtype, _color_from_int
-from helios.scene import StaticScene, ScenePart
+from helios.scene import DynamicScene, StaticScene, ScenePart
 import inspect
 
 
@@ -264,6 +264,17 @@ def test_live_viewer_attach_to_survey_sets_scene_once(monkeypatch):
     assert viewer.scene == "scene-1"
     with pytest.raises(RuntimeError, match="attach_to_survey already called"):
         viewer.attach_to_survey(survey2)
+
+
+def test_live_viewer_rejects_dynamic_scene_attachment(monkeypatch):
+    live_module, _, _ = _import_modules_with_fake_vedo(monkeypatch)
+    viewer = live_module.LiveViewer()
+    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+
+    with pytest.raises(NotImplementedError, match="Live viewing.*DynamicScene"):
+        viewer.attach_to_survey(SimpleNamespace(scene=dynamic_scene))
+
+    assert viewer.scene is None
 
 
 def test_ensure_scene_actors_builds_static_scene(monkeypatch):

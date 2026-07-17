@@ -16,9 +16,11 @@ from helios.utils import meas_dtype, set_rng_seed, traj_dtype
 from helios import HeliosException
 
 import copy
+import gc
 import laspy
 from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
+import weakref
 
 
 def test_construct_survey_from_xml():
@@ -127,6 +129,70 @@ def test_programmatically_composed_dynamic_survey_runs_once():
         dynamic_survey.run(
             format=OutputFormat.NPY, execution_settings=execution_settings
         )
+
+
+def test_dynamic_scene_cannot_be_shared_between_surveys():
+    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene)
+
+    with pytest.raises(ValueError, match="already owned by another Survey"):
+        Survey(scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene)
+
+    assert owner.scene is dynamic_scene
+
+
+def test_dynamic_scene_owner_is_released_on_reassignment():
+    first_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    replacement_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    first_owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=first_scene)
+
+    first_owner.scene = replacement_scene
+    second_owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=first_scene)
+
+    assert first_owner.scene is replacement_scene
+    assert second_owner.scene is first_scene
+
+
+def test_dynamic_scene_owner_is_released_after_garbage_collection():
+    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene)
+    owner_ref = weakref.ref(owner)
+
+    del owner
+    gc.collect()
+
+    assert owner_ref() is None
+    replacement_owner = Survey(
+        scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene
+    )
+    assert replacement_owner.scene is dynamic_scene
+
+
+def test_dynamic_survey_clone_and_deepcopy_are_rejected():
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+
+    with pytest.raises(NotImplementedError, match="Survey with a DynamicScene"):
+        dynamic_survey.clone()
+    with pytest.raises(NotImplementedError, match="Survey with a DynamicScene"):
+        copy.deepcopy(dynamic_survey)
+
+
+def test_dynamic_survey_rejects_live_viewing_before_attachment(monkeypatch):
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+
+    def unexpected_live_resolution(live):
+        raise AssertionError("live session resolution must not be reached")
+
+    monkeypatch.setattr(survey, "_resolve_live_session", unexpected_live_resolution)
+
+    with pytest.raises(NotImplementedError, match="Live viewing.*DynamicScene"):
+        dynamic_survey.run(live=True)
+
+    viewer = survey.LiveViewer.__new__(survey.LiveViewer)
+    with pytest.raises(NotImplementedError, match="Live viewing.*DynamicScene"):
+        dynamic_survey.run(live=viewer)
+
+    assert dynamic_survey.scene._playback_state().name == "FRESH"
 
 
 def test_leg_clone_and_deepcopy(survey):

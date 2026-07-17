@@ -54,6 +54,7 @@ import threading
 import numpy as np
 import tempfile
 import laspy
+import weakref
 
 import _helios
 
@@ -148,6 +149,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         scene = self.scene
         if isinstance(scene, DynamicScene):
             scene._ensure_fresh_for_playback()
+            if live is True or isinstance(live, LiveViewer):
+                raise NotImplementedError(
+                    "Live viewing is not supported for DynamicScene because the "
+                    "viewer cannot update moving geometry yet."
+                )
 
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
@@ -441,4 +447,40 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     def _pre_set(self, field, value):
         if field == "scanner":
-            self._enforce_uniqueness_across_instances(field, value)
+            owner_ref = getattr(value, "_survey_owner_ref", None)
+            owner = owner_ref() if owner_ref is not None else None
+            if owner is not None and owner is not self:
+                raise ValueError(f"Value {value} is already used by another instance")
+
+            old_scanner = getattr(self, "_scanner", None)
+            value._survey_owner_ref = weakref.ref(self)
+            if old_scanner is not None and old_scanner is not value:
+                old_owner_ref = getattr(old_scanner, "_survey_owner_ref", None)
+                if old_owner_ref is not None and old_owner_ref() is self:
+                    del old_scanner._survey_owner_ref
+
+        if field == "scene":
+            old_scene = getattr(self, "_scene", None)
+            if isinstance(value, DynamicScene):
+                value._claim_owner(self)
+            if isinstance(old_scene, DynamicScene) and old_scene is not value:
+                old_scene._release_owner(self)
+
+    def _ensure_clone_supported(self):
+        if isinstance(self.scene, DynamicScene):
+            raise NotImplementedError(
+                "Cloning a Survey with a DynamicScene is not supported; load a "
+                "fresh survey or scene from XML instead."
+            )
+
+    def clone(self):
+        """Create an independent copy when the survey has a static scene."""
+
+        self._ensure_clone_supported()
+        return super().clone()
+
+    def __deepcopy__(self, memo):
+        """Deep-copy a survey when its scene supports independent copying."""
+
+        self._ensure_clone_supported()
+        return super().__deepcopy__(memo)
