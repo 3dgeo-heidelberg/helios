@@ -30,6 +30,15 @@ DynSequencer<T>::nextStep()
   return sequence;
 }
 
+template<typename T>
+void
+DynSequencer<T>::restart()
+{
+  for (auto const& entry : dynseqs)
+    entry.second->restart();
+  current = start;
+}
+
 // ***   M E T H O D S   *** //
 // ************************* //
 template<typename T>

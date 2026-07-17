@@ -54,6 +54,14 @@ protected:
    * @see DynScene::prepareSimulation
    */
   double dynTimeStep = std::numeric_limits<double>::quiet_NaN();
+  /** Whether this scene has already prepared a SurveyPlayback. */
+  bool simulationPrepared = false;
+  /**
+   * Swap filters are destructively consumed by SimulationPlayer. Retain a
+   * small flag so a later playback can fail clearly even if its handler was
+   * removed at the end of the first playback.
+   */
+  bool hasUnresettableSwapOnRepeat = false;
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -153,6 +161,12 @@ public:
    * @see Simulation::prepareSimulation
    */
   void prepareSimulation(int const simFrequency_hz) override;
+
+  /**
+   * @brief Restore geometry, control loops, motion sequences, and dynamic KD
+   * trees to the initially finalized state.
+   */
+  void resetSimulationState();
 
   /**
    * @see Scene::shutdown

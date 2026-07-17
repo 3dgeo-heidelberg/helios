@@ -38,7 +38,7 @@ def test_construct_dynamic_survey_from_xml(xml_dynamic_test_survey):
     assert isinstance(xml_dynamic_test_survey.scene, DynamicScene)
 
 
-def test_dynamic_survey_is_one_shot(monkeypatch):
+def test_dynamic_survey_releases_running_guard_after_each_run(monkeypatch):
     dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
     starts = []
 
@@ -57,13 +57,9 @@ def test_dynamic_survey_is_one_shot(monkeypatch):
     )
 
     dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+    dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
 
-    assert len(starts) == 1
-    with pytest.raises(RuntimeError, match="reset support is planned"):
-        dynamic_survey.run(
-            format=OutputFormat.NPY, execution_settings=execution_settings
-        )
-    assert len(starts) == 1
+    assert len(starts) == 2
 
 
 def test_pre_playback_validation_error_does_not_consume_dynamic_scene(monkeypatch):
@@ -95,9 +91,10 @@ def test_pre_playback_validation_error_does_not_consume_dynamic_scene(monkeypatc
     assert len(starts) == 1
 
 
-def test_dynamic_survey_moves_scene_and_callbacks_preserve_one_shot(
+def test_dynamic_survey_moves_scene_and_repeated_run_is_equivalent(
     dynamic_test_survey,
     dynamic_test_static_control_survey,
+    dynamic_test_survey_f,
     dynamic_test_execution_settings,
 ):
     callback_times = []
@@ -106,7 +103,7 @@ def test_dynamic_survey_moves_scene_and_callbacks_preserve_one_shot(
         callback_times.append(context.sim_time_s)
 
     set_rng_seed(42)
-    points, _ = dynamic_test_survey.run(
+    points, trajectories = dynamic_test_survey.run(
         format=OutputFormat.NPY,
         execution_settings=dynamic_test_execution_settings,
         callbacks=(
@@ -139,11 +136,69 @@ def test_dynamic_survey_moves_scene_and_callbacks_preserve_one_shot(
         dynamic_cube["position"][:, 0].mean() > static_cube["position"][:, 0].mean() + 4
     )
 
-    with pytest.raises(RuntimeError, match="reset support is planned"):
-        dynamic_test_survey.run(
+    set_rng_seed(42)
+    repeated_points, repeated_trajectories = dynamic_test_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+    )
+    np.testing.assert_array_equal(repeated_points, points)
+    np.testing.assert_array_equal(repeated_trajectories, trajectories)
+
+    if getattr(dynamic_test_survey, "_is_loaded_from_xml", False):
+        fresh_survey = Survey.from_xml("data/test/dynamic_survey.xml")
+    else:
+        fresh_survey = dynamic_test_survey_f(
+            DynamicScene.from_xml("data/test/dynamic_scene.xml")
+        )
+    set_rng_seed(42)
+    fresh_points, fresh_trajectories = fresh_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+    )
+    np.testing.assert_array_equal(repeated_points, fresh_points)
+    np.testing.assert_array_equal(repeated_trajectories, fresh_trajectories)
+
+
+def test_dynamic_survey_resets_after_callback_failure(
+    dynamic_test_survey_f, dynamic_test_execution_settings
+):
+    survey_with_failure = dynamic_test_survey_f(
+        DynamicScene.from_xml("data/test/dynamic_scene.xml")
+    )
+
+    def fail_callback(context, points=None, trajectories=None):
+        raise RuntimeError("intentional callback failure")
+
+    set_rng_seed(17)
+    with pytest.raises(RuntimeError, match="intentional callback failure"):
+        survey_with_failure.run(
             format=OutputFormat.NPY,
             execution_settings=dynamic_test_execution_settings,
+            callbacks=(
+                helios.SurveyHook(
+                    point=helios.HookPoint.SIM_TIME_ONCE,
+                    callback=fail_callback,
+                    sim_time=0,
+                ),
+            ),
         )
+
+    set_rng_seed(17)
+    reset_points, reset_trajectories = survey_with_failure.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+    )
+
+    fresh_survey = dynamic_test_survey_f(
+        DynamicScene.from_xml("data/test/dynamic_scene.xml")
+    )
+    set_rng_seed(17)
+    fresh_points, fresh_trajectories = fresh_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+    )
+    np.testing.assert_array_equal(reset_points, fresh_points)
+    np.testing.assert_array_equal(reset_trajectories, fresh_trajectories)
 
 
 def test_dynamic_survey_las_output_accepts_numeric_dynamic_object_id(

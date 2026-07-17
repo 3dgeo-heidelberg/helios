@@ -94,6 +94,14 @@ protected:
    * @see DynObject::dynTimeStep
    */
   double observerDynTimeStep = std::numeric_limits<double>::quiet_NaN();
+  /**
+   * @brief Product of the linear normal transformations applied since the
+   *  last reset.
+   *
+   * This constant-sized state lets reset recover custom vertex and voxel
+   * normals without retaining a second normal for every vertex.
+   */
+  arma::mat accumulatedNormalTransform = arma::eye<arma::mat>(3, 3);
 
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -184,6 +192,10 @@ public:
    */
   bool doSimStep() override;
   /**
+   * @see DynObject::resetSimulationState
+   */
+  void resetSimulationState(glm::dvec3 const& sceneShift) override;
+  /**
    * @brief Handle update notifications to the subscribed observer. It is,
    *  notify the observer that it has been updated by the dynamic moving
    *  object.
@@ -215,9 +227,16 @@ protected:
     std::function<arma::mat()> matrixFromPrimitives,
     std::function<void(arma::mat const& X)> matrixToPrimitives,
     std::function<bool()> queueHasNext,
-    std::function<std::shared_ptr<DynMotion>()> queueNext);
+    std::function<std::shared_ptr<DynMotion>()> queueNext,
+    std::function<void(DynMotion const&)> motionApplied = nullptr);
 
 public:
+  /**
+   * @brief Immediately synchronize the observer KD tree with current
+   *  geometry, independently of its normal update interval.
+   */
+  void synchronizeObserver();
+
   // ***  MOTION QUEUES METHODS  *** //
   // ******************************* //
   /**

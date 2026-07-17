@@ -59,6 +59,10 @@ public:
    */
   virtual std::vector<std::shared_ptr<T>> nextStep();
   /**
+   * @brief Restart the complete sequence graph from its configured start.
+   */
+  virtual void restart();
+  /**
    * @brief Check if the dynamic sequencer supports a next step or not
    * @return True if dynamic sequencer supports a next step, false otherwise
    */

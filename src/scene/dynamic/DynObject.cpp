@@ -11,6 +11,27 @@ DynObject::doStep()
   return false;
 }
 
+void
+DynObject::resetSimulationState(glm::dvec3 const& sceneShift)
+{
+  stepLoop.setCurrentStep(0);
+
+  for (Primitive* primitive : mPrimitives) {
+    Vertex* vertices = primitive->getVertices();
+    for (std::size_t i = 0; i < primitive->getNumVertices(); ++i) {
+      if (!vertices[i].posOrigin.has_value()) {
+        throw HeliosException(
+          "DynObject::resetSimulationState requires finalized geometry with "
+          "canonical vertex positions");
+      }
+      vertices[i].pos = *vertices[i].posOrigin - sceneShift;
+    }
+    primitive->update();
+  }
+
+  computeCentroid();
+}
+
 // ***  U T I L  *** //
 // ***************** //
 size_t

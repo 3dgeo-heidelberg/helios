@@ -238,6 +238,7 @@ public:
    * @see AbstractBeamDeflector::applySettings
    */
   void applySettings(std::shared_ptr<ScannerSettings> settings) override;
+  void restartDeflector() override;
   /**
    * @see AbstractBeamDeflector::doSimStep
    */

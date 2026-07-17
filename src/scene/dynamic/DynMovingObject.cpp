@@ -37,7 +37,10 @@ DynMovingObject::doSimStep()
       this->updatePrimitivesNormalFromMatrix(X);
     },
     [=]() -> bool { return this->normalMotionQueueHasNext(); },
-    [=]() -> std::shared_ptr<DynMotion> { return this->nextNormalMotion(); });
+    [=]() -> std::shared_ptr<DynMotion> { return this->nextNormalMotion(); },
+    [this](DynMotion const& motion) {
+      accumulatedNormalTransform = motion.getA() * accumulatedNormalTransform;
+    });
 
   // Update primitives
   for (Primitive* prim : mPrimitives)
@@ -53,6 +56,25 @@ DynMovingObject::doSimStep()
 }
 
 void
+DynMovingObject::resetSimulationState(glm::dvec3 const& sceneShift)
+{
+  positionMotionQueue.clear();
+  normalMotionQueue.clear();
+  observerStepLoop.setCurrentStep(0);
+
+  if (!mPrimitives.empty()) {
+    std::size_t const numVertices = countVertices();
+    arma::mat const currentNormals = normalMatrixFromPrimitives(numVertices);
+    arma::mat const originalNormals =
+      arma::solve(accumulatedNormalTransform, currentNormals);
+    updatePrimitivesNormalFromMatrix(numVertices, originalNormals);
+  }
+  accumulatedNormalTransform.eye(3, 3);
+
+  DynObject::resetSimulationState(sceneShift);
+}
+
+void
 DynMovingObject::doObserverUpdate()
 {
   // Notify observer that it has been updated by this dynamic moving object
@@ -64,7 +86,8 @@ DynMovingObject::applyDynMotionQueue(
   std::function<arma::mat()> matrixFromPrimitives,
   std::function<void(arma::mat const& X)> matrixToPrimitives,
   std::function<bool()> queueHasNext,
-  std::function<std::shared_ptr<DynMotion>()> queueNext)
+  std::function<std::shared_ptr<DynMotion>()> queueNext,
+  std::function<void(DynMotion const&)> motionApplied)
 {
   // Flag to control whether the dynamic object has been modified or not
   bool modified = false;
@@ -80,6 +103,8 @@ DynMovingObject::applyDynMotionQueue(
         dm = std::make_shared<DynMotion>(dme.compose(*queueNext(), *dm, *this));
       }
     }
+    if (motionApplied)
+      motionApplied(*dm);
     X = dme.apply(*dm, X, *this);
     matrixToPrimitives(X);
     modified = true;
@@ -87,6 +112,13 @@ DynMovingObject::applyDynMotionQueue(
 
   // Return modifications control flag
   return modified;
+}
+
+void
+DynMovingObject::synchronizeObserver()
+{
+  if (kdGroveObserver != nullptr)
+    doObserverUpdate();
 }
 // ***  GROVE SUBSCRIBER METHODS  *** //
 // ********************************** //

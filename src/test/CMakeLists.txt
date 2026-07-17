@@ -9,6 +9,7 @@ target_sources(
   PUBLIC
   "AssetLoadingTest.cpp"
   "DiscreteTimeTest.cpp"
+  "DynamicSceneResetTest.cpp"
   "EnergyModelsTest.cpp"
   "ExprTreeTest.cpp"
   "FluxionumTest.cpp"

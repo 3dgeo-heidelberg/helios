@@ -43,6 +43,13 @@ RisleyBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings)
 }
 
 void
+RisleyBeamDeflector::restartDeflector()
+{
+  AbstractBeamDeflector::restartDeflector();
+  time = 0.0;
+}
+
+void
 RisleyBeamDeflector::doSimStep()
 {
   // time integration

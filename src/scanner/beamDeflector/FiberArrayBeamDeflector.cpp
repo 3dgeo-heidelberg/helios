@@ -37,6 +37,13 @@ FiberArrayBeamDeflector::applySettings(
 }
 
 void
+FiberArrayBeamDeflector::restartDeflector()
+{
+  AbstractBeamDeflector::restartDeflector();
+  state_currentFiber = 0;
+}
+
+void
 FiberArrayBeamDeflector::setNumFibers(int numFibers)
 {
   this->cfg_device_numFibers = numFibers;

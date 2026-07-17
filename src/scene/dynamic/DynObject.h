@@ -1,6 +1,7 @@
 #pragma once
 
 #include <armadillo>
+#include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
@@ -133,6 +134,17 @@ public:
    * @see DynObject::operator()()
    */
   virtual bool doSimStep() = 0;
+
+  /**
+   * @brief Restore runtime state and geometry to the state established by
+   *  Scene::finalizeLoading.
+   *
+   * Positions are reconstructed from Vertex::posOrigin and the original
+   * scene shift, so reset does not require a second geometry copy.
+   *
+   * @param sceneShift Original CRS centering shift.
+   */
+  virtual void resetSimulationState(glm::dvec3 const& sceneShift);
   /**
    * @brief Alias for DynObject::doStep method so it can be used as a functor
    * @see DynObject::doStep

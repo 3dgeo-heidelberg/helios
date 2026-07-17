@@ -221,6 +221,13 @@ public:
    */
   void initializeSequentialGenerators();
   /**
+   * @brief Restore scanner runtime state for a new repeatable playback.
+   *
+   * Leg settings restore component configuration separately. This method
+   * resets counters, deflector phase, and sequential RNGs.
+   */
+  void resetSimulationState();
+  /**
    * @brief Build the scanning pulse process to be used by the scanner
    *  during simulation
    * @param dropper Simulation's task dropper

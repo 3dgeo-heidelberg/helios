@@ -649,7 +649,7 @@ def test_static_scene_yaml_roundtrip(tmp_path):
 def test_dynamic_scene_yaml_roundtrip_replays_only_xml_provenance(tmp_path):
     scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
     scene._claim_for_playback()
-    scene._consume_after_playback()
+    scene._release_after_playback()
 
     yaml_path = scene.to_yaml(tmp_path / "dynamic_scene.yaml", shallow=False)
     with yaml_path.open("r", encoding="utf-8") as handle:
@@ -668,7 +668,7 @@ def test_dynamic_scene_yaml_roundtrip_replays_only_xml_provenance(tmp_path):
     }
     assert "binary" not in document
     assert "playback" not in str(document).lower()
-    assert "consumed" not in str(document).lower()
+    assert "running" not in str(document).lower()
 
     loaded = DynamicScene.from_yaml(yaml_path)
     assert isinstance(loaded, DynamicScene)

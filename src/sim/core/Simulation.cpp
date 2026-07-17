@@ -66,6 +66,12 @@ Simulation::prepareSimulation(int simFrequency_hz)
   // Mark as not finished
   finished = false;
 
+  // Dynamic scenes promise that each SurveyPlayback starts from the same
+  // initial state. Reset scanner-owned runtime state alongside the scene;
+  // static survey rerun behavior remains unchanged.
+  if (dynamic_cast<DynScene*>(&getScene()) != nullptr)
+    this->mScanner->resetSimulationState();
+
   // Prepare platform to work with scanner
   this->mScanner->platform->prepareSimulation(
     this->mScanner->getPulseFreq_Hz());

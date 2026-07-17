@@ -1,5 +1,6 @@
 #include <logging.hpp>
 #include <scene/dynamic/DynScene.h>
+#include <scene/primitives/AABB.h>
 
 using std::stringstream;
 
@@ -22,6 +23,18 @@ DynScene::DynScene(DynScene& ds)
 void
 DynScene::prepareSimulation(int const simFrequency_hz)
 {
+  if (!simulationPrepared) {
+    hasUnresettableSwapOnRepeat = !getSwapOnRepeatObjects().empty();
+  } else if (hasUnresettableSwapOnRepeat) {
+    throw HeliosException(
+      "Repeated playback of a dynamic scene containing swap-on-repeat "
+      "handlers is not supported because swap filter recipes are consumed "
+      "during the first playback; reload the scene from XML.");
+  }
+
+  resetSimulationState();
+  simulationPrepared = true;
+
   // Prepare variables
   double const simFreq_hz = (double)simFrequency_hz;
   // Configure the dynamic scene step interval from time
@@ -75,6 +88,31 @@ DynScene::prepareSimulation(int const simFrequency_hz)
       }
       obs->setObserverStepInterval((int)(kdtDt / partDt));
     }
+  }
+}
+
+void
+DynScene::resetSimulationState()
+{
+  stepLoop.setCurrentStep(0);
+  std::fill(updated.begin(), updated.end(), true);
+
+  glm::dvec3 const sceneShift = getShift();
+  for (std::shared_ptr<DynObject>& dynObj : dynObjs)
+    dynObj->resetSimulationState(sceneShift);
+
+  // Restore the scene-level bounds without inspecting or copying geometry.
+  bbox = std::make_shared<AABB>(bbox_crs->getMin() - sceneShift,
+                                bbox_crs->getMax() - sceneShift);
+
+  // Observer intervals can intentionally leave a stale dynamic tree at the
+  // end of a run. Bypass those intervals so the first ray of the next run
+  // always sees restored geometry.
+  for (std::shared_ptr<DynObject>& dynObj : dynObjs) {
+    std::shared_ptr<DynMovingObject> moving =
+      std::dynamic_pointer_cast<DynMovingObject>(dynObj);
+    if (moving != nullptr)
+      moving->synchronizeObserver();
   }
 }
 

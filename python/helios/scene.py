@@ -1234,7 +1234,6 @@ class StaticScene(_Scene, cpp_class=_helios.StaticScene):
 class _PlaybackState(Enum):
     FRESH = auto()
     RUNNING = auto()
-    CONSUMED = auto()
 
 
 class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
@@ -1242,7 +1241,10 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
 
     Dynamic behavior is defined entirely by the XML file and executed by the
     C++ simulation. Dynamic scenes intentionally expose no scene-part mutation
-    API in the high-level Python interface.
+    API in the high-level Python interface. Each new survey playback restores
+    the initially loaded geometry and dynamic control state without reloading
+    XML. Repeated playback of mixed motion/swap-on-repeat scenes remains
+    unsupported because swap filter recipes are destructively consumed.
     """
 
     # Dynamic geometry and runtime playback state must never be written through
@@ -1282,17 +1284,11 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
             del self._dynamic_owner_ref
 
     def _ensure_fresh_for_playback(self):
-        """Reject reuse before survey execution causes any side effects."""
+        """Reject reentrant playback before execution causes side effects."""
 
         state = self._playback_state()
         if state is _PlaybackState.RUNNING:
             raise RuntimeError("This DynamicScene is already running in a survey.")
-        if state is _PlaybackState.CONSUMED:
-            raise RuntimeError(
-                "This DynamicScene has already been used and cannot be run again. "
-                "Dynamic-scene reset support is planned but not yet available; "
-                "load a fresh DynamicScene from XML for another run."
-            )
 
     def _claim_for_playback(self):
         """Mark playback as running immediately before it is started."""
@@ -1300,10 +1296,10 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
         self._ensure_fresh_for_playback()
         self._dynamic_playback_state = _PlaybackState.RUNNING
 
-    def _consume_after_playback(self):
-        """Permanently consume the scene after a playback start attempt."""
+    def _release_after_playback(self):
+        """Allow a later playback; C++ resets state during preparation."""
 
-        self._dynamic_playback_state = _PlaybackState.CONSUMED
+        self._dynamic_playback_state = _PlaybackState.FRESH
 
     def clone(self):
         """Reject cloning until the complete C++ dynamic graph is independent."""

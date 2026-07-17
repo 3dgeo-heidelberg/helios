@@ -291,6 +291,15 @@ public:
    *  or not (False).
    */
   void prepareSimulation(bool const legacyEnergyModel = false);
+  /**
+   * @brief Reset per-playback counters that are not scanner settings.
+   */
+  inline void resetSimulationState()
+  {
+    state_currentPulseNumber = 0;
+    state_lastPulseWasHit = false;
+    state_opticsWarmupApplied = false;
+  }
 
   /**
    * @brief Configure beam related attributes. It is recommended to

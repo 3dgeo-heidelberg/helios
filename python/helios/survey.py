@@ -291,7 +291,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                 try:
                     _start_playback_interruptible(playback)
                 finally:
-                    scene._consume_after_playback()
+                    scene._release_after_playback()
             else:
                 _start_playback_interruptible(playback)
         finally:

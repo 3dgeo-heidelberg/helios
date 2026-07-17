@@ -15,6 +15,13 @@ DynSequentiableMovingObject::doSimStep()
 }
 
 void
+DynSequentiableMovingObject::resetSimulationState(glm::dvec3 const& sceneShift)
+{
+  dmSequencer.restart();
+  DynMovingObject::resetSimulationState(sceneShift);
+}
+
+void
 DynSequentiableMovingObject::fillMotionQueues()
 {
   // Fill motion queues from sequencer

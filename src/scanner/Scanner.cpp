@@ -354,6 +354,19 @@ Scanner::initializeSequentialGenerators()
 }
 
 void
+Scanner::resetSimulationState()
+{
+  initializeSequentialGenerators();
+  lastTrajectoryTime = 0L;
+  for (std::size_t i = 0; i < getNumDevices(); ++i) {
+    getScanningDevice(i).resetSimulationState();
+    getBeamDeflector(i)->restartDeflector();
+    getScannerHead(i)->setCurrentRotateAngle_rad(
+      getScannerHead(i)->getRotateStart());
+  }
+}
+
+void
 Scanner::buildScanningPulseProcess(
   int const parallelizationStrategy,
   PulseTaskDropper& dropper,

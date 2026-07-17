@@ -1,10 +1,13 @@
 import threading
 
+import numpy as np
+
 import pytest
 
 from helios import survey as survey_module
 from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
 from helios.survey import Survey, _start_playback_interruptible
+from helios.utils import meas_dtype, traj_dtype
 
 
 def test_start_playback_interruptible_completes():
@@ -57,13 +60,20 @@ def test_start_playback_interruptible_stops_on_keyboard_interrupt(monkeypatch):
     assert playback.stop_calls == 1
 
 
-def test_interrupted_dynamic_survey_is_consumed(monkeypatch, xml_dynamic_test_survey):
+def test_interrupted_dynamic_survey_can_run_again(monkeypatch, xml_dynamic_test_survey):
     dynamic_survey = xml_dynamic_test_survey
     starts = []
 
     def interrupt_start(playback):
         starts.append(playback)
-        raise KeyboardInterrupt
+        if len(starts) == 1:
+            raise KeyboardInterrupt
+        dynamic_survey.scanner._cpp_object.all_measurements = np.zeros(
+            (1,), dtype=meas_dtype
+        )
+        dynamic_survey.scanner._cpp_object.all_trajectories = np.zeros(
+            (1,), dtype=traj_dtype
+        )
 
     monkeypatch.setattr(survey_module, "_start_playback_interruptible", interrupt_start)
     execution_settings = ExecutionSettings(
@@ -75,8 +85,5 @@ def test_interrupted_dynamic_survey_is_consumed(monkeypatch, xml_dynamic_test_su
             format=OutputFormat.NPY, execution_settings=execution_settings
         )
 
-    with pytest.raises(RuntimeError, match="reset support is planned"):
-        dynamic_survey.run(
-            format=OutputFormat.NPY, execution_settings=execution_settings
-        )
-    assert len(starts) == 1
+    dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+    assert len(starts) == 2

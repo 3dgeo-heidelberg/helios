@@ -83,6 +83,10 @@ public:
    * @see DynSequence
    */
   bool doSimStep() override;
+  /**
+   * @see DynMovingObject::resetSimulationState
+   */
+  void resetSimulationState(glm::dvec3 const& sceneShift) override;
 
 protected:
   /**
