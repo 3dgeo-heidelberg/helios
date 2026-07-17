@@ -20,7 +20,7 @@ dependencies = [
     "clickqt-utils",
     "importlib-resources",
     "jsonschema",
-    "laspy",
+    "laspy[lazrs]",
     "numpy",
     "numpydantic",
     "pint",
