@@ -56,6 +56,9 @@ Scene
 .. autoapiclass:: helios.StaticScene
    :members:
 
+.. autoapiclass:: helios.DynamicScene
+   :members:
+
 .. autoapiclass:: helios.ScenePart
    :members:
 
