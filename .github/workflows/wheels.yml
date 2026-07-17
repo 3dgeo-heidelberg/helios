@@ -52,7 +52,6 @@ jobs:
           # docker/manylinux.dockerfile.
           CIBW_ARCHS_LINUX: x86_64
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
-          CIBW_TEST_COMMAND: "helios --version"
           CIBW_ENVIRONMENT_LINUX: >-
             SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT=120
             CMAKE_PREFIX_PATH="/opt/cmake-compat:/opt/tinyxml2:/opt/lastools:/usr"

@@ -76,8 +76,8 @@ __commit_id__ = commit_id = {scm_version.short_node!r}
 # Super-verbose output for debugging purpose
 build-verbosity = 3
 # Testing commands for our wheels
-test-command = "PYTHONPATH=$(pwd)/python pytest {package}/tests/python"
-test-requires = ["pytest", "ruptures"]
+test-command = "python -m pytest {package}/tests/python"
+test-requires = ["pytest"]
 [tool.pytest.ini_options]
 markers = [
     "exe: mark tests for the command line tool",
