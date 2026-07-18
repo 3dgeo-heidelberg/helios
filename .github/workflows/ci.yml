@@ -39,12 +39,12 @@ jobs:
       CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
@@ -57,7 +57,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v3-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('environment-dev.yml') }}
@@ -77,6 +77,11 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           conda install -y -c conda-forge gcc gxx
+
+      - name: Install Linux Open3D system dependencies
+        if: runner.os == 'Linux' && matrix.python != '3.14'
+        run: |
+          sudo apt-get install --yes libegl1
 
       - name: Install open3d test dependencies
         if: matrix.python != '3.14'
@@ -120,12 +125,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Header sanity check
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
@@ -138,7 +143,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v3-${{ runner.os }}-py3.10-${{ hashFiles('environment-dev.yml') }}

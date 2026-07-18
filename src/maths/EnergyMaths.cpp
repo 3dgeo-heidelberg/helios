@@ -26,7 +26,7 @@ EnergyMaths::calcEmittedPowerLegacy(double const I0,
                                     double const r,
                                     double const w0)
 {
-  double const denom = M_PI * w0 * w0;
+  double const denom = PI * w0 * w0;
   double const omega = (lambda * R) / denom;
   double const omega0 = (lambda * R0) / denom;
   double const w = w0 * sqrt(omega0 * omega0 + omega * omega);
@@ -42,7 +42,7 @@ EnergyMaths::calcSubrayWiseEmittedPower(double const reversedI0,
                                         double const numSubrays)
 {
   return EnergyMaths::calcSubrayWiseEmittedPowerFast(
-    M_PI * reversedI0 * (w0 * w0) / (2 * numSubrays),
+    PI * reversedI0 * (w0 * w0) / (2 * numSubrays),
     w * w,
     -2.0 * radius * radius,
     -2.0 * prevRadius * prevRadius);
