@@ -198,6 +198,7 @@ def test_construct_scene_from_xml():
 
 def test_construct_scene_part_from_xml():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
+    assert len(part._cpp_object.primitives) > 0
 
 
 def test_finalize_scene():
@@ -348,6 +349,11 @@ def test_scenepart_from_obj():
     scene = StaticScene(scene_parts=[box])
     scene._finalize()
 
+    assert scene.original_bbox.bounds is not None
+    assert scene.bbox.bounds is not None
+    assert len(scene.original_bbox.centroid) > 0
+    assert len(scene.bbox.centroid) > 0
+
 
 def test_sceneparts_from_obj_wildcard():
     box = ScenePart.from_objs("data/sceneparts/basic/**/*.obj")
@@ -355,11 +361,21 @@ def test_sceneparts_from_obj_wildcard():
     scene = StaticScene(scene_parts=box)
     scene._finalize()
 
+    assert scene.original_bbox.bounds is not None
+    assert scene.bbox.bounds is not None
+    assert len(scene.original_bbox.centroid) > 0
+    assert len(scene.bbox.centroid) > 0
+
 
 def test_scenepart_from_obj_yisup():
     box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="y")
     scene = StaticScene(scene_parts=[box])
     scene._finalize()
+
+    assert scene.original_bbox.bounds is not None
+    assert scene.bbox.bounds is not None
+    assert len(scene.original_bbox.centroid) > 0
+    assert len(scene.bbox.centroid) > 0
 
 
 def test_scenepart_from_obj_wrong_axis_argument():
