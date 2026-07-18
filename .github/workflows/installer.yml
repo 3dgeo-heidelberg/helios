@@ -33,10 +33,10 @@ jobs:
         shell: bash -l {0}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Create constructor dev environment
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           conda-remove-defaults: true
           channels: conda-forge
@@ -98,7 +98,7 @@ jobs:
           echo "INSTALLER=$(ls ./dist)" >> $GITHUB_ENV
 
       - name: Install Helios through installer
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           conda-remove-defaults: true
           channels: conda-forge

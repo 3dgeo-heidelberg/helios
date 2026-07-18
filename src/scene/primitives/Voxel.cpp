@@ -66,7 +66,7 @@ Voxel::getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
 
   // Determine incidence angle considering voxel normal
   double const angle = glm::angle(v.normal, rayDir);
-  return (angle > PI_HALF) ? M_PI - angle : angle; // Return min. angle
+  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
 }
 
 double
@@ -112,7 +112,7 @@ Voxel::getIncidenceAngleClosestFace_rad(const glm::dvec3& rayOrigin,
 
   // Compute incidence angle
   double const angle = glm::angle(normal, rayDir);
-  return (angle > PI_HALF) ? M_PI - angle : angle; // Return min. angle
+  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
 }
 
 std::vector<double>

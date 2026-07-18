@@ -4,6 +4,7 @@
 #include <scanner/SingleScanner.h>
 
 #include <adt/exprtree/UnivarExprTreeNode.h>
+#include <maths/MathConstants.h>
 
 #include <cmath>
 #include <sstream>
@@ -1026,7 +1027,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
       double angle1_rad =
         MathConverter::degreesToRadians(std::abs(prism1_angle_deg));
       prisms.emplace_back(
-        angle1_rad, inclinedOnLeft1, refr_prism1, rotorFreq_1_Hz * 2.0 * M_PI);
+        angle1_rad, inclinedOnLeft1, refr_prism1, rotorFreq_1_Hz * 2.0 * PI);
     }
 
     if (std::abs(prism2_angle_deg) > eps) {
@@ -1034,7 +1035,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
       double angle2_rad =
         MathConverter::degreesToRadians(std::abs(prism2_angle_deg));
       prisms.emplace_back(
-        angle2_rad, inclinedOnLeft2, refr_prism2, rotorFreq_2_Hz * 2.0 * M_PI);
+        angle2_rad, inclinedOnLeft2, refr_prism2, rotorFreq_2_Hz * 2.0 * PI);
     }
 
     if (std::abs(prism3_angle_deg) > eps) {
@@ -1042,7 +1043,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
       double angle3_rad =
         MathConverter::degreesToRadians(std::abs(prism3_angle_deg));
       prisms.emplace_back(
-        angle3_rad, inclinedOnLeft3, refr_prism3, rotorFreq_3_Hz * 2.0 * M_PI);
+        angle3_rad, inclinedOnLeft3, refr_prism3, rotorFreq_3_Hz * 2.0 * PI);
     }
 
     beamDeflector = std::make_shared<RisleyBeamDeflector>(prisms, refr_air);
@@ -1503,7 +1504,7 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
           if (XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")) {
             rbd->prisms[0].rotation_speed_rad =
               XmlUtils::getAttributeCast<double>(chan, "rotorFreq1_Hz", 0.0) *
-              2.0 * M_PI;
+              2.0 * PI;
           }
           if (XmlUtils::hasAttribute(chan, "angle1_deg")) {
             double angle =
@@ -1525,7 +1526,7 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
           if (XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")) {
             rbd->prisms[1].rotation_speed_rad =
               XmlUtils::getAttributeCast<double>(chan, "rotorFreq2_Hz", 0.0) *
-              2.0 * M_PI;
+              2.0 * PI;
           }
           if (XmlUtils::hasAttribute(chan, "angle2_deg")) {
             double angle =
@@ -1547,7 +1548,7 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
           if (XmlUtils::hasAttribute(chan, "rotorFreq3_Hz")) {
             rbd->prisms[2].rotation_speed_rad =
               XmlUtils::getAttributeCast<double>(chan, "rotorFreq3_Hz", 0.0) *
-              2.0 * M_PI;
+              2.0 * PI;
           }
           if (XmlUtils::hasAttribute(chan, "angle3_deg")) {
             double angle =

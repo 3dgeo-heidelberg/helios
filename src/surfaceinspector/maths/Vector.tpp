@@ -1,4 +1,5 @@
 #include <cmath>
+#include <maths/MathConstants.h>
 #include <vector>
 
 // ***  BASIC VECTOR OPERATIONS  *** //
@@ -310,8 +311,8 @@ SurfaceInspector::maths::Vector<T>::acuteAngle(std::vector<T> const u,
   if (dot < -1.0)
     dot = -1.0;
   theta = std::acos(dot);
-  if (theta > M_PI_2)
-    return M_PI - theta;
+  if (theta > PI_HALF)
+    return PI - theta;
   return theta;
 }
 
@@ -368,7 +369,7 @@ SurfaceInspector::maths::Vector<T>::xyRotations(size_t const depth,
                                                 bool complement)
 {
   // Prepare
-  T step = M_PI / ((T)depth);
+  T step = PI / ((T)depth);
   std::vector<std::vector<T>> rots(depth);
 
   // Compute semi-circumference space rotations

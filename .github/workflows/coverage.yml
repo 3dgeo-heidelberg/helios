@@ -25,12 +25,12 @@ jobs:
       CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
@@ -43,7 +43,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v3-${{ runner.os }}-py3.10-${{ hashFiles('environment-dev.yml') }}
@@ -73,7 +73,7 @@ jobs:
 
       - name: Install Helios (editable)
         run: |
-          python -m pip install --no-build-isolation --config-settings=cmake.build-type="Debug" --config-settings=build-dir="build" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage" -v -e .
+          python -m pip install --no-build-isolation --config-settings=build-dir="build" --config-settings=cmake.build-type="Debug" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage -fprofile-update=atomic" -v -e .
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
@@ -90,7 +90,7 @@ jobs:
           lcov --directory build --capture --output-file coverage.info --ignore-errors mismatch
       
       - name: Upload coverage to CodeCov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true
           files: ./coverage.info,./coverage.xml

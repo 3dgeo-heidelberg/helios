@@ -39,12 +39,12 @@ jobs:
       CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
@@ -57,7 +57,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v3-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('environment-dev.yml') }}
@@ -125,12 +125,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Header sanity check
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
@@ -143,7 +143,7 @@ jobs:
 
       - name: Restore conda environment cache
         id: conda-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
           key: conda-env-v3-${{ runner.os }}-py3.10-${{ hashFiles('environment-dev.yml') }}
