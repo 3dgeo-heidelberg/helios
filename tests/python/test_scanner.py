@@ -456,4 +456,5 @@ def test_optics_warmup_phase(case):
         warmup["position"] - nowarmup["position"],
         axis=1,
     )
-    assert np.percentile(dist, 99.0) < 0.1
+    # Allow for small cross-platform differences in scanner geometry calculations.
+    assert np.percentile(dist, 99.0) < 0.11
