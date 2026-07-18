@@ -69,7 +69,7 @@ def _build_manual_survey() -> Survey:
 
 
 def _build_xml_survey() -> Survey:
-    return Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    return Survey.from_xml("data/test/serialization_survey.xml")
 
 
 def _run_survey_npy(survey: Survey):

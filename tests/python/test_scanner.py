@@ -182,8 +182,8 @@ def test_scanner_settings_max_duration_manual():
     platform = tripod()
     plat_set1 = PlatformSettings(x=0, y=0, z=0)
     plat_set2 = PlatformSettings(x=0, y=0, z=0)
-    scan_set1 = ScannerSettings(pulse_frequency=100000, max_duration=0.4)
-    scan_set2 = ScannerSettings(pulse_frequency=100000, max_duration=5.2)
+    scan_set1 = ScannerSettings(pulse_frequency=100000, max_duration=0.04)
+    scan_set2 = ScannerSettings(pulse_frequency=100000, max_duration=0.12)
     survey = Survey(scanner=scanner, platform=platform, scene=scene)
     survey.add_leg(scanner_settings=scan_set1, platform_settings=plat_set1)
     survey.add_leg(scanner_settings=scan_set2, platform_settings=plat_set2)
@@ -198,9 +198,9 @@ def test_scanner_settings_max_duration_manual():
         - points[points["point_source_id"] == 1][0]["gps_time"]
     )
 
-    assert 0.39 < leg1_duration < 0.401
+    assert leg1_duration == pytest.approx(0.04, abs=0.005)
     assert leg2_duration != leg1_duration
-    assert 5.19 < leg2_duration < 5.201
+    assert leg2_duration == pytest.approx(0.12, abs=0.005)
 
 
 def test_max_duration_no_infinite_run():
