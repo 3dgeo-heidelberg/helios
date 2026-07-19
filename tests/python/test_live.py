@@ -712,14 +712,8 @@ def test_scene_show_switches_to_trame_if_in_jupyter(monkeypatch):
 
 
 def test_scene_show_raises_wo_sp_id():
-    groundplane = ScenePart.from_obj(
-        "data/sceneparts/basic/groundplane/groundplane.obj"
-    )
-    tree1 = ScenePart.from_obj(
-        "data/sceneparts/arbaro/black_tupelo_low.obj", up_axis="y"
-    )
-    tree2 = ScenePart.from_obj("data/sceneparts/arbaro/sassafras_low.obj", up_axis="y")
-    scene = StaticScene(scene_parts=[groundplane, tree1, tree2])
+    scene_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene(scene_parts=[scene_part])
     scene._is_finalized = True
 
     with pytest.raises(ValueError, match="Scene part at index"):

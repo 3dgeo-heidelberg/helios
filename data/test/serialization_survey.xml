@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey
+        name="serialization_test"
+        scene="data/scenes/demo/box_scene.xml#box_scene"
+        platform="data/platforms.xml#tripod"
+        scanner="data/scanners_tls.xml#livox_mid-70"
+    >
+        <leg maxDuration_s="0.02">
+            <platformSettings x="0.0" y="0.0" z="0.0"/>
+            <scannerSettings
+                active="true"
+                pulseFreq_hz="100000"
+                trajectoryTimeInterval_s="0.005"
+            />
+        </leg>
+    </survey>
+</document>

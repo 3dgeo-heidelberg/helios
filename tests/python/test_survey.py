@@ -320,7 +320,7 @@ def test_survey_tls_multi_scan_not_from_xml(tripod, multi_tls_scanner, scene):
         scan_frequency=20,
         head_rotation="30 deg/s",
         rotation_start_angle=0,
-        rotation_stop_angle=20,
+        rotation_stop_angle=1,
     )
     platform_settings = PlatformSettings(x=0, y=0, z=0)
     survey = Survey(scanner=multi_tls_scanner, platform=tripod, scene=scene)
@@ -330,6 +330,7 @@ def test_survey_tls_multi_scan_not_from_xml(tripod, multi_tls_scanner, scene):
     m, t = survey.run(format=OutputFormat.NPY)
     assert m.shape[0] > 0
     assert t.shape[0] > 0
+    assert np.unique(m["channel_id"]).size > 1
 
 
 def test_survey_als_multi_scan_not_from_xml(airplane, multi_als_scanner):
@@ -396,21 +397,21 @@ def test_run_interpolated_survey():
         pulse_frequency=2000,
         scan_frequency=20,
         scan_angle=0,
-        trajectory_time_interval=0.5,
+        trajectory_time_interval=0.05,
     )
 
-    trajectory_settings1 = TrajectorySettings(start_time=0, end_time=1)
+    trajectory_settings1 = TrajectorySettings(start_time=0, end_time=0.1)
 
     scanner_settings2 = ScannerSettings(
         is_active=True,
         pulse_frequency=2000,
         scan_frequency=20,
         scan_angle=0,
-        trajectory_time_interval=0.5,
+        trajectory_time_interval=0.05,
     )
 
     trajectory_settings2 = TrajectorySettings(
-        start_time=1, end_time=2, teleport_to_start=True
+        start_time=0.1, end_time=0.2, teleport_to_start=True
     )
     trajectory = load_traj_csv(
         csv="data/trajectories/flyandrotate.trj",
@@ -440,21 +441,25 @@ def test_run_interpolated_survey():
     m1, t1 = survey1.run(execution_settings=execution_settings)
 
     surv2 = Survey.from_xml("data/surveys/demo/box_survey_interp.xml")
+    surv2.legs = surv2.legs[:2]
     surv2.legs[0].scanner_settings.pulse_frequency = 2000
     surv2.legs[0].scanner_settings.scan_frequency = 20
-    surv2.legs[0].scanner_settings.trajectory_time_interval = 0.5
+    surv2.legs[0].scanner_settings.trajectory_time_interval = 0.05
     surv2.legs[0].trajectory_settings.start_time = 0
-    surv2.legs[0].trajectory_settings.end_time = 1
+    surv2.legs[0].trajectory_settings.end_time = 0.1
     surv2.legs[1].scanner_settings.pulse_frequency = 2000
     surv2.legs[1].scanner_settings.scan_frequency = 20
-    surv2.legs[1].scanner_settings.trajectory_time_interval = 0.5
-    surv2.legs[1].trajectory_settings.start_time = 1
-    surv2.legs[1].trajectory_settings.end_time = 2
+    surv2.legs[1].scanner_settings.trajectory_time_interval = 0.05
+    surv2.legs[1].trajectory_settings.start_time = 0.1
+    surv2.legs[1].trajectory_settings.end_time = 0.2
     m2, t2 = surv2.run(execution_settings=execution_settings)
 
     assert m1.shape[0] > 0
     assert m2.shape[0] > 0
+    assert t1.shape[0] > 0
+    assert t2.shape[0] > 0
     assert np.allclose(t1["position"][0], t2["position"][0], rtol=1e-1, atol=1e-1)
+    assert np.allclose(t1["position"][-1], t2["position"][-1], rtol=1e-1, atol=1e-1)
 
 
 def test_survey_run_with_scene_fixture(scene):
