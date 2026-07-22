@@ -261,7 +261,7 @@ class LiveViewer:
             return []
 
         actors: list[Any] = []
-        diff = self.scene.bbox_crs.centroid
+        diff = self.scene.original_bbox.centroid
         for part in self.scene.scene_parts:
             buffers = part._get_visualization_buffers(diff)
 
