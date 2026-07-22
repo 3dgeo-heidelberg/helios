@@ -271,7 +271,9 @@ def test_ensure_scene_actors_builds_static_scene(monkeypatch):
 
     viewer = live_module.LiveViewer()
     viewer.scene = SimpleNamespace(
-        bbox_crs=SimpleNamespace(centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)),
+        original_bbox=SimpleNamespace(
+            centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
+        ),
         scene_parts=[
             SimpleNamespace(
                 _get_visualization_buffers=lambda diff: SimpleNamespace(
@@ -314,7 +316,9 @@ def test_create_scene_actors_returns_mesh_and_points(monkeypatch):
 
     viewer = live_module.LiveViewer()
     viewer.scene = SimpleNamespace(
-        bbox_crs=SimpleNamespace(centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)),
+        original_bbox=SimpleNamespace(
+            centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
+        ),
         scene_parts=[
             SimpleNamespace(
                 _get_visualization_buffers=lambda diff: SimpleNamespace(
