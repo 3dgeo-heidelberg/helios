@@ -9,8 +9,8 @@ detailed explanations, and the complete API reference for both the Python and C+
 
 .. _3DGeo Research Group: https://uni-heidelberg.de/3dgeo
 
-Official website: https://uni-heidelberg.de/helios
-GitHub repository: https://github.com/3dgeo-heidelberg/helios
+* Official website: https://uni-heidelberg.de/helios
+* GitHub repository: https://github.com/3dgeo-heidelberg/helios
 
 .. figure:: /img/vls.png
    :alt: Virtual laser scanning
@@ -50,6 +50,7 @@ If you use HELIOS in your research, please cite
    scanners_platforms
    intensity_fwf
    error_randomness
+   serialization
    cli
 
 .. toctree::
