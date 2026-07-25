@@ -63,6 +63,11 @@ public:
    * @brief Max full wave range (nanoseconds)
    */
   double maxFullwaveRange_ns = 0.0;
+  /**
+   * @brief Snap waveform return to closest surface hit instead of
+   *  Gaussian-fitted peak point, eliminating angle-dependent slant bias
+   */
+  bool snapToSurface = false; // LCOV_EXCL_LINE
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -92,7 +97,8 @@ public:
        << "pulseLength_ns = " << pulseLength_ns << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
        << "winSize_ns = " << winSize_ns << "\n"
-       << "maxFullwaveRange_ns = " << maxFullwaveRange_ns << "\n";
+       << "maxFullwaveRange_ns = " << maxFullwaveRange_ns << "\n"
+       << "snapToSurface = " << snapToSurface << "\n"; // LCOV_EXCL_LINE
     return ss.str();
   }
   /**
