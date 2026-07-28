@@ -197,8 +197,7 @@ bind_logging(py::module_& m)
     .def(py::init<>())
     .def_readwrite("capacity", &logging::config::capacity)
     .def_readwrite("min_level", &logging::config::min_level)
-    .def_readwrite("clear_queue", &logging::config::clear_queue)
-    .def_readwrite("reset_counters", &logging::config::reset_counters);
+    .def_readwrite("clear_queue", &logging::config::clear_queue);
 
   py::class_<logging::log_event>(m, "LogEvent")
     .def_readonly("level", &logging::log_event::level)
@@ -207,48 +206,26 @@ bind_logging(py::module_& m)
     .def_readonly("thread_id_hash", &logging::log_event::thread_id_hash)
     .def_readonly("file", &logging::log_event::file)
     .def_readonly("line", &logging::log_event::line)
-    .def_readonly("function", &logging::log_event::function)
-    .def_readonly("category", &logging::log_event::category)
-    .def_readonly("logger_name", &logging::log_event::logger_name);
+    .def_readonly("function", &logging::log_event::function);
 
-  py::class_<logging::queue_stats>(m, "LogQueueStats")
-    .def_readonly("size", &logging::queue_stats::size)
-    .def_readonly("capacity", &logging::queue_stats::capacity)
-    .def_readonly("overflow_dropped", &logging::queue_stats::overflow_dropped)
-    .def_readonly("shutdown_dropped", &logging::queue_stats::shutdown_dropped)
-    .def_readonly("stopping", &logging::queue_stats::stopping)
-    .def_readonly("min_level", &logging::queue_stats::min_level);
+  py::class_<logging::dropped_counts>(m, "DroppedCounts")
+    .def(py::init<>())
+    .def_readonly("overflow", &logging::dropped_counts::overflow)
+    .def_readonly("shutdown", &logging::dropped_counts::shutdown);
 
-  m.def("logging_configure",
-        &logging::configure,
-        py::arg("config"),
-        "Configure the C++ log transport queue.");
+  m.def("logging_consume_dropped_counts",
+        &logging::consume_dropped_counts,
+        "Consume and reset dropped log counters.");
 
-  m.def("logging_configure_silent",
-        &logging::configure_silent,
-        "Disable logging output for deprecated C++ CLI path.");
+  m.def("logging_configure", &logging::configure, py::arg("config"));
 
-  m.def("logging_shutdown",
-        &logging::shutdown,
-        "Stop accepting logs and wake waiting consumers.");
+  m.def("logging_configure_silent", &logging::configure_silent);
+
+  m.def("logging_shutdown", &logging::shutdown);
 
   m.def("logging_set_min_level", &logging::set_min_level, py::arg("level"));
 
   m.def("logging_is_stopped", &logging::is_stopped);
-
-  m.def("logging_stats",
-        &logging::stats,
-        "Return a snapshot of queue state and counters.");
-
-  m.def("logging_size", &logging::size);
-
-  m.def("logging_capacity", &logging::capacity);
-
-  m.def("logging_overflow_dropped_count", &logging::overflow_dropped_count);
-
-  m.def("logging_shutdown_dropped_count", &logging::shutdown_dropped_count);
-
-  m.def("logging_reset_dropped_counters", &logging::reset_dropped_counters);
 
   m.def(
     "logging_drain",
