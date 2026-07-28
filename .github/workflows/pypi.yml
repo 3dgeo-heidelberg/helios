@@ -1,24 +1,22 @@
-# Note: This is merely a proof-of-concept right now. Please do not redistribute
-#       any of the generated wheels unless you have double-checked that you meet
-#       all licensing criteria.
+# Note: This workflow publishes its generated wheels to PyPI. Before pushing a
+#       release tag, double-check that all bundled dependencies meet their
+#       licensing criteria for redistribution.
 
-# Note: This workflow is currently located in this repository, but we might
-#       actually move it to a blender add-on release workflow in the future,
-#       because that is what is was developed for.
+# Note: PyPI must have a trusted publisher configured for this repository and
+#       workflow file. No GitHub environment or API token is used.
 
-# Note: This workflow builds Windows and Linux wheels. These are not currently used
-#       as the main installation methods, because they are not available on
-#       all platforms and we just made a decision to go with conda. However,
-#       this workflow still exists because it allows to bundle Helios into
-#       Blender.
+# Note: Only Windows and Linux x86-64 wheels are published. Conda remains the
+#       installation method for platforms not covered by these wheels.
 
-name: Build wheels
+name: Publish wheels to PyPI
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - linux-wheels
+    tags:
+      - 'v?[0-9]+.[0-9]+.[0-9]+'
+      - 'v?[0-9]+.[0-9]+.[0-9]+a[0-9]+'
+      - 'v?[0-9]+.[0-9]+.[0-9]+b[0-9]+'
+  workflow_dispatch:
 
 jobs:
   build-wheels:
@@ -30,14 +28,12 @@ jobs:
         include:
           # MacOS: Not tried due to lack of priority
           - os: ubuntu-24.04
-          #- os: windows-2022
-          
+          - os: windows-2022
 
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.1
@@ -134,3 +130,22 @@ jobs:
           name: wheels-${{ matrix.os }}
           path: wheelhouse/*.whl
           if-no-files-found: error
+
+  publish:
+    name: Publish wheels to PyPI
+    needs: build-wheels
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download wheels
+        uses: actions/download-artifact@v8
+        with:
+          pattern: wheels-*
+          path: dist
+          merge-multiple: true
+
+      - name: Publish wheels
+        uses: pypa/gh-action-pypi-publish@release/v1
