@@ -62,7 +62,7 @@ XML configuration
 Survey XML
 ----------
 
-The survey XML file contains references to the components needed to build a simulation: The scene, the platform and the scanner (see also `:doc:`Scanners and platforms <scanners_platforms>). 
+The survey XML file contains references to the components needed to build a simulation: The scene, the platform and the scanner (see also :doc:`Scanners and platforms <scanners_platforms>`). 
 It also contains waypoint information needed to define the scan positions or trajectory.
 
 Linking to the different components is done by specifying the absolute or relative path of the respective XML file in the ``<survey>`` tag, followed by a hashtag (#) and the ID of the entry:
@@ -75,7 +75,7 @@ Linking to the different components is done by specifying the absolute or relati
         scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
 
 The ``platform``  attribute of the ``<survey>`` tag can also be set to "interpolated".
-In this case, the platform behavior will be defined by a function obtained through interpolation of given trajectory data, see :ref:`interpolated-trajectories`
+In this case, the platform behavior will be defined by a function obtained through interpolation of given trajectory data, see :ref:`interpolated-trajectories`.
 
 Scanner settings and platform settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -280,6 +280,7 @@ The XML file also defines how the raw data that is read from the files should be
 A scene XML file starts with a ``<scene>`` tag, containing the id and name of the scene.
 Any number of ``<part>`` tags can be specified inside the ``<scene>`` tag. Each of them contains one or more ``<filter>`` tags.
 There are four loaders for different geometry types and three filters for coordinate transformations.
+In addition, dynamic rigid motions can be applied to the scene parts, which is explained later in :ref:`dynamic-scenes`.
 
 .. code-block:: xml
 
@@ -506,6 +507,8 @@ Read more about materials including custom HELIOS parameters on the page :doc:`F
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/
 
 
+.. _dynamic-scenes:
+
 Dynamic scenes (rigid motions)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -713,17 +716,13 @@ The first attribute is the ``dynStep="x"`` which means that the dynamic motion w
 Thus, if ``F=100000`` and ``dynStep="1000"`` it means that the dynamic motion will be applied ``F/dynStep = 100`` times per second.
 Note that this might require to update values such as the magnitude of a translation because adding ``100`` times a translation vector ``(0,0,1)`` leads to an accumulated translation vector ``(0,0,100)`` while adding ``100000`` times the same translation vector leads to an accumulated translation vector ``(0,0,100000)``.
 The dynamic time step exploits the inverse relationship between time and frequency to provide an alternative specification.
-More concretely, the time step (inside :math:(0, 1]``) between iterations can be given instead of the discrete dynamic step, which is independent of the simulation frequency. This means that when changing the dynamic time step, rigid motion magnitudes do not need to be updated.
+More concretely, the time step (inside :math:`(0, 1]`) between iterations can be given instead of the discrete dynamic step, which is independent of the simulation frequency. This means that when changing the dynamic time step, rigid motion magnitudes do not need to be updated.
 
 The second attribute is the ``kdtDynStep="y"`` which means that the KDGrove (a datastructure which handles multiple KDTrees for efficient ray casting on dynamic scenes) will update the KDTree for the dynamic object after ``y`` consecutive updates of the object itself. For instance, having ``kdtDynStep="10"`` means that the KDTree will be updated after computing ``10`` iterations of the dynamic motion sequence. 
 The alternative time-based counterpart ``kdtDynTimeStep="t"`` means that the KDTree will be updated after t seconds.
 
-These frequency/temporal parameters can either be given at the scene level, which changes the default frequency (``dynStep="1"``) for all scene parts,
-or at the scene part level, which changes the frequency for the specific scene part by multiplying the value with the scene default.
-This means that the ``dynStep`` of the object is relative to the ``dynStep`` of the scene, and the ``kdtDynStep`` of the KDT is relative to the ``dynStep`` of the object.
-
-Having ``dynStep="z"`` at the scene element and ``dynStep="x"`` at the scene part element means that the dynamic object will be updated each ``xz`` iterations.
-Also, having ``dynStep="z"`` at the scene element with default ``dynStep="1"`` for all dynamic objects works similar to having ``dynStep="z"`` defined for each dynamic object while having default ``dynStep="1"`` for the scene.
+These frequency/temporal parameters can either be given at the scene level, which changes the default frequency (``dynStep="1"``) for all scene parts, or at the scene part level, which multiplies the frequency for that specific scene part with the scene default (the ``kdtDynStep`` of the KDT works the same way, relative to the object's ``dynStep``).
+For example, having ``dynStep="z"`` at the scene element and ``dynStep="x"`` at the scene part element means that the dynamic object will be updated each ``xz`` iterations.
 
 An example of how to configure the different frequencies for scene is presented below:
 
@@ -774,6 +773,7 @@ In this case, the dynamic object has an infinite sequence that repeats the same 
 Assuming a pulse frequency of ``100000``, the dynamic moving object will apply the translation vector ``1000`` times per virtual second while the KDTree is updated ``100`` times per virtual second.
 
 The XML below yields the same simulation as the previous example but uses a time-based specification instead.
+Only the ``<scene>`` and dynamic ``<part>`` attributes change; the scene parts and filters themselves are identical to the previous example:
 
 .. code-block:: xml
 
@@ -781,33 +781,12 @@ The XML below yields the same simulation as the previous example but uses a time
 
     <!--  Ground plane as a static object -->
     <part>
-        <filter type="objloader">
-        <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
-        </filter>
-        <filter type="scale">
-        <param type="double" key="scale" value="120" />
-        </filter>
-        <filter type="translate">
-        <param type="vec3" key="offset" value="50.0;0;0" />
-        </filter>
+        ...
     </part>
 
     <!--  Cube as a dynamic object -->
     <part dynTimeStep="0.001" kdtDynTimeStep="0.01">
-        <filter type="objloader">
-        <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
-        </filter>
-        <filter type="rotate">
-        <param key="rotation" type="rotation">
-            <rot angle_deg="45" axis="z"/>
-        </param>
-        </filter>
-        <filter type="scale">
-        <param type="double" key="scale" value="0.75" />
-        </filter>
-        <filter type="translate">
-        <param type="vec3" key="offset" value="-40.0;-5.0;0" />
-        </filter>
+        ...
         <!-- The dynamic motion sequence for the cube -->
         <dmotion id="cube_translation" loop="0">
         <motion type="translation" vec="0.001;-0.003;0"/>
@@ -818,8 +797,7 @@ The XML below yields the same simulation as the previous example but uses a time
 
 As stated before, the ``dynTimeStep`` and ``kdtDynTimeStep`` are given as direct time measurements.
 Thus, when using the time-based specification, the ``dynTimeStep`` of the scene must be smaller than or equal to the ``dynTimeStep`` of each scene part (object), and the ``kdtDynTimeStep`` should be greater than or equal to the ``dynTimeStep`` of the associated object.
-The reason is that they represent nested components. Intuitively, updating a KDT representing an object 100 times per second does not make sense when the object is only updated five times per second. Furthermore, values greater than one are not expected.
-The reason is that the dynamic time steps are the inverse of a frequency that represents the number of iterations per second in the main simulation loop. 
+This nesting makes intuitive sense: updating a KDT representing an object 100 times per second is meaningless if the object itself is only updated five times per second. Values greater than one are not expected either, since dynamic time steps are the inverse of a frequency that represents the number of iterations per second in the main simulation loop.
 
 The dynamic time steps are straightforward to interpret. A dynamic scene with ``dynTimeStep="0.0002"`` will compute its dynamic simulation logic with a time step of 0.2 ms, a dynamic object with ``dynTimeStep="0.001"`` will run its logic with a time step of 1 ms, and a dynamic KDT with ``dynTimeStep="0.01"`` will be updated each 10 ms. When not given, the dynamic time step of the KDT is automatically equal to the dynamic time step of its associated object.
 Similarly, when the dynamic time step of an object is not given, it is automatically equal to the dynamic time step of the scene. Dynamic steps (discrete) and dynamic time steps (continuous) cannot be mixed in the same specification.
