@@ -88,7 +88,15 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
     logging::ERR("Finalizing the scene failed.");
     throw HeliosException("Finalizing the scene failed.");
   }
-  scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
+  // Dynamic scenes rebuild their KD-trees repeatedly during playback. Use the
+  // cheap sequential factory for the whole scene until dynamic scenes expose
+  // their own configurable KD-tree policy.
+  if (dynScene) {
+    scene->setKDGroveFactory(
+      std::make_shared<KDGroveFactory>(KDTreeFactoryMaker::makeSimple()));
+  } else {
+    scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
+  }
 
   // Handle dynamic scene attributes
   if (dynScene) {
