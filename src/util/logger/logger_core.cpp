@@ -1,13 +1,23 @@
+#include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <cstdint>
+#include <deque>
+#include <functional>
+#include <mutex>
+#include <thread>
+#include <utility>
+
 #include <logger_core.hpp>
 
 namespace logging {
-namespace{
+namespace {
 inline std::int64_t
 now_unix_time() noexcept
 {
   using namespace std::chrono;
-  return duration_cast<microseconds>(
-           system_clock::now().time_since_epoch())
+  return duration_cast<microseconds>(system_clock::now().time_since_epoch())
     .count();
 }
 
@@ -17,17 +27,8 @@ thread_hash() noexcept
   return std::hash<std::thread::id>{}(std::this_thread::get_id());
 }
 
-inline std::uint8_t to_raw(log_level level) noexcept
+class LogQueue
 {
-  return static_cast<std::uint8_t>(level);
-}
-
-inline log_level from_raw(std::uint8_t value) noexcept
-{
-  return static_cast<log_level>(value);
-}
-
-class log_queue{
 private:
   mutable std::mutex mutex_;
   std::condition_variable data_cv_;
@@ -35,32 +36,34 @@ private:
   std::deque<log_event> queue_;
 
   std::size_t capacity_;
-  std::chrono::milliseconds fallback_wait_{2};
+  std::chrono::milliseconds fallback_wait_{ 2 };
 
-  std::atomic<bool> stopping_{false};
-  std::atomic<std::uint8_t> min_level_{static_cast<std::uint8_t>(log_level::INFO)};
-  std::atomic<std::uint64_t> overflow_dropped_{0};
-  std::atomic<std::uint64_t> shutdown_dropped_{0};
+  std::atomic<bool> stopping_{ false };
+  std::atomic<std::uint8_t> min_level_{ static_cast<std::uint8_t>(
+    log_level::INFO) };
+  std::atomic<std::uint64_t> overflow_dropped_{ 0 };
+  std::atomic<std::uint64_t> shutdown_dropped_{ 0 };
+
 public:
-  explicit log_queue(std::size_t capacity = 4096)
+  explicit LogQueue(std::size_t capacity = 4096)
     : capacity_(capacity == 0 ? 1 : capacity)
-  {}
+  {
+  }
 
-void configure(const config& cfg)
+  void configure(const config& cfg)
   {
     std::lock_guard<std::mutex> guard(mutex_);
     capacity_ = cfg.capacity == 0 ? 1 : cfg.capacity;
-    min_level_.store(to_raw(cfg.min_level), std::memory_order_release);
+    min_level_.store(static_cast<std::uint8_t>(cfg.min_level),
+                     std::memory_order_release);
     stopping_.store(false, std::memory_order_release);
 
     if (cfg.clear_queue) {
       queue_.clear();
     }
 
-    if (cfg.reset_counters) {
-      overflow_dropped_.store(0, std::memory_order_relaxed);
-      shutdown_dropped_.store(0, std::memory_order_relaxed);
-    }
+    overflow_dropped_.store(0, std::memory_order_relaxed);
+    shutdown_dropped_.store(0, std::memory_order_relaxed);
 
     data_cv_.notify_all();
     space_cv_.notify_all();
@@ -68,22 +71,17 @@ void configure(const config& cfg)
 
   void configure_silent()
   {
-    config cfg;
-    cfg.capacity = 1;
-    cfg.min_level = log_level::OFF;
-    cfg.clear_queue = true;
-    cfg.reset_counters = true;
-    configure(cfg);
+    configure({
+      .capacity = 1,
+      .min_level = log_level::OFF,
+      .clear_queue = true,
+    });
   }
 
   void set_min_level(log_level level) noexcept
   {
-    min_level_.store(to_raw(level), std::memory_order_release);
-  }
-
-  log_level min_level() const noexcept
-  {
-    return from_raw(min_level_.load(std::memory_order_acquire));
+    min_level_.store(static_cast<std::uint8_t>(level),
+                     std::memory_order_release);
   }
 
   bool is_stopped() const noexcept
@@ -91,33 +89,10 @@ void configure(const config& cfg)
     return stopping_.load(std::memory_order_acquire);
   }
 
-  std::size_t size() const noexcept
-  {
-    std::lock_guard<std::mutex> guard(mutex_);
-    return queue_.size();
-  }
-
   std::size_t capacity() const noexcept
   {
     std::lock_guard<std::mutex> guard(mutex_);
     return capacity_;
-  }
-
-  queue_stats stats() const noexcept
-  {
-    queue_stats s;
-    {
-      std::lock_guard<std::mutex> guard(mutex_);
-      s.size = queue_.size();
-      s.capacity = capacity_;
-    }
-    s.overflow_dropped =
-      overflow_dropped_.load(std::memory_order_relaxed);
-    s.shutdown_dropped =
-      shutdown_dropped_.load(std::memory_order_relaxed);
-    s.stopping = stopping_.load(std::memory_order_acquire);
-    s.min_level = min_level();
-    return s;
   }
 
   bool push(log_event ev)
@@ -199,14 +174,14 @@ void configure(const config& cfg)
     space_cv_.notify_all();
   }
 
-  std::uint64_t overflow_dropped_count() const noexcept
+  std::uint64_t consume_overflow_dropped() noexcept
   {
-    return overflow_dropped_.load(std::memory_order_relaxed);
+    return overflow_dropped_.exchange(0, std::memory_order_relaxed);
   }
 
-  std::uint64_t shutdown_dropped_count() const noexcept
+  std::uint64_t consume_shutdown_dropped() noexcept
   {
-    return shutdown_dropped_.load(std::memory_order_relaxed);
+    return shutdown_dropped_.exchange(0, std::memory_order_relaxed);
   }
 
   void reset_dropped_counters() noexcept
@@ -214,16 +189,19 @@ void configure(const config& cfg)
     overflow_dropped_.store(0, std::memory_order_relaxed);
     shutdown_dropped_.store(0, std::memory_order_relaxed);
   }
+
 private:
   bool enabled(log_level level) const noexcept
   {
-    return to_raw(level) >= min_level_.load(std::memory_order_acquire);
+    return static_cast<std::uint8_t>(level) >=
+           min_level_.load(std::memory_order_acquire);
   }
 };
 
-log_queue& queue_instance()
+LogQueue&
+log_queue_instance()
 {
-  static log_queue instance;
+  static LogQueue instance;
   return instance;
 }
 }
@@ -231,90 +209,69 @@ log_queue& queue_instance()
 void
 configure(const config& cfg)
 {
-  queue_instance().configure(cfg);
+  log_queue_instance().configure(cfg);
 }
 
 void
 configure_silent()
 {
-  queue_instance().configure_silent();
+  log_queue_instance().configure_silent();
 }
 
 void
 shutdown() noexcept
 {
-  queue_instance().shutdown();
+  log_queue_instance().shutdown();
 }
 
 void
 set_min_level(log_level level) noexcept
 {
-  queue_instance().set_min_level(level);
-}
-
-queue_stats
-stats() noexcept
-{
-  return queue_instance().stats();
-}
-
-std::size_t
-size() noexcept
-{
-  return queue_instance().size();
+  log_queue_instance().set_min_level(level);
 }
 
 std::size_t
 capacity() noexcept
 {
-  return queue_instance().capacity();
+  return log_queue_instance().capacity();
 }
 
 std::size_t
 drain(std::vector<log_event>& out, std::size_t max_items)
 {
-  return queue_instance().drain(out, max_items);
+  return log_queue_instance().drain(out, max_items);
 }
 
 bool
 wait_pop(log_event& out, std::chrono::milliseconds timeout)
 {
-  return queue_instance().wait_pop(out, timeout);
-}
-
-std::uint64_t
-overflow_dropped_count() noexcept
-{
-  return queue_instance().overflow_dropped_count();
-}
-
-std::uint64_t
-shutdown_dropped_count() noexcept
-{
-  return queue_instance().shutdown_dropped_count();
-}
-
-void
-reset_dropped_counters() noexcept
-{
-  queue_instance().reset_dropped_counters();
+  return log_queue_instance().wait_pop(out, timeout);
 }
 
 bool
 is_stopped() noexcept
 {
-  return queue_instance().is_stopped();
+  return log_queue_instance().is_stopped();
+}
+
+dropped_counts
+consume_dropped_counts() noexcept
+{
+  auto& q = log_queue_instance();
+  return {
+    q.consume_overflow_dropped(),
+    q.consume_shutdown_dropped(),
+  };
 }
 
 namespace detail {
 
-bool submit(log_level level,
-            std::string message,
-            const char* file,
-            int line,
-            const char* function,
-            const char* category,
-            const char* logger_name)
+bool
+submit(log_level level,
+       std::string message,
+       const char* file,
+       int line,
+       const char* function)
 {
   log_event ev;
   ev.level = level;
@@ -324,10 +281,8 @@ bool submit(log_level level,
   ev.file = file;
   ev.line = line;
   ev.function = function;
-  ev.category = category ? category : "";
-  ev.logger_name = logger_name ? logger_name : "helios";
 
-  return queue_instance().push(std::move(ev));
+  return log_queue_instance().push(std::move(ev));
 }
 }
 }
