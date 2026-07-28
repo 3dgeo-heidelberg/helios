@@ -20,3 +20,11 @@ These demo notebooks showcase various simulation scenarios.
    12-multi_scanner_puck
    13-interpolated_trajectory
    17-dji-zenmuse-l2_demo
+
+Simulations with dynamic scenes are demonstrated in the following notebooks:
+
+.. toctree::
+   :maxdepth: 1
+
+   14-urban_mls_dynamic
+   15-tls_tree_dynamic
