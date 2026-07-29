@@ -4,6 +4,16 @@ from importlib import metadata
 __version__ = metadata.version("heliospp")
 del metadata
 
+from . import logger as _logger
+from .logger import (
+    configure_logging,
+    get_logger,
+    shutdown_logging,
+    LoggingConfig,
+    LogFormat,
+    LoggingService,
+)
+
 from helios.leg import Leg
 from helios.platforms import (
     Platform,
