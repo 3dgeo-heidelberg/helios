@@ -235,12 +235,7 @@ bind_logging(py::module_& m)
         py::gil_scoped_release release;
         logging::drain(events, max_items);
       }
-
-      py::list out;
-      for (const auto& ev : events) {
-        out.append(ev);
-      }
-      return out;
+      return events;
     },
     py::arg("max_items") = 256);
 
