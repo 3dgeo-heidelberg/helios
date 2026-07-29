@@ -15,9 +15,6 @@ parts of the SimStep, and does not include pulse computation.
 #include <scanner/ScanningPulseProcess.h>
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 namespace {
 
 // A subclass of ScanningDevice to allow setting the ScannerHead and
