@@ -10,7 +10,7 @@ casting costs, which are tested via the computeSubrays benchmark.
 */
 
 #include <benchmark/benchmark.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <AABB.h>
 #include <noise/RandomnessGenerator.h>
@@ -25,10 +25,6 @@ casting costs, which are tested via the computeSubrays benchmark.
 #include <map>
 #include <memory>
 #include <vector>
-
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 namespace {
 
