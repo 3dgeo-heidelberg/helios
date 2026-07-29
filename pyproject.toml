@@ -7,7 +7,7 @@ requires = [
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "helios"
+name = "heliospp"
 dynamic = ["version"]
 description = "The HELIOS++ Virtual Laser Scanning Simulator"
 readme = "README.md"
