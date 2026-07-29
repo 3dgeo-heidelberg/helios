@@ -2,7 +2,7 @@
 #include <catch2/generators/catch_generators.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 #include <SingleScanner.h>
 #include <maths/EnergyMaths.h>
