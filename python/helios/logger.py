@@ -6,32 +6,57 @@ import sys
 from datetime import datetime, timezone
 import time
 import threading
-import queue
 import contextvars
 from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
 import dataclasses
+import _helios
 
 
-__all__ = [
-    "LogFormat",
-    "LoggingConfig",
-    "QueueRecordBridge",
-    "clear_logging_context",
-    "configure_logging",
-    "get_logger",
-    "install_default_excepthook",
-    "reset_logging_context",
-    "set_logging_context",
-    "shutdown_logging",
-]
-
+TRACE_LEVEL_NUM = 5
+TIME_LEVEL_NUM = 25
+logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
+logging.addLevelName(TIME_LEVEL_NUM, "TIME")
 
 _LOG_CONTEXT: contextvars.ContextVar[dict[str, Any]] = contextvars.ContextVar(
     "project_log_context",
     default={},
 )
+
+
+def _cpp_level_to_py_level(level: Any) -> int:
+    try:
+        raw = int(level)
+    except Exception:
+        raw = 2
+
+    mapping = {
+        0: TRACE_LEVEL_NUM,
+        1: logging.DEBUG,
+        2: logging.INFO,
+        3: TIME_LEVEL_NUM,
+        4: logging.WARNING,
+        5: logging.ERROR,
+        255: logging.CRITICAL + 10,
+    }
+    return mapping.get(raw, logging.INFO)
+
+
+def _py_level_to_cpp_min_level(level: int) -> Any:
+    if level <= TRACE_LEVEL_NUM:
+        return _helios.LogLevel.TRACE
+    if level <= logging.DEBUG:
+        return _helios.LogLevel.DEBUG
+    if level <= logging.INFO:
+        return _helios.LogLevel.INFO
+    if level <= TIME_LEVEL_NUM:
+        return _helios.LogLevel.TIME
+    if level <= logging.WARNING:
+        return _helios.LogLevel.WARN
+    if level <= logging.ERROR:
+        return _helios.LogLevel.ERR
+    return _helios.LogLevel.OFF
 
 
 def set_logging_context(**fields: Any) -> contextvars.Token[dict[str, Any]]:
@@ -43,14 +68,10 @@ def set_logging_context(**fields: Any) -> contextvars.Token[dict[str, Any]]:
 
 
 def reset_logging_context(token: contextvars.Token[dict[str, Any]]) -> None:
-    """Restore the logging context returned by :func:`set_logging_context`."""
-
     _LOG_CONTEXT.reset(token)
 
 
 def clear_logging_context() -> None:
-    """Remove all contextual fields for the current execution context."""
-
     _LOG_CONTEXT.set({})
 
 
@@ -69,38 +90,59 @@ class LogFormat(str, Enum):
     JSON = "json"
 
 
-class _UTCFormatter(logging.Formatter):
-    converter = staticmethod(time.gmtime)
-
-
 _DEFAULT_COLORS = {
     "DEBUG": "\033[94m",
     "INFO": "\033[92m",
     "WARNING": "\033[93m",
     "ERROR": "\033[91m",
     "CRITICAL": "\033[41m\033[37m",
+    "TRACE": "\033[37m",
+    "TIME": "\033[36m",
 }
 _DEFAULT_RESET_COLOR = "\033[0m"
 
-_DEFAULT_DATEFMT = "%Y-%m-%d %H:%M:%S"
-
+_DEFAULT_DATEFMT = "%Y-%m-%d %H:%M:%S %z"
 _DEFAULT_FORMAT = (
-    "%(asctime)s | %(levelname)s | %(process)d | %(threadName)s | "
-    "%(name)s | %(message)s"
+    "%(asctime)s | %(levelname)s | %(thread)d |"
+    "%(pathname)s:%(lineno)d | %(name)s | %(message)s"
 )
 
 
-class ColorFormatter(logging.Formatter):
-    """Colorize text output by log level for terminal stdout."""
+class _SkipFileOnlyFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return not getattr(record, "_helios_file_only", False)
 
+
+class TimezoneFormatter(logging.Formatter):
+    def __init__(
+        self,
+        fmt: str = _DEFAULT_FORMAT,
+        datefmt: str = _DEFAULT_DATEFMT,
+        *,
+        utc: bool = False,
+    ) -> None:
+        super().__init__(fmt=fmt, datefmt=datefmt)
+        self._utc = utc
+
+    def formatTime(self, record: logging.LogRecord, datefmt: str | None = None) -> str:
+        dt = (
+            datetime.fromtimestamp(record.created, tz=timezone.utc)
+            if self._utc
+            else datetime.fromtimestamp(record.created).astimezone()
+        )
+        return dt.strftime(datefmt or self.datefmt)
+
+
+class ColorFormatter(TimezoneFormatter):
     def __init__(
         self,
         fmt: str = _DEFAULT_FORMAT,
         datefmt: str = _DEFAULT_DATEFMT,
         *,
         force_color: bool = False,
+        utc: bool = False,
     ) -> None:
-        super().__init__(fmt=fmt, datefmt=datefmt)
+        super().__init__(fmt=fmt, datefmt=datefmt, utc=utc)
         self._force_color = force_color
 
     def format(self, record: logging.LogRecord) -> str:
@@ -118,15 +160,38 @@ class ColorFormatter(logging.Formatter):
         if os.environ.get("NO_COLOR") is not None:
             return False
         stream = getattr(sys, "stdout", None)
+        if stream and type(stream).__name__ == "OutStream":
+            return True
         return bool(stream and hasattr(stream, "isatty") and stream.isatty())
 
 
 class JsonFormatter(logging.Formatter):
-    """Structured JSON formatter for machine-oriented log ingestion."""
-
-    def __init__(self, *, utc: bool = False, datefmt: str = _DEFAULT_DATEFMT) -> None:
-        super().__init__(datefmt=datefmt)
-        self._utc = utc
+    _SKIP_KEYS = frozenset(
+        {
+            "args",
+            "asctime",
+            "created",
+            "exc_info",
+            "exc_text",
+            "filename",
+            "funcName",
+            "levelno",
+            "lineno",
+            "module",
+            "msecs",
+            "message",
+            "msg",
+            "name",
+            "pathname",
+            "process",
+            "processName",
+            "relativeCreated",
+            "stack_info",
+            "thread",
+            "threadName",
+            "taskName",
+        }
+    )
 
     def format(self, record: logging.LogRecord) -> str:
         payload: dict[str, Any] = {
@@ -134,76 +199,52 @@ class JsonFormatter(logging.Formatter):
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),
+            "source_file": record.pathname,
+            "source_line": record.lineno,
+            "source_function": record.funcName,
             "module": record.module,
             "process": record.process,
             "function": record.funcName,
-            "thread": record.threadName,
+            "thread": record.thread,
             "line": record.lineno,
         }
 
-        for key, value in vars(record).items():
-            if key.startswith("_"):
+        for key, value in record.__dict__.items():
+            if key.startswith("_") or key in self._SKIP_KEYS:
                 continue
-            if key in payload:
-                continue
-            if key in {
-                "args",
-                "asctime",
-                "created",
-                "exc_info",
-                "exc_text",
-                "filename",
-                "funcName",
-                "levelno",
-                "lineno",
-                "module",
-                "msecs",
-                "message",
-                "msg",
-                "name",
-                "pathname",
-                "process",
-                "processName",
-                "relativeCreated",
-                "stack_info",
-                "thread",
-                "threadName",
-            }:
-                continue
-            try:
-                json.dumps(value)
-                payload[key] = value
-            except TypeError:
-                payload[key] = repr(value)
+            payload[key] = value
 
         if record.exc_info:
             payload["exception"] = self.formatException(record.exc_info)
         if record.stack_info:
             payload["stack"] = record.stack_info
 
-        return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+        return json.dumps(
+            payload, ensure_ascii=False, separators=(",", ":"), default=repr
+        )
 
     def _format_time(self, record: logging.LogRecord) -> str:
-        dt = datetime.fromtimestamp(
-            record.created, tz=timezone.utc if self._utc else None
-        )
-        return dt.isoformat(timespec="milliseconds")
+        dt = datetime.fromtimestamp(record.created, tz=timezone.utc)
+        return dt.isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
 @dataclasses.dataclass(slots=True)
 class LoggingConfig:
-    level: int = logging.INFO
+    level: int = logging.WARNING
     logger_name: str = "helios"
-    use_queue: bool = True
-    propagate: bool = False
+    use_cpp_bridge: bool = True
+    queue_capacity: int = 4096
+    batch_size: int = 256
     stdout: bool = True
     logfile: Optional[Path] = None
     max_bytes: int = 25 * 1024 * 1024
     backup_count: int = 5
     encoding: str = "utf-8"
-    format: LogFormat = LogFormat.TEXT
-    datefmt: str = _DEFAULT_DATEFMT
-    utc: bool = False
+    stdout_format: LogFormat = LogFormat.TEXT
+    file_format: LogFormat = LogFormat.JSON
+    datefmt: str = "%Y-%m-%d %H:%M:%S %z"
+    stdout_utc: bool = False
+    file_utc: bool = True
     capture_warnings: bool = True
     poll_interval: float = 0.1
     force_color: bool = False
@@ -214,220 +255,407 @@ class LoggingConfig:
         return Path(self.logfile).expanduser().resolve()
 
 
-_state_lock = threading.RLock()
-_state: dict[str, Any] = {
-    "configured": False,
-    "queue": None,
-    "listener": None,
-    "logger": None,
-    "handlers": [],
-    "root_handlers": [],
-    "config": None,
-}
+class JupyterActiveCellHandler(logging.StreamHandler):
+    def __init__(self, stream: Any = None) -> None:
+        super().__init__(stream)
+        self._kernel: Any = None
+        self._checked_ipython = False
 
+    def _get_kernel(self) -> Any:
+        if not self._checked_ipython:
+            self._checked_ipython = True
+            ipython = sys.modules.get("IPython")
+            if ipython is not None:
+                ip = ipython.get_ipython()
+                if ip is not None and hasattr(ip, "kernel"):
+                    self._kernel = ip.kernel
+        return self._kernel
 
-class _QueueConsumer:  # TODO this class should be changed after implementing the C++ bridge for logging queue
-    def __init__(
-        self,
-        queue: "queue.Queue[logging.LogRecord]",
-        handlers: list[logging.Handler],
-        poll_interval: float = 0.1,
-    ) -> None:
-        self._queue = queue
-        self._handlers = handlers
-        self._poll_interval = poll_interval
-        self._stop_event = threading.Event()
-        self._error: list[BaseException] = []
-        self._worker = threading.Thread(
-            target=self._run, name="logging-consumer", daemon=True
-        )
-
-    def start(self) -> None:
-        self._worker.start()
-
-    def stop(self) -> None:
+    def emit(self, record: logging.LogRecord) -> None:
         try:
-            self._queue.put_nowait(None)
+            kernel = self._get_kernel()
+            if kernel is not None and hasattr(self.stream, "set_parent"):
+                parent = kernel.get_parent()
+                if parent:
+                    self.stream.set_parent(parent)
         except Exception:
             pass
-        self._worker.join()
 
-    def join(self, timeout: Optional[float] = None) -> None:
-        self._worker.join(timeout)
+        super().emit(record)
 
-    @property
-    def error(self) -> BaseException | None:
-        return self._error[0] if self._error else None
 
-    def _run(self) -> None:
-        try:
-            while True:
-                try:
-                    record = self._queue.get(timeout=self._poll_interval)
-                except queue.Empty:
-                    continue
-                if record is None:
-                    break
-                self._dispatch(record)
-        finally:
-            self._flush_handlers()
+def _cpp_event_to_log_record(event: Any) -> logging.LogRecord:
+    levelno = _cpp_level_to_py_level(event.level)
+    created = (event.unix_time / 1_000_000.0) if event.unix_time else time.time()
 
-    def _dispatch(self, record: logging.LogRecord) -> None:
-        for handler in self._handlers:
-            if record.levelno < handler.level:
-                continue
-            if not handler.filter(record):
-                continue
-            try:
-                handler.handle(record)
-            except Exception:
-                self._report_handler_error(record)
+    record = logging.LogRecord(
+        name="helios",
+        level=levelno,
+        pathname=getattr(event, "file", ""),
+        lineno=int(getattr(event, "line", 0) or 0),
+        msg=getattr(event, "message", ""),
+        args=(),
+        exc_info=None,
+        func=getattr(event, "function", "") or None,
+    )
 
-    def _flush_handlers(self) -> None:
+    record.created = created
+    record.msecs = (created - int(created)) * 1000.0
+    record.thread = event.thread_id_hash or threading.get_ident()
+    record.process = os.getpid()
+    return record
+
+
+class _CppLoggingBackend:
+    def configure(self, cfg: LoggingConfig) -> None:
+        cpp_cfg = _helios.LoggingConfig()
+        cpp_cfg.capacity = int(cfg.queue_capacity)
+        cpp_cfg.min_level = _py_level_to_cpp_min_level(cfg.level)
+        cpp_cfg.clear_queue = True
+        _helios.logging_configure(cpp_cfg)
+
+    def configure_silent(self) -> None:
+        _helios.logging_configure_silent()
+
+    def shutdown(self) -> None:
+        _helios.logging_shutdown()
+
+    def set_min_level(self, level: int) -> None:
+        _helios.logging_set_min_level(_py_level_to_cpp_min_level(level))
+
+    def is_stopped(self) -> bool:
+        return bool(_helios.logging_is_stopped())
+
+    def consume_dropped_counts(self) -> Any:
+        return _helios.logging_consume_dropped_counts()
+
+    def drain(self, max_items: int) -> list[logging.LogRecord]:
+        events = _helios.logging_drain(int(max_items))
+        return [_cpp_event_to_log_record(ev) for ev in events]
+
+    def wait_pop(self, timeout_ms: int) -> logging.LogRecord | None:
+        ev = _helios.logging_wait_pop(int(timeout_ms))
+        if ev is None:
+            return None
+        return _cpp_event_to_log_record(ev)
+
+
+class LoggingService:
+    def __init__(self, config: LoggingConfig) -> None:
+        self.config = config
+        self.logger = logging.getLogger(config.logger_name)
+
+        self._backend: _CppLoggingBackend = _CppLoggingBackend()
+        self._consumer_thread: threading.Thread | None = None
+        self._stop_event = threading.Event()
+        self._started = False
+        self._lock = threading.RLock()
+
+        self._handlers: list[logging.Handler] = []
+        self._error: BaseException | None = None
+
+        self._install_logger_level_helpers()
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self.logger, name)
+
+    def __enter__(self) -> "LoggingService":
+        self.start()
+        return self
+
+    def __exit__(self, exc_type, exc, tb) -> None:
+        self.stop()
+
+    def start(self) -> "LoggingService":
+        with self._lock:
+            if self._started:
+                return self
+
+            self._configure_python_logging()
+            self._configure_cpp_bridge()
+
+            self._started = True
+            _state["service"] = self
+            _state["configured"] = True
+            return self
+
+    def stop(self) -> None:
+        with self._lock:
+            if not self._started:
+                return
+
+            self._stop_cpp_bridge()
+            self._teardown_python_logging()
+
+            self._started = False
+            if _state.get("service") is self:
+                _state.update({"service": None, "configured": False})
+
+    def set_level(self, level: int) -> None:
+        with self._lock:
+            self.config.level = level
+
+            logging.getLogger().setLevel(level)
+            self.logger.setLevel(level)
+
+            for handler in self._handlers:
+                handler.setLevel(level)
+
+            if self._backend is not None:
+                self._backend.set_min_level(level)
+
+    def _teardown_python_logging(self) -> None:
+        if self.config.capture_warnings:
+            logging.captureWarnings(False)
+
+        root = logging.getLogger()
+
         for handler in self._handlers:
             try:
                 handler.flush()
-            except Exception as e:
-                self._error.append(e)
-
-    def _report_handler_error(self, record: logging.LogRecord) -> None:
-        try:
-            sys.stderr.write(f"Logging handler failed for {record.name}")
-        except Exception:
-            pass
-
-
-def configure_logging(
-    config: LoggingConfig | None = None, *, force: bool = False
-) -> logging.Logger:
-    """Configure the logging system based on the provided configuration."""
-    cfg = config or LoggingConfig()
-
-    with _state_lock:
-        if _state["configured"] and not force:
-            logger = _state["logger"]
-            assert isinstance(logger, logging.Logger)
-            return logger
-
-        shutdown_logging()
-
-        root = logging.getLogger()
-        root.setLevel(cfg.level)
-        root.handlers.clear()
-        root.filters.clear()
-        root.addFilter(_ContextFilter())
-
-        project_logger = logging.getLogger(cfg.logger_name)
-        project_logger.setLevel(cfg.level)
-        project_logger.propagate = True
-        project_logger.handlers.clear()
-        project_logger.filters.clear()
-
-        handlers = _build_downstream_handlers(cfg)
-        _state["handlers"] = handlers
-
-        if cfg.use_queue:
-            q: "queue.Queue[logging.LogRecord | None]" = queue.Queue(-1)
-            queue_handler = logging.handlers.QueueHandler(q)
-            queue_handler.setLevel(cfg.level)
-            queue_handler.addFilter(_ContextFilter())
-            root.addHandler(queue_handler)
-            _state["root_handlers"] = [queue_handler]
-
-            q_consumer = _QueueConsumer(q, handlers, cfg.poll_interval)
-            q_consumer.start()
-            _state["queue"] = q
-            _state["listener"] = q_consumer
-        else:
-            for handler in handlers:
-                root.addHandler(handler)
-            _state["root_handlers"] = list(handlers)
-
-        if cfg.capture_warnings:
-            logging.captureWarnings(True)
-
-        _state["logger"] = project_logger
-        _state["configured"] = True
-        _state["config"] = cfg
-        return project_logger
-
-
-def get_logger(name: str | None = None) -> logging.Logger:
-    """Get the project logger or a child logger."""
-
-    base_name = _state["logger"].name if _state["logger"] else "laser_scan"
-    base = logging.getLogger(base_name)
-    return base if not name else base.getChild(name)
-
-
-def shutdown_logging() -> None:
-    """Shutdown the logging system and clean up resources."""
-    with _state_lock:
-        if not _state["configured"]:
-            return
-
-        listener = _state.get("listener")
-        if listener is not None:
-            try:
-                listener.stop()
             except Exception:
                 pass
-
-        root = logging.getLogger()
-        for handler in list(_state.get("root_handlers") or []):
             try:
                 root.removeHandler(handler)
             except Exception:
                 pass
-            try:
-                handler.flush()
-            except Exception:
-                pass
+
             try:
                 handler.close()
             except Exception:
                 pass
 
-        for handler in list(_state.get("handlers") or []):
+        self._handlers = []
+
+    def _configure_python_logging(self) -> None:
+        root = logging.getLogger()
+        root.setLevel(self.config.level)
+
+        self._handlers = _build_downstream_handlers(self.config)
+        for handler in self._handlers:
+            root.addHandler(handler)
+
+        self.logger.setLevel(self.config.level)
+        self.logger.propagate = True
+
+        if self.config.capture_warnings:
+            logging.captureWarnings(True)
+
+    def _configure_cpp_bridge(self) -> None:
+
+        if self.config.use_cpp_bridge:
+            self._backend.configure(self.config)
+            self._consumer_thread = threading.Thread(
+                target=self._run_cpp_consumer,
+                name="logging-consumer",
+                daemon=True,
+            )
+            self._consumer_thread.start()
+        else:
+            self._backend.configure_silent()
+
+    def _stop_cpp_bridge(self) -> None:
+        self._stop_event.set()
+
+        if self._backend is not None:
             try:
-                handler.flush()
-            except Exception:
-                pass
-            try:
-                handler.close()
+                self._backend.shutdown()
             except Exception:
                 pass
 
-        logging.captureWarnings(False)
+        if self._consumer_thread is not None:
+            try:
+                self._consumer_thread.join(timeout=2.0)
+            except Exception:
+                pass
+            self._consumer_thread = None
 
-        _state.update(
-            {
-                "configured": False,
-                "queue": None,
-                "listener": None,
-                "logger": None,
-                "handlers": [],
-                "root_handlers": [],
-                "config": None,
-            }
+        if self._error is not None:
+            error = self._error
+            self._error = None
+            raise error
+
+        self._stop_event.clear()
+
+    def _emit_file_only_error(
+        self, message: str, *, overflow: int, shutdown: int
+    ) -> None:
+        record = logging.LogRecord(
+            name="helios",
+            level=logging.ERROR,
+            pathname=__file__,
+            lineno=0,
+            msg=message,
+            args=(),
+            exc_info=None,
+            func="_run_cpp_consumer",
         )
+        record._helios_file_only = True
+        record.overflow_dropped = overflow
+        record.shutdown_dropped = shutdown
+        self.logger.handle(record)
+
+    def _report_dropped_counts(self) -> None:
+        if self._backend is None:
+            return
+
+        dropped = self._backend.consume_dropped_counts()
+        overflow = int(getattr(dropped, "overflow", 0) or 0)
+        shutdown = int(getattr(dropped, "shutdown", 0) or 0)
+
+        if overflow or shutdown:
+            self._emit_file_only_error(
+                f"Dropped C++ log messages: overflow={overflow}, shutdown={shutdown}",
+                overflow=overflow,
+                shutdown=shutdown,
+            )
+
+    def _run_cpp_consumer(self) -> None:
+        timeout_ms = max(1, int(self.config.poll_interval * 1000))
+        batch_size = max(1, int(self.config.batch_size))
+
+        try:
+            while not self._stop_event.is_set():
+                event = self._backend.wait_pop(timeout_ms)
+
+                if event is None:
+                    if self._backend.is_stopped():
+                        self._drain_remaining_cpp_events(batch_size)
+                        self._report_dropped_counts()
+                        break
+
+                    self._report_dropped_counts()
+                    continue
+
+                self._emit_cpp_event(event)
+                self._drain_remaining_cpp_events(batch_size - 1)
+                self._report_dropped_counts()
+
+        except Exception as exc:
+            self._error = exc
+            self._stop_event.set()
+            return
+
+    def _drain_remaining_cpp_events(self, max_items: int) -> None:
+        if self._backend is None or max_items <= 0:
+            return
+
+        try:
+            for event in self._backend.drain(max_items):
+                self._emit_cpp_event(event)
+        except Exception:
+            pass
+
+    def _emit_cpp_event(self, record: logging.LogRecord) -> None:
+        logging.getLogger(record.name).handle(record)
+
+    def _install_logger_level_helpers(self) -> None:
+        def trace(self_logger: logging.Logger, msg, *args, **kwargs):
+            self_logger.log(TRACE_LEVEL_NUM, msg, *args, **kwargs)
+
+        def time_log(self_logger: logging.Logger, msg, *args, **kwargs):
+            self_logger.log(TIME_LEVEL_NUM, msg, *args, **kwargs)
+
+        if not hasattr(logging.Logger, "trace"):
+            logging.Logger.trace = trace
+
+        if not hasattr(logging.Logger, "time"):
+            logging.Logger.time = time_log
+
+
+_state_lock = threading.RLock()
+
+_state: dict[str, Any] = {
+    "configured": False,
+    "service": None,
+}
+
+
+def configure_logging(
+    config: LoggingConfig | None = None, *, force: bool = False
+) -> LoggingService:
+    cfg = config or _DEFAULT_LOGGING_CONFIG
+
+    with _state_lock:
+        service = _state.get("service")
+        if service is not None and not force:
+            if config is None or cfg == service.config:
+                return service
+
+        if service is not None:
+            shutdown_logging()
+
+        service = LoggingService(cfg)
+        service.start()
+        _state["service"] = service
+        _state["configured"] = True
+        return service
+
+
+def get_logger(name: str | None = None) -> logging.Logger:
+    service = _state.get("service")
+    if isinstance(service, LoggingService):
+        base = service.logger
+    else:
+        base = logging.getLogger("helios")
+    return base if not name else base.getChild(name)
+
+
+def shutdown_logging() -> None:
+    with _state_lock:
+        service = _state.get("service")
+        if isinstance(service, LoggingService):
+            try:
+                service.stop()
+            except Exception:
+                pass
+
+        _state["service"] = None
+        _state["configured"] = False
+
+
+def install_default_excepthook(
+    logger: logging.Logger | LoggingService | None = None,
+) -> None:
+    if isinstance(logger, LoggingService):
+        logger = logger.logger
+    if logger is None:
+        logger = get_logger()
+
+    original_hook = sys.excepthook
+
+    def _hook(exc_type, exc_value, exc_traceback):
+        if issubclass(exc_type, KeyboardInterrupt):
+            original_hook(exc_type, exc_value, exc_traceback)
+            return
+        logger.exception(
+            "Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback)
+        )
+
+    sys.excepthook = _hook
 
 
 def _build_downstream_handlers(cfg: LoggingConfig) -> list[logging.Handler]:
     handlers: list[logging.Handler] = []
 
     if cfg.stdout:
-        stream_handler = logging.StreamHandler(stream=sys.stdout)
+        stream_handler = JupyterActiveCellHandler(sys.stdout)
         stream_handler.setLevel(cfg.level)
-        if cfg.format == LogFormat.JSON:
-            stream_handler.setFormatter(JsonFormatter(utc=cfg.utc, datefmt=cfg.datefmt))
+
+        if cfg.stdout_format == LogFormat.JSON:
+            stream_handler.setFormatter(JsonFormatter())
         else:
             stream_handler.setFormatter(
                 ColorFormatter(
-                    _DEFAULT_FORMAT, datefmt=cfg.datefmt, force_color=cfg.force_color
+                    _DEFAULT_FORMAT,
+                    datefmt=cfg.datefmt,
+                    force_color=cfg.force_color,
+                    utc=cfg.stdout_utc,
                 )
             )
+
         stream_handler.addFilter(_ContextFilter())
+        stream_handler.addFilter(_SkipFileOnlyFilter())
         handlers.append(stream_handler)
 
     logfile = cfg.normalized_logfile()
@@ -441,17 +669,19 @@ def _build_downstream_handlers(cfg: LoggingConfig) -> list[logging.Handler]:
             delay=True,
         )
         file_handler.setLevel(cfg.level)
-        if cfg.format == LogFormat.JSON:
-            file_handler.setFormatter(JsonFormatter(utc=cfg.utc, datefmt=cfg.datefmt))
+
+        if cfg.file_format == LogFormat.JSON:
+            file_handler.setFormatter(JsonFormatter())
         else:
-            if cfg.utc:
-                file_handler.setFormatter(
-                    _UTCFormatter(_DEFAULT_FORMAT, datefmt=cfg.datefmt)
+            file_handler.setFormatter(
+                ColorFormatter(
+                    _DEFAULT_FORMAT,
+                    datefmt=cfg.datefmt,
+                    force_color=False,
+                    utc=cfg.file_utc,
                 )
-            else:
-                file_handler.setFormatter(
-                    logging.Formatter(_DEFAULT_FORMAT, datefmt=cfg.datefmt)
-                )
+            )
+
         file_handler.addFilter(_ContextFilter())
         handlers.append(file_handler)
 
@@ -461,19 +691,16 @@ def _build_downstream_handlers(cfg: LoggingConfig) -> list[logging.Handler]:
     return handlers
 
 
-def install_default_excepthook(logger_name: str | None = None) -> None:
-    """Install a default exception hook that logs uncaught exceptions."""
-    logger = logging.getLogger(
-        logger_name or (_state["logger"].name if _state["logger"] else "laser_scan")
-    )
-    original_hook = sys.excepthook
-
-    def _hook(exc_type, exc_value, exc_traceback):
-        if issubclass(exc_type, KeyboardInterrupt):
-            original_hook(exc_type, exc_value, exc_traceback)
-            return
-        logger.exception(
-            "Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback)
-        )
-
-    sys.excepthook = _hook
+_DEFAULT_LOGGING_CONFIG = LoggingConfig(
+    level=logging.DEBUG,
+    logger_name="helios",
+    use_cpp_bridge=True,
+    stdout=True,
+    logfile=None,
+    stdout_format=LogFormat.TEXT,
+    file_format=LogFormat.JSON,
+    stdout_utc=False,
+    file_utc=True,
+)
+_service = configure_logging(_DEFAULT_LOGGING_CONFIG, force=True)
+logger = _service.logger
