@@ -1,10 +1,21 @@
 import click
 from clickqt_utils.extensions import PathWithExtensions
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
-from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
+from helios.logger import (
+    configure_logging,
+    install_default_excepthook,
+    shutdown_logging,
+)
+from helios.settings import (
+    ExecutionSettings,
+    OutputSettings,
+    LogVerbosity,
+    build_logging_config,
+)
 from helios.survey import Survey
 from helios.utils import add_asset_directory, set_rng_seed
 from helios import __version__
+from pathlib import Path
 
 
 @click.command()
@@ -281,13 +292,34 @@ def cli(**kw):
     output_settings.write_pulse = kw.get("writepulse")
     output_settings.las_scale = kw.get("lasscale")
 
-    survey = Survey.from_xml(kw.get("survey_file_path"))
-    if gps := kw.get("gpsstarttime"):
-        survey.gps_time = gps
+    logging_service = configure_logging(
+        build_logging_config(
+            execution_settings, log_dir=Path(output_settings.output_dir) / "logs"
+        ),
+        force=True,
+    )
+    install_default_excepthook(logging_service)
 
-    if kw.get("dryrun"):
-        return
-    survey.run(execution_settings=execution_settings, output_settings=output_settings)
+    try:
+        for asset in kw["assets"]:
+            add_asset_directory(asset)
+
+        if seed := kw.get("seed") is not None:
+            set_rng_seed(seed)
+        else:
+            set_rng_seed()
+
+        survey = Survey.from_xml(kw.get("survey_file_path"))
+        if gps := kw.get("gpsstarttime"):
+            survey.gps_time = gps
+
+        if kw.get("dryrun"):
+            return
+        survey.run(
+            execution_settings=execution_settings, output_settings=output_settings
+        )
+    finally:
+        shutdown_logging()
 
 
 if __name__ == "__main__":
