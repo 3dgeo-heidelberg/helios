@@ -32,11 +32,9 @@ class LogQueue
 private:
   mutable std::mutex mutex_;
   std::condition_variable data_cv_;
-  std::condition_variable space_cv_;
   std::deque<log_event> queue_;
 
   std::size_t capacity_;
-  std::chrono::milliseconds fallback_wait_{ 2 };
 
   std::atomic<bool> stopping_{ false };
   std::atomic<std::uint8_t> min_level_{ static_cast<std::uint8_t>(
@@ -66,7 +64,6 @@ public:
     shutdown_dropped_.store(0, std::memory_order_relaxed);
 
     data_cv_.notify_all();
-    space_cv_.notify_all();
   }
 
   void configure_silent()
@@ -109,20 +106,6 @@ public:
     }
 
     if (queue_.size() >= capacity_) {
-      // Synchronous fallback policy:
-      // wait briefly for space; if still full, drop and count it.
-      space_cv_.wait_for(lock, fallback_wait_, [this]() {
-        return queue_.size() < capacity_ ||
-               stopping_.load(std::memory_order_acquire);
-      });
-    }
-
-    if (stopping_.load(std::memory_order_acquire)) {
-      shutdown_dropped_.fetch_add(1, std::memory_order_relaxed);
-      return false;
-    }
-
-    if (queue_.size() >= capacity_) {
       overflow_dropped_.fetch_add(1, std::memory_order_relaxed);
       return false;
     }
@@ -145,7 +128,6 @@ public:
 
     out = std::move(queue_.front());
     queue_.pop_front();
-    space_cv_.notify_one();
     return true;
   }
 
@@ -160,10 +142,6 @@ public:
       queue_.pop_front();
     }
 
-    if (n > 0) {
-      space_cv_.notify_all();
-    }
-
     return n;
   }
 
@@ -171,7 +149,6 @@ public:
   {
     stopping_.store(true, std::memory_order_release);
     data_cv_.notify_all();
-    space_cv_.notify_all();
   }
 
   std::uint64_t consume_overflow_dropped() noexcept
