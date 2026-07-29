@@ -13,7 +13,6 @@ from typing import Any, Optional
 import dataclasses
 import _helios
 
-
 TRACE_LEVEL_NUM = 5
 TIME_LEVEL_NUM = 25
 logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
