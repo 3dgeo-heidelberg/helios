@@ -7,7 +7,9 @@ from helios.settings import ExecutionSettings, OutputSettings
 from helios.survey import Survey
 from helios.scene import ScenePart
 
-import helios.logger as logger
+from importlib import import_module
+
+logger = import_module("helios.logger")
 
 
 @pytest.fixture(autouse=True)
