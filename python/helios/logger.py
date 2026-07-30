@@ -691,7 +691,7 @@ def _build_downstream_handlers(cfg: LoggingConfig) -> list[logging.Handler]:
 
 
 _DEFAULT_LOGGING_CONFIG = LoggingConfig(
-    level=logging.DEBUG,
+    level=logging.WARNING,
     logger_name="helios",
     use_cpp_bridge=True,
     stdout=True,
