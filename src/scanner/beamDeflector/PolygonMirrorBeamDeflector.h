@@ -69,4 +69,12 @@ public:
   {
     return cfg_device_scanAngleEffectiveMax_rad;
   }
+  /**
+   * @brief Set the maximum effective scan angle in radians.
+   * @see PolygonMirrorBeamDeflector::cfg_device_scanAngleEffectiveMax_rad
+   */
+  void setScanAngleEffectiveMax_rad(double scanAngleEffectiveMax_rad)
+  {
+    cfg_device_scanAngleEffectiveMax_rad = scanAngleEffectiveMax_rad;
+  }
 };

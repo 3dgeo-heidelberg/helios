@@ -1451,7 +1451,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         chan, "scanFreqMax_Hz", _deflec->cfg_device_scanFreqMax_Hz);
       if (XmlUtils::hasAttribute(chan, "scanAngleMax_deg")) {
         _deflec->cfg_device_scanAngleMax_rad =
-          XmlUtils::getAttributeCast<double>(chan, "scanAngleMax_deg", 0.0);
+          MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
+            chan, "scanAngleMax_deg", 0.0));
       }
       // Oscillating mirror beam deflector updates
       if (optics == "oscillating") {
@@ -1472,12 +1473,12 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       if (optics == "rotating") {
         std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
           std::static_pointer_cast<PolygonMirrorBeamDeflector>(_deflec);
-        pmbd->cfg_device_scanAngleMax_rad =
+        pmbd->setScanAngleEffectiveMax_rad(
           MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
             chan,
             "scanAngleEffectiveMax_deg",
             MathConverter::radiansToDegrees(
-              pmbd->cfg_device_scanAngleMax_rad)));
+              pmbd->getScanAngleEffectiveMax_rad()))));
       }
       // Risley beam deflector updates
       if (optics == "risley") {
