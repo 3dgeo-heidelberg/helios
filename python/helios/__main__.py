@@ -4,7 +4,7 @@ from click_option_group import optgroup, MutuallyExclusiveOptionGroup
 from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
 from helios.survey import Survey
 from helios.utils import add_asset_directory, set_rng_seed
-
+from helios import __version__
 
 @click.command()
 @click.argument(
@@ -233,7 +233,7 @@ from helios.utils import add_asset_directory, set_rng_seed
 )
 @optgroup.option("--quiet", "-q", is_flag=True, help="Only errors are reported.")
 @optgroup.option("--vt", is_flag=True, help="Report time and errors.")
-@click.version_option()
+@click.version_option(version=__version__, prog_name="helios")
 def cli(**kw):
     """Runs a single Helios++ survey specified in SURVEY_FILE_PATH"""
 
