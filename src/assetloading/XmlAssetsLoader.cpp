@@ -1450,9 +1450,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       _deflec->cfg_device_scanFreqMax_Hz = XmlUtils::getAttributeCast<double>(
         chan, "scanFreqMax_Hz", _deflec->cfg_device_scanFreqMax_Hz);
       if (XmlUtils::hasAttribute(chan, "scanAngleMax_deg")) {
-        _deflec->cfg_device_scanAngleMax_rad =
-          MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
-            chan, "scanAngleMax_deg", 0.0));
+        _deflec->cfg_device_scanAngleMax_rad = MathConverter::degreesToRadians(
+          XmlUtils::getAttributeCast<double>(chan, "scanAngleMax_deg", 0.0));
       }
       // Oscillating mirror beam deflector updates
       if (optics == "oscillating") {
