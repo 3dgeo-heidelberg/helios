@@ -1,15 +1,14 @@
+from helios.logger import *
+from helios.settings import ExecutionSettings, OutputSettings
+from helios.survey import Survey
+from helios.scene import ScenePart
+
 import json
 import logging
 import sys
 from types import SimpleNamespace
 import pytest
-from helios.settings import ExecutionSettings, OutputSettings
-from helios.survey import Survey
-from helios.scene import ScenePart
-
-from importlib import import_module
-
-logger = import_module("helios.logger")
+import helios.logger as logger
 
 
 @pytest.fixture(autouse=True)
