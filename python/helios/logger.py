@@ -1,3 +1,4 @@
+import atexit
 import os
 import json
 import logging
@@ -456,25 +457,19 @@ class LoggingService:
     def _stop_cpp_bridge(self) -> None:
         self._stop_event.set()
 
-        if self._backend is not None:
-            try:
-                self._backend.shutdown()
-            except Exception:
-                pass
+        try:
+            self._backend.shutdown()
 
-        if self._consumer_thread is not None:
-            try:
-                self._consumer_thread.join(timeout=2.0)
-            except Exception:
-                pass
-            self._consumer_thread = None
+            if self._consumer_thread is not None:
+                self._consumer_thread.join()
+                self._consumer_thread = None
 
-        if self._error is not None:
-            error = self._error
-            self._error = None
-            raise error
-
-        self._stop_event.clear()
+            if self._error is not None:
+                error = self._error
+                self._error = None
+                raise error
+        finally:
+            self._stop_event.clear()
 
     def _emit_file_only_error(
         self, message: str, *, overflow: int, shutdown: int
@@ -613,6 +608,13 @@ def shutdown_logging() -> None:
         _state["configured"] = False
 
 
+def _shutdown_logging_at_exit() -> None:
+    try:
+        shutdown_logging()
+    except Exception:
+        pass
+
+
 def install_default_excepthook(
     logger: logging.Logger | LoggingService | None = None,
 ) -> None:
@@ -703,3 +705,4 @@ _DEFAULT_LOGGING_CONFIG = LoggingConfig(
 )
 _service = configure_logging(_DEFAULT_LOGGING_CONFIG, force=True)
 logger = _service.logger
+atexit.register(_shutdown_logging_at_exit)
