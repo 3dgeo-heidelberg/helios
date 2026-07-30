@@ -6,6 +6,7 @@ from helios.survey import Survey
 from helios.utils import add_asset_directory, set_rng_seed
 from helios import __version__
 
+
 @click.command()
 @click.argument(
     "survey_file_path",
