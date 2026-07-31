@@ -241,7 +241,8 @@ def cli(**kw):
     for asset in kw["assets"]:
         add_asset_directory(asset)
 
-    if seed := kw.get("seed") is not None:
+    seed = kw.get("seed")
+    if seed is not None:
         set_rng_seed(seed)
     else:
         set_rng_seed()
