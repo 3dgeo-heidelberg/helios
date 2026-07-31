@@ -68,11 +68,12 @@ public:
 
   void configure_silent()
   {
-    configure({
-      .capacity = 1,
-      .min_level = log_level::OFF,
-      .clear_queue = true,
-    });
+    config cfg;
+    cfg.capacity = 1;
+    cfg.min_level = log_level::OFF;
+    cfg.clear_queue = true;
+
+    configure(cfg);
   }
 
   void set_min_level(log_level level) noexcept
