@@ -93,27 +93,6 @@ def _build_manual_dynamic_survey(scene: DynamicScene | None = None) -> Survey:
     return survey
 
 
-def _build_manual_dynamic_survey(scene: DynamicScene | None = None) -> Survey:
-    scanner = Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vz400")
-    platform = Platform.from_xml("data/platforms.xml", platform_id="tripod")
-    scene = scene or DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
-    survey = Survey(scanner=scanner, platform=platform, scene=scene, name="dynamic")
-    survey.add_leg(
-        x=-30,
-        y=-30,
-        z=0,
-        force_on_ground=True,
-        pulse_frequency=100000,
-        scan_frequency=120,
-        head_rotation="-10 deg/s",
-        rotation_start_angle="340 deg",
-        rotation_stop_angle="339 deg",
-        min_vertical_angle="-40 deg",
-        max_vertical_angle="60 deg",
-    )
-    return survey
-
-
 def _run_survey_npy(survey: Survey):
     execution_settings = ExecutionSettings(num_threads=1)
     set_rng_seed(42)
