@@ -1,0 +1,25 @@
+.wy-table-responsive table td, .wy-table-responsive table th {
+    white-space: normal !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* The theme wraps inline code by default (.rst-content code.literal has
+   white-space: normal), which is fine in prose but makes code in tables
+   break awkwardly mid-token. Force nowrap for code inside tables only, so
+   the column widens to fit it instead; .wy-table-responsive already falls
+   back to overflow-x: auto, so a contained scrollbar only appears if a
+   column still can't fit even after that. */
+.wy-table-responsive table td code.literal,
+.wy-table-responsive table th code.literal {
+    white-space: nowrap !important;
+}
+
+/* RTD's default content column is a fixed 800px, which is comfortable for
+   prose but cramped for wider tables. Loosen it a bit on screens that have
+   the room, leaving narrower viewports untouched. */
+@media screen and (min-width: 1100px) {
+    .wy-nav-content {
+        max-width: 1000px;
+    }
+}

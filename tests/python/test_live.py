@@ -282,7 +282,9 @@ def test_ensure_scene_actors_builds_static_scene(monkeypatch):
 
     viewer = live_module.LiveViewer()
     viewer.scene = SimpleNamespace(
-        bbox_crs=SimpleNamespace(centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)),
+        original_bbox=SimpleNamespace(
+            centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
+        ),
         scene_parts=[
             SimpleNamespace(
                 _get_visualization_buffers=lambda diff: SimpleNamespace(
@@ -325,7 +327,9 @@ def test_create_scene_actors_returns_mesh_and_points(monkeypatch):
 
     viewer = live_module.LiveViewer()
     viewer.scene = SimpleNamespace(
-        bbox_crs=SimpleNamespace(centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)),
+        original_bbox=SimpleNamespace(
+            centroid=np.array([0.0, 0.0, 0.0], dtype=np.float64)
+        ),
         scene_parts=[
             SimpleNamespace(
                 _get_visualization_buffers=lambda diff: SimpleNamespace(
@@ -723,14 +727,8 @@ def test_scene_show_switches_to_trame_if_in_jupyter(monkeypatch):
 
 
 def test_scene_show_raises_wo_sp_id():
-    groundplane = ScenePart.from_obj(
-        "data/sceneparts/basic/groundplane/groundplane.obj"
-    )
-    tree1 = ScenePart.from_obj(
-        "data/sceneparts/arbaro/black_tupelo_low.obj", up_axis="y"
-    )
-    tree2 = ScenePart.from_obj("data/sceneparts/arbaro/sassafras_low.obj", up_axis="y")
-    scene = StaticScene(scene_parts=[groundplane, tree1, tree2])
+    scene_part = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene(scene_parts=[scene_part])
     scene._is_finalized = True
 
     with pytest.raises(ValueError, match="Scene part at index"):

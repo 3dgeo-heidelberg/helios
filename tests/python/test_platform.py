@@ -384,6 +384,7 @@ def test_trajectory_settings_clone_and_deepcopy():
         leg.scanner_settings.pulse_frequency = 2000
         leg.scanner_settings.scan_frequency = 20
         leg.scanner_settings.head_rotation = "30 deg/s"
+    survey.legs = (survey.legs[0],)
 
     for copied in (settings.clone(), copy.deepcopy(settings)):
         assert copied is not settings
@@ -394,6 +395,9 @@ def test_trajectory_settings_clone_and_deepcopy():
 
         cloned_survey = survey.clone()
         cloned_survey.legs[0].trajectory_settings = copied
+        assert len(cloned_survey.legs) == 1
+        assert cloned_survey.legs[0].trajectory_settings.start_time == 5.0
+        assert cloned_survey.legs[0].trajectory_settings.end_time == 6.0
         points, trajectory = cloned_survey.run(
             format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
         )

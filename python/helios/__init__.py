@@ -1,7 +1,7 @@
 # Export the version given in project metadata
 from importlib import metadata
 
-__version__ = metadata.version(__package__)
+__version__ = metadata.version("heliospp")
 del metadata
 
 from helios.leg import Leg

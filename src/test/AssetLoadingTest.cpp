@@ -11,6 +11,10 @@ bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
   logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
   logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
+#include <FastSAHKDTreeFactory.h>
+#include <KDGroveFactory.h>
+#include <MultiThreadKDTreeFactory.h>
+#include <SimpleKDTreeFactory.h>
 #include <WavefrontObjFileLoader.h>
 #include <assetloading/XmlAssetsLoader.h>
 #include <assetloading/XmlSceneLoader.h>
@@ -33,6 +37,33 @@ bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
 TEST_CASE("Asset Loading Tests")
 {
   double const eps = 0.00001;
+
+  SECTION("Dynamic scenes default to a sequential Simple KD-tree")
+  {
+    std::filesystem::path const scenePath = "data/test/dynamic_scene.xml";
+    tinyxml2::XMLDocument doc;
+    REQUIRE(doc.LoadFile(scenePath.string().c_str()) == tinyxml2::XML_SUCCESS);
+
+    tinyxml2::XMLElement* sceneNode =
+      doc.FirstChildElement("document")->FirstChildElement("scene");
+    REQUIRE(sceneNode != nullptr);
+
+    XmlSceneLoader loader({ std::filesystem::current_path().string() });
+    loader.kdtFactoryType = 4;
+    loader.kdtNumJobs = 2;
+    loader.kdtGeomJobs = 1;
+    loader.kdtSAHLossNodes = 32;
+
+    std::shared_ptr<Scene> scene =
+      loader.createSceneFromXml(sceneNode, scenePath.string());
+    REQUIRE(std::dynamic_pointer_cast<DynScene>(scene) != nullptr);
+
+    std::shared_ptr<KDTreeFactory> factory =
+      scene->getKDGroveFactory()->getKdtf();
+    REQUIRE(dynamic_cast<SimpleKDTreeFactory*>(factory.get()) != nullptr);
+    REQUIRE(dynamic_cast<FastSAHKDTreeFactory*>(factory.get()) == nullptr);
+    REQUIRE(dynamic_cast<MultiThreadKDTreeFactory*>(factory.get()) == nullptr);
+  }
 
   SECTION("Test Scanner Loading")
   {
