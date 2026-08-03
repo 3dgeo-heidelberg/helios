@@ -314,7 +314,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                     [
                         laspy.ExtraBytesParams("echo_width", "f8"),
                         laspy.ExtraBytesParams("fullwaveIndex", "i4"),
-                        # laspy.ExtraBytesParams("hitObjectId", "U50"),
+                        laspy.ExtraBytesParams("hitObjectId", "i4"),
                     ]
                 )
                 header.generating_software = "HELIOS++"
@@ -332,7 +332,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                 las.classification = measurements["classification"]
                 las.echo_width = measurements["echo_width"]
                 las.fullwaveIndex = measurements["fullwave_index"]
-                # las.hitObjectId = data_mes["hit_object_id"]
+                las.hitObjectId = measurements["hit_object_id"]
 
                 return las, trajectories
 
