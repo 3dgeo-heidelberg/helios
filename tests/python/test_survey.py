@@ -405,7 +405,23 @@ def test_survey_run_las_output(survey, tmp_path):
 
     # Read the output
     las = laspy.read(files[0])
-    las.X.shape[0] == 352
+    assert las.X.shape[0] == 352
+    column_names = list(las.point_format.dimension_names)
+    names_to_check = [
+        "X",
+        "Y",
+        "Z",
+        "intensity",
+        "return_number",
+        "number_of_returns",
+        "gps_time",
+        "classification",
+        "echo_width",
+        "fullwaveIndex",
+        "hitObjectId",
+    ]
+    for name in names_to_check:
+        assert name in column_names
 
 
 def test_survey_run_laz_output(survey, tmp_path):
@@ -417,7 +433,7 @@ def test_survey_run_laz_output(survey, tmp_path):
 
     # Read the output
     las = laspy.read(files[0])
-    las.X.shape[0] == 200
+    assert las.X.shape[0] == 352
 
 
 def test_survey_run_xyz_output(survey, tmp_path):
