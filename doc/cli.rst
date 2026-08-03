@@ -62,7 +62,7 @@ XML configuration
 Survey XML
 ----------
 
-The survey XML file contains references to the components needed to build a simulation: The scene, the platform and the scanner. 
+The survey XML file contains references to the components needed to build a simulation: The scene, the platform and the scanner (see also :doc:`Scanners and platforms <scanners_platforms>`). 
 It also contains waypoint information needed to define the scan positions or trajectory.
 
 Linking to the different components is done by specifying the absolute or relative path of the respective XML file in the ``<survey>`` tag, followed by a hashtag (#) and the ID of the entry:
@@ -75,7 +75,7 @@ Linking to the different components is done by specifying the absolute or relati
         scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
 
 The ``platform``  attribute of the ``<survey>`` tag can also be set to "interpolated".
-In this case, the platform behavior will be defined by a function obtained through interpolation of given trajectory data, see :ref:`interpolated-trajectories`
+In this case, the platform behavior will be defined by a function obtained through interpolation of given trajectory data, see :ref:`interpolated-trajectories`.
 
 Scanner settings and platform settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -84,7 +84,7 @@ Scanner settings and platform settings are defined at the document level before 
 Setting one or more templates with defined scanner settings at the beginning of the file enables the reuse of these settings for the different legs.
 Within the ``<scannerSettings>`` or ``<platformSettings>`` in each ``<leg>``, the globally defined settings can be referenced by an ID using the template parameter.
 Additionally, all settings can be given explicitly in the ``<scannerSettings>`` and ``platformSettings`` of the ``<leg>``.
-If the same setting is defined in a template and in a leg which uses the template, the value that is given in the leg is taken. So the priority is always: Leg -> Template -> Default
+If the same setting is defined in a template and in a leg which uses the template, the value that is given in the leg is taken. So the priority is always: Leg -> Template -> Default.
 
 .. code-block:: xml
 
@@ -280,6 +280,7 @@ The XML file also defines how the raw data that is read from the files should be
 A scene XML file starts with a ``<scene>`` tag, containing the id and name of the scene.
 Any number of ``<part>`` tags can be specified inside the ``<scene>`` tag. Each of them contains one or more ``<filter>`` tags.
 There are four loaders for different geometry types and three filters for coordinate transformations.
+In addition, dynamic rigid motions can be applied to the scene parts, which is explained later in :ref:`dynamic-scenes`.
 
 .. code-block:: xml
 
@@ -504,3 +505,313 @@ Furthermore, voxel material also supports uniform randomization. For this, a num
 Read more about materials including custom HELIOS parameters on the page :doc:`Full waveform and intensity modelling <../intensity_fwf>`.
 
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/
+
+
+.. _dynamic-scenes:
+
+Dynamic scenes (rigid motions)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A dynamic scene is a scene that experiences some type of update during the simulation, i.e., a scene with dynamic moving updates.
+HELIOS++ currently supports rigidly moving dynamic objects which are scene parts which experience at least one type of rigid motion during the simulation.
+
+Dynamic moving objects
+""""""""""""""""""""""
+
+In the current version, dynamic scenes can only be specified using an XML file.
+For each dynamic moving object, this requires defining the sequence of rigid motions that the object should perform.
+HELIOS++ supports all possible rigid motions in 3D, which are illustrated in the following table.
+
+.. list-table::
+   :widths: 15 10 15 60
+   :header-rows: 1
+
+   * - Rigid motion
+     - XML type
+     - XML attributes
+     - Description
+   * - Translation
+     - translation
+     - vec, autoCRS
+     - Add a translation vector
+   * - Reflection
+     - reflection
+     - ortho
+     - Reflection with respect to a plane defined by its orthonormal vector
+   * - Glide plane
+     - glideplane
+     - ortho, shift
+     - Combination of reflection and translation
+   * - Rotation
+     - rotation
+     - axis, angle, center, autoCRS, selfMode
+     - Rotation around given rotation axis (in degrees) around a rotation center (if specified) or around the origin O(0, 0, 0)
+   * - Helical motion
+     - helical
+     - axis, angle, glide
+     - Combination of rotation and translation (in degrees)
+   * - Rotational symmetry
+     - rotsym
+     - axis, angle, center
+     - Combination of rotation and reflection (in degrees)
+
+Rigid motions that are defined with respect to an associated linear variety (e.g. rotations, which are associated with a rotation axis, a 1D linear variety), also support a ``selfMode`` XML attribute which specifies that the rigid motion must be applied centered with respect to the object.
+For example, a rotation which is specified with selfMode="true" implies that the object will rotate around its own centre.
+
+Any scene part that is meant to be a dynamic moving object must be defined using the following general structure (example for a rotation):
+
+.. code-block:: xml
+
+    <part>
+    ...
+    <dmotion id="my_motion" loop="0">
+        <motion type="rotation" axis="0;0;1" angle="1" selfMode="true"/>
+    </dmotion>
+    </part>
+
+The ``<dmotion>`` element defines a dynamic motion sequence that consists of the computation of all ``<motion>`` elements contained inside in the exact order that they are specified.
+In case multiple dynamic motions are defined for the same scene parts to create a motion sequence, these have to be chained together explicitly by defining a ``next="another motion"`` attribute 
+so the dynamic motion ``<dmotion id="another_motion" ...> ... </dmotion>`` will be executed after the current one has finished.
+
+Note that the above case defines "my_motion" as the identifier for the dynamic motion sequence.
+Furthermore, it will be executed during the entire simulation because the ``loop="0"`` attribute means that the motion must be applied as an infinite loop.
+Specifying ``loop="n"`` for any n greater than 0 will lead to the dynamic motion being executed n times before finishing.
+
+Motion definition
+"""""""""""""""""
+
+The different rigid motions that can be specified are detailed in this section, in the same order as they appear in the table above.
+
+A **translation** can be defined as
+
+.. code-block:: xml
+
+    <motion type="translation" vec="x;y;z"/>
+
+The vector components specify how many meters for axis ``x``, ``y`` and ``z`` will be added to the object position at each iteration. That is, at each loop iteration the new position of a point ``p`` can be defined as ``p' = p + (x, y, z)``.
+
+For the sake of simplicity, translations can use the ``autoCRS`` attribute to automatically align the translation with respect to the internal coordinate reference system of the simulator, e.g.:
+
+.. code-block:: xml
+
+    <motion type="translation" vec="x;y;z" autoCRS="1" />
+
+
+A **reflection** can be defined as
+
+.. code-block:: xml
+
+    <motion type="reflection" ortho="x;y;z"/>
+
+The vector ``ortho`` is understood as the orthonormal vector defining the reflection plane. For example, if the orthonormal vector is ``(0, 0, 1)``, then it is the ``e3`` vector of the canonical basis for the 3D space (``z`` axis). Thus, the reflection plane would have ``e1`` and ``e2`` (``x`` and ``y`` axis) as its basis.
+
+
+A **glide plane** can be defined as
+
+.. code-block:: xml
+
+    <motion type="glideplane" ortho="u;v;w" shift="x;y;z"/>
+
+The ``ortho`` vector is understood as the orthonormal vector defining the reflection plane. The ``shift`` vector specifies how many meters for axis ``x``, ``y`` and ``z`` will be added to the object position at each iteration.
+
+
+A **rotation** can be defined as:
+
+.. code-block:: xml
+
+    <motion type="rotation" axis="x;y;z" angle="a" />
+
+The ``axis`` vector specifies the rotation axis. The ``angle`` scalar specifies how many degrees of rotation must be applied at each iteration.
+
+Optionally, a rotation ``center`` can be specified to rotate around a known point:
+
+.. code-block:: xml
+
+    <motion type="rotation" axis="x;y;z" angle="a" center="x;y;z"/>
+
+Moreover, the ``autoCRS`` attribute can be used to automatically translate the rotation center to the internal reference system of the simulation:
+
+.. code-block:: xml
+
+    <motion type="rotation" axis="x;y;z" angle="a" center="x;y;z" autoCRS="1" />
+
+
+To position the rotation center to the object center, use the ``selfMode`` argument:
+
+.. code-block:: xml
+
+    <motion type="rotation" axis="x;y;z" angle="a" selfMode="true" />
+
+A **helical motion** can be defined as:
+
+.. code-block:: xml
+
+    <motion type="helical" axis="x;y;z" angle="a" glide="k"/>
+
+The ``axis`` vector specifies the rotation axis which is the translation direction too. The ``angle`` scalar specifies how many degrees of rotation must be applied at each iteration. The ``glide`` scalar defines the magnitude of the translation so that after the rotation the ``p' = p + k (x,y,z)`` translation is applied to complete the helical motion.
+
+
+A **rotational symmetry** can be defined as:
+
+.. code-block:: xml
+
+    <motion type="rotsym" axis="x;y;z" angle="a" center="p;q;r" />
+
+The ``axis`` vector specifies the rotation axis which is also the orthogonal vector of the reflection plane. The ``angle`` scalar specifies how many degrees of rotation must be applied at each iteration. The ``center`` point specifies the center of the rotational symmetry, it is the point where the rotation axis and the reflection plane intersect.
+
+
+Sequence definition
+"""""""""""""""""""
+
+As stated before, each rigid motion can be defined as a set of ``<motion ... />`` elements contained inside a ``<dmotion ...> ... </dmotion>``. Let us now look at how to define two different rigid movements.
+
+The first rigid motion is a sequence of 4 motions describing a planetary like motion.
+
+.. code-block:: xml
+
+    <dmotion id ="planetary_motion" loop="0">
+    <motion type="rotation" axis="0;0;1" angle="2" selfMode="true" />
+    <motion type="translation" vec="-120;-100;0" />
+    <motion type="rotation" axis="0;0;1" angle="1" />
+    <motion type="translation" vec="120;100;0" />
+    </dmotion>
+
+The first rotation is configured with ``selfMode="true"`` to represent the rotation of a planet around the `z` axis centered in the object. It is followed by a translation, then a rotation and finally another translation that reverses the first. This last set of three motions is used to represent the translation of a planet which rotates around a given point. Thus, this dynamic motion defines a behavior similar to the one described by planet Earth, which rotates around itself at the same time that it moves around the sun. The entire sequence is computed inside an infinite loop, so it will never end.
+
+
+The second rigid motion consists of two chained sequences of rigid motions. It represents a particle describing an ascendant helical motion followed by its corresponding descendant helical motion.
+
+.. code-block:: xml
+
+    <dmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
+    <motion type="translation" vec="-129;-120;0" />
+    <motion type="helical" axis="0;0;1" angle="4" glide="0.3"/>
+    <motion type="translation" vec="129;120;0" />
+    </dmotion>
+    <dmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
+    <motion type="translation" vec="-129;-120;0" />
+    <motion type="helical" axis="0;0;1" angle="-4" glide="-0.3"/>
+    <motion type="translation" vec="129;120;0" />
+    </dmotion>
+
+
+The ``"sphere_helical_down"`` sequence is repeated 300 times before proceeding to the ``"sphere_helical_up"`` motion. Once the second has been applied 300 times, the first one is executed again.
+The aforementioned process is repeated until the simulation ends. Each motion starts with a translation and ends with another translation which reverts the first one. Thus, the translations can be seen as a way to centering the helical motion around an arbitrary point. The first helical motion is the ascending one, while the second helical motion is identical to the first but in the opposite direction.
+
+
+
+
+Dynamic motion frequency
+""""""""""""""""""""""""
+
+By default, all rigid motions operate at the same frequency than the simulation. 
+The operating frequency ``F`` for the simulation is defined by the pulse frequency of the scanner. This leads to rigid motions being computed ``F`` times per virtual second (seconds in simulated time, not real time seconds).
+For comparison, typical FPS values for cameras easily range from ``25`` FPS for typical videos to ``960`` FPS for super slow motion videos.
+This means that when using a pulse frequency of ``100000`` Hz and not setting a lower dynamic motion frequency explicitly, the scene movement is simulated at a rate that is 4000 and 100 times that of typical and super slow motion videos, respectively.
+
+Thus, users are advised to individually control the frequency at which dynamic motions are computed, to find a suitable trade-off between temporal resolution and performance.
+Both the frequency of the dynamic motion update and that of the KDTree update can be specified separately, specifying either a frequency (``dynStep``, ``kdtDynStep``) or a time step (``dynTimeStep``, ``kdtDynTimeStep``).
+
+The first attribute is the ``dynStep="x"`` which means that the dynamic motion will be applied each ``x`` simulation steps.
+Thus, if ``F=100000`` and ``dynStep="1000"`` it means that the dynamic motion will be applied ``F/dynStep = 100`` times per second.
+Note that this might require to update values such as the magnitude of a translation because adding ``100`` times a translation vector ``(0,0,1)`` leads to an accumulated translation vector ``(0,0,100)`` while adding ``100000`` times the same translation vector leads to an accumulated translation vector ``(0,0,100000)``.
+The dynamic time step exploits the inverse relationship between time and frequency to provide an alternative specification.
+More concretely, the time step (inside :math:`(0, 1]`) between iterations can be given instead of the discrete dynamic step, which is independent of the simulation frequency. This means that when changing the dynamic time step, rigid motion magnitudes do not need to be updated.
+
+The second attribute is the ``kdtDynStep="y"`` which means that the KDGrove (a datastructure which handles multiple KDTrees for efficient ray casting on dynamic scenes) will update the KDTree for the dynamic object after ``y`` consecutive updates of the object itself. For instance, having ``kdtDynStep="10"`` means that the KDTree will be updated after computing ``10`` iterations of the dynamic motion sequence. 
+The alternative time-based counterpart ``kdtDynTimeStep="t"`` means that the KDTree will be updated after t seconds.
+
+These frequency/temporal parameters can either be given at the scene level, which changes the default frequency (``dynStep="1"``) for all scene parts, or at the scene part level, which multiplies the frequency for that specific scene part with the scene default (the ``kdtDynStep`` of the KDT works the same way, relative to the object's ``dynStep``).
+For example, having ``dynStep="z"`` at the scene element and ``dynStep="x"`` at the scene part element means that the dynamic object will be updated each ``xz`` iterations.
+
+An example of how to configure the different frequencies for scene is presented below:
+
+.. code-block:: xml
+
+    <scene id="dyn_cube_scene" name="DynCubeScene" dynStep="20">
+
+    <!--  Ground plane as a static object -->
+    <part>
+        <filter type="objloader">
+        <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+        </filter>
+        <filter type="scale">
+        <param type="double" key="scale" value="120" />
+        </filter>
+        <filter type="translate">
+        <param type="vec3" key="offset" value="50.0;0;0" />
+        </filter>
+    </part>
+
+    <!--  Cube as a dynamic object -->
+    <part dynStep="5" kdtDynStep="10">
+        <filter type="objloader">
+        <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+        </filter>
+        <filter type="rotate">
+        <param key="rotation" type="rotation">
+            <rot angle_deg="45" axis="z"/>
+        </param>
+        </filter>
+        <filter type="scale">
+        <param type="double" key="scale" value="0.75" />
+        </filter>
+        <filter type="translate">
+        <param type="vec3" key="offset" value="-40.0;-5.0;0" />
+        </filter>
+        <!-- The dynamic motion sequence for the cube -->
+        <dmotion id="cube_translation" loop="0">
+        <motion type="translation" vec="0.001;-0.003;0"/>
+        </dmotion>
+    </part>
+
+    </scene>
+
+In the above example, the frequency for the dynamic scene is set to ``20`` while the frequency for the dynamic object is set to ``5``, which means that the dynamic object is updated each ``20 x 5 = 100`` simulation steps.
+The frequency for KDTree updates is ``10``, which means the KDTree is updated after ``10`` dynamic object updates.
+In this case, the dynamic object has an infinite sequence that repeats the same translation. Thus, it is clear that the KDTree will be updated each ``1000`` simulation steps.
+Assuming a pulse frequency of ``100000``, the dynamic moving object will apply the translation vector ``1000`` times per virtual second while the KDTree is updated ``100`` times per virtual second.
+
+The XML below yields the same simulation as the previous example but uses a time-based specification instead.
+Only the ``<scene>`` and dynamic ``<part>`` attributes change; the scene parts and filters themselves are identical to the previous example:
+
+.. code-block:: xml
+
+    <scene id="dyn_cube_scene" name="DynCubeScene" dynTimeStep="0.0002">
+
+    <!--  Ground plane as a static object -->
+    <part>
+        ...
+    </part>
+
+    <!--  Cube as a dynamic object -->
+    <part dynTimeStep="0.001" kdtDynTimeStep="0.01">
+        ...
+        <!-- The dynamic motion sequence for the cube -->
+        <dmotion id="cube_translation" loop="0">
+        <motion type="translation" vec="0.001;-0.003;0"/>
+        </dmotion>
+    </part>
+
+    </scene>
+
+As stated before, the ``dynTimeStep`` and ``kdtDynTimeStep`` are given as direct time measurements.
+Thus, when using the time-based specification, the ``dynTimeStep`` of the scene must be smaller than or equal to the ``dynTimeStep`` of each scene part (object), and the ``kdtDynTimeStep`` should be greater than or equal to the ``dynTimeStep`` of the associated object.
+This nesting makes intuitive sense: updating a KDT representing an object 100 times per second is meaningless if the object itself is only updated five times per second. Values greater than one are not expected either, since dynamic time steps are the inverse of a frequency that represents the number of iterations per second in the main simulation loop.
+
+The dynamic time steps are straightforward to interpret. A dynamic scene with ``dynTimeStep="0.0002"`` will compute its dynamic simulation logic with a time step of 0.2 ms, a dynamic object with ``dynTimeStep="0.001"`` will run its logic with a time step of 1 ms, and a dynamic KDT with ``dynTimeStep="0.01"`` will be updated each 10 ms. When not given, the dynamic time step of the KDT is automatically equal to the dynamic time step of its associated object.
+Similarly, when the dynamic time step of an object is not given, it is automatically equal to the dynamic time step of the scene. Dynamic steps (discrete) and dynamic time steps (continuous) cannot be mixed in the same specification.
+
+
+Examples
+""""""""
+
+Multiple examples for different rigid motions can be found in the `example scene for moving toyblocks`_ and in the `dyn scene folder`_.
+
+See also our notebooks:
+
+- :doc:`14 - MLS Dynamic Scene Demo <14-urban_mls_dynamic>`
+- :doc:`15 - TLS Rigid Motion Demo <15-tls_tree_dynamic>`
+
+.. _example scene for moving toyblocks: https://github.com/3dgeo-heidelberg/helios/blob/main/data/scenes/toyblocks/moving_toyblocks_scene.xml
+.. _dyn scene folder: https://github.com/3dgeo-heidelberg/helios/tree/main/data/scenes/dyn
