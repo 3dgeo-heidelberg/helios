@@ -7,7 +7,7 @@
 void
 AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad)
 {
-  ad->scanner = scanner; // Reference pointer => copy pointer, not object
+  ad->scanner = scanner; // Weak back-reference => copy pointer, not object
   ad->cfg_device_accuracy_m = cfg_device_accuracy_m;
   ad->cfg_device_rangeMin_m = cfg_device_rangeMin_m;
   ad->cfg_device_rangeMax_m = cfg_device_rangeMax_m;
@@ -24,7 +24,8 @@ AbstractDetector::shutdown()
   if (fms != nullptr) {
     fms->write.finishMeasurementWriter();
     fms->write.finishTrajectoryWriter();
-    if (scanner->isWriteWaveform())
+    auto owner = scanner.lock();
+    if (owner != nullptr && owner->isWriteWaveform())
       fms->write.finishFullWaveformWriter();
   }
 }
@@ -33,7 +34,8 @@ AbstractDetector::onLegComplete()
 {
   if (pcloudYielder != nullptr)
     pcloudYielder->yield();
-  if (fwfYielder != nullptr && scanner->isWriteWaveform())
+  auto owner = scanner.lock();
+  if (fwfYielder != nullptr && owner != nullptr && owner->isWriteWaveform())
     fwfYielder->yield();
 }
 
@@ -45,9 +47,10 @@ AbstractDetector::setFMS(std::shared_ptr<helios::filems::FMSFacade> fms)
   this->fms = fms;
   if (fms != nullptr) {
     pcloudYielder = std::make_shared<PointcloudYielder>(fms->write);
-    if (scanner->isWriteWaveform())
+    auto owner = scanner.lock();
+    if (owner != nullptr && owner->isWriteWaveform())
       fwfYielder = std::make_shared<FullWaveformYielder>(fms->write);
-    if (scanner->isWritePulse())
+    if (owner != nullptr && owner->isWritePulse())
       pulseRecordYielder = std::make_shared<PulseRecordYielder>(fms->write);
   }
 }

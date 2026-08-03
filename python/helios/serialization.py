@@ -104,7 +104,7 @@ def _normalize_provenance_value(value: Any):
     if isinstance(value, Path):
         path = value.expanduser()
         if not path.is_absolute():
-            return str(path)
+            return path.as_posix()
 
         asset_dirs = [
             Path(directory).expanduser().resolve()
@@ -123,18 +123,20 @@ def _normalize_provenance_value(value: Any):
                 relative_candidates,
                 key=lambda candidate: (len(candidate.parts), len(str(candidate))),
             )
-            return str(shortest)
+            return shortest.as_posix()
 
         if asset_dirs:
             try:
-                return os.path.relpath(resolved_path, start=asset_dirs[0])
+                return Path(
+                    os.path.relpath(resolved_path, start=asset_dirs[0])
+                ).as_posix()
             except ValueError:
-                return str(resolved_path)
+                return resolved_path.as_posix()
 
         try:
-            return os.path.relpath(resolved_path, start=Path.cwd())
+            return Path(os.path.relpath(resolved_path, start=Path.cwd())).as_posix()
         except ValueError:
-            return str(resolved_path)
+            return resolved_path.as_posix()
 
     if isinstance(value, Enum):
         return value.value
@@ -813,6 +815,12 @@ def _build_model_document(
     model: Model, context: _SerializationContext
 ) -> dict[str, Any]:
     """Create the serialized document payload for one model."""
+
+    if context.binary and getattr(model, "_provenance_only_serialization", False):
+        raise NotImplementedError(
+            f"Binary serialization is not supported for {model.__class__.__name__}; "
+            "use a non-binary YAML bundle instead."
+        )
 
     binary_info = None
     include_fields = not _uses_from_binary_constructor_provenance(model)

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="dynamic_test_scene" name="Dynamic test scene" dynStep="1" kdtDynStep="1">
+        <part id="1">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj"/>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="120"/>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="50;0;0"/>
+            </filter>
+        </part>
+        <part id="2" dynStep="1" kdtDynStep="1">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj"/>
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot angle_deg="45" axis="z"/>
+                </param>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="0.75"/>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-40;-5;0"/>
+            </filter>
+            <dmotion id="test_cube_translation" loop="0">
+                <motion type="translation" vec="0.002;0;0"/>
+            </dmotion>
+        </part>
+    </scene>
+</document>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="dynamic_test_survey"
+            scene="data/test/dynamic_scene.xml#dynamic_test_scene"
+            platform="data/platforms.xml#tripod"
+            scanner="data/scanners_tls.xml#riegl_vz400">
+        <leg>
+            <platformSettings x="-30" y="-30" z="0" onGround="true"/>
+            <scannerSettings active="true"
+                             pulseFreq_hz="5000"
+                             verticalAngleMin_deg="-40"
+                             verticalAngleMax_deg="60"
+                             scanFreq_hz="120"
+                             headRotatePerSec_deg="-60"
+                             headRotateStart_deg="340"
+                             headRotateStop_deg="280"/>
+        </leg>
+    </survey>
+</document>

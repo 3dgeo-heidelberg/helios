@@ -79,6 +79,9 @@
                 "$ref": "#/$defs/model_document_helios_scene_BoundingBox"
               },
               {
+                "$ref": "#/$defs/model_document_helios_scene_DynamicScene"
+              },
+              {
                 "$ref": "#/$defs/model_document_helios_scene_Material"
               },
               {
@@ -133,6 +136,7 @@
             "helios.scanner.ScannerSettings",
             "helios.scanner.ScannerSettingsBase",
             "helios.scene.BoundingBox",
+            "helios.scene.DynamicScene",
             "helios.scene.Material",
             "helios.scene.ScenePart",
             "helios.scene.StaticScene",
@@ -453,6 +457,21 @@
         }
       }
     },
+    "model_document_helios_scene_DynamicScene": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.scene.DynamicScene"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_scene_DynamicScene"
+        }
+      }
+    },
     "model_document_helios_scene_Material": {
       "type": "object",
       "required": [
@@ -685,6 +704,11 @@
       "maxProperties": 0
     },
     "fields_helios_scene_BoundingBox": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "fields_helios_scene_DynamicScene": {
       "type": "object",
       "additionalProperties": false,
       "maxProperties": 0

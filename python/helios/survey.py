@@ -8,7 +8,7 @@ from helios.platforms import (
     _specify_platform_settings_type,
 )
 from helios.scanner import Scanner, ScannerSettings
-from helios.scene import StaticScene
+from helios.scene import DynamicScene, StaticScene, _Scene
 from helios.callbacks import (
     CPP_HOOK_END_OF_LEG_POLICY_MAP,
     CPP_HOOK_PAYLOAD_MAP,
@@ -54,6 +54,7 @@ import threading
 import numpy as np
 import tempfile
 import laspy
+import weakref
 
 import _helios
 
@@ -107,7 +108,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     :param full_waveform_settings: The settings for the full waveform recording. If none is specified, the default settings will be used.
     :type scanner: Scanner
     :type platform: Platform
-    :type scene: StaticScene
+    :type scene: StaticScene | DynamicScene
     :type legs: Tuple[Leg, ...]
     :type name: str
     :type gps_time: datetime
@@ -116,7 +117,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     scanner: Scanner
     platform: Platform
-    scene: StaticScene
+    scene: _Scene
     legs: Tuple[Leg, ...] = ()
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
@@ -145,6 +146,15 @@ class Survey(Model, cpp_class=_helios.Survey):
         :type callbacks: Optional[Sequence[SurveyHook]]
         :type live: bool | LiveViewer
         """
+        scene = self.scene
+        if isinstance(scene, DynamicScene):
+            scene._ensure_fresh_for_playback()
+            if live is True or isinstance(live, LiveViewer):
+                raise NotImplementedError(
+                    "Live viewing is not supported for DynamicScene because the "
+                    "viewer cannot update moving geometry yet."
+                )
+
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
         # Update the settings to use
@@ -162,10 +172,10 @@ class Survey(Model, cpp_class=_helios.Survey):
             raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
         # Ensure that the scene has been finalized
-        if not (is_xml_loaded(self) or is_xml_loaded(self.scene)):
-            self.scene._finalize(execution_settings)
+        if isinstance(scene, StaticScene) and not is_xml_loaded(scene):
+            scene._finalize(execution_settings)
 
-        self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
+        scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         # we need to add serial IDs to the legs for proper process of writing into the file
         for i, leg in enumerate(self.legs):
@@ -182,9 +192,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         )
 
         # also, for proper writing into the file, we need to set IDs for the scene parts
-        for i, scene_part in enumerate(self.scene.scene_parts):
-            if scene_part.id is None:
-                scene_part.id = str(i)
+        if isinstance(scene, StaticScene):
+            for i, scene_part in enumerate(scene.scene_parts):
+                if scene_part.id is None:
+                    scene_part.id = str(i)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False
@@ -275,7 +286,14 @@ class Survey(Model, cpp_class=_helios.Survey):
         try:
             if live_session is not None:
                 live_session.start()
-            _start_playback_interruptible(playback)
+            if isinstance(scene, DynamicScene):
+                scene._claim_for_playback()
+                try:
+                    _start_playback_interruptible(playback)
+                finally:
+                    scene._consume_after_playback()
+            else:
+                _start_playback_interruptible(playback)
         finally:
             if progressbar_controller is not None:
                 progressbar_controller.close()
@@ -429,4 +447,40 @@ class Survey(Model, cpp_class=_helios.Survey):
 
     def _pre_set(self, field, value):
         if field == "scanner":
-            self._enforce_uniqueness_across_instances(field, value)
+            owner_ref = getattr(value, "_survey_owner_ref", None)
+            owner = owner_ref() if owner_ref is not None else None
+            if owner is not None and owner is not self:
+                raise ValueError(f"Value {value} is already used by another instance")
+
+            old_scanner = getattr(self, "_scanner", None)
+            value._survey_owner_ref = weakref.ref(self)
+            if old_scanner is not None and old_scanner is not value:
+                old_owner_ref = getattr(old_scanner, "_survey_owner_ref", None)
+                if old_owner_ref is not None and old_owner_ref() is self:
+                    del old_scanner._survey_owner_ref
+
+        if field == "scene":
+            old_scene = getattr(self, "_scene", None)
+            if isinstance(value, DynamicScene):
+                value._claim_owner(self)
+            if isinstance(old_scene, DynamicScene) and old_scene is not value:
+                old_scene._release_owner(self)
+
+    def _ensure_clone_supported(self):
+        if isinstance(self.scene, DynamicScene):
+            raise NotImplementedError(
+                "Cloning a Survey with a DynamicScene is not supported; load a "
+                "fresh survey or scene from XML instead."
+            )
+
+    def clone(self):
+        """Create an independent copy when the survey has a static scene."""
+
+        self._ensure_clone_supported()
+        return super().clone()
+
+    def __deepcopy__(self, memo):
+        """Deep-copy a survey when its scene supports independent copying."""
+
+        self._ensure_clone_supported()
+        return super().__deepcopy__(memo)

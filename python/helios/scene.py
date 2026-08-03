@@ -37,10 +37,12 @@ from pydantic import (
     NonNegativeInt,
     validate_call,
 )
+from enum import Enum, auto
 from pathlib import Path
 from typing import Literal, Optional, Union, Tuple, Any
 import numpy as np
 import vedo
+import weakref
 
 import _helios
 
@@ -1002,7 +1004,32 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             self._apply_material_to_all_primitives(material)
 
 
-class StaticScene(Model, cpp_class=_helios.StaticScene):
+class _Scene(Model, cpp_class=_helios.Scene):
+    """Private common wrapper for the polymorphic C++ scene hierarchy."""
+
+    def _set_reflectances(self, wavelength: float):
+        """Modify the scene's primitives with reflectances for a wavelength."""
+
+        _helios.set_scene_reflectances(
+            self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
+        )
+
+    @classmethod
+    def _from_cpp(cls, value):
+        if isinstance(value, _helios.DynamicScene):
+            wrapper_class = DynamicScene
+        elif isinstance(value, _helios.StaticScene):
+            wrapper_class = StaticScene
+        else:
+            raise TypeError(
+                "Unsupported C++ scene type: "
+                f"{type(value).__name__}. Expected StaticScene or DynamicScene."
+            )
+
+        return Model._from_cpp.__func__(wrapper_class, value)
+
+
+class StaticScene(_Scene, cpp_class=_helios.StaticScene):
     """Class representing a static scene. A scene is composed of multiple scene parts, which can be transformed independently and have different materials.
 
     :param scene_parts: The scene parts that make up the scene.
@@ -1052,13 +1079,6 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
                 execution_settings.sah_nodes,
             )
 
-    def _set_reflectances(self, wavelength: float):
-        """Modify the scene's primitives with correct reflectances for the given wavelength."""
-
-        _helios.set_scene_reflectances(
-            self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
-        )
-
     def _pre_set(self, field, value):
         if is_xml_loaded(self):
             raise RuntimeError("The scene loaded from XML cannot be modified.")
@@ -1086,6 +1106,11 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             [str(p) for p in get_asset_directories()],
             True,
         )
+        if isinstance(_cpp_scene, _helios.DynamicScene):
+            raise TypeError(
+                "StaticScene.from_xml() cannot load a dynamic scene; use "
+                "DynamicScene.from_xml() instead."
+            )
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
         scene._disable_yaml_serialization_for_descendants()
@@ -1204,3 +1229,111 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             plotter.show(resetcam=True, interactive=interactive)
 
         return plotter
+
+
+class _PlaybackState(Enum):
+    FRESH = auto()
+    RUNNING = auto()
+    CONSUMED = auto()
+
+
+class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
+    """A dynamic scene loaded from an XML scene definition.
+
+    Dynamic behavior is defined entirely by the XML file and executed by the
+    C++ simulation. Dynamic scenes intentionally expose no scene-part mutation
+    API in the high-level Python interface.
+    """
+
+    # Dynamic geometry and runtime playback state must never be written through
+    # the generic binary bundle path. YAML stores only from_xml provenance.
+    _provenance_only_serialization = True
+
+    def __new__(cls, *args, **kwargs):
+        if kwargs.get("_cpp_object") is None:
+            raise TypeError(
+                "DynamicScene cannot be constructed directly; use "
+                "DynamicScene.from_xml(...)"
+            )
+        return super().__new__(cls, *args, **kwargs)
+
+    def _playback_state(self) -> _PlaybackState:
+        """Return the runtime-only playback lifecycle state."""
+
+        return getattr(self, "_dynamic_playback_state", _PlaybackState.FRESH)
+
+    def _claim_owner(self, survey):
+        """Claim this scene for one live high-level survey wrapper."""
+
+        owner_ref = getattr(self, "_dynamic_owner_ref", None)
+        owner = owner_ref() if owner_ref is not None else None
+        if owner is not None and owner is not survey:
+            raise ValueError(
+                "This DynamicScene is already owned by another Survey; "
+                "one DynamicScene instance cannot be shared between surveys."
+            )
+        self._dynamic_owner_ref = weakref.ref(survey)
+
+    def _release_owner(self, survey):
+        """Release this scene if ``survey`` is its current owner."""
+
+        owner_ref = getattr(self, "_dynamic_owner_ref", None)
+        if owner_ref is not None and owner_ref() is survey:
+            del self._dynamic_owner_ref
+
+    def _ensure_fresh_for_playback(self):
+        """Reject reuse before survey execution causes any side effects."""
+
+        state = self._playback_state()
+        if state is _PlaybackState.RUNNING:
+            raise RuntimeError("This DynamicScene is already running in a survey.")
+        if state is _PlaybackState.CONSUMED:
+            raise RuntimeError(
+                "This DynamicScene has already been used and cannot be run again. "
+                "Dynamic-scene reset support is planned but not yet available; "
+                "load a fresh DynamicScene from XML for another run."
+            )
+
+    def _claim_for_playback(self):
+        """Mark playback as running immediately before it is started."""
+
+        self._ensure_fresh_for_playback()
+        self._dynamic_playback_state = _PlaybackState.RUNNING
+
+    def _consume_after_playback(self):
+        """Permanently consume the scene after a playback start attempt."""
+
+        self._dynamic_playback_state = _PlaybackState.CONSUMED
+
+    def clone(self):
+        """Reject cloning until the complete C++ dynamic graph is independent."""
+
+        raise NotImplementedError(
+            "Cloning DynamicScene is not supported; load a fresh "
+            "DynamicScene from XML instead."
+        )
+
+    def __deepcopy__(self, memo):
+        """Reject deep copying until dynamic-scene cloning is proven safe."""
+
+        raise NotImplementedError(
+            "Deep copying DynamicScene is not supported; load a fresh "
+            "DynamicScene from XML instead."
+        )
+
+    @classonlymethod
+    @validate_call
+    def from_xml(cls, scene_file: AssetPath):
+        """Load a dynamic scene from an XML file."""
+
+        validate_xml_file(scene_file, "xsd/scene.xsd")
+        _cpp_scene = _helios.read_dynamic_scene_from_xml(
+            str(scene_file),
+            [str(p) for p in get_asset_directories()],
+            True,
+        )
+        scene = cls._from_cpp(_cpp_scene)
+        scene._is_loaded_from_xml = True
+        scene._disable_yaml_serialization_for_descendants()
+        scene._set_constructor_provenance("from_xml", scene_file=scene_file)
+        return scene

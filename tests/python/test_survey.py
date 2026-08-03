@@ -9,16 +9,19 @@ from helios.platforms import (
     StaticPlatformSettings,
 )
 from helios.scanner import Scanner, riegl_lms_q560, riegl_vz_1000, riegl_vz_400
-from helios.scene import StaticScene, ScenePart
+from helios.scene import DynamicScene, StaticScene, ScenePart
 from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
 from helios.survey import *
-from helios.utils import set_rng_seed
+from helios.utils import meas_dtype, set_rng_seed, traj_dtype
 from helios import HeliosException
 
 import copy
+import gc
 import laspy
+import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured
 import pytest
+import weakref
 
 
 def test_construct_survey_from_xml():
@@ -29,6 +32,199 @@ def test_construct_survey_from_xml():
     assert isinstance(survey.platform, Platform)
     assert isinstance(survey.scanner, Scanner)
     assert isinstance(survey.scene, StaticScene)
+
+
+def test_construct_dynamic_survey_from_xml(xml_dynamic_test_survey):
+    assert isinstance(xml_dynamic_test_survey.scene, DynamicScene)
+
+
+def test_dynamic_survey_is_one_shot(monkeypatch):
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+    starts = []
+
+    def record_start(playback):
+        starts.append(playback)
+        dynamic_survey.scanner._cpp_object.all_measurements = np.zeros(
+            (1,), dtype=meas_dtype
+        )
+        dynamic_survey.scanner._cpp_object.all_trajectories = np.zeros(
+            (1,), dtype=traj_dtype
+        )
+
+    monkeypatch.setattr(survey, "_start_playback_interruptible", record_start)
+    execution_settings = ExecutionSettings(
+        num_threads=1, progressbar=ProgressBarStrategy.NONE
+    )
+
+    dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+
+    assert len(starts) == 1
+    with pytest.raises(RuntimeError, match="reset support is planned"):
+        dynamic_survey.run(
+            format=OutputFormat.NPY, execution_settings=execution_settings
+        )
+    assert len(starts) == 1
+
+
+def test_pre_playback_validation_error_does_not_consume_dynamic_scene(monkeypatch):
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+    starts = []
+
+    def record_start(playback):
+        starts.append(playback)
+        dynamic_survey.scanner._cpp_object.all_measurements = np.zeros(
+            (1,), dtype=meas_dtype
+        )
+        dynamic_survey.scanner._cpp_object.all_trajectories = np.zeros(
+            (1,), dtype=traj_dtype
+        )
+
+    monkeypatch.setattr(survey, "_start_playback_interruptible", record_start)
+    execution_settings = ExecutionSettings(
+        num_threads=1, progressbar=ProgressBarStrategy.NONE
+    )
+
+    with pytest.raises(ValueError, match="Unknown parameters: unsupported_option"):
+        dynamic_survey.run(
+            format=OutputFormat.NPY,
+            execution_settings=execution_settings,
+            unsupported_option=True,
+        )
+
+    dynamic_survey.run(format=OutputFormat.NPY, execution_settings=execution_settings)
+    assert len(starts) == 1
+
+
+def test_dynamic_survey_moves_scene_and_callbacks_preserve_one_shot(
+    dynamic_test_survey,
+    dynamic_test_static_control_survey,
+    dynamic_test_execution_settings,
+):
+    callback_times = []
+
+    def record_time(context, points=None, trajectories=None):
+        callback_times.append(context.sim_time_s)
+
+    set_rng_seed(42)
+    points, _ = dynamic_test_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+        callbacks=(
+            helios.SurveyHook(
+                point=helios.HookPoint.SIM_TIME_PERIODIC,
+                callback=record_time,
+                sim_time=0,
+                period=0.2,
+            ),
+        ),
+    )
+
+    set_rng_seed(42)
+    static_points, _ = dynamic_test_static_control_survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=dynamic_test_execution_settings,
+    )
+
+    assert points.shape[0] > 0
+    assert points.dtype["hit_object_id"].kind in ("i", "u")
+    assert 2 in points["hit_object_id"]
+    assert callback_times == sorted(callback_times)
+    assert len(callback_times) >= 2
+
+    dynamic_cube = points[points["hit_object_id"] == 2]
+    static_cube = static_points[static_points["hit_object_id"] == 2]
+    assert dynamic_cube.shape[0] > 0
+    assert static_cube.shape[0] > 0
+    assert (
+        dynamic_cube["position"][:, 0].mean() > static_cube["position"][:, 0].mean() + 4
+    )
+
+    with pytest.raises(RuntimeError, match="reset support is planned"):
+        dynamic_test_survey.run(
+            format=OutputFormat.NPY,
+            execution_settings=dynamic_test_execution_settings,
+        )
+
+
+def test_dynamic_survey_las_output_accepts_numeric_dynamic_object_id(
+    tmp_path, xml_dynamic_test_survey, dynamic_test_execution_settings
+):
+    output_path = xml_dynamic_test_survey.run(
+        format=OutputFormat.LAS,
+        output_dir=tmp_path,
+        execution_settings=dynamic_test_execution_settings,
+    )
+
+    files = list(output_path.rglob("*.las"))
+    assert len(files) == 1
+    las = laspy.read(files[0])
+    assert len(las.points) > 0
+    assert las.hitObjectId.dtype.kind in ("i", "u")
+    assert 2 in las.hitObjectId
+
+
+def test_dynamic_scene_cannot_be_shared_between_surveys():
+    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene)
+
+    with pytest.raises(ValueError, match="already owned by another Survey"):
+        Survey(scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene)
+
+    assert owner.scene is dynamic_scene
+
+
+def test_dynamic_scene_owner_is_released_on_reassignment():
+    first_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    replacement_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    first_owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=first_scene)
+
+    first_owner.scene = replacement_scene
+    second_owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=first_scene)
+
+    assert first_owner.scene is replacement_scene
+    assert second_owner.scene is first_scene
+
+
+def test_dynamic_scene_owner_is_released_after_garbage_collection():
+    dynamic_scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    owner = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene)
+    owner_ref = weakref.ref(owner)
+
+    del owner
+    gc.collect()
+
+    assert owner_ref() is None
+    replacement_owner = Survey(
+        scanner=riegl_vz_400(), platform=tripod(), scene=dynamic_scene
+    )
+    assert replacement_owner.scene is dynamic_scene
+
+
+def test_dynamic_survey_clone_and_deepcopy_are_rejected():
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+
+    with pytest.raises(NotImplementedError, match="Survey with a DynamicScene"):
+        dynamic_survey.clone()
+    with pytest.raises(NotImplementedError, match="Survey with a DynamicScene"):
+        copy.deepcopy(dynamic_survey)
+
+
+def test_dynamic_survey_rejects_live_viewing_before_attachment(monkeypatch):
+    dynamic_survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+
+    def unexpected_live_resolution(live):
+        raise AssertionError("live session resolution must not be reached")
+
+    monkeypatch.setattr(survey, "_resolve_live_session", unexpected_live_resolution)
+
+    with pytest.raises(NotImplementedError, match="Live viewing.*DynamicScene"):
+        dynamic_survey.run(live=True)
+
+    viewer = survey.LiveViewer.__new__(survey.LiveViewer)
+    with pytest.raises(NotImplementedError, match="Live viewing.*DynamicScene"):
+        dynamic_survey.run(live=viewer)
+
+    assert dynamic_survey.scene._playback_state().name == "FRESH"
 
 
 def test_leg_clone_and_deepcopy(survey):

@@ -8,10 +8,11 @@ from helios.scanner import (
     riegl_vz_400,
     vlp16,
 )
-from helios.scene import ScenePart, StaticScene
+from helios.scene import DynamicScene, ScenePart, StaticScene
 from helios.settings import (
     ExecutionSettings,
     OutputSettings,
+    ProgressBarStrategy,
     set_execution_settings,
     set_output_settings,
 )
@@ -129,6 +130,73 @@ def tls_survey(tls_scanner, tripod, scene):
 
 
 survey = tls_survey
+
+
+@pytest.fixture
+def dynamic_test_execution_settings():
+    return ExecutionSettings(
+        num_threads=1,
+        kdt_num_threads=1,
+        kdt_geom_num_threads=1,
+        progressbar=ProgressBarStrategy.NONE,
+    )
+
+
+@pytest.fixture
+def dynamic_test_scene():
+    return DynamicScene.from_xml("data/test/dynamic_scene.xml")
+
+
+@pytest.fixture
+def dynamic_test_static_control_scene():
+    return StaticScene.from_xml("data/test/dynamic_scene_static_control.xml")
+
+
+@pytest.fixture
+def dynamic_test_survey_f():
+    def create(scene):
+        survey = Survey(scanner=riegl_vz_400(), platform=tripod_platform(), scene=scene)
+        survey.add_leg(
+            x=-30,
+            y=-30,
+            z=0,
+            force_on_ground=True,
+            pulse_frequency=5000,
+            min_vertical_angle="-40 deg",
+            max_vertical_angle="60 deg",
+            scan_frequency=120,
+            head_rotation="-60 deg/s",
+            rotation_start_angle="340 deg",
+            rotation_stop_angle="280 deg",
+        )
+        return survey
+
+    return create
+
+
+@pytest.fixture
+def manual_dynamic_test_survey(dynamic_test_survey_f, dynamic_test_scene):
+    return dynamic_test_survey_f(dynamic_test_scene)
+
+
+@pytest.fixture
+def xml_dynamic_test_survey():
+    return Survey.from_xml("data/test/dynamic_survey.xml")
+
+
+@pytest.fixture
+def dynamic_test_static_control_survey(
+    dynamic_test_survey_f, dynamic_test_static_control_scene
+):
+    return dynamic_test_survey_f(dynamic_test_static_control_scene)
+
+
+@pytest.fixture(
+    params=("manual_dynamic_test_survey", "xml_dynamic_test_survey"),
+    ids=("dynamic-scene-from-xml", "survey-from-xml"),
+)
+def dynamic_test_survey(request):
+    return request.getfixturevalue(request.param)
 
 
 @pytest.fixture

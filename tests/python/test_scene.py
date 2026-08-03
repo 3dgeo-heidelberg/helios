@@ -196,6 +196,47 @@ def test_construct_scene_from_xml():
     assert len(scene.scene_parts) == 5
 
 
+def test_construct_dynamic_scene_from_xml():
+    from helios.utils import is_xml_loaded
+
+    scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+
+    assert isinstance(scene, DynamicScene)
+    assert isinstance(scene._cpp_object, _helios.DynamicScene)
+    assert not isinstance(scene, StaticScene)
+    assert not hasattr(scene, "scene_parts")
+    assert is_xml_loaded(scene)
+    assert scene._provenance["constructor"]["method"] == "from_xml"
+
+
+def test_dynamic_scene_direct_construction_is_rejected():
+    with pytest.raises(
+        TypeError,
+        match=r"DynamicScene cannot be constructed directly; use "
+        r"DynamicScene\.from_xml\(\.\.\.\)",
+    ):
+        DynamicScene()
+
+
+def test_static_scene_loader_rejects_dynamic_xml():
+    with pytest.raises(TypeError, match=r"use DynamicScene\.from_xml\(\) instead"):
+        StaticScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+
+
+def test_dynamic_scene_loader_rejects_static_xml():
+    with pytest.raises(HeliosException, match="produced a static scene"):
+        DynamicScene.from_xml("data/scenes/demo/box_scene.xml")
+
+
+def test_dynamic_scene_clone_and_deepcopy_are_rejected():
+    scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+
+    with pytest.raises(NotImplementedError, match="Cloning DynamicScene"):
+        scene.clone()
+    with pytest.raises(NotImplementedError, match="Deep copying DynamicScene"):
+        copy.deepcopy(scene)
+
+
 def test_construct_scene_part_from_xml():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id=0)
     assert len(part._cpp_object.primitives) > 0

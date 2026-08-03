@@ -11,8 +11,8 @@ import helios.serialization as serialization
 from helios.platforms import DynamicPlatformSettings, Platform, TrajectorySettings
 from helios.serialization import _MIGRATIONS, register_migration
 from helios.scanner import Scanner
-from helios.scene import ScenePart, StaticScene
-from helios.settings import ExecutionSettings, OutputFormat
+from helios.scene import DynamicScene, ScenePart, StaticScene
+from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
 from helios.survey import Survey
 from helios.utils import add_asset_directory, get_asset_directories, set_rng_seed
 from helios.validation import Model
@@ -70,6 +70,27 @@ def _build_manual_survey() -> Survey:
 
 def _build_xml_survey() -> Survey:
     return Survey.from_xml("data/test/serialization_survey.xml")
+
+
+def _build_manual_dynamic_survey(scene: DynamicScene | None = None) -> Survey:
+    scanner = Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vz400")
+    platform = Platform.from_xml("data/platforms.xml", platform_id="tripod")
+    scene = scene or DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    survey = Survey(scanner=scanner, platform=platform, scene=scene, name="dynamic")
+    survey.add_leg(
+        x=-30,
+        y=-30,
+        z=0,
+        force_on_ground=True,
+        pulse_frequency=100000,
+        scan_frequency=120,
+        head_rotation="-10 deg/s",
+        rotation_start_angle="340 deg",
+        rotation_stop_angle="339 deg",
+        min_vertical_angle="-40 deg",
+        max_vertical_angle="60 deg",
+    )
+    return survey
 
 
 def _run_survey_npy(survey: Survey):
@@ -623,6 +644,124 @@ def test_static_scene_yaml_roundtrip(tmp_path):
     scene._finalize()
     loaded._finalize()
     assert len(scene._cpp_object.primitives) == len(loaded._cpp_object.primitives)
+
+
+def test_dynamic_scene_yaml_roundtrip_replays_only_xml_provenance(tmp_path):
+    scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    scene._claim_for_playback()
+    scene._consume_after_playback()
+
+    yaml_path = scene.to_yaml(tmp_path / "dynamic_scene.yaml", shallow=False)
+    with yaml_path.open("r", encoding="utf-8") as handle:
+        document = yaml.safe_load(handle)
+
+    assert document["serialization_major_version"] == 0
+    assert document["serialization_minor_version"] == 0
+    assert document["model_class"] == "helios.scene.DynamicScene"
+    assert document["fields"] == {}
+    assert document["provenance"] == {
+        "constructor": {
+            "method": "from_xml",
+            "kwargs": {"scene_file": "data/scenes/dyn/dyn_cube_scene.xml"},
+        },
+        "operations": [],
+    }
+    assert "binary" not in document
+    assert "playback" not in str(document).lower()
+    assert "consumed" not in str(document).lower()
+
+    loaded = DynamicScene.from_yaml(yaml_path)
+    assert isinstance(loaded, DynamicScene)
+    assert loaded._playback_state().name == "FRESH"
+    assert loaded._cpp_object is not scene._cpp_object
+
+    survey = _build_manual_dynamic_survey(loaded)
+    points, trajectory = survey.run(
+        format=OutputFormat.NPY,
+        execution_settings=ExecutionSettings(
+            num_threads=1, progressbar=ProgressBarStrategy.NONE
+        ),
+    )
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
+
+
+@pytest.mark.parametrize("shallow", [False, True])
+def test_manual_dynamic_survey_yaml_roundtrip(tmp_path, shallow: bool):
+    survey = _build_manual_dynamic_survey()
+    yaml_path = survey.to_yaml(
+        tmp_path / f"dynamic_survey_{shallow}.yaml", shallow=shallow
+    )
+
+    with yaml_path.open("r", encoding="utf-8") as handle:
+        survey_document = yaml.safe_load(handle)
+    serialized_scene = survey_document["fields"]["scene"]
+    if shallow:
+        scene_yaml = tmp_path / serialized_scene["model_ref"]
+        with scene_yaml.open("r", encoding="utf-8") as handle:
+            scene_document = yaml.safe_load(handle)
+    else:
+        scene_document = serialized_scene
+
+    assert scene_document["model_class"] == "helios.scene.DynamicScene"
+    assert scene_document["fields"] == {}
+    assert scene_document["provenance"]["constructor"]["method"] == "from_xml"
+    assert "binary" not in scene_document
+
+    loaded = Survey.from_yaml(yaml_path)
+    assert isinstance(loaded.scene, DynamicScene)
+    assert loaded.scene._playback_state().name == "FRESH"
+    assert loaded.scene._cpp_object is not survey.scene._cpp_object
+
+
+def test_dynamic_xml_survey_yaml_uses_root_provenance(tmp_path):
+    survey = Survey.from_xml("data/surveys/dyn/tls_dyn_cube.xml")
+    yaml_path = survey.to_yaml(tmp_path / "dynamic_xml_survey.yaml", shallow=True)
+
+    with yaml_path.open("r", encoding="utf-8") as handle:
+        document = yaml.safe_load(handle)
+    assert document["model_class"] == "helios.survey.Survey"
+    assert document["provenance"]["constructor"] == {
+        "method": "from_xml",
+        "kwargs": {"survey_file": "data/surveys/dyn/tls_dyn_cube.xml"},
+    }
+
+    loaded = Survey.from_yaml(yaml_path)
+    assert isinstance(loaded.scene, DynamicScene)
+    assert loaded.scene._playback_state().name == "FRESH"
+    assert loaded.scene._yaml_serializable is False
+    with pytest.raises(RuntimeError, match="implicitly constructed"):
+        loaded.scene.to_yaml(tmp_path / "implicit_dynamic_scene.yaml")
+
+
+def test_dynamic_scene_non_binary_bundle_roundtrip(tmp_path):
+    scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    bundle_dir = tmp_path / "dynamic_scene_bundle"
+    root_yaml = scene.to_bundle(bundle_dir, binary=False)
+
+    with root_yaml.open("r", encoding="utf-8") as handle:
+        document = yaml.safe_load(handle)
+    bundled_scene_file = document["provenance"]["constructor"]["kwargs"]["scene_file"]
+    assert bundled_scene_file == "dyn_cube_scene.xml"
+    assert (bundle_dir / bundled_scene_file).exists()
+    assert "binary" not in document
+
+    loaded = DynamicScene.from_bundle(bundle_dir)
+    assert isinstance(loaded, DynamicScene)
+    assert loaded._playback_state().name == "FRESH"
+
+
+def test_dynamic_scene_binary_serialization_is_unavailable(tmp_path):
+    scene = DynamicScene.from_xml("data/scenes/dyn/dyn_cube_scene.xml")
+    assert not hasattr(scene, "to_binary")
+    assert not hasattr(DynamicScene, "from_binary")
+
+    with pytest.raises(NotImplementedError, match="Binary serialization.*DynamicScene"):
+        scene.to_bundle(tmp_path / "dynamic_binary_bundle", binary=True)
+
+    survey = _build_manual_dynamic_survey()
+    with pytest.raises(NotImplementedError, match="Binary serialization.*DynamicScene"):
+        survey.to_bundle(tmp_path / "dynamic_survey_binary_bundle", binary=True)
 
 
 def test_from_binary_to_yaml_uses_provenance_reference(tmp_path):

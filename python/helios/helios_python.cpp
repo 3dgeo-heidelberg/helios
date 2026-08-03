@@ -1435,6 +1435,9 @@ PYBIND11_MODULE(_helios, m)
     .def("clear_static_object_parts", &StaticScene::clearStaticObjects)
     .def("shutdown", &StaticScene::shutdown);
 
+  py::class_<DynScene, StaticScene, std::shared_ptr<DynScene>>(m,
+                                                               "DynamicScene");
+
   py::class_<Platform, std::shared_ptr<Platform>> platform(m, "Platform");
   platform.def(py::init<>())
     .def(py::init<Platform&>(), py::arg("platform"))
@@ -3340,6 +3343,11 @@ PYBIND11_MODULE(_helios, m)
   m.def("read_scanner_from_xml", &readScannerFromXml);
   m.def("read_platform_from_xml", &readPlatformFromXml);
   m.def("read_scene_from_xml", &readSceneFromXml);
+  m.def("read_dynamic_scene_from_xml",
+        &readDynamicSceneFromXml,
+        py::arg("file_path"),
+        py::arg("assets_path"),
+        py::arg("build_kd_grove") = true);
   m.def("read_scene_part_from_xml", &readScenePartFromXml);
 
   // Add helper function for scene handling
