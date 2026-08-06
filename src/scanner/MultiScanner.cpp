@@ -79,7 +79,7 @@ MultiScanner::prepareSimulation(bool const legacyEnergyModel)
       }
     }
     // Prepare scanning device
-    scanDevs[i].prepareSimulation();
+    scanDevs[i].prepareSimulation(legacyEnergyModel);
   }
 }
 
