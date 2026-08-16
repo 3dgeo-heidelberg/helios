@@ -82,8 +82,6 @@ test-command = "python -m pytest tests/python"
 test-requires = ["pytest"]
 [tool.pytest.ini_options]
 markers = [
-    "exe: mark tests for the command line tool",
-    "pyh: mark tests for the python bindings pyhelios",
     "open3d: tests requiring Open3D",
 ]
 testpaths = [
