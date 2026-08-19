@@ -92,7 +92,6 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
                                     void* extraOutput)
 {
   if (assetNode == nullptr) {
-    LOG_ERR("ERROR: Asset definition XML node is null!");
     throw HeliosException("Asset definition XML node is null!");
   }
 
@@ -114,10 +113,12 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
     result =
       std::dynamic_pointer_cast<Asset>(createFWFSettingsFromXml(assetNode));
   } else {
-    LOG_ERR("ERROR: Unknown asset type: " + type);
     throw HeliosException("Unknown asset type: " + type);
   }
 
+  if (result == nullptr) {
+    throw HeliosException("Failed to create asset of type: " + type);
+  }
   // Read "asset" properties:
   result->id =
     XmlUtils::getAttributeCast<std::string>(assetNode, "id", std::string(""));
@@ -140,7 +141,6 @@ XmlAssetsLoader::createProceduralAssetFromXml(std::string const& type,
     result = std::dynamic_pointer_cast<Asset>(
       procedurallyCreatePlatformFromXml(type, id));
   } else {
-    LOG_ERR("ERROR: Unknown procedurally created asset type: " + type);
     throw HeliosException("Unknown procedurally created asset type: " + type);
   }
   return result;
@@ -1625,10 +1625,7 @@ XmlAssetsLoader::getAssetById(std::string type,
 {
   std::string errorMsg = "# DEF ERR MSG #";
   if (type.empty() || id.empty()) {
-    std::stringstream ss;
-    ss << "ERROR: Invalid asset type or id for " << type << ":" << id;
-    LOG_ERR(ss.str());
-    throw HeliosException(ss.str());
+    throw HeliosException("Invalid asset type or id for " + type + ":" + id);
   }
 
   XmlUtils::assertDocumentForAssetLoading(doc,
@@ -1660,18 +1657,17 @@ XmlAssetsLoader::getAssetById(std::string type,
        << FileUtils::pathSeparator << this->xmlDocFilename << "#" << id
        << "\nExecution aborted!";
     errorMsg = ss.str();
-    LOG_ERR(errorMsg);
-    throw HeliosException(errorMsg);
-
+    throw HeliosException(ss.str());
+  } catch (const HeliosException&) {
+    throw;
   } catch (const std::exception& e) {
     std::stringstream ss;
-    ss << "ERROR: Failed to read " << type
+    ss << "Failed to read " << type
        << " asset definition: " << this->xmlDocFilePath
        << FileUtils::pathSeparator << this->xmlDocFilename << "#" << id
        << "\nEXCEPTION: " << e.what() << "\nExecution aborted!";
-    errorMsg = ss.str();
-    LOG_ERR(errorMsg);
-    throw HeliosException(errorMsg);
+
+    throw HeliosException(ss.str());
   }
 }
 
@@ -1683,21 +1679,22 @@ XmlAssetsLoader::getAssetByLocation(std::string type,
   std::vector<std::string> vec;
   boost::split(vec, location, boost::is_any_of("#"));
   XmlAssetsLoader* loader = this;
+  std::unique_ptr<XmlAssetsLoader> externalLoader;
   std::string id = vec[0].erase(vec[0].find_last_not_of("#") + 1);
   bool freeLoader = false;
 
   // External document location provided:
   if (vec.size() == 2) {
-    loader = new XmlAssetsLoader(id, assetsDir);
-    loader->sceneLoader = sceneLoader;
+    externalLoader = std::make_unique<XmlAssetsLoader>(id, assetsDir);
+
+    externalLoader->sceneLoader = sceneLoader;
+
+    loader = externalLoader.get();
+
     id = vec[1].erase(vec[1].find_last_not_of('#') + 1);
-    freeLoader = true;
   }
 
-  std::shared_ptr<Asset> asset = loader->getAssetById(type, id, extraOutput);
-  if (freeLoader)
-    delete loader;
-  return asset;
+  return loader->getAssetById(type, id, extraOutput);
 }
 
 // ***  UTIL METHODS  *** //

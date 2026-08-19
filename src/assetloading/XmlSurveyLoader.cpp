@@ -23,17 +23,13 @@ XmlSurveyLoader::load(bool legNoiseDisabled)
 {
   tinyxml2::XMLNode* pRoot = doc.FirstChild();
   if (pRoot == nullptr) {
-    LOG_ERR("ERROR: xml root not found");
-    return nullptr;
+    throw HeliosException("XML root not found.");
   }
   tinyxml2::XMLElement* surveyNodes =
     pRoot->NextSiblingElement()->FirstChildElement("survey");
   if (surveyNodes == nullptr) {
-    std::stringstream ss;
-    ss << "XML Survey playback loader: "
-       << "ERROR: No survey elements found in file " << this->xmlDocFilename;
-    LOG_WARN(ss.str());
-    return nullptr;
+    throw HeliosException("No survey elements found in file " +
+                          this->xmlDocFilename);
   }
 
   return createSurveyFromXml(surveyNodes, legNoiseDisabled);
@@ -70,15 +66,14 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
   // failed.
 
   // Load scene
-  std::string sceneString = surveyNode->Attribute("scene");
-  try {
-    survey->setScene(loadScene(sceneString));
-  } catch (const std::exception& e) {
-    std::stringstream ss;
-    ss << "Failed to load scene '" << sceneString << "': " << e.what();
-    LOG_ERR(ss.str());
-    throw; // Re-throw to propagate the error properly
+  const char* sceneStringAttr = surveyNode->Attribute("scene");
+  if (sceneStringAttr == nullptr || *sceneStringAttr == '\0') {
+    throw HeliosException("Survey is missing required 'scene' attribute.");
   }
+  std::string sceneString(sceneStringAttr);
+
+  survey->setScene(loadScene(sceneString));
+
   SpectralLibrary spectralLibrary = SpectralLibrary(
     (float)survey->scanner->getWavelength(), assetsDir, "spectra");
   spectralLibrary.readReflectances();
@@ -197,37 +192,17 @@ XmlSurveyLoader::loadScene(std::string sceneString)
 {
   LOG_INFO("Loading Scene...");
   if (sceneString.empty()) {
-    std::stringstream ss;
-    ss << "ERROR: Empty scene string provided";
-    LOG_ERR(ss.str());
-    throw HeliosException(ss.str());
+    throw HeliosException("Empty scene string provided");
   }
   std::shared_ptr<Scene> scene;
   TimeWatcher tw;
   tw.start();
-  try {
-    scene = std::dynamic_pointer_cast<Scene>(
-      getAssetByLocation("scene", sceneString));
-    if (scene == nullptr) {
-      std::stringstream ss;
-      ss << "ERROR: Cannot load scene from string: " << sceneString;
-      LOG_ERR(ss.str());
-      throw HeliosException(ss.str());
-    }
-    scene->buildKDGroveWithLog();
-  } catch (std::exception& e) {
-    std::stringstream ss;
-    ss << "EXCEPTION at XmlSurveyLoader::loadScene:\n\t" << e.what();
-    LOG_ERR(ss.str());
-    throw;
-  } catch (...) {
-    // Catch any other exceptions that might occur
-    std::stringstream ss;
-    ss << "UNKNOWN EXCEPTION at XmlSurveyLoader::loadScene for scene: "
-       << sceneString;
-    LOG_ERR(ss.str());
-    throw HeliosException(ss.str());
+  scene =
+    std::dynamic_pointer_cast<Scene>(getAssetByLocation("scene", sceneString));
+  if (scene == nullptr) {
+    throw HeliosException("Cannot load scene from string: " + sceneString);
   }
+  scene->buildKDGroveWithLog();
 
   tw.stop();
   std::stringstream ss;

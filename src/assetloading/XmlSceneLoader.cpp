@@ -85,7 +85,6 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
   scene->setKDGroveFactory(nullptr); // Prevent building before serializing
   bool success = scene->finalizeLoading();
   if (!success) {
-    LOG_ERR("Finalizing the scene failed.");
     throw HeliosException("Finalizing the scene failed.");
   }
   // Dynamic scenes rebuild their KD-trees repeatedly during playback. Use the
@@ -116,37 +115,49 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
     scenePartNode->FirstChildElement("filter");
   while (filterNodes != nullptr) {
     // Load the filter
-    std::string filterType = filterNodes->Attribute("type");
+    const char* filterTypeAttr = filterNodes->Attribute("type");
+    if (filterTypeAttr == nullptr || *filterTypeAttr == '\0') {
+      throw HeliosException(
+        "Scene filter is missing required 'type' attribute.");
+    }
+
+    std::string filterType(filterTypeAttr);
     AbstractGeometryFilter* filter =
       loadFilter(filterNodes, holistic, scenePart);
     // Apply the filter
     if (filter != nullptr) {
-      // Set params:
       filter->setAssetsDir(assetsDir);
       filter->params = XmlUtils::createParamsFromXml(filterNodes);
       LOG_DEBUG("Applying filter: " + filterType);
       scenePart = filter->run();
-      // Load the sawps now so their baseline is defined from the raw
-      // geometry with no transformation filters (e.g., scales or rotations)
+      if (scenePart == nullptr) {
+        delete filter;
+        throw HeliosException("Scene filter '" + filterType +
+                              "' failed to produce a scene part.");
+      }
+
       if (XmlUtils::isGeometryLoadingFilter(filter) &&
           scenePartNode->FirstChildElement("swap") != nullptr) {
         if (scenePart->sorh != nullptr) {
-          std::stringstream ss;
-          ss << "XmlSceneLoader::loadFilters found a geometry "
-                "loading filter when a SwapOnRepeatHandler has "
-                "already been built.";
-          LOG_ERR(ss.str());
-          throw HeliosException(ss.str());
+          delete filter;
+          throw HeliosException("Geometry loading filter encountered after "
+                                "SwapOnRepeatHandler was already built.");
         }
+
         scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
       }
-      // Delete the filter (not used anymore)
+
       if (scenePart == filter->primsOut)
         filter->primsOut = nullptr;
+
       delete filter;
     }
 
     filterNodes = filterNodes->NextSiblingElement("filter");
+  }
+
+  if (scenePart == nullptr) {
+    throw HeliosException("Scene part contains no usable geometry filter.");
   }
   // ############## END Loop over filter nodes ##################
   return std::shared_ptr<ScenePart>(scenePart);
@@ -157,7 +168,12 @@ XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
                            bool& holistic,
                            ScenePart* scenePart)
 {
-  std::string filterType = filterNode->Attribute("type");
+  const char* filterTypeAttr = filterNode->Attribute("type");
+  if (filterTypeAttr == nullptr || *filterTypeAttr == '\0') {
+    throw HeliosException("Scene filter is missing required 'type' attribute.");
+  }
+
+  std::string filterType(filterTypeAttr);
 
   std::transform(
     filterType.begin(), filterType.end(), filterType.begin(), ::tolower);
@@ -201,6 +217,9 @@ XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
     filter = new DetailedVoxelLoader();
   }
   // ################### END Set up filter ##################
+  else {
+    throw HeliosException("Unknown scene filter type: " + filterType);
+  }
 
   filter->setAssetsDir(assetsDir);
 
@@ -274,7 +293,7 @@ XmlSceneLoader::loadScenePartId(tinyxml2::XMLElement* scenePartNode,
            << "Caution! "
            << "This is not compatible with LAS format specification"
            << std::endl;
-      LOG_INFO(exss.str());
+      LOG_WARN(exss.str());
     }
   }
 
@@ -310,7 +329,11 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
         bool const isFilePath = key == "filepath";
         bool const isEFilePath = key == "efilepath";
         if (isFilePath || isEFilePath) {
-          path = param->Attribute("value");
+          const char* value = param->Attribute("value");
+          if (value != nullptr) {
+            path = value;
+          }
+
           if (isEFilePath)
             pathType = "extended path expression";
           foundPath = true;
@@ -329,7 +352,8 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
        << "It leads to the loading of an invalid scene part, which is "
           "automatically ignored when composing the scene."
        << std::endl;
-    LOG_ERR(ss.str());
+    LOG_WARN(ss.str());
+
     return false;
   }
   return true;
