@@ -1,5 +1,4 @@
 #include "AABB.h"
-#include "logging.hpp"
 
 #include <glm/gtx/string_cast.hpp>
 

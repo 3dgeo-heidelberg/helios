@@ -9,7 +9,7 @@
 #include <XmlUtils.h>
 #include <scene/dynamic/DynScene.h>
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <memory>
@@ -79,13 +79,13 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
   std::stringstream ss;
   ss << std::to_string(scenePartCounter) << " sceneparts loaded in "
      << tw.getElapsedDecimalSeconds() << "s\n";
-  logging::TIME(ss.str());
+  LOG_TIME(ss.str());
 
   // Set KDGrove factory and finish scene loading
   scene->setKDGroveFactory(nullptr); // Prevent building before serializing
   bool success = scene->finalizeLoading();
   if (!success) {
-    logging::ERR("Finalizing the scene failed.");
+    LOG_ERR("Finalizing the scene failed.");
     throw HeliosException("Finalizing the scene failed.");
   }
   // Dynamic scenes rebuild their KD-trees repeatedly during playback. Use the
@@ -124,7 +124,7 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
       // Set params:
       filter->setAssetsDir(assetsDir);
       filter->params = XmlUtils::createParamsFromXml(filterNodes);
-      logging::DEBUG("Applying filter: " + filterType);
+      LOG_DEBUG("Applying filter: " + filterType);
       scenePart = filter->run();
       // Load the sawps now so their baseline is defined from the raw
       // geometry with no transformation filters (e.g., scales or rotations)
@@ -135,7 +135,7 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
           ss << "XmlSceneLoader::loadFilters found a geometry "
                 "loading filter when a SwapOnRepeatHandler has "
                 "already been built.";
-          logging::ERR(ss.str());
+          LOG_ERR(ss.str());
           throw HeliosException(ss.str());
         }
         scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
@@ -274,7 +274,7 @@ XmlSceneLoader::loadScenePartId(tinyxml2::XMLElement* scenePartNode,
            << "Caution! "
            << "This is not compatible with LAS format specification"
            << std::endl;
-      logging::INFO(exss.str());
+      LOG_INFO(exss.str());
     }
   }
 
@@ -329,7 +329,7 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
        << "It leads to the loading of an invalid scene part, which is "
           "automatically ignored when composing the scene."
        << std::endl;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     return false;
   }
   return true;
@@ -380,27 +380,27 @@ XmlSceneLoader::makeKDTreeFactory()
     kdtGeomJobs = kdtNumJobs;
 
   if (kdtFactoryType == 1) { // Simple
-    logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeSimpleMultiThread(kdtNumJobs, kdtGeomJobs);
     }
     return KDTreeFactoryMaker::makeSimple();
   } else if (kdtFactoryType == 2) { // SAH
-    logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeSAHMultiThread(
         kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs);
     }
     return KDTreeFactoryMaker::makeSAH(kdtSAHLossNodes);
   } else if (kdtFactoryType == 3) { // Axis SAH
-    logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeAxisSAHMultiThread(
         kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs);
     }
     return KDTreeFactoryMaker::makeAxisSAH(kdtSAHLossNodes);
   } else if (kdtFactoryType == 4) { // Fast SAH
-    logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeFastSAHMultiThread(
         kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs);

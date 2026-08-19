@@ -5,7 +5,7 @@
 #include <adt/exprtree/UnivarExprTreeStringFactory.h>
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
@@ -23,7 +23,7 @@ XmlSurveyLoader::load(bool legNoiseDisabled)
 {
   tinyxml2::XMLNode* pRoot = doc.FirstChild();
   if (pRoot == nullptr) {
-    logging::ERR("ERROR: xml root not found");
+    LOG_ERR("ERROR: xml root not found");
     return nullptr;
   }
   tinyxml2::XMLElement* surveyNodes =
@@ -32,7 +32,7 @@ XmlSurveyLoader::load(bool legNoiseDisabled)
     std::stringstream ss;
     ss << "XML Survey playback loader: "
        << "ERROR: No survey elements found in file " << this->xmlDocFilename;
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
     return nullptr;
   }
 
@@ -76,7 +76,7 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement* surveyNode,
   } catch (const std::exception& e) {
     std::stringstream ss;
     ss << "Failed to load scene '" << sceneString << "': " << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw; // Re-throw to propagate the error properly
   }
   SpectralLibrary spectralLibrary = SpectralLibrary(
@@ -195,11 +195,11 @@ XmlSurveyLoader::reinitLoader()
 std::shared_ptr<Scene>
 XmlSurveyLoader::loadScene(std::string sceneString)
 {
-  logging::INFO("Loading Scene...");
+  LOG_INFO("Loading Scene...");
   if (sceneString.empty()) {
     std::stringstream ss;
     ss << "ERROR: Empty scene string provided";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
   std::shared_ptr<Scene> scene;
@@ -211,28 +211,28 @@ XmlSurveyLoader::loadScene(std::string sceneString)
     if (scene == nullptr) {
       std::stringstream ss;
       ss << "ERROR: Cannot load scene from string: " << sceneString;
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
     scene->buildKDGroveWithLog();
   } catch (std::exception& e) {
     std::stringstream ss;
     ss << "EXCEPTION at XmlSurveyLoader::loadScene:\n\t" << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw;
   } catch (...) {
     // Catch any other exceptions that might occur
     std::stringstream ss;
     ss << "UNKNOWN EXCEPTION at XmlSurveyLoader::loadScene for scene: "
        << sceneString;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
   tw.stop();
   std::stringstream ss;
   ss << "Scene loaded in " << tw.getElapsedDecimalSeconds() << "s";
-  logging::TIME(ss.str());
+  LOG_TIME(ss.str());
 
   return scene;
 }
@@ -259,7 +259,7 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
   if (survey->scanner == nullptr) {
     std::stringstream ss;
     ss << "ERROR: Cannot load scanner from location: " << scannerAssetLocation;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -273,7 +273,7 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
     std::stringstream ss;
     ss << "ERROR: Cannot load platform from location: "
        << platformAssetLocation;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
   // Load fullwave form
@@ -292,7 +292,7 @@ XmlSurveyLoader::loadSurveyCore(tinyxml2::XMLElement* surveyNode,
     std::stringstream ss;
     ss << "XMLSurveyLoader::loadSurveyCore "
        << "ERROR: Sim speed can't be <= 0. Setting it to 1.";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
     speed = 1.0;
   }
   survey->simSpeedFactor = 1.0 / speed;
@@ -393,8 +393,8 @@ XmlSurveyLoader::loadLegs(tinyxml2::XMLElement* legNodes,
     if (trajInterp != nullptr) {
       // Validate leg
       if (leg->mTrajectorySettings == nullptr) {
-        logging::ERR("XmlSurveyLoader::loadLegs failed because a leg without "
-                     "trajectory settings could not be interpolated");
+        LOG_ERR("XmlSurveyLoader::loadLegs failed because a leg without "
+                "trajectory settings could not be interpolated");
         throw HeliosException(
           "XmlSurveyLoader::loadLegs failed because a leg without "
           "trajectory settings could not be interpolated");
@@ -520,7 +520,7 @@ XmlSurveyLoader::configureDefaultRandomnessGenerator(
     if (seed != "AUTO") {
       stringstream ss;
       ss << "survey seed: " << seed;
-      logging::INFO(ss.str());
+      LOG_INFO(ss.str());
       DEFAULT_RG = std::unique_ptr<RandomnessGenerator<double>>(
         new RandomnessGenerator<double>(seed));
       DEFAULT_RG_MODIFIED_FLAG = true;
@@ -594,7 +594,7 @@ XmlSurveyLoader::integrateSurveyAndLegs(std::shared_ptr<Survey> survey)
            << leg->mScannerSettings->scanFreq_Hz << " and "
            << "headRotatePerSec_rad = "
            << leg->mScannerSettings->headRotatePerSec_rad << ".";
-        logging::INFO(ss.str());
+        LOG_INFO(ss.str());
       }
     }
   }
@@ -620,7 +620,7 @@ XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey)
         << "Please update either the requested scanning "
         << "frequency (potentially via the requested scan resolution) "
         << "or the scanner specification.";
-      logging::ERR(s.str());
+      LOG_ERR(s.str());
       throw HeliosException(s.str());
     }
     // Check scanFreq_Hz is not above the maximum threshold
@@ -637,7 +637,7 @@ XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey)
         << "Please update either the requested scanning "
         << "frequency (potentially via the requested scan resolution) "
         << "or the scanner specification.";
-      logging::ERR(s.str());
+      LOG_ERR(s.str());
       throw HeliosException(s.str());
     }
   }

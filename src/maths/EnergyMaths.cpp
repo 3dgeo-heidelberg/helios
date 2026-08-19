@@ -1,6 +1,6 @@
 #include <EnergyMaths.h>
 #include <util/HeliosException.h>
-#include <util/logger/logging.hpp>
+#include <util/logger/logger_core.hpp>
 
 // ***  EMITTED / RECEIVED POWER  *** //
 // ********************************** //
@@ -185,7 +185,7 @@ EnergyMaths::computeBDRF(Material const& mat, double const incidenceAngle)
   // Not acceptable lighting model
   std::stringstream ss;
   ss << "Unexpected lighting model for material \"" << mat.name << "\"";
-  logging::ERR(ss.str());
+  LOG_ERR(ss.str());
   throw HeliosException("Unexpected lighting model.");
 }
 
