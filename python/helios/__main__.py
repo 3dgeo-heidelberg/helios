@@ -249,15 +249,6 @@ from pathlib import Path
 def cli(**kw):
     """Runs a single Helios++ survey specified in SURVEY_FILE_PATH"""
 
-    for asset in kw["assets"]:
-        add_asset_directory(asset)
-
-    seed = kw.get("seed")
-    if seed is not None:
-        set_rng_seed(seed)
-    else:
-        set_rng_seed()
-
     verbosity = LogVerbosity.DEFAULT
     if kw.get("verbose") == 1:
         verbosity = LogVerbosity.VERBOSE
@@ -304,7 +295,8 @@ def cli(**kw):
         for asset in kw["assets"]:
             add_asset_directory(asset)
 
-        if seed := kw.get("seed") is not None:
+        seed = kw.get("seed")
+        if seed is not None:
             set_rng_seed(seed)
         else:
             set_rng_seed()
