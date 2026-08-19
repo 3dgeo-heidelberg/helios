@@ -323,21 +323,21 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
     while (filter != nullptr && !foundPath) {
       tinyxml2::XMLElement* param = filter->FirstChildElement("param");
       while (param != nullptr && !foundPath) {
-        if (!XmlUtils::hasAttribute(param, "key"))
-          continue;
-        std::string key = param->Attribute("key");
-        bool const isFilePath = key == "filepath";
-        bool const isEFilePath = key == "efilepath";
-        if (isFilePath || isEFilePath) {
-          const char* value = param->Attribute("value");
-          if (value != nullptr) {
-            path = value;
-          }
+        if (XmlUtils::hasAttribute(param, "key")) {
+          std::string key = param->Attribute("key");
+          bool const isFilePath = key == "filepath";
+          bool const isEFilePath = key == "efilepath";
+          if (isFilePath || isEFilePath) {
+            const char* value = param->Attribute("value");
+            if (value != nullptr) {
+              path = value;
+            }
 
-          if (isEFilePath)
-            pathType = "extended path expression";
-          foundPath = true;
-          break;
+            if (isEFilePath)
+              pathType = "extended path expression";
+            foundPath = true;
+            break;
+          }
         }
         param = param->NextSiblingElement("param");
       }
