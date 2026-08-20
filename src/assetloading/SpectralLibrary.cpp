@@ -124,7 +124,8 @@ SpectralLibrary::readReflectances()
 void
 SpectralLibrary::setReflectances(Scene* scene)
 {
-  std::set<std::string> matsMissing;
+  std::set<std::string> materialsWithoutSpectra;
+  std::set<std::string> spectraMissingFromLibrary;
 
   for (Primitive* prim : scene->primitives) {
     if (!isnan(prim->material->reflectance)) {
@@ -135,11 +136,15 @@ SpectralLibrary::setReflectances(Scene* scene)
       defaultReflectance; // otherwise, set the default reflectance
 
     if (prim->material->spectra.empty()) {
-      if (matsMissing.find(prim->material->spectra) == matsMissing.end()) {
-        matsMissing.insert(prim->material->spectra);
-        LOG_WARN("Material " + prim->material->name + " of primitive " +
-                 typeid(*prim).name() + " (" + prim->material->matFilePath +
-                 ") has no spectral definition");
+      const std::string& materialKey = prim->material->matFilePath.empty()
+                                         ? prim->material->name
+                                         : prim->material->matFilePath;
+
+      if (materialsWithoutSpectra.insert(materialKey).second) {
+        LOG_WARN("Material '" + prim->material->name + "' (" +
+                 prim->material->matFilePath +
+                 ") has no spectral definition; "
+                 "using default reflectance.");
       }
       continue;
     }
