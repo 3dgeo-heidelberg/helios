@@ -149,20 +149,20 @@ SpectralLibrary::setReflectances(Scene* scene)
       continue;
     }
 
-    if (reflectanceMap.find(prim->material->spectra) == reflectanceMap.end()) {
-      if (matsMissing.find(prim->material->spectra) == matsMissing.end()) {
-        matsMissing.insert(prim->material->spectra);
-        LOG_WARN("Spectra " + prim->material->spectra +
-                 "' referenced by material '" + prim->material->name + " (" +
+    auto it = reflectanceMap.find(prim->material->spectra);
+
+    if (it == reflectanceMap.end()) {
+      if (spectraMissingFromLibrary.insert(prim->material->spectra).second) {
+        LOG_WARN("Spectrum '" + prim->material->spectra +
+                 "' referenced by material '" + prim->material->name + "' (" +
                  prim->material->matFilePath +
-                 ") is not in the spectral library"
+                 ") was not found in the spectral library; "
                  "using default reflectance.");
       }
       continue;
     }
 
-    prim->material->reflectance =
-      reflectanceMap.find(prim->material->spectra)->second;
+    prim->material->reflectance = it->second;
     prim->material->setSpecularity();
   }
 }
