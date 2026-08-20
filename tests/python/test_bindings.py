@@ -35,7 +35,7 @@ def test_checked_dynamic_scene_loader_rejects_static_xml():
 def test_checked_dynamic_scene_loader_rejects_null_result(tmp_path):
     missing_scene = tmp_path / "missing.xml"
 
-    with pytest.raises(_helios.HeliosException, match="failed to load a scene"):
+    with pytest.raises(_helios.HeliosException, match="Failed to load XML file"):
         _helios.read_dynamic_scene_from_xml(str(missing_scene), ["."], False)
 
 

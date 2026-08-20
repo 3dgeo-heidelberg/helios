@@ -1,5 +1,5 @@
-#include "logging.hpp"
 #include <HeliosException.h>
+#include <logger_core.hpp>
 #include <scanner/MultiScanner.h>
 #include <scanner/SingleScanner.h>
 
@@ -66,18 +66,18 @@ XmlAssetsLoader::XmlAssetsLoader(std::string& filePath,
     std::stringstream ss;
     ss << "Provided filepath was not found among the asset directories: "
        << filePath;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
   xmlDocFilename = xmlFile.filename().string();
   xmlDocFilePath = xmlFile.parent_path().string();
-  logging::INFO("xmlDocFilename: " + xmlDocFilename);
-  logging::INFO("xmlDocFilePath: " + xmlDocFilePath);
+  LOG_INFO("xmlDocFilename: " + xmlDocFilename);
+  LOG_INFO("xmlDocFilePath: " + xmlDocFilePath);
 
   tinyxml2::XMLError result = doc.LoadFile(xmlFile.string().c_str());
   if (result != tinyxml2::XML_SUCCESS) {
-    logging::ERR("ERROR: loading " + filePath + " failed.");
+    LOG_ERR("ERROR: loading " + filePath + " failed.");
     throw HeliosException("ERROR: loading " + filePath + " failed.");
   }
 
@@ -92,7 +92,6 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
                                     void* extraOutput)
 {
   if (assetNode == nullptr) {
-    logging::ERR("ERROR: Asset definition XML node is null!");
     throw HeliosException("Asset definition XML node is null!");
   }
 
@@ -114,10 +113,12 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
     result =
       std::dynamic_pointer_cast<Asset>(createFWFSettingsFromXml(assetNode));
   } else {
-    logging::ERR("ERROR: Unknown asset type: " + type);
     throw HeliosException("Unknown asset type: " + type);
   }
 
+  if (result == nullptr) {
+    throw HeliosException("Failed to create asset of type: " + type);
+  }
   // Read "asset" properties:
   result->id =
     XmlUtils::getAttributeCast<std::string>(assetNode, "id", std::string(""));
@@ -140,7 +141,6 @@ XmlAssetsLoader::createProceduralAssetFromXml(std::string const& type,
     result = std::dynamic_pointer_cast<Asset>(
       procedurallyCreatePlatformFromXml(type, id));
   } else {
-    logging::ERR("ERROR: Unknown procedurally created asset type: " + type);
     throw HeliosException("Unknown procedurally created asset type: " + type);
   }
   return result;
@@ -162,7 +162,7 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement* platformNode)
   } else if (type.compare("multicopter") == 0) {
     platform = std::shared_ptr<Platform>(new HelicopterPlatform());
   } else {
-    logging::INFO("No platform type specified. Using static platform.");
+    LOG_INFO("No platform type specified. Using static platform.");
   }
 
   // Read SimplePhysicsPlatform related stuff
@@ -211,8 +211,8 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement* platformNode)
     platform->cfg_device_relativeMountAttitude =
       XmlUtils::createRotationFromXml(scannerMountNode);
   } catch (std::exception& e) {
-    logging::WARN(std::string("No scanner orientation defined.\nEXCEPTION: ") +
-                  e.what());
+    LOG_WARN(std::string("No scanner orientation defined.\nEXCEPTION: ") +
+             e.what());
   }
 
   // ########## BEGIN Read Platform noise specification ##########
@@ -222,21 +222,21 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement* platformNode)
     platform->positionXNoiseSource =
       XmlUtils::createNoiseSource(positionXNoise);
   } else
-    logging::DEBUG("No default platform position X noise was specified");
+    LOG_DEBUG("No default platform position X noise was specified");
   tinyxml2::XMLElement* positionYNoise =
     platformNode->FirstChildElement("positionYNoise");
   if (positionYNoise != nullptr) {
     platform->positionYNoiseSource =
       XmlUtils::createNoiseSource(positionYNoise);
   } else
-    logging::DEBUG("No default platform position Y noise was specified");
+    LOG_DEBUG("No default platform position Y noise was specified");
   tinyxml2::XMLElement* positionZNoise =
     platformNode->FirstChildElement("positionZNoise");
   if (positionZNoise != nullptr) {
     platform->positionZNoiseSource =
       XmlUtils::createNoiseSource(positionZNoise);
   } else
-    logging::DEBUG("No default platform position Z noise was specified");
+    LOG_DEBUG("No default platform position Z noise was specified");
 
   tinyxml2::XMLElement* attitudeXNoise =
     platformNode->FirstChildElement("attitudeXNoise");
@@ -244,21 +244,21 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement* platformNode)
     platform->attitudeXNoiseSource =
       XmlUtils::createNoiseSource(attitudeXNoise);
   } else
-    logging::DEBUG("No default platform attitude X noise was specified");
+    LOG_DEBUG("No default platform attitude X noise was specified");
   tinyxml2::XMLElement* attitudeYNoise =
     platformNode->FirstChildElement("attitudeYNoise");
   if (attitudeYNoise != nullptr) {
     platform->attitudeYNoiseSource =
       XmlUtils::createNoiseSource(attitudeYNoise);
   } else
-    logging::DEBUG("No default platform attitude Y noise was specified");
+    LOG_DEBUG("No default platform attitude Y noise was specified");
   tinyxml2::XMLElement* attitudeZNoise =
     platformNode->FirstChildElement("attitudeZNoise");
   if (attitudeZNoise != nullptr) {
     platform->attitudeZNoiseSource =
       XmlUtils::createNoiseSource(attitudeZNoise);
   } else
-    logging::DEBUG("No default platform attitude Z noise was specified");
+    LOG_DEBUG("No default platform attitude Z noise was specified");
 
   // ########## END Read Platform noise specification ##########
 
@@ -311,7 +311,7 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
          << "Platform settings template specified in line "
          << node->GetLineNum() << "\nnot found: '"
          << "Using hard-coded defaults instead.";
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
   }
 
@@ -337,8 +337,8 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
     node, "smoothTurn", template1->smoothTurn, defaultPlatformSettingsMsg);
 
   if (settings->stopAndTurn && settings->smoothTurn) {
-    logging::INFO("Both stopAndTurn and smoothTurn have been set to true. "
-                  "Setting stopAndTurn to false.");
+    LOG_INFO("Both stopAndTurn and smoothTurn have been set to true. "
+             "Setting stopAndTurn to false.");
     settings->stopAndTurn = false;
   }
 
@@ -379,7 +379,7 @@ XmlAssetsLoader::procedurallyCreatePlatformFromXml(std::string const& type,
   if (id == "interpolated")
     return createInterpolatedMovingPlatform();
   else {
-    logging::ERR("Unexpected procedurally creatable platform type: " + type);
+    LOG_ERR("Unexpected procedurally creatable platform type: " + type);
     throw HeliosException("Unexpected procedurally creatable platform type: " +
                           type);
   }
@@ -412,8 +412,8 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
   double startTime = 0.0;
   bool syncGPSTime = false;
   if (leg == nullptr) {
-    logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
-                 "There is no leg in the Survey XML document");
+    LOG_ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+            "There is no leg in the Survey XML document");
     throw HeliosException(
       "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
       "There is no leg in the Survey XML document");
@@ -424,15 +424,15 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
     tinyxml2::XMLElement* ps = leg->FirstChildElement("platformSettings");
     // Validate platform settings
     if (ps == nullptr) {
-      logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
-                   "There is no platformSettings in the leg");
+      LOG_ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+              "There is no platformSettings in the leg");
       throw HeliosException(
         "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
         "There is no platformSettings in the leg");
     }
     if (!XmlUtils::hasAttribute(ps, "trajectory")) {
-      logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
-                   "The platformSettings element has no trajectory attribute");
+      LOG_ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+              "The platformSettings element has no trajectory attribute");
       throw HeliosException(
         "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
         "The platformSettings element has no trajectory attribute");
@@ -457,7 +457,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
              << "failed.\n"
              << "Unexpected interpolation domain: \"" << interpolationDomain
              << "\"";
-          logging::ERR(ss.str());
+          LOG_ERR(ss.str());
           throw HeliosException(ss.str());
         }
         interpDom = interpolationDomain;
@@ -469,7 +469,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
            << "was first specified.\n"
            << "But then, interpolation domain \"" << interpolationDomain
            << "\" was given.";
-        logging::ERR(ss.str());
+        LOG_ERR(ss.str());
         throw HeliosException(ss.str());
       }
       firstInterpDom = false;
@@ -483,10 +483,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
         XmlUtils::hasAttribute(ps, "yIndex") ||
         XmlUtils::hasAttribute(ps, "zIndex")) {
       if (indices.find(trajectoryPath) != indices.end()) {
-        logging::ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed."
-                     "\nIndices were specified more than once for the same "
-                     "trajectory:\n\"" +
-                     trajectoryPath + "\"");
+        LOG_ERR("XmlAssetsLoader::createInterpolatedMovingPlatform failed."
+                "\nIndices were specified more than once for the same "
+                "trajectory:\n\"" +
+                trajectoryPath + "\"");
         throw HeliosException(
           "XmlAssetsLoader::createInterpolatedMovingPlatform failed."
           "\nIndices were specified more than once for the same "
@@ -534,7 +534,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
         "Trajectory file \"" +
         trajectoryPath +
         "\" was not found in asset directories or as a direct path";
-      logging::ERR(msg);
+      LOG_ERR(msg);
       throw HeliosException(msg);
     }
 
@@ -567,10 +567,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                        names[i] == "yaw")
                 ; // Ignore roll pitch yaw in position mode
               else {
-                logging::ERR("XmlAssetsLoader::createInterpolated"
-                             "MovingPlatform failed\n"
-                             "Unexpected column \"" +
-                             names[i] + "\"");
+                LOG_ERR("XmlAssetsLoader::createInterpolated"
+                        "MovingPlatform failed\n"
+                        "Unexpected column \"" +
+                        names[i] + "\"");
                 throw HeliosException("XmlAssetsLoader::createInterpolated"
                                       "MovingPlatform failed\n"
                                       "Unexpected column \"" +
@@ -595,10 +595,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
               else if (names[i] == "z")
                 inds[5] = i;
               else {
-                logging::ERR("XmlAssetsLoader::createInterpolated"
-                             "MovingPlatform failed\n"
-                             "Unexpected column \"" +
-                             names[i] + "\"");
+                LOG_ERR("XmlAssetsLoader::createInterpolated"
+                        "MovingPlatform failed\n"
+                        "Unexpected column \"" +
+                        names[i] + "\"");
                 throw HeliosException("XmlAssetsLoader::createInterpolated"
                                       "MovingPlatform failed\n"
                                       "Unexpected column \"" +
@@ -622,7 +622,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
           std::stringstream ss;
           ss << "Slope filter removed " << filteredPoints << " "
              << "points from \"" + trajectoryPath + "\"";
-          logging::DEBUG(ss.str());
+          LOG_DEBUG(ss.str());
         }
       } else {
         // Not first loaded, so merge with previous data
@@ -653,10 +653,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
                        names[i] == "yaw")
                 ; // Ignore roll pitch yaw in position mode
               else {
-                logging::ERR("XmlAssetsLoader::createInterpolated"
-                             "MovingPlatform failed\n"
-                             "Unexpected column \"" +
-                             names[i] + "\"");
+                LOG_ERR("XmlAssetsLoader::createInterpolated"
+                        "MovingPlatform failed\n"
+                        "Unexpected column \"" +
+                        names[i] + "\"");
                 throw HeliosException("XmlAssetsLoader::createInterpolated"
                                       "MovingPlatform failed\n"
                                       "Unexpected column \"" +
@@ -681,10 +681,10 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
               else if (names[i] == "z")
                 inds[5] = i;
               else {
-                logging::ERR("XmlAssetsLoader::createInterpolated"
-                             "MovingPlatform failed\n"
-                             "Unexpected column \"" +
-                             names[i] + "\"");
+                LOG_ERR("XmlAssetsLoader::createInterpolated"
+                        "MovingPlatform failed\n"
+                        "Unexpected column \"" +
+                        names[i] + "\"");
                 throw HeliosException("XmlAssetsLoader::createInterpolated"
                                       "MovingPlatform failed\n"
                                       "Unexpected column \"" +
@@ -742,7 +742,7 @@ XmlAssetsLoader::createInterpolatedMovingPlatform()
     std::stringstream ss;
     ss << "XmlAssetsLoader::createInterpolatedMovingPlatform got an "
        << "unexpected rotation specification: \"" << rotspec << "\"";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -800,8 +800,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
     // Read relative orientation of the scanner mount on the platform:
     emitterAttitude = XmlUtils::createRotationFromXml(emitterNode);
   } catch (std::exception& e) {
-    logging::WARN(std::string("No scanner orientation defined.\n") +
-                  "EXCEPTION: " + e.what());
+    LOG_WARN(std::string("No scanner orientation defined.\n") +
+             "EXCEPTION: " + e.what());
   }
   // ############ END Read emitter position and orientation ############
 
@@ -1052,7 +1052,7 @@ XmlAssetsLoader::createBeamDeflectorFromXml(tinyxml2::XMLElement* scannerNode)
   if (beamDeflector == nullptr) {
     std::stringstream ss;
     ss << "ERROR: Unknown beam deflector type: '" << str_opticsType << "'";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -1089,7 +1089,7 @@ XmlAssetsLoader::createScannerHeadFromXml(tinyxml2::XMLElement* scannerNode)
        << "<headRotateAxis> of <scanner> element at line "
        << scannerNode->GetLineNum()
        << ". Using default.\nEXCEPTION: " << e.what();
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
   double headRotatePerSecMax_rad =
     MathConverter::degreesToRadians(XmlUtils::getAttributeCast<double>(
@@ -1162,7 +1162,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
          << "WARNING: Scanner settings template specified in line "
          << node->GetLineNum() << " not found: '"
          << "Using hard-coded defaults instead.";
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
   }
 
@@ -1192,9 +1192,9 @@ XmlAssetsLoader::createScannerSettingsFromXml(
     // rotation speed is positive:
     if (hrStop_rad < settings->headRotateStart_rad &&
         settings->headRotatePerSec_rad > 0) {
-      logging::ERR(std::string("XML Assets Loader: Error: ") +
-                   "Head Rotation Stop angle must be larger than start angle " +
-                   "if rotation speed is positive!");
+      LOG_ERR(std::string("XML Assets Loader: Error: ") +
+              "Head Rotation Stop angle must be larger than start angle " +
+              "if rotation speed is positive!");
       throw HeliosException(
         std::string("XML Assets Loader: Error: ") +
         "Head Rotation Stop angle must be larger than start " +
@@ -1205,10 +1205,9 @@ XmlAssetsLoader::createScannerSettingsFromXml(
     // rotation speed is negative:
     if (hrStop_rad > settings->headRotateStart_rad &&
         settings->headRotatePerSec_rad < 0) {
-      logging::ERR(
-        std::string("XML Assets Loader: Error: ") +
-        "Head Rotation Stop angle must be smaller than start angle if " +
-        "rotation speed is negative!");
+      LOG_ERR(std::string("XML Assets Loader: Error: ") +
+              "Head Rotation Stop angle must be smaller than start angle if " +
+              "rotation speed is negative!");
       throw HeliosException(
         std::string("XML Assets Loader: Error: ") +
         "Head Rotation Stop angle must be smaller than start " +
@@ -1264,7 +1263,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
       try {
         settings->maxDuration_s = std::stod(maxDurationNode->GetText());
       } catch (std::exception const& e) {
-        logging::WARN(
+        LOG_WARN(
           std::string(
             "XML Assets Loader: Failed to parse <maxDuration_s> at line ") +
           std::to_string(maxDurationNode->GetLineNum()) + ": " + e.what());
@@ -1393,7 +1392,7 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         ss << "Failed to find beamOrigin (x, y, z) in channel " << idx
            << ".\nEXCEPTION:\n"
            << hex.what();
-        logging::WARN(ss.str());
+        LOG_WARN(ss.str());
       }
       // Check beam attitude
       try {
@@ -1404,7 +1403,7 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         ss << "Failed to find beamAttitude (q0, q1, q2, q3) in "
            << "channel " << idx << ".\nEXCEPTION:\n"
            << hex.what();
-        logging::WARN(ss.str());
+        LOG_WARN(ss.str());
       }
     }
     // Check full waveform settings update
@@ -1495,7 +1494,7 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
             ss << "Failed to parse <incidentBeam> in channel " << idx
                << ".\nEXCEPTION:\n"
                << hex.what();
-            logging::WARN(ss.str());
+            LOG_WARN(ss.str());
           }
         }
 
@@ -1626,10 +1625,7 @@ XmlAssetsLoader::getAssetById(std::string type,
 {
   std::string errorMsg = "# DEF ERR MSG #";
   if (type.empty() || id.empty()) {
-    std::stringstream ss;
-    ss << "ERROR: Invalid asset type or id for " << type << ":" << id;
-    logging::ERR(ss.str());
-    throw HeliosException(ss.str());
+    throw HeliosException("Invalid asset type or id for " + type + ":" + id);
   }
 
   XmlUtils::assertDocumentForAssetLoading(doc,
@@ -1661,18 +1657,17 @@ XmlAssetsLoader::getAssetById(std::string type,
        << FileUtils::pathSeparator << this->xmlDocFilename << "#" << id
        << "\nExecution aborted!";
     errorMsg = ss.str();
-    logging::ERR(errorMsg);
-    throw HeliosException(errorMsg);
-
+    throw HeliosException(ss.str());
+  } catch (const HeliosException&) {
+    throw;
   } catch (const std::exception& e) {
     std::stringstream ss;
-    ss << "ERROR: Failed to read " << type
+    ss << "Failed to read " << type
        << " asset definition: " << this->xmlDocFilePath
        << FileUtils::pathSeparator << this->xmlDocFilename << "#" << id
        << "\nEXCEPTION: " << e.what() << "\nExecution aborted!";
-    errorMsg = ss.str();
-    logging::ERR(errorMsg);
-    throw HeliosException(errorMsg);
+
+    throw HeliosException(ss.str());
   }
 }
 
@@ -1684,21 +1679,22 @@ XmlAssetsLoader::getAssetByLocation(std::string type,
   std::vector<std::string> vec;
   boost::split(vec, location, boost::is_any_of("#"));
   XmlAssetsLoader* loader = this;
+  std::unique_ptr<XmlAssetsLoader> externalLoader;
   std::string id = vec[0].erase(vec[0].find_last_not_of("#") + 1);
   bool freeLoader = false;
 
   // External document location provided:
   if (vec.size() == 2) {
-    loader = new XmlAssetsLoader(id, assetsDir);
-    loader->sceneLoader = sceneLoader;
+    externalLoader = std::make_unique<XmlAssetsLoader>(id, assetsDir);
+
+    externalLoader->sceneLoader = sceneLoader;
+
+    loader = externalLoader.get();
+
     id = vec[1].erase(vec[1].find_last_not_of('#') + 1);
-    freeLoader = true;
   }
 
-  std::shared_ptr<Asset> asset = loader->getAssetById(type, id, extraOutput);
-  if (freeLoader)
-    delete loader;
-  return asset;
+  return loader->getAssetById(type, id, extraOutput);
 }
 
 // ***  UTIL METHODS  *** //

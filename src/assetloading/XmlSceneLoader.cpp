@@ -9,7 +9,7 @@
 #include <XmlUtils.h>
 #include <scene/dynamic/DynScene.h>
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <memory>
@@ -79,13 +79,12 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
   std::stringstream ss;
   ss << std::to_string(scenePartCounter) << " sceneparts loaded in "
      << tw.getElapsedDecimalSeconds() << "s\n";
-  logging::TIME(ss.str());
+  LOG_TIME(ss.str());
 
   // Set KDGrove factory and finish scene loading
   scene->setKDGroveFactory(nullptr); // Prevent building before serializing
   bool success = scene->finalizeLoading();
   if (!success) {
-    logging::ERR("Finalizing the scene failed.");
     throw HeliosException("Finalizing the scene failed.");
   }
   // Dynamic scenes rebuild their KD-trees repeatedly during playback. Use the
@@ -116,37 +115,49 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
     scenePartNode->FirstChildElement("filter");
   while (filterNodes != nullptr) {
     // Load the filter
-    std::string filterType = filterNodes->Attribute("type");
+    const char* filterTypeAttr = filterNodes->Attribute("type");
+    if (filterTypeAttr == nullptr || *filterTypeAttr == '\0') {
+      throw HeliosException(
+        "Scene filter is missing required 'type' attribute.");
+    }
+
+    std::string filterType(filterTypeAttr);
     AbstractGeometryFilter* filter =
       loadFilter(filterNodes, holistic, scenePart);
     // Apply the filter
     if (filter != nullptr) {
-      // Set params:
       filter->setAssetsDir(assetsDir);
       filter->params = XmlUtils::createParamsFromXml(filterNodes);
-      logging::DEBUG("Applying filter: " + filterType);
+      LOG_DEBUG("Applying filter: " + filterType);
       scenePart = filter->run();
-      // Load the sawps now so their baseline is defined from the raw
-      // geometry with no transformation filters (e.g., scales or rotations)
+      if (scenePart == nullptr) {
+        delete filter;
+        throw HeliosException("Scene filter '" + filterType +
+                              "' failed to produce a scene part.");
+      }
+
       if (XmlUtils::isGeometryLoadingFilter(filter) &&
           scenePartNode->FirstChildElement("swap") != nullptr) {
         if (scenePart->sorh != nullptr) {
-          std::stringstream ss;
-          ss << "XmlSceneLoader::loadFilters found a geometry "
-                "loading filter when a SwapOnRepeatHandler has "
-                "already been built.";
-          logging::ERR(ss.str());
-          throw HeliosException(ss.str());
+          delete filter;
+          throw HeliosException("Geometry loading filter encountered after "
+                                "SwapOnRepeatHandler was already built.");
         }
+
         scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
       }
-      // Delete the filter (not used anymore)
+
       if (scenePart == filter->primsOut)
         filter->primsOut = nullptr;
+
       delete filter;
     }
 
     filterNodes = filterNodes->NextSiblingElement("filter");
+  }
+
+  if (scenePart == nullptr) {
+    throw HeliosException("Scene part contains no usable geometry filter.");
   }
   // ############## END Loop over filter nodes ##################
   return std::shared_ptr<ScenePart>(scenePart);
@@ -157,7 +168,12 @@ XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
                            bool& holistic,
                            ScenePart* scenePart)
 {
-  std::string filterType = filterNode->Attribute("type");
+  const char* filterTypeAttr = filterNode->Attribute("type");
+  if (filterTypeAttr == nullptr || *filterTypeAttr == '\0') {
+    throw HeliosException("Scene filter is missing required 'type' attribute.");
+  }
+
+  std::string filterType(filterTypeAttr);
 
   std::transform(
     filterType.begin(), filterType.end(), filterType.begin(), ::tolower);
@@ -201,6 +217,9 @@ XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
     filter = new DetailedVoxelLoader();
   }
   // ################### END Set up filter ##################
+  else {
+    throw HeliosException("Unknown scene filter type: " + filterType);
+  }
 
   filter->setAssetsDir(assetsDir);
 
@@ -274,7 +293,7 @@ XmlSceneLoader::loadScenePartId(tinyxml2::XMLElement* scenePartNode,
            << "Caution! "
            << "This is not compatible with LAS format specification"
            << std::endl;
-      logging::INFO(exss.str());
+      LOG_WARN(exss.str());
     }
   }
 
@@ -304,17 +323,21 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
     while (filter != nullptr && !foundPath) {
       tinyxml2::XMLElement* param = filter->FirstChildElement("param");
       while (param != nullptr && !foundPath) {
-        if (!XmlUtils::hasAttribute(param, "key"))
-          continue;
-        std::string key = param->Attribute("key");
-        bool const isFilePath = key == "filepath";
-        bool const isEFilePath = key == "efilepath";
-        if (isFilePath || isEFilePath) {
-          path = param->Attribute("value");
-          if (isEFilePath)
-            pathType = "extended path expression";
-          foundPath = true;
-          break;
+        if (XmlUtils::hasAttribute(param, "key")) {
+          std::string key = param->Attribute("key");
+          bool const isFilePath = key == "filepath";
+          bool const isEFilePath = key == "efilepath";
+          if (isFilePath || isEFilePath) {
+            const char* value = param->Attribute("value");
+            if (value != nullptr) {
+              path = value;
+            }
+
+            if (isEFilePath)
+              pathType = "extended path expression";
+            foundPath = true;
+            break;
+          }
         }
         param = param->NextSiblingElement("param");
       }
@@ -329,7 +352,8 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
        << "It leads to the loading of an invalid scene part, which is "
           "automatically ignored when composing the scene."
        << std::endl;
-    logging::ERR(ss.str());
+    LOG_WARN(ss.str());
+
     return false;
   }
   return true;
@@ -380,27 +404,27 @@ XmlSceneLoader::makeKDTreeFactory()
     kdtGeomJobs = kdtNumJobs;
 
   if (kdtFactoryType == 1) { // Simple
-    logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeSimpleMultiThread(kdtNumJobs, kdtGeomJobs);
     }
     return KDTreeFactoryMaker::makeSimple();
   } else if (kdtFactoryType == 2) { // SAH
-    logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeSAHMultiThread(
         kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs);
     }
     return KDTreeFactoryMaker::makeSAH(kdtSAHLossNodes);
   } else if (kdtFactoryType == 3) { // Axis SAH
-    logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeAxisSAHMultiThread(
         kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs);
     }
     return KDTreeFactoryMaker::makeAxisSAH(kdtSAHLossNodes);
   } else if (kdtFactoryType == 4) { // Fast SAH
-    logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
+    LOG_DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
     if (kdtNumJobs > 1) {
       return KDTreeFactoryMaker::makeFastSAHMultiThread(
         kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs);

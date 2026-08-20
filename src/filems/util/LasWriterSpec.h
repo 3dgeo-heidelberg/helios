@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <laswriter.hpp>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <memory>
 #include <sstream>
@@ -265,7 +265,7 @@ public:
     } catch (std::exception& e) {
       std::stringstream ss;
       ss << "LasSyncFileWriter failed.\n\tEXCEPTION: " << e.what();
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
 
     lwHeader.update_extra_bytes_vlr();

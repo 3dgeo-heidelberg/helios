@@ -4,7 +4,7 @@
 #include <Vertex.h>
 #include <boost/variant/get.hpp>
 #include <fstream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <ogrsf_frmts.h>
 #include <sstream>
 // ***  R U N  *** //
@@ -21,7 +21,7 @@ GeoTiffFileLoader::run()
 
   std::stringstream ss;
   ss << "Reading 3D model from GeoTiff file '" << filePathString << "'...";
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
   ss.str("");
 
   std::fstream file;
@@ -57,7 +57,7 @@ GeoTiffFileLoader::run()
     ss << "File (" << filePathString << ") could not be successfully read."
        << "\n\tException: " << e.what() << "\n"
        << "Aborting load attempt.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -85,7 +85,7 @@ GeoTiffFileLoader::obtainCRS(GDALDataset* tiff)
     ss << "WARNING (GeoTiffFileLoader.run):\n\t"
        << "No coordinate reference system was available.\n\t"
           "Using default one. ";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 }
 
@@ -122,12 +122,12 @@ GeoTiffFileLoader::obtainEnvelope(GDALDataset* tiff)
     if (layer->GetExtent(env, true) != OGRERR_NONE) {
       ss << "ERROR at GeoTiffFileLoader::run when "
          << "retrieving envelope from layer.";
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
     ss << "WARNING! Unexpected secenario at GeoTiffFileLoader when "
        << "obtaining envelope";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   } else { // Envelope from GeoTransform
     double transform[6];
     tiff->GetGeoTransform(transform);
@@ -151,7 +151,7 @@ GeoTiffFileLoader::obtainEnvelope(GDALDataset* tiff)
        << "because a layer-based one was not found.\n"
        << "\t(x,y) boundaries go from (" << env->MinX << "," << env->MinY
        << ") to (" << env->MaxX << "," << env->MaxY << ")";
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
     ss.str("");
   }
   minx = env->MinX;
@@ -167,7 +167,7 @@ GeoTiffFileLoader::obtainEnvelope(GDALDataset* tiff)
      << "\tenvelope dimensions " << width << " x " << height << "\n"
      << "\traster dimensions " << rasterWidth << " x " << rasterHeight << "\n"
      << "\tpixel dimension " << pixelWidth << " x " << pixelHeight;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
@@ -198,7 +198,7 @@ GeoTiffFileLoader::fillVertices()
         std::stringstream ss;
         ss << "Raster failure at GeoTiffFileLoader::filVertices\n\t"
            << "(" << x << ", " << y << ")" << std::endl;
-        logging::WARN(ss.str());
+        LOG_WARN(ss.str());
       }
       if (std::abs(z - nodata) < eps) {
         v = nullptr;

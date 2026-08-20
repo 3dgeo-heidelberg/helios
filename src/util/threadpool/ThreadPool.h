@@ -16,7 +16,7 @@
 // --- Include boost ASIO preventing windows conflicts
 #include <boost/function.hpp>
 #include <boost/thread.hpp>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <sstream>
 
 /**

@@ -10,7 +10,7 @@
 
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 
 std::shared_ptr<KDTreeFactory>
@@ -113,7 +113,7 @@ readObjScenePart(std::string filePath,
   } catch (const std::exception& e) {
     std::stringstream ss;
     ss << "Failed to read OBJ scene part '" << filePath << "': " << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw;
   }
 }

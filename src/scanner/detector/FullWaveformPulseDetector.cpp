@@ -3,7 +3,6 @@ namespace fs = boost::filesystem;
 
 #include "FullWaveformPulseDetector.h"
 #include <filems/facade/FMSFacade.h>
-#include <logging.hpp>
 
 using namespace std;
 

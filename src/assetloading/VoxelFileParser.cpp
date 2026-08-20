@@ -142,18 +142,19 @@ void
 VoxelFileParser::loadFile(std::vector<std::string>& lines,
                           std::string const& path)
 {
-  std::string line;
+  std::ifstream inFile(path, std::ios::in);
 
-  try {
-    std::ifstream inFile(path, std::ios::in);
-    while (std::getline(inFile, line)) {
-      lines.push_back(line);
-    }
-    inFile.close();
-  } catch (std::exception& ex) {
-    logging::ERR(std::string("VoxelFileParser::loadFile EXCEPTION:\n\t") +
-                 ex.what());
-    throw HeliosException("Could not load file '" + path + "'");
+  if (!inFile.is_open()) {
+    throw HeliosException("Could not open voxel file '" + path + "'.");
+  }
+
+  std::string line;
+  while (std::getline(inFile, line)) {
+    lines.push_back(line);
+  }
+
+  if (inFile.bad()) {
+    throw HeliosException("Failed while reading voxel file '" + path + "'.");
   }
 }
 

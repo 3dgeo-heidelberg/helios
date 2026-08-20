@@ -48,17 +48,22 @@ readSceneFromXml(std::string filePath,
 {
   tinyxml2::XMLDocument doc;
   if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
-    logging::ERR("ERROR: Failed to load XML file " + filePath);
-    return nullptr;
-  }
+    std::stringstream ss;
+    ss << "Failed to load XML file '" << filePath << "'";
 
-  tinyxml2::XMLNode* rootNode = doc.FirstChild();
-  if (!rootNode) {
-    logging::ERR("ERROR: XML root not found in file " + filePath);
-    return nullptr;
+    if (doc.ErrorStr() != nullptr)
+      ss << ": " << doc.ErrorStr();
+
+    if (doc.ErrorLineNum() > 0)
+      ss << " at line " << doc.ErrorLineNum();
+
+    throw HeliosException(ss.str());
   }
 
   tinyxml2::XMLElement* documentElement = doc.FirstChildElement("document");
+  if (documentElement == nullptr) {
+    throw HeliosException("XML <document> root not found in file: " + filePath);
+  }
 
   for (tinyxml2::XMLElement* element = documentElement->FirstChildElement();
        element != nullptr;
@@ -66,13 +71,18 @@ readSceneFromXml(std::string filePath,
     std::string elementName = element->Name();
     if (elementName == "survey") {
 
-      std::string sceneString = element->Attribute("scene");
+      const char* sceneStringAttr = element->Attribute("scene");
+      if (sceneStringAttr == nullptr || *sceneStringAttr == '\0') {
+        throw HeliosException("Survey is missing required 'scene' attribute.");
+      }
+      std::string sceneString(sceneStringAttr);
       XmlSurveyLoader xmlSurveyLoader(filePath, assetsPath);
       xmlSurveyLoader.sceneLoader.kdtFactoryType = 4;
       xmlSurveyLoader.sceneLoader.kdtNumJobs = 0;
       xmlSurveyLoader.sceneLoader.kdtSAHLossNodes = 32;
       return xmlSurveyLoader.loadScene(sceneString);
-    } else if (elementName == "scene") {
+    }
+    if (elementName == "scene") {
       // Load the scene directly from a scene node
       XmlSceneLoader xmlSceneLoader(assetsPath);
       std::shared_ptr<Scene> scene =
@@ -80,12 +90,10 @@ readSceneFromXml(std::string filePath,
       if (buildKDGrove)
         scene->buildKDGroveWithLog();
       return scene;
-    } else {
-      logging::ERR("Error: Failed to create scene from XML");
-      return nullptr;
     }
   }
-  return nullptr;
+  throw HeliosException("Failed to create scene from XML '" + filePath +
+                        "': no <survey> or <scene> element found.");
 }
 
 std::shared_ptr<DynScene>
@@ -121,67 +129,62 @@ readScenePartFromXml(std::string filePath,
 {
   tinyxml2::XMLDocument doc;
   if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
-    logging::ERR("Failed to load file: " + filePath);
-    return nullptr;
+    throw HeliosException("Failed to load XML file '" + filePath +
+                          "': " + doc.ErrorStr());
   }
 
   tinyxml2::XMLElement* root = doc.FirstChildElement("document");
   if (!root) {
-    logging::ERR("Invalid XML structure: Missing <document> root");
-    return nullptr;
+    throw HeliosException("Invalid XML structure: Missing <document> root");
   }
 
   tinyxml2::XMLElement* scene = root->FirstChildElement("scene");
   if (!scene) {
-
-    logging::ERR("Invalid XML structure: Missing <scene> element");
-    return nullptr;
+    throw HeliosException("Invalid XML structure in '" + filePath +
+                          "': Missing <scene> element");
   }
 
   tinyxml2::XMLElement* part = scene->FirstChildElement("part");
   int currentIndex = 0;
   std::string finalId = "";
-  bool splitPart = true;
   bool holistic = false;
 
   while (part) {
     const char* partId = part->Attribute("id");
     if (partId) {
+      int parsedId = 0;
 
-      try {
-        int parsedId = std::stoi(partId);
-        if (parsedId == id) {
-          finalId = partId;
-          splitPart = false;
-          break;
-        }
-      } catch (std::invalid_argument& e) {
-        logging::ERR("Error: Invalid ID format in XML for part: " +
-                     std::string(partId));
-        return nullptr;
+      if (part->QueryIntAttribute("id", &parsedId) != tinyxml2::XML_SUCCESS) {
+        throw HeliosException("Invalid scene part ID: '" + std::string(partId) +
+                              "'.");
       }
-    } else {
-
-      if (currentIndex == id) {
-        finalId = std::to_string(currentIndex);
+      if (parsedId == id) {
+        finalId = partId;
         break;
       }
+    } else if (currentIndex == id) {
+      finalId = std::to_string(currentIndex);
+      break;
     }
 
     part = part->NextSiblingElement("part");
     currentIndex++;
   }
 
-  if (finalId.empty()) {
-    logging::ERR("Error: No matching part found for id: " + std::to_string(id));
-    return nullptr;
+  if (part == nullptr || finalId.empty()) {
+    throw HeliosException("No scene part found with id " + std::to_string(id) +
+                          ".");
   }
   XmlSceneLoader xmlSceneLoader(assetsPath);
 
   std::shared_ptr<ScenePart> scenePart =
     xmlSceneLoader.loadFilters(part, holistic);
-  scenePart->mId = finalId;
 
+  scenePart->mId = finalId;
+  if (scenePart->mPrimitives.empty()) {
+    throw HeliosException("Scene part with id '" + finalId +
+                          "' contains no primitives.");
+  }
   // For all primitives, set reference to their scene part and transform:
   ScenePart::computeTransformations(scenePart, holistic);
 
@@ -191,11 +194,6 @@ readScenePartFromXml(std::string filePath,
     scenePart->primitiveType = ScenePart::TRIANGLE;
   else
     scenePart->primitiveType = ScenePart::VOXEL;
-
-  if (!xmlSceneLoader.validateScenePart(scenePart, part)) {
-    logging::ERR("Error: Invalid scene part");
-    return nullptr;
-  }
 
   return scenePart;
 }

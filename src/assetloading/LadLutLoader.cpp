@@ -2,21 +2,17 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <fstream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <vector>
 
 std::shared_ptr<LadLut>
 LadLutLoader::load(std::string const& path, std::string const separator)
 {
   // Open file input stream
-  std::ifstream ifs;
-  try {
-    ifs = std::ifstream(path, std::ifstream::binary);
-  } catch (std::exception& e) {
+  std::ifstream ifs(path, std::ios::binary);
+  if (!ifs.is_open()) {
     std::stringstream ss;
-    ss << "Failed to open ladlut file at \"" << path << "\"\n"
-       << "EXCEPTION: " << e.what();
-    logging::ERR(ss.str());
+    ss << "Failed to open LAD LUT file: \"" << path << "\"";
     throw HeliosException(ss.str());
   }
 

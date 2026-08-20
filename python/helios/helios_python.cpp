@@ -27,10 +27,7 @@
 #include <scene/Scene.h>
 #include <sim/comps/Leg.h>
 #include <sim/comps/Survey.h>
-
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
+#include <util/logger/logger_core.hpp>
 
 namespace py = pybind11;
 
@@ -183,6 +180,82 @@ toCoreSurveyHookRegistration(PySurveyHookRegistration const& pyReg)
 }
 }
 
+void
+bind_logging(py::module_& m)
+{
+  py::enum_<logging::log_level>(m, "LogLevel")
+    .value("TRACE", logging::log_level::TRACE)
+    .value("DEBUG", logging::log_level::DEBUG)
+    .value("INFO", logging::log_level::INFO)
+    .value("TIME", logging::log_level::TIME)
+    .value("WARN", logging::log_level::WARN)
+    .value("ERR", logging::log_level::ERR)
+    .value("OFF", logging::log_level::OFF)
+    .export_values();
+
+  py::class_<logging::config>(m, "LoggingConfig")
+    .def(py::init<>())
+    .def_readwrite("capacity", &logging::config::capacity)
+    .def_readwrite("min_level", &logging::config::min_level)
+    .def_readwrite("clear_queue", &logging::config::clear_queue);
+
+  py::class_<logging::log_event>(m, "LogEvent")
+    .def_readonly("level", &logging::log_event::level)
+    .def_readonly("message", &logging::log_event::message)
+    .def_readonly("unix_time", &logging::log_event::unix_time)
+    .def_readonly("thread_id_hash", &logging::log_event::thread_id_hash)
+    .def_readonly("file", &logging::log_event::file)
+    .def_readonly("line", &logging::log_event::line)
+    .def_readonly("function", &logging::log_event::function);
+
+  py::class_<logging::dropped_counts>(m, "DroppedCounts")
+    .def(py::init<>())
+    .def_readonly("overflow", &logging::dropped_counts::overflow)
+    .def_readonly("shutdown", &logging::dropped_counts::shutdown);
+
+  m.def("logging_consume_dropped_counts",
+        &logging::consume_dropped_counts,
+        "Consume and reset dropped log counters.");
+
+  m.def("logging_configure", &logging::configure, py::arg("config"));
+
+  m.def("logging_configure_silent", &logging::configure_silent);
+
+  m.def("logging_shutdown", &logging::shutdown);
+
+  m.def("logging_set_min_level", &logging::set_min_level, py::arg("level"));
+
+  m.def("logging_is_stopped", &logging::is_stopped);
+
+  m.def(
+    "logging_drain",
+    [](std::size_t max_items) {
+      std::vector<logging::log_event> events;
+      {
+        py::gil_scoped_release release;
+        logging::drain(events, max_items);
+      }
+      return events;
+    },
+    py::arg("max_items") = 256);
+
+  m.def(
+    "logging_wait_pop",
+    [](int timeout_ms) -> py::object {
+      logging::log_event ev;
+      const bool ok = [&]() {
+        py::gil_scoped_release release;
+        return logging::wait_pop(ev, std::chrono::milliseconds(timeout_ms));
+      }();
+
+      if (!ok) {
+        return py::none();
+      }
+      return py::cast(ev);
+    },
+    py::arg("timeout_ms") = 100);
+}
+
 PYBIND11_MODULE(_helios, m)
 {
   m.doc() = "Helios python bindings";
@@ -200,27 +273,7 @@ PYBIND11_MODULE(_helios, m)
     throw std::runtime_error("GDAL failed to initialize properly.");
   }
 
-  // Definitions
-  m.def("logging_quiet",
-        &logging::makeQuiet,
-        "Set the logging verbosity level to quiet");
-  m.def("logging_silent",
-        &logging::makeSilent,
-        "Set the logging verbosity level to silent");
-  m.def("logging_default",
-        &logging::makeDefault,
-        "Set the logging verbosity level to default");
-  m.def("logging_verbose",
-        &logging::makeVerbose,
-        "Set the logging verbosity level to verbose");
-  m.def("logging_very_verbose",
-        &logging::makeVerbose2,
-        "Set the logging verbosity level to verbose 2");
-  m.def("logging_time",
-        &logging::makeTime,
-        "Set the logging verbosity level to time");
-
-  m.def("configure_logging", &logging::configure, py::arg("config"));
+  helios::bind_logging(m);
 
   m.def("default_rand_generator_seed",
         &setDefaultRandomnessGeneratorSeed,
