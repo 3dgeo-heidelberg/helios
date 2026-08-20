@@ -91,6 +91,12 @@
 	
 	<platform id="simple_linearpath" name="Simple Linearpath" type="linearpath">
 	</platform>
+
+	<platform id="horizon_linearpath" name="Horizon Linearpath" type="linearpath">
+		<scannerMount x="0.0" y="0.0" z="0.0" rotations="local">
+			<rot axis="x" angle_deg="20" />
+		</scannerMount>
+	</platform>
 	<!-- ###################### END MLS Platforms ###################### -->
 
 
