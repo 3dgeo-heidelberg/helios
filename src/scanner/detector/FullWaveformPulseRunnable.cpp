@@ -283,7 +283,7 @@ FullWaveformPulseRunnable::handleSubray(
       }
       if (!rayContinues) { // If ray is not continuing
         // Then register hit by default
-        reflections.insert(pair<double, double>(distance, intensity));
+        reflections[distance] += intensity;
         intersect->incidenceAngle = incidenceAngle;
         intersects.push_back(*intersect);
       }
