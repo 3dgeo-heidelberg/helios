@@ -49,6 +49,7 @@ SpectralLibrary::readFileAster(fs::path path)
     float prevWavelength = 0;
     float prevReflectance = 0;
     std::string line;
+    bool reflectanceFound = false;
 
     // Skip the header
     for (int i = 0; i < 26; i++) {
@@ -71,6 +72,7 @@ SpectralLibrary::readFileAster(fs::path path)
         reflectance = interpolateReflectance(
           prevWavelength, wavelength, prevReflectance, reflectance);
       }
+      reflectanceFound = true;
       break;
     }
     ins.close();
