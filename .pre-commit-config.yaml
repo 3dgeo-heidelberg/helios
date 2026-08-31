@@ -30,13 +30,13 @@ repos:
   - id: validate-cff
 
 - repo: https://github.com/abravalheri/validate-pyproject
-  rev: v0.25
+  rev: '0.26'
   hooks:
   # Validate the contents of pyproject.toml
   - id: validate-pyproject
 
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v22.1.8
+  rev: v23.1.0
   hooks:
   # Format C/C++/Objective-C code with clang-format
   - id: clang-format
