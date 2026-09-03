@@ -225,6 +225,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         * An axis and an angle
         * An origin and an image vector
 
+        Exactly one of these must be specified.
+
         Optionally, you may specify a rotation center. If omitted the origin
         of the coordinate system of the scene part will be used.
 
@@ -237,6 +239,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :type quaternion: Optional[Quaternion]
         :type axis: Optional[R3Vector]
         :type angle: Optional[Angle]
+        :type from_axis: Optional[R3Vector]
         :type to_axis: Optional[R3Vector]
         :type rotation_center: Optional[R3Vector]
         """
