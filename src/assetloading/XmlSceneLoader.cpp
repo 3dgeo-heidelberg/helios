@@ -33,11 +33,10 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
   tw.start();
   while (scenePartNode != nullptr) {
     partIndex++;
-    bool holistic = false;
     bool dynObject = false;
 
     // Load filter nodes, if any
-    std::shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode, holistic);
+    std::shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode);
 
     // Read and set scene part ID
     bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
@@ -68,7 +67,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
 
     // Digest scene part
     digestScenePart(
-      scenePart, scene, holistic, splitPart, dynObject, partIndex);
+      scenePart, scene, splitPart, dynObject, partIndex);
 
     // Read next scene part from XML
     scenePartNode = scenePartNode->NextSiblingElement("part");
@@ -109,7 +108,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
 }
 
 std::shared_ptr<ScenePart>
-XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
+XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode)
 {
   ScenePart* scenePart = nullptr;
   tinyxml2::XMLElement* filterNodes =
@@ -118,7 +117,7 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
     // Load the filter
     std::string filterType = filterNodes->Attribute("type");
     AbstractGeometryFilter* filter =
-      loadFilter(filterNodes, holistic, scenePart);
+      loadFilter(filterNodes, scenePart);
     // Apply the filter
     if (filter != nullptr) {
       // Set params:
@@ -154,7 +153,6 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode, bool& holistic)
 
 AbstractGeometryFilter*
 XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
-                           bool& holistic,
                            ScenePart* scenePart)
 {
   std::string filterType = filterNode->Attribute("type");
@@ -193,7 +191,6 @@ XmlSceneLoader::loadFilter(tinyxml2::XMLElement* filterNode,
   // Read xyz ASCII point cloud file:
   else if (filterType == "xyzloader") {
     filter = new XYZPointCloudFileLoader();
-    holistic = true;
   }
 
   // Read detailed voxels file
@@ -220,7 +217,6 @@ XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
   std::shared_ptr<SwapOnRepeatHandler> sorh =
     std::make_shared<SwapOnRepeatHandler>();
   while (swapNodes != nullptr) {
-    bool holistic = false;
     int const swapStep =
       XmlUtils::getAttributeCast<int>(swapNodes, "swapStep", 1);
     bool const keepCRS =
@@ -237,7 +233,7 @@ XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
       // Add non-null filters to the handler
       while (filterNodes != nullptr) {
         AbstractGeometryFilter* filter =
-          loadFilter(filterNodes, holistic, scenePart);
+          loadFilter(filterNodes, scenePart);
         filter->params = XmlUtils::createParamsFromXml(filterNodes);
         swapFilters.push_back(filter);
         // Find next XML filter element
@@ -338,13 +334,12 @@ XmlSceneLoader::validateScenePart(std::shared_ptr<ScenePart> scenePart,
 void
 XmlSceneLoader::digestScenePart(std::shared_ptr<ScenePart>& scenePart,
                                 std::shared_ptr<StaticScene>& scene,
-                                bool holistic,
                                 bool splitPart,
                                 bool dynObject,
                                 int& partIndex)
 {
   // For all primitives, set reference to their scene part and transform:
-  ScenePart::computeTransformations(scenePart, holistic);
+  ScenePart::computeTransformations(scenePart);
 
   // Append as static object if it is not dynamic
   // If it is dynamic, it must have been appended before
