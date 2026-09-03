@@ -642,8 +642,8 @@ def test_rotate_scenepart_rotation_center(box_f):
 
     box1.rotate(angle="180 deg", axis=[0, 0, 1.0], rotation_center=[100.0, 0.0, 0.0])
     box2.translate([200.0, 0.0, 0.0])
-    bbox1 =  np.array(box1.bbox.bounds)
-    bbox2 =  np.array(box2.bbox.bounds)
+    bbox1 = np.array(box1.bbox.bounds)
+    bbox2 = np.array(box2.bbox.bounds)
 
     assert np.allclose(bbox1, bbox2)
 
