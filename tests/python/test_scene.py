@@ -661,6 +661,11 @@ def test_scale_scenepart(box_f):
     assert np.allclose(bbox1 * scale, bbox2)
 
 
+def test_voxel_scenepart():
+    # to add
+    pass
+
+
 def test_transform_scenepart(box_f):
     box1 = box_f()
     box2 = box_f()
