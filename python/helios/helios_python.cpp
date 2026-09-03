@@ -60,8 +60,8 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <scene/primitives/DetailedVoxel.h>
 #include <scene/primitives/Primitive.h>
 #include <scene/primitives/Triangle.h>
-#include <scene/primitives/Voxel.h>
 #include <scene/primitives/Vertex.h>
+#include <scene/primitives/Voxel.h>
 #include <sim/core/SurveyHooks.h>
 
 #include <DynMovingObject.h>

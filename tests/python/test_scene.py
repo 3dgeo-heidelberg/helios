@@ -661,11 +661,15 @@ def test_scale_mesh_scenepart(box_f):
     assert np.allclose(bbox1 * scale, bbox2)
 
 
-@pytest.mark.parametrize("factory_fixture,scale", 
-                         [("xyz_scenepart_f", 2.0),
-                          ("xyz_scenepart_f", 0.5),
-                          ("vox_f", 2.0),
-                          ("vox_f", 0.5)])
+@pytest.mark.parametrize(
+    "factory_fixture,scale",
+    [
+        ("xyz_scenepart_f", 2.0),
+        ("xyz_scenepart_f", 0.5),
+        ("vox_f", 2.0),
+        ("vox_f", 0.5),
+    ],
+)
 def test_scale_voxelized_scenepart(factory_fixture, scale, request):
     factory = request.getfixturevalue(factory_fixture)
     vox1 = factory()
@@ -677,12 +681,8 @@ def test_scale_voxelized_scenepart(factory_fixture, scale, request):
     bbox2 = np.array(vox2.bbox.bounds)
     assert np.allclose(bbox1 * scale, bbox2)
 
-    half_size1 = np.array(
-        [p.half_size for p in vox1._cpp_object.primitives]
-    )
-    half_size2 = np.array(
-        [p.half_size for p in vox2._cpp_object.primitives]
-    )
+    half_size1 = np.array([p.half_size for p in vox1._cpp_object.primitives])
+    half_size2 = np.array([p.half_size for p in vox2._cpp_object.primitives])
     assert np.allclose(half_size1 * scale, half_size2)
 
     ratio1 = (bbox1[1] - bbox1[0]) / half_size1[0]
