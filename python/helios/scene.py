@@ -302,7 +302,11 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         return self
 
     @validate_call
-    def scale(self, factor: PositiveFloat, scale_center: Optional[R3Vector] = None,):
+    def scale(
+        self,
+        factor: PositiveFloat,
+        scale_center: Optional[R3Vector] = None,
+    ):
         """Scale the scene part by a factor.
 
         :param factor: The factor to scale the scene part by.
@@ -322,7 +326,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         if scale_center is not None:
             _helios.translate_scene_part(self._cpp_object, scale_center)
 
-        self._append_operation_provenance("scale", factor=factor, scale_center=scale_center)
+        self._append_operation_provenance(
+            "scale", factor=factor, scale_center=scale_center
+        )
 
         return self
 
