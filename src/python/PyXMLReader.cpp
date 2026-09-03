@@ -177,8 +177,7 @@ readScenePartFromXml(std::string filePath,
   }
   XmlSceneLoader xmlSceneLoader(assetsPath);
 
-  std::shared_ptr<ScenePart> scenePart =
-    xmlSceneLoader.loadFilters(part);
+  std::shared_ptr<ScenePart> scenePart = xmlSceneLoader.loadFilters(part);
   scenePart->mId = finalId;
 
   // For all primitives, set reference to their scene part and transform:

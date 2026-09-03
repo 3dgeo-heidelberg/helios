@@ -66,8 +66,7 @@ XmlSceneLoader::createSceneFromXml(tinyxml2::XMLElement* sceneNode,
     sceneSpec.apply(scenePart);
 
     // Digest scene part
-    digestScenePart(
-      scenePart, scene, splitPart, dynObject, partIndex);
+    digestScenePart(scenePart, scene, splitPart, dynObject, partIndex);
 
     // Read next scene part from XML
     scenePartNode = scenePartNode->NextSiblingElement("part");
@@ -116,8 +115,7 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode)
   while (filterNodes != nullptr) {
     // Load the filter
     std::string filterType = filterNodes->Attribute("type");
-    AbstractGeometryFilter* filter =
-      loadFilter(filterNodes, scenePart);
+    AbstractGeometryFilter* filter = loadFilter(filterNodes, scenePart);
     // Apply the filter
     if (filter != nullptr) {
       // Set params:
@@ -232,8 +230,7 @@ XmlSceneLoader::loadScenePartSwaps(tinyxml2::XMLElement* scenePartNode,
     } else {
       // Add non-null filters to the handler
       while (filterNodes != nullptr) {
-        AbstractGeometryFilter* filter =
-          loadFilter(filterNodes, scenePart);
+        AbstractGeometryFilter* filter = loadFilter(filterNodes, scenePart);
         filter->params = XmlUtils::createParamsFromXml(filterNodes);
         swapFilters.push_back(filter);
         // Find next XML filter element
