@@ -235,6 +235,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param to_axis: The image vector to use for the rotation. Must be provided together with the 'from_axis' parameter.
         :param rotation_center: The center to use for the rotation. If omitted, the origin of the coordinate system of the scene part will be used.
         :type quaternion: Optional[Quaternion]
+        :type axis: Optional[R3Vector]
+        :type angle: Optional[Angle]
+        :type to_axis: Optional[R3Vector]
+        :type rotation_center: Optional[R3Vector]
         """
 
         # The rotation object that we want to construct
@@ -295,15 +299,28 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         return self
 
     @validate_call
-    def scale(self, factor: PositiveFloat):
+    def scale(self, factor: PositiveFloat, scale_center: Optional[R3Vector] = None,):
         """Scale the scene part by a factor.
 
         :param factor: The factor to scale the scene part by.
+        :param scale_center: The center to use for the scaling. If omitted, the origin of the coordinate system of the scene part will be used.
         :type factor: PositiveFloat
+        :type scale_center: Optional[R3Vector]
         """
 
+        # maybe shift by the scaling center
+        if scale_center is not None:
+            _helios.translate_scene_part(self._cpp_object, -scale_center)
+
+        # perform the actual scaling
         _helios.scale_scene_part(self._cpp_object, factor)
-        self._append_operation_provenance("scale", factor=factor)
+
+        # undo the shift by the scaling center
+        if scale_center is not None:
+            _helios.translate_scene_part(self._cpp_object, scale_center)
+
+        self._append_operation_provenance("scale", factor=factor, scale_center=scale_center)
+
         return self
 
     @validate_call

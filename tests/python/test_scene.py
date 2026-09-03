@@ -648,6 +648,18 @@ def test_rotate_scenepart_rotation_center(box_f):
     assert np.allclose(bbox1, bbox2)
 
 
+def test_scale_scenepart_scale_center(box_f):
+    box = box_f()
+    original_bbox = np.array(box.bbox.bounds)
+
+    center = np.array([100.0, 0.0, 50.0])
+    factor = 5.0
+    box.scale(factor, scale_center=center)
+
+    expected_bbox = center + (original_bbox - center) * factor
+    assert np.allclose(expected_bbox, np.array(box.bbox.bounds))
+
+
 def test_scale_scenepart(box_f):
     box1 = box_f()
     box2 = box_f()
