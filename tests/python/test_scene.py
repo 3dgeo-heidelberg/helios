@@ -98,6 +98,11 @@ def xyz_file(tmp_path) -> Path:
 
 
 @pytest.fixture
+def xyz_scenepart_f(xyz_file):
+    return lambda: ScenePart.from_xyz(str(xyz_file), separator=" ", voxel_size=1.0)
+
+
+@pytest.fixture
 def only_points_xyz_file(tmp_path) -> Path:
     path = tmp_path / "small_only_points.xyz"
     _write_only_points_xyz_file(path)
@@ -648,7 +653,7 @@ def test_rotate_scenepart_rotation_center(box_f):
     assert np.allclose(bbox1, bbox2)
 
 
-def test_scale_scenepart(box_f):
+def test_scale_mesh_scenepart(box_f):
     box1 = box_f()
     box2 = box_f()
 
@@ -661,9 +666,33 @@ def test_scale_scenepart(box_f):
     assert np.allclose(bbox1 * scale, bbox2)
 
 
-def test_voxel_scenepart():
-    # to add
-    pass
+@pytest.mark.parametrize("factory_fixture,scale", 
+                         [("xyz_scenepart_f", 2.0),
+                          ("xyz_scenepart_f", 0.5),
+                          ("vox_f", 2.0),
+                          ("vox_f", 0.5)])
+def test_scale_voxelized_scenepart(factory_fixture, scale, request):
+    factory = request.getfixturevalue(factory_fixture)
+    vox1 = factory()
+    vox2 = factory()
+
+    vox2.scale(scale)
+
+    bbox1 = np.array(vox1.bbox.bounds)
+    bbox2 = np.array(vox2.bbox.bounds)
+    assert np.allclose(bbox1 * scale, bbox2)
+
+    half_size1 = np.array(
+        [p.half_size for p in vox1._cpp_object.primitives]
+    )
+    half_size2 = np.array(
+        [p.half_size for p in vox2._cpp_object.primitives]
+    )
+    assert np.allclose(half_size1 * scale, half_size2)
+
+    ratio1 = (bbox1[1] - bbox1[0]) / half_size1[0]
+    ratio2 = (bbox2[1] - bbox2[0]) / half_size2[0]
+    assert np.allclose(ratio1, ratio2)
 
 
 def test_transform_scenepart(box_f):
