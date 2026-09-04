@@ -98,6 +98,11 @@ def xyz_file(tmp_path) -> Path:
 
 
 @pytest.fixture
+def xyz_scenepart_f(xyz_file):
+    return lambda: ScenePart.from_xyz(str(xyz_file), separator=" ", voxel_size=1.0)
+
+
+@pytest.fixture
 def only_points_xyz_file(tmp_path) -> Path:
     path = tmp_path / "small_only_points.xyz"
     _write_only_points_xyz_file(path)
@@ -524,11 +529,6 @@ def test_scenepart_from_vox():
         )
 
 
-def get_bbox(part):
-    scene = StaticScene(scene_parts=[part])
-    return np.array(scene._cpp_object.bbox_crs.bounds)
-
-
 def test_scenepart_bbox_extraction(box):
     bbox = box.bbox
     assert isinstance(bbox, BoundingBox)
@@ -569,13 +569,13 @@ def test_scenepart_bbox_updates_after_transformations(box):
 
 
 def check_rotation(box1, box2):
-    bbox1 = get_bbox(box1)
+    bbox1 = np.array(box1.bbox.bounds)
     bbox1[0][1] = bbox1[0][1] * math.sqrt(2)
     bbox1[0][2] = bbox1[0][2] * math.sqrt(2)
     bbox1[1][1] = bbox1[1][1] * math.sqrt(2)
     bbox1[1][2] = bbox1[1][2] * math.sqrt(2)
 
-    bbox2 = get_bbox(box2)
+    bbox2 = np.array(box2.bbox.bounds)
     assert np.allclose(bbox1, bbox2)
 
 
@@ -642,23 +642,52 @@ def test_rotate_scenepart_rotation_center(box_f):
 
     box1.rotate(angle="180 deg", axis=[0, 0, 1.0], rotation_center=[100.0, 0.0, 0.0])
     box2.translate([200.0, 0.0, 0.0])
-    bbox1 = get_bbox(box1)
-    bbox2 = get_bbox(box2)
+    bbox1 = np.array(box1.bbox.bounds)
+    bbox2 = np.array(box2.bbox.bounds)
 
     assert np.allclose(bbox1, bbox2)
 
 
-def test_scale_scenepart(box_f):
+def test_scale_mesh_scenepart(box_f):
     box1 = box_f()
     box2 = box_f()
 
     scale = 2.0
     box2.scale(scale)
 
-    bbox1 = get_bbox(box1)
-    bbox2 = get_bbox(box2)
+    bbox1 = np.array(box1.bbox.bounds)
+    bbox2 = np.array(box2.bbox.bounds)
 
     assert np.allclose(bbox1 * scale, bbox2)
+
+
+@pytest.mark.parametrize(
+    "factory_fixture,scale",
+    [
+        ("xyz_scenepart_f", 2.0),
+        ("xyz_scenepart_f", 0.5),
+        ("vox_f", 2.0),
+        ("vox_f", 0.5),
+    ],
+)
+def test_scale_voxelized_scenepart(factory_fixture, scale, request):
+    factory = request.getfixturevalue(factory_fixture)
+    vox1 = factory()
+    vox2 = factory()
+
+    vox2.scale(scale)
+
+    bbox1 = np.array(vox1.bbox.bounds)
+    bbox2 = np.array(vox2.bbox.bounds)
+    assert np.allclose(bbox1 * scale, bbox2)
+
+    half_size1 = np.array([p.half_size for p in vox1._cpp_object.primitives])
+    half_size2 = np.array([p.half_size for p in vox2._cpp_object.primitives])
+    assert np.allclose(half_size1 * scale, half_size2)
+
+    ratio1 = (bbox1[1] - bbox1[0]) / half_size1[0]
+    ratio2 = (bbox2[1] - bbox2[0]) / half_size2[0]
+    assert np.allclose(ratio1, ratio2)
 
 
 def test_transform_scenepart(box_f):
@@ -668,8 +697,8 @@ def test_transform_scenepart(box_f):
     offset = np.array([10.0, 0, 0])
     box2.translate(offset)
 
-    bbox1 = get_bbox(box1)
-    bbox2 = get_bbox(box2)
+    bbox1 = np.array(box1.bbox.bounds)
+    bbox2 = np.array(box2.bbox.bounds)
 
     assert np.allclose(bbox1 + offset, bbox2)
 

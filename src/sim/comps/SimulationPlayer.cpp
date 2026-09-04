@@ -212,7 +212,7 @@ SimulationPlayer::restartScene(Scene& scene, bool const keepCRS)
     }
     // Handle scene parts who are in the first play after a swap
     if (sp->sorh != nullptr && sp->sorh->isOnSwapFirstPlay()) {
-      ScenePart::computeTransformations(sp, sp->sorh->isHolistic());
+      ScenePart::computeTransformations(sp);
       sp->sorh->setOnSwapFirstPlay(false);
       if (!sp->mPrimitives.empty()) {
         sp->sorh->setNull(false);

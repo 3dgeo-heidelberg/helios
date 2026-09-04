@@ -51,11 +51,6 @@ protected:
    */
   bool discardOnReplay;
   /**
-   * @brief Whether all the vertices defining each primitive must be
-   *  considered as a whole.
-   */
-  bool holistic;
-  /**
    * @brief Whether the simulation is at the first play of the current
    *  swap.
    */
@@ -132,15 +127,6 @@ public:
   {
     return numCurrentSwaps < numTargetSwaps;
   }
-  /**
-   * @brief Check whether the handler needs an holistic approach (all the
-   *  vertices must be considered as a whole).
-   *
-   * Swap on repeat handlers are typically holistic if the geometry they
-   *  handle was loaded from a point cloud (see XYZPointCloudFileLoader).
-   * @return True if the handler needs an holistic approach, false otherwise.
-   */
-  inline bool isHolistic() const { return holistic; }
   /**
    * @brief Check whether the active swap of the handler is at its first
    *  play or not (when TTL>1, a swap will be active for more than one play).
