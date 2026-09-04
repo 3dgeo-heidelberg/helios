@@ -648,16 +648,21 @@ def test_rotate_scenepart_rotation_center(box_f):
     assert np.allclose(bbox1, bbox2)
 
 
-def test_scale_scenepart_scale_center(box_f):
-    box = box_f()
-    original_bbox = np.array(box.bbox.bounds)
+@pytest.mark.parametrize(
+    "factory_fixture",
+    ["box_f", "xyz_scenepart_f","vox_f"],
+)
+def test_scale_scenepart_scale_center(factory_fixture, request):
+    factory = request.getfixturevalue(factory_fixture)
+    part = factory()
+    original_bbox = np.array(part.bbox.bounds)
 
     center = np.array([100.0, 0.0, 50.0])
     factor = 5.0
-    box.scale(factor, scale_center=center)
+    part.scale(factor, scale_center=center)
 
     expected_bbox = center + (original_bbox - center) * factor
-    assert np.allclose(expected_bbox, np.array(box.bbox.bounds))
+    assert np.allclose(expected_bbox, np.array(part.bbox.bounds))
 
 
 def test_scale_mesh_scenepart(box_f):
