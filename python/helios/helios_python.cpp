@@ -61,6 +61,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <scene/primitives/Primitive.h>
 #include <scene/primitives/Triangle.h>
 #include <scene/primitives/Vertex.h>
+#include <scene/primitives/Voxel.h>
 #include <sim/core/SurveyHooks.h>
 
 #include <DynMovingObject.h>
@@ -434,7 +435,10 @@ PYBIND11_MODULE(_helios, m)
     .def_property_readonly("centroid", &AABB::getCentroid)
     .def("__str__", &AABB::toString);
 
-  py::class_<DetailedVoxel, std::shared_ptr<DetailedVoxel>, Primitive>
+  py::class_<Voxel, std::shared_ptr<Voxel>, Primitive> voxel(m, "Voxel");
+  voxel.def_readonly("half_size", &Voxel::halfSize);
+
+  py::class_<DetailedVoxel, std::shared_ptr<DetailedVoxel>, Voxel>
     detailed_voxel(m, "DetailedVoxel");
   detailed_voxel.def(py::init<>())
     .def(py::init<glm::dvec3, double, std::vector<int>, std::vector<double>>(),

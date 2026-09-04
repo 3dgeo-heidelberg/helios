@@ -142,7 +142,6 @@ readScenePartFromXml(std::string filePath,
   int currentIndex = 0;
   std::string finalId = "";
   bool splitPart = true;
-  bool holistic = false;
 
   while (part) {
     const char* partId = part->Attribute("id");
@@ -178,12 +177,11 @@ readScenePartFromXml(std::string filePath,
   }
   XmlSceneLoader xmlSceneLoader(assetsPath);
 
-  std::shared_ptr<ScenePart> scenePart =
-    xmlSceneLoader.loadFilters(part, holistic);
+  std::shared_ptr<ScenePart> scenePart = xmlSceneLoader.loadFilters(part);
   scenePart->mId = finalId;
 
   // For all primitives, set reference to their scene part and transform:
-  ScenePart::computeTransformations(scenePart, holistic);
+  ScenePart::computeTransformations(scenePart);
 
   // Infer type of primitive for the scene part
   auto numVertices = scenePart->mPrimitives[0]->getNumVertices();

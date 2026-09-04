@@ -88,6 +88,16 @@ def box(box_f):
 
 
 @pytest.fixture
+def vox_f():
+    return lambda: ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox")
+
+
+@pytest.fixture
+def vox(vox_f):
+    return vox_f()
+
+
+@pytest.fixture
 def wall_f():
     return (
         lambda: ScenePart.from_obj("data/sceneparts/basic/plane/plane.obj")
