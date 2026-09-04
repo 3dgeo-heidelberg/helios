@@ -650,7 +650,7 @@ def test_rotate_scenepart_rotation_center(box_f):
 
 @pytest.mark.parametrize(
     "factory_fixture",
-    ["box_f", "xyz_scenepart_f","vox_f"],
+    ["box_f", "xyz_scenepart_f", "vox_f"],
 )
 def test_scale_scenepart_scale_center(factory_fixture, request):
     factory = request.getfixturevalue(factory_fixture)
