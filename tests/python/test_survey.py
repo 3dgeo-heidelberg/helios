@@ -677,7 +677,7 @@ def test_run_interpolated_survey():
 def test_run_interpolated_survey_teleport_first_leg_on_disk_output(tmp_path):
     """
     Regression test: an interpolated-platform survey whose first leg has
-    `teleport_to_start=True`, written to on-disk LAZ, used to crash the 
+    `teleport_to_start=True`, written to on-disk LAZ, used to crash the
     process (silent access violation).
     """
     execution_settings = ExecutionSettings(num_threads=1)
