@@ -91,7 +91,10 @@ public:
   /**
    * @see filems::TrajectoryWriter::getOutputFilePath
    */
-  inline std::string getOutputPath() const { return sfw->getPath(); }
+  inline std::string getOutputPath() const
+  {
+    return sfw == nullptr ? "" : sfw->getPath();
+  }
 };
 
 }

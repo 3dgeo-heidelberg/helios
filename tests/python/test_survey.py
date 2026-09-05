@@ -674,6 +674,58 @@ def test_run_interpolated_survey():
     assert np.allclose(t1["position"][-1], t2["position"][-1], rtol=1e-1, atol=1e-1)
 
 
+def test_run_interpolated_survey_teleport_first_leg_on_disk_output(tmp_path):
+    """
+    Regression test: an interpolated-platform survey whose first leg has
+    `teleport_to_start=True`, written to on-disk LAZ, used to crash the
+    process (silent access violation).
+    """
+    execution_settings = ExecutionSettings(num_threads=1)
+
+    scanner_settings = ScannerSettings(
+        is_active=True,
+        pulse_frequency=2000,
+        scan_frequency=20,
+        scan_angle=0,
+        trajectory_time_interval=0.05,
+    )
+    trajectory_settings = TrajectorySettings(
+        start_time=0, end_time=0.2, teleport_to_start=True
+    )
+    trajectory = load_traj_csv(
+        csv="data/trajectories/flyandrotate.trj",
+        xIndex=4,
+        yIndex=5,
+        zIndex=6,
+        rollIndex=1,
+        pitchIndex=2,
+        yawIndex=3,
+    )
+    scene = StaticScene.from_xml("data/scenes/demo/box_scene.xml")
+    platform = Platform.load_interpolate_platform(
+        trajectory=trajectory,
+        platform_file="data/platforms.xml",
+        platform_id="sr22",
+        interpolation_method="ARINC 705",
+        sync_gps_time=True,
+    )
+    survey = Survey(scanner=riegl_lms_q560(), platform=platform, scene=scene)
+    survey.add_leg(
+        scanner_settings=scanner_settings, trajectory_settings=trajectory_settings
+    )
+
+    output_path = survey.run(
+        format=OutputFormat.LAZ,
+        output_dir=tmp_path,
+        execution_settings=execution_settings,
+    )
+
+    files = list(output_path.rglob("*.laz"))
+    assert len(files) == 1
+    las = laspy.read(files[0])
+    assert len(las.points) > 0
+
+
 def test_survey_run_with_scene_fixture(scene):
     """
     Test that a survey can be run with an in-memory scene.
