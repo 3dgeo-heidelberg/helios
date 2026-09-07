@@ -7,7 +7,7 @@ received power for fixed, synthetic arguments.
 */
 
 #include <benchmark/benchmark.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <maths/model/BaseEnergyModel.h>
 
@@ -17,10 +17,6 @@ received power for fixed, synthetic arguments.
 #include <scanner/detector/FullWaveformPulseDetector.h>
 
 #include <memory>
-
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 namespace {
 

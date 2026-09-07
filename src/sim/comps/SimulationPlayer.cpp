@@ -43,12 +43,12 @@ SimulationPlayer::endPlay()
   for (std::shared_ptr<ScenePart> sp : swapOnRepeatObjects) {
     ss.str("");
     ss << "Swapping scene part \"" << sp->mId << "\" ...";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
     std::shared_ptr<SwapOnRepeatHandler> sorh = sp->getSwapOnRepeatHandler();
     if (sorh->hasPendingSwaps()) {
       ss.str("");
       ss << "Scene part \"" << sp->mId << "\" has pending swaps.";
-      logging::DEBUG(ss.str());
+      LOG_DEBUG(ss.str());
       // Backup rotation (because RotateFilter modifies inplace)
       Rotation const rotationBackup = sp->mRotation;
       // Do the swap
@@ -58,28 +58,27 @@ SimulationPlayer::endPlay()
     }
     ss.str("");
     ss << "Swapped scene part \"" << sp->mId << "\"!";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
   }
   // Prepare next play, if any
   if (plays < getNumTargetPlays()) {
-    logging::DEBUG("Preparing next simulation play ...");
+    LOG_DEBUG("Preparing next simulation play ...");
     // Restart platform
-    logging::DEBUG("Restarting platform for next simulation play ...");
+    LOG_DEBUG("Restarting platform for next simulation play ...");
     restartPlatform(*sim.getScanner()->platform);
     // Restart filems
-    logging::DEBUG(
-      "Restarting file management system for next simulation play ...");
+    LOG_DEBUG("Restarting file management system for next simulation play ...");
     restartFileMS(*sim.getScanner()->fms);
     // Restart scanner
-    logging::DEBUG("Restarting scanner for next simulation play ...");
+    LOG_DEBUG("Restarting scanner for next simulation play ...");
     restartScanner(*sim.getScanner());
     // Restart scene
-    logging::DEBUG("Restarting scene for next simulation play ...");
+    LOG_DEBUG("Restarting scene for next simulation play ...");
     restartScene(sim.getScene(), keepCRS);
     // Restart simulation
-    logging::DEBUG("Restarting context for next simulation play ...");
+    LOG_DEBUG("Restarting context for next simulation play ...");
     restartSimulation(sim);
-    logging::DEBUG("Next simulation play prepared.");
+    LOG_DEBUG("Next simulation play prepared.");
   }
 }
 
@@ -314,7 +313,7 @@ SimulationPlayer::restartScene(Scene& scene, bool const keepCRS)
     scene.setBBoxCRS(newCRS);
     scene.setBBox(newBBox);
     // Report
-    logging::DEBUG("SimulationPlayer::restartScene kept the scene's CRS.");
+    LOG_DEBUG("SimulationPlayer::restartScene kept the scene's CRS.");
   }
   // Rebuild KDGrove
   scene.setKDGroveFactory(kdgf);
@@ -325,7 +324,7 @@ void
 SimulationPlayer::restartSimulation(Simulation& sim)
 {
   // Restart survey playback attributes
-  logging::DEBUG("Restarting survey playback attributes ...");
+  LOG_DEBUG("Restarting survey playback attributes ...");
   SurveyPlayback& sp = static_cast<SurveyPlayback&>(sim);
   sp.progress = 0;
   sp.legProgress = 0;
@@ -336,7 +335,7 @@ SimulationPlayer::restartSimulation(Simulation& sim)
   sp.timeStart_ns = sp.legStartTime_ns;
   sp.elapsedLength = 0;
   // Restart simulation attributes
-  logging::DEBUG("Restarting simulation attributes ...");
+  LOG_DEBUG("Restarting simulation attributes ...");
   sim.finished = false;
   sim.mStopped = false;
   sim.mCurrentLegIndex = 0;
@@ -344,10 +343,10 @@ SimulationPlayer::restartSimulation(Simulation& sim)
   sim.maxDurationDeferredUntilFirstPulse = false;
   sim.maxDurationStartPulseNumber = sim.getScanner()->getCurrentPulseNumber();
   // Restart simulation step loop (i.e., time)
-  logging::DEBUG("Restarting simulation step loop ...");
+  LOG_DEBUG("Restarting simulation step loop ...");
   sim.getStepLoop().setCurrentStep(0);
   // Start first leg
-  logging::DEBUG("Restarting first leg ...");
+  LOG_DEBUG("Restarting first leg ...");
   sp.startLeg(sp.mCurrentLegIndex, true);
 }
 
@@ -365,12 +364,11 @@ SimulationPlayer::isKeepCRS(
   }
   // Report that both trues and falses were found
   if (anyFalse && anyTrue) {
-    logging::WARN(
-      "SimulationPlayer::isKeepCRS found at least one "
-      "SwapOnRepeatHandler with a KeepCRS flag set to true and another "
-      "one with the flag set to false.\n"
-      "Consequently, the CRS of the current scene will not be kept "
-      "because at least one flag is set to false.");
+    LOG_WARN("SimulationPlayer::isKeepCRS found at least one "
+             "SwapOnRepeatHandler with a KeepCRS flag set to true and another "
+             "one with the flag set to false.\n"
+             "Consequently, the CRS of the current scene will not be kept "
+             "because at least one flag is set to false.");
   }
   // Return true to keep CRS only if no SoRH has the flag to false
   return !anyFalse;

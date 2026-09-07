@@ -24,7 +24,7 @@ BaseMeasurementWriter<WriteArgs...>::configure(std::string const& parent,
   ss2 << "Parent path for base measurement writer: \"" << parent << "\"\n"
       << "Prefix for base measurement writer: \"" << prefix << "\"\n"
       << "Output path for base measurement writer: \"" << outpath << "\"";
-  logging::DEBUG(ss2.str());
+  LOG_DEBUG(ss2.str());
 
   // Set
   setOutputFilePath(outpath, lastLegInStrip);
@@ -46,12 +46,12 @@ void
 BaseMeasurementWriter<WriteArgs...>::clearPointcloudFile()
 {
   std::string outputPath = getOutputPath();
-  logging::INFO("Clearing point cloud: \"" + outputPath + "\"");
+  LOG_INFO("Clearing point cloud: \"" + outputPath + "\"");
   std::ofstream ofs;
   try {
     ofs.open(outputPath, std::ofstream::out | std::ofstream::trunc);
   } catch (std::exception& ex) {
-    logging::ERR(ex.what());
+    LOG_ERR(ex.what());
   }
   ofs.close();
 }
@@ -87,7 +87,7 @@ BaseMeasurementWriter<WriteArgs...>::setOutputFilePath(
   std::string const& path,
   bool const lastLegInStrip)
 {
-  logging::WARN("outputFilePath=" + path);
+  LOG_INFO("outputFilePath=" + path);
   try {
     WriterType wt = chooseWriterType();
 
@@ -96,7 +96,7 @@ BaseMeasurementWriter<WriteArgs...>::setOutputFilePath(
 
     // Create the Writer
     if (!fs::exists(path)) {
-      logging::DEBUG("Creating writer for measurements ...");
+      LOG_DEBUG("Creating writer for measurements ...");
       sfw = makeWriter(wt,            // Writer type
                        path,          // Output path
                        isZipOutput(), // Zip flag
@@ -105,11 +105,11 @@ BaseMeasurementWriter<WriteArgs...>::setOutputFilePath(
                        0.0,           // Min intensity
                        1000000.0      // Delta intensity
       );
-      logging::DEBUG("Created synchronous file writer!");
+      LOG_DEBUG("Created synchronous file writer!");
       writers[path] = sfw;
-      logging::DEBUG("Stored synchronous file writer!");
+      LOG_DEBUG("Stored synchronous file writer!");
     } else { // Consider existing writer
-      logging::DEBUG("Loading existing writer for measurements ...");
+      LOG_DEBUG("Loading existing writer for measurements ...");
       sfw = writers[path];
     }
 
@@ -117,7 +117,7 @@ BaseMeasurementWriter<WriteArgs...>::setOutputFilePath(
     // to allow the sfw destructor to be called when sfw is replaced in the
     // next leg
     if (lastLegInStrip) {
-      logging::DEBUG("Erasing existing writer ...");
+      LOG_DEBUG("Erasing existing writer ...");
       writers.erase(path);
     }
 
@@ -125,8 +125,8 @@ BaseMeasurementWriter<WriteArgs...>::setOutputFilePath(
     std::string const sfwPath = (sfw != nullptr) ? sfw->getPath() : "NULL";
     ss << "Set output file path for measurements!\n"
        << "sfw = " << sfw << " writing to \"" << sfwPath << "\"";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
   } catch (std::exception& e) {
-    logging::WARN(e.what());
+    LOG_WARN(e.what());
   }
 }

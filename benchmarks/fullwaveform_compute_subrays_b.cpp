@@ -7,7 +7,7 @@ Scanner settings are largely taken from example RIEGL VZ-400 specifications.
 */
 
 #include <benchmark/benchmark.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <AABB.h>
 #include <noise/UniformNoiseSource.h>
@@ -19,10 +19,6 @@ Scanner settings are largely taken from example RIEGL VZ-400 specifications.
 #include <map>
 #include <memory>
 #include <vector>
-
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 namespace {
 

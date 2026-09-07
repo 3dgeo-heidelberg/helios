@@ -179,36 +179,6 @@ ArgumentsParser::parseDisableLegNoise()
   return findIndexOfArgument("--disableLegNoise") >= 0;
 }
 
-void
-ArgumentsParser::parseLoggingVerbosity()
-{
-  if (findIndexOfArgument("--silent") >= 0)
-    logging::makeSilent();
-  else if (findIndexOfArgument("-q") >= 0 ||
-           findIndexOfArgument("--quiet") >= 0) {
-    logging::makeQuiet();
-  } else if (findIndexOfArgument("-v2") >= 0 ||
-             findIndexOfArgument("-vv") >= 0) {
-    logging::makeVerbose2();
-  } else if (findIndexOfArgument("-vt") >= 0)
-    logging::makeTime();
-  else if (findIndexOfArgument("-v") >= 0)
-    logging::makeVerbose();
-  else
-    logging::makeDefault();
-}
-
-std::string
-ArgumentsParser::parseLoggingOutputMode()
-{
-  if (findIndexOfArgument("--logFile") >= 0)
-    return "full";
-  else if (findIndexOfArgument("--logFileOnly") >= 0)
-    return "file";
-  else
-    return "std_out";
-}
-
 bool
 ArgumentsParser::parseFullWaveNoise()
 {

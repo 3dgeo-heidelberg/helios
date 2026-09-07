@@ -1,5 +1,4 @@
-// #include <iostream>
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 #include <KDTreeRaycaster.h>
 #include <Scene.h>
@@ -102,7 +101,7 @@ Scene::finalizeLoading(bool const safe)
   // Report number of primitives in the scene
   std::ostringstream s;
   s << "Total # of primitives in scene: " << primitives.size() << "\n";
-  logging::DEBUG(s.str());
+  LOG_DEBUG(s.str());
   if (primitives.size() == 0)
     return false;
 
@@ -122,7 +121,7 @@ Scene::finalizeLoading(bool const safe)
   ss << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
      << "\nShift: " << glm::to_string(diff)
      << "\n# vertices to translate: " << numVertices;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
   ss.str("");
 
   // Iterate over the primitives and translate each vertex:
@@ -141,7 +140,7 @@ Scene::finalizeLoading(bool const safe)
   this->bbox = AABB::getForPrimitives(primitives);
 
   ss << "Actual bounding box (by vertices): " << this->bbox->toString();
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
   ss.str("");
 
   // ################ END Shift primitives to originWaypoint ##################
@@ -196,7 +195,7 @@ Scene::getGroundPointAt(glm::dvec3 point)
     ss << "\n\torigin = (" << origin.x << ", " << origin.y << ", " << origin.z
        << ");\n\tdir = (" << dir.x << ", " << dir.y << ", " << dir.z << ");"
        << std::endl;
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
     return {};
   }
 
@@ -220,7 +219,7 @@ Scene::getIntersection(std::vector<double> const& tMinMax,
                        bool const groundOnly) const
 {
   if (tMinMax.empty()) {
-    logging::DEBUG("tMinMax is empty");
+    LOG_DEBUG("tMinMax is empty");
 #if DATA_ANALYTICS >= 2
     HDA_GV.incrementNonIntersectiveSubraysDueToNullTimeCount();
 #endif
@@ -238,7 +237,7 @@ Scene::getIntersections(glm::dvec3& rayOrigin,
 
   std::vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
-    logging::DEBUG("tMinMax is empty");
+    LOG_DEBUG("tMinMax is empty");
     return {};
   }
 
@@ -289,7 +288,7 @@ Scene::doForceOnGround()
     std::stringstream ss;
     ss << "Scene::doForceGround could not compute nothing because there "
        << "was no ground scene part available";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 
   // Compute remaining algorithm steps for each on ground scene part
@@ -298,13 +297,13 @@ Scene::doForceOnGround()
       std::stringstream ss;
       ss << "Scene::doForceOnGround skipped part \"" << part->mId << "\"\n"
          << "Its forceOnGround attribute was 0";
-      logging::DEBUG(ss.str());
+      LOG_DEBUG(ss.str());
       continue;
     } else { // Report search depth (forceOnGround) as debug info
       std::stringstream ss;
       ss << "Scene::doForceOnGround computing part \"" << part->mId << "\"\n"
          << "Search depth is " << part->forceOnGround;
-      logging::DEBUG(ss.str());
+      LOG_DEBUG(ss.str());
     }
     // 2. Find minimum z vertex and pick first ground reference
     std::vector<Vertex*> vertices = part->getAllVertices();
@@ -335,7 +334,7 @@ Scene::doForceOnGround()
       ss << "Scene::doForceOnGround could not place part \"" << part->mId
          << "\" on ground.\n"
          << "No valid ground candidate was found";
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
       continue;
     }
     // 3. Find ground reference best fitting plane
@@ -420,14 +419,14 @@ Scene::buildKDGrove(bool const safe)
 void
 Scene::buildKDGroveWithLog(bool const safe)
 {
-  logging::INFO("Building KD-Grove... ");
+  LOG_INFO("Building KD-Grove... ");
   TimeWatcher kdgTw;
   kdgTw.start();
   buildKDGrove(safe);
   kdgTw.stop();
   std::stringstream ss;
   ss << "KDG built in " << kdgTw.getElapsedDecimalSeconds() << "s";
-  logging::TIME(ss.str());
+  LOG_TIME(ss.str());
 }
 
 void

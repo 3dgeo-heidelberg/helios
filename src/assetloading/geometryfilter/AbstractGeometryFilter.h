@@ -6,7 +6,7 @@
 namespace fs = boost::filesystem;
 #include "Material.h"
 #include "ScenePart.h"
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include "maths/Rotation.h"
 

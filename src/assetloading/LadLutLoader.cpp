@@ -2,7 +2,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <fstream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <vector>
 
 std::shared_ptr<LadLut>
@@ -16,7 +16,7 @@ LadLutLoader::load(std::string const& path, std::string const separator)
     std::stringstream ss;
     ss << "Failed to open ladlut file at \"" << path << "\"\n"
        << "EXCEPTION: " << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 

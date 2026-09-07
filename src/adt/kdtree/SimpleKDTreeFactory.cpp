@@ -2,7 +2,7 @@
 #include <IBinaryTreeNode.h>
 #include <KDTreePrimitiveComparator.h>
 #include <SimpleKDTreeFactory.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -70,7 +70,7 @@ SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
      */
     std::stringstream ss;
     ss << "Null KDTree with no primitives was built";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
   } else {
     if (computeStats) {
       computeKDTreeStats(root);
@@ -252,7 +252,7 @@ SimpleKDTreeFactory::reportKDTreeStats(
      << "Interior nodes: " << root->stats_numInterior << "\n\t"
      << "Leaf nodes: " << root->stats_numLeaves << "\n\t"
      << "Total tree cost: " << root->stats_totalCost;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void

@@ -3,7 +3,7 @@
 #include "maths/Directions.h"
 #include <HeliosException.h>
 #include <iostream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <math.h>
 #include <sstream>
 
@@ -85,11 +85,11 @@ PolygonMirrorBeamDeflector::applySettings(
        << MathConverter::radiansToDegrees(cfg_device_scanAngleEffectiveMax_rad *
                                           2)
        << " degrees). Please adjust the settings.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
   state_currentBeamAngle_rad = 0;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 
   // For calculating the spacing between subsequent shots:
   double const angleMax = cfg_device_scanAngleMax_rad;

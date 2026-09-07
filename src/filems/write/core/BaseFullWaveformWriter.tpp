@@ -45,6 +45,6 @@ template<typename... WriteArgs>
 void
 BaseFullWaveformWriter<WriteArgs...>::setOutputFilePath(std::string const& path)
 {
-  logging::INFO("fw_path=" + path);
+  LOG_INFO("fw_path=" + path);
   sfw = makeWriter(path);
 }

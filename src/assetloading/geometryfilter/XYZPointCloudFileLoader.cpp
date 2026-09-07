@@ -2,7 +2,7 @@
 #include <assetloading/geometryfilter/SparseVoxelGrid.h>
 #include <assetloading/geometryfilter/XYZPointCloudFileLoader.h>
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <util/FileUtils.h>
 #include <util/HeliosException.h>
 
@@ -59,7 +59,7 @@ XYZPointCloudFileLoader::run()
     if (!fs::exists(fs::path(filePath))) { // Error : file not found
       std::stringstream ss;
       ss << "File not found: " << filePath << std::endl;
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
     lastNumVoxels = primsOut->mPrimitives.size();
@@ -76,14 +76,14 @@ XYZPointCloudFileLoader::run()
 void
 XYZPointCloudFileLoader::parse(std::string const& filePath)
 {
-  logging::INFO("Reading point cloud from XYZ file " + filePath + " ...");
+  LOG_INFO("Reading point cloud from XYZ file " + filePath + " ...");
 
   // Initialize counters
   unsafeNormalEstimations = 0;
   discardedPointsByNormal = 0;
 
   // Material
-  logging::INFO("Adding default material");
+  LOG_INFO("Adding default material");
   Material mat;
   // Legacy default material commented below
   /*mat.useVertexColors = true;
@@ -95,8 +95,8 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
   try {
     ifs = std::ifstream(filePath, std::ifstream::binary);
   } catch (std::exception& e) {
-    logging::ERR("Failed to open xyz point cloud file: " + filePath +
-                 "\nEXCEPTION: " + e.what());
+    LOG_ERR("Failed to open xyz point cloud file: " + filePath +
+            "\nEXCEPTION: " + e.what());
     throw HeliosException("Failed to open xyz point cloud file: " + filePath +
                           "\nEXCEPTION: " + e.what());
   }
@@ -131,7 +131,7 @@ XYZPointCloudFileLoader::parse(std::string const& filePath)
     ss << "\t" << discardedPointsByNormal << " points have a non valid "
        << "normal";
   }
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
   ss.str("");
 }
 
@@ -194,7 +194,7 @@ XYZPointCloudFileLoader::firstPass(std::string const& filePathString,
     std::stringstream ss;
     ss << "Failed to read xyz point cloud file \"" << filePathString
        << "\"\nEXCEPTION: " << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw;
   }
 }
@@ -383,7 +383,7 @@ XYZPointCloudFileLoader::fillVoxelsGrid(std::ifstream& ifs,
     ss << "Failed to read (2nd pass, fillVoxelsGrid) xyz point cloud"
           "file \""
        << filePathString << "\"\nEXCEPTION: " << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
   }
 }
 
@@ -486,7 +486,7 @@ XYZPointCloudFileLoader::warnAboutPotentialErrors(
     std::stringstream ss;
     ss << "Non unitary normals were found in point cloud loaded from "
        << "file:\n\t\"" << filePathString << "\"";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 }
 
@@ -522,7 +522,7 @@ XYZPointCloudFileLoader::postProcess(std::string const& matName,
        << voxelPopulationThreshold << " points)\n"
        << "Computation might be to slow or even run out of memory.\n"
        << "Please, consider reducing voxel size.";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 }
 
@@ -567,7 +567,7 @@ XYZPointCloudFileLoader::estimateNormals(std::ifstream& ifs)
     ss << "Failed to read (estimate normals) xyz point cloud file \n"
           "EXCEPTION: "
        << e.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -640,7 +640,7 @@ XYZPointCloudFileLoader::estimateNormalsBatch(std::ifstream& ifs)
       ss << "Failed to read (estimate normals batch) xyz point cloud"
             "file \nEXCEPTION: "
          << e.what();
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
 

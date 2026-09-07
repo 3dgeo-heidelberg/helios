@@ -10,7 +10,7 @@
 #include <scanner/ScannerHead.h>
 #include <scanner/WarehouseScanningPulseProcess.h>
 #include <util/HeliosException.h>
-#include <util/logger/logging.hpp>
+#include <util/logger/logger_core.hpp>
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>
@@ -271,7 +271,7 @@ HDA_SimStepRecorder::recordPlatformMount()
        << "platform's absolute mount attitude:\n"
        << hex.what() << "\n"
        << "Recording " << roll << " value instead.";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
   platformMountRoll->push(roll);
   platformMountPitch->push(pitch);

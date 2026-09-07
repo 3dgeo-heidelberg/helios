@@ -11,9 +11,16 @@ from helios.validation import (
 from enum import IntEnum
 from pydantic import PositiveInt, BaseModel
 from typing import Optional
-from logging import ERROR, DEBUG, INFO, WARNING
+import logging
+from helios.logger import (
+    TRACE_LEVEL_NUM,
+    TIME_LEVEL_NUM,
+    LogFormat,
+    LoggingConfig,
+)
 from datetime import datetime
 import os
+from pathlib import Path
 
 import _helios
 import sys
@@ -53,7 +60,7 @@ class LogVerbosity(IntEnum):
     "Log timing information."
 
     DEFAULT = 0b111000
-    "Default logging level."
+    "Default logging level (only errors and warnings will be logged)."
 
     VERBOSE = 0b111100
     "Verbose logging output."
@@ -61,20 +68,20 @@ class LogVerbosity(IntEnum):
     VERY_VERBOSE = 0b111111
     "Very verbose logging output."
 
-    def apply(self) -> None:
+    def to_python_level(self) -> int:
         match self:
             case LogVerbosity.SILENT:
-                _helios.logging_silent()
+                return logging.CRITICAL + 10
             case LogVerbosity.QUIET:
-                _helios.logging_quiet()
+                return logging.ERROR
             case LogVerbosity.TIME:
-                _helios.logging_time()
+                return TIME_LEVEL_NUM
             case LogVerbosity.DEFAULT:
-                _helios.logging_default()
+                return logging.WARNING
             case LogVerbosity.VERBOSE:
-                _helios.logging_verbose()
+                return logging.INFO
             case LogVerbosity.VERY_VERBOSE:
-                _helios.logging_very_verbose()
+                return TRACE_LEVEL_NUM
 
 
 class KDTreeFactoryType(IntEnum):
@@ -175,7 +182,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     warehouse_factor: PositiveInt = 4
     log_file: bool = False
     log_file_only: bool = False
-    verbosity: LogVerbosity = LogVerbosity.SILENT
+    verbosity: LogVerbosity = LogVerbosity.DEFAULT
     factory_type: KDTreeFactoryType = KDTreeFactoryType.SAH_APPROXIMATION
     kdt_num_threads: ThreadCount = None
     kdt_geom_num_threads: ThreadCount = None
@@ -278,9 +285,6 @@ def set_execution_settings(
     # Update the global settings with the provided parameters
     _global_execution_settings.update_from_dict(parameters)
 
-    _global_execution_settings.verbosity.apply()
-    apply_log_writing(_global_execution_settings)
-
 
 def set_output_settings(output_settings: Optional[OutputSettings] = None, **parameters):
     """Set the global output settings for the Helios++ library
@@ -364,26 +368,25 @@ def compose_output_settings(
     return _compose_settings((local_settings, _global_output_settings), parameters)
 
 
-def apply_log_writing(execution_settings: ExecutionSettings):
-    # Apply the chosen log writing mode to c++ part
-    config: dict[str, str] = {}
+def build_logging_config(
+    execution_settings: ExecutionSettings,
+    *,
+    log_dir: Path | str = "output/logs",
+) -> LoggingConfig:
+    log_dir = Path(log_dir)
+    logfile = None
 
-    if execution_settings.log_file_only or execution_settings.log_file:
-        log_dir = "output/logs"
-        os.makedirs(log_dir, exist_ok=True)
-        file_log = os.path.join(
-            log_dir, f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
-        )
-        config["file_name"] = file_log
+    if execution_settings.log_file or execution_settings.log_file_only:
+        log_dir.mkdir(parents=True, exist_ok=True)
+        logfile = log_dir / f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
 
-    if execution_settings.log_file_only:
-        config["type"] = "file"
-    elif execution_settings.log_file:
-        config["type"] = "full"
-    else:
-        config["type"] = "std_out"
-
-    if config["type"] in {"file", "full"} and "file_name" not in config:
-        raise ValueError(f"Logger type '{config['type']}' requires a file_name")
-
-    _helios.configure_logging(config)
+    return LoggingConfig(
+        level=execution_settings.verbosity.to_python_level(),
+        stdout=not execution_settings.log_file_only,
+        logfile=logfile,
+        stdout_format=LogFormat.TEXT,
+        file_format=LogFormat.JSON,
+        stdout_utc=False,
+        file_utc=True,
+        use_cpp_bridge=True,
+    )

@@ -1,6 +1,4 @@
 #include <DateTimeUtils.h>
-// #include <iostream>
-// #include "logging.hpp"
 
 #include <chrono>
 #include <ctime>
