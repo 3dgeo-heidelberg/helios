@@ -91,7 +91,10 @@ public:
   /**
    * @see filems::HeliosWriter::getOutputFilePath
    */
-  virtual std::string getOutputPath() const { return sfw->getPath(); }
+  virtual std::string getOutputPath() const
+  {
+    return sfw == nullptr ? "" : sfw->getPath();
+  }
 
   /**
    * @brief Get the LAS output flag

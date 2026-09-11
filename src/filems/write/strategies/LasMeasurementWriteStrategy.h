@@ -167,7 +167,8 @@ protected:
     // Populate LAS point (extra bytes attributes)
     lp.set_attribute(ewAttrStart, F64(m.echo_width));
     lp.set_attribute(fwiAttrStart, I32(m.fullwaveIndex));
-    lp.set_attribute(hoiAttrStart, I32(std::stoi(m.hitObjectId)));
+    I32 const hoi = m.hitObjectId.empty() ? 0 : I32(std::stoi(m.hitObjectId));
+    lp.set_attribute(hoiAttrStart, hoi);
     lp.set_attribute(ampAttrStart, F64(m.intensity));
   }
 };

@@ -153,7 +153,13 @@ SurveyPlayback::estimateTemporalLegProgress()
   double const t0 = imp->getCurrentLegStartTime();
   double const t = imp->getStepLoop().getCurrentTime();
   double const Dt = imp->getCurrentLegTimeDiff();
-  return (int)(100 * t / (t0 + Dt));
+  double const legDuration = t0 + Dt;
+  // Zero-duration legs (e.g. TELEPORT/STOP legs, which have Dt == 0 and can
+  // start at t0 == 0) would otherwise divide by zero here; such legs are
+  // considered complete as soon as they start.
+  if (legDuration <= 0.0)
+    return 100;
+  return (int)(100 * t / legDuration);
 }
 
 void
