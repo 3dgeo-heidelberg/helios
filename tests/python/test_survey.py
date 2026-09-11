@@ -714,14 +714,30 @@ def test_run_interpolated_survey_teleport_first_leg_on_disk_output(tmp_path):
         scanner_settings=scanner_settings, trajectory_settings=trajectory_settings
     )
 
+    leg_start_paths = []
+
+    def record_leg_start(ctx, points=None, trajectories=None):
+        leg_start_paths.append(ctx.output_path)
+
     output_path = survey.run(
         format=OutputFormat.LAZ,
         output_dir=tmp_path,
         execution_settings=execution_settings,
+        callbacks=(
+            SurveyHook(
+                point=HookPoint.LEG_START,
+                callback=record_leg_start,
+            ),
+        ),
     )
+
+    assert leg_start_paths
+    assert leg_start_paths[0] == ""
+    assert any(path for path in leg_start_paths[1:])
 
     files = list(output_path.rglob("*.laz"))
     assert len(files) == 1
+
     las = laspy.read(files[0])
     assert len(las.points) > 0
 
