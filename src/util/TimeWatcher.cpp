@@ -1,6 +1,6 @@
 #include <TimeWatcher.h>
 #include <iomanip>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <sstream>
 
 // *** CONSTRUCTOR *** //
@@ -115,7 +115,7 @@ TimeWatcher::reportSeconds(std::string msg)
 {
   std::stringstream ss;
   ss << msg << getElapsedSeconds();
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
@@ -123,7 +123,7 @@ TimeWatcher::reportMillis(std::string msg)
 {
   std::stringstream ss;
   ss << msg << getElapsedMillis() << std::endl;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
@@ -131,7 +131,7 @@ TimeWatcher::reportFormat(std::string msg)
 {
   std::stringstream ss;
   ss << msg << getElapsedFormat() << std::endl;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void

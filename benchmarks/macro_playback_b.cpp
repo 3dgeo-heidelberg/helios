@@ -16,13 +16,9 @@ The benchmark tests the performance of the SurveyPlayback->start() method.
 #include <noise/RandomnessGenerator.h>
 #include <scanner/detector/PulseThreadPoolFactory.h>
 
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 namespace fs = boost::filesystem;
-
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 static void
 macro_playback_benchmark(benchmark::State& state)

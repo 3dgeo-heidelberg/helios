@@ -15,6 +15,7 @@
 
 #include <boost/filesystem.hpp>
 #include <gdal_priv.h>
+#include <logger_core.hpp>
 
 #include <iomanip>
 
@@ -22,11 +23,6 @@ namespace fs = boost::filesystem;
 
 // ***  DECLARATIONS  *** //
 // ********************** //
-
-// LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 // ***  MAIN : EXECUTION ENTRY POINT  *** //
 // ************************************** //
@@ -83,36 +79,12 @@ main(int argc, char** argv)
     // Load drivers
     GDALAllRegister(); // Load All known GDAL Drivers
 
-    // Configure logging
-    ap.parseLoggingVerbosity();
-    time_t t = std::time(nullptr);
-    std::tm* tm = std::localtime(&t);
-    std::stringstream ss;
-    ss << "helios_" << std::put_time(tm, "%Y-%m-%d_%H-%M-%S") << ".log";
-    logging::configure({ { "type", ap.parseLoggingOutputMode() },
-                         { "file_name", ss.str() },
-                         { "reopen_interval", "1" } });
-    ss.str("");
-
-    // Show version
-    ss << "HELIOS++ VERSION " << getHeliosVersion() << "\n";
-    logging::INFO(ss.str());
-
-    // Show current working directory
-    ss.str("");
-    ss << "CWD: " << boost::filesystem::current_path();
-    logging::INFO(ss.str());
-
+    // Deprecated CLI: logging is silent / no-op.
+    logging::configure_silent();
     // Handle default randomness generator
     std::string seed = ap.parseSeed();
-    if (seed != "") {
-      std::stringstream ss;
-      ss << "seed: " << seed;
-      logging::INFO(ss.str());
+    if (seed != "")
       setDefaultRandomnessGeneratorSeed(seed);
-    } else {
-      logging::INFO("seed: AUTO");
-    }
 
     // Load lidar simulation
     helios::main::LidarSim app;

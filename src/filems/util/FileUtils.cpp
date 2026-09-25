@@ -1,7 +1,7 @@
 #include <FileUtils.h>
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
-#include <logging.hpp>
+#include <logger_core.hpp>
 namespace fs = boost::filesystem;
 
 char const FileUtils::pathSeparator =
@@ -38,7 +38,7 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
     } catch (std::exception& e2) {
       std::stringstream ss;
       ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
   }
@@ -64,7 +64,7 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
     std::stringstream ss;
     ss << "Could not resolve file path: '" << path << "'. "
        << "Please check the assetsDir, filepath or efilepath.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -100,7 +100,7 @@ FileUtils::getFilesByExpression(std::string const pathExpression)
     ss << "Warning: No matching files were found "
           "in efilepath directory. "
           "Check regular expression.";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 
   return filePaths;

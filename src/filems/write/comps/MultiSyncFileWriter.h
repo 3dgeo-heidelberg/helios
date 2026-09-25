@@ -77,7 +77,7 @@ protected:
     } catch (std::exception& e) {
       std::stringstream ss;
       ss << "MultiSyncFileWriter failed to write. EXCEPTION: \n\t" << e.what();
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
   }
   /**

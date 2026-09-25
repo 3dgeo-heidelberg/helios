@@ -6,7 +6,7 @@ checkIntegrateSurveyAndLegs(std::shared_ptr<Survey> survey)
   std::shared_ptr<AbstractBeamDeflector> beamDeflector =
     survey->scanner->getBeamDeflector();
   if (!beamDeflector) {
-    logging::ERR(
+    LOG_ERR(
       "checkIntegrateSurveyAndLegs: scanner->getBeamDeflector() returned null");
     throw std::runtime_error("Beam deflector was not properly set in scanner.");
   }
@@ -35,7 +35,7 @@ checkIntegrateSurveyAndLegs(std::shared_ptr<Survey> survey)
          << leg->mScannerSettings->scanFreq_Hz << " and "
          << "headRotatePerSec_rad = "
          << leg->mScannerSettings->headRotatePerSec_rad << ".";
-      logging::INFO(ss.str());
+      LOG_INFO(ss.str());
     }
     ScannerSettings const& ss = leg->getScannerSettings();
     if (ss.scanFreq_Hz < beamDeflector->cfg_device_scanFreqMin_Hz) {
@@ -49,7 +49,7 @@ checkIntegrateSurveyAndLegs(std::shared_ptr<Survey> survey)
         << "Please update either the requested scanning "
         << "frequency (potentially via the requested scan resolution) "
         << "or the scanner specification.";
-      logging::ERR(s.str());
+      LOG_ERR(s.str());
       throw std::runtime_error(s.str());
     }
 
@@ -65,7 +65,7 @@ checkIntegrateSurveyAndLegs(std::shared_ptr<Survey> survey)
         << "Please update either the requested scanning "
         << "frequency (potentially via the requested scan resolution) "
         << "or the scanner specification.";
-      logging::ERR(s.str());
+      LOG_ERR(s.str());
 
       throw std::runtime_error(s.str());
     }

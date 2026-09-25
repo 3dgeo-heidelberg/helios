@@ -1,6 +1,6 @@
 #include <FMSFacadeFactory.h>
 #include <filems/write/core/MultiVectorialMeasurementWriter.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <boost/filesystem.hpp>
 
@@ -49,7 +49,7 @@ helios::filems::FMSFacadeFactory::buildFacade(std::string const& outdir,
   }
   // Create the root directory
   fs::create_directories(rootDir);
-  logging::INFO("Output directory: \"" + rootDir + "\"");
+  LOG_INFO("Output directory: \"" + rootDir + "\"");
 
   // Create FMS facade
   std::shared_ptr<FMSFacade> fms = std::make_shared<FMSFacade>();

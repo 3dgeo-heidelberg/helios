@@ -2,7 +2,7 @@
 
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/perpendicular.hpp>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include "HeliosException.h"
 #include "MathConstants.h"
@@ -74,7 +74,7 @@ Rotation::Rotation(glm::dvec3 axis, double angle)
 
   double norm = glm::l2Norm(axis);
   if (norm == 0) {
-    logging::WARN("ERROR: ZERO_NORM_FOR_ROTATION_AXIS");
+    LOG_WARN("ERROR: ZERO_NORM_FOR_ROTATION_AXIS");
   }
 
   double halfAngle = -0.5 * angle;

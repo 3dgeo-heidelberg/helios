@@ -132,7 +132,7 @@ protected:
     catch (const std::exception& e) {
       std::stringstream ss;
       ss << "MDThreadPool::wrap_md_task EXCEPTION: " << e.what();
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
 
     // Task has finished, so increment count of available threads.

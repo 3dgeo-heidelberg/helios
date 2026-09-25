@@ -1,7 +1,7 @@
 #if DATA_ANALYTICS >= 2
 #pragma once
 #include <HDA_GlobalVars.h>
-#include <util/logger/logging.hpp>
+#include <util/logger/logger_core.hpp>
 
 #include <sstream>
 #include <string>
@@ -59,7 +59,7 @@ public:
        << gv.getIntensityComputationsCount() << "\n";
     // Print through info logging level system
     std::string text = ss.str();
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
   }
 };
 

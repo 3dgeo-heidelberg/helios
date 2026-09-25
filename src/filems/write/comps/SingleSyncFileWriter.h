@@ -77,7 +77,7 @@ public:
     } catch (std::exception& e) {
       std::stringstream ss;
       ss << "SingleSyncFileWriter failed to write. EXCEPTION: \n\t" << e.what();
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
   }
 

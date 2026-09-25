@@ -1,6 +1,6 @@
 #include <Simulation.h>
 #include <SimulationReporter.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <memory>
 #include <sstream>
@@ -22,7 +22,7 @@ SimulationReporter::preStartReport() const
   std::string dmoReport = reportDynMovingObjects();
   if (dmoReport != "")
     ss << dmoReport;
-  logging::DEBUG(ss.str());
+  LOG_DEBUG(ss.str());
 }
 
 void
@@ -35,7 +35,7 @@ SimulationReporter::preFinishReport(double const seconds) const
   std::string dmoReport = reportDynMovingObjects();
   if (dmoReport != "")
     ss << dmoReport;
-  logging::DEBUG(ss.str());
+  LOG_DEBUG(ss.str());
 
   // Report steps and times
   ss.str("");
@@ -43,7 +43,7 @@ SimulationReporter::preFinishReport(double const seconds) const
      << "Elapsed virtual time = " << sim.stepLoop.getCurrentTime() << " sec.\n"
      << "Main thread simulation loop finished in " << seconds << " sec.\n"
      << "Waiting for completion of pulse computation tasks...";
-  logging::TIME(ss.str());
+  LOG_TIME(ss.str());
 }
 
 void
@@ -52,7 +52,7 @@ SimulationReporter::postFinishReport(double const seconds) const
   // Report computation task including finish process
   std::stringstream ss;
   ss << "Pulse computation tasks finished in " << seconds << " sec.";
-  logging::TIME(ss.str());
+  LOG_TIME(ss.str());
 }
 
 // ***  UTIL METHODS  *** //

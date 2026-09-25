@@ -1,5 +1,5 @@
 #include <HeliosException.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <maths/RayUtils.h>
 
 glm::dvec3

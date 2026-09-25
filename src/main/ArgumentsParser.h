@@ -1,6 +1,5 @@
 #pragma once
 
-#include <logging.hpp>
 #include <string>
 #include <vector>
 
@@ -136,15 +135,6 @@ public:
    * False otherwise
    */
   bool parseDisableLegNoise();
-  /**
-   * @brief Parse the verbosity level for logging from invocation arguments
-   */
-  void parseLoggingVerbosity();
-  /**
-   * @brief Parse the logging output mode from invocation arguments
-   * @return Translated parsed logging output mode. By default "std_out"
-   */
-  std::string parseLoggingOutputMode();
   /**
    * @brief Parse the full wave noise specification.
    * @return True if full wave noise was setted, False otherwise.

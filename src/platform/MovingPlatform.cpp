@@ -2,13 +2,12 @@
 
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/vector_angle.hpp>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include "maths/Directions.h"
 
 #include "MovingPlatform.h"
 #include "PrintUtils.h"
-#include <logging.hpp>
 using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -80,7 +79,7 @@ MovingPlatform::initLegManual()
        << "computation at MovingPlatform::initLegManual\n\t"
        << "angle = " << angle << " but it should be below " << eps
        << "\n\tUsing iterative computation instead";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
     initLegManualIterative();
   }
 }
@@ -100,10 +99,10 @@ MovingPlatform::initLegManualIterative()
       angle = glm::angle(glm::normalize(cached_vectorToTarget_xy),
                          glm::normalize(cached_dir_current_xy));
     }
-    logging::INFO("Iterative mode was used for manual leg initialization "
-                  "because default one failed for MovingPlatform");
+    LOG_INFO("Iterative mode was used for manual leg initialization "
+             "because default one failed for MovingPlatform");
   } catch (std::exception& e) {
-    logging::WARN(e.what());
+    LOG_WARN(e.what());
   }
 }
 
@@ -116,7 +115,7 @@ MovingPlatform::waypointReached()
   bool const result =
     (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
   if (result) {
-    logging::INFO("Waypoint reached!");
+    LOG_INFO("Waypoint reached!");
   }
   return result;
 }

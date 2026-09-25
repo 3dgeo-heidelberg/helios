@@ -12,6 +12,7 @@ target_sources(
   "PrintUtils.cpp"
   "DateTimeUtils.cpp"
   "threadpool/SharedTaskSequencer.cpp"
+  "logger/logger_core.cpp"
   "TimeWatcher.cpp"
   "helios_version.cpp"
 )

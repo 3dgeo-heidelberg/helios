@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <PulseTaskDropper.h>
 #include <PulseThreadPool.h>
@@ -228,8 +228,8 @@ Scanner::setPulseFreq_Hz(int pulseFreq_Hz)
 
   // Check of requested pulse freq is > 0:
   if (pulseFreq_Hz < 0) {
-    logging::WARN("ERROR: Attempted to set pulse frequency < 0. "
-                  "This is not possible.");
+    LOG_WARN("ERROR: Attempted to set pulse frequency < 0. "
+             "This is not possible.");
     pulseFreq_Hz = 0;
   }
 
@@ -237,8 +237,8 @@ Scanner::setPulseFreq_Hz(int pulseFreq_Hz)
   if (std::find(getSupportedPulseFreqs_Hz().begin(),
                 getSupportedPulseFreqs_Hz().end(),
                 pulseFreq_Hz) == getSupportedPulseFreqs_Hz().end()) {
-    logging::WARN("WARNING: Specified pulse frequency is not supported "
-                  "by this device. We'll set it nevertheless.\n");
+    LOG_WARN("WARNING: Specified pulse frequency is not supported "
+             "by this device. We'll set it nevertheless.\n");
   }
 
   // Set new pulse frequency:
@@ -246,7 +246,7 @@ Scanner::setPulseFreq_Hz(int pulseFreq_Hz)
 
   stringstream ss;
   ss << "Pulse frequency set to " << this->cfg_setting_pulseFreq_Hz;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 // ***  SIM STEP UTILS  *** //

@@ -1,4 +1,4 @@
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <scene/dynamic/DynScene.h>
 
 using std::stringstream;
@@ -35,7 +35,7 @@ DynScene::prepareSimulation(int const simFrequency_hz)
          << ") is greater than one. "
             "This is not supported. "
             "Any dynamic time step must be inside (0, 1].";
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
     setStepInterval((int)(simFreq_hz * dynTimeStep));
     // Configure each dynamic object step interval from time
@@ -53,7 +53,7 @@ DynScene::prepareSimulation(int const simFrequency_hz)
            << ") greater than "
               "one. This is not supported. "
               "Any dynamic time step must be inside (0, 1].";
-        logging::WARN(ss.str());
+        LOG_WARN(ss.str());
       }
       dynObj->setStepInterval((int)(partDt / dynTimeStep));
       // Configure the dynamic step interval for each observer from time
@@ -71,7 +71,7 @@ DynScene::prepareSimulation(int const simFrequency_hz)
            << ") greater than "
               "one. This is not supported. "
               "Any dynamic time step must be inside (0, 1].";
-        logging::WARN(ss.str());
+        LOG_WARN(ss.str());
       }
       obs->setObserverStepInterval((int)(kdtDt / partDt));
     }
