@@ -5,6 +5,7 @@ from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
 from helios.survey import Survey
 from helios.utils import add_asset_directory, set_rng_seed
 from helios import __version__
+from pathlib import Path
 
 
 @click.command()
@@ -281,7 +282,11 @@ def cli(**kw):
     output_settings.write_pulse = kw.get("writepulse")
     output_settings.las_scale = kw.get("lasscale")
 
-    survey = Survey.from_xml(kw.get("survey_file_path"))
+    survey_file_path = Path(kw.get("survey_file_path"))
+    if survey_file_path.suffix.lower() in (".yml", ".yaml"):
+        survey = Survey.from_yaml(survey_file_path)
+    else:
+        survey = Survey.from_xml(survey_file_path)
     if gps := kw.get("gpsstarttime"):
         survey.gps_time = gps
 
