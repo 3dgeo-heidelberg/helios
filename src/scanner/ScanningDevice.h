@@ -284,11 +284,8 @@ public:
    *
    * For example, data related to the subray generation process will be
    *  cached to avoid redundant operations.
-   *
-   * @param legacyEnergyModel Whether to use the legacy energy model (True)
-   *  or not (False).
    */
-  void prepareSimulation(bool const legacyEnergyModel = false);
+  void prepareSimulation();
 
   /**
    * @brief Configure beam related attributes. It is recommended to
