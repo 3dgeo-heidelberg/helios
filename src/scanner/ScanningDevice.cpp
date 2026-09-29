@@ -416,20 +416,8 @@ ScanningDevice::calcIntensity(double const targetRange,
                               double const sigma,
                               int const subrayRadiusStep) const
 {
-  return EnergyMaths::calcReceivedPower(
-           averagePower_w,
-           wavelength_m,
-           targetRange,
-           detector->cfg_device_rangeMin_m,
-           targetRange *
-             std::sin(cached_subrayDivergenceAngle_rad[subrayRadiusStep]),
-           beamWaistRadius,
-           cached_Dr2,
-           cached_Bt2,
-           efficiency,
-           atmosphericExtinction,
-           sigma) *
-         1000000000.0;
+  return energyModel->computeReceivedPowerWithSigma(
+    targetRange, sigma, subrayRadiusStep);
 }
 
 // ***  GETTERs and SETTERs  *** //
