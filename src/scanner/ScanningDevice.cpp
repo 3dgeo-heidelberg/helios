@@ -95,7 +95,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 // ***  M E T H O D S  *** //
 // *********************** //
 void
-ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+ScanningDevice::prepareSimulation()
 {
   // Reset cached subray data for a clean elliptical sampling pass
   cached_subrayRotation.clear();

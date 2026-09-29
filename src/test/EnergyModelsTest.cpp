@@ -119,7 +119,7 @@ TEST_CASE("Energy Models Test ")
     scanner->setWavelength(1064e-06);
     scanner->setBeamWaistRadius(0.0011289390629985112);
     scanner->setAtmosphericExtinction(9.07603791e-6);
-    scanner->prepareSimulation(false);
+    scanner->prepareSimulation();
     // Get reference to scanning device
     ScanningDevice& scanDev = scanner->getScanningDevice(0);
 
