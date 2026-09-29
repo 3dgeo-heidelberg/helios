@@ -46,8 +46,7 @@ protected:
   friend class Scanner;
   friend class SingleScanner;
   friend class MultiScanner;
-  friend class BaseEnergyModel;
-  friend class ImprovedEnergyModel;
+  friend class EnergyModel;
   friend class HeliosTests::EnergyModelsTest;
 
   // ***  DEVICE ATTRIBUTES  *** //
@@ -181,7 +180,6 @@ protected:
    * @brief The energy model to compute the intensity for any pulse
    *  emitted by the scanning device.
    * @see EnergyModel
-   * @see BaseEnergyModel
    */
   std::shared_ptr<EnergyModel> energyModel = nullptr;
   /**
