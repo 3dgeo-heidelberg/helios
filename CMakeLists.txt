@@ -27,13 +27,6 @@ project(Helios++
 # We also store relevant CMake modules in the cmake/ directory
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 
-# Set CMake policies for this project
-
-# We allow <Package>_ROOT (env) variables for locating dependencies
-cmake_policy(SET CMP0074 NEW)
-# We allow target_sources to convert relative paths to absolute paths
-cmake_policy(SET CMP0076 NEW)
-
 # Initialize some default paths
 include(GNUInstallDirs)
 
