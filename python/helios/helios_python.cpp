@@ -1862,9 +1862,7 @@ PYBIND11_MODULE(_helios, m)
          &ScanningDevice::setHeadRelativeEmitterPosition)
     .def("set_head_relative_emitter_attitude",
          &ScanningDevice::setHeadRelativeEmitterAttitude)
-    .def("prepare_simulation",
-         &ScanningDevice::prepareSimulation,
-         py::arg("legacyEnergyModel") = false)
+    .def("prepare_simulation", &ScanningDevice::prepareSimulation)
     .def("configure_beam", &ScanningDevice::configureBeam)
     .def("calcAtmosphericAttenuation",
          &ScanningDevice::calcAtmosphericAttenuation)
@@ -2409,12 +2407,6 @@ PYBIND11_MODULE(_helios, m)
       [](const PyHeliosSimulation& self) { return self.finalOutput; },
       [](PyHeliosSimulation& self, bool value) { self.finalOutput = value; })
     .def_property(
-      "legacy_energy_model",
-      [](const PyHeliosSimulation& self) { return self.legacyEnergyModel; },
-      [](PyHeliosSimulation& self, bool value) {
-        self.legacyEnergyModel = value;
-      })
-    .def_property(
       "export_to_file",
       [](const PyHeliosSimulation& self) { return self.exportToFile; },
       [](PyHeliosSimulation& self, bool value) { self.exportToFile = value; })
@@ -2775,9 +2767,7 @@ PYBIND11_MODULE(_helios, m)
          py::arg("platform_noise_disabled") = false)
 
     .def("on_leg_complete", &MultiScanner::onLegComplete)
-    .def("prepare_simulation",
-         &MultiScanner::prepareSimulation,
-         py::arg("legacy_energy_model") = 0)
+    .def("prepare_simulation", &MultiScanner::prepareSimulation)
     .def("apply_settings",
          &MultiScanner::applySettings,
          py::arg("settings"),
@@ -3027,13 +3017,11 @@ PYBIND11_MODULE(_helios, m)
     .def(py::init<int,
                   std::shared_ptr<PulseThreadPoolInterface>,
                   int,
-                  std::string,
-                  bool>(),
+                  std::string>(),
          py::arg("parallelizationStrategy"),
          py::arg("pulseThreadPoolInterface"),
          py::arg("chunkSize"),
-         py::arg("fixedGpsTimeStart") = "",
-         py::arg("legacyEnergyModel") = false)
+         py::arg("fixedGpsTimeStart") = "")
 
     .def_readwrite("current_leg_index", &Simulation::mCurrentLegIndex)
     .def_readwrite("is_finished", &Simulation::finished)
@@ -3128,14 +3116,12 @@ PYBIND11_MODULE(_helios, m)
                   std::string,
                   bool,
                   bool,
-                  bool,
                   std::shared_ptr<helios::filems::FMSFacade>>(),
          py::arg("survey"),
          py::arg("parallelizationStrategy"),
          py::arg("pulseThreadPoolInterface"),
          py::arg("chunkSize"),
          py::arg("fixedGpsTimeStart"),
-         py::arg("legacyEnergyModel"),
          py::arg("exportToFile") = true,
          py::arg("disableShutdown") = false,
          py::arg("fms") = nullptr)
