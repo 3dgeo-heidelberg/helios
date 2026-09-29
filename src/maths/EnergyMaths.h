@@ -21,43 +21,6 @@ public:
   // ***  EMITTED / RECEIVED POWER  *** //
   // ********************************** //
   /**
-   * @brief Compute the space distribution equation to calculate the beam
-   *  energy decreasing the further away from the center.
-   *
-   * \f[
-   *  P_e = I_0 \exp\left[- \frac{
-   *          2 \pi^2 r^2 w_0^2
-   *      }{
-   *          \lambda^2 \left(R_0^2 + R^2\right)
-   *      }\right]
-   * \f]
-   *
-   * @param I0 The average power
-   * @param lambda The wavelength
-   * @param R The target range (in meters)
-   * @param R0 The minimum range of the device (in meters)
-   * @param r The radius
-   * @param w0 The beam waist radius
-   * @return Calculated emitted power
-   */
-  static double calcEmittedPower(double const I0,
-                                 double const lambda,
-                                 double const R,
-                                 double const R0,
-                                 double const r,
-                                 double const w0);
-  /**
-   * @brief Legacy version of EnergyMaths::calcEmittedPower
-   * @see EnergyMaths::calcEmittedPower
-   */
-  static double calcEmittedPowerLegacy(double const I0,
-                                       double const lambda,
-                                       double const R,
-                                       double const R0,
-                                       double const r,
-                                       double const w0);
-
-  /**
    * @brief Compute the emitted power for a subray such that the sum of the
    *  emitted energy by each subray matches the emitted energy when only a
    *  single ray is used.
@@ -121,84 +84,6 @@ public:
 
   /**
    * @brief Solve the laser radar equation
-   *
-   * <br/>
-   * Report title: Signature simulation and signal analysis for 3-D laser
-   * radar
-   * <br/>
-   * Report authors: Tomas Carlsson, Ove Steinvall and Dietmar Letalick
-   *
-   * \f[
-   *  P_r = \frac{
-   *          I_0 D_r^2 \eta_s \sigma
-   *      }{
-   *          4 \pi R^4 B_t^2
-   *      }
-   *      \exp\left[-\left(
-   *          \frac{2\pi^2r^2w_0^2}{\lambda^2\left(R_0^2 + R^2\right)} +
-   *          2Ra_e
-   *      \right)\right]
-   * \f]
-   * @param I0 Average power
-   * @param lambda Wavelength
-   * @param R Target range
-   * @param R0 Minimum range
-   * @param r Radius
-   * @param w0 beam waist radius
-   * @param Dr2 Squared receiver diameter
-   * @param Bt2 Squared beam divergence
-   * @param etaSys Efficiency of scanning device
-   * @param ae Atmospheric extinction coefficient
-   * @param sigma Cross section between target area and incidence angle
-   * @return Calculated received power
-   */
-  static double calcReceivedPower(double const I0,
-                                  double const lambda,
-                                  double const R,
-                                  double const R0,
-                                  double const r,
-                                  double const w0,
-                                  double const Dr2,
-                                  double const Bt2,
-                                  double const etaSys,
-                                  double const ae,
-                                  double const sigma);
-  /**
-   * @brief Fast version of EnergyMaths::calcReceivedPower .
-   *
-   * It receives the squared range that is assumed to be precomputed, thus
-   *  it is expected to be faster too.
-   */
-  static double calcReceivedPowerFast(double const I0,
-                                      double const lambdaSquared,
-                                      double const R,
-                                      double const RSquared,
-                                      double const R0Squared,
-                                      double const rSquared,
-                                      double const w0Squared,
-                                      double const Dr2,
-                                      double const Bt2,
-                                      double const etaSys,
-                                      double const ae,
-                                      double const sigma);
-  /**
-   * @brief Legacy version of EnergyMaths::calcReceivedPower
-   * @param Pe The emitted power
-   * @param etaAtm The atmospheric factor
-   * @see EnergyMaths::calcReceivedPower
-   * @see EnergyMaths::calcAtmosphericFactor
-   */
-  static double calcReceivedPowerLegacy(double const Pe,
-                                        double const Dr2,
-                                        double const R,
-                                        double const Bt2,
-                                        double const etaSys,
-                                        double const etaAtm,
-                                        double const sigma);
-
-  /**
-   * @brief Improved version of EnergyMaths::calcReceivedPower to be used
-   *  with the improved energy model.
    * @param Pe The emitted power
    * @param Dr2 Squared receiver diameter
    * @param R Target range
@@ -207,28 +92,14 @@ public:
    * @param etaAtm Atmospheric factor
    * @param sigma Cross section between target area and incidence angle
    * @return Calculated received power
-   * @see ImprovedEnergyModel
+   * @see EnergyModel
    */
-  static double calcReceivedPowerImproved(double const Pe,
-                                          double const Dr2,
-                                          double const R,
-                                          double const targetArea,
-                                          double const etaSys,
-                                          double const etaAtm,
-                                          double const sigma);
-
-  /**
-   * @brief Fast version of EnergyMaths::calcReceivedPowerImproved .
-   * The denominator is assumed to be precomputed, so it is expected to be
-   * faster.
-   * @see EnergyMaths::calcReceivedPowerImproved
-   */
-  static double calcReceivedPowerImprovedFast(double const Pe,
-                                              double const Dr2,
-                                              double const denom,
-                                              double const etaSys,
-                                              double const etaAtm,
-                                              double const sigma);
+  static double calcReceivedPowerFast(double const Pe,
+                                      double const Dr2,
+                                      double const denom,
+                                      double const etaSys,
+                                      double const etaAtm,
+                                      double const sigma);
 
   // ***  ATMOSPHERIC STUFF  *** //
   // *************************** //

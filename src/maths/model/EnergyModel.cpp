@@ -93,12 +93,12 @@ EnergyModel::computeReceivedPower(
   double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
     args.targetRange, sd.atmosphericExtinction);
   double const receivedPower =
-    EnergyMaths::calcReceivedPowerImprovedFast(Pe,
-                                               sd.cached_Dr2,
-                                               16 * targetArea * rangeSquared,
-                                               sd.efficiency,
-                                               atmosphericFactor,
-                                               sigma);
+    EnergyMaths::calcReceivedPowerFast(Pe,
+                                       sd.cached_Dr2,
+                                       16 * targetArea * rangeSquared,
+                                       sd.efficiency,
+                                       atmosphericFactor,
+                                       sigma);
 #if DATA_ANALYTICS >= 2
   std::vector<double>& calcIntensityRecord = calcIntensityRecords.back();
   calcIntensityRecord[3] = args.incidenceAngle_rad;
@@ -111,6 +111,37 @@ EnergyModel::computeReceivedPower(
   calcIntensityRecord[11] = Pe;
   calcIntensityRecord[12] = args.subrayRadiusStep;
 #endif
+  return receivedPower * 1e09;
+}
+
+double
+EnergyModel::computeReceivedPowerWithSigma(double const targetRange,
+                                           double const sigma,
+                                           int const subrayRadiusStep)
+{
+  double const rangeSquared = targetRange * targetRange;
+  double const emittedPower =
+    computeEmittedPower(EmittedPowerArgs{ targetRange,
+                                          rangeSquared,
+                                          sd.detector->cfg_device_rangeMin_m,
+                                          subrayRadiusStep });
+#if DATA_ANALYTICS >= 2
+  std::vector<std::vector<double>> unusedRecords;
+  double const targetArea = computeTargetArea(
+    TargetAreaArgs{ rangeSquared, subrayRadiusStep }, unusedRecords);
+#else
+  double const targetArea =
+    computeTargetArea(TargetAreaArgs{ rangeSquared, subrayRadiusStep });
+#endif
+  double const atmosphericFactor =
+    EnergyMaths::calcAtmosphericFactor(targetRange, sd.atmosphericExtinction);
+  double const receivedPower =
+    EnergyMaths::calcReceivedPowerFast(emittedPower,
+                                       sd.cached_Dr2,
+                                       16 * targetArea * rangeSquared,
+                                       sd.efficiency,
+                                       atmosphericFactor,
+                                       sigma);
   return receivedPower * 1e09;
 }
 
