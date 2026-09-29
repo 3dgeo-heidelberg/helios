@@ -172,6 +172,10 @@ public:
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   );
+  /** Compute received power when the target cross section is precomputed. */
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       int const subrayRadiusStep);
   /**
    * @brief Compute the emitted power \f$P_e\f$.
    *
