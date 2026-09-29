@@ -109,7 +109,6 @@ public:
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     std::string fixedGpsTimeStart,
-    bool const legacyEnergyModel,
     bool const exportToFile = true,
     bool const disableShutdown = false,
     std::shared_ptr<helios::filems::FMSFacade> fms = nullptr);

@@ -110,7 +110,7 @@ private:
                                                   ),
       0);
 
-    scanner->prepareSimulation(false);
+    scanner->prepareSimulation();
     return scanner;
   }
 };

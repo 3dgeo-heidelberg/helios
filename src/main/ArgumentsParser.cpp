@@ -299,12 +299,6 @@ ArgumentsParser::parseSplitByChannel()
   return findIndexOfArgument("--splitByChannel") >= 0;
 }
 
-bool
-ArgumentsParser::parseLegacyEnergyModel()
-{
-  return findIndexOfArgument("--legacyEnergyModel") >= 0;
-}
-
 // *** PRIVATE METHODS *** //
 // *********************** //
 int

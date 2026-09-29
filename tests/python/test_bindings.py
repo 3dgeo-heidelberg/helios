@@ -993,7 +993,7 @@ class ExampleScanner(_helios.Scanner):
     def getVisibility(self, index):
         return 10.0
 
-    def prepareSimulation(self, legacyEnergyModel):
+    def prepareSimulation(self):
         pass
 
     def retrieveCurrentSettings(self, idx):
