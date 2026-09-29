@@ -178,7 +178,6 @@ PyHeliosSimulation::start()
                                               pulseThreadPool,
                                               chunkSize,
                                               fixedGpsTimeStart,
-                                              legacyEnergyModel,
                                               exportToFile,
                                               true,
                                               fms);
