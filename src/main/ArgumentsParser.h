@@ -254,8 +254,6 @@ public:
    *  (false).
    * @return True if the legacy energy model must be used, false otherwise.
    * @see EnergyModel
-   * @see BaseEnergyModel
-   * @see ImprovedEnervyModel
    * @see ScanningDevice
    */
   bool parseLegacyEnergyModel();

@@ -10,8 +10,7 @@ target_include_directories(
 target_sources(
   helios
   PRIVATE
-  "model/BaseEnergyModel.cpp"
-  "model/ImprovedEnergyModel.cpp"
+  "model/EnergyModel.cpp"
   "rigidmotion/RigidMotionEngine.cpp"
   "rigidmotion/RigidMotionR2Factory.cpp"
   "rigidmotion/RigidMotionR3Factory.cpp"

@@ -167,8 +167,6 @@ protected:
   /**
    * @brief Whether to use the legacy energy model (true) or not (false).
    * @see EnergyModel
-   * @see BaseEnergyModel
-   * @see ImprovedEnergyModel
    * @see ScanningDevice
    * @see Simulation::prepareSimulation
    */

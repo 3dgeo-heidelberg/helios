@@ -3,8 +3,7 @@
 #include <logging.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
-#include <maths/model/BaseEnergyModel.h>
-#include <maths/model/ImprovedEnergyModel.h>
+#include <maths/model/EnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
@@ -137,11 +136,7 @@ ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
   }
 
   // Prepare energy model
-  if (legacyEnergyModel) {
-    energyModel = std::make_shared<BaseEnergyModel>(*this);
-  } else {
-    energyModel = std::make_shared<ImprovedEnergyModel>(*this);
-  }
+  energyModel = std::make_shared<EnergyModel>(*this);
 }
 
 void
