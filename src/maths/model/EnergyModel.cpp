@@ -1,12 +1,12 @@
-#include <ImprovedEnergyModel.h>
+#include <EnergyModel.h>
 #include <maths/EnergyMaths.h>
 #include <scanner/ScanningDevice.h>
 #include <scanner/detector/AbstractDetector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const& sd)
-  : BaseEnergyModel(sd)
+EnergyModel::EnergyModel(ScanningDevice const& sd)
+  : sd(sd)
   , radii(sd.FWF_settings.beamSampleQuality + 1)
   , radiiSquared(sd.FWF_settings.beamSampleQuality + 1)
   , negRadiiSquaredx2(sd.FWF_settings.beamSampleQuality + 1)
@@ -38,7 +38,7 @@ ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const& sd)
 // ***  METHODS  *** //
 // ***************** //
 double
-ImprovedEnergyModel::computeIntensity(
+EnergyModel::computeIntensity(
   double const incidenceAngle,
   double const targetRange,
   Material const& mat,
@@ -49,8 +49,8 @@ ImprovedEnergyModel::computeIntensity(
 #endif
 )
 {
-  ImprovedReceivedPowerArgs args = ImprovedReceivedPowerArgs(
-    targetRange, incidenceAngle, mat, subrayRadiusStep);
+  ReceivedPowerArgs args =
+    ReceivedPowerArgs(targetRange, incidenceAngle, mat, subrayRadiusStep);
   return computeReceivedPower(args
 #if DATA_ANALYTICS >= 2
                               ,
@@ -60,37 +60,35 @@ ImprovedEnergyModel::computeIntensity(
 }
 
 double
-ImprovedEnergyModel::computeReceivedPower(
-  ModelArg const& _args
+EnergyModel::computeReceivedPower(
+  ReceivedPowerArgs const& args
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords
 #endif
 )
 {
-  ImprovedReceivedPowerArgs const& args =
-    static_cast<ImprovedReceivedPowerArgs const&>(_args);
   // Pre-computations
   double const rangeSquared = args.targetRange * args.targetRange;
   // Emitted power
-  double const Pe = computeEmittedPower(
-    ImprovedEmittedPowerArgs{ args.targetRange,
-                              rangeSquared,
-                              sd.detector->cfg_device_rangeMin_m,
-                              args.subrayRadiusStep });
+  double const Pe =
+    computeEmittedPower(EmittedPowerArgs{ args.targetRange,
+                                          rangeSquared,
+                                          sd.detector->cfg_device_rangeMin_m,
+                                          args.subrayRadiusStep });
   // Target area
-  double const targetArea = computeTargetArea(
-    ImprovedTargetAreaArgs{ rangeSquared, args.subrayRadiusStep }
+  double const targetArea =
+    computeTargetArea(TargetAreaArgs{ rangeSquared, args.subrayRadiusStep }
 #if DATA_ANALYTICS >= 2
-    ,
-    calcIntensityRecords
+                      ,
+                      calcIntensityRecords
 #endif
-  );
+    );
   // Cross-section
   double const bdrf =
     EnergyMaths::computeBDRF(args.material, args.incidenceAngle_rad);
-  double const sigma = computeCrossSection(
-    BaseCrossSectionArgs{ args.material, bdrf, targetArea });
+  double const sigma =
+    computeCrossSection(CrossSectionArgs{ args.material, bdrf, targetArea });
   // Received power
   double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
     args.targetRange, sd.atmosphericExtinction);
@@ -117,10 +115,8 @@ ImprovedEnergyModel::computeReceivedPower(
 }
 
 double
-ImprovedEnergyModel::computeEmittedPower(ModelArg const& _args)
+EnergyModel::computeEmittedPower(EmittedPowerArgs const& args)
 {
-  ImprovedEmittedPowerArgs const& args =
-    static_cast<ImprovedEmittedPowerArgs const&>(_args);
   double const Omega0 = 1 - args.targetRange / args.rangeMin;
   double const OmegaSquared = args.targetRangeSquared * omegaCacheSquared;
   double const wSquared = w0Squared * (Omega0 * Omega0 + OmegaSquared);
@@ -132,8 +128,8 @@ ImprovedEnergyModel::computeEmittedPower(ModelArg const& _args)
 }
 
 double
-ImprovedEnergyModel::computeTargetArea(
-  ModelArg const& _args
+EnergyModel::computeTargetArea(
+  TargetAreaArgs const& args
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords
@@ -141,8 +137,6 @@ ImprovedEnergyModel::computeTargetArea(
 )
 {
   // Once for target area and once for emitted power
-  ImprovedTargetAreaArgs const& args =
-    static_cast<ImprovedTargetAreaArgs const&>(_args);
   double const prevRadiusSquared = radiiSquared[args.subrayRadiusStep];
   double const radiusSquared = radiiSquared[args.subrayRadiusStep + 1];
   double const radius_m_squared = radiusSquared * args.targetRangeSquared;
@@ -156,4 +150,10 @@ ImprovedEnergyModel::computeTargetArea(
 #endif
   return (radius_m_squared - prevRadius_m_squared) *
          targetAreaCache[args.subrayRadiusStep];
+}
+
+double
+EnergyModel::computeCrossSection(CrossSectionArgs const& args)
+{
+  return EnergyMaths::calcCrossSection(args.bdrf, args.targetArea);
 }
