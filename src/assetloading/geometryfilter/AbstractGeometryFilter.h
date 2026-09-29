@@ -1,9 +1,9 @@
 #pragma once
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <map>
 #include <string>
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 #include "Material.h"
 #include "ScenePart.h"
 #include <logging.hpp>

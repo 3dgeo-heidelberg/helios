@@ -4,10 +4,10 @@
 #include <LadLutLoader.h>
 #include <assetloading/MaterialsFileReader.h>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <noise/UniformNoiseSource.h>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 ScenePart*
 DetailedVoxelLoader::run()

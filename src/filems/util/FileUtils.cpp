@@ -1,8 +1,8 @@
 #include <FileUtils.h>
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
+#include <filesystem>
 #include <logging.hpp>
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 char const FileUtils::pathSeparator =
 #ifdef _WIN32
@@ -52,11 +52,12 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
   } else {
     if (!fs::path(path).is_relative()) {
       paths.push_back(path);
-    }
-    for (auto assetPath : assetsDir) {
-      if (fs::exists(fs::path(assetPath) / path)) {
-        paths.push_back((fs::path(assetPath) / path).string());
-        break;
+    } else {
+      for (auto assetPath : assetsDir) {
+        if (fs::exists(fs::path(assetPath) / path)) {
+          paths.push_back((fs::path(assetPath) / path).string());
+          break;
+        }
       }
     }
   }

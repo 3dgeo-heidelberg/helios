@@ -15,9 +15,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/variant/get.hpp>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <glm/glm.hpp>
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 // ***  R U N  *** //
 // *************** //

@@ -8,9 +8,9 @@ The benchmark tests the performance of the SurveyPlayback->start() method.
 
 #include "Survey.h"
 #include <assetloading/XmlSurveyLoader.h>
-#include <boost/filesystem.hpp>
 #include <filems/facade/FMSFacade.h>
 #include <filems/factory/FMSFacadeFactory.h>
+#include <filesystem>
 #include <main/LidarSim.h>
 #include <memory>
 #include <noise/RandomnessGenerator.h>
@@ -18,7 +18,7 @@ The benchmark tests the performance of the SurveyPlayback->start() method.
 
 #include "logging.hpp"
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
   logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
