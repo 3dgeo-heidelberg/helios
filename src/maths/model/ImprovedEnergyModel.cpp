@@ -127,8 +127,8 @@ ImprovedEnergyModel::computeEmittedPower(ModelArg const& _args)
   return EnergyMaths::calcSubrayWiseEmittedPowerFast(
     deviceConstantExpression[args.subrayRadiusStep],
     wSquared,
-    negRadiiSquaredx2[args.subrayRadiusStep + 1],
-    negRadiiSquaredx2[args.subrayRadiusStep]);
+    negRadiiSquaredx2[args.subrayRadiusStep + 1] * args.targetRangeSquared,
+    negRadiiSquaredx2[args.subrayRadiusStep] * args.targetRangeSquared);
 }
 
 double
