@@ -7,9 +7,9 @@
 #include <memory>
 using namespace std::chrono;
 
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "AbstractDetector.h"
 #include "HelicopterPlatform.h"

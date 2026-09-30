@@ -19,8 +19,8 @@ typedef boost::
   variant<bool, int, float, double, std::string, glm::dvec3, Rotation>
     ObjectT;
 
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 #include <FileUtils.h>
 
 #include "Triangle.h"

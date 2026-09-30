@@ -13,9 +13,9 @@
 #include <glm/gtx/norm.hpp>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "typedef.h"
 #include <XmlUtils.h>

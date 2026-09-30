@@ -3,12 +3,12 @@
 #include <filems/write/comps/SyncFileWriter.h>
 #include <util/HeliosException.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <memory>
 #include <string>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace helios {
 namespace filems {
