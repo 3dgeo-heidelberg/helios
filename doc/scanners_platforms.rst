@@ -138,6 +138,7 @@ The x, y, z coordinates of the position of the origin of the laser beam are set 
 These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform and intensity modelling <intensity_fwf>`.
 
 - ``beamSampleQuality``
+- ``beamSamplingFactor``
 - ``binSize_ns``
 - ``maxFullwaveRange_ns``
 - ``winSize_ns``
@@ -149,7 +150,7 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
   .. math::
      w_0 = \frac{\text{beamQualityFactor} \cdot \lambda}{\pi \cdot \text{beamDivergence}}
 
-  and is assumed to occur at the minimum range (as defined in the scanner configuration). Do not confuse with ``beamSampleQuality``, which defines the number of subrays used (default: 1.0).
+  for diagnostic reporting only. The far-field energy model uses divergence and sampling coverage directly; beam quality and minimum detector range do not affect subray shares. ``beamSampleQuality`` controls spatial resolution.
 
 - ``opticalEfficiency``: Efficiency of the scanner, i.e. :math:`\eta_{\text{Sys}}` in the LiDAR equation :cite:p:`HoeflePfeifer.2007` (default: 0.99).
 
