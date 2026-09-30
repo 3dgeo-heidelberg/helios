@@ -59,7 +59,7 @@ MultiScanner::onLegComplete()
 // ***   M E T H O D S   *** //
 // ************************* //
 void
-MultiScanner::prepareSimulation(bool const legacyEnergyModel)
+MultiScanner::prepareSimulation()
 {
   size_t const numDevs = getNumDevices();
   for (size_t i = 0; i < numDevs; ++i) { // For each i-th device
@@ -79,7 +79,7 @@ MultiScanner::prepareSimulation(bool const legacyEnergyModel)
       }
     }
     // Prepare scanning device
-    scanDevs[i].prepareSimulation(legacyEnergyModel);
+    scanDevs[i].prepareSimulation();
   }
 }
 

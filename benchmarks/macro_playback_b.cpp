@@ -64,7 +64,6 @@ macro_playback_benchmark(benchmark::State& state)
   size_t kdtGeomJobs = 1UL;
   size_t sahLossNodes = 32;
   ;
-  bool const legacyEnergyModel = true;
 
   std::shared_ptr<XmlSurveyLoader> xmlreader =
     std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
@@ -120,7 +119,6 @@ macro_playback_benchmark(benchmark::State& state)
                                      pulseThreadPool,
                                      std::abs(chunkSize),
                                      gpsStartTime,
-                                     legacyEnergyModel,
                                      true,
                                      false,
                                      fms);

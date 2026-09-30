@@ -129,7 +129,7 @@ private:
                                                   0.01   // rangeMin_m
                                                   ),
       0);
-    scanner->prepareSimulation(false);
+    scanner->prepareSimulation();
     return scanner;
   }
 };

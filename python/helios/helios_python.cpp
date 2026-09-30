@@ -42,9 +42,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 
 #include <maths/Rotation.h>
 #include <maths/WaveMaths.h>
-#include <maths/model/BaseEnergyModel.h>
 #include <maths/model/EnergyModel.h>
-#include <maths/model/ImprovedEnergyModel.h>
 #include <noise/NoiseSource.h>
 #include <noise/RandomnessGenerator.h>
 #include <scanner/beamDeflector/AbstractBeamDeflector.h>
@@ -108,7 +106,6 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <filems/facade/FMSFacade.h>
 #include <python/AbstractBeamDeflectorWrap.h>
 #include <python/AbstractDetectorWrap.h>
-#include <python/EnergyModelWrap.h>
 #include <python/GLMTypeCaster.h>
 #include <python/InterpolatedPlatformPreparation.h>
 #include <python/KDTreeFactoryWrapper.h>
@@ -1703,25 +1700,68 @@ PYBIND11_MODULE(_helios, m)
     .def("push_time_to_live", &SwapOnRepeatHandler::pushTimeToLive)
     .def("push_swap_filters", &SwapOnRepeatHandler::pushSwapFilters);
 
-  py::class_<EnergyModel, EnergyModelWrap, std::shared_ptr<EnergyModel>>
-    energy_model(m, "EnergyModel");
+  py::class_<ReceivedPowerArgs>(m, "ReceivedPowerArgs")
+    .def(py::init<double, double, Material const&, int>(),
+         py::arg("target_range"),
+         py::arg("incidence_angle"),
+         py::arg("material"),
+         py::arg("subray_radius_step"),
+         py::keep_alive<1, 4>())
+    .def_readonly("target_range", &ReceivedPowerArgs::targetRange)
+    .def_readonly("incidence_angle", &ReceivedPowerArgs::incidenceAngle_rad)
+    .def_property_readonly(
+      "material",
+      [](ReceivedPowerArgs const& args) -> Material const& {
+        return args.material;
+      },
+      py::return_value_policy::reference_internal)
+    .def_readonly("subray_radius_step", &ReceivedPowerArgs::subrayRadiusStep);
+
+  py::class_<EmittedPowerArgs>(m, "EmittedPowerArgs")
+    .def(py::init<double, double, double, int>(),
+         py::arg("target_range"),
+         py::arg("target_range_squared"),
+         py::arg("range_min"),
+         py::arg("subray_radius_step"))
+    .def_readonly("target_range", &EmittedPowerArgs::targetRange)
+    .def_readonly("target_range_squared", &EmittedPowerArgs::targetRangeSquared)
+    .def_readonly("range_min", &EmittedPowerArgs::rangeMin)
+    .def_readonly("subray_radius_step", &EmittedPowerArgs::subrayRadiusStep);
+
+  py::class_<TargetAreaArgs>(m, "TargetAreaArgs")
+    .def(py::init<double, int>(),
+         py::arg("target_range_squared"),
+         py::arg("subray_radius_step"))
+    .def_readonly("target_range_squared", &TargetAreaArgs::targetRangeSquared)
+    .def_readonly("subray_radius_step", &TargetAreaArgs::subrayRadiusStep);
+
+  py::class_<CrossSectionArgs>(m, "CrossSectionArgs")
+    .def(py::init<Material const&, double, double>(),
+         py::arg("material"),
+         py::arg("bdrf"),
+         py::arg("target_area"),
+         py::keep_alive<1, 2>())
+    .def_property_readonly(
+      "material",
+      [](CrossSectionArgs const& args) -> Material const& {
+        return args.material;
+      },
+      py::return_value_policy::reference_internal)
+    .def_readonly("bdrf", &CrossSectionArgs::bdrf)
+    .def_readonly("target_area", &CrossSectionArgs::targetArea);
+
+  py::class_<EnergyModel, std::shared_ptr<EnergyModel>> energy_model(
+    m, "EnergyModel");
   energy_model
-    .def(py::init<ScanningDevice&>(), py::arg("device"))
+    .def(py::init<ScanningDevice const&>(),
+         py::arg("device"),
+         py::keep_alive<1, 2>())
 
     .def("compute_intensity", &EnergyModel::computeIntensity)
     .def("compute_received_power", &EnergyModel::computeReceivedPower)
     .def("compute_emitted_power", &EnergyModel::computeEmittedPower)
     .def("compute_target_area", &EnergyModel::computeTargetArea)
     .def("compute_cross_section", &EnergyModel::computeCrossSection);
-
-  py::class_<BaseEnergyModel, EnergyModel, std::shared_ptr<BaseEnergyModel>>
-    base_energy_model(m, "BaseEnergyModel");
-  base_energy_model.def(py::init<ScanningDevice&>(), py::arg("device"))
-    .def("compute_intensity", &BaseEnergyModel::computeIntensity)
-    .def("compute_received_power", &BaseEnergyModel::computeReceivedPower)
-    .def("compute_emitted_power", &BaseEnergyModel::computeEmittedPower)
-    .def("compute_target_area", &BaseEnergyModel::computeTargetArea)
-    .def("compute_cross_section", &BaseEnergyModel::computeCrossSection);
 
   py::class_<ScanningDevice, std::shared_ptr<ScanningDevice>> scanning_device(
     m, "ScanningDevice");
@@ -1749,9 +1789,10 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("cached_subray_radius_step",
                    &ScanningDevice::cached_subrayRadiusStep)
 
-    .def_property("energy_model",
-                  &ScanningDevice::getEnergyModel,
-                  &ScanningDevice::setEnergyModel)
+    .def_property(
+      "energy_model",
+      py::cpp_function(&ScanningDevice::getEnergyModel, py::keep_alive<0, 1>()),
+      &ScanningDevice::setEnergyModel)
 
     .def_property("fwf_settings",
                   &ScanningDevice::getFWFSettings,
@@ -1767,9 +1808,7 @@ PYBIND11_MODULE(_helios, m)
          &ScanningDevice::setHeadRelativeEmitterPosition)
     .def("set_head_relative_emitter_attitude",
          &ScanningDevice::setHeadRelativeEmitterAttitude)
-    .def("prepare_simulation",
-         &ScanningDevice::prepareSimulation,
-         py::arg("legacyEnergyModel") = false)
+    .def("prepare_simulation", &ScanningDevice::prepareSimulation)
     .def("configure_beam", &ScanningDevice::configureBeam)
     .def("calcAtmosphericAttenuation",
          &ScanningDevice::calcAtmosphericAttenuation)
@@ -2314,12 +2353,6 @@ PYBIND11_MODULE(_helios, m)
       [](const PyHeliosSimulation& self) { return self.finalOutput; },
       [](PyHeliosSimulation& self, bool value) { self.finalOutput = value; })
     .def_property(
-      "legacy_energy_model",
-      [](const PyHeliosSimulation& self) { return self.legacyEnergyModel; },
-      [](PyHeliosSimulation& self, bool value) {
-        self.legacyEnergyModel = value;
-      })
-    .def_property(
       "export_to_file",
       [](const PyHeliosSimulation& self) { return self.exportToFile; },
       [](PyHeliosSimulation& self, bool value) { self.exportToFile = value; })
@@ -2680,9 +2713,7 @@ PYBIND11_MODULE(_helios, m)
          py::arg("platform_noise_disabled") = false)
 
     .def("on_leg_complete", &MultiScanner::onLegComplete)
-    .def("prepare_simulation",
-         &MultiScanner::prepareSimulation,
-         py::arg("legacy_energy_model") = 0)
+    .def("prepare_simulation", &MultiScanner::prepareSimulation)
     .def("apply_settings",
          &MultiScanner::applySettings,
          py::arg("settings"),
@@ -2932,13 +2963,11 @@ PYBIND11_MODULE(_helios, m)
     .def(py::init<int,
                   std::shared_ptr<PulseThreadPoolInterface>,
                   int,
-                  std::string,
-                  bool>(),
+                  std::string>(),
          py::arg("parallelizationStrategy"),
          py::arg("pulseThreadPoolInterface"),
          py::arg("chunkSize"),
-         py::arg("fixedGpsTimeStart") = "",
-         py::arg("legacyEnergyModel") = false)
+         py::arg("fixedGpsTimeStart") = "")
 
     .def_readwrite("current_leg_index", &Simulation::mCurrentLegIndex)
     .def_readwrite("is_finished", &Simulation::finished)
@@ -3033,14 +3062,12 @@ PYBIND11_MODULE(_helios, m)
                   std::string,
                   bool,
                   bool,
-                  bool,
                   std::shared_ptr<helios::filems::FMSFacade>>(),
          py::arg("survey"),
          py::arg("parallelizationStrategy"),
          py::arg("pulseThreadPoolInterface"),
          py::arg("chunkSize"),
          py::arg("fixedGpsTimeStart"),
-         py::arg("legacyEnergyModel"),
          py::arg("exportToFile") = true,
          py::arg("disableShutdown") = false,
          py::arg("fms") = nullptr)

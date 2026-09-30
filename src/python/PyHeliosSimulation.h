@@ -62,7 +62,6 @@ private:
 
 public:
   bool finalOutput = true;
-  bool legacyEnergyModel = false;
   bool exportToFile = true;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
