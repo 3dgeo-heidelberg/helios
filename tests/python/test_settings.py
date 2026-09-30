@@ -91,6 +91,7 @@ def test_full_waveform_settings_defaults():
 
     assert settings.bin_size == 2.5e-10
     assert settings.beam_sample_quality == 3
+    assert settings.beam_sampling_factor == 2.0
     assert settings.win_size == 1e-9
     assert settings.max_fullwave_range == 0.0
 
@@ -99,6 +100,7 @@ def test_convert_full_waveform_settings_to_cpp():
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
+        beam_sampling_factor=1.5,
         win_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
@@ -106,6 +108,7 @@ def test_convert_full_waveform_settings_to_cpp():
 
     assert cpp_settings.bin_size == 1.0
     assert cpp_settings.beam_sample_quality == 4
+    assert cpp_settings.beam_sampling_factor == 1.5
     assert cpp_settings.win_size == 2.0
     assert cpp_settings.max_fullwave_range == 10.0
 
@@ -198,6 +201,21 @@ def test_fullwaveform_settings_rejects_invalid_window_in_python():
             bin_size=0.2 * units.ns,
             win_size=0.3 * units.ns,
         )
+
+
+@pytest.mark.parametrize("factor", [0, -1, float("inf"), float("nan")])
+def test_fullwaveform_settings_rejects_invalid_sampling_factor(factor):
+    with pytest.raises(ValueError):
+        FullWaveformSettings(beam_sampling_factor=factor)
+
+
+def test_fullwaveform_sampling_settings_roundtrip(tmp_path):
+    settings = FullWaveformSettings(beam_sample_quality=8, beam_sampling_factor=1.5)
+    path = settings.to_yaml(tmp_path / "sampling.yaml", shallow=False)
+    restored = FullWaveformSettings.from_yaml(path)
+    assert restored.beam_sample_quality == 8
+    assert restored.beam_sampling_factor == 1.5
+    assert restored._to_cpp().beam_sampling_factor == 1.5
 
 
 def test_fullwaveform_settings_rejects_invalid_window_from_xml(tmp_path):

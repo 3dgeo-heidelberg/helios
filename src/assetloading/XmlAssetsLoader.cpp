@@ -1240,11 +1240,6 @@ XmlAssetsLoader::createScannerSettingsFromXml(
     settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
   settings->scanFreq_Hz = XmlUtils::getAttributeCast<double>(
     node, "scanFreq_hz", template1->scanFreq_Hz, defaultScannerSettingsMsg);
-  settings->beamDivAngle =
-    XmlUtils::getAttributeCast<double>(node,
-                                       "beamDivergence_rad",
-                                       template1->beamDivAngle,
-                                       defaultScannerSettingsMsg);
   settings->trajectoryTimeInterval =
     XmlUtils::getAttributeCast<double>(node,
                                        "trajectoryTimeInterval_s",
@@ -1324,6 +1319,8 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
     settings->winSize_ns = settings->pulseLength_ns / 4.0; // By default
     settings->beamSampleQuality = XmlUtils::getAttributeCast<int>(
       node, "beamSampleQuality", settings->beamSampleQuality);
+    settings->beamSamplingFactor = XmlUtils::getAttributeCast<double>(
+      node, "beamSamplingFactor", settings->beamSamplingFactor);
     settings->winSize_ns = XmlUtils::getAttributeCast<double>(
       node, "winSize_ns", settings->winSize_ns);
     settings->maxFullwaveRange_ns = XmlUtils::getAttributeCast<double>(
@@ -1332,6 +1329,7 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
       node, "apertureDiameter_m", settings->apertureDiameter);
   }
 
+  settings->validateBeamSampling();
   return settings;
 }
 
@@ -1596,8 +1594,10 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
     }
     scanner->setScannerHead(_scanHead, idx);
     // Check general attributes
-    scanner->setBeamDivergence(XmlUtils::getAttributeCast<double>(
-      chan, "beamDivergence_rad", scanner->getBeamDivergence(idx)));
+    scanner->setBeamDivergence(
+      XmlUtils::getAttributeCast<double>(
+        chan, "beamDivergence_rad", scanner->getBeamDivergence(idx)),
+      idx);
     scanner->setPulseLength_ns(XmlUtils::getAttributeCast<double>(
       chan, "pulseLength_ns", scanner->getPulseLength_ns(idx)));
     if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
@@ -1744,7 +1744,7 @@ void
 XmlAssetsLoader::trackNonDefaultScannerSettings(
   std::shared_ptr<ScannerSettings> base,
   std::shared_ptr<ScannerSettings> ref,
-  std::string const defaultTemplateId,
+  std::string defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)
@@ -1767,8 +1767,6 @@ XmlAssetsLoader::trackNonDefaultScannerSettings(
     fields.insert("verticalAngleMax_rad");
   if (base->scanFreq_Hz != ref->scanFreq_Hz)
     fields.insert("scanFreq_Hz");
-  if (base->beamDivAngle != ref->beamDivAngle)
-    fields.insert("beamDivAngle");
   if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
     fields.insert("trajectoryTimeInterval");
   if (base->opticsWarmupPhase_s != ref->opticsWarmupPhase_s)
@@ -1783,7 +1781,7 @@ void
 XmlAssetsLoader::trackNonDefaultPlatformSettings(
   std::shared_ptr<PlatformSettings> base,
   std::shared_ptr<PlatformSettings> ref,
-  std::string const defaultTemplateId,
+  std::string defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)

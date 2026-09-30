@@ -44,7 +44,6 @@ class ScannerSettings(ScannerSettingsBase):
     :param min_vertical_angle: The minimum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
     :param max_vertical_angle: The maximum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
     :param scan_frequency: The scan frequency of the scanner in Hz.
-    :param beam_divergence_angle: The beam divergence angle of the scanner in radians.
     :param trajectory_time_interval: The time interval in seconds at which the trajectory points are written.
     :param vertical_resolution: The vertical resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
     :param horizontal_resolution: The horizontal resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
@@ -59,7 +58,6 @@ class ScannerSettings(ScannerSettingsBase):
     :type min_vertical_angle: Angle
     :type max_vertical_angle: Angle
     :type scan_frequency: Frequency
-    :type beam_divergence_angle: Angle
     :type trajectory_time_interval: TimeInterval
     :type vertical_resolution: Angle
     :type horizontal_resolution: Angle
@@ -77,7 +75,6 @@ class ScannerSettings(ScannerSettingsBase):
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
     scan_frequency: ScanFrequency = 200
-    beam_divergence_angle: Angle = 0.003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Angle = 0
     horizontal_resolution: Angle = 0
@@ -114,6 +111,32 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 
 class Scanner(Model, cpp_class=_helios.Scanner):
+    @property
+    def beam_divergence(self) -> Angle:
+        """Full beam divergence of channel 0, in radians."""
+        return self.get_beam_divergence()
+
+    @beam_divergence.setter
+    def beam_divergence(self, value: Angle) -> None:
+        self.set_beam_divergence(value)
+
+    @validate_call
+    def get_beam_divergence(self, index: int = 0) -> Angle:
+        """Return a channel's full beam divergence in radians."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_beam_divergence(index)
+
+    @validate_call
+    def set_beam_divergence(self, value: Angle, index: int = 0) -> None:
+        """Set a channel's full divergence and refresh derived beam state.
+
+        Accepts radians or angles with units, for example ``"0.03 deg"``.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_specific_beam_divergence(value, index)
+
     @classonlymethod
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):

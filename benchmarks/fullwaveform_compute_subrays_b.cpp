@@ -60,20 +60,19 @@ struct BenchmarkContext
   std::map<double, double> reflections;
   std::vector<RaySceneIntersection> intersections;
 
-  explicit BenchmarkContext(int const beamSampleQuality)
+  explicit BenchmarkContext(int beamSampleQuality)
     : scene(makeScene())
     , scanner(makeScanner(beamSampleQuality))
     , runnable(scanner, *scene, makePulse())
     , intersectionNoise(0.0, 1.0)
   {
     runnable.detector = scanner->getDetector(0);
-    intersections.reserve(
-      scanner->getScanningDevice(0).cached_subrayRotation.size());
+    intersections.reserve(scanner->getScanningDevice(0).getSubrays().size());
   }
 
   std::size_t numSubrays() const
   {
-    return scanner->getScanningDevice(0).cached_subrayRotation.size();
+    return scanner->getScanningDevice(0).getSubrays().size();
   }
 
 private:
@@ -96,7 +95,7 @@ private:
     return scene;
   }
 
-  static std::shared_ptr<SingleScanner> makeScanner(int const beamSampleQuality)
+  static std::shared_ptr<SingleScanner> makeScanner(int beamSampleQuality)
   {
     auto scanner =
       std::make_shared<SingleScanner>(0.0003,              // beamDiv_rad

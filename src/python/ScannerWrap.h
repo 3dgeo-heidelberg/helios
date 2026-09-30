@@ -128,7 +128,7 @@ public:
   void computeSubrays(
     std::function<void(
       Rotation const&,
-      int const,
+      std::size_t,
       NoiseSource<double>&,
       std::map<double, double>&,
       std::vector<RaySceneIntersection>& SUBRAY_ADDITIONAL_ARGS)> handleSubray,
@@ -174,7 +174,7 @@ public:
   double calcIntensity(double const incidenceAngle,
                        double const targetRange,
                        Material const& mat,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        size_t const idx INTENSITY_RECORDS_ARG) const override
   {
     PYBIND11_OVERLOAD_PURE(double,
@@ -183,22 +183,17 @@ public:
                            incidenceAngle,
                            targetRange,
                            mat,
-                           subrayRadiusStep,
+                           subrayIndex,
                            idx INTENSITY_RECORDS_MACRO_ARG);
   }
 
   double calcIntensity(double const targetRange,
                        double const sigma,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        size_t const idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(double,
-                           Scanner,
-                           calcIntensity,
-                           targetRange,
-                           sigma,
-                           subrayRadiusStep,
-                           idx);
+    PYBIND11_OVERLOAD_PURE(
+      double, Scanner, calcIntensity, targetRange, sigma, subrayIndex, idx);
   }
 
   void onLegComplete() override
@@ -216,12 +211,12 @@ public:
     PYBIND11_OVERLOAD_PURE(int, Scanner, getCurrentPulseNumber, idx);
   }
 
-  int getNumRays(size_t const idx) const override
+  std::size_t getNumRays(size_t const idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(int, Scanner, getNumRays, idx);
+    PYBIND11_OVERLOAD_PURE(std::size_t, Scanner, getNumRays, idx);
   }
 
-  void setNumRays(int const numRays, size_t const idx) override
+  void setNumRays(std::size_t numRays, size_t const idx) override
   {
     PYBIND11_OVERLOAD_PURE(void, Scanner, setNumRays, numRays, idx);
   }
