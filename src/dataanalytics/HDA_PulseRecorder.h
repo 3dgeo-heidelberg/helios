@@ -50,7 +50,7 @@ protected:
    *
    * [11] -> The emitted power.
    *
-   * [12] -> The radius step on the discrete elliptical footprint method.
+   * [12] -> The direct index in the device's subray table.
    *
    */
   std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> intensityCalc;
