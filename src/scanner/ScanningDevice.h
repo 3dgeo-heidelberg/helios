@@ -68,7 +68,7 @@ protected:
    */
   Rotation headRelativeEmitterAttitude = Rotation(Directions::right, 0);
   /**
-   * @brief Beam divergence (radians)
+   * @brief Full 1/e^2 beam divergence angle (radians)
    */
   double beamDivergence_rad = 0;
   /**
@@ -132,7 +132,7 @@ protected:
    * @brief Number of rays computed by the calcRaysNumber function
    * @see ScanningDevice::calcRaysNumber
    */
-  int numRays = 0;
+  std::size_t numRays = 0;
   /**
    * @brief Pulse frequencies (hertz) supoported by the scanner
    */
@@ -235,40 +235,47 @@ public:
    * @see ScanningDevice::beamDivergence_rad
    */
   double cached_Bt2;
-  /**
-   * @brief The rotation representing the subray divergence wrt to the
-   *  central ray.
-   */
-  std::vector<Rotation> cached_subrayRotation;
-  /**
-   * @brief The divergence angle for each subray.
-   */
-  std::vector<double> cached_subrayDivergenceAngle_rad;
-  /**
-   * @brief The subray radius step or iteration.
-   */
-  std::vector<int> cached_subrayRadiusStep;
+  struct Subray
+  {
+    Rotation rotation;
+    double angle_rad;
+    double share;      // Fraction of total sampled Gaussian power.
+    double areaFactor; // Patch area per squared axial range.
+    double outerAngle_rad;
+  };
+
+private:
+  std::vector<Subray> subrays;
+  double sampledDivergence_rad = 0.0;
+  double sampledFactor = 0.0;
+  int sampledQuality = 0;
 
 public:
+  /** Build only between pulse batches, before worker threads read the table. */
+  void buildSubrayTable();
+  bool isSubrayTableCurrent() const;
+  /** Read-only sampling geometry and power fractions. Requires preparation. */
+  std::vector<Subray> const& getSubrays() const;
+
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
   /**
    * @brief ScanningDevice constructor from given values
    */
   ScanningDevice(
-    size_t const devIdx,
-    std::string const id,
-    double const beamDiv_rad,
-    glm::dvec3 const beamOrigin,
-    Rotation const beamOrientation,
+    size_t devIdx,
+    std::string id,
+    double beamDiv_rad,
+    glm::dvec3 beamOrigin,
+    Rotation beamOrientation,
     std::list<int> const& pulseFreqs,
-    double const pulseLength_ns,
-    double const averagePower,
-    double const beamQuality,
-    double const efficiency,
-    double const receiverDiameter_m,
-    double const atmosphericVisibility_km,
-    double const wavelength_m,
+    double pulseLength_ns,
+    double averagePower,
+    double beamQuality,
+    double efficiency,
+    double receiverDiameter_m,
+    double atmosphericVisibility_km,
+    double wavelength_m,
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr);
   /**
    * @brief Copy constructor for the ScanningDevice
@@ -320,9 +327,9 @@ public:
    */
   void doSimStep(
     unsigned int legIndex,
-    double const currentGpsTime,
-    int const simFreq_Hz,
-    bool const isActive,
+    double currentGpsTime,
+    int simFreq_Hz,
+    bool isActive,
     glm::dvec3 const& platformPosition,
     Rotation const& platformAttitude,
     std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
@@ -330,7 +337,7 @@ public:
   /**
    * @brief Advance head/deflector without emitting pulses to apply warmup.
    */
-  void applyWarmupPhase(int const simFreq_Hz);
+  void applyWarmupPhase(int simFreq_Hz);
   /**
    * @brief Compute the absolute beam attitude of the scanning device
    *  with respect to given absolute platform attitude
@@ -354,7 +361,7 @@ public:
    */
   void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -375,8 +382,8 @@ public:
   /**
    * @see Scanner::initializeFullWaveform
    */
-  bool initializeFullWaveform(double const minHitDist_m,
-                              double const maxHitDist_m,
+  bool initializeFullWaveform(double minHitDist_m,
+                              double maxHitDist_m,
                               double& minHitTime_ns,
                               double& maxHitTime_ns,
                               double& nsPerBin,
@@ -431,10 +438,10 @@ public:
    *
    * @return Computed intensity \f$P_r 10^9\f$
    */
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
+  double calcIntensity(double incidenceAngle,
+                       double targetRange,
                        Material const& mat,
-                       int const subrayRadiusStep
+                       std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
                        ,
                        std::vector<std::vector<double>>& calcIntensityRecords
@@ -446,9 +453,9 @@ public:
    *  \f$\sigma\f$
    * @see ScanningDevice::calcIntensity
    */
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       int const subrayRadiusStep) const;
+  double calcIntensity(double targetRange,
+                       double sigma,
+                       std::size_t subrayIndex) const;
 
   int calcTimePropagation(std::vector<double>& timeWave);
 
@@ -480,7 +487,7 @@ public:
    * @param lastPulseWasHit New last pulse hit specification
    * @see Scanner::state_lastPulseWasHit
    */
-  void setLastPulseWasHit(bool const value);
+  void setLastPulseWasHit(bool value);
   /**
    * @brief Set the relative emitter position
    * @see ScanningDevice::headRelativeEmitterPosition
@@ -586,14 +593,14 @@ public:
    * @param receivedEnergyMin_W The new minimum received energy threshold
    *  for the scanning device.
    */
-  inline void setReceivedEnergyMin(double const receivedEnergyMin_W)
+  inline void setReceivedEnergyMin(double receivedEnergyMin_W)
   {
     this->receivedEnergyMin_W = receivedEnergyMin_W;
   }
   /**
    * @brief Set warmup phase and mark it for application in next active step.
    */
-  inline void setOpticsWarmupPhase_s(double const opticsWarmupPhase_s)
+  inline void setOpticsWarmupPhase_s(double opticsWarmupPhase_s)
   {
     cfg_setting_opticsWarmupPhase_s = opticsWarmupPhase_s;
     state_opticsWarmupApplied = false;

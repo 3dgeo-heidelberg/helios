@@ -337,9 +337,9 @@ template<typename ValType>
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   ValType const& val,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   ss << openEntry(key, depth, EntryType::VALUE);
@@ -357,9 +357,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   double const& val,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   if (std::isnan(val))
@@ -371,9 +371,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   glm::dvec3 const& u,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   ss << "[" << u.x << ", " << u.y << ", " << u.z << "]";
@@ -383,9 +383,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   Rotation const& r,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   ss << "[" << r.getQ0() << ", " << r.getQ1() << ", " << r.getQ2() << ", "
@@ -397,9 +397,9 @@ template<typename T>
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   std::vector<T> const& u,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   ss << "[";
@@ -418,9 +418,9 @@ template<typename T>
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   std::list<T> const& u,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   ss << "[";
@@ -436,9 +436,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   FWFSettings const& fs,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   int const d2 = depth + 1;
@@ -453,6 +453,7 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry("beamDivergence_rad", fs.beamDivergence_rad, d2)
      << craftEntry("pulseLength_ns", fs.pulseLength_ns, d2)
      << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
+     << craftEntry("beamSamplingFactor", fs.beamSamplingFactor, d2)
      << craftEntry("winSize_ns", fs.winSize_ns, d2)
      << craftEntry(
           "maxFullwaveRange_ns", fs.maxFullwaveRange_ns, d2, false, true)
@@ -464,9 +465,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   ScenePart const& sp,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   int const d2 = depth + 1;
@@ -503,9 +504,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   arma::colvec const& u,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   std::stringstream ss;
   ss << "[";
@@ -520,9 +521,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   ScannerSettings const& ss,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   int const d2 = depth + 1;
   std::stringstream s;
@@ -547,9 +548,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   PlatformSettings const& ps,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   int const d2 = depth + 1;
   std::stringstream ss;
@@ -570,9 +571,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   TrajectorySettings const& ts,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   int const d2 = depth + 1;
   std::stringstream ss;
@@ -586,9 +587,9 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 std::string
 HDA_StateJSONReporter::craftEntry(std::string const& key,
                                   Leg const& leg,
-                                  int const depth,
-                                  bool const asString,
-                                  bool const last)
+                                  int depth,
+                                  bool asString,
+                                  bool last)
 {
   int const d2 = depth + 1;
   std::stringstream ss;
@@ -610,8 +611,8 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
 
 std::string
 HDA_StateJSONReporter::openEntry(std::string const& key,
-                                 int const depth,
-                                 EntryType const entryType)
+                                 int depth,
+                                 EntryType entryType)
 {
   std::stringstream ss;
   for (int i = 0; i < depth; ++i)
@@ -625,7 +626,7 @@ HDA_StateJSONReporter::openEntry(std::string const& key,
   return ss.str();
 }
 std::string
-HDA_StateJSONReporter::openEntry(int const depth, EntryType const entryType)
+HDA_StateJSONReporter::openEntry(int depth, EntryType entryType)
 {
   std::stringstream ss;
   for (int i = 0; i < depth; ++i)
@@ -638,9 +639,7 @@ HDA_StateJSONReporter::openEntry(int const depth, EntryType const entryType)
   return ss.str();
 }
 std::string
-HDA_StateJSONReporter::closeEntry(int const depth,
-                                  bool const last,
-                                  EntryType const entryType)
+HDA_StateJSONReporter::closeEntry(int depth, bool last, EntryType entryType)
 {
   if (entryType == EntryType::VALUE)
     return "";
