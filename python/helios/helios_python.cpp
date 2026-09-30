@@ -897,9 +897,9 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("atmospheric_visibility",
                    &FWFSettings::atmosphericVisibility)
     .def_readwrite("scanner_wave_length", &FWFSettings::scannerWaveLength)
-    .def_readwrite("beam_divergence_angle", &FWFSettings::beamDivergence_rad)
     .def_readwrite("pulse_length", &FWFSettings::pulseLength_ns)
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
+    .def_readwrite("beam_sampling_factor", &FWFSettings::beamSamplingFactor)
     .def_readwrite("win_size", &FWFSettings::winSize_ns)
     .def_readwrite("max_fullwave_range", &FWFSettings::maxFullwaveRange_ns)
     .def("__str__", &FWFSettings::toString);
@@ -1230,7 +1230,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("min_vertical_angle", &ScannerSettings::verticalAngleMin_rad)
     .def_readwrite("max_vertical_angle", &ScannerSettings::verticalAngleMax_rad)
     .def_readwrite("scan_frequency", &ScannerSettings::scanFreq_Hz)
-    .def_readwrite("beam_divergence_angle", &ScannerSettings::beamDivAngle)
     .def_readwrite("trajectory_time_interval",
                    &ScannerSettings::trajectoryTimeInterval)
     .def_readwrite("vertical_resolution",
@@ -1429,9 +1428,7 @@ PYBIND11_MODULE(_helios, m)
     .def("build_kd_grove", &Scene::buildKDGroveWithLog, py::arg("safe") = true)
     .def(
       "to_binary",
-      [](Scene const& scene,
-         std::string const& path,
-         int const compressionLevel) {
+      [](Scene const& scene, std::string const& path, int compressionLevel) {
         scene.saveCereal(path, compressionLevel);
       },
       py::arg("path"),
@@ -1463,9 +1460,7 @@ PYBIND11_MODULE(_helios, m)
       "to_binary",
       [](StaticScene const& scene,
          std::string const& path,
-         int const compressionLevel) {
-        scene.saveCereal(path, compressionLevel);
-      },
+         int compressionLevel) { scene.saveCereal(path, compressionLevel); },
       py::arg("path"),
       py::arg("compression_level") = 6)
     .def_static(
@@ -1755,11 +1750,11 @@ PYBIND11_MODULE(_helios, m)
     .def("push_swap_filters", &SwapOnRepeatHandler::pushSwapFilters);
 
   py::class_<ReceivedPowerArgs>(m, "ReceivedPowerArgs")
-    .def(py::init<double, double, Material const&, int>(),
+    .def(py::init<double, double, Material const&, std::size_t>(),
          py::arg("target_range"),
          py::arg("incidence_angle"),
          py::arg("material"),
-         py::arg("subray_radius_step"),
+         py::arg("subray_index"),
          py::keep_alive<1, 4>())
     .def_readonly("target_range", &ReceivedPowerArgs::targetRange)
     .def_readonly("incidence_angle", &ReceivedPowerArgs::incidenceAngle_rad)
@@ -1769,25 +1764,18 @@ PYBIND11_MODULE(_helios, m)
         return args.material;
       },
       py::return_value_policy::reference_internal)
-    .def_readonly("subray_radius_step", &ReceivedPowerArgs::subrayRadiusStep);
+    .def_readonly("subray_index", &ReceivedPowerArgs::subrayIndex);
 
   py::class_<EmittedPowerArgs>(m, "EmittedPowerArgs")
-    .def(py::init<double, double, double, int>(),
-         py::arg("target_range"),
-         py::arg("target_range_squared"),
-         py::arg("range_min"),
-         py::arg("subray_radius_step"))
-    .def_readonly("target_range", &EmittedPowerArgs::targetRange)
-    .def_readonly("target_range_squared", &EmittedPowerArgs::targetRangeSquared)
-    .def_readonly("range_min", &EmittedPowerArgs::rangeMin)
-    .def_readonly("subray_radius_step", &EmittedPowerArgs::subrayRadiusStep);
+    .def(py::init<std::size_t>(), py::arg("subray_index"))
+    .def_readonly("subray_index", &EmittedPowerArgs::subrayIndex);
 
   py::class_<TargetAreaArgs>(m, "TargetAreaArgs")
-    .def(py::init<double, int>(),
+    .def(py::init<double, std::size_t>(),
          py::arg("target_range_squared"),
-         py::arg("subray_radius_step"))
+         py::arg("subray_index"))
     .def_readonly("target_range_squared", &TargetAreaArgs::targetRangeSquared)
-    .def_readonly("subray_radius_step", &TargetAreaArgs::subrayRadiusStep);
+    .def_readonly("subray_index", &TargetAreaArgs::subrayIndex);
 
   py::class_<CrossSectionArgs>(m, "CrossSectionArgs")
     .def(py::init<Material const&, double, double>(),
@@ -1817,6 +1805,13 @@ PYBIND11_MODULE(_helios, m)
     .def("compute_target_area", &EnergyModel::computeTargetArea)
     .def("compute_cross_section", &EnergyModel::computeCrossSection);
 
+  py::class_<ScanningDevice::Subray>(m, "Subray")
+    .def_readonly("rotation", &ScanningDevice::Subray::rotation)
+    .def_readonly("angle_rad", &ScanningDevice::Subray::angle_rad)
+    .def_readonly("share", &ScanningDevice::Subray::share)
+    .def_readonly("area_factor", &ScanningDevice::Subray::areaFactor)
+    .def_readonly("outer_angle_rad", &ScanningDevice::Subray::outerAngle_rad);
+
   py::class_<ScanningDevice, std::shared_ptr<ScanningDevice>> scanning_device(
     m, "ScanningDevice");
   scanning_device.def(py::init<ScanningDevice const&>())
@@ -1836,12 +1831,9 @@ PYBIND11_MODULE(_helios, m)
 
     .def_readwrite("cached_dr2", &ScanningDevice::cached_Dr2)
     .def_readwrite("cached_bt2", &ScanningDevice::cached_Bt2)
-    .def_readwrite("cached_subray_rotation",
-                   &ScanningDevice::cached_subrayRotation)
-    .def_readwrite("cached_subray_divergence",
-                   &ScanningDevice::cached_subrayDivergenceAngle_rad)
-    .def_readwrite("cached_subray_radius_step",
-                   &ScanningDevice::cached_subrayRadiusStep)
+    .def_property_readonly(
+      "subrays", &ScanningDevice::getSubrays, py::return_value_policy::copy)
+    .def("build_subray_table", &ScanningDevice::buildSubrayPattern)
 
     .def_property(
       "energy_model",
@@ -1874,11 +1866,11 @@ PYBIND11_MODULE(_helios, m)
     .def("computeSubrays", &ScanningDevice::computeSubrays)
     .def("initializeFullWaveform", &ScanningDevice::initializeFullWaveform)
     .def("calcIntensity",
-         py::overload_cast<double, double, const Material&, int>(
+         py::overload_cast<double, double, const Material&, std::size_t>(
            &ScanningDevice::calcIntensity, py::const_))
     .def("calcIntensity",
-         py::overload_cast<double, double, int>(&ScanningDevice::calcIntensity,
-                                                py::const_))
+         py::overload_cast<double, double, std::size_t>(
+           &ScanningDevice::calcIntensity, py::const_))
     .def("eval_range_error_expression",
          &ScanningDevice::evalRangeErrorExpression);
 
@@ -1969,7 +1961,7 @@ PYBIND11_MODULE(_helios, m)
     .def("get_specific_num_rays",
          py::overload_cast<size_t>(&Scanner::getNumRays, py::const_))
     .def("set_specific_num_rays",
-         py::overload_cast<int, size_t>(&Scanner::setNumRays))
+         py::overload_cast<std::size_t, size_t>(&Scanner::setNumRays))
     .def("get_specific_pulse_length",
          py::overload_cast<size_t>(&Scanner::getPulseLength_ns, py::const_),
          py::arg("index"))
@@ -2209,7 +2201,7 @@ PYBIND11_MODULE(_helios, m)
 
     .def_property("num_rays",
                   py::overload_cast<>(&Scanner::getNumRays, py::const_),
-                  py::overload_cast<int>(&Scanner::setNumRays))
+                  py::overload_cast<std::size_t>(&Scanner::setNumRays))
     .def_property("pulse_length",
                   py::overload_cast<>(&Scanner::getPulseLength_ns, py::const_),
                   py::overload_cast<double>(&Scanner::setPulseLength_ns))
@@ -2546,7 +2538,7 @@ PYBIND11_MODULE(_helios, m)
     .def("get_specific_num_rays",
          py::overload_cast<size_t>(&SingleScanner::getNumRays, py::const_))
     .def("set_specific_num_rays",
-         py::overload_cast<int, size_t>(&SingleScanner::setNumRays))
+         py::overload_cast<std::size_t, size_t>(&SingleScanner::setNumRays))
     .def(
       "get_specific_pulse_length",
       py::overload_cast<size_t>(&SingleScanner::getPulseLength_ns, py::const_))
@@ -2804,12 +2796,13 @@ PYBIND11_MODULE(_helios, m)
          py::arg("num_fullwave_bins"),
          py::arg("idx"))
 
-    .def("calc_intensity",
-         py::overload_cast<double, double, const Material&, int, size_t>(
-           &MultiScanner::calcIntensity, py::const_))
+    .def(
+      "calc_intensity",
+      py::overload_cast<double, double, const Material&, std::size_t, size_t>(
+        &MultiScanner::calcIntensity, py::const_))
 
     .def("calc_intensity",
-         py::overload_cast<double, double, int, size_t>(
+         py::overload_cast<double, double, std::size_t, size_t>(
            &MultiScanner::calcIntensity, py::const_))
 
     .def("set_device_index",

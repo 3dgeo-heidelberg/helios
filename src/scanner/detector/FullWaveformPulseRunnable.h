@@ -96,7 +96,7 @@ private:
    * @see FullWaveformPulseRunnable::computeSubrays
    */
   void handleSubray(Rotation const& subrayRotation,
-                    int const subrayRadiusStep,
+                    std::size_t subrayIndex,
                     NoiseSource<double>& intersectionHandlingNoiseSource,
                     std::map<double, double>& reflections,
                     vector<RaySceneIntersection>& intersects
