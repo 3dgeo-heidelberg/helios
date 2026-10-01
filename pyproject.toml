@@ -57,7 +57,7 @@ BUILD_PYTHON = "ON"
 HELIOS_DATA_ANALYTICS = "0"
 HELIOS_BUDDING_METRICS = "0"
 # Executable built and installed during "pip install" should
-# find the shared libaries of their dependencies without manual
+# find the shared libraries of their dependencies without manual
 # fiddling with LD_LIBRARY_PATH. As a downside, the built executables
 # are not relocatable.
 CMAKE_INSTALL_RPATH_USE_LINK_PATH = "ON"
@@ -70,7 +70,7 @@ version_file_template = '''
 
 __version__ = version = {version!r}
 __version_tuple__ = version_tuple = {version_tuple!r}
-__commit_id__ = commit_id = {scm_version.short_node!r}
+__commit_id__ = commit_id = {scm_version.node!r}
 '''
 
 [tool.cibuildwheel]
