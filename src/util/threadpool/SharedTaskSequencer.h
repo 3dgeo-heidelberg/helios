@@ -77,12 +77,10 @@ public:
    */
   virtual void start(std::shared_ptr<SharedSubTask> subTask);
   /**
-   * @brief Assist the start method to start a shared sub-task by wrapping
-   *  it into a SmartSharedFunctorContainer
+   * @brief Start a thread that retains shared ownership of the sub-task
    * @param subTask The sub-task to be started
    * @see SharedTaskSequencer::start
    * @see SharedSubTask
-   * @see SmartSharedFunctorContainer
    */
   virtual void startThread(std::shared_ptr<SharedSubTask> subTask);
   /**

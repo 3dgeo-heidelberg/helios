@@ -21,7 +21,6 @@ logging_test
 #include <logger.hpp>
 #include <logger_factory.hpp>
 #include <logging_common.hpp>
-#include <logging_creation.hpp>
 #include <memory>
 #include <mutex>
 #include <sstream>
