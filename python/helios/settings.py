@@ -9,8 +9,8 @@ from helios.validation import (
 )
 
 from enum import IntEnum
-from pydantic import PositiveInt, BaseModel
-from typing import Optional
+from pydantic import PositiveInt, BaseModel, Field
+from typing import Annotated, Optional
 from logging import ERROR, DEBUG, INFO, WARNING
 from datetime import datetime
 import os
@@ -215,6 +215,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
 
     :param bin_size: The size of the bins to use for full waveform processing in seconds. Default is 0.25 ns.
     :param beam_sample_quality: The beam sample quality to use for full waveform processing. Default is 3.
+    :param beam_sampling_factor: Sampling radius divided by the Gaussian 1/e^2 radius on the transverse plane. Default is 2 (99.9665% captured power).
     :param win_size: The size of the window to use for full waveform processing in seconds. Default is 1.0 ns.
     :param max_fullwave_range: The maximum range to use for full waveform processing in seconds. Default is 0.0 ns (no maximum range).
     :type bin_size: TimeInterval
@@ -225,6 +226,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
 
     bin_size: TimeInterval = 0.25 * units.ns
     beam_sample_quality: PositiveInt = 3
+    beam_sampling_factor: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 2.0
     win_size: TimeInterval = 1.0 * units.ns
     max_fullwave_range: TimeInterval = 0.0 * units.ns
 
@@ -234,6 +236,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
         fwf = _helios.FWFSettings()
         fwf.bin_size = self.bin_size * 1e9
         fwf.beam_sample_quality = self.beam_sample_quality
+        fwf.beam_sampling_factor = self.beam_sampling_factor
         fwf.win_size = self.win_size * 1e9
         fwf.max_fullwave_range = self.max_fullwave_range * 1e9
 

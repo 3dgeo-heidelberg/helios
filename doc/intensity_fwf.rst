@@ -26,6 +26,10 @@ If no information is given there, the scanner definition may have a set of ``FWF
      - 3
      - 3 concentric circles of subrays, 19 subrays total; discretization in space.
 
+   * - ``beamSamplingFactor``
+     - 2
+     - Sampling radius in units of the Gaussian 1/e^2 radius; captures 99.9665% of emitted power.
+
    * - ``binSize_ns``
      - 0.25
      - Discretization in time (in nanoseconds).
@@ -42,19 +46,20 @@ If no information is given there, the scanner definition may have a set of ``FWF
 The ``beamSampleQuality`` :math:`bSQ` is the number of concentric circles from which subrays are sampled. The angular distance of circle :math:`i` (counting from the center) depends on the beam divergence :math:`\beta` and is calculated as:
 
 .. math::
-   \theta_i = \frac{i \cdot \beta}{bSQ}
+   \theta_s = \arctan\left(k\tan(\beta/2)\right), \qquad
+   \alpha_i = \frac{i\theta_s}{bSQ-1/2}, \quad 0 \le i < bSQ
 
-Thus, the outermost circle lies at an angular distance of :math:`\beta` (i.e., twice the beam divergence, assuming the divergence is defined at the :math:`1/e^2` energy points).
+Here :math:`\beta` is the full 1/e^2 divergence and :math:`k` is ``beamSamplingFactor``. Annular boundaries lie halfway between ring directions, starting at zero and ending exactly at :math:`\theta_s`. A single central ray represents the entire sampled disk when ``beamSampleQuality = 1``. Increasing coverage at fixed quality makes spatial sampling coarser.
 
 On each circle, :math:`k` subrays are sampled, where:
 
 .. math::
-   k = \left\lfloor 2\pi n \right\rfloor
+   N_0 = 1, \qquad N_i = \left\lfloor 2\pi i \right\rfloor \quad (i > 0)
 
 The subrays are distributed evenly around the circle. The total number of subrays for a given ``beamSampleQuality`` :math:`bSQ` is:
 
 .. math::
-   n_{\text{Rays}} = 1 + \sum_{i=1}^{bSQ} \left\lfloor 2\pi i \right\rfloor
+   n_{\text{Rays}} = 1 + \sum_{i=1}^{bSQ-1} \left\lfloor 2\pi i \right\rfloor
 
 For example, with ``beamSampleQuality = 3``, the subray distribution appears as follows (color represents relative amplitude, see next section):
 
@@ -75,33 +80,13 @@ For each subray, the returned waveform is computed by intersecting the ray with 
 
 The received amplitude is derived from the LiDAR equation, considering the following components:
 
-1. **Transmitted energy**  
-   The energy of a subray at a radial offset :math:`r` from the central beam is determined by the beam profile. Key parameters are:
-
-   - :math:`w_0` ... beam waist radius (see :doc:`Scanners and platforms <scanners_platforms>`),
-   - :math:`\lambda` ... wavelength,
-   - :math:`r` ... radial offset from center beam,
-   - :math:`R` ... target range,
-   - :math:`R_0` ... minimum range (range of beam waist),
-   - :math:`I_0` ... average transmitted power.
-
-   Define the following auxiliary variables:
+1. **Transmitted power**
+   Geometry and weights use one circular far-field Gaussian. At axial distance :math:`z`, the radius is :math:`w=z\tan(\beta/2)`. The power :math:`P_i` assigned to each subray of annulus :math:`i` is its integrated fraction of total emitted power :math:`P_0`:
 
    .. math::
-      \Omega = \frac{\lambda R}{\pi w_0^2}
+      P_i = \frac{P_0}{N_i}\left[\exp{\left(-\frac{2\tan^2(\theta_i)}{\tan^2(\beta/2)}\right)} - \exp{\left(-\frac{2\tan^2(\theta_{i+1})}{\tan^2(\beta/2)}\right)}\right].
 
-   .. math::
-      \Omega_0 = 1 - \frac{R}{R_0}
-
-   .. math::
-      w = w_0 \sqrt{\Omega_0^2 + \Omega^2}
-
-   The power of the subray at offset :math:`r` is then:
-
-   .. math::
-      I = I_0 \exp\left(-\frac{2r^2}{w^2}\right)
-
-   This model follows :cite:t:`Carlsson.2001`.
+   The shares sum to :math:`1-e^{-2k^2}`, independently of range and sample quality. No power from the omitted Gaussian tail is shifted into the sampled cone.
 
 2. **Material reflectance**  
    The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BDRF) :cite:p:`Phong.1975`. 

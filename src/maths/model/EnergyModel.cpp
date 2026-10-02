@@ -1,60 +1,32 @@
 #include <EnergyModel.h>
 #include <maths/EnergyMaths.h>
 #include <scanner/ScanningDevice.h>
-#include <scanner/detector/AbstractDetector.h>
 
-// ***  CONSTRUCTION / DESTRUCTION  *** //
-// ************************************ //
+#include <cmath>
+#include <limits>
+
 EnergyModel::EnergyModel(ScanningDevice const& sd)
   : sd(sd)
-  , radii(sd.FWF_settings.beamSampleQuality + 1)
-  , radiiSquared(sd.FWF_settings.beamSampleQuality + 1)
-  , negRadiiSquaredx2(sd.FWF_settings.beamSampleQuality + 1)
-  , w0Squared((sd.beamQuality * sd.wavelength_m) *
-              (sd.beamQuality * sd.wavelength_m) /
-              ((PI * sd.beamDivergence_rad) * (PI * sd.beamDivergence_rad)))
-  , totPower(2 * sd.averagePower_w / (PI * w0Squared))
-  , omegaCacheSquared((sd.wavelength_m / (PI * w0Squared)) *
-                      (sd.wavelength_m / (PI * w0Squared)))
-  , targetAreaCache(sd.FWF_settings.beamSampleQuality)
-  , deviceConstantExpression(sd.FWF_settings.beamSampleQuality)
 {
-  // Cached radii
-  int const BSQ = sd.FWF_settings.beamSampleQuality;
-  radii[0] = 0.0;
-  radiiSquared[0] = 0.0;
-  negRadiiSquaredx2[0] = 0.0;
-  for (int i = 0; i < BSQ; ++i) {
-    int const subraysAtRing = (i == 0) ? 1 : (int)(i * PI_2);
-    radii[i + 1] = sd.beamDivergence_rad * (i + 0.5) / (2 * (BSQ - 0.5));
-    radiiSquared[i + 1] = radii[i + 1] * radii[i + 1];
-    negRadiiSquaredx2[i + 1] = -2.0 * radiiSquared[i + 1];
-    targetAreaCache[i] = PI / ((double)subraysAtRing);
-    deviceConstantExpression[i] =
-      PI * totPower * w0Squared / (2.0 * ((double)subraysAtRing));
-  }
 }
 
-// ***  METHODS  *** //
-// ***************** //
 double
 EnergyModel::computeIntensity(
-  double const incidenceAngle,
-  double const targetRange,
+  double incidenceAngle,
+  double targetRange,
   Material const& mat,
-  int const subrayRadiusStep
+  std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords
 #endif
 )
 {
-  ReceivedPowerArgs args =
-    ReceivedPowerArgs(targetRange, incidenceAngle, mat, subrayRadiusStep);
-  return computeReceivedPower(args
+  return computeReceivedPower(
+    ReceivedPowerArgs{ targetRange, incidenceAngle, mat, subrayIndex }
 #if DATA_ANALYTICS >= 2
-                              ,
-                              calcIntensityRecords
+    ,
+    calcIntensityRecords
 #endif
   );
 }
@@ -68,94 +40,65 @@ EnergyModel::computeReceivedPower(
 #endif
 )
 {
-  // Pre-computations
   double const rangeSquared = args.targetRange * args.targetRange;
-  // Emitted power
-  double const Pe =
-    computeEmittedPower(EmittedPowerArgs{ args.targetRange,
-                                          rangeSquared,
-                                          sd.detector->cfg_device_rangeMin_m,
-                                          args.subrayRadiusStep });
-  // Target area
-  double const targetArea =
-    computeTargetArea(TargetAreaArgs{ rangeSquared, args.subrayRadiusStep }
-#if DATA_ANALYTICS >= 2
-                      ,
-                      calcIntensityRecords
-#endif
-    );
-  // Cross-section
+  double const emittedPower =
+    computeEmittedPower(EmittedPowerArgs{ args.subrayIndex });
   double const bdrf =
     EnergyMaths::computeBDRF(args.material, args.incidenceAngle_rad);
-  double const sigma =
-    computeCrossSection(CrossSectionArgs{ args.material, bdrf, targetArea });
-  // Received power
-  double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
+  double const atmosphere = EnergyMaths::calcAtmosphericFactor(
     args.targetRange, sd.atmosphericExtinction);
-  double const receivedPower =
-    EnergyMaths::calcReceivedPowerFast(Pe,
-                                       sd.cached_Dr2,
-                                       16 * targetArea * rangeSquared,
-                                       sd.efficiency,
-                                       atmosphericFactor,
-                                       sigma);
+  // sigma = 4*pi*BDRF*A cancels A in the extended-target equation.
+  double const receivedPower = PI * emittedPower * sd.cached_Dr2 *
+                               sd.efficiency * atmosphere * bdrf /
+                               (4.0 * rangeSquared);
 #if DATA_ANALYTICS >= 2
-  std::vector<double>& calcIntensityRecord = calcIntensityRecords.back();
-  calcIntensityRecord[3] = args.incidenceAngle_rad;
-  calcIntensityRecord[4] = args.targetRange;
-  calcIntensityRecord[5] = targetArea;
-  calcIntensityRecord[7] = bdrf;
-  calcIntensityRecord[8] = sigma;
-  calcIntensityRecord[9] = receivedPower;
-  calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
-  calcIntensityRecord[11] = Pe;
-  calcIntensityRecord[12] = args.subrayRadiusStep;
+  double const area = computeTargetArea(
+    TargetAreaArgs{ rangeSquared, args.subrayIndex }, calcIntensityRecords);
+  auto& record = calcIntensityRecords.back();
+  record[3] = args.incidenceAngle_rad;
+  record[4] = args.targetRange;
+  record[5] = area;
+  record[7] = bdrf;
+  record[8] = EnergyMaths::calcCrossSection(bdrf, area);
+  record[9] = receivedPower;
+  record[10] = 0;
+  record[11] = emittedPower;
+  record[12] = args.subrayIndex;
 #endif
   return receivedPower * 1e09;
 }
 
 double
-EnergyModel::computeReceivedPowerWithSigma(double const targetRange,
-                                           double const sigma,
-                                           int const subrayRadiusStep)
+EnergyModel::computeReceivedPowerWithSigma(double targetRange,
+                                           double sigma,
+                                           std::size_t subrayIndex)
 {
   double const rangeSquared = targetRange * targetRange;
   double const emittedPower =
-    computeEmittedPower(EmittedPowerArgs{ targetRange,
-                                          rangeSquared,
-                                          sd.detector->cfg_device_rangeMin_m,
-                                          subrayRadiusStep });
+    computeEmittedPower(EmittedPowerArgs{ subrayIndex });
 #if DATA_ANALYTICS >= 2
   std::vector<std::vector<double>> unusedRecords;
-  double const targetArea = computeTargetArea(
-    TargetAreaArgs{ rangeSquared, subrayRadiusStep }, unusedRecords);
+  double const area = computeTargetArea(
+    TargetAreaArgs{ rangeSquared, subrayIndex }, unusedRecords);
 #else
-  double const targetArea =
-    computeTargetArea(TargetAreaArgs{ rangeSquared, subrayRadiusStep });
+  double const area =
+    computeTargetArea(TargetAreaArgs{ rangeSquared, subrayIndex });
 #endif
-  double const atmosphericFactor =
+  double const atmosphere =
     EnergyMaths::calcAtmosphericFactor(targetRange, sd.atmosphericExtinction);
-  double const receivedPower =
-    EnergyMaths::calcReceivedPowerFast(emittedPower,
-                                       sd.cached_Dr2,
-                                       16 * targetArea * rangeSquared,
-                                       sd.efficiency,
-                                       atmosphericFactor,
-                                       sigma);
-  return receivedPower * 1e09;
+  return EnergyMaths::calcReceivedPowerFast(emittedPower,
+                                            sd.cached_Dr2,
+                                            16.0 * area * rangeSquared,
+                                            sd.efficiency,
+                                            atmosphere,
+                                            sigma) *
+         1e09;
 }
 
 double
 EnergyModel::computeEmittedPower(EmittedPowerArgs const& args)
 {
-  double const Omega0 = 1 - args.targetRange / args.rangeMin;
-  double const OmegaSquared = args.targetRangeSquared * omegaCacheSquared;
-  double const wSquared = w0Squared * (Omega0 * Omega0 + OmegaSquared);
-  return EnergyMaths::calcSubrayWiseEmittedPowerFast(
-    deviceConstantExpression[args.subrayRadiusStep],
-    wSquared,
-    negRadiiSquaredx2[args.subrayRadiusStep + 1],
-    negRadiiSquaredx2[args.subrayRadiusStep]);
+  return sd.averagePower_w * sd.getSubrays().at(args.subrayIndex).share;
 }
 
 double
@@ -167,20 +110,15 @@ EnergyModel::computeTargetArea(
 #endif
 )
 {
-  // Once for target area and once for emitted power
-  double const prevRadiusSquared = radiiSquared[args.subrayRadiusStep];
-  double const radiusSquared = radiiSquared[args.subrayRadiusStep + 1];
-  double const radius_m_squared = radiusSquared * args.targetRangeSquared;
-  double const prevRadius_m_squared =
-    prevRadiusSquared * args.targetRangeSquared;
+  auto const& subray = sd.getSubrays().at(args.subrayIndex);
+  double const cosine = std::cos(subray.angle_rad);
+  double const axialRangeSquared = args.targetRangeSquared * cosine * cosine;
 #if DATA_ANALYTICS >= 2
-  std::vector<double> calcIntensityRecord(
-    13, std::numeric_limits<double>::quiet_NaN());
-  calcIntensityRecord[6] = std::sqrt(radius_m_squared);
-  calcIntensityRecords.push_back(calcIntensityRecord);
+  std::vector<double> record(13, std::numeric_limits<double>::quiet_NaN());
+  record[6] = std::sqrt(axialRangeSquared) * std::tan(subray.outerAngle_rad);
+  calcIntensityRecords.push_back(std::move(record));
 #endif
-  return (radius_m_squared - prevRadius_m_squared) *
-         targetAreaCache[args.subrayRadiusStep];
+  return subray.areaFactor * axialRangeSquared;
 }
 
 double

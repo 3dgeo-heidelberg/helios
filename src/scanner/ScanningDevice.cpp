@@ -1,10 +1,13 @@
 #include <ScanningDevice.h>
 #include <cmath>
+#include <limits>
 #include <logging.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
 #include <maths/model/EnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <stdexcept>
+#include <utility>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -13,19 +16,19 @@ using namespace helios::analytics;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 ScanningDevice::ScanningDevice(
-  size_t const deviceIndex,
-  std::string const id,
-  double const beamDiv_rad,
-  glm::dvec3 const beamOrigin,
-  Rotation const beamOrientation,
+  size_t deviceIndex,
+  std::string id,
+  double beamDiv_rad,
+  glm::dvec3 beamOrigin,
+  Rotation beamOrientation,
   std::list<int> const& pulseFreqs,
-  double const pulseLength_ns,
-  double const averagePower_w,
-  double const beamQuality,
-  double const efficiency,
-  double const receiverDiameter_m,
-  double const atmosphericVisibility_km,
-  double const wavelength_m,
+  double pulseLength_ns,
+  double averagePower_w,
+  double beamQuality,
+  double efficiency,
+  double receiverDiameter_m,
+  double atmosphericVisibility_km,
+  double wavelength_m,
   std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr)
   : devIdx(deviceIndex)
   , id(id)
@@ -90,6 +93,11 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
     this->detector = nullptr;
   else
     this->detector = scdev.detector->clone();
+  if (scdev.isSubrayTableCurrent()) {
+    buildSubrayTable();
+    if (scdev.energyModel != nullptr)
+      energyModel = std::make_shared<EnergyModel>(*this);
+  }
 }
 
 // ***  M E T H O D S  *** //
@@ -97,46 +105,87 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 void
 ScanningDevice::prepareSimulation()
 {
-  // Reset cached subray data for a clean elliptical sampling pass
-  cached_subrayRotation.clear();
-  cached_subrayRadiusStep.clear();
-  cached_subrayDivergenceAngle_rad.clear();
-
-  // Elliptical footprint discrete method
-  int const beamSampleQuality = FWF_settings.beamSampleQuality;
-  double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
-
-  // Outer loop over radius steps from beam center to outer edge
-  for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++) {
-    double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
-    cached_subrayDivergenceAngle_rad.push_back(subrayDivergenceAngle_rad);
-
-    // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-    Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
-
-    // Calculate circle step width:
-    int circleSteps = (int)(PI_2 * radiusStep);
-
-    // Make sure that central ray is not skipped:
-    if (circleSteps == 0) {
-      circleSteps = 1;
-    }
-
-    double const circleStep_rad = PI_2 / circleSteps;
-
-    // # Loop over sub-rays along the circle
-    for (int circleStep = 0; circleStep < circleSteps; circleStep++) {
-      // Rotate around the circle
-      Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
-      r2 = r2.applyTo(r1);
-      // Cache subray generation data
-      cached_subrayRotation.push_back(r2);
-      cached_subrayRadiusStep.push_back(radiusStep);
-    }
-  }
-
-  // Prepare energy model
+  buildSubrayTable();
   energyModel = std::make_shared<EnergyModel>(*this);
+}
+
+bool
+ScanningDevice::isSubrayTableCurrent() const
+{
+  return !subrays.empty() && sampledDivergence_rad == beamDivergence_rad &&
+         sampledFactor == FWF_settings.beamSamplingFactor &&
+         sampledQuality == FWF_settings.beamSampleQuality;
+}
+
+std::vector<ScanningDevice::Subray> const&
+ScanningDevice::getSubrays() const
+{
+  if (!isSubrayTableCurrent())
+    throw std::logic_error(
+      "Subray settings changed; prepare the scanner before tracing");
+  return subrays;
+}
+
+void
+ScanningDevice::buildSubrayTable()
+{
+  if (isSubrayTableCurrent())
+    return;
+  FWF_settings.validateBeamSampling();
+  if (!std::isfinite(beamDivergence_rad) || beamDivergence_rad <= 0.0 ||
+      beamDivergence_rad >= PI)
+    throw std::invalid_argument(
+      "Full beam divergence must be finite and in (0, pi)");
+
+  int const quality = FWF_settings.beamSampleQuality;
+  double const tangent0 = std::tan(beamDivergence_rad / 2.0);
+  double const cutoffTangent = FWF_settings.beamSamplingFactor * tangent0;
+  double const cutoff = std::atan(cutoffTangent);
+  if (!std::isfinite(cutoffTangent) || cutoff <= 0.0 || cutoff >= PI / 2.0)
+    throw std::invalid_argument("Sampling cone is not representable");
+  std::vector<Subray> generated;
+  double innerTangent = 0.0;
+  for (int ring = 0; ring < quality; ++ring) {
+    double const population = (ring == 0) ? 1.0 : std::floor(PI_2 * ring);
+    if (population >= static_cast<double>(generated.max_size()))
+      throw std::invalid_argument("Too many subrays");
+    std::size_t const count = static_cast<std::size_t>(population);
+    if (count > generated.max_size() - generated.size())
+      throw std::invalid_argument("Too many subrays");
+    double const angle = cutoff * ring / (quality - 0.5);
+    double const outerAngle =
+      (ring == quality - 1) ? cutoff : cutoff * (ring + 0.5) / (quality - 0.5);
+    double const outerTangent =
+      (ring == quality - 1) ? cutoffTangent : std::tan(outerAngle);
+    double const innerRatio = innerTangent / tangent0;
+    double const outerRatio = outerTangent / tangent0;
+    double const exponent = 2.0 * innerRatio * innerRatio;
+    double const delta =
+      2.0 * (outerRatio - innerRatio) * (outerRatio + innerRatio);
+    // expm1 preserves the power of narrow annuli without subtracting
+    // near-equals.
+    double const share = std::exp(-exponent) * -std::expm1(-delta) / count;
+    double const extentSquared =
+      (outerTangent - innerTangent) * (outerTangent + innerTangent) / count;
+    if (!std::isfinite(share) || !std::isfinite(PI * extentSquared) ||
+        extentSquared <= 0.0)
+      throw std::invalid_argument("Subray patch is not representable");
+    Rotation const tilt(Directions::right, angle);
+    for (std::size_t j = 0; j < count; ++j) {
+      Rotation const azimuth(Directions::forward, PI_2 * j / count);
+      generated.push_back({ azimuth.applyTo(tilt),
+                            angle,
+                            share,
+                            PI * extentSquared,
+                            outerAngle });
+    }
+    innerTangent = outerTangent;
+  }
+  subrays = std::move(generated);
+  numRays = subrays.size();
+  sampledDivergence_rad = beamDivergence_rad;
+  sampledFactor = FWF_settings.beamSamplingFactor;
+  sampledQuality = quality;
 }
 
 void
@@ -173,16 +222,8 @@ ScanningDevice::calcAtmosphericAttenuation() const
 void
 ScanningDevice::calcRaysNumber()
 {
-  // Count circle steps
-  int count = 1;
-  for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
-       radiusStep++) {
-    int circleSteps = (int)(2 * PI) * radiusStep;
-    count += circleSteps;
-  }
-
-  // Update number of rays
-  numRays = count;
+  buildSubrayTable();
+  numRays = subrays.size();
   std::stringstream ss;
   ss << "Number of subsampling rays (" << id << "): " << numRays;
   logging::INFO(ss.str());
@@ -191,9 +232,9 @@ ScanningDevice::calcRaysNumber()
 void
 ScanningDevice::doSimStep(
   unsigned int legIndex,
-  double const currentGpsTime,
-  int const simFreq_Hz,
-  bool const isActive,
+  double currentGpsTime,
+  int simFreq_Hz,
+  bool isActive,
   glm::dvec3 const& platformPosition,
   Rotation const& platformAttitude,
   std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
@@ -212,6 +253,8 @@ ScanningDevice::doSimStep(
   // -------------------//
   if (!isActive)
     return;
+
+  buildSubrayTable();
 
   // Do what active scanner does
   // ----------------------------//
@@ -254,7 +297,7 @@ ScanningDevice::doSimStep(
 }
 
 void
-ScanningDevice::applyWarmupPhase(int const simFreq_Hz)
+ScanningDevice::applyWarmupPhase(int simFreq_Hz)
 {
   if (state_opticsWarmupApplied || cfg_setting_opticsWarmupPhase_s <= 0.0 ||
       simFreq_Hz <= 0) {
@@ -295,7 +338,7 @@ ScanningDevice::calcExactAbsoluteBeamAttitude(Rotation const& platformAttitude)
 void
 ScanningDevice::computeSubrays(
   std::function<void(Rotation const& subrayRotation,
-                     int const sburayRadiusStep,
+                     std::size_t subrayIndex,
                      NoiseSource<double>& intersectionHandlingNoiseSource,
                      std::map<double, double>& reflections,
                      vector<RaySceneIntersection>& intersects
@@ -314,15 +357,16 @@ ScanningDevice::computeSubrays(
 #endif
 )
 {
-  size_t const numSubrays = cached_subrayRotation.size();
-  for (size_t i = 0; i < numSubrays; ++i) {
+  auto const& table = getSubrays();
+  std::size_t const numSubrays = table.size();
+  for (std::size_t i = 0; i < numSubrays; ++i) {
 #if DATA_ANALYTICS >= 2
     bool subrayHit;
     std::vector<double> subraySimRecord(
       14, std::numeric_limits<double>::quiet_NaN());
 #endif
-    handleSubray(cached_subrayRotation[i],
-                 cached_subrayRadiusStep[i],
+    handleSubray(table[i].rotation,
+                 i,
                  intersectionHandlingNoiseSource,
                  reflections,
                  intersects
@@ -335,15 +379,15 @@ ScanningDevice::computeSubrays(
 #if DATA_ANALYTICS >= 2
     HDA_GV.incrementGeneratedSubraysCount();
     subraySimRecord[0] = (double)subrayHit;
-    subraySimRecord[1] = cached_subrayDivergenceAngle_rad[i];
+    subraySimRecord[1] = table[i].angle_rad;
     pulseRecorder->recordSubraySimulation(subraySimRecord);
 #endif
   }
 }
 
 bool
-ScanningDevice::initializeFullWaveform(double const minHitDist_m,
-                                       double const maxHitDist_m,
+ScanningDevice::initializeFullWaveform(double minHitDist_m,
+                                       double maxHitDist_m,
                                        double& minHitTime_ns,
                                        double& maxHitTime_ns,
                                        double& nsPerBin,
@@ -391,10 +435,10 @@ ScanningDevice::initializeFullWaveform(double const minHitDist_m,
 
 double
 ScanningDevice::calcIntensity(
-  double const incidenceAngle,
-  double const targetRange,
+  double incidenceAngle,
+  double targetRange,
   Material const& mat,
-  int const subrayRadiusStep
+  std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords
@@ -404,7 +448,7 @@ ScanningDevice::calcIntensity(
   return energyModel->computeIntensity(incidenceAngle,
                                        targetRange,
                                        mat,
-                                       subrayRadiusStep
+                                       subrayIndex
 #if DATA_ANALYTICS >= 2
                                        ,
                                        calcIntensityRecords
@@ -412,18 +456,18 @@ ScanningDevice::calcIntensity(
   );
 }
 double
-ScanningDevice::calcIntensity(double const targetRange,
-                              double const sigma,
-                              int const subrayRadiusStep) const
+ScanningDevice::calcIntensity(double targetRange,
+                              double sigma,
+                              std::size_t subrayIndex) const
 {
   return energyModel->computeReceivedPowerWithSigma(
-    targetRange, sigma, subrayRadiusStep);
+    targetRange, sigma, subrayIndex);
 }
 
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 void
-ScanningDevice::setLastPulseWasHit(bool const value)
+ScanningDevice::setLastPulseWasHit(bool value)
 {
   if (value == state_lastPulseWasHit)
     return;

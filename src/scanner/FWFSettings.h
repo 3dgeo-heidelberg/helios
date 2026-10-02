@@ -2,8 +2,10 @@
 
 #include "Asset.h"
 
+#include <cmath>
 #include <ostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 /**
@@ -55,6 +57,8 @@ public:
    * @brief Beam sample quality
    */
   int beamSampleQuality = 3;
+  /** Tangent-plane sampling radius in units of the Gaussian 1/e^2 radius. */
+  double beamSamplingFactor = 2.0;
   /**
    * @brief Window size to iterate over discretization (nanoseconds)
    */
@@ -78,12 +82,20 @@ public:
    */
   void validate() const
   {
+    validateBeamSampling();
     if (binSize_ns <= 0.0)
       throw std::invalid_argument("binSize_ns must be > 0");
     if (winSize_ns <= 0.0)
       throw std::invalid_argument("winSize_ns must be > 0");
     if (winSize_ns < 2.0 * binSize_ns)
       throw std::invalid_argument("winSize_ns must be >= 2 * binSize_ns");
+  }
+  void validateBeamSampling() const
+  {
+    if (beamSampleQuality < 1)
+      throw std::invalid_argument("beamSampleQuality must be >= 1");
+    if (!std::isfinite(beamSamplingFactor) || beamSamplingFactor <= 0.0)
+      throw std::invalid_argument("beamSamplingFactor must be finite and > 0");
   }
 
   // ***  TO STRING  *** //
@@ -106,6 +118,7 @@ public:
        << "beamDivergence_rad = " << beamDivergence_rad << "\n"
        << "pulseLength_ns = " << pulseLength_ns << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
+       << "beamSamplingFactor = " << beamSamplingFactor << "\n"
        << "winSize_ns = " << winSize_ns << "\n"
        << "maxFullwaveRange_ns = " << maxFullwaveRange_ns << "\n";
     return ss.str();

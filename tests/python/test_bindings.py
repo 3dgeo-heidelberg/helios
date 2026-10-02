@@ -458,6 +458,7 @@ def test_fwf_settings_to_string():
         "beamDivergence_rad = 0.0003\n"
         "pulseLength_ns = 4\n"
         "beamSampleQuality = 3\n"
+        "beamSamplingFactor = 2\n"
         "winSize_ns = 1\n"
         "maxFullwaveRange_ns = 0\n"
     )

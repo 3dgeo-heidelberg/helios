@@ -1324,6 +1324,8 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
     settings->winSize_ns = settings->pulseLength_ns / 4.0; // By default
     settings->beamSampleQuality = XmlUtils::getAttributeCast<int>(
       node, "beamSampleQuality", settings->beamSampleQuality);
+    settings->beamSamplingFactor = XmlUtils::getAttributeCast<double>(
+      node, "beamSamplingFactor", settings->beamSamplingFactor);
     settings->winSize_ns = XmlUtils::getAttributeCast<double>(
       node, "winSize_ns", settings->winSize_ns);
     settings->maxFullwaveRange_ns = XmlUtils::getAttributeCast<double>(
@@ -1332,6 +1334,7 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
       node, "apertureDiameter_m", settings->apertureDiameter);
   }
 
+  settings->validateBeamSampling();
   return settings;
 }
 
@@ -1744,7 +1747,7 @@ void
 XmlAssetsLoader::trackNonDefaultScannerSettings(
   std::shared_ptr<ScannerSettings> base,
   std::shared_ptr<ScannerSettings> ref,
-  std::string const defaultTemplateId,
+  std::string defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)
@@ -1783,7 +1786,7 @@ void
 XmlAssetsLoader::trackNonDefaultPlatformSettings(
   std::shared_ptr<PlatformSettings> base,
   std::shared_ptr<PlatformSettings> ref,
-  std::string const defaultTemplateId,
+  std::string defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)
