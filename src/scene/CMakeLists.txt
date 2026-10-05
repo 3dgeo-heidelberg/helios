@@ -9,7 +9,6 @@ target_include_directories(
 target_sources(
   helios
   PRIVATE
-  "RaySceneIntersection.cpp"
   "Material.cpp"
   "StaticScene.cpp"
   "Scene.cpp"
