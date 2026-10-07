@@ -13,12 +13,12 @@
 #include <dataanalytics/HDA_GlobalVarsReporter.h>
 #endif
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gdal_priv.h>
 
 #include <iomanip>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 // ***  DECLARATIONS  *** //
 // ********************** //
@@ -100,7 +100,7 @@ main(int argc, char** argv)
 
     // Show current working directory
     ss.str("");
-    ss << "CWD: " << boost::filesystem::current_path();
+    ss << "CWD: " << std::filesystem::current_path().string();
     logging::INFO(ss.str());
 
     // Handle default randomness generator

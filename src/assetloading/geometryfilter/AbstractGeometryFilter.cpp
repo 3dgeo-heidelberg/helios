@@ -24,7 +24,7 @@ AbstractGeometryFilter::parseMaterials()
     return std::vector<std::shared_ptr<Material>>(0);
   }
 
-  fs::path matfilePath = boost::get<std::string>(params["matfile"]);
+  fs::path matfilePath = std::get<std::string>(params["matfile"]);
   bool found = false;
   for (const auto& base : assetsDir) {
     fs::path candidate = fs::path(base) / matfilePath;
@@ -46,7 +46,7 @@ AbstractGeometryFilter::parseMaterials()
   auto mats = MaterialsFileReader::loadMaterials(matfilePath.string());
   std::vector<std::shared_ptr<Material>> matvec(0);
   if (params.find("matname") != params.end()) { // Pick by name
-    std::string matname = boost::get<std::string>(params["matname"]);
+    std::string matname = std::get<std::string>(params["matname"]);
     auto it = mats.find(matname);
     if (it == mats.end()) {
       std::stringstream ss;
@@ -63,10 +63,10 @@ AbstractGeometryFilter::parseMaterials()
 
   // Generate randomized materials if requested
   if (params.find("randomMaterials") != params.end()) {
-    int nRandom = boost::get<int>(params["randomMaterials"]);
+    int nRandom = std::get<int>(params["randomMaterials"]);
     double randomRange = 1.0;
     if (params.find("randomRange") != params.end()) {
-      randomRange = boost::get<double>(params["randomRange"]);
+      randomRange = std::get<double>(params["randomRange"]);
     }
     UniformNoiseSource<double> uns(*DEFAULT_RG, -randomRange, randomRange);
     std::shared_ptr<Material> mat0 = matvec[0];

@@ -1,8 +1,8 @@
 #include <FileUtils.h>
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
+#include <filesystem>
 #include <logging.hpp>
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 char const FileUtils::pathSeparator =
 #ifdef _WIN32
@@ -30,11 +30,11 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
   bool extendedFilePath = false;
 
   try {
-    path = boost::get<std::string>(params["efilepath"]);
+    path = std::get<std::string>(params["efilepath"]);
     extendedFilePath = true;
   } catch (std::exception& e) {
     try {
-      path = boost::get<std::string>(params["filepath"]);
+      path = std::get<std::string>(params["filepath"]);
     } catch (std::exception& e2) {
       std::stringstream ss;
       ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
@@ -52,11 +52,12 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
   } else {
     if (!fs::path(path).is_relative()) {
       paths.push_back(path);
-    }
-    for (auto assetPath : assetsDir) {
-      if (fs::exists(fs::path(assetPath) / path)) {
-        paths.push_back((fs::path(assetPath) / path).string());
-        break;
+    } else {
+      for (auto assetPath : assetsDir) {
+        if (fs::exists(fs::path(assetPath) / path)) {
+          paths.push_back((fs::path(assetPath) / path).string());
+          break;
+        }
       }
     }
   }

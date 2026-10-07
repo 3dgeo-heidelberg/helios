@@ -2,6 +2,7 @@
 
 #include <KDTreeBuildType.h>
 #include <MDThreadPool.h>
+#include <functional>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -61,11 +62,11 @@ protected:
    * @param data It will be deleted after computing the task
    * @see ThreadPool::do_task
    */
-  inline void do_md_task(boost::function<void(KDTreeNode*,
-                                              bool const,
-                                              std::vector<Primitive*>&,
-                                              int const,
-                                              int const)>& task,
+  inline void do_md_task(std::function<void(KDTreeNode*,
+                                            bool const,
+                                            std::vector<Primitive*>&,
+                                            int const,
+                                            int const)>& task,
                          KDTreeBuildType* data) override
   {
     task(data->parent, data->left, data->primitives, data->depth, data->index);
