@@ -214,23 +214,27 @@ ScanningDevice::configureBeam()
 double
 ScanningDevice::calcAtmosphericAttenuation() const
 {
-  double q;
-  double const lambda = wavelength_m * 1e9;
+  double const lambda_um = wavelength_m * 1e6; // Kruse relation in micrometers
   double const Vm = visibility_km;
 
-  if (lambda < 500 && lambda > 2000) {
+  if (lambda_um < 0.5 || lambda_um > 2.0) {
     // Do nothing if wavelength is outside range, approximation will be bad
-    return 0;
+    logging::WARN(
+      "calcAtmosphericAttenuation: wavelength outside 0.5-2.0 um, the Kruse "
+      "approximation does not apply, assuming no attenuation");
+    return 0.0;
   }
 
-  if (Vm > 50)
+  double q;
+  if (Vm > 50.0)
     q = 1.6;
-  else if (Vm > 6 && Vm < 50)
+  else if (Vm > 6.0)
     q = 1.3;
   else
-    q = 0.585 * pow(Vm, 0.33);
+    q = 0.585 * std::pow(Vm, 0.33);
 
-  return (3.91 / Vm) * pow((lambda / 0.55), -q);
+  // 3.91/Vm is per kilometre; simulation ranges are measured in metres.
+  return (3.91 / Vm) * std::pow(lambda_um / 0.55, -q) / 1000.0;
 }
 
 void

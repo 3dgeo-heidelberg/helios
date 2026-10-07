@@ -100,7 +100,7 @@ protected:
    */
   double wavelength_m;
   /**
-   * @brief Atmospheric extinction
+   * @brief Atmospheric extinction coefficient (per metre)
    */
   double atmosphericExtinction;
   /**
@@ -312,10 +312,11 @@ public:
    */
   void configureBeam();
   /**
-   * @brief Compute the atmospheric attenuation to be used as the
-   *  atmospheric extinction
-   * @return Atmospheric attenuation
-   * @see Scanner::atmosphericExtinction
+   * @brief Compute the Kruse atmospheric extinction coefficient (per metre).
+   * Uses wavelength in micrometres and visibility in kilometres. Outside
+   * 0.5-2.0 micrometres, warns and returns zero (no attenuation).
+   * @return Atmospheric extinction coefficient (per metre)
+   * @see ScanningDevice::atmosphericExtinction
    */
   double calcAtmosphericAttenuation() const;
   /**
