@@ -136,8 +136,7 @@ public:
     // Start threads
     workersCount = pool_size;
     for (std::size_t tid = 0; tid < pool_size; ++tid) {
-      boost::asio::post(io_context_,
-                        boost::bind(&WarehouseThreadPool::_start, this, tid));
+      boost::asio::post(io_context_, [this, tid]() { _start(tid); });
     }
   }
 
