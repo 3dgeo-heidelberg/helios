@@ -356,10 +356,10 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    - :math:`w_0` is the beam waist radius,
    - :math:`\lambda` is the scanner wavelength,
    - :math:`R_0` is the beam waist range (minimum range),
-   - :math:`a_e` is the atmospheric extinction coefficient, computed as:
+   - :math:`a_e` is the atmospheric extinction coefficient in inverse metres, computed using the Kruse relation as:
 
    .. math::
-      a_e = \frac{3.91}{V_M} \left( \frac{\lambda}{0.55} \right)^{-q}
+      a_e = \frac{3.91}{1000 V_M} \left( \frac{\lambda_{\mu\mathrm{m}}}{0.55} \right)^{-q}
 
    with the exponent :math:`q` defined piecewise:
 
@@ -367,12 +367,13 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
       q = 
       \begin{cases}
         1.6, & \text{if } V_M > 50\ \text{km} \\
-        1.3, & \text{if } 50\ \text{km} > V_M > 6\ \text{km} \\
+        1.3, & \text{if } 6\ \text{km} < V_M \le 50\ \text{km} \\
         0.585 \cdot V_M^{0.33}, & \text{otherwise}
       \end{cases}
 
-   where :math:`V_M` is the atmospheric visibility.
+   Here :math:`V_M` is the numerical visibility in kilometres and :math:`\lambda_{\mu\mathrm{m}}` is the numerical wavelength in micrometres. The scanner stores wavelength in metres and converts it to micrometres for this relation. The factor of 1000 converts extinction per kilometre to extinction per metre, matching the range :math:`R` in metres in the two-way atmospheric transmission :math:`\exp(-2 R a_e)`.
 
+   The approximation is applied for wavelengths from 0.5 to 2.0 micrometres, including both endpoints. Outside this range, HELIOS logs a warning and assumes zero extinction (unit atmospheric transmission).
 
 References
 ----------
