@@ -130,19 +130,25 @@ public:
    * Paper DOI: 10.1016/j.isprsjprs.2010.06.007
    *
    * @return Cross section
-   * @see computeBDRF
+   * @see computeBRDF
    */
   static double calcCrossSection(double const f, double const Alf);
 
   // ***  LIGHTING  *** //
   // ****************** //
   /**
-   * @brief Compute the Bidirectional Reflectande Function (BDRF).
+   * @brief Compute the material's angular reflectance response using its BRDF.
+   *
+   * For Phong materials, this multiplies phongBRDF by the reflectance and
+   * the cosine of the incidence angle. Lambertian materials return
+   * reflectance times cosine; direction-independent materials return
+   * reflectance alone.
    * @param mat The material specification.
    * @param incidenceAngle The incidence angle.
-   * @return The value of the BDRF.
+   * @return The reflectance response including the incidence cosine where
+   * applicable.
    */
-  static double computeBDRF(Material const& mat, double const incidenceAngle);
+  static double computeBRDF(Material const& mat, double const incidenceAngle);
   /**
    * @brief Compute the Phong model
    *
@@ -159,28 +165,33 @@ public:
    *  defined in Material::setSpecularity
    *
    * \f[
-   *  \mathrm{BDRF}_{\mathrm{PHONG}} = \bigl(1-K_s\bigr) \cos(\varphi) +
-   *      K_s {\cos(2\varphi)}^{N_s}
+   *  \mathrm{BRDF}_{\mathrm{PHONG}} = \bigl(1-K_s\bigr) +
+   *      \frac{K_s \lvert\cos(2\varphi)\rvert^{N_s}}{\cos(\varphi)}
    * \f]
    *
-   * The final BDRF will often be the Phong BDRF multiplied by the
-   *  reflectance \f$\rho\f$:
+   * computeBRDF multiplies this factor by the reflectance \f$\rho\f$
+   * and the incidence cosine to obtain the angular reflectance response:
    *
    * \f[
-   *  \mathrm{BDRF} = \rho \mathrm{BDRF}_{\mathrm{PHONG}} = \rho \biggl(
-   *      \bigl(1-K_s\bigr) \cos(\varphi) + K_s {\cos(2\varphi)}^{N_s} \biggr)
+   *  f = \rho \mathrm{BRDF}_{\mathrm{PHONG}} \cos(\varphi) = \rho \biggl(
+   *      \bigl(1-K_s\bigr) \cos(\varphi) +
+   *      K_s \lvert\cos(2\varphi)\rvert^{N_s} \biggr)
    * \f]
-   *
+   * This helper divides by the incidence cosine. Callers must apply that
+   * cosine as computeBRDF does; the standalone factor is singular at grazing
+   * incidence (cosine zero). Refactors must preserve this caller constraint.
    */
-  static double phongBDRF(double const incidenceAngle,
+  static double phongBRDF(double const incidenceAngle,
                           double const targetSpecularity,
                           double const targetSpecularExponent);
   /**
-   * @brief The EnergyMaths::phongBDRF function assuming the cosine of the
+   * @brief The EnergyMaths::phongBRDF function assuming the cosine of the
    * incidence angle is precomputed, thus it is expected to be faster.
-   * @see EnergyMaths::phongBDRF
+   * The supplied cosine must match incidenceAngle and be nonzero. The caller
+   * must apply it to the result as documented for phongBRDF.
+   * @see EnergyMaths::phongBRDF
    */
-  static double phongBDRFFast(double const incidenceAngle,
+  static double phongBRDFFast(double const incidenceAngle,
                               double const cosIncidenceAngle,
                               double const targetSpecularity,
                               double const targetSpecularExponent);

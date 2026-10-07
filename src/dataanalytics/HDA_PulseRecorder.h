@@ -40,7 +40,7 @@ protected:
    * [6] -> The radius in meters, i.e., the distance between the beam's
    *  center line and the intersection point.
    *
-   * [7] -> The bidirectional reflectance function (BDRF).
+   * [7] -> The bidirectional reflectance distribution function (BRDF).
    *
    * [8] -> The cross-section in squared meters.
    *

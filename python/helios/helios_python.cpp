@@ -1726,7 +1726,7 @@ PYBIND11_MODULE(_helios, m)
   py::class_<CrossSectionArgs>(m, "CrossSectionArgs")
     .def(py::init<Material const&, double, double>(),
          py::arg("material"),
-         py::arg("bdrf"),
+         py::arg("brdf"),
          py::arg("target_area"),
          py::keep_alive<1, 2>())
     .def_property_readonly(
@@ -1735,7 +1735,7 @@ PYBIND11_MODULE(_helios, m)
         return args.material;
       },
       py::return_value_policy::reference_internal)
-    .def_readonly("bdrf", &CrossSectionArgs::bdrf)
+    .def_readonly("brdf", &CrossSectionArgs::brdf)
     .def_readonly("target_area", &CrossSectionArgs::targetArea);
 
   py::class_<EnergyModel, std::shared_ptr<EnergyModel>> energy_model(
