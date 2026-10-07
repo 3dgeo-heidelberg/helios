@@ -80,9 +80,8 @@ Triangle::getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                                 const glm::dvec3& rayDir,
                                 const glm::dvec3& intersectionPoint)
 {
-  double const angle = glm::angle(faceNormal, rayDir);
-  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
-  // If (PI_HALF - min. angle), then 0 rad does no longer mean orthogonal
+  return std::acos(
+    getIncidenceAngleCosine(rayOrigin, rayDir, intersectionPoint));
 }
 
 // These naive methods are much faster than the built-in in Vector3D
@@ -289,4 +288,12 @@ operator<<(std::ostream& out, Triangle* t)
   out << t->getVertices() << " " << t->getVertices() + 1 << " "
       << t->getVertices() + 2;
   return out;
+}
+
+double
+Triangle::getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                                  const glm::dvec3& rayDir,
+                                  const glm::dvec3& intersectionPoint)
+{
+  return std::min(1.0, std::abs(glm::dot(faceNormal, rayDir)));
 }

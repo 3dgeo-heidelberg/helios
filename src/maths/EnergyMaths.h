@@ -149,6 +149,11 @@ public:
    * applicable.
    */
   static double computeBRDF(Material const& mat, double const incidenceAngle);
+  /** Angular reflectance response from an incidence cosine in [-1, 1].
+   * Uses cos(2*phi) = 2*cos(phi)^2 - 1, without division by cos(phi).
+   */
+  static double computeBRDFFromCosine(Material const& mat,
+                                      double incidenceCosine);
   /**
    * @brief Compute the Phong model
    *
