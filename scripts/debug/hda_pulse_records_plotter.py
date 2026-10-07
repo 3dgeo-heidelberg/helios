@@ -79,11 +79,11 @@ def read_records(path, sep=","):
         "target_range_m": intensity_calc[:, 4],
         "target_area_m2": intensity_calc[:, 5],
         "radius_m": intensity_calc[:, 6],
-        "bdrf": intensity_calc[:, 7],
+        "brdf": intensity_calc[:, 7],
         "cross_section": intensity_calc[:, 8],
         "received_power": intensity_calc[:, 9],
         "emitted_power": intensity_calc[:, 11],
-        "radius_step": intensity_calc[:, 12],
+        "subray_index": intensity_calc[:, 12],
         # Intensity calculation indices
         "ray_idx": intensity_indices,
         # Subray simulation records
@@ -309,7 +309,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir, emitted_power=False):
         or not validate_record("target_range_m", arec, "a")
         or not validate_record("target_area_m2", arec, "a")
         or not validate_record("radius_m", arec, "a")
-        or not validate_record("bdrf", arec, "a")
+        or not validate_record("brdf", arec, "a")
         or not validate_record("cross_section", arec, "a")
         or not validate_record("emitted_power", arec, "a")
         or not validate_record("received_power", arec, "a")
@@ -317,7 +317,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir, emitted_power=False):
         or not validate_record("target_range_m", brec, "b")
         or not validate_record("target_area_m2", brec, "b")
         or not validate_record("radius_m", brec, "b")
-        or not validate_record("bdrf", brec, "b")
+        or not validate_record("brdf", brec, "b")
         or not validate_record("cross_section", brec, "b")
         or not validate_record("emitted_power", brec, "b")
         or not validate_record("received_power", brec, "b")
@@ -396,7 +396,7 @@ def _do_by_incidence_angle_plots(
         ylabel="Radius (m)",
         color="tab:red",
     )
-    ax = fig.add_subplot(3, 4, 6)  # Initialize BDRF A subplot
+    ax = fig.add_subplot(3, 4, 6)  # Initialize BRDF A subplot
     if emitted_power:  # Do emitted power instead
         do_y_by_x_subplot(
             fig,
@@ -408,15 +408,15 @@ def _do_by_incidence_angle_plots(
             ylabel="Emitted power",
             color="tab:green",
         )
-    else:  # Do BDRF subplot as expected
+    else:  # Do BRDF subplot as expected
         do_y_by_x_subplot(
             fig,
             ax,
             incidence_angle_a,
-            arec["bdrf"],
-            title="A-BDRF",
+            arec["brdf"],
+            title="A-BRDF",
             xlabel=f"Incidence angle ({unit})",
-            ylabel="BDRF",
+            ylabel="BRDF",
             color="tab:green",
         )
     ax = fig.add_subplot(3, 4, 9)  # Initialize Cross-section A subplot
@@ -474,7 +474,7 @@ def _do_by_incidence_angle_plots(
         ylabel="Radius (m)",
         color="tab:red",
     )
-    ax = fig.add_subplot(3, 4, 8)  # Initialize BDRF B subplot
+    ax = fig.add_subplot(3, 4, 8)  # Initialize BRDF B subplot
     if emitted_power:  # Do emitted power instead
         do_y_by_x_subplot(
             fig,
@@ -486,15 +486,15 @@ def _do_by_incidence_angle_plots(
             ylabel="Emitted power",
             color="tab:green",
         )
-    else:  # Do BDRF subplot as expected
+    else:  # Do BRDF subplot as expected
         do_y_by_x_subplot(
             fig,
             ax,
             incidence_angle_b,
-            brec["bdrf"],
-            title="B-BDRF",
+            brec["brdf"],
+            title="B-BRDF",
             xlabel=f"Incidence angle ({unit})",
-            ylabel="BDRF",
+            ylabel="BRDF",
             color="tab:green",
         )
     ax = fig.add_subplot(3, 4, 11)  # Initialize Cross-section B subplot
@@ -595,13 +595,13 @@ def do_subray_hit_plots(arec, brec, outdir):
     # do_subray_hit_subplot_hist2d(
     #    fig, ax,
     #    arec['circle_step'][arec['subray_hit']],
-    #    arec['radius_step'][arec['subray_hit']],
+    #    arec['subray_index'][arec['subray_hit']],
     #    title='Hit distribution (100%) (A)',
     # )
     # Removed because radstep and circstep are no longer exported
-    ax = fig.add_subplot(4, 5, 2)  # Initialize a hist on radius step by hit
+    ax = fig.add_subplot(4, 5, 2)  # Initialize a hist on subray index by hit
     # do_subray_hit_subplot_hist(
-    #    fig, ax, arec['subray_hit'], arec['radius_step'],
+    #    fig, ax, arec['subray_hit'], arec['subray_index'],
     #    ylabel='Absolute'
     # )
     # Removed because radstep is no longer exported
@@ -626,18 +626,18 @@ def do_subray_hit_plots(arec, brec, outdir):
     # do_subray_hit_subplot_hist2d(
     #    fig, ax,
     #    arec['circle_step'][~arec['subray_hit']],
-    #    arec['radius_step'][~arec['subray_hit']],
+    #    arec['subray_index'][~arec['subray_hit']],
     #    title='No-hit distribution (100%)',
     #    xlabel='Circle step',
-    #    ylabel='Radius step'
+    #    ylabel='Subray index'
     # )
     # Removed because radstep and circstep are no longer exported
-    ax = fig.add_subplot(4, 5, 7)  # Initialize a hist on radius step by hit
+    ax = fig.add_subplot(4, 5, 7)  # Initialize a hist on subray index by hit
     # do_subray_hit_subplot_hist(
-    #    fig, ax, arec['subray_hit'], arec['radius_step'],
+    #    fig, ax, arec['subray_hit'], arec['subray_index'],
     #    ylabel='Relative ($100\\%$)',
     #    relative=True,
-    #    xlabel='Radius step'
+    #    xlabel='Subray index'
     # )
     # Removed because radstep is no longer exported
     ax = fig.add_subplot(4, 5, 8)  # Initialize a hist on circle steps by hit
@@ -668,13 +668,13 @@ def do_subray_hit_plots(arec, brec, outdir):
     # do_subray_hit_subplot_hist2d(
     #    fig, ax,
     #    brec['circle_step'][brec['subray_hit']],
-    #    brec['radius_step'][brec['subray_hit']],
+    #    brec['subray_index'][brec['subray_hit']],
     #    title='Hit distribution (100%) (B)',
     # )
     # Removed because radstep and circstep are no longer exported
-    ax = fig.add_subplot(4, 5, 12)  # Initialize a hist on radius step by hit
+    ax = fig.add_subplot(4, 5, 12)  # Initialize a hist on subray index by hit
     # do_subray_hit_subplot_hist(
-    #    fig, ax, brec['subray_hit'], brec['radius_step'],
+    #    fig, ax, brec['subray_hit'], brec['subray_index'],
     #    ylabel='Absolute'
     # )
     # Removed because radstep is no longer exported
@@ -699,18 +699,18 @@ def do_subray_hit_plots(arec, brec, outdir):
     # do_subray_hit_subplot_hist2d(
     #    fig, ax,
     #    brec['circle_step'][~brec['subray_hit']],
-    #    brec['radius_step'][~brec['subray_hit']],
+    #    brec['subray_index'][~brec['subray_hit']],
     #    title='No-hit distribution (100%)',
     #    xlabel='Circle step',
-    #    ylabel='Radius step'
+    #    ylabel='Subray index'
     # )
     # Removed because radstep and circstep are no longer exported
-    ax = fig.add_subplot(4, 5, 17)  # Initialize a hist on radius step by hit
+    ax = fig.add_subplot(4, 5, 17)  # Initialize a hist on subray index by hit
     # do_subray_hit_subplot_hist(
-    #    fig, ax, brec['subray_hit'], brec['radius_step'],
+    #    fig, ax, brec['subray_hit'], brec['subray_index'],
     #    ylabel='Relative ($100\\%$)',
     #    relative=True,
-    #    xlabel='Radius step'
+    #    xlabel='Subray index'
     # )
     # Removed because radstep is no longer exported
     ax = fig.add_subplot(4, 5, 18)  # Initialize a hist on circle steps by hit
@@ -1113,14 +1113,14 @@ def do_energy_plots(arec, brec, outdir):
         or not validate_record("cross_section", arec, "a")
         or not validate_record("emitted_power", arec, "a")
         or not validate_record("received_power", arec, "a")
-        or not validate_record("radius_step", arec, "a")
+        or not validate_record("subray_index", arec, "a")
         or not validate_record("ray_idx", arec, "a")
         or not validate_record("incidence_angle_rad", brec, "b")
         or not validate_record("target_area_m2", brec, "b")
         or not validate_record("cross_section", brec, "b")
         or not validate_record("emitted_power", brec, "b")
         or not validate_record("received_power", brec, "b")
-        or not validate_record("radius_step", brec, "b")
+        or not validate_record("subray_index", brec, "b")
         or not validate_record("ray_idx", brec, "b")
     ):
         print("Cannot do energy plots")
@@ -1132,14 +1132,14 @@ def do_energy_plots(arec, brec, outdir):
     arec["cross_section"] = arec["cross_section"][amask]
     arec["emitted_power"] = arec["emitted_power"][amask]
     arec["received_power"] = arec["received_power"][amask]
-    arec["radius_step"] = arec["radius_step"][amask]
+    arec["subray_index"] = arec["subray_index"][amask]
     arec["ray_idx"] = arec["ray_idx"][amask]
     brec["incidence_angle_rad"] = brec["incidence_angle_rad"][bmask]
     brec["target_area_m2"] = brec["target_area_m2"][bmask]
     brec["cross_section"] = brec["cross_section"][bmask]
     brec["emitted_power"] = brec["emitted_power"][bmask]
     brec["received_power"] = brec["received_power"][bmask]
-    brec["radius_step"] = brec["radius_step"][bmask]
+    brec["subray_index"] = brec["subray_index"][bmask]
     brec["ray_idx"] = brec["ray_idx"][bmask]
     # Find four cases equally spaced wrt incidence angle distribution
     theta_rad_a = arec["incidence_angle_rad"]
@@ -1170,7 +1170,7 @@ def do_energy_plots(arec, brec, outdir):
                 "cross_section": arec["cross_section"][mask_a],
                 "emitted_power": arec["emitted_power"][mask_a],
                 "received_power": arec["received_power"][mask_a],
-                "radius_step": arec["radius_step"][mask_a],
+                "subray_index": arec["subray_index"][mask_a],
                 "ray_idx": arec["ray_idx"][mask_a],
             }
         )
@@ -1181,7 +1181,7 @@ def do_energy_plots(arec, brec, outdir):
                 "cross_section": brec["cross_section"][mask_b],
                 "emitted_power": brec["emitted_power"][mask_b],
                 "received_power": brec["received_power"][mask_b],
-                "radius_step": brec["radius_step"][mask_b],
+                "subray_index": brec["subray_index"][mask_b],
                 "ray_idx": brec["ray_idx"][mask_b],
             }
         )
@@ -1235,10 +1235,10 @@ def _do_energy_plots(eda, edb, outdir):
 
 def do_energy_subplots(fig, ax, edi, case_letter, key, full_name, name):
     # Extract values of interest
-    rstep = edi["radius_step"]
+    rstep = edi["subray_index"]
     n_subrays = len(rstep)
     rstep_uniq = np.unique(rstep)
-    # Group by radius step
+    # Group by subray index
     x = edi[key]
     x_by_rs = [x[rstep == rstepk] for rstepk in rstep_uniq]
     # Do the plot
@@ -1264,7 +1264,7 @@ def do_energy_subplots(fig, ax, edi, case_letter, key, full_name, name):
             label="subray" if j == 0 else None,
         )
     ax.legend(loc="best")
-    ax.set_xlabel("Radius step", fontsize=14)
+    ax.set_xlabel("Subray index", fontsize=14)
     ax.set_ylabel(f"{full_name} ({name})", fontsize=14)
     ax.set_title(
         f"{case_letter}) {name} $ = $ {x_by_rs_sum:.3g} ({n_subrays} subrays)\n"

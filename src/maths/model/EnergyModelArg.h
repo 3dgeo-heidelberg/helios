@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 class Material;
 
 struct ReceivedPowerArgs
@@ -7,33 +9,24 @@ struct ReceivedPowerArgs
   double const targetRange;
   double const incidenceAngle_rad;
   Material const& material;
-  int const subrayRadiusStep;
+  std::size_t const subrayIndex;
   ReceivedPowerArgs(double const targetRange,
                     double const incidenceAngle_rad,
                     Material const& material,
-                    int const subrayRadiusStep)
+                    std::size_t subrayIndex)
     : targetRange(targetRange)
     , incidenceAngle_rad(incidenceAngle_rad)
     , material(material)
-    , subrayRadiusStep(subrayRadiusStep)
+    , subrayIndex(subrayIndex)
   {
   }
 };
 
 struct EmittedPowerArgs
 {
-  double const targetRange;
-  double const targetRangeSquared;
-  double const rangeMin;
-  int const subrayRadiusStep;
-  EmittedPowerArgs(double const targetRange,
-                   double const targetRangeSquared,
-                   double const rangeMin,
-                   int const subrayRadiusStep)
-    : targetRange(targetRange)
-    , targetRangeSquared(targetRangeSquared)
-    , rangeMin(rangeMin)
-    , subrayRadiusStep(subrayRadiusStep)
+  std::size_t const subrayIndex;
+  explicit EmittedPowerArgs(std::size_t subrayIndex)
+    : subrayIndex(subrayIndex)
   {
   }
 };
@@ -41,10 +34,10 @@ struct EmittedPowerArgs
 struct TargetAreaArgs
 {
   double const targetRangeSquared;
-  int const subrayRadiusStep;
-  TargetAreaArgs(double const targetRangeSquared, int const subrayRadiusStep)
+  std::size_t const subrayIndex;
+  TargetAreaArgs(double const targetRangeSquared, std::size_t subrayIndex)
     : targetRangeSquared(targetRangeSquared)
-    , subrayRadiusStep(subrayRadiusStep)
+    , subrayIndex(subrayIndex)
   {
   }
 };
@@ -52,13 +45,13 @@ struct TargetAreaArgs
 struct CrossSectionArgs
 {
   Material const& material;
-  double const bdrf; // Bidirectional reflectance function
+  double const brdf; // Bidirectional reflectance distribution function
   double const targetArea;
   CrossSectionArgs(Material const& material,
-                   double const bdrf,
+                   double const brdf,
                    double const targetArea)
     : material(material)
-    , bdrf(bdrf)
+    , brdf(brdf)
     , targetArea(targetArea)
   {
   }

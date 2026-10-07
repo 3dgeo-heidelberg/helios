@@ -144,7 +144,7 @@ public:
    */
   void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -181,11 +181,23 @@ public:
   double calcIntensity(double const incidenceAngle,
                        double const targetRange,
                        Material const& mat,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        size_t const idx
 #if DATA_ANALYTICS >= 2
                        ,
                        std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const override;
+  /** Intensity using the precomputed incidence cosine. */
+  double calcIntensityFromCosine(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const override;
   /**
@@ -193,7 +205,7 @@ public:
    */
   double calcIntensity(double const targetRange,
                        double const sigma,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        size_t const idx) const override;
 
   // ***  GETTERs and SETTERs  *** //
@@ -256,7 +268,7 @@ public:
    */
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
-    scanDevs[idx].beamDivergence_rad = beamDivergence;
+    scanDevs.at(idx).setBeamDivergence(beamDivergence);
   }
   /**
    * @see Scanner::getAveragePower
@@ -455,14 +467,14 @@ public:
   /**
    * @see Scanner::getNumRays
    */
-  int getNumRays(size_t const idx) const override
+  std::size_t getNumRays(size_t const idx) const override
   {
     return scanDevs[idx].numRays;
   }
   /**
    * @see Scanner::setNumRays
    */
-  void setNumRays(int const numRays, size_t const idx) override
+  void setNumRays(std::size_t numRays, size_t const idx) override
   {
     scanDevs[idx].numRays = numRays;
   }

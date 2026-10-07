@@ -7,23 +7,23 @@
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 SingleScanner::SingleScanner(
-  double const beamDiv_rad,
-  glm::dvec3 const beamOrigin,
-  Rotation const beamOrientation,
+  double beamDiv_rad,
+  glm::dvec3 beamOrigin,
+  Rotation beamOrientation,
   std::list<int> const& pulseFreqs,
-  double const pulseLength_ns,
-  std::string const id,
-  double const averagePower,
-  double const beamQuality,
-  double const efficiency,
-  double const receiverDiameter,
-  double const atmosphericVisibility,
-  int const wavelength,
-  bool const writeWaveform,
-  bool const writePulse,
-  bool const calcEchowidth,
-  bool const fullWaveNoise,
-  bool const platformNoiseDisabled,
+  double pulseLength_ns,
+  std::string id,
+  double averagePower,
+  double beamQuality,
+  double efficiency,
+  double receiverDiameter,
+  double atmosphericVisibility,
+  int wavelength,
+  bool writeWaveform,
+  bool writePulse,
+  bool calcEchowidth,
+  bool fullWaveNoise,
+  bool platformNoiseDisabled,
   std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr)
   : Scanner(id,
             pulseFreqs,
@@ -122,13 +122,12 @@ SingleScanner::onLegComplete()
 // ************************* //
 void
 SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
-                             size_t const idx)
+                             size_t idx)
 {
   // Configure scanner and scanning device
   setMaxDuration(settings->maxDuration_s);
   setPulseFreq_Hz(settings->pulseFreq_Hz);
   setActive(settings->active);
-  setBeamDivergence(settings->beamDivAngle, 0);
   trajectoryTimeInterval_ns = settings->trajectoryTimeInterval * 1000000000.0;
   scanDev.setOpticsWarmupPhase_s(settings->opticsWarmupPhase_s);
   scanDev.configureBeam();
@@ -141,7 +140,7 @@ SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
 
 void
 SingleScanner::doSimStep(unsigned int legIndex,
-                         double const currentGpsTime,
+                         double currentGpsTime,
                          Scene& scene)
 {
   // Check whether the scanner is active or not
@@ -169,7 +168,7 @@ SingleScanner::doSimStep(unsigned int legIndex,
 }
 
 void
-SingleScanner::prepareDiscretization(size_t const idx)
+SingleScanner::prepareDiscretization(size_t idx)
 {
   setNumTimeBins(getPulseLength_ns(0) / getFWFSettings(0).binSize_ns, 0);
   setTimeWave(vector<double>(getNumTimeBins(0)), 0);
@@ -184,14 +183,14 @@ SingleScanner::prepareDiscretization(size_t const idx)
 }
 
 Rotation
-SingleScanner::calcAbsoluteBeamAttitude(size_t const idx)
+SingleScanner::calcAbsoluteBeamAttitude(size_t idx)
 {
   return scanDev.calcAbsoluteBeamAttitude(platform->getAbsoluteMountAttitude());
 }
 void
 SingleScanner::computeSubrays(
   std::function<void(Rotation const& subrayRotation,
-                     int const subrayRadiusStep,
+                     std::size_t subrayIndex,
                      NoiseSource<double>& intersectionHandlingNoiseSource,
                      std::map<double, double>& reflections,
                      vector<RaySceneIntersection>& intersects
@@ -204,7 +203,7 @@ SingleScanner::computeSubrays(
   NoiseSource<double>& intersectionHandlingNoiseSource,
   std::map<double, double>& reflections,
   vector<RaySceneIntersection>& intersects,
-  size_t const idx
+  size_t idx
 #if DATA_ANALYTICS >= 2
   ,
   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
@@ -223,15 +222,15 @@ SingleScanner::computeSubrays(
 }
 
 bool
-SingleScanner::initializeFullWaveform(double const minHitDist_m,
-                                      double const maxHitDist_m,
+SingleScanner::initializeFullWaveform(double minHitDist_m,
+                                      double maxHitDist_m,
                                       double& minHitTime_ns,
                                       double& maxHitTime_ns,
                                       double& nsPerBin,
                                       double& distanceThreshold,
                                       int& peakIntensityIndex,
                                       int& numFullwaveBins,
-                                      size_t const idx)
+                                      size_t idx)
 {
   return scanDev.initializeFullWaveform(minHitDist_m,
                                         maxHitDist_m,
@@ -245,11 +244,11 @@ SingleScanner::initializeFullWaveform(double const minHitDist_m,
 
 double
 SingleScanner::calcIntensity(
-  double const incidenceAngle,
-  double const targetRange,
+  double incidenceAngle,
+  double targetRange,
   Material const& mat,
-  int const subrayRadiusStep,
-  size_t const idx
+  std::size_t subrayIndex,
+  size_t idx
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords
@@ -259,18 +258,42 @@ SingleScanner::calcIntensity(
   return scanDev.calcIntensity(incidenceAngle,
                                targetRange,
                                mat,
-                               subrayRadiusStep
+                               subrayIndex
 #if DATA_ANALYTICS >= 2
                                ,
                                calcIntensityRecords
 #endif
   );
 }
+
 double
-SingleScanner::calcIntensity(double const targetRange,
-                             double const sigma,
-                             int const subrayRadiusStep,
-                             size_t const idx) const
+SingleScanner::calcIntensityFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex,
+  size_t idx
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+) const
 {
-  return scanDev.calcIntensity(targetRange, sigma, subrayRadiusStep);
+  return scanDev.calcIntensityFromCosine(incidenceCosine,
+                                         targetRange,
+                                         mat,
+                                         subrayIndex
+#if DATA_ANALYTICS >= 2
+                                         ,
+                                         calcIntensityRecords
+#endif
+  );
+}
+double
+SingleScanner::calcIntensity(double targetRange,
+                             double sigma,
+                             std::size_t subrayIndex,
+                             size_t idx) const
+{
+  return scanDev.calcIntensity(targetRange, sigma, subrayIndex);
 }

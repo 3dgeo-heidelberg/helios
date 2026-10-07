@@ -458,3 +458,76 @@ def test_optics_warmup_phase(case):
     )
     # Allow for small cross-platform differences in scanner geometry calculations.
     assert np.percentile(dist, 99.0) < 0.11
+
+
+@pytest.mark.parametrize("divergence", [0.0001, 0.003, "0.03 deg"])
+def test_beam_divergence_survives_leg_settings(divergence):
+    scanner = riegl_vz_400()
+    assert scanner.beam_divergence == pytest.approx(0.0003)
+    scanner.beam_divergence = divergence
+    expected = np.deg2rad(0.03) if isinstance(divergence, str) else divergence
+    for _ in range(2):
+        scanner._cpp_object.apply_settings(
+            ScannerSettings(scan_frequency=30)._cpp_object
+        )
+        assert scanner.beam_divergence == pytest.approx(expected)
+
+
+@pytest.mark.parametrize("invalid", [0, -0.001, np.pi, np.inf, np.nan])
+def test_beam_divergence_rejects_invalid_values(invalid):
+    scanner = riegl_vz_400()
+    with pytest.raises(ValueError):
+        scanner.beam_divergence = invalid
+    assert scanner.beam_divergence == pytest.approx(0.0003)
+
+
+def test_multichannel_beam_divergence():
+    scanner = riegl_vq_1560i()
+    original = scanner.get_beam_divergence(0)
+    scanner.set_beam_divergence("0.03 deg", index=1)
+    assert scanner.get_beam_divergence(1) == pytest.approx(np.deg2rad(0.03))
+    assert scanner.beam_divergence == original
+    scanner.beam_divergence = 0.003
+    scanner._cpp_object.apply_settings(ScannerSettings()._cpp_object, 0)
+    assert scanner.get_beam_divergence(0) == 0.003
+    assert scanner.get_beam_divergence(1) == pytest.approx(np.deg2rad(0.03))
+    for invalid_index in (-1, scanner._cpp_object.num_devices):
+        with pytest.raises(IndexError):
+            scanner.get_beam_divergence(invalid_index)
+        with pytest.raises(IndexError):
+            scanner.set_beam_divergence(0.001, invalid_index)
+
+
+def test_divergence_removed_from_leg_and_waveform_settings():
+    import _helios
+
+    assert not hasattr(_helios.ScannerSettings(), "beam_divergence_angle")
+    assert not hasattr(_helios.FWFSettings(), "beam_divergence_angle")
+    with pytest.raises(ValueError, match="Invalid fields"):
+        ScannerSettings(beam_divergence_angle=0.001)
+
+
+def test_channel_xml_divergence_is_independent(tmp_path):
+    from pathlib import Path
+    from helios.utils import get_asset_directories
+    import _helios
+
+    source = Path(scanner_module.__file__).parent / "data/scanners_als.xml"
+    xml = (
+        source.read_text()
+        .replace(
+            '<channel id="0" wavelength_nm = "532">',
+            '<channel id="0" wavelength_nm = "532" beamDivergence_rad="0.0001">',
+        )
+        .replace(
+            '<channel id="1" wavelength_nm = "1064">',
+            '<channel id="1" wavelength_nm = "1064" beamDivergence_rad="0.003">',
+        )
+    )
+    path = tmp_path / "scanners.xml"
+    path.write_text(xml)
+    scanner = _helios.read_scanner_from_xml(
+        str(path), [str(p) for p in get_asset_directories()], "riegl_vq-1560i"
+    )
+    assert scanner.get_specific_beam_divergence(0) == 0.0001
+    assert scanner.get_specific_beam_divergence(1) == 0.003

@@ -38,6 +38,31 @@ TEST_CASE("Asset Loading Tests")
 {
   double const eps = 0.00001;
 
+  SECTION("Beam sampling coverage defaults, inheritance and validation")
+  {
+    std::string path = "python/helios/data/scanners_tls.xml";
+    std::vector<std::string> assets{ "." };
+    XmlAssetsLoader loader(path, assets);
+    REQUIRE(loader.createFWFSettingsFromXml(nullptr)->beamSamplingFactor ==
+            2.0);
+    tinyxml2::XMLDocument document;
+    REQUIRE(
+      document.Parse(
+        "<FWFSettings beamSamplingFactor='1.5' beamSampleQuality='8'/>") ==
+      tinyxml2::XML_SUCCESS);
+    auto node = document.RootElement();
+    auto settings = loader.createFWFSettingsFromXml(node);
+    REQUIRE(settings->beamSamplingFactor == 1.5);
+    REQUIRE(settings->beamSampleQuality == 8);
+    node->DeleteAttribute("beamSamplingFactor");
+    REQUIRE(
+      loader.createFWFSettingsFromXml(node, settings)->beamSamplingFactor ==
+      1.5);
+    node->SetAttribute("beamSamplingFactor", 0.0);
+    REQUIRE_THROWS_AS(loader.createFWFSettingsFromXml(node),
+                      std::invalid_argument);
+  }
+
   SECTION("Dynamic scenes default to a sequential Simple KD-tree")
   {
     std::filesystem::path const scenePath = "data/test/dynamic_scene.xml";

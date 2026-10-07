@@ -28,7 +28,6 @@
                     <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
-                    <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
                     <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="opticsWarmupPhase_s" use="optional"/>
@@ -86,6 +85,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
                                             <xs:attribute type="xs:int" name="beamSampleQuality" use="optional"/>
+                                            <xs:attribute type="xs:double" name="beamSamplingFactor" use="optional"/>
                                             <xs:attribute type="xs:float" name="binSize_ns" use="optional"/>
                                             <xs:attribute type="xs:float" name="maxFullwaveRange_ns" use="optional"/>
                                             <xs:attribute type="xs:float" name="winSize_ns" use="optional"/>
@@ -176,7 +176,6 @@
                                                         <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
-                                                        <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
                                                         <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="opticsWarmupPhase_s" use="optional"/>

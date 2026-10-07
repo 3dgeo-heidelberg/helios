@@ -32,6 +32,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
                                             <xs:attribute type="xs:int" name="beamSampleQuality"/>
+                                            <xs:attribute type="xs:double" name="beamSamplingFactor"/>
                                             <xs:attribute type="xs:float" name="binSize_ns"/>
                                             <xs:attribute type="xs:float" name="maxFullwaveRange_ns"/>
                                             <xs:attribute type="xs:float" name="winSize_ns"/>
@@ -81,6 +82,7 @@
                                                             <xs:simpleContent>
                                                                 <xs:extension base="xs:string">
                                                                     <xs:attribute type="xs:int" name="beamSampleQuality"/>
+                                                                    <xs:attribute type="xs:double" name="beamSamplingFactor"/>
                                                                     <xs:attribute type="xs:float" name="binSize_ns"/>
                                                                     <xs:attribute type="xs:float" name="maxFullwaveRange_ns"/>
                                                                     <xs:attribute type="xs:float" name="winSize_ns"/>

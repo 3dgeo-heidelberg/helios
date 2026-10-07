@@ -690,7 +690,6 @@
         "min_vertical_angle": {},
         "max_vertical_angle": {},
         "scan_frequency": {},
-        "beam_divergence_angle": {},
         "trajectory_time_interval": {},
         "vertical_resolution": {},
         "horizontal_resolution": {},
@@ -769,6 +768,7 @@
       "properties": {
         "bin_size": {},
         "beam_sample_quality": {},
+        "beam_sampling_factor": {},
         "win_size": {},
         "max_fullwave_range": {}
       }

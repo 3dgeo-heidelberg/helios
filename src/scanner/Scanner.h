@@ -397,7 +397,7 @@ public:
    */
   virtual void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -453,13 +453,25 @@ public:
     double const incidenceAngle,
     double const targetRange,
     Material const& mat,
-    int const subrayRadiusStep,
+    std::size_t subrayIndex,
     size_t const idx
 #if DATA_ANALYTICS >= 2
     ,
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const = 0;
+  /** Cosine path; default preserves angle-based subclass overrides. */
+  virtual double calcIntensityFromCosine(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const;
   /**
    * @brief Handle to which scanning device request the intensity computation
    * @param idx The index of the scanning device that must compute the
@@ -468,7 +480,7 @@ public:
    */
   virtual double calcIntensity(double const targetRange,
                                double const sigma,
-                               int const subrayRadiusStep,
+                               std::size_t subrayIndex,
                                size_t const idx) const = 0;
 
   // ***  SIM STEP UTILS  *** //
@@ -551,13 +563,13 @@ public:
    * @return Number of rays of the scanning device
    * @see ScanningDevice::numRays
    */
-  virtual int getNumRays(size_t const idx) const = 0;
+  virtual std::size_t getNumRays(size_t const idx) const = 0;
   /**
    * @brief Non index version of the Scanner::getNumRays(size_t const)
    *  method
    * @see Scanner::getNumRays(size_t const)
    */
-  inline int getNumRays() const { return getNumRays(0); }
+  inline std::size_t getNumRays() const { return getNumRays(0); }
   /**
    * @brief Set the number of rays of the scanning device
    * @param numRays New number of rays for the scanning device
@@ -565,13 +577,13 @@ public:
    *  be set
    * @see ScanningDevice::numRays
    */
-  virtual void setNumRays(int const numRays, size_t const idx) = 0;
+  virtual void setNumRays(std::size_t numRays, size_t const idx) = 0;
   /**
    * @brief Non index version of the
-   *  Scanner::setNumRays(int const, size_t const) method
-   * @see Scanner::setNumRays(int const, size_t const)
+   *  Scanner::setNumRays(std::size_t, size_t const) method
+   * @see Scanner::setNumRays(std::size_t, size_t const)
    */
-  inline void setNumRays(int const numRays) { setNumRays(numRays, 0); }
+  inline void setNumRays(std::size_t numRays) { setNumRays(numRays, 0); }
 
   /**
    * @brief Obtain the pulse frequency
@@ -666,7 +678,7 @@ public:
    */
   inline double getBeamDivergence() const { return getBeamDivergence(0); }
   /**
-   * @brief Set beam divergence
+   * @brief Set beam divergence and refresh the subray table and beam caches.
    * @param beamDivergence New beam divergence (radians)
    * @param idx The index of the scanning device which beam divergence must
    *  be set (by default 0, it is the first one)

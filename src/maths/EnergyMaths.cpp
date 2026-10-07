@@ -64,12 +64,12 @@ EnergyMaths::calcCrossSection(double const f, double const Alf)
 // ***  LIGHTING  *** //
 // ****************** //
 double
-EnergyMaths::computeBDRF(Material const& mat, double const incidenceAngle)
+EnergyMaths::computeBRDF(Material const& mat, double const incidenceAngle)
 {
   // Supported lighting models
   if (mat.isPhong()) {
     return mat.reflectance *
-           EnergyMaths::phongBDRF(
+           EnergyMaths::phongBRDF(
              incidenceAngle, mat.specularity, mat.specularExponent) *
            std::cos(incidenceAngle);
   } else if (mat.isLambert()) {
@@ -87,18 +87,18 @@ EnergyMaths::computeBDRF(Material const& mat, double const incidenceAngle)
 // Phong reflection model "Normalization of Lidar Intensity..." (Jutzi and
 // Gross, 2009)
 double
-EnergyMaths::phongBDRF(double const incidenceAngle,
+EnergyMaths::phongBRDF(double const incidenceAngle,
                        double const targetSpecularity,
                        double const targetSpecularExponent)
 {
-  return EnergyMaths::phongBDRFFast(incidenceAngle,
+  return EnergyMaths::phongBRDFFast(incidenceAngle,
                                     std::cos(incidenceAngle),
                                     targetSpecularity,
                                     targetSpecularExponent);
 }
 
 double
-EnergyMaths::phongBDRFFast(double const incidenceAngle,
+EnergyMaths::phongBRDFFast(double const incidenceAngle,
                            double const cosIncidenceAngle,
                            double const targetSpecularity,
                            double const targetSpecularExponent)
@@ -110,4 +110,22 @@ EnergyMaths::phongBDRFFast(double const incidenceAngle,
     ks * pow(std::abs(cos(specularAngle)), targetSpecularExponent) /
     cosIncidenceAngle;
   return kd + specular;
+}
+
+double
+EnergyMaths::computeBRDFFromCosine(Material const& mat, double incidenceCosine)
+{
+  if (mat.isPhong()) {
+    double const cosDoubleAngle = 2.0 * incidenceCosine * incidenceCosine - 1.0;
+    return mat.reflectance *
+           ((1.0 - mat.specularity) * incidenceCosine +
+            mat.specularity *
+              std::pow(std::abs(cosDoubleAngle), mat.specularExponent));
+  } else if (mat.isLambert()) {
+    return mat.reflectance * incidenceCosine;
+  } else if (mat.isDirectionIndependent()) {
+    return mat.reflectance;
+  }
+  logging::ERR("Unexpected lighting model for material \"" + mat.name + "\"");
+  throw HeliosException("Unexpected lighting model.");
 }
