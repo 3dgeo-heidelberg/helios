@@ -111,6 +111,13 @@ The received amplitude is derived from the LiDAR equation, considering the follo
 
 See also: :ref:`intensity-modelling`.
 
+Incidence evaluation uses the cosine directly during ray tracing. For normalized ray direction and surface normal, the smaller incidence angle has cosine :math:`c = |\mathbf{n}\cdot\mathbf{d}|`. The Phong angular reflectance response is computed without recovering the angle:
+
+.. math::
+   f = \rho\left[(1-K_s)c + K_s |2c^2-1|^{N_s}\right].
+
+Angle-based APIs remain available. The cosine path also supports normal-based voxels and their closest-face fallback. Detailed analytics convert the cosine back to radians only when recording the incidence angle.
+
 Time-Domain Beam Modeling
 --------------------------
 

@@ -40,30 +40,58 @@ EnergyModel::computeReceivedPower(
 #endif
 )
 {
-  double const rangeSquared = args.targetRange * args.targetRange;
+  double const intensity =
+    computeIntensityFromCosine(std::cos(args.incidenceAngle_rad),
+                               args.targetRange,
+                               args.material,
+                               args.subrayIndex
+#if DATA_ANALYTICS >= 2
+                               ,
+                               calcIntensityRecords
+#endif
+    );
+#if DATA_ANALYTICS >= 2
+  // Preserve the supplied angle for callers of the legacy angle API.
+  calcIntensityRecords.back()[3] = args.incidenceAngle_rad;
+#endif
+  return intensity;
+}
+
+double
+EnergyModel::computeIntensityFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+)
+{
+  double const rangeSquared = targetRange * targetRange;
   double const emittedPower =
-    computeEmittedPower(EmittedPowerArgs{ args.subrayIndex });
-  double const brdf =
-    EnergyMaths::computeBRDF(args.material, args.incidenceAngle_rad);
-  double const atmosphere = EnergyMaths::calcAtmosphericFactor(
-    args.targetRange, sd.atmosphericExtinction);
+    computeEmittedPower(EmittedPowerArgs{ subrayIndex });
+  double const brdf = EnergyMaths::computeBRDFFromCosine(mat, incidenceCosine);
+  double const atmosphere =
+    EnergyMaths::calcAtmosphericFactor(targetRange, sd.atmosphericExtinction);
   // sigma = 4*pi*BRDF*A cancels A in the extended-target equation.
   double const receivedPower = PI * emittedPower * sd.cached_Dr2 *
                                sd.efficiency * atmosphere * brdf /
                                (4.0 * rangeSquared);
 #if DATA_ANALYTICS >= 2
   double const area = computeTargetArea(
-    TargetAreaArgs{ rangeSquared, args.subrayIndex }, calcIntensityRecords);
+    TargetAreaArgs{ rangeSquared, subrayIndex }, calcIntensityRecords);
   auto& record = calcIntensityRecords.back();
-  record[3] = args.incidenceAngle_rad;
-  record[4] = args.targetRange;
+  record[3] = std::acos(incidenceCosine);
+  record[4] = targetRange;
   record[5] = area;
   record[7] = brdf;
   record[8] = EnergyMaths::calcCrossSection(brdf, area);
   record[9] = receivedPower;
   record[10] = 0;
   record[11] = emittedPower;
-  record[12] = args.subrayIndex;
+  record[12] = subrayIndex;
 #endif
   return receivedPower * 1e09;
 }

@@ -111,3 +111,21 @@ EnergyMaths::phongBRDFFast(double const incidenceAngle,
     cosIncidenceAngle;
   return kd + specular;
 }
+
+double
+EnergyMaths::computeBRDFFromCosine(Material const& mat, double incidenceCosine)
+{
+  if (mat.isPhong()) {
+    double const cosDoubleAngle = 2.0 * incidenceCosine * incidenceCosine - 1.0;
+    return mat.reflectance *
+           ((1.0 - mat.specularity) * incidenceCosine +
+            mat.specularity *
+              std::pow(std::abs(cosDoubleAngle), mat.specularExponent));
+  } else if (mat.isLambert()) {
+    return mat.reflectance * incidenceCosine;
+  } else if (mat.isDirectionIndependent()) {
+    return mat.reflectance;
+  }
+  logging::ERR("Unexpected lighting model for material \"" + mat.name + "\"");
+  throw HeliosException("Unexpected lighting model.");
+}
