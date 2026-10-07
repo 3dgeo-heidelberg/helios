@@ -176,3 +176,36 @@ def test_subray_table_captured_power(energy_device, quality, factor):
         rays[0].share = 1.0
     energy_device.prepare_simulation()
     assert len(energy_device.subrays) == len(rays)
+
+
+@pytest.mark.parametrize("angle", [0.0, 0.2, math.pi / 4, 1.2, math.pi / 2])
+def test_cosine_intensity_matches_angle_api(energy_device, angle):
+    model = _helios.EnergyModel(energy_device)
+    material = _helios.Material()
+    material.reflectance = 0.4
+    material.diffuse_components = [0.75, 0, 0, 0]
+    material.specular_components = [0.25, 0, 0, 0]
+    material.specularity = 0.25
+    material.specular_exponent = 2.5
+    expected = model.compute_received_power(
+        _helios.ReceivedPowerArgs(100.0, angle, material, 0)
+    )
+    assert model.compute_intensity_from_cosine(
+        math.cos(angle), 100.0, material, 0
+    ) == pytest.approx(expected, rel=1e-12)
+
+
+@pytest.mark.parametrize("side", [-1.0, 1.0])
+def test_triangle_incidence_cosine(side):
+    triangle = _helios.Triangle(
+        _helios.Vertex(0, 0, 0),
+        _helios.Vertex(1, 0, 0),
+        _helios.Vertex(0, 1, 0),
+    )
+    angle = 0.4
+    origin, point = (0, 0, 1), (0, 0, 0)
+    direction = (math.sin(angle), 0, side * math.cos(angle))
+    assert triangle.incidence_angle_cosine(origin, direction, point) == pytest.approx(
+        math.cos(angle)
+    )
+    assert triangle.incidence_angle(origin, direction, point) == pytest.approx(angle)

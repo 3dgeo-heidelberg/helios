@@ -45,6 +45,13 @@ public:
     );
   }
 
+  double getIncidenceAngleCosine(const glm::dvec3& p,
+                                 const glm::dvec3& d,
+                                 const glm::dvec3& n) override
+  {
+    PYBIND11_OVERRIDE(double, Primitive, getIncidenceAngleCosine, p, d, n);
+  }
+
   // Override getRayIntersection method
   std::vector<double> getRayIntersection(const glm::dvec3& p,
                                          const glm::dvec3& d) override

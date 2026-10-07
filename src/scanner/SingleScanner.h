@@ -165,6 +165,18 @@ public:
                        std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const override;
+  /** Intensity using the precomputed incidence cosine. */
+  double calcIntensityFromCosine(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const override;
   /**
    * @see Scanner::calcIntensity
    */

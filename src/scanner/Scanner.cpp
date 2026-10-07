@@ -395,3 +395,28 @@ Scanner::buildScanningPulseProcess(
     throw HeliosException(ss.str());
   }
 }
+
+double
+Scanner::calcIntensityFromCosine(
+  double const incidenceCosine,
+  double const targetRange,
+  Material const& mat,
+  std::size_t subrayIndex,
+  size_t const idx
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+) const
+{
+  return calcIntensity(std::acos(incidenceCosine),
+                       targetRange,
+                       mat,
+                       subrayIndex,
+                       idx
+#if DATA_ANALYTICS >= 2
+                       ,
+                       calcIntensityRecords
+#endif
+  );
+}

@@ -453,6 +453,17 @@ public:
                        std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const;
+  /** Intensity using the precomputed incidence cosine. */
+  double calcIntensityFromCosine(
+    double incidenceCosine,
+    double targetRange,
+    Material const& mat,
+    std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const;
 
   /**
    * @brief Version of ScanningDevice::calcIntensity with precomputed

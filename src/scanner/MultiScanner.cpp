@@ -241,6 +241,30 @@ MultiScanner::calcIntensity(
 }
 
 double
+MultiScanner::calcIntensityFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex,
+  size_t idx
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+) const
+{
+  return scanDevs[idx].calcIntensityFromCosine(incidenceCosine,
+                                               targetRange,
+                                               mat,
+                                               subrayIndex
+#if DATA_ANALYTICS >= 2
+                                               ,
+                                               calcIntensityRecords
+#endif
+  );
+}
+
+double
 MultiScanner::calcIntensity(double targetRange,
                             double sigma,
                             std::size_t subrayIndex,

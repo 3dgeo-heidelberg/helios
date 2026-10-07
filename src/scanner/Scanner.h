@@ -460,6 +460,18 @@ public:
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const = 0;
+  /** Cosine path; default preserves angle-based subclass overrides. */
+  virtual double calcIntensityFromCosine(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const;
   /**
    * @brief Handle to which scanning device request the intensity computation
    * @param idx The index of the scanning device that must compute the
