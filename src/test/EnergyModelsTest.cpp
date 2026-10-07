@@ -11,6 +11,7 @@
 #include <scanner/MultiScanner.h>
 #include <scanner/SingleScanner.h>
 #include <scanner/detector/FullWaveformPulseRunnable.h>
+#include <scene/primitives/Voxel.h>
 
 namespace {
 std::shared_ptr<Scanner>
@@ -62,6 +63,61 @@ area(EnergyModel& model, double rangeSquared, std::size_t index)
   return model.computeTargetArea(TargetAreaArgs{ rangeSquared, index });
 #endif
 }
+}
+
+TEST_CASE("Incidence cosine handles both sides and voxel faces", "[energy]")
+{
+  double const angle = GENERATE(0.0, 0.2, PI / 4.0, 1.2, PI / 2.0);
+  double const side = GENERATE(-1.0, 1.0);
+  glm::dvec3 const origin(0, 0, 2);
+  glm::dvec3 const point(0, 0, 1);
+  glm::dvec3 const direction(std::sin(angle), 0, side * std::cos(angle));
+  double const expected = std::cos(angle);
+  Triangle triangle(Vertex(0, 0, 0), Vertex(1, 0, 0), Vertex(0, 1, 0));
+  REQUIRE(triangle.getIncidenceAngleCosine(origin, direction, point) ==
+          Catch::Approx(expected).margin(1e-15));
+  REQUIRE(triangle.getIncidenceAngle_rad(origin, direction, point) ==
+          Catch::Approx(angle).margin(1e-15));
+  Voxel voxel(glm::dvec3(0), 2.0);
+  voxel.v.normal = glm::dvec3(0, 0, -1);
+  REQUIRE(voxel.getIncidenceAngleCosine(origin, direction, point) ==
+          Catch::Approx(expected).margin(1e-15));
+  voxel.v.normal = glm::dvec3(0);
+  glm::dvec3 const oblique = glm::normalize(glm::dvec3(1, 2, 3));
+  for (int axis = 0; axis < 3; ++axis) {
+    glm::dvec3 face(0);
+    face[axis] = side;
+    REQUIRE(voxel.getIncidenceAngleCosine(origin, oblique, face) ==
+            Catch::Approx(oblique[axis]));
+  }
+  // AABB retains its existing normal-incidence behavior via base fallback.
+  AABB box(glm::dvec3(-1), glm::dvec3(1));
+  REQUIRE(box.getIncidenceAngleCosine(origin, direction, point) == 1.0);
+}
+
+TEST_CASE("Cosine BRDF agrees with angle response including fractional Phong",
+          "[energy]")
+{
+  double const angle = GENERATE(0.0, 0.2, PI / 4.0, 1.2, PI / 2.0 - 1e-8);
+  int const lighting = GENERATE(0, 1, 2);
+  Material material;
+  material.reflectance = 0.4;
+  if (lighting > 0)
+    material.kd[0] = 0.75;
+  if (lighting == 2)
+    material.ks[0] = 0.25;
+  material.setSpecularity();
+  material.specularExponent = 2.5;
+  double const cosine = std::cos(angle);
+  REQUIRE(
+    EnergyMaths::computeBRDFFromCosine(material, cosine) ==
+    Catch::Approx(EnergyMaths::computeBRDF(material, angle)).margin(1e-14));
+  double const grazing = EnergyMaths::computeBRDFFromCosine(material, 0.0);
+  REQUIRE(std::isfinite(grazing));
+  double const expectedGrazing =
+    (lighting == 0) ? material.reflectance
+                    : material.reflectance * material.specularity;
+  REQUIRE(grazing == Catch::Approx(expectedGrazing));
 }
 
 TEST_CASE("Subray table conserves captured Gaussian power", "[energy]")
@@ -277,6 +333,18 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
 
 #if DATA_ANALYTICS < 2
 namespace {
+class CosineOnlyTriangle : public Triangle
+{
+public:
+  using Triangle::Triangle;
+  double getIncidenceAngle_rad(const glm::dvec3&,
+                               const glm::dvec3&,
+                               const glm::dvec3&) override
+  {
+    throw std::logic_error("Tracing must use the cosine accessor");
+  }
+};
+
 class TracingTestPulse : public FullWaveformPulseRunnable
 {
 public:
@@ -289,6 +357,7 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
           "[energy]")
 {
   double const xmin = GENERATE(-1.0, 0.002);
+  bool const fixedIncidence = GENERATE(false, true);
   auto scanner = energyScanner();
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
@@ -297,9 +366,11 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
   auto part = std::make_shared<ScenePart>();
   auto material = std::make_shared<Material>();
   material->reflectance = 0.5;
-  scene.primitives.push_back(
-    new Triangle(Vertex(xmin, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
-  scene.primitives.push_back(new Triangle(
+  material->kd[0] = 1.0;
+  scanner->setFixedIncidenceAngle(fixedIncidence);
+  scene.primitives.push_back(new CosineOnlyTriangle(
+    Vertex(xmin, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
+  scene.primitives.push_back(new CosineOnlyTriangle(
     Vertex(xmin, 100, -1), Vertex(1, 100, 1), Vertex(xmin, 100, 1)));
   for (auto primitive : scene.primitives) {
     primitive->part = part;
@@ -326,7 +397,8 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
     ++expectedHits;
     double const range = 100.0 / direction.y;
     expected += PI * 4.0 * ray.share * 0.15 * 0.15 * 0.99 * 0.5 /
-                (4.0 * range * range) * 1e9;
+                (4.0 * range * range) * 1e9 *
+                (fixedIncidence ? 1.0 : direction.y);
   }
   double total = 0.0;
   for (auto const& reflection : reflections)
