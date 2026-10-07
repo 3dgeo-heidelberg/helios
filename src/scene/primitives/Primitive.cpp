@@ -1,5 +1,6 @@
 #include "Primitive.h"
 
+#include <cmath>
 #include <iomanip>
 #include <sstream>
 
@@ -72,4 +73,13 @@ Primitive::translate(glm::dvec3 const& shift)
   for (size_t i = 0; i < getNumVertices(); i++) {
     getVertices()[i].pos = getVertices()[i].pos + shift;
   }
+}
+
+// Compatibility fallback for primitives implementing only the angle accessor.
+double
+Primitive::getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                                   const glm::dvec3& rayDir,
+                                   const glm::dvec3& intersectionPoint)
+{
+  return std::cos(getIncidenceAngle_rad(rayOrigin, rayDir, intersectionPoint));
 }

@@ -210,7 +210,7 @@ FullWaveformPulseRunnable::handleSubray(
 
   glm::dvec3 subrayOrigin(pulse.getOrigin());
   bool rayContinues = true;
-  double incidenceAngle = 0.0;
+  double incidenceCosine = 1.0;
   while (rayContinues) {
     rayContinues = false;
     shared_ptr<RaySceneIntersection> intersect =
@@ -221,9 +221,9 @@ FullWaveformPulseRunnable::handleSubray(
       HDA_GV.incrementSubrayIntersectionCount();
       subrayHit = true;
 #endif
-      // Incidence angle:
+      // Cosine of the smaller incidence angle:
       if (!scanner->isFixedIncidenceAngle()) {
-        incidenceAngle = intersect->prim->getIncidenceAngle_rad(
+        incidenceCosine = intersect->prim->getIncidenceAngleCosine(
           pulse.getOriginRef(), subrayDirection, intersect->point);
       }
 
@@ -249,7 +249,7 @@ FullWaveformPulseRunnable::handleSubray(
           TargetAreaArgs{ distance * distance, subrayIndex },
           calcIntensityRecords);
         auto& record = calcIntensityRecords.back();
-        record[3] = incidenceAngle;
+        record[3] = std::acos(incidenceCosine);
         record[4] = distance;
         record[5] = area;
         record[8] = sigma;
@@ -264,14 +264,14 @@ FullWaveformPulseRunnable::handleSubray(
 #if DATA_ANALYTICS >= 2
         HDA_GV.incrementIntensityComputationsCount();
 #endif
-        intensity = scanner->calcIntensity(incidenceAngle,
-                                           distance,
-                                           *intersect->prim->material,
-                                           subrayIndex,
-                                           pulse.getDeviceIndex()
+        intensity = scanner->calcIntensityFromCosine(incidenceCosine,
+                                                     distance,
+                                                     *intersect->prim->material,
+                                                     subrayIndex,
+                                                     pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2
-                                             ,
-                                           calcIntensityRecords
+                                                       ,
+                                                     calcIntensityRecords
 #endif
         );
       }

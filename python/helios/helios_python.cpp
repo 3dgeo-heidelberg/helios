@@ -357,6 +357,7 @@ PYBIND11_MODULE(_helios, m)
         prim.material = material;
       })
 
+    .def("incidence_angle_cosine", &Primitive::getIncidenceAngleCosine)
     .def(
       "incidence_angle",
       [](Primitive& prim,
@@ -1746,6 +1747,8 @@ PYBIND11_MODULE(_helios, m)
          py::keep_alive<1, 2>())
 
     .def("compute_intensity", &EnergyModel::computeIntensity)
+    .def("compute_intensity_from_cosine",
+         &EnergyModel::computeIntensityFromCosine)
     .def("compute_received_power", &EnergyModel::computeReceivedPower)
     .def("compute_emitted_power", &EnergyModel::computeEmittedPower)
     .def("compute_target_area", &EnergyModel::computeTargetArea)

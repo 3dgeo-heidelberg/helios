@@ -24,6 +24,17 @@ public:
                           std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   );
+  /** Intensity using the precomputed incidence cosine. */
+  double computeIntensityFromCosine(
+    double incidenceCosine,
+    double targetRange,
+    Material const& mat,
+    std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  );
   /** Extended-target return. Public intensity units remain unchanged. */
   double computeReceivedPower(
     ReceivedPowerArgs const& args
