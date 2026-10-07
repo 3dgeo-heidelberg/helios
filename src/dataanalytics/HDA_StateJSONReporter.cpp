@@ -450,7 +450,6 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry("scannerEfficiency", fs.scannerEfficiency, d2)
      << craftEntry("atmosphericVisibility", fs.atmosphericVisibility, d2)
      << craftEntry("scannerWaveLength", fs.scannerWaveLength, d2)
-     << craftEntry("beamDivergence_rad", fs.beamDivergence_rad, d2)
      << craftEntry("pulseLength_ns", fs.pulseLength_ns, d2)
      << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
      << craftEntry("beamSamplingFactor", fs.beamSamplingFactor, d2)
@@ -537,7 +536,6 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
     << craftEntry("verticalAngleMin_rad", ss.verticalAngleMin_rad, d2)
     << craftEntry("verticalAngleMax_rad", ss.verticalAngleMax_rad, d2)
     << craftEntry("scanFreq_Hz", ss.scanFreq_Hz, d2)
-    << craftEntry("beamDivAngle", ss.beamDivAngle, d2)
     << craftEntry("trajectoryTimeInterval", ss.trajectoryTimeInterval, d2)
     << craftEntry(
          "opticsWarmupPhase_s", ss.opticsWarmupPhase_s, d2, false, true)

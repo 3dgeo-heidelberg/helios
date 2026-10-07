@@ -295,6 +295,12 @@ public:
   void prepareSimulation();
 
   /**
+   * @brief Set the full divergence in radians and refresh derived beam state.
+   * @throws std::invalid_argument If the beam or sampling cone is invalid.
+   */
+  void setBeamDivergence(double divergence_rad);
+
+  /**
    * @brief Configure beam related attributes. It is recommended to
    *  reconfigure beam attributes always that beam divergence, beam quality
    *  or wavelength are updated.

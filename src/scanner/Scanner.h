@@ -666,7 +666,7 @@ public:
    */
   inline double getBeamDivergence() const { return getBeamDivergence(0); }
   /**
-   * @brief Set beam divergence
+   * @brief Set beam divergence and refresh the subray table and beam caches.
    * @param beamDivergence New beam divergence (radians)
    * @param idx The index of the scanning device which beam divergence must
    *  be set (by default 0, it is the first one)

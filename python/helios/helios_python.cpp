@@ -843,7 +843,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("atmospheric_visibility",
                    &FWFSettings::atmosphericVisibility)
     .def_readwrite("scanner_wave_length", &FWFSettings::scannerWaveLength)
-    .def_readwrite("beam_divergence_angle", &FWFSettings::beamDivergence_rad)
     .def_readwrite("pulse_length", &FWFSettings::pulseLength_ns)
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
     .def_readwrite("beam_sampling_factor", &FWFSettings::beamSamplingFactor)
@@ -1177,7 +1176,6 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("min_vertical_angle", &ScannerSettings::verticalAngleMin_rad)
     .def_readwrite("max_vertical_angle", &ScannerSettings::verticalAngleMax_rad)
     .def_readwrite("scan_frequency", &ScannerSettings::scanFreq_Hz)
-    .def_readwrite("beam_divergence_angle", &ScannerSettings::beamDivAngle)
     .def_readwrite("trajectory_time_interval",
                    &ScannerSettings::trajectoryTimeInterval)
     .def_readwrite("vertical_resolution",

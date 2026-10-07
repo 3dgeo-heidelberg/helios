@@ -286,8 +286,6 @@ findNonDefaultScannerSettings(std::shared_ptr<ScannerSettings> base,
     fields.insert("verticalAngleMax_rad");
   if (base->scanFreq_Hz != ref->scanFreq_Hz)
     fields.insert("scanFreq_Hz");
-  if (base->beamDivAngle != ref->beamDivAngle)
-    fields.insert("beamDivAngle");
   if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
     fields.insert("trajectoryTimeInterval");
   if (base->maxDuration_s != ref->maxDuration_s)

@@ -690,7 +690,6 @@
         "min_vertical_angle": {},
         "max_vertical_angle": {},
         "scan_frequency": {},
-        "beam_divergence_angle": {},
         "trajectory_time_interval": {},
         "vertical_resolution": {},
         "horizontal_resolution": {},

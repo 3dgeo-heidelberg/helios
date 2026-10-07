@@ -177,7 +177,6 @@ Scanner::retrieveCurrentSettings(size_t const idx)
   settings->id = ss.str();
   settings->pulseFreq_Hz = getPulseFreq_Hz();
   settings->active = isActive();
-  settings->beamDivAngle = getBeamDivergence(idx);
   settings->trajectoryTimeInterval = trajectoryTimeInterval_ns / 1000000000.0;
   settings->maxDuration_s = maxDuration_s;
   // Settings from ScannerHead

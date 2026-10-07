@@ -128,7 +128,6 @@ SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
   setMaxDuration(settings->maxDuration_s);
   setPulseFreq_Hz(settings->pulseFreq_Hz);
   setActive(settings->active);
-  setBeamDivergence(settings->beamDivAngle, 0);
   trajectoryTimeInterval_ns = settings->trajectoryTimeInterval * 1000000000.0;
   scanDev.setOpticsWarmupPhase_s(settings->opticsWarmupPhase_s);
   scanDev.configureBeam();

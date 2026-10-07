@@ -8,6 +8,18 @@ Fullwave processing
 
 HELIOS++ supports simulation of full waveform data by simulating a laser beam cone of finite divergence via sampled subrays.
 
+Beam divergence
+^^^^^^^^^^^^^^^
+
+The scanner XML attribute ``beamDivergence_rad`` defines the full beam divergence in radians. Individual ``<channel>`` elements can override it. In Python, change the divergence before running a simulation:
+
+   scanner.beam_divergence = 0.003  # radians, channel 0
+   scanner.beam_divergence = "0.03 deg"  # angles with units are supported
+   scanner.set_beam_divergence(0.0005, index=1)  # a multi-channel scanner
+   angle = scanner.get_beam_divergence(index=1)
+
+These setters refresh the derived beam state automatically. Divergence must be finite and strictly between zero and pi radians.
+
 Subray quantification
 ^^^^^^^^^^^^^^^^^^^^^
 

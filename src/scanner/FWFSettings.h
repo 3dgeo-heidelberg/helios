@@ -46,10 +46,6 @@ public:
    */
   double scannerWaveLength = 1550.0;
   /**
-   * @brief Beam divergence (radians)
-   */
-  double beamDivergence_rad = 0.0003;
-  /**
    * @brief Pulse length (nanoseconds)
    */
   double pulseLength_ns = 4.0;
@@ -115,7 +111,6 @@ public:
        << "scannerEfficiency = " << scannerEfficiency << "\n"
        << "atmosphericVisibility = " << atmosphericVisibility << "\n"
        << "scannerWaveLength = " << scannerWaveLength << "\n"
-       << "beamDivergence_rad = " << beamDivergence_rad << "\n"
        << "pulseLength_ns = " << pulseLength_ns << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
        << "beamSamplingFactor = " << beamSamplingFactor << "\n"

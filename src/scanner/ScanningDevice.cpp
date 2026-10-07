@@ -189,6 +189,20 @@ ScanningDevice::buildSubrayTable()
 }
 
 void
+ScanningDevice::setBeamDivergence(double divergence_rad)
+{
+  double const previous = beamDivergence_rad;
+  beamDivergence_rad = divergence_rad;
+  try {
+    buildSubrayTable();
+  } catch (...) {
+    beamDivergence_rad = previous;
+    throw;
+  }
+  configureBeam();
+}
+
+void
 ScanningDevice::configureBeam()
 {
   cached_Bt2 = beamDivergence_rad * beamDivergence_rad;

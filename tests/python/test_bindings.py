@@ -405,7 +405,6 @@ def test_fwf_settings_instantiation():
     assert fwf.scanner_efficiency == 0.9
     assert fwf.atmospheric_visibility == 0.9
     assert fwf.scanner_wave_length == 1550.0
-    assert fwf.beam_divergence_angle == 0.0003
     assert fwf.pulse_length == 4.0
     assert fwf.beam_sample_quality == 3
     assert fwf.win_size == fwf.pulse_length / 4.0
@@ -423,7 +422,6 @@ def test_fwf_settings_set_get_properties():
     fwf.scanner_efficiency = 0.85
     fwf.atmospheric_visibility = 0.95
     fwf.scanner_wave_length = 1600.0
-    fwf.beam_divergence_angle = 0.0005
     fwf.pulse_length = 5.0
     fwf.beam_sample_quality = 4
     fwf.win_size = 1.25
@@ -437,7 +435,6 @@ def test_fwf_settings_set_get_properties():
     assert fwf.scanner_efficiency == 0.85
     assert fwf.atmospheric_visibility == 0.95
     assert fwf.scanner_wave_length == 1600.0
-    assert fwf.beam_divergence_angle == 0.0005
     assert fwf.pulse_length == 5.0
     assert fwf.beam_sample_quality == 4
     assert fwf.win_size == 1.25
@@ -455,7 +452,6 @@ def test_fwf_settings_to_string():
         "scannerEfficiency = 0.9\n"
         "atmosphericVisibility = 0.9\n"
         "scannerWaveLength = 1550\n"
-        "beamDivergence_rad = 0.0003\n"
         "pulseLength_ns = 4\n"
         "beamSampleQuality = 3\n"
         "beamSamplingFactor = 2\n"
@@ -632,7 +628,6 @@ def create_and_modify_leg_with_platform_and_scanner_settings():
     scanner_settings.min_vertical_angle = -90
     scanner_settings.max_vertical_angle = 90
     scanner_settings.scan_frequency = 5
-    scanner_settings.beam_divergence_angle = 0.01
     scanner_settings.trajectory_time_interval = 1.0
     scanner_settings.vertical_resolution = 0.5
     scanner_settings.horizontal_resolution = 0.5
@@ -689,7 +684,6 @@ def test_leg_and_scanner_settings():
     assert scanner_settings.min_vertical_angle == -90
     assert scanner_settings.max_vertical_angle == 90
     assert scanner_settings.scan_frequency == 5
-    assert scanner_settings.beam_divergence_angle == 0.01
     assert scanner_settings.trajectory_time_interval == 1.0
     assert scanner_settings.vertical_resolution == 0.5
     assert scanner_settings.horizontal_resolution == 0.5

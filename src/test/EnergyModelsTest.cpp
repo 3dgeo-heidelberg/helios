@@ -185,10 +185,9 @@ TEST_CASE("Subray settings changes and copies cannot use stale tables",
 
   double const previousAngle = device.getSubrays().back().angle_rad;
   scanner->setBeamDivergence(0.0006);
-  REQUIRE_FALSE(device.isSubrayTableCurrent());
-  REQUIRE_THROWS_AS(device.getSubrays(), std::logic_error);
-  scanner->prepareSimulation();
+  REQUIRE(device.isSubrayTableCurrent());
   REQUIRE(device.getSubrays().back().angle_rad > previousAngle);
+  REQUIRE(device.cached_Bt2 == Catch::Approx(0.0006 * 0.0006));
   scanner->getFWFSettings().beamSamplingFactor = 1.0;
   REQUIRE_FALSE(device.isSubrayTableCurrent());
   scanner->getFWFSettings().beamSampleQuality = 8;
@@ -216,12 +215,21 @@ TEST_CASE("Subray sampling validates settings", "[energy]")
   }
   SECTION("Invalid divergence")
   {
-    scanner->setBeamDivergence(
-      GENERATE(0.0,
-               -1.0,
-               PI,
-               std::numeric_limits<double>::infinity(),
-               std::numeric_limits<double>::quiet_NaN()));
+    double const invalid = GENERATE(0.0,
+                                    -1.0,
+                                    PI,
+                                    std::numeric_limits<double>::infinity(),
+                                    std::numeric_limits<double>::quiet_NaN());
+    scanner->prepareSimulation();
+    double const previousAngle =
+      scanner->getScanningDevice(0).getSubrays().back().angle_rad;
+    REQUIRE_THROWS_AS(scanner->setBeamDivergence(invalid),
+                      std::invalid_argument);
+    REQUIRE(scanner->getBeamDivergence() == 0.0003);
+    REQUIRE(scanner->getScanningDevice(0).isSubrayTableCurrent());
+    REQUIRE(scanner->getScanningDevice(0).getSubrays().back().angle_rad ==
+            previousAngle);
+    return;
   }
   REQUIRE_THROWS_AS(scanner->prepareSimulation(), std::invalid_argument);
 }
@@ -249,6 +257,13 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
   scanner.getFWFSettings(1).beamSamplingFactor = 2.0;
   scanner.getFWFSettings(1).beamSampleQuality = 8;
   scanner.prepareSimulation();
+  double const previousAngle =
+    scanner.getScanningDevice(1).getSubrays().back().angle_rad;
+  scanner.setBeamDivergence(0.003, 1);
+  REQUIRE(scanner.getBeamDivergence(0) == 0.0003);
+  REQUIRE(scanner.getBeamDivergence(1) == 0.003);
+  REQUIRE(scanner.getScanningDevice(1).getSubrays().back().angle_rad >
+          previousAngle);
   for (size_t channel = 0; channel < 2; ++channel) {
     auto const& device = scanner.getScanningDevice(channel);
     double sum = 0;

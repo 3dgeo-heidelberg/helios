@@ -256,7 +256,7 @@ public:
    */
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
-    scanDevs[idx].beamDivergence_rad = beamDivergence;
+    scanDevs.at(idx).setBeamDivergence(beamDivergence);
   }
   /**
    * @see Scanner::getAveragePower
