@@ -79,7 +79,7 @@ def read_records(path, sep=","):
         "target_range_m": intensity_calc[:, 4],
         "target_area_m2": intensity_calc[:, 5],
         "radius_m": intensity_calc[:, 6],
-        "bdrf": intensity_calc[:, 7],
+        "brdf": intensity_calc[:, 7],
         "cross_section": intensity_calc[:, 8],
         "received_power": intensity_calc[:, 9],
         "emitted_power": intensity_calc[:, 11],
@@ -309,7 +309,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir, emitted_power=False):
         or not validate_record("target_range_m", arec, "a")
         or not validate_record("target_area_m2", arec, "a")
         or not validate_record("radius_m", arec, "a")
-        or not validate_record("bdrf", arec, "a")
+        or not validate_record("brdf", arec, "a")
         or not validate_record("cross_section", arec, "a")
         or not validate_record("emitted_power", arec, "a")
         or not validate_record("received_power", arec, "a")
@@ -317,7 +317,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir, emitted_power=False):
         or not validate_record("target_range_m", brec, "b")
         or not validate_record("target_area_m2", brec, "b")
         or not validate_record("radius_m", brec, "b")
-        or not validate_record("bdrf", brec, "b")
+        or not validate_record("brdf", brec, "b")
         or not validate_record("cross_section", brec, "b")
         or not validate_record("emitted_power", brec, "b")
         or not validate_record("received_power", brec, "b")
@@ -396,7 +396,7 @@ def _do_by_incidence_angle_plots(
         ylabel="Radius (m)",
         color="tab:red",
     )
-    ax = fig.add_subplot(3, 4, 6)  # Initialize BDRF A subplot
+    ax = fig.add_subplot(3, 4, 6)  # Initialize BRDF A subplot
     if emitted_power:  # Do emitted power instead
         do_y_by_x_subplot(
             fig,
@@ -408,15 +408,15 @@ def _do_by_incidence_angle_plots(
             ylabel="Emitted power",
             color="tab:green",
         )
-    else:  # Do BDRF subplot as expected
+    else:  # Do BRDF subplot as expected
         do_y_by_x_subplot(
             fig,
             ax,
             incidence_angle_a,
-            arec["bdrf"],
-            title="A-BDRF",
+            arec["brdf"],
+            title="A-BRDF",
             xlabel=f"Incidence angle ({unit})",
-            ylabel="BDRF",
+            ylabel="BRDF",
             color="tab:green",
         )
     ax = fig.add_subplot(3, 4, 9)  # Initialize Cross-section A subplot
@@ -474,7 +474,7 @@ def _do_by_incidence_angle_plots(
         ylabel="Radius (m)",
         color="tab:red",
     )
-    ax = fig.add_subplot(3, 4, 8)  # Initialize BDRF B subplot
+    ax = fig.add_subplot(3, 4, 8)  # Initialize BRDF B subplot
     if emitted_power:  # Do emitted power instead
         do_y_by_x_subplot(
             fig,
@@ -486,15 +486,15 @@ def _do_by_incidence_angle_plots(
             ylabel="Emitted power",
             color="tab:green",
         )
-    else:  # Do BDRF subplot as expected
+    else:  # Do BRDF subplot as expected
         do_y_by_x_subplot(
             fig,
             ax,
             incidence_angle_b,
-            brec["bdrf"],
-            title="B-BDRF",
+            brec["brdf"],
+            title="B-BRDF",
             xlabel=f"Incidence angle ({unit})",
-            ylabel="BDRF",
+            ylabel="BRDF",
             color="tab:green",
         )
     ax = fig.add_subplot(3, 4, 11)  # Initialize Cross-section B subplot

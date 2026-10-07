@@ -43,13 +43,13 @@ EnergyModel::computeReceivedPower(
   double const rangeSquared = args.targetRange * args.targetRange;
   double const emittedPower =
     computeEmittedPower(EmittedPowerArgs{ args.subrayIndex });
-  double const bdrf =
-    EnergyMaths::computeBDRF(args.material, args.incidenceAngle_rad);
+  double const brdf =
+    EnergyMaths::computeBRDF(args.material, args.incidenceAngle_rad);
   double const atmosphere = EnergyMaths::calcAtmosphericFactor(
     args.targetRange, sd.atmosphericExtinction);
-  // sigma = 4*pi*BDRF*A cancels A in the extended-target equation.
+  // sigma = 4*pi*BRDF*A cancels A in the extended-target equation.
   double const receivedPower = PI * emittedPower * sd.cached_Dr2 *
-                               sd.efficiency * atmosphere * bdrf /
+                               sd.efficiency * atmosphere * brdf /
                                (4.0 * rangeSquared);
 #if DATA_ANALYTICS >= 2
   double const area = computeTargetArea(
@@ -58,8 +58,8 @@ EnergyModel::computeReceivedPower(
   record[3] = args.incidenceAngle_rad;
   record[4] = args.targetRange;
   record[5] = area;
-  record[7] = bdrf;
-  record[8] = EnergyMaths::calcCrossSection(bdrf, area);
+  record[7] = brdf;
+  record[8] = EnergyMaths::calcCrossSection(brdf, area);
   record[9] = receivedPower;
   record[10] = 0;
   record[11] = emittedPower;
@@ -124,5 +124,5 @@ EnergyModel::computeTargetArea(
 double
 EnergyModel::computeCrossSection(CrossSectionArgs const& args)
 {
-  return EnergyMaths::calcCrossSection(args.bdrf, args.targetArea);
+  return EnergyMaths::calcCrossSection(args.brdf, args.targetArea);
 }
