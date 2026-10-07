@@ -58,7 +58,9 @@ SpectralLibrary::readFileAster(fs::path path)
       boost::split(values, line, boost::is_any_of("\t"));
       wavelength = boost::lexical_cast<float>(values.at(0));
       boost::trim_right(values.at(1));
-      reflectance = boost::lexical_cast<float>(values.at(1));
+      // Material::reflectance expects a value in [0, 1], but the spectra files
+      // have it in [0, 100]
+      reflectance = boost::lexical_cast<float>(values.at(1)) / 100.0f;
 
       if (wavelength < wavelength_um) {
         prevWavelength = wavelength;
