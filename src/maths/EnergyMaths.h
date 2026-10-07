@@ -111,8 +111,8 @@ public:
    *  \eta_a = \exp\left( -2 R a_e \right)
    * \f]
    *
-   * @param R The target range \f$R\f$
-   * @param ae The atmospheric extinction \f$a_e\f$
+   * @param R The target range \f$R\f$ in metres
+   * @param ae The atmospheric extinction \f$a_e\f$ per metre
    * @return The atmospheric factor \f$\eta_a\f$
    */
   static double calcAtmosphericFactor(double const R, double const ae);
