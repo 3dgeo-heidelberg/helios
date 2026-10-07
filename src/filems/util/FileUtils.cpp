@@ -30,11 +30,11 @@ FileUtils::handleFilePath(std::map<std::string, ObjectT>& params,
   bool extendedFilePath = false;
 
   try {
-    path = boost::get<std::string>(params["efilepath"]);
+    path = std::get<std::string>(params["efilepath"]);
     extendedFilePath = true;
   } catch (std::exception& e) {
     try {
-      path = boost::get<std::string>(params["filepath"]);
+      path = std::get<std::string>(params["filepath"]);
     } catch (std::exception& e2) {
       std::stringstream ss;
       ss << "No filepath was provided.\nEXCEPTION: " << e2.what();

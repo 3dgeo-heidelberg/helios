@@ -13,7 +13,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/variant/get.hpp>
+#include <variant>
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -29,19 +29,19 @@ XYZPointCloudFileLoader::run()
     FileUtils::handleFilePath(params, assetsDir);
 
   // Read separator
-  std::string const& pSep = boost::get<std::string const&>(params["separator"]);
+  std::string const& pSep = std::get<std::string>(params["separator"]);
   if (!pSep.empty())
     separator = pSep;
 
   // Read voxel size
-  double pVoxelSize = boost::get<double>(params["voxelSize"]);
+  double pVoxelSize = std::get<double>(params["voxelSize"]);
   if (pVoxelSize != 0)
     voxelSize = pVoxelSize;
 
   // Read max color value
   maxColorValue = 255.0;
   if (params.find("maxColorValue") != params.end()) {
-    double pMaxCol = boost::get<double>(params["maxColorValue"]);
+    double pMaxCol = std::get<double>(params["maxColorValue"]);
     if (pMaxCol != 0) {
       maxColorValue = pMaxCol;
     }
@@ -49,7 +49,7 @@ XYZPointCloudFileLoader::run()
 
   // Default normal
   if (params.find("defaultNormal") != params.end()) {
-    defaultNormal = boost::get<glm::dvec3>(params["defaultNormal"]);
+    defaultNormal = std::get<glm::dvec3>(params["defaultNormal"]);
     defaultNormal = glm::normalize(defaultNormal);
     assignDefaultNormal = true;
   }
@@ -285,7 +285,7 @@ XYZPointCloudFileLoader::prepareVoxelsGrid(int& estimateNormals,
 
   // Instantiate voxel grid
   if (params.find("sparse") != params.end() &&
-      !boost::get<bool>(params["sparse"])) { // Dense voxel grid
+      !std::get<bool>(params["sparse"])) { // Dense voxel grid
     voxelGrid = new DenseVoxelGrid(maxNVoxels);
   } else { // Sparse voxel grid (default)
     voxelGrid = new SparseVoxelGrid(maxNVoxels);
@@ -294,7 +294,7 @@ XYZPointCloudFileLoader::prepareVoxelsGrid(int& estimateNormals,
   // Check if voxel grid needs normal estimation or not
   estimateNormals = 0;
   if (params.find("estimateNormals") != params.end()) {
-    estimateNormals = boost::get<int>(params["estimateNormals"]);
+    estimateNormals = std::get<int>(params["estimateNormals"]);
   }
 }
 
@@ -312,17 +312,17 @@ XYZPointCloudFileLoader::fillVoxelsGrid(std::ifstream& ifs,
   std::size_t normalYIndex = 4;
   std::size_t normalZIndex = 5;
   if (params.find("rgbRIndex") != params.end()) {
-    rgbRIndex = (std::size_t)boost::get<int>(params["rgbRIndex"]);
-    rgbGIndex = (std::size_t)boost::get<int>(params["rgbGIndex"]);
-    rgbBIndex = (std::size_t)boost::get<int>(params["rgbBIndex"]);
+    rgbRIndex = (std::size_t)std::get<int>(params["rgbRIndex"]);
+    rgbGIndex = (std::size_t)std::get<int>(params["rgbGIndex"]);
+    rgbBIndex = (std::size_t)std::get<int>(params["rgbBIndex"]);
   }
   if (params.find("normalXIndex") != params.end()) {
-    normalXIndex = (std::size_t)boost::get<int>(params["normalXIndex"]);
-    normalYIndex = (std::size_t)boost::get<int>(params["normalYIndex"]);
-    normalZIndex = (std::size_t)boost::get<int>(params["normalZIndex"]);
+    normalXIndex = (std::size_t)std::get<int>(params["normalXIndex"]);
+    normalYIndex = (std::size_t)std::get<int>(params["normalYIndex"]);
+    normalZIndex = (std::size_t)std::get<int>(params["normalZIndex"]);
   }
   if (params.find("snapNeighborNormal") != params.end()) {
-    snapNeighborNormal = boost::get<bool>(params["snapNeighborNormal"]);
+    snapNeighborNormal = std::get<bool>(params["snapNeighborNormal"]);
   }
 
   // Fill voxel grid
