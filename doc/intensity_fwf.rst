@@ -101,7 +101,7 @@ The received amplitude is derived from the LiDAR equation, considering the follo
    The shares sum to :math:`1-e^{-2k^2}`, independently of range and sample quality. No power from the omitted Gaussian tail is shifted into the sampled cone.
 
 2. **Material reflectance**  
-   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BDRF) :cite:p:`Phong.1975`. 
+   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BRDF) :cite:p:`Phong.1975`.
 
 3. **Target cross section**  
    The effective cross section is computed based on the area illuminated by the subray and the local incidence angle.
@@ -297,19 +297,19 @@ There are four HELIOS-specific parameters, that can be added to material files b
 Intensity calculation from material properties
 ----------------------------------------------
 
-HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Function (BDRF) reflectance model coupled with the lidar-radar equation. The recorded intensity (signal amplitude) is calculated in three main steps:
+HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Function (BRDF) reflectance model coupled with the lidar-radar equation. The recorded intensity (signal amplitude) is calculated in three main steps:
 
-1. **BDRF Calculation**
+1. **BRDF Calculation**
 
-   The BDRF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (defined by the material parameters ``kd`` :math:`(k_d)`, ``ks`` :math:`(k_s)`, and the specular exponent ``Ns`` :math:`(N_s)`). The incidence angle :math:`\varphi` is determined from the ray-object intersection.
-
-   .. math::
-      \text{BDRF}_r = \rho \cdot BDRF(\varphi, \text{spec}, N_s)
-
-   where :math:`BDRF` follows the formulation by :cite:t:`JutziGross.2022`:
+   The BRDF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (defined by the material parameters ``kd`` :math:`(k_d)`, ``ks`` :math:`(k_s)`, and the specular exponent ``Ns`` :math:`(N_s)`). The incidence angle :math:`\varphi` is determined from the ray-object intersection.
 
    .. math::
-      BDRF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
+      \text{BRDF}_r = \rho \cdot BRDF(\varphi, \text{spec}, N_s)
+
+   where :math:`BRDF` follows the formulation by :cite:t:`JutziGross.2022`:
+
+   .. math::
+      BRDF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
 
    with :math:`\varphi^* = \varphi - \pi/2` if :math:`\varphi > \pi/2`, otherwise :math:`\varphi^* = \varphi`.
 
@@ -320,8 +320,8 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
    Please note:
 
-   - If ``ks`` is 0, the material is fully diffuse and the BDRF simplifies to :math:`\text{BDRF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
-   - If both ``kd`` and ``ks`` are 0, the material reflectance is direction-independent and the BDRF simplifies to :math:`\text{BDRF}_r = \rho`.
+   - If ``ks`` is 0, the material is fully diffuse and the BRDF simplifies to :math:`\text{BRDF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
+   - If both ``kd`` and ``ks`` are 0, the material reflectance is direction-independent and the BRDF simplifies to :math:`\text{BRDF}_r = \rho`.
 
 
 2. **Lidar Cross Section Calculation**
@@ -329,7 +329,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following :cite:p:`Wagner.2010`, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
 
    .. math::
-      \sigma = 4\pi \cdot \text{BDRF}_r \cdot A \cdot \cos(\varphi)
+      \sigma = 4\pi \cdot \text{BRDF}_r \cdot A \cdot \cos(\varphi)
 
 3. **Received Intensity via Lidar-Radar Equation**
 
