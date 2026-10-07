@@ -64,12 +64,12 @@ EnergyMaths::calcCrossSection(double const f, double const Alf)
 // ***  LIGHTING  *** //
 // ****************** //
 double
-EnergyMaths::computeBDRF(Material const& mat, double const incidenceAngle)
+EnergyMaths::computeBRDF(Material const& mat, double const incidenceAngle)
 {
   // Supported lighting models
   if (mat.isPhong()) {
     return mat.reflectance *
-           EnergyMaths::phongBDRF(
+           EnergyMaths::phongBRDF(
              incidenceAngle, mat.specularity, mat.specularExponent) *
            std::cos(incidenceAngle);
   } else if (mat.isLambert()) {
@@ -87,18 +87,18 @@ EnergyMaths::computeBDRF(Material const& mat, double const incidenceAngle)
 // Phong reflection model "Normalization of Lidar Intensity..." (Jutzi and
 // Gross, 2009)
 double
-EnergyMaths::phongBDRF(double const incidenceAngle,
+EnergyMaths::phongBRDF(double const incidenceAngle,
                        double const targetSpecularity,
                        double const targetSpecularExponent)
 {
-  return EnergyMaths::phongBDRFFast(incidenceAngle,
+  return EnergyMaths::phongBRDFFast(incidenceAngle,
                                     std::cos(incidenceAngle),
                                     targetSpecularity,
                                     targetSpecularExponent);
 }
 
 double
-EnergyMaths::phongBDRFFast(double const incidenceAngle,
+EnergyMaths::phongBRDFFast(double const incidenceAngle,
                            double const cosIncidenceAngle,
                            double const targetSpecularity,
                            double const targetSpecularExponent)

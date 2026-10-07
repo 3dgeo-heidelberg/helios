@@ -45,13 +45,13 @@ struct TargetAreaArgs
 struct CrossSectionArgs
 {
   Material const& material;
-  double const bdrf; // Bidirectional reflectance function
+  double const brdf; // Bidirectional reflectance distribution function
   double const targetArea;
   CrossSectionArgs(Material const& material,
-                   double const bdrf,
+                   double const brdf,
                    double const targetArea)
     : material(material)
-    , bdrf(bdrf)
+    , brdf(brdf)
     , targetArea(targetArea)
   {
   }

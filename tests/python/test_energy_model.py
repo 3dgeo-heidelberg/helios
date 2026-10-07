@@ -54,10 +54,10 @@ def test_energy_arguments_keep_material_alive(argument_type):
     else:
         args = _helios.CrossSectionArgs(
             material=material,
-            bdrf=0.25,
+            brdf=0.25,
             target_area=2.0,
         )
-        assert args.bdrf == 0.25
+        assert args.brdf == 0.25
         assert args.target_area == 2.0
 
     assert args.material is material
@@ -96,7 +96,7 @@ def test_energy_arguments_keep_material_alive(argument_type):
                 "subray_index": 1,
             },
         ),
-        (_helios.CrossSectionArgs, {"bdrf": 0.25, "target_area": 2.0}),
+        (_helios.CrossSectionArgs, {"brdf": 0.25, "target_area": 2.0}),
     ],
 )
 def test_energy_argument_fields_are_readonly(argument_class, kwargs):
