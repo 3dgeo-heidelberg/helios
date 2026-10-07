@@ -12,6 +12,7 @@
 #include <scanner/SingleScanner.h>
 #include <scanner/detector/FullWaveformPulseRunnable.h>
 #include <scene/primitives/Voxel.h>
+#include <utility>
 
 namespace {
 std::shared_ptr<Scanner>
@@ -28,7 +29,7 @@ energyScanner()
                                                  0.99,
                                                  0.15,
                                                  23.0,
-                                                 1064e-9,
+                                                 1064,
                                                  false,
                                                  false,
                                                  false,
@@ -63,6 +64,48 @@ area(EnergyModel& model, double rangeSquared, std::size_t index)
   return model.computeTargetArea(TargetAreaArgs{ rangeSquared, index });
 #endif
 }
+}
+
+TEST_CASE("Atmospheric extinction uses micrometres and inverse metres",
+          "[energy]")
+{
+  // Reference values at 1064 nm cover all visibility branches and boundaries.
+  auto const sample =
+    GENERATE(std::make_pair(5.0, 0.00040556958615247865),
+             std::make_pair(6.0, 0.0003244902684506537),
+             std::make_pair(6.0001, 0.000276353932424009),
+             std::make_pair(23.0, 0.0000720935317364042),
+             std::make_pair(50.0, 0.00003316302459874593),
+             std::make_pair(50.0001, 0.000027206932737294658));
+  auto scanner = energyScanner();
+  auto& device = scanner->getScanningDevice(0);
+  scanner->setVisibility(sample.first);
+  double const extinction = device.calcAtmosphericAttenuation();
+  REQUIRE(extinction == Catch::Approx(sample.second).epsilon(1e-12));
+  if (sample.first == 23.0) {
+    REQUIRE(EnergyMaths::calcAtmosphericFactor(1000.0, extinction) ==
+            Catch::Approx(0.8657257872389399));
+    REQUIRE(EnergyMaths::calcAtmosphericFactor(3000.0, extinction) ==
+            Catch::Approx(0.6488451488135547));
+  }
+}
+
+TEST_CASE("Kruse wavelength bounds include endpoints", "[energy]")
+{
+  double const wavelength =
+    GENERATE(0.499e-6, 0.5e-6, 0.55e-6, 2.0e-6, 2.001e-6);
+  auto scanner = energyScanner();
+  auto& device = scanner->getScanningDevice(0);
+  scanner->setWavelength(wavelength);
+  double const extinction = device.calcAtmosphericAttenuation();
+  if (wavelength < 0.5e-6 || wavelength > 2.0e-6) {
+    REQUIRE(extinction == 0.0);
+    REQUIRE(EnergyMaths::calcAtmosphericFactor(1000.0, extinction) == 1.0);
+  } else {
+    REQUIRE(extinction > 0.0);
+    if (wavelength == 0.55e-6)
+      REQUIRE(extinction == Catch::Approx(3.91 / 23000.0));
+  }
 }
 
 TEST_CASE("Incidence cosine handles both sides and voxel faces", "[energy]")
