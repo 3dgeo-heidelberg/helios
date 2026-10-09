@@ -60,6 +60,7 @@ measurements_to_numpy(const std::vector<Measurement>& measurements)
   meas_fields.append(py::make_tuple("beam_direction", "3f8"));
   meas_fields.append(py::make_tuple("beam_origin", "3f8"));
   meas_fields.append(py::make_tuple("distance", "f8"));
+  meas_fields.append(py::make_tuple("incidence_angle", "f8"));
   meas_fields.append(py::make_tuple("intensity", "f8"));
   meas_fields.append(py::make_tuple("echo_width", "f8"));
   meas_fields.append(py::make_tuple("return_number", "i4"));
@@ -92,6 +93,7 @@ measurements_to_numpy(const std::vector<Measurement>& measurements)
   size_t off_beam_dir = offsets["beam_direction"];
   size_t off_beam_orig = offsets["beam_origin"];
   size_t off_dist = offsets["distance"];
+  size_t off_inc = offsets["incidence_angle"];
   size_t off_intens = offsets["intensity"];
   size_t off_width = offsets["echo_width"];
   size_t off_ret = offsets["return_number"];
@@ -116,6 +118,7 @@ measurements_to_numpy(const std::vector<Measurement>& measurements)
     copy_dvec3(reinterpret_cast<double*>(row + off_beam_orig), m.beamOrigin);
 
     *reinterpret_cast<double*>(row + off_dist) = m.distance;
+    *reinterpret_cast<double*>(row + off_inc) = m.incidenceAngle;
     *reinterpret_cast<double*>(row + off_intens) = m.intensity;
     *reinterpret_cast<double*>(row + off_width) = m.echo_width;
     *reinterpret_cast<int32_t*>(row + off_ret) = m.returnNumber;

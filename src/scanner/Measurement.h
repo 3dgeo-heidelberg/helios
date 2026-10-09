@@ -45,6 +45,10 @@ public:
    */
   double distance = 0;
   /**
+   * @brief Incidence angle
+   */
+  double incidenceAngle = 0;
+  /**
    * @brief Point intensity
    */
   double intensity = 0;
@@ -92,6 +96,7 @@ public:
     beamDirection = glm::dvec3(m.beamDirection);
     beamOrigin = glm::dvec3(m.beamOrigin);
     distance = m.distance;
+    incidenceAngle = m.incidenceAngle;
     intensity = m.intensity;
     echo_width = m.echo_width;
     returnNumber = m.returnNumber;
@@ -108,10 +113,10 @@ public:
   friend std::ostream& operator<<(std::ostream& out, Measurement& m)
   {
     out << m.hitObjectId << "," << m.position << "," << m.beamDirection << ","
-        << m.beamOrigin << "," << m.distance << "," << m.intensity << ","
-        << m.echo_width << "," << m.returnNumber << "," << m.pulseReturnNumber
-        << "," << m.fullwaveIndex << "," << m.classification << ","
-        << m.gpsTime;
+        << m.beamOrigin << "," << m.distance << "," << m.incidenceAngle << ","
+        << m.intensity << "," << m.echo_width << "," << m.returnNumber << "," 
+        << m.pulseReturnNumber << "," << m.fullwaveIndex << "," 
+        << m.classification << "," << m.gpsTime;
     return out;
   }
 };
