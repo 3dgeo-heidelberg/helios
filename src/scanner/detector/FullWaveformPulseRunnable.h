@@ -170,7 +170,8 @@ private:
                               int& peakIntensityIndex,
                               int& numFullwaveBins);
   /**
-   * @brief Populate a previously initialized full waveform vector
+   * @brief Populate from dimensionless transfer coefficients, then apply
+   * whole-beam amplitude and legacy intensity scaling before detection
    * @param[out] fullwave Full waveform vector to be populated
    * @see FullWaveformPulseRunnable::digestIntersections
    * @see FullWaveformPulseRunnable::initializeFullWaveform

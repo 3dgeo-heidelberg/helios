@@ -155,7 +155,7 @@
                                             <xs:attribute type="xs:float" name="refrIndex2" use="optional"/>
                                             <xs:attribute type="xs:float" name="refrIndex3" use="optional"/>
                                             <xs:attribute type="xs:float" name="refrIndex_air" use="optional"/>
-                                            <xs:attribute type="xs:float" name="averagePower_w" use="optional"/>
+                                            <xs:attribute type="xs:float" name="pulseAmplitude_W" use="optional"/>
                                             <xs:attribute type="xs:short" name="numFibers" use="optional"/>
                                             <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
                                             <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
@@ -193,7 +193,7 @@
                         <xs:attribute type="xs:float" name="refrIndex2" use="optional"/>
                         <xs:attribute type="xs:float" name="refrIndex3" use="optional"/>
                         <xs:attribute type="xs:float" name="refrIndex_air" use="optional"/>
-                        <xs:attribute type="xs:float" name="averagePower_w" use="optional"/>
+                        <xs:attribute type="xs:float" name="pulseAmplitude_W" use="optional"/>
                         <xs:attribute type="xs:short" name="numFibers" use="optional"/>
                         <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
                         <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>

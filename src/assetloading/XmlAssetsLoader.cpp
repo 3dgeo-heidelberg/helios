@@ -834,8 +834,13 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
     XmlUtils::getAttributeCast<double>(scannerNode, "pulseLength_ns", 4.0);
   std::string id = XmlUtils::getAttributeCast<std::string>(
     scannerNode, "id", std::string("Default"));
-  double avgPower =
-    XmlUtils::getAttributeCast<double>(scannerNode, "averagePower_w", 4.0);
+  if (XmlUtils::hasAttribute(scannerNode, "averagePower_w"))
+    throw HeliosException(
+      "averagePower_w was removed; use pulseAmplitude_W for whole-beam peak "
+      "power. To preserve legacy waveforms, multiply the old coefficient by "
+      "4/exp(2); this is not an average-to-peak power conversion.");
+  double pulseAmplitude =
+    XmlUtils::getAttributeCast<double>(scannerNode, "pulseAmplitude_W", 1.0);
   double beamQuality =
     XmlUtils::getAttributeCast<double>(scannerNode, "beamQualityFactor", 1.0);
   double efficiency =
@@ -866,7 +871,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                emitterAttitude,
                                pulseFreqs,
                                pulseLength_ns,
-                               avgPower,
+                               pulseAmplitude,
                                beamQuality,
                                efficiency,
                                receiverDiameter,
@@ -895,7 +900,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               pulseFreqs,
                                               pulseLength_ns,
                                               id,
-                                              avgPower,
+                                              pulseAmplitude,
                                               beamQuality,
                                               efficiency,
                                               receiverDiameter,
@@ -1593,6 +1598,15 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       _scanHead->cfg_device_rotateAxis = shra;
     }
     scanner->setScannerHead(_scanHead, idx);
+    if (XmlUtils::hasAttribute(chan, "averagePower_w"))
+      throw HeliosException(
+        "averagePower_w was removed; use pulseAmplitude_W for whole-beam peak "
+        "power. To preserve legacy waveforms, multiply the old coefficient by "
+        "4/exp(2); this is not an average-to-peak power conversion.");
+    scanner->setPulseAmplitude(
+      XmlUtils::getAttributeCast<double>(
+        chan, "pulseAmplitude_W", scanner->getPulseAmplitude(idx)),
+      idx);
     // Check general attributes
     scanner->setBeamDivergence(
       XmlUtils::getAttributeCast<double>(

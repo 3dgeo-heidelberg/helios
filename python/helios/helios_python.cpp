@@ -1750,6 +1750,11 @@ PYBIND11_MODULE(_helios, m)
     .def("compute_intensity", &EnergyModel::computeIntensity)
     .def("compute_intensity_from_cosine",
          &EnergyModel::computeIntensityFromCosine)
+    .def("compute_transfer_from_cosine",
+         &EnergyModel::computeTransferFromCosine)
+    .def("compute_transfer_with_sigma", &EnergyModel::computeTransferWithSigma)
+    .def("compute_received_power_with_sigma",
+         &EnergyModel::computeReceivedPowerWithSigma)
     .def("compute_received_power", &EnergyModel::computeReceivedPower)
     .def("compute_emitted_power", &EnergyModel::computeEmittedPower)
     .def("compute_target_area", &EnergyModel::computeTargetArea)
@@ -1934,11 +1939,13 @@ PYBIND11_MODULE(_helios, m)
          py::arg("value"),
          py::arg("index"))
 
-    .def("get_specific_average_power",
-         py::overload_cast<size_t>(&Scanner::getAveragePower, py::const_),
+    .def("calc_transfer_from_cosine", &Scanner::calcTransferFromCosine)
+    .def("calc_transfer_with_sigma", &Scanner::calcTransferWithSigma)
+    .def("get_specific_pulse_amplitude",
+         py::overload_cast<size_t>(&Scanner::getPulseAmplitude, py::const_),
          py::arg("index"))
-    .def("set_specific_average_power",
-         py::overload_cast<double, size_t>(&Scanner::setAveragePower),
+    .def("set_specific_pulse_amplitude",
+         py::overload_cast<double, size_t>(&Scanner::setPulseAmplitude),
          py::arg("value"),
          py::arg("index"))
 
@@ -2161,9 +2168,9 @@ PYBIND11_MODULE(_helios, m)
     .def_property("beam_divergence",
                   py::overload_cast<>(&Scanner::getBeamDivergence, py::const_),
                   py::overload_cast<double>(&Scanner::setBeamDivergence))
-    .def_property("average_power",
-                  py::overload_cast<>(&Scanner::getAveragePower, py::const_),
-                  py::overload_cast<double>(&Scanner::setAveragePower))
+    .def_property("pulse_amplitude",
+                  py::overload_cast<>(&Scanner::getPulseAmplitude, py::const_),
+                  py::overload_cast<double>(&Scanner::setPulseAmplitude))
     .def_property("beam_quality",
                   py::overload_cast<>(&Scanner::getBeamQuality, py::const_),
                   py::overload_cast<double>(&Scanner::setBeamQuality))
@@ -2438,7 +2445,7 @@ PYBIND11_MODULE(_helios, m)
          py::arg("pulse_freqs"),
          py::arg("pulse_length"),
          py::arg("id"),
-         py::arg("average_power"),
+         py::arg("pulse_amplitude"),
          py::arg("beam_quality"),
          py::arg("efficiency"),
          py::arg("receiver_diameter"),
@@ -2512,11 +2519,12 @@ PYBIND11_MODULE(_helios, m)
          py::arg("value"),
          py::arg("index"))
 
-    .def("get_specific_average_power",
-         py::overload_cast<size_t>(&SingleScanner::getAveragePower, py::const_),
-         py::arg("index"))
-    .def("set_specific_average_power",
-         py::overload_cast<double, size_t>(&SingleScanner::setAveragePower),
+    .def(
+      "get_specific_pulse_amplitude",
+      py::overload_cast<size_t>(&SingleScanner::getPulseAmplitude, py::const_),
+      py::arg("index"))
+    .def("set_specific_pulse_amplitude",
+         py::overload_cast<double, size_t>(&SingleScanner::setPulseAmplitude),
          py::arg("value"),
          py::arg("index"))
 
@@ -2779,10 +2787,11 @@ PYBIND11_MODULE(_helios, m)
          py::arg("beam_divergence"),
          py::arg("idx"))
 
-    .def("get_average_power", &MultiScanner::getAveragePower, py::arg("idx"))
-    .def("set_average_power",
-         &MultiScanner::setAveragePower,
-         py::arg("average_power"),
+    .def(
+      "get_pulse_amplitude", &MultiScanner::getPulseAmplitude, py::arg("idx"))
+    .def("set_pulse_amplitude",
+         &MultiScanner::setPulseAmplitude,
+         py::arg("pulse_amplitude"),
          py::arg("idx"))
 
     .def("get_num_rays", &MultiScanner::getNumRays, py::arg("idx"))

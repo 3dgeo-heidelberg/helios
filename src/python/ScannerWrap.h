@@ -196,6 +196,37 @@ public:
       double, Scanner, calcIntensity, targetRange, sigma, subrayIndex, idx);
   }
 
+  double calcTransferFromCosine(double const incidenceCosine,
+                                double const targetRange,
+                                Material const& mat,
+                                std::size_t subrayIndex,
+                                size_t const idx
+                                  INTENSITY_RECORDS_ARG) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double,
+                           Scanner,
+                           calcTransferFromCosine,
+                           incidenceCosine,
+                           targetRange,
+                           mat,
+                           subrayIndex,
+                           idx INTENSITY_RECORDS_MACRO_ARG);
+  }
+
+  double calcTransferWithSigma(double const targetRange,
+                               double const sigma,
+                               std::size_t subrayIndex,
+                               size_t const idx) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double,
+                           Scanner,
+                           calcTransferWithSigma,
+                           targetRange,
+                           sigma,
+                           subrayIndex,
+                           idx);
+  }
+
   void onLegComplete() override
   {
     PYBIND11_OVERLOAD_PURE(void, Scanner, onLegComplete, );
@@ -254,14 +285,15 @@ public:
       void, Scanner, setBeamDivergence, beamDivergence, idx);
   }
 
-  double getAveragePower(size_t const idx) const override
+  double getPulseAmplitude(size_t const idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(double, Scanner, getAveragePower, idx);
+    PYBIND11_OVERLOAD_PURE(double, Scanner, getPulseAmplitude, idx);
   }
 
-  void setAveragePower(double const averagePower, size_t const idx) override
+  void setPulseAmplitude(double const pulseAmplitude, size_t const idx) override
   {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setAveragePower, averagePower, idx);
+    PYBIND11_OVERLOAD_PURE(
+      void, Scanner, setPulseAmplitude, pulseAmplitude, idx);
   }
 
   double getBeamQuality(size_t const idx) const override

@@ -37,7 +37,7 @@ public:
    *  \Biggr)
    * \f]
    *
-   * @param reversedI0 The reversed average power of the device \f$I_0'\f$
+   * @param reversedI0 The legacy reversed emission coefficient \f$I_0'\f$
    *  as in Carlsson 2001, Signature simulation and signal analysis for 3D
    *  laser radar, equation 2.3.
    * @param w Let \f$\lambda\f$ be the wavelength in meters,
