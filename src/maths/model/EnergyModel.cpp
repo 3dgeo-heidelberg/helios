@@ -69,16 +69,38 @@ EnergyModel::computeIntensityFromCosine(
 #endif
 )
 {
+  return sd.pulseAmplitude_W * 1e9 *
+         computeTransferFromCosine(incidenceCosine,
+                                   targetRange,
+                                   mat,
+                                   subrayIndex
+#if DATA_ANALYTICS >= 2
+                                   ,
+                                   calcIntensityRecords
+#endif
+         );
+}
+
+double
+EnergyModel::computeTransferFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+)
+{
   double const rangeSquared = targetRange * targetRange;
-  double const emittedPower =
-    computeEmittedPower(EmittedPowerArgs{ subrayIndex });
+  double const share = sd.getSubrays().at(subrayIndex).share;
   double const brdf = EnergyMaths::computeBRDFFromCosine(mat, incidenceCosine);
   double const atmosphere =
     EnergyMaths::calcAtmosphericFactor(targetRange, sd.atmosphericExtinction);
   // sigma = 4*pi*BRDF*A cancels A in the extended-target equation.
-  double const receivedPower = PI * emittedPower * sd.cached_Dr2 *
-                               sd.efficiency * atmosphere * brdf /
-                               (4.0 * rangeSquared);
+  double const transfer = PI * share * sd.cached_Dr2 * sd.efficiency *
+                          atmosphere * brdf / (4.0 * rangeSquared);
 #if DATA_ANALYTICS >= 2
   double const area = computeTargetArea(
     TargetAreaArgs{ rangeSquared, subrayIndex }, calcIntensityRecords);
@@ -88,12 +110,12 @@ EnergyModel::computeIntensityFromCosine(
   record[5] = area;
   record[7] = brdf;
   record[8] = EnergyMaths::calcCrossSection(brdf, area);
-  record[9] = receivedPower;
+  record[9] = sd.pulseAmplitude_W * transfer;
   record[10] = 0;
-  record[11] = emittedPower;
+  record[11] = sd.pulseAmplitude_W * share;
   record[12] = subrayIndex;
 #endif
-  return receivedPower * 1e09;
+  return transfer;
 }
 
 double
@@ -101,9 +123,17 @@ EnergyModel::computeReceivedPowerWithSigma(double targetRange,
                                            double sigma,
                                            std::size_t subrayIndex)
 {
+  return sd.pulseAmplitude_W * 1e9 *
+         computeTransferWithSigma(targetRange, sigma, subrayIndex);
+}
+
+double
+EnergyModel::computeTransferWithSigma(double targetRange,
+                                      double sigma,
+                                      std::size_t subrayIndex)
+{
   double const rangeSquared = targetRange * targetRange;
-  double const emittedPower =
-    computeEmittedPower(EmittedPowerArgs{ subrayIndex });
+  double const share = sd.getSubrays().at(subrayIndex).share;
 #if DATA_ANALYTICS >= 2
   std::vector<std::vector<double>> unusedRecords;
   double const area = computeTargetArea(
@@ -114,19 +144,18 @@ EnergyModel::computeReceivedPowerWithSigma(double targetRange,
 #endif
   double const atmosphere =
     EnergyMaths::calcAtmosphericFactor(targetRange, sd.atmosphericExtinction);
-  return EnergyMaths::calcReceivedPowerFast(emittedPower,
+  return EnergyMaths::calcReceivedPowerFast(share,
                                             sd.cached_Dr2,
                                             16.0 * area * rangeSquared,
                                             sd.efficiency,
                                             atmosphere,
-                                            sigma) *
-         1e09;
+                                            sigma);
 }
 
 double
 EnergyModel::computeEmittedPower(EmittedPowerArgs const& args)
 {
-  return sd.averagePower_w * sd.getSubrays().at(args.subrayIndex).share;
+  return sd.pulseAmplitude_W * sd.getSubrays().at(args.subrayIndex).share;
 }
 
 double

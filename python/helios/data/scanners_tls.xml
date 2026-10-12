@@ -6,18 +6,19 @@
 
   <!-- ##### BEGIN RIEGL VZ-400 ##### -->
   <scanner  id                         = "riegl_vz400"
-            name                       = "RIEGL VZ-400"
             accuracy_m                 = "0.005"
             beamDivergence_rad         = "0.0003"
             headRotatePerSecMax_deg    = "60"
+            name                       = "RIEGL VZ-400"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "100000,300000"
             pulseLength_ns             = "5"
             rangeMin_m                 = "1.5"
-            scanAngleMax_deg           = "120"
             scanAngleEffectiveMax_deg  = "50"
-            scanFreqMin_Hz             = "3"
-            scanFreqMax_Hz             = "120">
+            scanAngleMax_deg           = "120"
+            scanFreqMax_Hz             = "120"
+            scanFreqMin_Hz             = "3">
 
     <FWFSettings beamSampleQuality="3"/>
     <beamOrigin x="0" y="0" z="0.2">
@@ -38,13 +39,14 @@
             headRotatePerSecMax_deg    = "60"
             name                       = "RIEGL VZ-1000"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "70000,100000,150000,300000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "2.5"
-            scanAngleMax_deg           = "120"
             scanAngleEffectiveMax_deg  = "50"
-            scanFreqMin_Hz             = "3"
-            scanFreqMax_Hz             = "120">
+            scanAngleMax_deg           = "120"
+            scanFreqMax_Hz             = "120"
+            scanFreqMin_Hz             = "3">
 
     <FWFSettings beamSampleQuality="3"/>
   </scanner>
@@ -52,19 +54,20 @@
 
 
 	<!-- ##### BEGIN RIEGL VZ-2000i ##### -->	
-	<scanner 	id 							          = "riegl_vz2000i"
-            name                      = "RIEGL VZ-2000i"
-            accuracy_m                = "0.005"
-            beamDivergence_rad        = "0.00027"
-            headRotatePerSecMax_deg   = "150"
-            optics                    = "rotating"
-            pulseFreqs_Hz             = "50000,100000,300000,600000,1200000"
-            pulseLength_ns            = "5"
-            rangeMin_m                = "1.5"
-            scanAngleMax_deg          = "120"
-            scanAngleEffectiveMax_deg = "50"
-            scanFreqMin_Hz            = "3"
-            scanFreqMax_Hz            = "240">
+	<scanner  id                         = "riegl_vz2000i"
+	          accuracy_m                 = "0.005"
+	          beamDivergence_rad         = "0.00027"
+	          headRotatePerSecMax_deg    = "150"
+	          name                       = "RIEGL VZ-2000i"
+	          optics                     = "rotating"
+	          pulseAmplitude_W           = "2.1653645317858032"
+	          pulseFreqs_Hz              = "50000,100000,300000,600000,1200000"
+	          pulseLength_ns             = "5"
+	          rangeMin_m                 = "1.5"
+	          scanAngleEffectiveMax_deg  = "50"
+	          scanAngleMax_deg           = "120"
+	          scanFreqMax_Hz             = "240"
+	          scanFreqMin_Hz             = "3">
         
       <FWFSettings beamSampleQuality="3"/>	
         <beamOrigin x="0" y="0" z="0.2">
@@ -79,18 +82,19 @@
 
   <!-- ##### BEGIN RIEGL VZ-600i ##### -->    
   <scanner  id                         = "riegl_vz600i"
-            name                       = "RIEGL VZ-600i"
             accuracy_m                 = "0.005"
             beamDivergence_rad         = "0.00035"
             headRotatePerSecMax_deg    = "360"
+            name                       = "RIEGL VZ-600i"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "140000,600000,1200000,2200000"
             pulseLength_ns             = "5"
             rangeMin_m                 = "0.5"
-            scanAngleMax_deg           = "52.5"
             scanAngleEffectiveMax_deg  = "52.5"
-            scanFreqMin_Hz             = "4"
-            scanFreqMax_Hz             = "420">
+            scanAngleMax_deg           = "52.5"
+            scanFreqMax_Hz             = "420"
+            scanFreqMin_Hz             = "4">
       
       <FWFSettings beamSampleQuality="3"/>    
       <beamOrigin x="0" y="0" z="0.2">
@@ -109,13 +113,14 @@
             beamDivergence_rad         = "0.0003"
             name                       = "RIEGL VQ-450"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "150000,200000,300000,380000,550000,550000"
             pulseLength_ns             = "4"
             rangeMin_m                 = "1.5"
-            scanAngleMax_deg           = "360"
             scanAngleEffectiveMax_deg  = "360"
-            scanFreqMin_Hz             = "10"
-            scanFreqMax_Hz             = "200">
+            scanAngleMax_deg           = "360"
+            scanFreqMax_Hz             = "200"
+            scanFreqMin_Hz             = "10">
 
 		<FWFSettings beamSampleQuality="3"/>
 		<beamOrigin x="0" y="0.14" z="0.126">
@@ -132,23 +137,24 @@
   <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
        We use the value for the semi-minor axis -->
   <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
-  <scanner  id                        = "livox_mid-40" 
-            accuracy_m                = "0.01"
-            beamDivergence_rad        = "0.00089" 
-            name                      = "Livox Mid-40" 
-            optics                    = "risley" 
-            pulseFreqs_Hz             = "100000" 
-            pulseLength_ns            = "4" 
-            rangeMin_m                = "1"
-            maxNOR                    = "2"
-            wavelength_nm             = "905" 
-            rotorFreq1_Hz             = "-121.5657" 
-            rotorFreq2_Hz             = "77.7430" 
-            angle1_deg                = "18.7481" 
-            angle2_deg                = "17.9634" 
-            refrIndex1                = "1.51" 
-            refrIndex2                = "1.51" 
-            refrIndex_air             = "1.0">
+  <scanner  id                  = "livox_mid-40"
+            accuracy_m          = "0.01"
+            angle1_deg          = "18.7481"
+            angle2_deg          = "17.9634"
+            beamDivergence_rad  = "0.00089"
+            maxNOR              = "2"
+            name                = "Livox Mid-40"
+            optics              = "risley"
+            pulseAmplitude_W    = "2.1653645317858032"
+            pulseFreqs_Hz       = "100000"
+            pulseLength_ns      = "4"
+            rangeMin_m          = "1"
+            refrIndex1          = "1.51"
+            refrIndex2          = "1.51"
+            refrIndex_air       = "1.0"
+            rotorFreq1_Hz       = "-121.5657"
+            rotorFreq2_Hz       = "77.7430"
+            wavelength_nm       = "905">
 
     <FWFSettings beamSampleQuality="3" />
     <!-- height to beam origin is 0.0547 m, add as z offset if needed -->
@@ -161,23 +167,24 @@
   <!-- ##### LIVOX Mid-100 -->
   <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
        We use the value for the semi-minor axis -->
-  <scanner  id                         = "livox-mid-100"
-            accuracy_m                = "0.02"
-            beamDivergence_rad        = "0.00089" 
-            name                      = "Livox Mid-100" 
-            optics                    = "risley" 
-            pulseFreqs_Hz             = "100000" 
-            pulseLength_ns            = "4" 
-            rangeMin_m                = "1"
-            maxNOR                    = "2" 
-            wavelength_nm             = "905" 
-            rotorFreq1_Hz             = "-121.5657" 
-            rotorFreq2_Hz             = "77.7430" 
-            angle1_deg                = "18.7481" 
-            angle2_deg                = "17.9634" 
-            refrIndex1                = "1.51" 
-            refrIndex2                = "1.51" 
-            refrIndex_air             = "1.0">
+  <scanner  id                  = "livox-mid-100"
+            accuracy_m          = "0.02"
+            angle1_deg          = "18.7481"
+            angle2_deg          = "17.9634"
+            beamDivergence_rad  = "0.00089"
+            maxNOR              = "2"
+            name                = "Livox Mid-100"
+            optics              = "risley"
+            pulseAmplitude_W    = "2.1653645317858032"
+            pulseFreqs_Hz       = "100000"
+            pulseLength_ns      = "4"
+            rangeMin_m          = "1"
+            refrIndex1          = "1.51"
+            refrIndex2          = "1.51"
+            refrIndex_air       = "1.0"
+            rotorFreq1_Hz       = "-121.5657"
+            rotorFreq2_Hz       = "77.7430"
+            wavelength_nm       = "905">
     <!-- height to beam origin is 0.0547 m, add as z offset to beam origin if needed -->
     <beamOrigin x="0" y="0" z="0"/>
     <channels>
@@ -210,23 +217,24 @@
   <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
        We use the value for the semi-minor axis -->
   <!-- prism angles (angle1_deg, angle2_deg) estimated based on the FOV provided in the data sheet (70.4°). -->
-  <scanner  id                         = "livox_mid-70"
-            accuracy_m                 = "0.02"
-            beamDivergence_rad         = "0.00089"
-            name                       = "Livox Mid-70"
-            optics                     = "risley"
-            pulseFreqs_Hz              = "100000"
-            pulseLength_ns             = "4"
-            rangeMin_m                 = "2"
-            maxNOR                     = "2"
-            wavelength_nm              = "905"
-            rotorFreq1_Hz              = "-77.733333333"
-            rotorFreq2_Hz              = "121.566666666"
-            angle1_deg                 = "-29.7"
-            angle2_deg                 = "29.7"
-            refrIndex1                 = "1.5095"
-            refrIndex2                 = "1.5095"
-            refrIndex_air              = "1.0">
+  <scanner  id                  = "livox_mid-70"
+            accuracy_m          = "0.02"
+            angle1_deg          = "-29.7"
+            angle2_deg          = "29.7"
+            beamDivergence_rad  = "0.00089"
+            maxNOR              = "2"
+            name                = "Livox Mid-70"
+            optics              = "risley"
+            pulseAmplitude_W    = "2.1653645317858032"
+            pulseFreqs_Hz       = "100000"
+            pulseLength_ns      = "4"
+            rangeMin_m          = "2"
+            refrIndex1          = "1.5095"
+            refrIndex2          = "1.5095"
+            refrIndex_air       = "1.0"
+            rotorFreq1_Hz       = "-77.733333333"
+            rotorFreq2_Hz       = "121.566666666"
+            wavelength_nm       = "905">
 
     <FWFSettings beamSampleQuality="3"/>
     <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
@@ -239,23 +247,24 @@
   <!-- ##### LIVOX Mid-100 -->
   <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
        We use the value for the semi-minor axis -->
-  <scanner  id                         = "livox_mid-100"
-            accuracy_m                = "0.02"
-            beamDivergence_rad        = "0.00089" 
-            name                      = "Livox Mid-100" 
-            optics                    = "risley" 
-            pulseFreqs_Hz             = "100000" 
-            pulseLength_ns            = "4" 
-            rangeMin_m                = "1"
-            maxNOR                    = "2" 
-            wavelength_nm             = "905" 
-            rotorFreq1_Hz             = "-121.5657" 
-            rotorFreq2_Hz             = "77.7430" 
-            angle1_deg                = "18.7481" 
-            angle2_deg                = "17.9634" 
-            refrIndex1                = "1.51" 
-            refrIndex2                = "1.51" 
-            refrIndex_air             = "1.0">
+  <scanner  id                  = "livox_mid-100"
+            accuracy_m          = "0.02"
+            angle1_deg          = "18.7481"
+            angle2_deg          = "17.9634"
+            beamDivergence_rad  = "0.00089"
+            maxNOR              = "2"
+            name                = "Livox Mid-100"
+            optics              = "risley"
+            pulseAmplitude_W    = "2.1653645317858032"
+            pulseFreqs_Hz       = "100000"
+            pulseLength_ns      = "4"
+            rangeMin_m          = "1"
+            refrIndex1          = "1.51"
+            refrIndex2          = "1.51"
+            refrIndex_air       = "1.0"
+            rotorFreq1_Hz       = "-121.5657"
+            rotorFreq2_Hz       = "77.7430"
+            wavelength_nm       = "905">
 
     <!-- height to beam origin is 0.0547 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
@@ -289,26 +298,27 @@
   <!-- elliptical beam divergence: horizontal: 0.03°, vertical: 0.28°. In radians, this is 0.00052 rad x 0.00489 rad. We assume that the divergence is provided at FWHM, which at the 1/e2 point corresponds to 0.00089 rad x 0.0083 rad (mean: 0.0046 rad).
        We use the value for the semi-minor axis -->
   <!-- accuracy_m: The datasheet states a range precision of 0.02 m (1 sigma @ 20 m), however, in controlled measurements of a flat wall at small ranges (approx. 2 m), we found accuracy_m = 0.01 m to better match real-world acquisitions -->
-  <scanner  id                         = "livox-avia-non-repetitive"
-            accuracy_m                 = "0.01" 
-            beamDivergence_rad         = "0.00089" 
-            name                       = "Livox Avia (non-repetitive)" 
-            optics                     = "risley" 
-            pulseFreqs_Hz              = "40000" 
-            pulseLength_ns             = "4" 
-            rangeMin_m                 = "1"
-            maxNOR                     = "3"
-            wavelength_nm              = "905" 
-            rotorFreq1_Hz              = "-131.5463" 
-            rotorFreq2_Hz              = "40.8032" 
-            rotorFreq3_Hz              = "213.1611" 
-            angle1_deg                 = "30.8856" 
-            angle2_deg                 = "29.7735" 
-            angle3_deg                 = "3.1351" 
-            refrIndex1                 = "1.51" 
-            refrIndex2                 = "1.51" 
-            refrIndex3                 = "1.51" 
-            refrIndex_air              = "1.0">
+  <scanner  id                  = "livox-avia-non-repetitive"
+            accuracy_m          = "0.01"
+            angle1_deg          = "30.8856"
+            angle2_deg          = "29.7735"
+            angle3_deg          = "3.1351"
+            beamDivergence_rad  = "0.00089"
+            maxNOR              = "3"
+            name                = "Livox Avia (non-repetitive)"
+            optics              = "risley"
+            pulseAmplitude_W    = "2.1653645317858032"
+            pulseFreqs_Hz       = "40000"
+            pulseLength_ns      = "4"
+            rangeMin_m          = "1"
+            refrIndex1          = "1.51"
+            refrIndex2          = "1.51"
+            refrIndex3          = "1.51"
+            refrIndex_air       = "1.0"
+            rotorFreq1_Hz       = "-131.5463"
+            rotorFreq2_Hz       = "40.8032"
+            rotorFreq3_Hz       = "213.1611"
+            wavelength_nm       = "905">
 
     <!-- height to beam origin is 0.0324 m, add as z offset if needed -->
     <beamOrigin x="0" y="0" z="0.0"/>
@@ -344,19 +354,20 @@
   <scanner  id                         = "vlp16"
             accuracy_m                 = "0.03"
             beamDivergence_rad         = "0.0007"
+            headRotatePerSecMax_deg    = "7200"
+            maxNOR                     = "2"
             name                       = "Velodyne VLP-16"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "18750"
             pulseLength_ns             = "5"
-            rangeMin_m                 = "0.09144"
             rangeMax_m                 = "100"
-            scanAngleMax_deg           = "1"
+            rangeMin_m                 = "0.09144"
             scanAngleEffectiveMax_deg  = "1"
-            scanFreqMin_Hz             = "0"
+            scanAngleMax_deg           = "1"
             scanFreqMax_Hz             = "0"
-            wavelength_nm              = "905"
-            maxNOR                     = "2"
-            headRotatePerSecMax_deg    = "7200">
+            scanFreqMin_Hz             = "0"
+            wavelength_nm              = "905">
 
     <headRotateAxis x="0" y="0" z="1"/>
     <FWFSettings beamSampleQuality="3"/>  <!-- set to one for fast simulations -->
@@ -454,19 +465,20 @@
   <scanner  id                         = "velodyne_hdl-64e"
             accuracy_m                 = "0.02"
             beamDivergence_rad         = "0.0034"
+            headRotatePerSecMax_deg    = "5400"
+            maxNOR                     = "1"
             name                       = "Velodyne HDL-64E"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "20833"
             pulseLength_ns             = "5"
-            rangeMin_m                 = "0.9144"
             rangeMax_m                 = "120"
-            scanAngleMax_deg           = "1"
+            rangeMin_m                 = "0.9144"
             scanAngleEffectiveMax_deg  = "1"
-            scanFreqMin_Hz             = "0"
+            scanAngleMax_deg           = "1"
             scanFreqMax_Hz             = "0"
-            wavelength_nm              = "905"
-            maxNOR                     = "1"
-            headRotatePerSecMax_deg    = "5400">  <!-- up to 15 Hz = 15 rotations per second -->
+            scanFreqMin_Hz             = "0"
+            wavelength_nm              = "905">  <!-- up to 15 Hz = 15 rotations per second -->
 
     <FWFSettings beamSampleQuality="1"/>  <!-- set to one for fast simulations -->
     <channels>
@@ -803,18 +815,19 @@
 
 
   <!-- ##### BEGIN Tractor scanner ##### -->
-  <scanner id                         = "tractorscanner"
-           accuracy_m                 = "0"
-           beamDivergence_rad         = "0.00035"
-           name                       = "Tractor Scanner"
-           optics                     = "oscillating"
-           pulseFreqs_Hz              = "1000,50000,100000,200000"
-           pulseLength_ns             = "4"
-           rangeMin_m                 = "0"
-           scanAngleMax_deg           = "30"
-           scanAngleEffectiveMax_deg  = "50"
-           scanFreqMin_Hz             = "100"
-           scanFreqMax_Hz             = "50">
+  <scanner  id                         = "tractorscanner"
+            accuracy_m                 = "0"
+            beamDivergence_rad         = "0.00035"
+            name                       = "Tractor Scanner"
+            optics                     = "oscillating"
+            pulseAmplitude_W           = "2.1653645317858032"
+            pulseFreqs_Hz              = "1000,50000,100000,200000"
+            pulseLength_ns             = "4"
+            rangeMin_m                 = "0"
+            scanAngleEffectiveMax_deg  = "50"
+            scanAngleMax_deg           = "30"
+            scanFreqMax_Hz             = "50"
+            scanFreqMin_Hz             = "100">
 
     <FWFSettings beamSampleQuality="3"/>
   </scanner>
@@ -822,18 +835,19 @@
 
   <!-- ##### BEGIN Panoramic scanner ##### -->
   <scanner  id                         = "panoscanner"
-            name                       = "PANO"
             accuracy_m                 = "0.005"
             beamDivergence_rad         = "0.0003"
             headRotatePerSecMax_deg    = "500"
+            name                       = "PANO"
             optics                     = "rotating"
+            pulseAmplitude_W           = "2.1653645317858032"
             pulseFreqs_Hz              = "100000,300000"
             pulseLength_ns             = "5"
             rangeMin_m                 = "0.01"
-            scanAngleMax_deg           = "180"
             scanAngleEffectiveMax_deg  = "150"
-            scanFreqMin_Hz             = "0"
-            scanFreqMax_Hz             = "12000">
+            scanAngleMax_deg           = "180"
+            scanFreqMax_Hz             = "12000"
+            scanFreqMin_Hz             = "0">
 
     <FWFSettings beamSampleQuality="3"/>
     <beamOrigin x="0" y="0" z="0.2">

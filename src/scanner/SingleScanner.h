@@ -34,7 +34,7 @@ public:
     std::list<int> const& pulseFreqs,
     double const pulseLength_ns,
     std::string const id,
-    double const averagePower,
+    double const pulseAmplitude,
     double const beamQuality,
     double const efficiency,
     double const receiverDiameter,
@@ -177,6 +177,23 @@ public:
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const override;
+  /** Dimensionless received/whole-beam peak-power transfer, including subray
+   * share. */
+  double calcTransferFromCosine(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const override;
+  double calcTransferWithSigma(double targetRange,
+                               double sigma,
+                               std::size_t subrayIndex,
+                               size_t idx) const override;
   /**
    * @see Scanner::calcIntensity
    */
@@ -262,18 +279,18 @@ public:
     scanDev.setBeamDivergence(beamDivergence);
   }
   /**
-   * @see Scanner::getAveragePower
+   * @see Scanner::getPulseAmplitude
    */
-  double getAveragePower(size_t const idx) const override
+  double getPulseAmplitude(size_t const idx) const override
   {
-    return scanDev.averagePower_w;
+    return scanDev.pulseAmplitude_W;
   }
   /**
-   * @see Scanner::setAveragePower
+   * @see Scanner::setPulseAmplitude
    */
-  void setAveragePower(double const averagePower, size_t const idx) override
+  void setPulseAmplitude(double const pulseAmplitude, size_t const idx) override
   {
-    scanDev.averagePower_w = averagePower;
+    scanDev.setPulseAmplitude(pulseAmplitude);
   }
   /**
    * @see Scanner::getBeamQuality

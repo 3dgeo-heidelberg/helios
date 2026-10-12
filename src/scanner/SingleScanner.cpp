@@ -13,7 +13,7 @@ SingleScanner::SingleScanner(
   std::list<int> const& pulseFreqs,
   double pulseLength_ns,
   std::string id,
-  double averagePower,
+  double pulseAmplitude,
   double beamQuality,
   double efficiency,
   double receiverDiameter,
@@ -39,7 +39,7 @@ SingleScanner::SingleScanner(
             beamOrientation,
             pulseFreqs,
             pulseLength_ns,
-            averagePower,
+            pulseAmplitude,
             beamQuality,
             efficiency,
             receiverDiameter,
@@ -296,4 +296,37 @@ SingleScanner::calcIntensity(double targetRange,
                              size_t idx) const
 {
   return scanDev.calcIntensity(targetRange, sigma, subrayIndex);
+}
+
+double
+SingleScanner::calcTransferFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex,
+  size_t idx
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+) const
+{
+  return scanDev.calcTransferFromCosine(incidenceCosine,
+                                        targetRange,
+                                        mat,
+                                        subrayIndex
+#if DATA_ANALYTICS >= 2
+                                        ,
+                                        calcIntensityRecords
+#endif
+  );
+}
+
+double
+SingleScanner::calcTransferWithSigma(double targetRange,
+                                     double sigma,
+                                     std::size_t subrayIndex,
+                                     size_t idx) const
+{
+  return scanDev.calcTransferWithSigma(targetRange, sigma, subrayIndex);
 }
