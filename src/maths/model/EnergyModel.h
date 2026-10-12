@@ -35,6 +35,21 @@ public:
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   );
+  /** Received/whole-beam peak-power ratio, including the absolute subray share.
+   */
+  double computeTransferFromCosine(
+    double incidenceCosine,
+    double targetRange,
+    Material const& mat,
+    std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  );
+  double computeTransferWithSigma(double targetRange,
+                                  double sigma,
+                                  std::size_t subrayIndex);
   /** Extended-target return. Public intensity units remain unchanged. */
   double computeReceivedPower(
     ReceivedPowerArgs const& args
@@ -47,7 +62,8 @@ public:
   double computeReceivedPowerWithSigma(double targetRange,
                                        double sigma,
                                        std::size_t subrayIndex);
-  /** Total emitted power times this subray's absolute Gaussian share. */
+  /** Whole-beam peak emitted power times this subray's absolute Gaussian share.
+   */
   double computeEmittedPower(EmittedPowerArgs const& args);
   /** Table-derived transverse patch area, retained for external
    * sigma/analytics. */

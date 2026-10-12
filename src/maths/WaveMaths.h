@@ -35,11 +35,12 @@ public:
    *
    * \f[
    * \begin{split}
-   *  w_i =& \frac{(ih)^2}{\tau^2} \exp{-\frac{ih}{\tau}} \\
-   *      =& \frac{t_i^2}{\tau^2} \exp{-\frac{t_i}{\tau}}
+   *  w_i =& \frac{e^2}{4} \frac{(ih)^2}{\tau^2} \exp{-\frac{ih}{\tau}} \\
+   *      =& \frac{e^2}{4} \frac{t_i^2}{\tau^2} \exp{-\frac{t_i}{\tau}}
    * \end{split}
    * \f]
    *
+   * The analytic peak is one; sampled maxima are not renormalized.
    * The peak intensity index is simply obtained by taking the \f$i\f$-th
    *  index of the greatest \f$w_i\f$.
    *

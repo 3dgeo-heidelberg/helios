@@ -204,10 +204,10 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - **Provided by**
      - **Default Value**
 
-   * - Average power
-     - Transmitted optical power (watts)
-     - User: ``averagePower_w`` in **scanner XML**
-     - 4.0 W
+   * - Pulse amplitude
+     - Whole-beam peak optical power before footprint truncation (watts)
+     - User: ``pulseAmplitude_W`` in **scanner XML**
+     - 1.0 W (reference amplitude)
 
    * - Aperture size
      - Receiver aperture diameter (meters)
@@ -259,6 +259,37 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - Controls sharpness of specular highlights (material property)
      - User: ``Ns`` in material file (`.mtl`)
      - —
+
+.. _pulse_amplitude:
+
+Whole-beam pulse amplitude
+--------------------------
+
+``pulseAmplitude_W`` (Python ``scanner.pulse_amplitude``) specifies the effective peak optical power of the **entire emitted beam**, not an individual subray. Users supply or calibrate this value for their operating conditions. HELIOS++ does not infer it from manufacturer average power, repetition rate, or pulse length. The default 1 W is a reference amplitude, not a scanner specification.
+
+For amplitude :math:`A_p` and a dimensionless unit-peak temporal shape :math:`h`:
+
+.. math::
+
+   P_\mathrm{emit}(t) = A_p h(t), \qquad E_\mathrm{pulse} = A_p \int h(t)\,dt.
+
+Time in the energy integral is in seconds. The current shape is :math:`h(t)=(e^2/4)(t/\tau)^2 e^{-t/\tau}`, with analytic maximum one at :math:`t=2\tau`. Sampling can miss this peak; samples are not renormalized. Pulse duration and shape therefore affect pulse energy at fixed amplitude. The existing finite sampling window and timing convention remain unchanged.
+
+Each subray receives peak power :math:`A_p s_i`, where :math:`s_i` is its absolute Gaussian power fraction. At fixed footprint extent, the sum of these fractions is independent of subray count. With ``beamSamplingFactor`` :math:`f`, the captured fraction is :math:`1-e^{-2f^2}`; power outside the sampling cone is not redistributed among the retained rays.
+
+The energy model computes dimensionless transfer coefficients :math:`H_i`, including these subray fractions. Waveform construction then evaluates:
+
+.. math::
+
+   P_\mathrm{received}(t) = A_p \sum_i H_i h(t-t_i).
+
+Amplitude is applied before detection and fitting. Existing intensity outputs retain their numerical convention :math:`10^9 P_\mathrm{received}` (power in watts). Despite its name, ``receivedEnergyMin_W`` is currently compared directly against these scaled samples; this change does not correct that separate unit mismatch. Intersection callbacks receive the same scaled intensity convention; custom callbacks may themselves depend on amplitude.
+
+.. versionchanged:: 3.0
+
+   ``averagePower_w`` is rejected; use ``pulseAmplitude_W``. Python ``average_power`` becomes ``pulse_amplitude`` and C++ accessors become ``getPulseAmplitude`` / ``setPulseAmplitude`` (including indexed variants). To preserve a legacy waveform, set :math:`A_p=A_\mathrm{old}4/e^2`. The old default coefficient 4.0 corresponds to approximately 2.1653645318 W. Shipped scanner definitions explicitly use this migrated value; new definitions without an amplitude use 1 W. This conversion preserves simulated waveforms, not manufacturer average-power physics. Public emitted/received peak-power methods now use the new peak meaning.
+
+   Custom scanner subclasses must implement ``calcTransferFromCosine`` and ``calcTransferWithSigma`` for tracing. These return dimensionless transfers, without amplitude or the legacy intensity scaling. The energy model exposes corresponding Python methods ``compute_transfer_from_cosine`` and ``compute_transfer_with_sigma``. Existing public intensity methods remain amplitude-scaled.
 
 Material files
 --------------
@@ -336,27 +367,25 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following :cite:p:`Wagner.2010`, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
 
    .. math::
-      \sigma = 4\pi \cdot \text{BRDF}_r \cdot A \cdot \cos(\varphi)
+      \sigma_i = 4\pi \cdot \text{BRDF}_r \cdot A_i
 
 3. **Received Intensity via Lidar-Radar Equation**
 
-   The received intensity :math:`I` is computed using the lidar-radar equation, including atmospheric attenuation :cite:p:`Carlsson.2001`:
+   For a subray with absolute power fraction :math:`s_i`, the dimensionless
+   received/whole-beam peak-power transfer is:
 
    .. math::
-      I = \frac{I_0 \cdot D_r^2 \cdot \eta_{\text{sys}} \cdot \sigma}{4\pi \cdot R^4 \cdot B_t^2 \cdot \exp\left( \frac{2\pi^2 r^2 w_0^2}{\lambda^2 (R_0^2 + R^2)} + 2 R a_e \right)} \cdot 10^9
+      H_i = \frac{\pi s_i D_r^2 \eta_{\mathrm{sys}}\,\mathrm{BRDF}_r
+                  e^{-2Ra_e}}{4R^2}, \qquad I_i = 10^9 A_p H_i.
 
-   where:
-   
-   - :math:`I_0` is the average pulse intensity,
-   - :math:`D_r` is the receiver diameter,
-   - :math:`\eta_{\text{sys}}` is the system efficiency,
-   - :math:`R` is the target range,
-   - :math:`r` is the sub-ray radius (distance from the central sub-ray),
-   - :math:`B_t` is the beam divergence,
-   - :math:`w_0` is the beam waist radius,
-   - :math:`\lambda` is the scanner wavelength,
-   - :math:`R_0` is the beam waist range (minimum range),
-   - :math:`a_e` is the atmospheric extinction coefficient in inverse metres, computed using the Kruse relation as:
+   For an externally supplied cross section, the corresponding expression is
+   :math:`H_i=s_iD_r^2\eta_{\mathrm{sys}}\sigma_i e^{-2Ra_e}/(16A_iR^2)`.
+   Here :math:`A_p` is whole-beam peak optical power, :math:`A_i` is the subray's
+   transverse target area, :math:`D_r` is receiver diameter, :math:`R` is target
+   range, and :math:`\eta_{\mathrm{sys}}` is system efficiency. The BRDF response
+   above already includes the incidence cosine; it is not applied a second time.
+   The atmospheric extinction coefficient :math:`a_e` in inverse metres uses
+   the Kruse relation:
 
    .. math::
       a_e = \frac{3.91}{1000 V_M} \left( \frac{\lambda_{\mu\mathrm{m}}}{0.55} \right)^{-q}

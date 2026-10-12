@@ -18,7 +18,8 @@ WaveMaths::calcPropagationTimeLegacy(std::vector<double>& timeWave,
   for (int i = 0; i < numBins; ++i) {
     t = i * binSize;
     t_tau = t / tau;
-    pt = (t_tau * t_tau) * std::exp(-t_tau);
+    // Analytic unit peak at t = 2*tau; independent of bin resolution.
+    pt = (std::exp(2.0) / 4.0) * (t_tau * t_tau) * std::exp(-t_tau);
     timeWave[i] = pt;
     if (pt > peakValue) {
       peakValue = pt;
