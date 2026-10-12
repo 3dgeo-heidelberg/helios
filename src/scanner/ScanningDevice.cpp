@@ -23,7 +23,7 @@ ScanningDevice::ScanningDevice(
   Rotation beamOrientation,
   std::list<int> const& pulseFreqs,
   double pulseLength_ns,
-  double averagePower_w,
+  double pulseAmplitude_W,
   double beamQuality,
   double efficiency,
   double receiverDiameter_m,
@@ -36,7 +36,7 @@ ScanningDevice::ScanningDevice(
   , headRelativeEmitterAttitude(beamOrientation)
   , beamDivergence_rad(beamDiv_rad)
   , pulseLength_ns(pulseLength_ns)
-  , averagePower_w(averagePower_w)
+  , pulseAmplitude_W(pulseAmplitude_W)
   , beamQuality(beamQuality)
   , efficiency(efficiency)
   , receiverDiameter_m(receiverDiameter_m)
@@ -45,6 +45,7 @@ ScanningDevice::ScanningDevice(
   , supportedPulseFreqs_Hz(pulseFreqs)
   , rangeErrExpr(rangeErrExpr)
 {
+  setPulseAmplitude(pulseAmplitude_W);
   configureBeam();
   atmosphericExtinction = calcAtmosphericAttenuation();
   cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
@@ -58,7 +59,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
   this->beamDivergence_rad = scdev.beamDivergence_rad;
   this->pulseLength_ns = scdev.pulseLength_ns;
-  this->averagePower_w = scdev.averagePower_w;
+  this->pulseAmplitude_W = scdev.pulseAmplitude_W;
   this->beamQuality = scdev.beamQuality;
   this->efficiency = scdev.efficiency;
   this->receiverDiameter_m = scdev.receiverDiameter_m;
@@ -515,4 +516,44 @@ ScanningDevice::setLastPulseWasHit(bool value)
   // TODO see
   // https://www.codeproject.com/Articles/12362/A-quot-synchronized-quot-statement-for-C-like-in-J
   state_lastPulseWasHit = value;
+}
+
+void
+ScanningDevice::setPulseAmplitude(double amplitude)
+{
+  if (!std::isfinite(amplitude) || amplitude < 0.0)
+    throw std::invalid_argument(
+      "Pulse amplitude must be finite and nonnegative (watts)");
+  pulseAmplitude_W = amplitude;
+}
+
+double
+ScanningDevice::calcTransferFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+) const
+{
+  return energyModel->computeTransferFromCosine(incidenceCosine,
+                                                targetRange,
+                                                mat,
+                                                subrayIndex
+#if DATA_ANALYTICS >= 2
+                                                ,
+                                                calcIntensityRecords
+#endif
+  );
+}
+
+double
+ScanningDevice::calcTransferWithSigma(double targetRange,
+                                      double sigma,
+                                      std::size_t subrayIndex) const
+{
+  return energyModel->computeTransferWithSigma(targetRange, sigma, subrayIndex);
 }

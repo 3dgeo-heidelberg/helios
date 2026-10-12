@@ -272,3 +272,36 @@ MultiScanner::calcIntensity(double targetRange,
 {
   return scanDevs[idx].calcIntensity(targetRange, sigma, subrayIndex);
 }
+
+double
+MultiScanner::calcTransferFromCosine(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex,
+  size_t idx
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+) const
+{
+  return scanDevs[idx].calcTransferFromCosine(incidenceCosine,
+                                              targetRange,
+                                              mat,
+                                              subrayIndex
+#if DATA_ANALYTICS >= 2
+                                              ,
+                                              calcIntensityRecords
+#endif
+  );
+}
+
+double
+MultiScanner::calcTransferWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex,
+                                    size_t idx) const
+{
+  return scanDevs[idx].calcTransferWithSigma(targetRange, sigma, subrayIndex);
+}

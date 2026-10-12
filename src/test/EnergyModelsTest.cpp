@@ -5,8 +5,10 @@
 #undef INFO
 #include "logging.hpp"
 
+#include <algorithm>
 #include <limits>
 #include <maths/EnergyMaths.h>
+#include <maths/WaveMaths.h>
 #include <noise/UniformNoiseSource.h>
 #include <scanner/MultiScanner.h>
 #include <scanner/SingleScanner.h>
@@ -16,7 +18,7 @@
 
 namespace {
 std::shared_ptr<Scanner>
-energyScanner()
+energyScanner(double amplitude = 4.0)
 {
   auto scanner = std::make_shared<SingleScanner>(0.0003,
                                                  glm::dvec3(0),
@@ -24,7 +26,7 @@ energyScanner()
                                                  std::list<int>{ 100000 },
                                                  5.0,
                                                  "energy-test",
-                                                 4.0,
+                                                 amplitude,
                                                  1.0,
                                                  0.99,
                                                  0.15,
@@ -262,7 +264,7 @@ TEST_CASE("Far field returns use absolute shares", "[energy]")
   REQUIRE(sumReturn == Catch::Approx(PI * 4 * captured * 0.15 * 0.15 * 0.99 *
                                      0.5 / (4 * range * range) * 1e9)
                          .epsilon(1e-12));
-  scanner->setAveragePower(8.0);
+  scanner->setPulseAmplitude(8.0);
   REQUIRE(model->computeEmittedPower(EmittedPowerArgs{ 0 }) ==
           Catch::Approx(8 * device.getSubrays()[0].share));
 }
@@ -276,7 +278,7 @@ TEST_CASE("Subray settings changes and copies cannot use stale tables",
   auto copy = scanner->clone();
   REQUIRE(copy->getScanningDevice(0).getEnergyModel().get() !=
           device.getEnergyModel().get());
-  copy->setAveragePower(8.0);
+  copy->setPulseAmplitude(8.0);
   REQUIRE(copy->getScanningDevice(0).getEnergyModel()->computeEmittedPower(
             EmittedPowerArgs{ 0 }) ==
           Catch::Approx(2 * device.getEnergyModel()->computeEmittedPower(
@@ -380,6 +382,17 @@ class CosineOnlyTriangle : public Triangle
 {
 public:
   using Triangle::Triangle;
+  double callbackSum = 0.0;
+  bool canHandleIntersections() override { return true; }
+  IntersectionHandlingResult onRayIntersection(NoiseSource<double>&,
+                                               glm::dvec3&,
+                                               glm::dvec3 const& inside,
+                                               glm::dvec3 const&,
+                                               double intensity) override
+  {
+    callbackSum += intensity;
+    return IntersectionHandlingResult(inside, false);
+  }
   double getIncidenceAngle_rad(const glm::dvec3&,
                                const glm::dvec3&,
                                const glm::dvec3&) override
@@ -388,10 +401,21 @@ public:
   }
 };
 
+class WaveformTestScene : public Scene
+{
+public:
+  WaveformTestScene()
+  {
+    bbox = std::make_shared<AABB>(glm::dvec3(-200), glm::dvec3(200));
+    bbox_crs = bbox;
+  }
+};
+
 class TracingTestPulse : public FullWaveformPulseRunnable
 {
 public:
   using FullWaveformPulseRunnable::computeSubrays;
+  using FullWaveformPulseRunnable::digestIntersections;
   using FullWaveformPulseRunnable::FullWaveformPulseRunnable;
 };
 }
@@ -439,21 +463,170 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
       continue;
     ++expectedHits;
     double const range = 100.0 / direction.y;
-    expected += PI * 4.0 * ray.share * 0.15 * 0.15 * 0.99 * 0.5 /
-                (4.0 * range * range) * 1e9 *
-                (fixedIncidence ? 1.0 : direction.y);
+    expected += PI * ray.share * 0.15 * 0.15 * 0.99 * 0.5 /
+                (4.0 * range * range) * (fixedIncidence ? 1.0 : direction.y);
   }
   double total = 0.0;
   for (auto const& reflection : reflections)
     total += reflection.second;
   REQUIRE(intersections.size() == expectedHits);
   REQUIRE(total == Catch::Approx(expected).epsilon(1e-10));
+  double callbackSum = 0.0;
+  for (auto primitive : scene.primitives)
+    callbackSum += static_cast<CosineOnlyTriangle*>(primitive)->callbackSum;
+  REQUIRE(callbackSum ==
+          Catch::Approx(expected * scanner->getPulseAmplitude() * 1e9)
+            .epsilon(1e-10));
   if (xmin < 0) {
     REQUIRE(expectedHits == rays.size());
     REQUIRE(reflections.size() < expectedHits);
   } else {
     REQUIRE(expectedHits > 0);
     REQUIRE(expectedHits < rays.size());
+  }
+}
+#endif
+
+TEST_CASE(
+  "Whole-beam amplitude validation is shared by construction and setters",
+  "[energy]")
+{
+  double const invalid = GENERATE(-1.0,
+                                  std::numeric_limits<double>::infinity(),
+                                  std::numeric_limits<double>::quiet_NaN());
+  REQUIRE_THROWS_AS(energyScanner(invalid), std::invalid_argument);
+  auto scanner = energyScanner();
+  REQUIRE_THROWS_AS(scanner->setPulseAmplitude(invalid), std::invalid_argument);
+  REQUIRE(scanner->getPulseAmplitude() == 4.0);
+  scanner->setPulseAmplitude(0.0);
+  REQUIRE(scanner->getPulseAmplitude() == 0.0);
+}
+
+TEST_CASE("Power transfers are independent of amplitude and pulse frequency",
+          "[energy]")
+{
+  auto scanner = energyScanner();
+  scanner->prepareSimulation();
+  auto model = scanner->getScanningDevice(0).getEnergyModel();
+  Material material;
+  material.reflectance = 0.5;
+  double const sigma = 4 * PI * 0.5 * area(*model, 10000.0, 0);
+  double const baseline = model->computeTransferWithSigma(100.0, sigma, 0);
+  double const amplitude = GENERATE(0.0, 1.0, 7.5);
+  scanner->setPulseAmplitude(amplitude);
+  scanner->setPulseFreq_Hz(GENERATE(50000, 100000));
+#if DATA_ANALYTICS >= 2
+  std::vector<std::vector<double>> records;
+  double const transfer =
+    model->computeTransferFromCosine(1.0, 100.0, material, 0, records);
+  REQUIRE(records.back()[9] == Catch::Approx(amplitude * baseline));
+  REQUIRE(records.back()[11] ==
+          Catch::Approx(amplitude *
+                        scanner->getScanningDevice(0).getSubrays()[0].share));
+#else
+  double const transfer =
+    model->computeTransferFromCosine(1.0, 100.0, material, 0);
+#endif
+  REQUIRE(transfer == Catch::Approx(baseline));
+  REQUIRE(model->computeTransferWithSigma(100.0, sigma, 0) ==
+          Catch::Approx(baseline));
+  REQUIRE(received(*model, 100.0, material, 0) ==
+          Catch::Approx(amplitude * baseline * 1e9));
+  REQUIRE(model->computeReceivedPowerWithSigma(100.0, sigma, 0) ==
+          Catch::Approx(amplitude * baseline * 1e9));
+}
+
+TEST_CASE("Temporal peak normalization preserves migrated samples and "
+          "whole-beam energy",
+          "[energy]")
+{
+  double const length = GENERATE(5.0, 12.0);
+  double const bin = GENERATE(0.01, 0.1, 0.7);
+  int const count = static_cast<int>(length / bin);
+  std::vector<double> wave(count);
+  int const peak =
+    WaveMaths::calcPropagationTimeLegacy(wave, count, bin, length, 7.0);
+  REQUIRE(wave[peak] <= 1.0 + 1e-14);
+  double integral = 0;
+  for (int i = 0; i < count; ++i) {
+    double const x = i * bin / (length / 7.0);
+    double const legacy = x * x * std::exp(-x);
+    REQUIRE(wave[i] * (16.0 / std::exp(2.0)) ==
+            Catch::Approx(4.0 * legacy).margin(1e-14));
+    integral += wave[i] * bin * 1e-9;
+  }
+  // Use a grid that includes the analytic peak explicitly.
+  std::vector<double> exact(3);
+  REQUIRE(WaveMaths::calcPropagationTimeLegacy(
+            exact, 3, length / 7.0, length, 7.0) == 2);
+  REQUIRE(exact[2] == Catch::Approx(1.0).epsilon(1e-14));
+  auto scanner = energyScanner();
+  double const factor = GENERATE(1.0, 2.0);
+  scanner->getFWFSettings().beamSamplingFactor = factor;
+  scanner->getFWFSettings().beamSampleQuality = GENERATE(1, 3, 8);
+  scanner->prepareSimulation();
+  double power = 0;
+  auto model = scanner->getScanningDevice(0).getEnergyModel();
+  for (size_t i = 0; i < scanner->getNumRays(); ++i)
+    power += model->computeEmittedPower(EmittedPowerArgs{ i });
+  double const captured = -std::expm1(-2 * factor * factor);
+  REQUIRE(power == Catch::Approx(4.0 * captured).epsilon(1e-12));
+  REQUIRE(power * integral ==
+          Catch::Approx(4.0 * captured * integral).epsilon(1e-12));
+}
+
+#if DATA_ANALYTICS < 2
+TEST_CASE("Waveform detection uses scaled whole-beam amplitude", "[energy]")
+{
+  auto scanner = energyScanner();
+  scanner->setDetector(
+    std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
+  scanner->getFWFSettings().winSize_ns =
+    2 * scanner->getFWFSettings().binSize_ns;
+  scanner->prepareDiscretization(0);
+  scanner->allMeasurements = std::make_shared<std::vector<Measurement>>();
+  scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
+  WaveformTestScene scene;
+  SimulatedPulse pulse(glm::dvec3(0), Rotation(), 0.0, 0, 1, 0);
+  TracingTestPulse runnable(scanner, scene, pulse);
+  runnable.AbstractPulseRunnable::initialize();
+  auto part = std::make_shared<ScenePart>();
+  part->setId("amplitude-test");
+  AABB primitive(glm::dvec3(-1), glm::dvec3(1));
+  primitive.part = part;
+  primitive.material = std::make_shared<Material>();
+  RaySceneIntersection intersection;
+  intersection.prim = &primitive;
+  intersection.point = glm::dvec3(0, 100, 0);
+  intersection.hitDistance = 100;
+  std::vector<RaySceneIntersection> intersections{ intersection };
+  std::map<double, double> reflections{ { 100.0, 1e-6 } };
+  std::vector<std::vector<double>> matrix;
+  RandomnessGenerator<double> rng(42), rng2(43);
+  glm::dvec3 direction(0, 1, 0);
+  double const peak = *std::max_element(scanner->getTimeWave(0).begin(),
+                                        scanner->getTimeWave(0).end());
+  scanner->setReceivedEnergyMin(1.5 * peak * 1e3);
+  for (double amplitude : { 0.0, 1.0, 2.0, 16.0 / std::exp(2.0) }) {
+    scanner->setPulseAmplitude(amplitude);
+    scanner->setReceivedEnergyMin(amplitude == 0.0 ? 0.0 : 1.5 * peak * 1e3);
+    scanner->allMeasurements->clear();
+    runnable.digestIntersections(
+      matrix, rng, rng2, direction, reflections, intersections);
+    if (amplitude < 1.5) {
+      REQUIRE(scanner->allMeasurements->empty());
+    } else {
+      REQUIRE(scanner->allMeasurements->size() == 1);
+      REQUIRE(scanner->allMeasurements->front().intensity ==
+              Catch::Approx(amplitude * peak * 1e3));
+      if (amplitude == 16.0 / std::exp(2.0)) {
+        double const x = scanner->getPeakIntensityIndex(0) *
+                         scanner->getFWFSettings().binSize_ns /
+                         (scanner->getPulseLength_ns() / 7.0);
+        REQUIRE(scanner->allMeasurements->front().intensity ==
+                Catch::Approx(4.0 * x * x * std::exp(-x) * 1e3));
+      }
+    }
   }
 }
 #endif

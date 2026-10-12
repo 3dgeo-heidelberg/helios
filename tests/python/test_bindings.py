@@ -967,6 +967,12 @@ class ExampleScanner(_helios.Scanner):
         self._peak_intensity_index = 0
         self._received_energy_min = 0.0
 
+    def calcTransferFromCosine(self, cosine, target_range, material, subray_index, idx):
+        return cosine * 0.25
+
+    def calcTransferWithSigma(self, target_range, sigma, subray_index, idx):
+        return sigma * 0.125
+
     def getScannerId(self):
         return "TestScannerID"
 
@@ -976,7 +982,7 @@ class ExampleScanner(_helios.Scanner):
     def getDeviceId(self, index):
         return f"Device{index}"
 
-    def getAveragePower(self, index):
+    def getPulseAmplitude(self, index):
         return 10.0
 
     def getBeamDivergence(self, index):
@@ -1057,10 +1063,10 @@ class ExampleScanner(_helios.Scanner):
     def setBeamDivergence(self, beamDivergence, idx):
         pass  # Default implementation
 
-    def getAveragePower(self, idx):
+    def getPulseAmplitude(self, idx):
         return 0.0  # Default implementation
 
-    def setAveragePower(self, averagePower, idx):
+    def setPulseAmplitude(self, pulseAmplitude, idx):
         pass  # Default implementation
 
     def getBeamQuality(self, idx):
@@ -1588,3 +1594,11 @@ class TestScannerMethods:
         scanner.setTimeWave(time_wave)
         result = scanner.calcTimePropagation(time_wave, num_bins, scanner)
         assert isinstance(result, int)  # Replace with expected value if applicable
+
+
+def test_scanner_normalized_transfer_dispatch():
+    scanner = ExampleScanner("transfer-test", [100000])
+    assert (
+        scanner.calc_transfer_from_cosine(0.5, 100.0, _helios.Material(), 0, 0) == 0.125
+    )
+    assert scanner.calc_transfer_with_sigma(100.0, 2.0, 0, 0) == 0.25

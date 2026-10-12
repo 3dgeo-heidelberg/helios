@@ -112,6 +112,29 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 class Scanner(Model, cpp_class=_helios.Scanner):
     @property
+    def pulse_amplitude(self) -> float:
+        """Whole-beam peak optical power before footprint truncation, in watts."""
+        return self.get_pulse_amplitude()
+
+    @pulse_amplitude.setter
+    def pulse_amplitude(self, value: float) -> None:
+        self.set_pulse_amplitude(value)
+
+    @validate_call
+    def get_pulse_amplitude(self, index: int = 0) -> float:
+        """Return a channel's whole-beam peak optical power in watts."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_pulse_amplitude(index)
+
+    @validate_call
+    def set_pulse_amplitude(self, value: float, index: int = 0) -> None:
+        """Set finite, nonnegative whole-beam peak power in watts; zero disables returns."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_specific_pulse_amplitude(value, index)
+
+    @property
     def beam_divergence(self) -> Angle:
         """Full beam divergence of channel 0, in radians."""
         return self.get_beam_divergence()
@@ -147,6 +170,20 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         :type scanner_file: AssetPath
         :type scanner_id: str
         """
+
+        # Explain the removed setting before schema validation rejects it.
+        from xml.etree import ElementTree
+
+        for element in ElementTree.parse(scanner_file).iter():
+            if (
+                element.tag in ("scanner", "channel")
+                and "averagePower_w" in element.attrib
+            ):
+                raise ValueError(
+                    "averagePower_w was removed; use pulseAmplitude_W for whole-beam "
+                    "peak power. To preserve legacy waveforms, multiply the old "
+                    "coefficient by 4/exp(2); this is not an average-to-peak conversion."
+                )
 
         # Validate the XML
         validate_xml_file(scanner_file, "xsd/scanner.xsd")
