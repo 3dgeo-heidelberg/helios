@@ -472,6 +472,23 @@ public:
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const;
+  /** Dimensionless received/whole-beam peak-power transfer, including subray
+   * share. */
+  virtual double calcTransferFromCosine(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const = 0;
+  virtual double calcTransferWithSigma(double targetRange,
+                                       double sigma,
+                                       std::size_t subrayIndex,
+                                       size_t idx) const = 0;
   /**
    * @brief Handle to which scanning device request the intensity computation
    * @param idx The index of the scanning device that must compute the
@@ -697,33 +714,34 @@ public:
   }
 
   /**
-   * @brief Obtain average power
-   * @param idx The index of the scanning device which average power must be
-   *  obtained (by default 0, it is the first one)
-   * @return Average power (watts)
-   * @see ScanningDevice::averagePower_w
+   * @brief Obtain whole-beam peak power
+   * @param idx The index of the scanning device which whole-beam peak power
+   * must be obtained (by default 0, it is the first one)
+   * @return Whole-beam peak power (watts)
+   * @see ScanningDevice::pulseAmplitude_W
    */
-  virtual double getAveragePower(size_t const idx) const = 0;
+  virtual double getPulseAmplitude(size_t const idx) const = 0;
   /**
-   * @brief No index argument version of the Scanner::getAveragePower method
-   * @see Scanner::getAveragePower(size_t const)
+   * @brief No index argument version of the Scanner::getPulseAmplitude method
+   * @see Scanner::getPulseAmplitude(size_t const)
    */
-  inline double getAveragePower() const { return getAveragePower(0); }
+  inline double getPulseAmplitude() const { return getPulseAmplitude(0); }
   /**
-   * @brief Set average power
-   * @param averagePower New average power (watts)
-   * @param idx The index of the scanning device which average power must be
-   *  set (by default 0, it is the first one)
-   * @see ScanningDevice::averagePower_w
+   * @brief Set whole-beam peak power
+   * @param pulseAmplitude New whole-beam peak power (watts)
+   * @param idx The index of the scanning device which whole-beam peak power
+   * must be set (by default 0, it is the first one)
+   * @see ScanningDevice::pulseAmplitude_W
    */
-  virtual void setAveragePower(double const averagePower, size_t const idx) = 0;
+  virtual void setPulseAmplitude(double const pulseAmplitude,
+                                 size_t const idx) = 0;
   /**
-   * @brief No index argument version of the Scanner::setAveragePower method
-   * @see Scanner::setAveragePower(double const, size_t const)
+   * @brief No index argument version of the Scanner::setPulseAmplitude method
+   * @see Scanner::setPulseAmplitude(double const, size_t const)
    */
-  inline void setAveragePower(double const averagePower)
+  inline void setPulseAmplitude(double const pulseAmplitude)
   {
-    setAveragePower(averagePower, 0);
+    setPulseAmplitude(pulseAmplitude, 0);
   }
 
   /**

@@ -53,7 +53,7 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
   Rotation beamOrientation(Directions::right, 0);
   std::list<int> pulseFreqs = { 100000, 300000 };
   const double pulseLength_ns = 5;
-  const double averagePower = 4.0;
+  const double pulseAmplitude = 4.0;
   const double beamQuality = 1.0;
   const double efficiency = 0.99;
   const double receiverDiameter = 0.15;
@@ -72,7 +72,7 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
                                               beamOrientation,
                                               pulseFreqs,
                                               pulseLength_ns,
-                                              averagePower,
+                                              pulseAmplitude,
                                               beamQuality,
                                               efficiency,
                                               receiverDiameter,

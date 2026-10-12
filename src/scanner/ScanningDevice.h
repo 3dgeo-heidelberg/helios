@@ -76,9 +76,9 @@ protected:
    */
   double pulseLength_ns = 0;
   /**
-   * @brief Average power (watts)
+   * @brief Whole-beam peak optical power before footprint truncation (watts)
    */
-  double averagePower_w;
+  double pulseAmplitude_W = 1.0;
   /**
    * @brief Beam quality
    */
@@ -270,7 +270,7 @@ public:
     Rotation beamOrientation,
     std::list<int> const& pulseFreqs,
     double pulseLength_ns,
-    double averagePower,
+    double pulseAmplitude,
     double beamQuality,
     double efficiency,
     double receiverDiameter_m,
@@ -293,6 +293,9 @@ public:
    *  cached to avoid redundant operations.
    */
   void prepareSimulation();
+
+  /** Set whole-beam peak power; requires a finite, nonnegative value. */
+  void setPulseAmplitude(double amplitude);
 
   /**
    * @brief Set the full divergence in radians and refresh derived beam state.
@@ -399,51 +402,11 @@ public:
                               int& numFullwaveBins);
 
   /**
-   * @brief Compute intensity. It is the strength of the laser going back
-   *  to the detector considering the emitted power \f$P_e\f$, and its
-   *  corresponding received power \f$P_r\f$.
-   *
-   * Let \f$I_0\f$ be the average power of the scanning device, \f$\lambda\f$
-   *  be the wavelength, \f$R\f$ be the target range, \f$R_0\f$ be the
-   *  minimum range, and \f$w_0\f$ be the beam waist radius. Thus, the
-   *  emitted power \f$P_e\f$ can be defined:
-   * \f[
-   *  P_e = I_0 \exp\left[- \frac{
-   *          2 \pi^2 r^2 w_0^2
-   *      }{
-   *          \lambda^2 \left(R_0^2 + R^2\right)
-   *      }\right]
-   * \f]
-   *
-   * Note that if \f$a_e\f$ is the atmospheric extinction coefficient, then
-   *  the atmospheric factor \f$\eta_a\f$ is:
-   * \f[
-   *  \eta_a = \exp\left(-2Ra_e\right)
-   * \f]
-   *
-   * Now, let \f$\eta_s\f$ be the efficiency of the scanning device,
-   *  \f$\sigma\f$ be the cross section between the target area and the
-   *  incidence angle, \f$D_{r2}\f$ the squared receiver diameter, and
-   *  \f$B_{t2}\f$ the squared beam divergence. Thus, the received power
-   *  can be calculated as:
-   * \f[
-   * \begin{split}
-   *  P_r =& \frac{P_e D_r^2 \eta_s \eta_a \sigma}{4 \pi R^4 B_t^2} \\
-   *   =& \frac{
-   *          I_0 D_r^2 \eta_s \sigma
-   *      }{
-   *          4 \pi R^4 B_t^2
-   *      }
-   *      \exp\left[-\left(
-   *          \frac{2\pi^2r^2w_0^2}{\lambda^2\left(R_0^2 + R^2\right)} +
-   *          2Ra_e
-   *      \right)\right]
-   * \end{split}
-   * \f]
-   *
-   * Finally, the intensity would be \f$P_r 10^9\f$.
-   *
-   * @return Computed intensity \f$P_r 10^9\f$
+   * @brief Received peak power in legacy intensity units (watts times 1e9).
+   * The energy model multiplies whole-beam pulseAmplitude_W by a transfer
+   * coefficient containing the absolute subray share, geometry, material
+   * response, efficiency, and atmospheric transmission.
+   * @see EnergyModel::computeTransferFromCosine
    */
   double calcIntensity(double incidenceAngle,
                        double targetRange,
@@ -465,6 +428,21 @@ public:
     std::vector<std::vector<double>>& calcIntensityRecords
 #endif
   ) const;
+  /** Dimensionless received/whole-beam peak-power transfer, including subray
+   * share. */
+  double calcTransferFromCosine(
+    double incidenceCosine,
+    double targetRange,
+    Material const& mat,
+    std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& calcIntensityRecords
+#endif
+  ) const;
+  double calcTransferWithSigma(double targetRange,
+                               double sigma,
+                               std::size_t subrayIndex) const;
 
   /**
    * @brief Version of ScanningDevice::calcIntensity with precomputed

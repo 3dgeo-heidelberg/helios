@@ -104,7 +104,7 @@ private:
                                       std::list<int>({ 100000 }), // pulse freqs
                                       5.0,                // pulseLength_ns
                                       "benchmarkScanner", // id
-                                      4.0,                // averagePower
+                                      4.0,                // pulseAmplitude
                                       1.0,                // beamQuality
                                       0.99,               // efficiency
                                       0.15,               // receiverDiameter

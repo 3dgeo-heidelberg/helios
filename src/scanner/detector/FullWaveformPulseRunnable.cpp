@@ -234,13 +234,13 @@ FullWaveformPulseRunnable::handleSubray(
       if (detector->isDistanceNotInRange(distance))
         continue;
 
-      // Distance between beam's center line and intersection point:
-      double intensity = 0.0;
+      // Received/whole-beam peak-power transfer for this subray.
+      double transfer = 0.0;
       if (intersect->prim->canComputeSigmaWithLadLut()) {
         // LadLut based intensity computation
         double const sigma =
           intersect->prim->computeSigmaWithLadLut(subrayDirection);
-        intensity = scanner->calcIntensity(
+        transfer = scanner->calcTransferWithSigma(
           distance, sigma, subrayIndex, pulse.getDeviceIndex());
 #if DATA_ANALYTICS >= 2
         auto model =
@@ -253,7 +253,8 @@ FullWaveformPulseRunnable::handleSubray(
         record[4] = distance;
         record[5] = area;
         record[8] = sigma;
-        record[9] = intensity * 1e-9;
+        record[9] =
+          transfer * scanner->getPulseAmplitude(pulse.getDeviceIndex());
         record[10] = 0;
         record[11] =
           model->computeEmittedPower(EmittedPowerArgs{ subrayIndex });
@@ -264,14 +265,14 @@ FullWaveformPulseRunnable::handleSubray(
 #if DATA_ANALYTICS >= 2
         HDA_GV.incrementIntensityComputationsCount();
 #endif
-        intensity = scanner->calcIntensityFromCosine(incidenceCosine,
-                                                     distance,
-                                                     *intersect->prim->material,
-                                                     subrayIndex,
-                                                     pulse.getDeviceIndex()
+        transfer = scanner->calcTransferFromCosine(incidenceCosine,
+                                                   distance,
+                                                   *intersect->prim->material,
+                                                   subrayIndex,
+                                                   pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2
-                                                       ,
-                                                     calcIntensityRecords
+                                                     ,
+                                                   calcIntensityRecords
 #endif
         );
       }
@@ -281,12 +282,12 @@ FullWaveformPulseRunnable::handleSubray(
         glm::dvec3 outsideIntersectionPoint =
           RayUtils::obtainPointAfterTraversing(
             *intersect->prim->getAABB(), subrayOrigin, subrayDirection, 0.0);
-        IntersectionHandlingResult ihr =
-          intersect->prim->onRayIntersection(intersectionHandlingNoiseSource,
-                                             subrayDirection,
-                                             intersect->point,
-                                             outsideIntersectionPoint,
-                                             intensity);
+        IntersectionHandlingResult ihr = intersect->prim->onRayIntersection(
+          intersectionHandlingNoiseSource,
+          subrayDirection,
+          intersect->point,
+          outsideIntersectionPoint,
+          transfer * scanner->getPulseAmplitude(pulse.getDeviceIndex()) * 1e9);
         if (ihr.canRayContinue()) { // Subray can continue
           // Move subray origin outside primitive and update tMinMax
           subrayOrigin = outsideIntersectionPoint + 0.00001 * subrayDirection;
@@ -300,7 +301,7 @@ FullWaveformPulseRunnable::handleSubray(
       }
       if (!rayContinues) { // If ray is not continuing
         // Then register hit by default
-        reflections[distance] += intensity;
+        reflections[distance] += transfer;
         intersects.push_back(*intersect);
       }
 #if DATA_ANALYTICS >= 2
@@ -472,8 +473,7 @@ FullWaveformPulseRunnable::populateFullWaveform(
   double nsPerBin,
   int peakIntensityIndex)
 {
-  // Multiply each sub-beam intensity with time_wave and
-  // add to the full waveform
+  // Assemble amplitude-independent subray returns with the unit-peak shape.
   vector<double> const& time_wave =
     scanner->getTimeWave(pulse.getDeviceIndex());
   map<double, double>::const_iterator it;
@@ -481,7 +481,7 @@ FullWaveformPulseRunnable::populateFullWaveform(
     double const entryDistance_m = it->first;
     if (entryDistance_m > distanceThreshold)
       continue;
-    double const entryIntensity = it->second;
+    double const entryTransfer = it->second;
     double const wavePeakTime_ns =
       entryDistance_m / SPEEDofLIGHT_mPerNanosec; // in nanoseconds
     int const binStart =
@@ -489,9 +489,14 @@ FullWaveformPulseRunnable::populateFullWaveform(
                 peakIntensityIndex),
                0);
     for (size_t i = 0; i < time_wave.size(); ++i) {
-      fullwave[binStart + i] += time_wave[i] * entryIntensity;
+      fullwave[binStart + i] += time_wave[i] * entryTransfer;
     }
   }
+  // Apply whole-beam amplitude once, before detection, in legacy intensity
+  // units.
+  double const scale = scanner->getPulseAmplitude(pulse.getDeviceIndex()) * 1e9;
+  for (double& sample : fullwave)
+    sample *= scale;
 }
 
 void
@@ -637,7 +642,7 @@ FullWaveformPulseRunnable::handleFullWaveformBin(
   double nsPerBin)
 {
   double const eps = scanner->getReceivedEnergyMin(pulse.getDeviceIndex());
-  if (fullwave[binIndex] < eps)
+  if (fullwave[binIndex] <= 0.0 || fullwave[binIndex] < eps)
     return true;
 
   // Continue with next iteration if there is no peak

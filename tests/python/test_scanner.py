@@ -531,3 +531,91 @@ def test_channel_xml_divergence_is_independent(tmp_path):
     )
     assert scanner.get_specific_beam_divergence(0) == 0.0001
     assert scanner.get_specific_beam_divergence(1) == 0.003
+
+
+@pytest.mark.parametrize("factory", [riegl_vz_400, riegl_vq_1560i])
+def test_whole_beam_pulse_amplitude_access_and_clone(factory):
+    scanner = factory()
+    assert scanner.pulse_amplitude == pytest.approx(16 / np.exp(2))
+    scanner.pulse_amplitude = 7.5
+    assert scanner.get_pulse_amplitude() == 7.5
+    assert scanner._cpp_object.pulse_amplitude == 7.5
+    copied = scanner.clone()
+    copied.pulse_amplitude = 0.0
+    assert copied.pulse_amplitude == 0.0
+    assert scanner.pulse_amplitude == 7.5
+    assert not hasattr(scanner._cpp_object, "average_power")
+    for index in (-1, scanner._cpp_object.num_devices):
+        with pytest.raises(IndexError):
+            scanner.get_pulse_amplitude(index)
+        with pytest.raises(IndexError):
+            scanner.set_pulse_amplitude(1, index)
+    if scanner._cpp_object.num_devices > 1:
+        scanner.set_pulse_amplitude(3.0, index=1)
+        assert scanner.get_pulse_amplitude(1) == 3.0
+        assert scanner.pulse_amplitude == 7.5
+
+
+@pytest.mark.parametrize("invalid", [-1, np.inf, -np.inf, np.nan])
+@pytest.mark.parametrize("factory", [riegl_vz_400, riegl_vq_1560i])
+def test_pulse_amplitude_validation(invalid, factory):
+    scanner = factory()
+    previous = scanner.pulse_amplitude
+    for index in range(scanner._cpp_object.num_devices):
+        with pytest.raises(ValueError, match="finite and nonnegative"):
+            scanner.set_pulse_amplitude(invalid, index)
+        assert scanner.get_pulse_amplitude(index) == previous
+
+
+def _amplitude_xml(tmp_path):
+    from pathlib import Path
+    from xml.etree import ElementTree
+
+    source = Path(scanner_module.__file__).parent / "data/scanners_als.xml"
+    tree = ElementTree.parse(source)
+    element = tree.getroot().find("scanner[@id='riegl_vq-1560i']")
+    path = tmp_path / "scanners.xml"
+    return tree, element, path
+
+
+def test_pulse_amplitude_xml_default_and_channel_override(tmp_path):
+    tree, element, path = _amplitude_xml(tmp_path)
+    del element.attrib["pulseAmplitude_W"]
+    element.find("channels/channel").set("pulseAmplitude_W", "3.5")
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, "riegl_vq-1560i")
+    assert scanner.get_pulse_amplitude(0) == 3.5
+    assert scanner.get_pulse_amplitude(1) == 1.0
+    element.set("pulseAmplitude_W", "6.5")
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, "riegl_vq-1560i")
+    assert scanner.get_pulse_amplitude(0) == 3.5
+    assert scanner.get_pulse_amplitude(1) == 6.5
+
+
+@pytest.mark.parametrize("channel", [False, True])
+@pytest.mark.parametrize("both_names", [False, True])
+def test_average_power_xml_rejected_with_migration_guidance(
+    tmp_path, channel, both_names
+):
+    import _helios
+    from helios.utils import get_asset_directories
+
+    tree, element, path = _amplitude_xml(tmp_path)
+    node = element.find("channels/channel") if channel else element
+    node.attrib.pop("pulseAmplitude_W", None)
+    node.set("averagePower_w", "4")
+    if both_names:
+        node.set("pulseAmplitude_W", "2")
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    with pytest.raises(
+        ValueError, match="averagePower_w was removed; use pulseAmplitude_W"
+    ):
+        Scanner.from_xml(path, "riegl_vq-1560i")
+    with pytest.raises(
+        _helios.HeliosException,
+        match="averagePower_w was removed; use pulseAmplitude_W",
+    ):
+        _helios.read_scanner_from_xml(
+            str(path), [str(p) for p in get_asset_directories()], "riegl_vq-1560i"
+        )
