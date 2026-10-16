@@ -8,9 +8,9 @@
 #define SUBRAY_ADDITIONAL_ARGS , bool&, std::vector<double>&
 #define PULSE_RECORDER_ARG , std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #define INTENSITY_RECORDS_ARG                                                  \
-  , std::vector<std::vector<double>>& calcIntensityRecords
+  , std::vector<std::vector<double>>& radiometryRecords
 #define PULSE_RECORDER_MACRO_ARG , pulseRecorder
-#define INTENSITY_RECORDS_MACRO_ARG , calcIntensityRecords
+#define INTENSITY_RECORDS_MACRO_ARG , radiometryRecords
 #else
 #define SUBRAY_ADDITIONAL_ARGS
 #define PULSE_RECORDER_ARG
@@ -171,41 +171,16 @@ public:
                            idx);
   }
 
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       std::size_t subrayIndex,
-                       size_t const idx INTENSITY_RECORDS_ARG) const override
+  double computeReceivedPower(double const incidenceCosine,
+                              double const targetRange,
+                              Material const& mat,
+                              std::size_t subrayIndex,
+                              size_t const idx
+                                INTENSITY_RECORDS_ARG) const override
   {
     PYBIND11_OVERLOAD_PURE(double,
                            Scanner,
-                           calcIntensity,
-                           incidenceAngle,
-                           targetRange,
-                           mat,
-                           subrayIndex,
-                           idx INTENSITY_RECORDS_MACRO_ARG);
-  }
-
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       std::size_t subrayIndex,
-                       size_t const idx) const override
-  {
-    PYBIND11_OVERLOAD_PURE(
-      double, Scanner, calcIntensity, targetRange, sigma, subrayIndex, idx);
-  }
-
-  double calcTransferFromCosine(double const incidenceCosine,
-                                double const targetRange,
-                                Material const& mat,
-                                std::size_t subrayIndex,
-                                size_t const idx
-                                  INTENSITY_RECORDS_ARG) const override
-  {
-    PYBIND11_OVERLOAD_PURE(double,
-                           Scanner,
-                           calcTransferFromCosine,
+                           computeReceivedPower,
                            incidenceCosine,
                            targetRange,
                            mat,
@@ -213,14 +188,45 @@ public:
                            idx INTENSITY_RECORDS_MACRO_ARG);
   }
 
-  double calcTransferWithSigma(double const targetRange,
-                               double const sigma,
-                               std::size_t subrayIndex,
-                               size_t const idx) const override
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       std::size_t subrayIndex,
+                                       size_t const idx) const override
   {
     PYBIND11_OVERLOAD_PURE(double,
                            Scanner,
-                           calcTransferWithSigma,
+                           computeReceivedPowerWithSigma,
+                           targetRange,
+                           sigma,
+                           subrayIndex,
+                           idx);
+  }
+
+  double computePowerRatio(double const incidenceCosine,
+                           double const targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex,
+                           size_t const idx
+                             INTENSITY_RECORDS_ARG) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double,
+                           Scanner,
+                           computePowerRatio,
+                           incidenceCosine,
+                           targetRange,
+                           mat,
+                           subrayIndex,
+                           idx INTENSITY_RECORDS_MACRO_ARG);
+  }
+
+  double computePowerRatioWithSigma(double const targetRange,
+                                    double const sigma,
+                                    std::size_t subrayIndex,
+                                    size_t const idx) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double,
+                           Scanner,
+                           computePowerRatioWithSigma,
                            targetRange,
                            sigma,
                            subrayIndex,

@@ -2,8 +2,8 @@
 
 #include <assetloading/Asset.h>
 #include <maths/Directions.h>
+#include <maths/EnergyModel.h>
 #include <maths/Rotation.h>
-#include <maths/model/EnergyModel.h>
 #include <scanner/FWFSettings.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/SimulatedPulse.h>
@@ -402,56 +402,46 @@ public:
                               int& numFullwaveBins);
 
   /**
-   * @brief Received peak power in legacy intensity units (watts times 1e9).
+   * @brief Received peak power in watts.
    * The energy model multiplies whole-beam pulseAmplitude_W by a transfer
    * coefficient containing the absolute subray share, geometry, material
    * response, efficiency, and atmospheric transmission.
-   * @see EnergyModel::computeTransferFromCosine
+   * @see EnergyModel::computePowerRatio
+   *
+   * Received peak power in watts; range in metres, incidence cosine in [-1, 1].
    */
-  double calcIntensity(double incidenceAngle,
-                       double targetRange,
-                       Material const& mat,
-                       std::size_t subrayIndex
-#if DATA_ANALYTICS >= 2
-                       ,
-                       std::vector<std::vector<double>>& calcIntensityRecords
-#endif
-  ) const;
-  /** Intensity using the precomputed incidence cosine. */
-  double calcIntensityFromCosine(
+  double computeReceivedPower(
     double incidenceCosine,
     double targetRange,
     Material const& mat,
     std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
     ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const;
-  /** Dimensionless received/whole-beam peak-power transfer, including subray
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
    * share. */
-  double calcTransferFromCosine(
-    double incidenceCosine,
-    double targetRange,
-    Material const& mat,
-    std::size_t subrayIndex
+  double computePowerRatio(double incidenceCosine,
+                           double targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const;
-  double calcTransferWithSigma(double targetRange,
-                               double sigma,
-                               std::size_t subrayIndex) const;
+  double computePowerRatioWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex) const;
 
   /**
-   * @brief Version of ScanningDevice::calcIntensity with precomputed
-   *  \f$\sigma\f$
-   * @see ScanningDevice::calcIntensity
+   * @brief Received peak power in watts with externally supplied sigma.
+   * @see ScanningDevice::computeReceivedPowerWithSigma
    */
-  double calcIntensity(double targetRange,
-                       double sigma,
-                       std::size_t subrayIndex) const;
+  double computeReceivedPowerWithSigma(double targetRange,
+                                       double sigma,
+                                       std::size_t subrayIndex) const;
 
   int calcTimePropagation(std::vector<double>& timeWave);
 
