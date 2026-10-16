@@ -148,7 +148,7 @@ protected:
    *
    * The number of bins is computed considering full wave settings:
    * \f[
-   *  \textrm{numTimeBins} = \frac{\textrm{pulseLength}}{binSize}
+   *  \textrm{numTimeBins} = \left\lceil\frac{7\tau}{binSize}\right\rceil
    * \f]
    */
   int numTimeBins = -1;

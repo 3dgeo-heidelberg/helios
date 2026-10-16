@@ -421,7 +421,8 @@ ScanningDevice::initializeFullWaveform(double minHitDist_m,
   // Time until first maximum minus rising flank
   minHitTime_ns = minHitDist_m / SPEEDofLIGHT_mPerNanosec - peakFactor;
   // Time until last maximum time for signal decay with 1 bin for buffer
-  maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec + pulseLength_ns -
+  double const pulseDuration_ns = time_wave.size() * nsPerBin;
+  maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec + pulseDuration_ns -
                   peakFactor + nsPerBin; // 1 bin for buffer
 
   // Calc ranges and threshold
@@ -431,7 +432,6 @@ ScanningDevice::initializeFullWaveform(double minHitDist_m,
   if (maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns) {
     hitTimeDelta_ns = maxFullwaveRange_ns;
     maxHitTime_ns = minHitTime_ns + maxFullwaveRange_ns;
-    distanceThreshold = SPEEDofLIGHT_mPerNanosec * maxFullwaveRange_ns;
   }
 
   // Check if full wave is possible
@@ -443,10 +443,16 @@ ScanningDevice::initializeFullWaveform(double minHitDist_m,
   // Compute fullwave variables
   numFullwaveBins = ((int)std::ceil(maxHitTime_ns / nsPerBin)) -
                     ((int)ceil(minHitTime_ns / nsPerBin));
+  if (numFullwaveBins <= 0)
+    return false;
 
   // update maxHitTime to fit the discretized fullwave bins
   // minus 1 is necessary as the minimum is in bin #0
   maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
+  // The limit is a time span relative to the first return, not an absolute
+  // range.
+  distanceThreshold =
+    std::min(maxHitDist_m, SPEEDofLIGHT_mPerNanosec * maxHitTime_ns);
 
   return true;
 }
