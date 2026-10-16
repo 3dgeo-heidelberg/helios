@@ -493,7 +493,13 @@ FullWaveformPulseRunnable::populateFullWaveform(
       std::max((((int)((wavePeakTime_ns - minHitTime_ns) / nsPerBin)) -
                 peakIntensityIndex),
                0);
-    for (size_t i = 0; i < time_wave.size(); ++i) {
+    size_t const start = static_cast<size_t>(binStart);
+    if (start >= fullwave.size())
+      continue;
+    // A configured recording limit can clip the pulse's falling flank.
+    size_t const sampleCount =
+      std::min(time_wave.size(), fullwave.size() - start);
+    for (size_t i = 0; i < sampleCount; ++i) {
       fullwave[binStart + i] += time_wave[i] * entryPowerRatio;
     }
   }
