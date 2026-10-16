@@ -397,7 +397,7 @@ public:
    */
   virtual void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -444,32 +444,52 @@ public:
                                       size_t const idx) = 0;
 
   /**
-   * @brief Handle to which scanning device request the intensity computation
+   * @brief Handle to which scanning device request the received-power
+   * computation
    * @param idx The index of the scanning device that must compute the
-   *  intensity
-   * @see ScanningDevice::calcIntensity
-   */
-  virtual double calcIntensity(
-    double const incidenceAngle,
+   *  received power
+   * @see ScanningDevice::computeReceivedPower
+   *
+   * Received peak power in watts, using incidence cosine. */
+  virtual double computeReceivedPower(
+    double const incidenceCosine,
     double const targetRange,
     Material const& mat,
-    int const subrayRadiusStep,
+    std::size_t subrayIndex,
     size_t const idx
 #if DATA_ANALYTICS >= 2
     ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const = 0;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
+   * share. */
+  virtual double computePowerRatio(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& radiometryRecords
+#endif
+  ) const = 0;
+  virtual double computePowerRatioWithSigma(double targetRange,
+                                            double sigma,
+                                            std::size_t subrayIndex,
+                                            size_t idx) const = 0;
   /**
-   * @brief Handle to which scanning device request the intensity computation
+   * @brief Handle to which scanning device request the received-power
+   * computation
    * @param idx The index of the scanning device that must compute the
-   *  intensity
-   * @see ScanningDevice::calcIntensity
+   *  received power
+   * @see ScanningDevice::computeReceivedPowerWithSigma
    */
-  virtual double calcIntensity(double const targetRange,
-                               double const sigma,
-                               int const subrayRadiusStep,
-                               size_t const idx) const = 0;
+  virtual double computeReceivedPowerWithSigma(double const targetRange,
+                                               double const sigma,
+                                               std::size_t subrayIndex,
+                                               size_t const idx) const = 0;
 
   // ***  SIM STEP UTILS  *** //
   // ************************ //
@@ -551,13 +571,13 @@ public:
    * @return Number of rays of the scanning device
    * @see ScanningDevice::numRays
    */
-  virtual int getNumRays(size_t const idx) const = 0;
+  virtual std::size_t getNumRays(size_t const idx) const = 0;
   /**
    * @brief Non index version of the Scanner::getNumRays(size_t const)
    *  method
    * @see Scanner::getNumRays(size_t const)
    */
-  inline int getNumRays() const { return getNumRays(0); }
+  inline std::size_t getNumRays() const { return getNumRays(0); }
   /**
    * @brief Set the number of rays of the scanning device
    * @param numRays New number of rays for the scanning device
@@ -565,13 +585,13 @@ public:
    *  be set
    * @see ScanningDevice::numRays
    */
-  virtual void setNumRays(int const numRays, size_t const idx) = 0;
+  virtual void setNumRays(std::size_t numRays, size_t const idx) = 0;
   /**
    * @brief Non index version of the
-   *  Scanner::setNumRays(int const, size_t const) method
-   * @see Scanner::setNumRays(int const, size_t const)
+   *  Scanner::setNumRays(std::size_t, size_t const) method
+   * @see Scanner::setNumRays(std::size_t, size_t const)
    */
-  inline void setNumRays(int const numRays) { setNumRays(numRays, 0); }
+  inline void setNumRays(std::size_t numRays) { setNumRays(numRays, 0); }
 
   /**
    * @brief Obtain the pulse frequency
@@ -666,7 +686,7 @@ public:
    */
   inline double getBeamDivergence() const { return getBeamDivergence(0); }
   /**
-   * @brief Set beam divergence
+   * @brief Set beam divergence and refresh the subray table and beam caches.
    * @param beamDivergence New beam divergence (radians)
    * @param idx The index of the scanning device which beam divergence must
    *  be set (by default 0, it is the first one)
@@ -685,33 +705,34 @@ public:
   }
 
   /**
-   * @brief Obtain average power
-   * @param idx The index of the scanning device which average power must be
-   *  obtained (by default 0, it is the first one)
-   * @return Average power (watts)
-   * @see ScanningDevice::averagePower_w
+   * @brief Obtain whole-beam peak power
+   * @param idx The index of the scanning device which whole-beam peak power
+   * must be obtained (by default 0, it is the first one)
+   * @return Whole-beam peak power (watts)
+   * @see ScanningDevice::pulseAmplitude_W
    */
-  virtual double getAveragePower(size_t const idx) const = 0;
+  virtual double getPulseAmplitude(size_t const idx) const = 0;
   /**
-   * @brief No index argument version of the Scanner::getAveragePower method
-   * @see Scanner::getAveragePower(size_t const)
+   * @brief No index argument version of the Scanner::getPulseAmplitude method
+   * @see Scanner::getPulseAmplitude(size_t const)
    */
-  inline double getAveragePower() const { return getAveragePower(0); }
+  inline double getPulseAmplitude() const { return getPulseAmplitude(0); }
   /**
-   * @brief Set average power
-   * @param averagePower New average power (watts)
-   * @param idx The index of the scanning device which average power must be
-   *  set (by default 0, it is the first one)
-   * @see ScanningDevice::averagePower_w
+   * @brief Set whole-beam peak power
+   * @param pulseAmplitude New whole-beam peak power (watts)
+   * @param idx The index of the scanning device which whole-beam peak power
+   * must be set (by default 0, it is the first one)
+   * @see ScanningDevice::pulseAmplitude_W
    */
-  virtual void setAveragePower(double const averagePower, size_t const idx) = 0;
+  virtual void setPulseAmplitude(double const pulseAmplitude,
+                                 size_t const idx) = 0;
   /**
-   * @brief No index argument version of the Scanner::setAveragePower method
-   * @see Scanner::setAveragePower(double const, size_t const)
+   * @brief No index argument version of the Scanner::setPulseAmplitude method
+   * @see Scanner::setPulseAmplitude(double const, size_t const)
    */
-  inline void setAveragePower(double const averagePower)
+  inline void setPulseAmplitude(double const pulseAmplitude)
   {
-    setAveragePower(averagePower, 0);
+    setPulseAmplitude(pulseAmplitude, 0);
   }
 
   /**

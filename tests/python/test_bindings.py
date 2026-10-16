@@ -405,7 +405,6 @@ def test_fwf_settings_instantiation():
     assert fwf.scanner_efficiency == 0.9
     assert fwf.atmospheric_visibility == 0.9
     assert fwf.scanner_wave_length == 1550.0
-    assert fwf.beam_divergence_angle == 0.0003
     assert fwf.pulse_length == 4.0
     assert fwf.beam_sample_quality == 3
     assert fwf.win_size == fwf.pulse_length / 4.0
@@ -423,7 +422,6 @@ def test_fwf_settings_set_get_properties():
     fwf.scanner_efficiency = 0.85
     fwf.atmospheric_visibility = 0.95
     fwf.scanner_wave_length = 1600.0
-    fwf.beam_divergence_angle = 0.0005
     fwf.pulse_length = 5.0
     fwf.beam_sample_quality = 4
     fwf.win_size = 1.25
@@ -437,7 +435,6 @@ def test_fwf_settings_set_get_properties():
     assert fwf.scanner_efficiency == 0.85
     assert fwf.atmospheric_visibility == 0.95
     assert fwf.scanner_wave_length == 1600.0
-    assert fwf.beam_divergence_angle == 0.0005
     assert fwf.pulse_length == 5.0
     assert fwf.beam_sample_quality == 4
     assert fwf.win_size == 1.25
@@ -455,9 +452,9 @@ def test_fwf_settings_to_string():
         "scannerEfficiency = 0.9\n"
         "atmosphericVisibility = 0.9\n"
         "scannerWaveLength = 1550\n"
-        "beamDivergence_rad = 0.0003\n"
         "pulseLength_ns = 4\n"
         "beamSampleQuality = 3\n"
+        "beamSamplingFactor = 2\n"
         "winSize_ns = 1\n"
         "maxFullwaveRange_ns = 0\n"
     )
@@ -631,7 +628,6 @@ def create_and_modify_leg_with_platform_and_scanner_settings():
     scanner_settings.min_vertical_angle = -90
     scanner_settings.max_vertical_angle = 90
     scanner_settings.scan_frequency = 5
-    scanner_settings.beam_divergence_angle = 0.01
     scanner_settings.trajectory_time_interval = 1.0
     scanner_settings.vertical_resolution = 0.5
     scanner_settings.horizontal_resolution = 0.5
@@ -688,7 +684,6 @@ def test_leg_and_scanner_settings():
     assert scanner_settings.min_vertical_angle == -90
     assert scanner_settings.max_vertical_angle == 90
     assert scanner_settings.scan_frequency == 5
-    assert scanner_settings.beam_divergence_angle == 0.01
     assert scanner_settings.trajectory_time_interval == 1.0
     assert scanner_settings.vertical_resolution == 0.5
     assert scanner_settings.horizontal_resolution == 0.5
@@ -972,6 +967,18 @@ class ExampleScanner(_helios.Scanner):
         self._peak_intensity_index = 0
         self._received_energy_min = 0.0
 
+    def computeReceivedPower(self, cosine, target_range, material, subray_index, idx):
+        return cosine * 2.0
+
+    def computeReceivedPowerWithSigma(self, target_range, sigma, subray_index, idx):
+        return sigma * 3.0
+
+    def computePowerRatio(self, cosine, target_range, material, subray_index, idx):
+        return cosine * 0.25
+
+    def computePowerRatioWithSigma(self, target_range, sigma, subray_index, idx):
+        return sigma * 0.125
+
     def getScannerId(self):
         return "TestScannerID"
 
@@ -981,7 +988,7 @@ class ExampleScanner(_helios.Scanner):
     def getDeviceId(self, index):
         return f"Device{index}"
 
-    def getAveragePower(self, index):
+    def getPulseAmplitude(self, index):
         return 10.0
 
     def getBeamDivergence(self, index):
@@ -1062,10 +1069,10 @@ class ExampleScanner(_helios.Scanner):
     def setBeamDivergence(self, beamDivergence, idx):
         pass  # Default implementation
 
-    def getAveragePower(self, idx):
+    def getPulseAmplitude(self, idx):
         return 0.0  # Default implementation
 
-    def setAveragePower(self, averagePower, idx):
+    def setPulseAmplitude(self, pulseAmplitude, idx):
         pass  # Default implementation
 
     def getBeamQuality(self, idx):
@@ -1593,3 +1600,15 @@ class TestScannerMethods:
         scanner.setTimeWave(time_wave)
         result = scanner.calcTimePropagation(time_wave, num_bins, scanner)
         assert isinstance(result, int)  # Replace with expected value if applicable
+
+
+def test_scanner_normalized_transfer_dispatch():
+    scanner = ExampleScanner("transfer-test", [100000])
+    assert scanner.compute_power_ratio(0.5, 100.0, _helios.Material(), 0, 0) == 0.125
+    assert scanner.compute_power_ratio_with_sigma(100.0, 2.0, 0, 0) == 0.25
+
+
+def test_scanner_received_power_dispatch():
+    scanner = ExampleScanner("power-test", [100000])
+    assert scanner.compute_received_power(0.5, 100.0, _helios.Material(), 0, 0) == 1.0
+    assert scanner.compute_received_power_with_sigma(100.0, 2.0, 0, 0) == 6.0

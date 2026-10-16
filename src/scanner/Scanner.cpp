@@ -177,7 +177,6 @@ Scanner::retrieveCurrentSettings(size_t const idx)
   settings->id = ss.str();
   settings->pulseFreq_Hz = getPulseFreq_Hz();
   settings->active = isActive();
-  settings->beamDivAngle = getBeamDivergence(idx);
   settings->trajectoryTimeInterval = trajectoryTimeInterval_ns / 1000000000.0;
   settings->maxDuration_s = maxDuration_s;
   // Settings from ScannerHead
@@ -214,7 +213,7 @@ Scanner::toString()
   size_t const numDevices = getNumDevices();
   for (size_t i = 0; i < numDevices; ++i) {
     ss << "Device[" << i << "]: " << getDeviceId(i) << "\n"
-       << "\tAverage Power: " << getAveragePower(i) << " W\n"
+       << "\tWhole-beam Pulse Amplitude: " << getPulseAmplitude(i) << " W\n"
        << "\tBeam Divergence: " << getBeamDivergence(i) * 1e3 << " mrad\n"
        << "\tWavelength: " << (int)(getWavelength(i) * 1e9) << " nm\n"
        << "\tVisibility: " << getVisibility(i) << " km\n";

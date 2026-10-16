@@ -3,10 +3,37 @@ Full waveform and intensity modelling
 =====================================
 
 
+Radiometry calculation API
+-------------------------
+
+``EnergyModel`` and scanner calculation methods use incidence cosine and ranges in metres. ``computeReceivedPower`` and ``computeEmittedPower`` return watts. ``computePowerRatio`` returns received power divided by whole-beam emitted peak power, including the absolute subray share. ``WithSigma`` variants accept the existing external scattering value, including the LadLut convention. ``computeTargetArea`` returns the transverse subray patch area in square metres. Python exposes the corresponding snake_case names and keyword arguments::
+
+   power_W = model.compute_received_power(
+       incidence_cosine=math.cos(angle_rad), target_range_m=100.0,
+       material=material, subray_index=0)
+   area_m2 = model.compute_target_area(target_range_m=100.0, subray_index=0)
+
+Migration from the previous API requires replacing argument objects with direct arguments, passing cosine instead of incidence angle, and using ordinary range instead of squared range for target area. The old intensity/transfer names and ``compute_cross_section`` are removed. Received-power values are now watts, so their numerical values are the former values divided by ``1e9``.
+
+Waveform and point-cloud output scaling remains unchanged. Conversion to the existing nanowatt scale occurs at waveform and intersection-handling boundaries. Analytics records retain their schema and watt-valued power columns. The BRDF column contains the angular reflectance response, including incidence cosine where applicable.
+
+
 Fullwave processing
 -------------------
 
 HELIOS++ supports simulation of full waveform data by simulating a laser beam cone of finite divergence via sampled subrays.
+
+Beam divergence
+^^^^^^^^^^^^^^^
+
+The scanner XML attribute ``beamDivergence_rad`` defines the full beam divergence in radians. Individual ``<channel>`` elements can override it. In Python, change the divergence before running a simulation:
+
+   scanner.beam_divergence = 0.003  # radians, channel 0
+   scanner.beam_divergence = "0.03 deg"  # angles with units are supported
+   scanner.set_beam_divergence(0.0005, index=1)  # a multi-channel scanner
+   angle = scanner.get_beam_divergence(index=1)
+
+These setters refresh the derived beam state automatically. Divergence must be finite and strictly between zero and pi radians.
 
 Subray quantification
 ^^^^^^^^^^^^^^^^^^^^^
@@ -26,6 +53,10 @@ If no information is given there, the scanner definition may have a set of ``FWF
      - 3
      - 3 concentric circles of subrays, 19 subrays total; discretization in space.
 
+   * - ``beamSamplingFactor``
+     - 2
+     - Sampling radius in units of the Gaussian 1/e^2 radius; captures 99.9665% of emitted power.
+
    * - ``binSize_ns``
      - 0.25
      - Discretization in time (in nanoseconds).
@@ -42,19 +73,20 @@ If no information is given there, the scanner definition may have a set of ``FWF
 The ``beamSampleQuality`` :math:`bSQ` is the number of concentric circles from which subrays are sampled. The angular distance of circle :math:`i` (counting from the center) depends on the beam divergence :math:`\beta` and is calculated as:
 
 .. math::
-   \theta_i = \frac{i \cdot \beta}{bSQ}
+   \theta_s = \arctan\left(k\tan(\beta/2)\right), \qquad
+   \alpha_i = \frac{i\theta_s}{bSQ-1/2}, \quad 0 \le i < bSQ
 
-Thus, the outermost circle lies at an angular distance of :math:`\beta` (i.e., twice the beam divergence, assuming the divergence is defined at the :math:`1/e^2` energy points).
+Here :math:`\beta` is the full 1/e^2 divergence and :math:`k` is ``beamSamplingFactor``. Annular boundaries lie halfway between ring directions, starting at zero and ending exactly at :math:`\theta_s`. A single central ray represents the entire sampled disk when ``beamSampleQuality = 1``. Increasing coverage at fixed quality makes spatial sampling coarser.
 
 On each circle, :math:`k` subrays are sampled, where:
 
 .. math::
-   k = \left\lfloor 2\pi n \right\rfloor
+   N_0 = 1, \qquad N_i = \left\lfloor 2\pi i \right\rfloor \quad (i > 0)
 
 The subrays are distributed evenly around the circle. The total number of subrays for a given ``beamSampleQuality`` :math:`bSQ` is:
 
 .. math::
-   n_{\text{Rays}} = 1 + \sum_{i=1}^{bSQ} \left\lfloor 2\pi i \right\rfloor
+   n_{\text{Rays}} = 1 + \sum_{i=1}^{bSQ-1} \left\lfloor 2\pi i \right\rfloor
 
 For example, with ``beamSampleQuality = 3``, the subray distribution appears as follows (color represents relative amplitude, see next section):
 
@@ -75,36 +107,16 @@ For each subray, the returned waveform is computed by intersecting the ray with 
 
 The received amplitude is derived from the LiDAR equation, considering the following components:
 
-1. **Transmitted energy**  
-   The energy of a subray at a radial offset :math:`r` from the central beam is determined by the beam profile. Key parameters are:
-
-   - :math:`w_0` ... beam waist radius (see :doc:`Scanners and platforms <scanners_platforms>`),
-   - :math:`\lambda` ... wavelength,
-   - :math:`r` ... radial offset from center beam,
-   - :math:`R` ... target range,
-   - :math:`R_0` ... minimum range (range of beam waist),
-   - :math:`I_0` ... average transmitted power.
-
-   Define the following auxiliary variables:
+1. **Transmitted power**
+   Geometry and weights use one circular far-field Gaussian. At axial distance :math:`z`, the radius is :math:`w=z\tan(\beta/2)`. The power share :math:`s_{p,i}` assigned to each subray of annulus :math:`i` is its integrated fraction of total emitted power :math:`P_0`:
 
    .. math::
-      \Omega = \frac{\lambda R}{\pi w_0^2}
+      s_{p,i} = \frac{1}{N_i}\left[\exp{\left(-\frac{2\tan^2(\theta_i)}{\tan^2(\beta/2)}\right)} - \exp{\left(-\frac{2\tan^2(\theta_{i+1})}{\tan^2(\beta/2)}\right)}\right].
 
-   .. math::
-      \Omega_0 = 1 - \frac{R}{R_0}
-
-   .. math::
-      w = w_0 \sqrt{\Omega_0^2 + \Omega^2}
-
-   The power of the subray at offset :math:`r` is then:
-
-   .. math::
-      I = I_0 \exp\left(-\frac{2r^2}{w^2}\right)
-
-   This model follows :cite:t:`Carlsson.2001`.
+   The shares sum to :math:`1-e^{-2k^2}`, independently of range and sample quality. No power from the omitted Gaussian tail is shifted into the sampled cone.
 
 2. **Material reflectance**  
-   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BDRF) :cite:p:`Phong.1975`. 
+   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BRDF) :cite:p:`Phong.1975`.
 
 3. **Target cross section**  
    The effective cross section is computed based on the area illuminated by the subray and the local incidence angle.
@@ -114,20 +126,32 @@ The received amplitude is derived from the LiDAR equation, considering the follo
 
 See also: :ref:`intensity-modelling`.
 
+Incidence evaluation uses the cosine directly during ray tracing. For normalized ray direction and surface normal, the smaller incidence angle has cosine :math:`c = |\mathbf{n}\cdot\mathbf{d}|`. The Phong angular reflectance response is computed without recovering the angle:
+
+.. math::
+   f = \rho\left[(1-K_s)c + K_s |2c^2-1|^{N_s}\right].
+
+Angle-based APIs remain available. The cosine path also supports normal-based voxels and their closest-face fallback. Detailed analytics convert the cosine back to radians only when recording the incidence angle.
+
 Time-Domain Beam Modeling
 --------------------------
 
 In the time domain, the beam pulse is modeled using the following function:
 
 .. math::
-   P(t) = t_\tau^2 \exp(-t_\tau)
+   P(t) = P_0 h(t)
+
+.. math::
+   h(t) = \frac{t_\tau^2\exp(2)}{4} \exp(-t_\tau)
 
 where:
 
 - :math:`t_\tau = t / \tau`,
-- :math:`\tau = \text{pulseLength} / 1.75`.
+- :math:`\tau = \text{pulseLength} / 3.394680670846504`.
 
-This function produces the characteristic pulse shape used in the simulation :cite:p:`Carlsson.2001`:
+The sampled waveform extends to :math:`7\tau` (about 2.06 times the FWHM), so the falling flank is retained. Return buffers use this sampled duration.
+
+``pulseLength`` is the FWHM of the pulse. The prefactor :math:`\frac{\exp(2)}{4}` scales the shape such that its maximum value is 1:
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
@@ -200,10 +224,10 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - **Provided by**
      - **Default Value**
 
-   * - Average power
-     - Transmitted optical power (watts)
-     - User: ``averagePower_w`` in **scanner XML**
-     - 4.0 W
+   * - Pulse amplitude
+     - Whole-beam peak optical power before footprint truncation (watts)
+     - User: ``pulseAmplitude_W`` in **scanner XML**
+     - 1.0 W (reference amplitude)
 
    * - Aperture size
      - Receiver aperture diameter (meters)
@@ -256,6 +280,37 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - User: ``Ns`` in material file (`.mtl`)
      - —
 
+.. _pulse_amplitude:
+
+Whole-beam pulse amplitude
+--------------------------
+
+``pulseAmplitude_W`` (Python ``scanner.pulse_amplitude``) specifies the effective peak optical power of the **entire emitted beam**, not an individual subray. Users supply or calibrate this value for their operating conditions. HELIOS++ does not infer it from manufacturer average power, repetition rate, or pulse length. The default 1 W is a reference amplitude, not a scanner specification.
+
+For amplitude :math:`P_0` and a dimensionless unit-peak temporal shape :math:`h`:
+
+.. math::
+
+   P_\mathrm{emit}(t) = P_0 h(t), \qquad E_\mathrm{pulse} = P_0 \int h(t)\,dt.
+
+Time in the energy integral is in seconds. The current shape is :math:`h(t)=(e^2/4)(t/\tau)^2 e^{-t/\tau}`, with analytic maximum one at :math:`t=2\tau`. Sampling can miss this peak. Samples are not renormalized. Pulse duration and shape therefore affect pulse energy at fixed amplitude. The existing finite sampling window and timing convention remain unchanged.
+
+Each subray receives peak power :math:`P_0 s_i`, where :math:`s_i` is its absolute Gaussian power fraction. At fixed footprint extent, the sum of these fractions is independent of subray count. With ``beamSamplingFactor`` :math:`f`, the captured fraction is :math:`1-e^{-2f^2}`. Power outside the sampling cone is not redistributed among the retained rays.
+
+The energy model computes dimensionless transfer coefficients :math:`H_i`, including these subray fractions. Waveform construction then evaluates:
+
+.. math::
+
+   P_\mathrm{received}(t) = P_0 \sum_i H_i h(t-t_i).
+
+Amplitude is applied before detection and fitting.
+
+.. versionchanged:: 3.0
+
+   ``averagePower_w`` is rejected. Use ``pulseAmplitude_W``. Python ``average_power`` becomes ``pulse_amplitude`` and C++ accessors become ``getPulseAmplitude`` / ``setPulseAmplitude`` (including indexed variants). To preserve a legacy waveform, set :math:`P_0=A_\mathrm{old}4/e^2`. The old default coefficient 4.0 corresponds to approximately 2.1653645318 W. Shipped scanner definitions explicitly use this migrated value. New definitions without an amplitude use 1 W. This conversion preserves simulated waveforms, not manufacturer average-power physics. Public emitted/received peak-power methods now use the new peak meaning.
+
+   Custom scanner subclasses must implement ``calcTransferFromCosine`` and ``calcTransferWithSigma`` for tracing. These return dimensionless transfers, without amplitude or the legacy intensity scaling. The energy model exposes corresponding Python methods ``compute_transfer_from_cosine`` and ``compute_transfer_with_sigma``. Existing public intensity methods remain amplitude-scaled.
+
 Material files
 --------------
 
@@ -300,19 +355,19 @@ There are four HELIOS-specific parameters, that can be added to material files b
 Intensity calculation from material properties
 ----------------------------------------------
 
-HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Function (BDRF) reflectance model coupled with the lidar-radar equation. The recorded intensity (signal amplitude) is calculated in three main steps:
+HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Function (BRDF) reflectance model coupled with the lidar-radar equation. The recorded intensity (signal amplitude) is calculated in three main steps:
 
-1. **BDRF Calculation**
+1. **BRDF Calculation**
 
-   The BDRF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (defined by the material parameters ``kd`` :math:`(k_d)`, ``ks`` :math:`(k_s)`, and the specular exponent ``Ns`` :math:`(N_s)`). The incidence angle :math:`\varphi` is determined from the ray-object intersection.
-
-   .. math::
-      \text{BDRF}_r = \rho \cdot BDRF(\varphi, \text{spec}, N_s)
-
-   where :math:`BDRF` follows the formulation by :cite:t:`JutziGross.2022`:
+   The BRDF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (defined by the material parameters ``kd`` :math:`(k_d)`, ``ks`` :math:`(k_s)`, and the specular exponent ``Ns`` :math:`(N_s)`). The incidence angle :math:`\varphi` is determined from the ray-object intersection.
 
    .. math::
-      BDRF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
+      \text{BRDF}_r = \rho \cdot BRDF(\varphi, \text{spec}, N_s)
+
+   where :math:`BRDF` follows the formulation by :cite:t:`JutziGross.2022`:
+
+   .. math::
+      BRDF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
 
    with :math:`\varphi^* = \varphi - \pi/2` if :math:`\varphi > \pi/2`, otherwise :math:`\varphi^* = \varphi`.
 
@@ -323,39 +378,30 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
    Please note:
 
-   - If ``ks`` is 0, the material is fully diffuse and the BDRF simplifies to :math:`\text{BDRF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
-   - If both ``kd`` and ``ks`` are 0, the material reflectance is direction-independent and the BDRF simplifies to :math:`\text{BDRF}_r = \rho`.
+   - If ``ks`` is 0, the material is fully diffuse and the BRDF simplifies to :math:`\text{BRDF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
+   - If both ``kd`` and ``ks`` are 0, the material reflectance is direction-independent and the BRDF simplifies to :math:`\text{BRDF}_r = \rho`.
 
 
 2. **Lidar Cross Section Calculation**
 
-   The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following :cite:p:`Wagner.2010`, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all; partial hits are treated as full hits in intensity simulation.
+   The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following :cite:p:`Wagner.2010`, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all. Partial hits are treated as full hits in intensity simulation.
 
    .. math::
-      \sigma = 4\pi \cdot \text{BDRF}_r \cdot A \cdot \cos(\varphi)
+      \sigma_i = 4\pi \cdot \text{BRDF}_r \cdot A_i
 
 3. **Received Intensity via Lidar-Radar Equation**
 
-   The received intensity :math:`I` is computed using the lidar-radar equation, including atmospheric attenuation :cite:p:`Carlsson.2001`:
+   For a subray with absolute power fraction :math:`s_i`, the dimensionless
+   received/whole-beam peak-power transfer is:
 
    .. math::
-      I = \frac{I_0 \cdot D_r^2 \cdot \eta_{\text{sys}} \cdot \sigma}{4\pi \cdot R^4 \cdot B_t^2 \cdot \exp\left( \frac{2\pi^2 r^2 w_0^2}{\lambda^2 (R_0^2 + R^2)} + 2 R a_e \right)} \cdot 10^9
+      H_i = \frac{\pi s_i D_r^2 \eta_{\mathrm{sys}}\,\mathrm{BRDF}_r
+                  e^{-2Ra_e}}{4R^2}, \qquad I_i = P_0 H_i.
 
-   where:
-   
-   - :math:`I_0` is the average pulse intensity,
-   - :math:`D_r` is the receiver diameter,
-   - :math:`\eta_{\text{sys}}` is the system efficiency,
-   - :math:`R` is the target range,
-   - :math:`r` is the sub-ray radius (distance from the central sub-ray),
-   - :math:`B_t` is the beam divergence,
-   - :math:`w_0` is the beam waist radius,
-   - :math:`\lambda` is the scanner wavelength,
-   - :math:`R_0` is the beam waist range (minimum range),
-   - :math:`a_e` is the atmospheric extinction coefficient, computed as:
+   For an externally supplied cross section, the corresponding expression is :math:`H_i=s_iD_r^2\eta_{\mathrm{sys}}\sigma_i e^{-2Ra_e}/(16A_iR^2)`. Here :math:`P_0` is whole-beam peak optical power, :math:`A_i` is the subray's transverse target area, :math:`D_r` is receiver diameter, :math:`R` is target range, and :math:`\eta_{\mathrm{sys}}` is system efficiency. The BRDF response above already includes the incidence cosine. It is not applied a second time. The atmospheric extinction coefficient :math:`a_e` in inverse metres uses the Kruse relation:
 
    .. math::
-      a_e = \frac{3.91}{V_M} \left( \frac{\lambda}{0.55} \right)^{-q}
+      a_e = \frac{3.91}{1000 V_M} \left( \frac{\lambda_{\mu\mathrm{m}}}{0.55} \right)^{-q}
 
    with the exponent :math:`q` defined piecewise:
 
@@ -363,12 +409,13 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
       q = 
       \begin{cases}
         1.6, & \text{if } V_M > 50\ \text{km} \\
-        1.3, & \text{if } 50\ \text{km} > V_M > 6\ \text{km} \\
+        1.3, & \text{if } 6\ \text{km} < V_M \le 50\ \text{km} \\
         0.585 \cdot V_M^{0.33}, & \text{otherwise}
       \end{cases}
 
-   where :math:`V_M` is the atmospheric visibility.
+   Here :math:`V_M` is the numerical visibility in kilometres and :math:`\lambda_{\mu\mathrm{m}}` is the numerical wavelength in micrometres. The scanner stores wavelength in metres and converts it to micrometres for this relation. The factor of 1000 converts extinction per kilometre to extinction per metre, matching the range :math:`R` in metres in the two-way atmospheric transmission :math:`\exp(-2 R a_e)`.
 
+   The approximation is applied for wavelengths from 0.5 to 2.0 micrometres, including both endpoints. Outside this range, HELIOS logs a warning and assumes zero extinction (unit atmospheric transmission).
 
 References
 ----------

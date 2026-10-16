@@ -67,6 +67,10 @@ public:
   virtual double getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                                        const glm::dvec3& rayDir,
                                        const glm::dvec3& intersectionPoint) = 0;
+  /** Cosine of the smaller incidence angle; rayDir must be normalized. */
+  virtual double getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                                         const glm::dvec3& rayDir,
+                                         const glm::dvec3& intersectionPoint);
   /**
    * @brief Obtain the intersection point between primitive and given ray
    * @param rayOrigin Ray origin coordinates

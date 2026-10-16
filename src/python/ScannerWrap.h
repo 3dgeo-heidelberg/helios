@@ -8,9 +8,9 @@
 #define SUBRAY_ADDITIONAL_ARGS , bool&, std::vector<double>&
 #define PULSE_RECORDER_ARG , std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #define INTENSITY_RECORDS_ARG                                                  \
-  , std::vector<std::vector<double>>& calcIntensityRecords
+  , std::vector<std::vector<double>>& radiometryRecords
 #define PULSE_RECORDER_MACRO_ARG , pulseRecorder
-#define INTENSITY_RECORDS_MACRO_ARG , calcIntensityRecords
+#define INTENSITY_RECORDS_MACRO_ARG , radiometryRecords
 #else
 #define SUBRAY_ADDITIONAL_ARGS
 #define PULSE_RECORDER_ARG
@@ -128,7 +128,7 @@ public:
   void computeSubrays(
     std::function<void(
       Rotation const&,
-      int const,
+      std::size_t,
       NoiseSource<double>&,
       std::map<double, double>&,
       std::vector<RaySceneIntersection>& SUBRAY_ADDITIONAL_ARGS)> handleSubray,
@@ -171,33 +171,65 @@ public:
                            idx);
   }
 
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       int const subrayRadiusStep,
-                       size_t const idx INTENSITY_RECORDS_ARG) const override
+  double computeReceivedPower(double const incidenceCosine,
+                              double const targetRange,
+                              Material const& mat,
+                              std::size_t subrayIndex,
+                              size_t const idx
+                                INTENSITY_RECORDS_ARG) const override
   {
     PYBIND11_OVERLOAD_PURE(double,
                            Scanner,
-                           calcIntensity,
-                           incidenceAngle,
+                           computeReceivedPower,
+                           incidenceCosine,
                            targetRange,
                            mat,
-                           subrayRadiusStep,
+                           subrayIndex,
                            idx INTENSITY_RECORDS_MACRO_ARG);
   }
 
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       int const subrayRadiusStep,
-                       size_t const idx) const override
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       std::size_t subrayIndex,
+                                       size_t const idx) const override
   {
     PYBIND11_OVERLOAD_PURE(double,
                            Scanner,
-                           calcIntensity,
+                           computeReceivedPowerWithSigma,
                            targetRange,
                            sigma,
-                           subrayRadiusStep,
+                           subrayIndex,
+                           idx);
+  }
+
+  double computePowerRatio(double const incidenceCosine,
+                           double const targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex,
+                           size_t const idx
+                             INTENSITY_RECORDS_ARG) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double,
+                           Scanner,
+                           computePowerRatio,
+                           incidenceCosine,
+                           targetRange,
+                           mat,
+                           subrayIndex,
+                           idx INTENSITY_RECORDS_MACRO_ARG);
+  }
+
+  double computePowerRatioWithSigma(double const targetRange,
+                                    double const sigma,
+                                    std::size_t subrayIndex,
+                                    size_t const idx) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double,
+                           Scanner,
+                           computePowerRatioWithSigma,
+                           targetRange,
+                           sigma,
+                           subrayIndex,
                            idx);
   }
 
@@ -216,12 +248,12 @@ public:
     PYBIND11_OVERLOAD_PURE(int, Scanner, getCurrentPulseNumber, idx);
   }
 
-  int getNumRays(size_t const idx) const override
+  std::size_t getNumRays(size_t const idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(int, Scanner, getNumRays, idx);
+    PYBIND11_OVERLOAD_PURE(std::size_t, Scanner, getNumRays, idx);
   }
 
-  void setNumRays(int const numRays, size_t const idx) override
+  void setNumRays(std::size_t numRays, size_t const idx) override
   {
     PYBIND11_OVERLOAD_PURE(void, Scanner, setNumRays, numRays, idx);
   }
@@ -259,14 +291,15 @@ public:
       void, Scanner, setBeamDivergence, beamDivergence, idx);
   }
 
-  double getAveragePower(size_t const idx) const override
+  double getPulseAmplitude(size_t const idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(double, Scanner, getAveragePower, idx);
+    PYBIND11_OVERLOAD_PURE(double, Scanner, getPulseAmplitude, idx);
   }
 
-  void setAveragePower(double const averagePower, size_t const idx) override
+  void setPulseAmplitude(double const pulseAmplitude, size_t const idx) override
   {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setAveragePower, averagePower, idx);
+    PYBIND11_OVERLOAD_PURE(
+      void, Scanner, setPulseAmplitude, pulseAmplitude, idx);
   }
 
   double getBeamQuality(size_t const idx) const override
@@ -549,8 +582,6 @@ public:
       timeWave,
       numBins,
       scanner.getFWFSettings(0).binSize_ns,
-      scanner.getPulseLength_ns(0),
-      7.0 // 3.5 too many ops., 7.0 just one op.
-    );
+      scanner.getPulseLength_ns(0));
   }
 };

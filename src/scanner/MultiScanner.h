@@ -144,7 +144,7 @@ public:
    */
   void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -176,25 +176,44 @@ public:
                               int& numFullwaveBins,
                               size_t const idx) override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPower
+   *
+   * Received peak power in watts; range in metres, incidence cosine in [-1, 1].
    */
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       int const subrayRadiusStep,
-                       size_t const idx
+  double computeReceivedPower(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
 #if DATA_ANALYTICS >= 2
-                       ,
-                       std::vector<std::vector<double>>& calcIntensityRecords
+    ,
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const override;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
+   * share. */
+  double computePowerRatio(double const incidenceCosine,
+                           double const targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex,
+                           size_t const idx
+#if DATA_ANALYTICS >= 2
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords
+#endif
+  ) const override;
+  double computePowerRatioWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex,
+                                    size_t idx) const override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPowerWithSigma
    */
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       int const subrayRadiusStep,
-                       size_t const idx) const override;
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       std::size_t subrayIndex,
+                                       size_t const idx) const override;
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
@@ -256,21 +275,21 @@ public:
    */
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
-    scanDevs[idx].beamDivergence_rad = beamDivergence;
+    scanDevs.at(idx).setBeamDivergence(beamDivergence);
   }
   /**
-   * @see Scanner::getAveragePower
+   * @see Scanner::getPulseAmplitude
    */
-  double getAveragePower(size_t const idx) const override
+  double getPulseAmplitude(size_t const idx) const override
   {
-    return scanDevs[idx].averagePower_w;
+    return scanDevs[idx].pulseAmplitude_W;
   }
   /**
-   * @see Scanner::setAveragePower
+   * @see Scanner::setPulseAmplitude
    */
-  void setAveragePower(double const averagePower, size_t const idx) override
+  void setPulseAmplitude(double const pulseAmplitude, size_t const idx) override
   {
-    scanDevs[idx].averagePower_w = averagePower;
+    scanDevs[idx].setPulseAmplitude(pulseAmplitude);
   }
   /**
    * @see Scanner::getBeamQuality
@@ -455,14 +474,14 @@ public:
   /**
    * @see Scanner::getNumRays
    */
-  int getNumRays(size_t const idx) const override
+  std::size_t getNumRays(size_t const idx) const override
   {
     return scanDevs[idx].numRays;
   }
   /**
    * @see Scanner::setNumRays
    */
-  void setNumRays(int const numRays, size_t const idx) override
+  void setNumRays(std::size_t numRays, size_t const idx) override
   {
     scanDevs[idx].numRays = numRays;
   }

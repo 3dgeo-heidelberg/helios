@@ -80,7 +80,7 @@ protected:
                       vector<RaySceneIntersection>& intersects
 #if DATA_ANALYTICS >= 2
                       ,
-                      std::vector<std::vector<double>>& calcIntensityRecords,
+                      std::vector<std::vector<double>>& radiometryRecords,
                       std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
@@ -96,7 +96,7 @@ private:
    * @see FullWaveformPulseRunnable::computeSubrays
    */
   void handleSubray(Rotation const& subrayRotation,
-                    int const subrayRadiusStep,
+                    std::size_t subrayIndex,
                     NoiseSource<double>& intersectionHandlingNoiseSource,
                     std::map<double, double>& reflections,
                     vector<RaySceneIntersection>& intersects
@@ -104,7 +104,7 @@ private:
                     ,
                     bool& subrayHit,
                     std::vector<double>& subraySimRecord,
-                    std::vector<std::vector<double>>& calcIntensityRecords
+                    std::vector<std::vector<double>>& radiometryRecords
 #endif
   );
 
@@ -123,18 +123,17 @@ protected:
    * @see FullWaveformPulseRunnable::digestFullWaveform
    * @see FullWaveformPulseRunnable::exportOutput
    */
-  void digestIntersections(
-    std::vector<std::vector<double>>& apMatrix,
-    RandomnessGenerator<double>& randGen,
-    RandomnessGenerator<double>& randGen2,
-    glm::dvec3& beamDir,
-    std::map<double, double>& reflections,
-    vector<RaySceneIntersection>& intersects
+  void digestIntersections(std::vector<std::vector<double>>& apMatrix,
+                           RandomnessGenerator<double>& randGen,
+                           RandomnessGenerator<double>& randGen2,
+                           glm::dvec3& beamDir,
+                           std::map<double, double>& reflections,
+                           vector<RaySceneIntersection>& intersects
 #if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords,
-    std::vector<std::vector<int>>& calcIntensityIndices,
-    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords,
+                           std::vector<std::vector<int>>& radiometryIndices,
+                           std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
 
@@ -170,7 +169,8 @@ private:
                               int& peakIntensityIndex,
                               int& numFullwaveBins);
   /**
-   * @brief Populate a previously initialized full waveform vector
+   * @brief Populate from dimensionless transfer coefficients, then apply
+   * whole-beam amplitude and legacy intensity scaling before detection
    * @param[out] fullwave Full waveform vector to be populated
    * @see FullWaveformPulseRunnable::digestIntersections
    * @see FullWaveformPulseRunnable::initializeFullWaveform
@@ -192,22 +192,21 @@ private:
    * @see FullWaveformPulseRunnable::populateFullWaveform
    * @see Measurement
    */
-  void digestFullWaveform(
-    std::vector<Measurement>& pointsMeasurement,
-    int& numReturns,
-    std::vector<std::vector<double>>& apMatrix,
-    std::vector<double> const& fullwave,
-    vector<RaySceneIntersection> const& intersects,
-    glm::dvec3 const& beamDir,
-    double const nsPerBin,
-    int const numFullwaveBins,
-    int const peakIntensityIndex,
-    double const minHitTime_ns
+  void digestFullWaveform(std::vector<Measurement>& pointsMeasurement,
+                          int& numReturns,
+                          std::vector<std::vector<double>>& apMatrix,
+                          std::vector<double> const& fullwave,
+                          vector<RaySceneIntersection> const& intersects,
+                          glm::dvec3 const& beamDir,
+                          double const nsPerBin,
+                          int const numFullwaveBins,
+                          int const peakIntensityIndex,
+                          double const minHitTime_ns
 #if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords,
-    std::vector<std::vector<int>>& calcIntensityIndices,
-    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+                          ,
+                          std::vector<std::vector<double>>& radiometryRecords,
+                          std::vector<std::vector<int>>& radiometryIndices,
+                          std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
   /**
@@ -244,8 +243,8 @@ private:
                     RandomnessGenerator<double>& randGen2
 #if DATA_ANALYTICS >= 2
                     ,
-                    std::vector<std::vector<double>>& calcIntensityRecords,
-                    std::vector<std::vector<int>>& calcIntensityIndices,
+                    std::vector<std::vector<double>>& radiometryRecords,
+                    std::vector<std::vector<int>>& radiometryIndices,
                     std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );

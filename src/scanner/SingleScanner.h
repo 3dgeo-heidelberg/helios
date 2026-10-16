@@ -34,7 +34,7 @@ public:
     std::list<int> const& pulseFreqs,
     double const pulseLength_ns,
     std::string const id,
-    double const averagePower,
+    double const pulseAmplitude,
     double const beamQuality,
     double const efficiency,
     double const receiverDiameter,
@@ -121,7 +121,7 @@ public:
    */
   void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -153,25 +153,44 @@ public:
                               int& numFullwaveBins,
                               size_t const idx) override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPower
+   *
+   * Received peak power in watts; range in metres, incidence cosine in [-1, 1].
    */
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       int const subrayRadiusStep,
-                       size_t const idx
+  double computeReceivedPower(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
 #if DATA_ANALYTICS >= 2
-                       ,
-                       std::vector<std::vector<double>>& calcIntensityRecords
+    ,
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const override;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
+   * share. */
+  double computePowerRatio(double const incidenceCosine,
+                           double const targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex,
+                           size_t const idx
+#if DATA_ANALYTICS >= 2
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords
+#endif
+  ) const override;
+  double computePowerRatioWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex,
+                                    size_t idx) const override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPowerWithSigma
    */
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       int const subrayRadiusStep,
-                       size_t const idx) const override;
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       std::size_t subrayIndex,
+                                       size_t const idx) const override;
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
@@ -210,11 +229,14 @@ public:
   /**
    * @see Scanner::getNumRays
    */
-  int getNumRays(size_t const idx) const override { return scanDev.numRays; }
+  std::size_t getNumRays(size_t const idx) const override
+  {
+    return scanDev.numRays;
+  }
   /**
    * @see Scanner::setNumRays
    */
-  void setNumRays(int const numRays, size_t const idx) override
+  void setNumRays(std::size_t numRays, size_t const idx) override
   {
     scanDev.numRays = numRays;
   }
@@ -244,21 +266,21 @@ public:
    */
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
-    scanDev.beamDivergence_rad = beamDivergence;
+    scanDev.setBeamDivergence(beamDivergence);
   }
   /**
-   * @see Scanner::getAveragePower
+   * @see Scanner::getPulseAmplitude
    */
-  double getAveragePower(size_t const idx) const override
+  double getPulseAmplitude(size_t const idx) const override
   {
-    return scanDev.averagePower_w;
+    return scanDev.pulseAmplitude_W;
   }
   /**
-   * @see Scanner::setAveragePower
+   * @see Scanner::setPulseAmplitude
    */
-  void setAveragePower(double const averagePower, size_t const idx) override
+  void setPulseAmplitude(double const pulseAmplitude, size_t const idx) override
   {
-    scanDev.averagePower_w = averagePower;
+    scanDev.setPulseAmplitude(pulseAmplitude);
   }
   /**
    * @see Scanner::getBeamQuality
