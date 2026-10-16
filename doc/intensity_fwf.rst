@@ -108,10 +108,10 @@ For each subray, the returned waveform is computed by intersecting the ray with 
 The received amplitude is derived from the LiDAR equation, considering the following components:
 
 1. **Transmitted power**
-   Geometry and weights use one circular far-field Gaussian. At axial distance :math:`z`, the radius is :math:`w=z\tan(\beta/2)`. The power :math:`P_i` assigned to each subray of annulus :math:`i` is its integrated fraction of total emitted power :math:`P_0`:
+   Geometry and weights use one circular far-field Gaussian. At axial distance :math:`z`, the radius is :math:`w=z\tan(\beta/2)`. The power share :math:`s_{p,i}` assigned to each subray of annulus :math:`i` is its integrated fraction of total emitted power :math:`P_0`:
 
    .. math::
-      P_i = \frac{P_0}{N_i}\left[\exp{\left(-\frac{2\tan^2(\theta_i)}{\tan^2(\beta/2)}\right)} - \exp{\left(-\frac{2\tan^2(\theta_{i+1})}{\tan^2(\beta/2)}\right)}\right].
+      s_{p,i} = \frac{1}{N_i}\left[\exp{\left(-\frac{2\tan^2(\theta_i)}{\tan^2(\beta/2)}\right)} - \exp{\left(-\frac{2\tan^2(\theta_{i+1})}{\tan^2(\beta/2)}\right)}\right].
 
    The shares sum to :math:`1-e^{-2k^2}`, independently of range and sample quality. No power from the omitted Gaussian tail is shifted into the sampled cone.
 
@@ -139,14 +139,19 @@ Time-Domain Beam Modeling
 In the time domain, the beam pulse is modeled using the following function:
 
 .. math::
-   P(t) = t_\tau^2 \exp(-t_\tau)
+   P(t) = P_0 h(t)
+
+.. math::
+   h(t) = \frac{t_\tau^2\exp(2)}{4} \exp(-t_\tau)
 
 where:
 
 - :math:`t_\tau = t / \tau`,
-- :math:`\tau = \text{pulseLength} / 1.75`.
+- :math:`\tau = \text{pulseLength} / 3.394680670846504`.
 
-This function produces the characteristic pulse shape used in the simulation :cite:p:`Carlsson.2001`:
+The sampled waveform extends to :math:`7\tau` (about 2.06 times the FWHM), so the falling flank is retained. Return buffers use this sampled duration.
+
+``pulseLength`` is the FWHM of the pulse. The prefactor :math:`\frac{\exp(2)}{4}` scales the shape such that its maximum value is 1:
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
