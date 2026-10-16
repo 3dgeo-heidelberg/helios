@@ -588,20 +588,21 @@ TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
           Catch::Approx(amplitude * baseline));
 }
 
-TEST_CASE("Temporal peak normalization preserves migrated samples and "
+TEST_CASE("Temporal pulse FWHM, peak normalization, and "
           "whole-beam energy",
           "[energy]")
 {
   double const length = GENERATE(5.0, 12.0);
   double const bin = GENERATE(0.01, 0.1, 0.7);
-  int const count = static_cast<int>(length / bin);
+  int const count =
+    static_cast<int>(std::ceil(WaveMaths::calcPulseDuration(length) / bin));
   std::vector<double> wave(count);
   int const peak =
-    WaveMaths::calcPropagationTimeLegacy(wave, count, bin, length, 7.0);
+    WaveMaths::calcPropagationTimeLegacy(wave, count, bin, length);
   REQUIRE(wave[peak] <= 1.0 + 1e-14);
   double integral = 0;
   for (int i = 0; i < count; ++i) {
-    double const x = i * bin / (length / 7.0);
+    double const x = i * bin / (length / 3.394680670846504);
     double const legacy = x * x * std::exp(-x);
     REQUIRE(wave[i] * (16.0 / std::exp(2.0)) ==
             Catch::Approx(4.0 * legacy).margin(1e-14));
@@ -610,7 +611,7 @@ TEST_CASE("Temporal peak normalization preserves migrated samples and "
   // Use a grid that includes the analytic peak explicitly.
   std::vector<double> exact(3);
   REQUIRE(WaveMaths::calcPropagationTimeLegacy(
-            exact, 3, length / 7.0, length, 7.0) == 2);
+            exact, 3, length / 3.394680670846504, length) == 2);
   REQUIRE(exact[2] == Catch::Approx(1.0).epsilon(1e-14));
   auto scanner = energyScanner();
   double const factor = GENERATE(1.0, 2.0);
@@ -628,11 +629,35 @@ TEST_CASE("Temporal peak normalization preserves migrated samples and "
 }
 
 #if DATA_ANALYTICS < 2
+TEST_CASE("Recording limit clips pulse tails relative to the first return",
+          "[energy]")
+{
+  auto scanner = energyScanner();
+  scanner->setDetector(
+    std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
+  auto& settings = scanner->getFWFSettings();
+  settings.binSize_ns = 1.0;
+  settings.winSize_ns = 2.0;
+  settings.maxFullwaveRange_ns = 10.0;
+  scanner->prepareDiscretization(0);
+  REQUIRE(scanner->getTimeWave(0).size() > 10);
+
+  double minTime, maxTime, binSize, threshold;
+  int peakIndex, numBins;
+  REQUIRE(scanner->getScanningDevice(0).initializeFullWaveform(
+    100.0, 100.0, minTime, maxTime, binSize, threshold, peakIndex, numBins));
+  REQUIRE(threshold == 100.0);
+  REQUIRE(numBins <= 10);
+  REQUIRE(peakIndex + 2 < numBins);
+}
+
 TEST_CASE("Waveform detection uses scaled whole-beam amplitude", "[energy]")
 {
   auto scanner = energyScanner();
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
+  scanner->getFWFSettings().binSize_ns = GENERATE(0.25, 1.0);
+  scanner->getFWFSettings().maxFullwaveRange_ns = GENERATE(0.0, 10.0);
   scanner->getFWFSettings().winSize_ns =
     2 * scanner->getFWFSettings().binSize_ns;
   scanner->prepareDiscretization(0);
@@ -674,7 +699,7 @@ TEST_CASE("Waveform detection uses scaled whole-beam amplitude", "[energy]")
       if (amplitude == 16.0 / std::exp(2.0)) {
         double const x = scanner->getPeakIntensityIndex(0) *
                          scanner->getFWFSettings().binSize_ns /
-                         (scanner->getPulseLength_ns() / 7.0);
+                         (scanner->getPulseLength_ns() / 3.394680670846504);
         REQUIRE(scanner->allMeasurements->front().intensity ==
                 Catch::Approx(4.0 * x * x * std::exp(-x) * 1e3));
       }
