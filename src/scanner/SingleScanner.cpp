@@ -243,31 +243,7 @@ SingleScanner::initializeFullWaveform(double minHitDist_m,
 }
 
 double
-SingleScanner::calcIntensity(
-  double incidenceAngle,
-  double targetRange,
-  Material const& mat,
-  std::size_t subrayIndex,
-  size_t idx
-#if DATA_ANALYTICS >= 2
-  ,
-  std::vector<std::vector<double>>& calcIntensityRecords
-#endif
-) const
-{
-  return scanDev.calcIntensity(incidenceAngle,
-                               targetRange,
-                               mat,
-                               subrayIndex
-#if DATA_ANALYTICS >= 2
-                               ,
-                               calcIntensityRecords
-#endif
-  );
-}
-
-double
-SingleScanner::calcIntensityFromCosine(
+SingleScanner::computeReceivedPower(
   double incidenceCosine,
   double targetRange,
   Material const& mat,
@@ -275,31 +251,31 @@ SingleScanner::calcIntensityFromCosine(
   size_t idx
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return scanDev.calcIntensityFromCosine(incidenceCosine,
-                                         targetRange,
-                                         mat,
-                                         subrayIndex
+  return scanDev.computeReceivedPower(incidenceCosine,
+                                      targetRange,
+                                      mat,
+                                      subrayIndex
 #if DATA_ANALYTICS >= 2
-                                         ,
-                                         calcIntensityRecords
+                                      ,
+                                      radiometryRecords
 #endif
   );
 }
 double
-SingleScanner::calcIntensity(double targetRange,
-                             double sigma,
-                             std::size_t subrayIndex,
-                             size_t idx) const
+SingleScanner::computeReceivedPowerWithSigma(double targetRange,
+                                             double sigma,
+                                             std::size_t subrayIndex,
+                                             size_t idx) const
 {
-  return scanDev.calcIntensity(targetRange, sigma, subrayIndex);
+  return scanDev.computeReceivedPowerWithSigma(targetRange, sigma, subrayIndex);
 }
 
 double
-SingleScanner::calcTransferFromCosine(
+SingleScanner::computePowerRatio(
   double incidenceCosine,
   double targetRange,
   Material const& mat,
@@ -307,26 +283,26 @@ SingleScanner::calcTransferFromCosine(
   size_t idx
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return scanDev.calcTransferFromCosine(incidenceCosine,
-                                        targetRange,
-                                        mat,
-                                        subrayIndex
+  return scanDev.computePowerRatio(incidenceCosine,
+                                   targetRange,
+                                   mat,
+                                   subrayIndex
 #if DATA_ANALYTICS >= 2
-                                        ,
-                                        calcIntensityRecords
+                                   ,
+                                   radiometryRecords
 #endif
   );
 }
 
 double
-SingleScanner::calcTransferWithSigma(double targetRange,
-                                     double sigma,
-                                     std::size_t subrayIndex,
-                                     size_t idx) const
+SingleScanner::computePowerRatioWithSigma(double targetRange,
+                                          double sigma,
+                                          std::size_t subrayIndex,
+                                          size_t idx) const
 {
-  return scanDev.calcTransferWithSigma(targetRange, sigma, subrayIndex);
+  return scanDev.computePowerRatioWithSigma(targetRange, sigma, subrayIndex);
 }
