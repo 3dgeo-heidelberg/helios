@@ -444,24 +444,14 @@ public:
                                       size_t const idx) = 0;
 
   /**
-   * @brief Handle to which scanning device request the intensity computation
+   * @brief Handle to which scanning device request the received-power
+   * computation
    * @param idx The index of the scanning device that must compute the
-   *  intensity
-   * @see ScanningDevice::calcIntensity
-   */
-  virtual double calcIntensity(
-    double const incidenceAngle,
-    double const targetRange,
-    Material const& mat,
-    std::size_t subrayIndex,
-    size_t const idx
-#if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords
-#endif
-  ) const = 0;
-  /** Cosine path; default preserves angle-based subclass overrides. */
-  virtual double calcIntensityFromCosine(
+   *  received power
+   * @see ScanningDevice::computeReceivedPower
+   *
+   * Received peak power in watts, using incidence cosine. */
+  virtual double computeReceivedPower(
     double const incidenceCosine,
     double const targetRange,
     Material const& mat,
@@ -469,12 +459,12 @@ public:
     size_t const idx
 #if DATA_ANALYTICS >= 2
     ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
-  ) const;
-  /** Dimensionless received/whole-beam peak-power transfer, including subray
+  ) const = 0;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
    * share. */
-  virtual double calcTransferFromCosine(
+  virtual double computePowerRatio(
     double const incidenceCosine,
     double const targetRange,
     Material const& mat,
@@ -482,23 +472,24 @@ public:
     size_t const idx
 #if DATA_ANALYTICS >= 2
     ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const = 0;
-  virtual double calcTransferWithSigma(double targetRange,
-                                       double sigma,
-                                       std::size_t subrayIndex,
-                                       size_t idx) const = 0;
+  virtual double computePowerRatioWithSigma(double targetRange,
+                                            double sigma,
+                                            std::size_t subrayIndex,
+                                            size_t idx) const = 0;
   /**
-   * @brief Handle to which scanning device request the intensity computation
+   * @brief Handle to which scanning device request the received-power
+   * computation
    * @param idx The index of the scanning device that must compute the
-   *  intensity
-   * @see ScanningDevice::calcIntensity
+   *  received power
+   * @see ScanningDevice::computeReceivedPowerWithSigma
    */
-  virtual double calcIntensity(double const targetRange,
-                               double const sigma,
-                               std::size_t subrayIndex,
-                               size_t const idx) const = 0;
+  virtual double computeReceivedPowerWithSigma(double const targetRange,
+                                               double const sigma,
+                                               std::size_t subrayIndex,
+                                               size_t const idx) const = 0;
 
   // ***  SIM STEP UTILS  *** //
   // ************************ //

@@ -967,10 +967,16 @@ class ExampleScanner(_helios.Scanner):
         self._peak_intensity_index = 0
         self._received_energy_min = 0.0
 
-    def calcTransferFromCosine(self, cosine, target_range, material, subray_index, idx):
+    def computeReceivedPower(self, cosine, target_range, material, subray_index, idx):
+        return cosine * 2.0
+
+    def computeReceivedPowerWithSigma(self, target_range, sigma, subray_index, idx):
+        return sigma * 3.0
+
+    def computePowerRatio(self, cosine, target_range, material, subray_index, idx):
         return cosine * 0.25
 
-    def calcTransferWithSigma(self, target_range, sigma, subray_index, idx):
+    def computePowerRatioWithSigma(self, target_range, sigma, subray_index, idx):
         return sigma * 0.125
 
     def getScannerId(self):
@@ -1598,7 +1604,11 @@ class TestScannerMethods:
 
 def test_scanner_normalized_transfer_dispatch():
     scanner = ExampleScanner("transfer-test", [100000])
-    assert (
-        scanner.calc_transfer_from_cosine(0.5, 100.0, _helios.Material(), 0, 0) == 0.125
-    )
-    assert scanner.calc_transfer_with_sigma(100.0, 2.0, 0, 0) == 0.25
+    assert scanner.compute_power_ratio(0.5, 100.0, _helios.Material(), 0, 0) == 0.125
+    assert scanner.compute_power_ratio_with_sigma(100.0, 2.0, 0, 0) == 0.25
+
+
+def test_scanner_received_power_dispatch():
+    scanner = ExampleScanner("power-test", [100000])
+    assert scanner.compute_received_power(0.5, 100.0, _helios.Material(), 0, 0) == 1.0
+    assert scanner.compute_received_power_with_sigma(100.0, 2.0, 0, 0) == 6.0

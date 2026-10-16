@@ -2,9 +2,8 @@
 #include <cmath>
 #include <limits>
 #include <logger_core.hpp>
-#include <maths/EnergyMaths.h>
+#include <maths/EnergyModel.h>
 #include <maths/MathConstants.h>
-#include <maths/model/EnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
 #include <stdexcept>
 #include <utility>
@@ -234,7 +233,7 @@ ScanningDevice::calcAtmosphericAttenuation() const
 
   if (lambda_um < 0.5 || lambda_um > 2.0) {
     // Do nothing if wavelength is outside range, approximation will be bad
-    logging::WARN(
+    LOG_WARN(
       "calcAtmosphericAttenuation: wavelength outside 0.5-2.0 um, the Kruse "
       "approximation does not apply, assuming no attenuation");
     return 0.0;
@@ -467,54 +466,31 @@ ScanningDevice::initializeFullWaveform(double minHitDist_m,
 }
 
 double
-ScanningDevice::calcIntensity(
-  double incidenceAngle,
-  double targetRange,
-  Material const& mat,
-  std::size_t subrayIndex
-#if DATA_ANALYTICS >= 2
-  ,
-  std::vector<std::vector<double>>& calcIntensityRecords
-#endif
-) const
-{
-  return energyModel->computeIntensity(incidenceAngle,
-                                       targetRange,
-                                       mat,
-                                       subrayIndex
-#if DATA_ANALYTICS >= 2
-                                       ,
-                                       calcIntensityRecords
-#endif
-  );
-}
-
-double
-ScanningDevice::calcIntensityFromCosine(
+ScanningDevice::computeReceivedPower(
   double incidenceCosine,
   double targetRange,
   Material const& mat,
   std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return energyModel->computeIntensityFromCosine(incidenceCosine,
-                                                 targetRange,
-                                                 mat,
-                                                 subrayIndex
+  return energyModel->computeReceivedPower(incidenceCosine,
+                                           targetRange,
+                                           mat,
+                                           subrayIndex
 #if DATA_ANALYTICS >= 2
-                                                 ,
-                                                 calcIntensityRecords
+                                           ,
+                                           radiometryRecords
 #endif
   );
 }
 double
-ScanningDevice::calcIntensity(double targetRange,
-                              double sigma,
-                              std::size_t subrayIndex) const
+ScanningDevice::computeReceivedPowerWithSigma(double targetRange,
+                                              double sigma,
+                                              std::size_t subrayIndex) const
 {
   return energyModel->computeReceivedPowerWithSigma(
     targetRange, sigma, subrayIndex);
@@ -542,32 +518,33 @@ ScanningDevice::setPulseAmplitude(double amplitude)
 }
 
 double
-ScanningDevice::calcTransferFromCosine(
+ScanningDevice::computePowerRatio(
   double incidenceCosine,
   double targetRange,
   Material const& mat,
   std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return energyModel->computeTransferFromCosine(incidenceCosine,
-                                                targetRange,
-                                                mat,
-                                                subrayIndex
+  return energyModel->computePowerRatio(incidenceCosine,
+                                        targetRange,
+                                        mat,
+                                        subrayIndex
 #if DATA_ANALYTICS >= 2
-                                                ,
-                                                calcIntensityRecords
+                                        ,
+                                        radiometryRecords
 #endif
   );
 }
 
 double
-ScanningDevice::calcTransferWithSigma(double targetRange,
-                                      double sigma,
-                                      std::size_t subrayIndex) const
+ScanningDevice::computePowerRatioWithSigma(double targetRange,
+                                           double sigma,
+                                           std::size_t subrayIndex) const
 {
-  return energyModel->computeTransferWithSigma(targetRange, sigma, subrayIndex);
+  return energyModel->computePowerRatioWithSigma(
+    targetRange, sigma, subrayIndex);
 }

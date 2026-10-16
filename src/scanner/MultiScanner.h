@@ -176,20 +176,11 @@ public:
                               int& numFullwaveBins,
                               size_t const idx) override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPower
+   *
+   * Received peak power in watts; range in metres, incidence cosine in [-1, 1].
    */
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       std::size_t subrayIndex,
-                       size_t const idx
-#if DATA_ANALYTICS >= 2
-                       ,
-                       std::vector<std::vector<double>>& calcIntensityRecords
-#endif
-  ) const override;
-  /** Intensity using the precomputed incidence cosine. */
-  double calcIntensityFromCosine(
+  double computeReceivedPower(
     double const incidenceCosine,
     double const targetRange,
     Material const& mat,
@@ -197,33 +188,32 @@ public:
     size_t const idx
 #if DATA_ANALYTICS >= 2
     ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const override;
-  /** Dimensionless received/whole-beam peak-power transfer, including subray
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
    * share. */
-  double calcTransferFromCosine(
-    double const incidenceCosine,
-    double const targetRange,
-    Material const& mat,
-    std::size_t subrayIndex,
-    size_t const idx
+  double computePowerRatio(double const incidenceCosine,
+                           double const targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex,
+                           size_t const idx
 #if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const override;
-  double calcTransferWithSigma(double targetRange,
-                               double sigma,
-                               std::size_t subrayIndex,
-                               size_t idx) const override;
+  double computePowerRatioWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex,
+                                    size_t idx) const override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPowerWithSigma
    */
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       std::size_t subrayIndex,
-                       size_t const idx) const override;
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       std::size_t subrayIndex,
+                                       size_t const idx) const override;
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //

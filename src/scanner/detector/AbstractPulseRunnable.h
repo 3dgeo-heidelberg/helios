@@ -85,8 +85,8 @@ public:
                     std::mutex* allMeasurementsMutex
 #if DATA_ANALYTICS >= 2
                     ,
-                    std::vector<double>& calcIntensityRecord,
-                    std::vector<int>& calcIntensityIndices,
+                    std::vector<double>& radiometryRecord,
+                    std::vector<int>& radiometryIndices,
                     std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
