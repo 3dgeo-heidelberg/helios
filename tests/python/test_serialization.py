@@ -4,8 +4,11 @@ import shutil
 from pathlib import Path
 
 import numpy as np
+import pooch
 import pytest
 import yaml
+
+import doiggie
 
 import helios.serialization as serialization
 from helios.platforms import DynamicPlatformSettings, Platform, TrajectorySettings
@@ -1023,6 +1026,122 @@ def test_from_bundle_uses_custom_default_filename_hook(tmp_path, monkeypatch):
     loaded = DynamicPlatformSettings.from_bundle(bundle_dir)
     assert isinstance(loaded, DynamicPlatformSettings)
     assert loaded.speed_m_s == 11.0
+
+
+def test_from_doi_downloads_repository_contents(tmp_path, monkeypatch):
+    source_directory = tmp_path / "source"
+    root_yaml = DynamicPlatformSettings(speed_m_s=13.0).to_bundle(source_directory)
+    custom_root_yaml = source_directory / "settings.yaml"
+    root_yaml.rename(custom_root_yaml)
+    repository_files = {
+        path.relative_to(source_directory).as_posix(): "unused hash"
+        for path in source_directory.rglob("*")
+        if path.is_file()
+    }
+    fetches = []
+    repository_arguments = {}
+
+    class FakeDOIPooch:
+        def __init__(self, path, doi, **kwargs):
+            self.path = Path(path)
+            self.registry = repository_files
+            repository_arguments.update(path=path, doi=doi, kwargs=kwargs)
+
+        def fetch(self, repository_filename, processor=None):
+            fetches.append((repository_filename, processor))
+            target = self.path / repository_filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_directory / repository_filename, target)
+            return str(target)
+
+    cache_root = tmp_path / "cache"
+    monkeypatch.setattr(pooch, "os_cache", lambda application: cache_root)
+    monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
+
+    loaded = DynamicPlatformSettings.from_doi(
+        "https://doi.org/10.1234/example%2Fbundle", filename="settings.yaml"
+    )
+
+    assert loaded.speed_m_s == 13.0
+    assert repository_arguments["doi"] == "10.1234/example/bundle"
+    assert Path(repository_arguments["path"]).parent == cache_root / "doi"
+    assert repository_arguments["kwargs"] == {
+        "registry": {},
+        "populate_registry": True,
+    }
+    assert {name for name, _ in fetches} == set(repository_files)
+    assert all(processor is None for _, processor in fetches)
+
+
+@pytest.mark.parametrize(
+    ("archive_format", "archive_suffix"),
+    [("zip", ".zip"), ("gztar", ".tar.gz")],
+)
+def test_from_doi_downloads_and_extracts_archive(
+    tmp_path,
+    monkeypatch,
+    archive_format,
+    archive_suffix,
+):
+    source_directory = tmp_path / "source"
+    DynamicPlatformSettings(speed_m_s=17.0).to_bundle(source_directory)
+    archive_path = Path(
+        shutil.make_archive(
+            str(tmp_path / "bundle"), archive_format, root_dir=source_directory
+        )
+    )
+    assert archive_path.name.endswith(archive_suffix)
+    fetches = []
+
+    class FakeDOIPooch:
+        def __init__(self, path, doi, **kwargs):
+            self.path = Path(path)
+            self.registry = {
+                archive_path.name: "unused hash",
+                "not-downloaded.txt": "unused hash",
+            }
+
+        def fetch(self, repository_filename, processor=None):
+            fetches.append((repository_filename, processor))
+            target = self.path / repository_filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(archive_path, target)
+            return processor(str(target), "download", self)
+
+    monkeypatch.setattr(pooch, "os_cache", lambda application: tmp_path / "cache")
+    monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
+
+    loaded = DynamicPlatformSettings.from_doi(
+        "10.1234/archive", archive_filename=archive_path.name
+    )
+
+    assert loaded.speed_m_s == 17.0
+    assert len(fetches) == 1
+    assert fetches[0][0] == archive_path.name
+
+
+def test_from_doi_rejects_unsupported_archive_format(tmp_path, monkeypatch):
+    invalid_archive = tmp_path / "bundle.7z"
+    invalid_archive.write_text("not an archive", encoding="utf-8")
+
+    class FakeDOIPooch:
+        def __init__(self, path, doi, **kwargs):
+            self.path = Path(path)
+            self.registry = {invalid_archive.name: "unused hash"}
+
+        def fetch(self, repository_filename, processor=None):
+            target = self.path / repository_filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(invalid_archive, target)
+            return processor(str(target), "download", self)
+
+    monkeypatch.setattr(pooch, "os_cache", lambda application: tmp_path / "cache")
+    monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
+
+    with pytest.raises(ValueError, match="Unsupported archive format"):
+        DynamicPlatformSettings.from_doi(
+            "10.1234/archive", archive_filename="bundle.7z"
+        )
 
 
 def test_manual_survey_to_bundle_roundtrip_with_assets(tmp_path):
