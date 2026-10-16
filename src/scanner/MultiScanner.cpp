@@ -143,16 +143,17 @@ MultiScanner::doSimStep(unsigned int legIndex,
 void
 MultiScanner::prepareDiscretization(size_t idx)
 {
-  setNumTimeBins(getPulseLength_ns(idx) / getFWFSettings(idx).binSize_ns, idx);
+  setNumTimeBins(static_cast<int>(std::ceil(
+                   WaveMaths::calcPulseDuration(getPulseLength_ns(idx)) /
+                   getFWFSettings(idx).binSize_ns)),
+                 idx);
   setTimeWave(vector<double>(getNumTimeBins(idx)), idx);
-  setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
-                          getTimeWave(idx),
-                          getNumTimeBins(idx),
-                          getFWFSettings(idx).binSize_ns,
-                          getPulseLength_ns(idx),
-                          7.0 // 3.5 too many ops., 7.0 just one op.
-                          ),
-                        idx);
+  setPeakIntensityIndex(
+    WaveMaths::calcPropagationTimeLegacy(getTimeWave(idx),
+                                         getNumTimeBins(idx),
+                                         getFWFSettings(idx).binSize_ns,
+                                         getPulseLength_ns(idx)),
+    idx);
 }
 
 Rotation

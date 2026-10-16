@@ -170,16 +170,17 @@ SingleScanner::doSimStep(unsigned int legIndex,
 void
 SingleScanner::prepareDiscretization(size_t idx)
 {
-  setNumTimeBins(getPulseLength_ns(0) / getFWFSettings(0).binSize_ns, 0);
+  setNumTimeBins(static_cast<int>(std::ceil(
+                   WaveMaths::calcPulseDuration(getPulseLength_ns(0)) /
+                   getFWFSettings(0).binSize_ns)),
+                 0);
   setTimeWave(vector<double>(getNumTimeBins(0)), 0);
-  setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
-                          getTimeWave(0),
-                          getNumTimeBins(0),
-                          getFWFSettings(0).binSize_ns,
-                          getPulseLength_ns(0),
-                          7.0 // 3.5 too many ops., 7.0 just one op.
-                          ),
-                        0);
+  setPeakIntensityIndex(
+    WaveMaths::calcPropagationTimeLegacy(getTimeWave(0),
+                                         getNumTimeBins(0),
+                                         getFWFSettings(0).binSize_ns,
+                                         getPulseLength_ns(0)),
+    0);
 }
 
 Rotation
