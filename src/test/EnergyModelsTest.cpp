@@ -7,7 +7,7 @@
 
 #include <algorithm>
 #include <limits>
-#include <maths/EnergyMaths.h>
+#include <maths/EnergyModel.h>
 #include <maths/WaveMaths.h>
 #include <noise/UniformNoiseSource.h>
 #include <scanner/MultiScanner.h>
@@ -49,22 +49,47 @@ received(EnergyModel& model,
 {
 #if DATA_ANALYTICS >= 2
   std::vector<std::vector<double>> records;
-  return model.computeIntensity(0.0, range, mat, index, records);
+  return model.computeReceivedPower(1.0, range, mat, index, records);
 #else
-  return model.computeIntensity(0.0, range, mat, index);
+  return model.computeReceivedPower(1.0, range, mat, index);
 #endif
 }
 
 double
 area(EnergyModel& model, double rangeSquared, std::size_t index)
 {
+  return model.computeTargetArea(std::sqrt(rangeSquared), index);
+}
+
+double
+ratio(EnergyModel const& model,
+      double cosine,
+      double range,
+      Material const& material)
+{
 #if DATA_ANALYTICS >= 2
   std::vector<std::vector<double>> records;
-  return model.computeTargetArea(TargetAreaArgs{ rangeSquared, index },
-                                 records);
+  return model.computePowerRatio(cosine, range, material, 0, records);
 #else
-  return model.computeTargetArea(TargetAreaArgs{ rangeSquared, index });
+  return model.computePowerRatio(cosine, range, material, 0);
 #endif
+}
+
+double
+atmosphericTransmission(Scanner& scanner, double range)
+{
+  scanner.prepareSimulation();
+  auto& device = scanner.getScanningDevice(0);
+  Material material;
+  material.reflectance = 1.0;
+  double const attenuated =
+    ratio(*device.getEnergyModel(), 1.0, range, material);
+  double const extinction = scanner.getAtmosphericExtinction();
+  scanner.setAtmosphericExtinction(0.0, 0);
+  double const unattenuated =
+    ratio(*device.getEnergyModel(), 1.0, range, material);
+  scanner.setAtmosphericExtinction(extinction, 0);
+  return attenuated / unattenuated;
 }
 }
 
@@ -83,11 +108,12 @@ TEST_CASE("Atmospheric extinction uses micrometres and inverse metres",
   auto& device = scanner->getScanningDevice(0);
   scanner->setVisibility(sample.first);
   double const extinction = device.calcAtmosphericAttenuation();
+  scanner->setAtmosphericExtinction(extinction, 0);
   REQUIRE(extinction == Catch::Approx(sample.second).epsilon(1e-12));
   if (sample.first == 23.0) {
-    REQUIRE(EnergyMaths::calcAtmosphericFactor(1000.0, extinction) ==
+    REQUIRE(atmosphericTransmission(*scanner, 1000.0) ==
             Catch::Approx(0.8657257872389399));
-    REQUIRE(EnergyMaths::calcAtmosphericFactor(3000.0, extinction) ==
+    REQUIRE(atmosphericTransmission(*scanner, 3000.0) ==
             Catch::Approx(0.6488451488135547));
   }
 }
@@ -100,9 +126,10 @@ TEST_CASE("Kruse wavelength bounds include endpoints", "[energy]")
   auto& device = scanner->getScanningDevice(0);
   scanner->setWavelength(wavelength);
   double const extinction = device.calcAtmosphericAttenuation();
+  scanner->setAtmosphericExtinction(extinction, 0);
   if (wavelength < 0.5e-6 || wavelength > 2.0e-6) {
     REQUIRE(extinction == 0.0);
-    REQUIRE(EnergyMaths::calcAtmosphericFactor(1000.0, extinction) == 1.0);
+    REQUIRE(atmosphericTransmission(*scanner, 1000.0) == 1.0);
   } else {
     REQUIRE(extinction > 0.0);
     if (wavelength == 0.55e-6)
@@ -140,8 +167,9 @@ TEST_CASE("Incidence cosine handles both sides and voxel faces", "[energy]")
   REQUIRE(box.getIncidenceAngleCosine(origin, direction, point) == 1.0);
 }
 
-TEST_CASE("Cosine BRDF agrees with angle response including fractional Phong",
-          "[energy]")
+TEST_CASE(
+  "Angular reflectance follows material formulas including fractional Phong",
+  "[energy]")
 {
   double const angle = GENERATE(0.0, 0.2, PI / 4.0, 1.2, PI / 2.0 - 1e-8);
   int const lighting = GENERATE(0, 1, 2);
@@ -154,15 +182,27 @@ TEST_CASE("Cosine BRDF agrees with angle response including fractional Phong",
   material.setSpecularity();
   material.specularExponent = 2.5;
   double const cosine = std::cos(angle);
-  REQUIRE(
-    EnergyMaths::computeBRDFFromCosine(material, cosine) ==
-    Catch::Approx(EnergyMaths::computeBRDF(material, angle)).margin(1e-14));
-  double const grazing = EnergyMaths::computeBRDFFromCosine(material, 0.0);
+  auto scanner = energyScanner();
+  scanner->prepareSimulation();
+  auto const& device = scanner->getScanningDevice(0);
+  auto const model = device.getEnergyModel();
+  double const geometry =
+    PI * device.getSubrays()[0].share * 0.15 * 0.15 * 0.99 / (4 * 100 * 100);
+  double expected = material.reflectance;
+  if (lighting == 1)
+    expected *= cosine;
+  if (lighting == 2)
+    expected *=
+      (1 - material.specularity) * cosine +
+      material.specularity * std::pow(std::abs(std::cos(2 * angle)), 2.5);
+  REQUIRE(ratio(*model, cosine, 100.0, material) ==
+          Catch::Approx(geometry * expected).epsilon(1e-12));
+  double const grazing = ratio(*model, 0.0, 100.0, material);
   REQUIRE(std::isfinite(grazing));
   double const expectedGrazing =
     (lighting == 0) ? material.reflectance
                     : material.reflectance * material.specularity;
-  REQUIRE(grazing == Catch::Approx(expectedGrazing));
+  REQUIRE(grazing == Catch::Approx(geometry * expectedGrazing).epsilon(1e-12));
 }
 
 TEST_CASE("Subray table conserves captured Gaussian power", "[energy]")
@@ -241,31 +281,31 @@ TEST_CASE("Far field returns use absolute shares", "[energy]")
   for (size_t j = 0; j < device.getSubrays().size(); ++j) {
     std::size_t const index = j;
     auto const& ray = device.getSubrays()[j];
-    double const power = model->computeEmittedPower(EmittedPowerArgs{ index });
+    double const power = model->computeEmittedPower(index);
     REQUIRE(power == Catch::Approx(4.0 * ray.share).epsilon(1e-12));
     double const expected =
-      PI * power * 0.15 * 0.15 * 0.99 * 0.5 / (4.0 * range * range) * 1e9;
-    double const intensity = received(*model, range, material, index);
-    REQUIRE(intensity == Catch::Approx(expected).epsilon(1e-12));
+      PI * power * 0.15 * 0.15 * 0.99 * 0.5 / (4.0 * range * range);
+    double const receivedPower_W = received(*model, range, material, index);
+    REQUIRE(receivedPower_W == Catch::Approx(expected).epsilon(1e-12));
     REQUIRE(received(*model, 2 * range, material, index) ==
-            Catch::Approx(intensity / 4).epsilon(1e-12));
+            Catch::Approx(receivedPower_W / 4).epsilon(1e-12));
     double const patchArea = area(*model, range * range, index);
     double const sigma = 4 * PI * 0.5 * patchArea;
     REQUIRE(model->computeReceivedPowerWithSigma(range, sigma, index) ==
-            Catch::Approx(intensity).epsilon(1e-12));
+            Catch::Approx(receivedPower_W).epsilon(1e-12));
     REQUIRE(model->computeReceivedPowerWithSigma(2 * range, sigma, index) ==
-            Catch::Approx(intensity / 16).epsilon(1e-12));
+            Catch::Approx(receivedPower_W / 16).epsilon(1e-12));
     sumPower += power;
-    sumReturn += intensity;
+    sumReturn += receivedPower_W;
   }
   double const factor = scanner->getFWFSettings().beamSamplingFactor;
   double const captured = -std::expm1(-2 * factor * factor);
   REQUIRE(sumPower == Catch::Approx(4 * captured).epsilon(1e-12));
   REQUIRE(sumReturn == Catch::Approx(PI * 4 * captured * 0.15 * 0.15 * 0.99 *
-                                     0.5 / (4 * range * range) * 1e9)
+                                     0.5 / (4 * range * range))
                          .epsilon(1e-12));
   scanner->setPulseAmplitude(8.0);
-  REQUIRE(model->computeEmittedPower(EmittedPowerArgs{ 0 }) ==
+  REQUIRE(model->computeEmittedPower(0) ==
           Catch::Approx(8 * device.getSubrays()[0].share));
 }
 
@@ -279,10 +319,8 @@ TEST_CASE("Subray settings changes and copies cannot use stale tables",
   REQUIRE(copy->getScanningDevice(0).getEnergyModel().get() !=
           device.getEnergyModel().get());
   copy->setPulseAmplitude(8.0);
-  REQUIRE(copy->getScanningDevice(0).getEnergyModel()->computeEmittedPower(
-            EmittedPowerArgs{ 0 }) ==
-          Catch::Approx(2 * device.getEnergyModel()->computeEmittedPower(
-                              EmittedPowerArgs{ 0 })));
+  REQUIRE(copy->getScanningDevice(0).getEnergyModel()->computeEmittedPower(0) ==
+          Catch::Approx(2 * device.getEnergyModel()->computeEmittedPower(0)));
 
   double const previousAngle = device.getSubrays().back().angle_rad;
   scanner->setBeamDivergence(0.0006);
@@ -388,9 +426,9 @@ public:
                                                glm::dvec3&,
                                                glm::dvec3 const& inside,
                                                glm::dvec3 const&,
-                                               double intensity) override
+                                               double receivedPower_nW) override
   {
-    callbackSum += intensity;
+    callbackSum += receivedPower_nW;
     return IntersectionHandlingResult(inside, false);
   }
   double getIncidenceAngle_rad(const glm::dvec3&,
@@ -502,7 +540,7 @@ TEST_CASE(
   REQUIRE(scanner->getPulseAmplitude() == 0.0);
 }
 
-TEST_CASE("Power transfers are independent of amplitude and pulse frequency",
+TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
           "[energy]")
 {
   auto scanner = energyScanner();
@@ -511,29 +549,43 @@ TEST_CASE("Power transfers are independent of amplitude and pulse frequency",
   Material material;
   material.reflectance = 0.5;
   double const sigma = 4 * PI * 0.5 * area(*model, 10000.0, 0);
-  double const baseline = model->computeTransferWithSigma(100.0, sigma, 0);
+  double const baseline = model->computePowerRatioWithSigma(100.0, sigma, 0);
   double const amplitude = GENERATE(0.0, 1.0, 7.5);
   scanner->setPulseAmplitude(amplitude);
   scanner->setPulseFreq_Hz(GENERATE(50000, 100000));
 #if DATA_ANALYTICS >= 2
   std::vector<std::vector<double>> records;
-  double const transfer =
-    model->computeTransferFromCosine(1.0, 100.0, material, 0, records);
+  double const powerRatio =
+    model->computePowerRatio(1.0, 100.0, material, 0, records);
+  REQUIRE(records.size() == 1);
+  REQUIRE(records.back().size() == 13);
+  REQUIRE(records.back()[3] == 0.0);
+  REQUIRE(records.back()[4] == 100.0);
+  REQUIRE(records.back()[5] ==
+          Catch::Approx(model->computeTargetArea(100.0, 0)));
+  REQUIRE(records.back()[7] == material.reflectance);
+  REQUIRE(records.back()[8] == Catch::Approx(sigma));
+  REQUIRE(records.back()[12] == 0.0);
+  // Geometry queries do not append or alter analytics records.
+  auto const savedRecord = records.back();
+  REQUIRE(model->computeTargetArea(200.0, 0) ==
+          Catch::Approx(4 * records.back()[5]));
+  REQUIRE(records.size() == 1);
+  REQUIRE(records.back()[5] == savedRecord[5]);
   REQUIRE(records.back()[9] == Catch::Approx(amplitude * baseline));
   REQUIRE(records.back()[11] ==
           Catch::Approx(amplitude *
                         scanner->getScanningDevice(0).getSubrays()[0].share));
 #else
-  double const transfer =
-    model->computeTransferFromCosine(1.0, 100.0, material, 0);
+  double const powerRatio = model->computePowerRatio(1.0, 100.0, material, 0);
 #endif
-  REQUIRE(transfer == Catch::Approx(baseline));
-  REQUIRE(model->computeTransferWithSigma(100.0, sigma, 0) ==
+  REQUIRE(powerRatio == Catch::Approx(baseline));
+  REQUIRE(model->computePowerRatioWithSigma(100.0, sigma, 0) ==
           Catch::Approx(baseline));
   REQUIRE(received(*model, 100.0, material, 0) ==
-          Catch::Approx(amplitude * baseline * 1e9));
+          Catch::Approx(amplitude * baseline));
   REQUIRE(model->computeReceivedPowerWithSigma(100.0, sigma, 0) ==
-          Catch::Approx(amplitude * baseline * 1e9));
+          Catch::Approx(amplitude * baseline));
 }
 
 TEST_CASE("Temporal peak normalization preserves migrated samples and "
@@ -568,7 +620,7 @@ TEST_CASE("Temporal peak normalization preserves migrated samples and "
   double power = 0;
   auto model = scanner->getScanningDevice(0).getEnergyModel();
   for (size_t i = 0; i < scanner->getNumRays(); ++i)
-    power += model->computeEmittedPower(EmittedPowerArgs{ i });
+    power += model->computeEmittedPower(i);
   double const captured = -std::expm1(-2 * factor * factor);
   REQUIRE(power == Catch::Approx(4.0 * captured).epsilon(1e-12));
   REQUIRE(power * integral ==

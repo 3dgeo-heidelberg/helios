@@ -36,97 +36,47 @@ def energy_device():
     return make_energy_device()
 
 
-@pytest.mark.parametrize("argument_type", ["received", "cross_section"])
-def test_energy_arguments_keep_material_alive(argument_type):
-    material = _helios.Material()
-    material.reflectance = 0.25
-    material_ref = weakref.ref(material)
-    if argument_type == "received":
-        args = _helios.ReceivedPowerArgs(
-            target_range=100.0,
-            incidence_angle=0.3,
-            material=material,
-            subray_index=1,
-        )
-        assert args.target_range == 100.0
-        assert args.incidence_angle == 0.3
-        assert args.subray_index == 1
-    else:
-        args = _helios.CrossSectionArgs(
-            material=material,
-            brdf=0.25,
-            target_area=2.0,
-        )
-        assert args.brdf == 0.25
-        assert args.target_area == 2.0
-
-    assert args.material is material
-    with pytest.raises(AttributeError):
-        args.material = _helios.Material()
-    del material
-    gc.collect()
-    assert material_ref() is not None
-    assert args.material.reflectance == 0.25
-    del args
-    gc.collect()
-    assert material_ref() is None
-
-
-@pytest.mark.parametrize(
-    "argument_class, kwargs",
-    [
-        (
-            _helios.ReceivedPowerArgs,
-            {
-                "target_range": 100.0,
-                "incidence_angle": 0.3,
-                "subray_index": 1,
-            },
-        ),
-        (
-            _helios.EmittedPowerArgs,
-            {
-                "subray_index": 1,
-            },
-        ),
-        (
-            _helios.TargetAreaArgs,
-            {
-                "target_range_squared": 10000.0,
-                "subray_index": 1,
-            },
-        ),
-        (_helios.CrossSectionArgs, {"brdf": 0.25, "target_area": 2.0}),
-    ],
-)
-def test_energy_argument_fields_are_readonly(argument_class, kwargs):
-    if argument_class in (_helios.ReceivedPowerArgs, _helios.CrossSectionArgs):
-        args = argument_class(material=_helios.Material(), **kwargs)
-    else:
-        args = argument_class(**kwargs)
-    for field, value in kwargs.items():
-        assert getattr(args, field) == value
-        with pytest.raises(AttributeError):
-            setattr(args, field, value)
-
-
 def test_concrete_energy_model_calculations(energy_device):
     model = _helios.EnergyModel(device=energy_device)
-    area_args = _helios.TargetAreaArgs(10000.0, 0)
-    area = model.compute_target_area(area_args)
+    area = model.compute_target_area(target_range_m=100.0, subray_index=0)
     cutoff = math.atan(2.0 * math.tan(0.0003 / 2.0))
     assert area == pytest.approx(math.pi * (100 * math.tan(cutoff / 5)) ** 2)
-    sigma = model.compute_cross_section(
-        _helios.CrossSectionArgs(_helios.Material(), 0.25, area)
+    assert model.compute_target_area(200.0, 0) == pytest.approx(4 * area)
+    material = _helios.Material()
+    material.reflectance = 0.25
+    ratio = model.compute_power_ratio(
+        incidence_cosine=1.0, target_range_m=100.0, material=material, subray_index=0
     )
-    assert sigma == pytest.approx(4 * math.pi * 0.25 * area)
-    power = model.compute_emitted_power(_helios.EmittedPowerArgs(0))
-    assert math.isfinite(power) and power > 0
-    with pytest.raises(TypeError):
-        model.compute_emitted_power(area_args)
-    with pytest.raises(TypeError):
-        model.compute_received_power(area_args)
-    assert not hasattr(_helios, "BaseEnergyModel")
+    power = model.compute_received_power(1.0, 100.0, material, 0)
+    assert power == pytest.approx(4 * ratio, rel=1e-12, abs=0)
+    assert energy_device.compute_received_power(1.0, 100.0, material, 0) == power
+    assert energy_device.compute_power_ratio(1.0, 100.0, material, 0) == ratio
+    sigma = 4 * math.pi * 0.25 * area
+    assert model.compute_received_power_with_sigma(100.0, sigma, 0) == pytest.approx(
+        power, rel=1e-12, abs=0
+    )
+    assert model.compute_power_ratio_with_sigma(100.0, sigma, 0) == pytest.approx(
+        ratio, rel=1e-12, abs=0
+    )
+    assert model.compute_emitted_power(subray_index=0) == pytest.approx(
+        4 * energy_device.subrays[0].share
+    )
+    for name in (
+        "ReceivedPowerArgs",
+        "EmittedPowerArgs",
+        "TargetAreaArgs",
+        "CrossSectionArgs",
+    ):
+        assert not hasattr(_helios, name)
+    for name in (
+        "compute_intensity",
+        "compute_intensity_from_cosine",
+        "compute_cross_section",
+        "compute_transfer_from_cosine",
+    ):
+        assert not hasattr(model, name)
+    with pytest.raises(IndexError):
+        model.compute_target_area(100.0, len(energy_device.subrays))
 
 
 @pytest.mark.parametrize("source", ["constructor", "device"])
@@ -149,9 +99,8 @@ def test_energy_model_keeps_device_alive(source):
 def test_device_prepares_concrete_energy_model(energy_device):
     energy_device.prepare_simulation()
     assert isinstance(energy_device.energy_model, _helios.EnergyModel)
-    args = _helios.TargetAreaArgs(10000.0, 0)
-    expected = _helios.EnergyModel(energy_device).compute_target_area(args)
-    assert energy_device.energy_model.compute_target_area(args) == expected
+    expected = _helios.EnergyModel(energy_device).compute_target_area(100.0, 0)
+    assert energy_device.energy_model.compute_target_area(100.0, 0) == expected
 
 
 @pytest.mark.parametrize("quality", [1, 3, 8])
@@ -169,8 +118,7 @@ def test_subray_table_captured_power(energy_device, quality, factor):
     captured = -math.expm1(-2 * factor**2)
     assert sum(ray.share for ray in rays) == pytest.approx(captured, rel=1e-12)
     assert sum(
-        energy_device.energy_model.compute_emitted_power(_helios.EmittedPowerArgs(i))
-        for i in range(len(rays))
+        energy_device.energy_model.compute_emitted_power(i) for i in range(len(rays))
     ) == pytest.approx(4 * captured, rel=1e-12)
     with pytest.raises(AttributeError):
         rays[0].share = 1.0
@@ -179,7 +127,7 @@ def test_subray_table_captured_power(energy_device, quality, factor):
 
 
 @pytest.mark.parametrize("angle", [0.0, 0.2, math.pi / 4, 1.2, math.pi / 2])
-def test_cosine_intensity_matches_angle_api(energy_device, angle):
+def test_cosine_power_matches_phong_formula(energy_device, angle):
     model = _helios.EnergyModel(energy_device)
     material = _helios.Material()
     material.reflectance = 0.4
@@ -187,12 +135,15 @@ def test_cosine_intensity_matches_angle_api(energy_device, angle):
     material.specular_components = [0.25, 0, 0, 0]
     material.specularity = 0.25
     material.specular_exponent = 2.5
-    expected = model.compute_received_power(
-        _helios.ReceivedPowerArgs(100.0, angle, material, 0)
+    cosine = math.cos(angle)
+    response = 0.4 * (0.75 * cosine + 0.25 * abs(math.cos(2 * angle)) ** 2.5)
+    # Divide out an independently evaluated direction-independent reference.
+    reference = _helios.Material()
+    reference.reflectance = 1.0
+    baseline = model.compute_received_power(1.0, 100.0, reference, 0)
+    assert model.compute_received_power(cosine, 100.0, material, 0) == pytest.approx(
+        baseline * response, rel=1e-12, abs=0
     )
-    assert model.compute_intensity_from_cosine(
-        math.cos(angle), 100.0, material, 0
-    ) == pytest.approx(expected, rel=1e-12)
 
 
 @pytest.mark.parametrize("side", [-1.0, 1.0])

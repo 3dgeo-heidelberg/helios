@@ -10,13 +10,12 @@ target_include_directories(
 target_sources(
   helios
   PRIVATE
-  "model/EnergyModel.cpp"
+  "EnergyModel.cpp"
   "rigidmotion/RigidMotionEngine.cpp"
   "rigidmotion/RigidMotionR2Factory.cpp"
   "rigidmotion/RigidMotionR3Factory.cpp"
   "rigidmotion/RigidMotion.cpp"
   "Rotation.cpp"
-  "EnergyMaths.cpp"
   "LadLut.cpp"
   "RotationOrder.cpp"
   "RayUtils.cpp"

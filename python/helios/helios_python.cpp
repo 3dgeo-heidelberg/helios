@@ -40,9 +40,9 @@ PYBIND11_MAKE_OPAQUE(std::vector<std::string>);
 PYBIND11_MAKE_OPAQUE(std::vector<Measurement>);
 PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 
+#include <maths/EnergyModel.h>
 #include <maths/Rotation.h>
 #include <maths/WaveMaths.h>
-#include <maths/model/EnergyModel.h>
 #include <noise/NoiseSource.h>
 #include <noise/RandomnessGenerator.h>
 #include <scanner/beamDeflector/AbstractBeamDeflector.h>
@@ -1697,49 +1697,6 @@ PYBIND11_MODULE(_helios, m)
     .def("push_time_to_live", &SwapOnRepeatHandler::pushTimeToLive)
     .def("push_swap_filters", &SwapOnRepeatHandler::pushSwapFilters);
 
-  py::class_<ReceivedPowerArgs>(m, "ReceivedPowerArgs")
-    .def(py::init<double, double, Material const&, std::size_t>(),
-         py::arg("target_range"),
-         py::arg("incidence_angle"),
-         py::arg("material"),
-         py::arg("subray_index"),
-         py::keep_alive<1, 4>())
-    .def_readonly("target_range", &ReceivedPowerArgs::targetRange)
-    .def_readonly("incidence_angle", &ReceivedPowerArgs::incidenceAngle_rad)
-    .def_property_readonly(
-      "material",
-      [](ReceivedPowerArgs const& args) -> Material const& {
-        return args.material;
-      },
-      py::return_value_policy::reference_internal)
-    .def_readonly("subray_index", &ReceivedPowerArgs::subrayIndex);
-
-  py::class_<EmittedPowerArgs>(m, "EmittedPowerArgs")
-    .def(py::init<std::size_t>(), py::arg("subray_index"))
-    .def_readonly("subray_index", &EmittedPowerArgs::subrayIndex);
-
-  py::class_<TargetAreaArgs>(m, "TargetAreaArgs")
-    .def(py::init<double, std::size_t>(),
-         py::arg("target_range_squared"),
-         py::arg("subray_index"))
-    .def_readonly("target_range_squared", &TargetAreaArgs::targetRangeSquared)
-    .def_readonly("subray_index", &TargetAreaArgs::subrayIndex);
-
-  py::class_<CrossSectionArgs>(m, "CrossSectionArgs")
-    .def(py::init<Material const&, double, double>(),
-         py::arg("material"),
-         py::arg("brdf"),
-         py::arg("target_area"),
-         py::keep_alive<1, 2>())
-    .def_property_readonly(
-      "material",
-      [](CrossSectionArgs const& args) -> Material const& {
-        return args.material;
-      },
-      py::return_value_policy::reference_internal)
-    .def_readonly("brdf", &CrossSectionArgs::brdf)
-    .def_readonly("target_area", &CrossSectionArgs::targetArea);
-
   py::class_<EnergyModel, std::shared_ptr<EnergyModel>> energy_model(
     m, "EnergyModel");
   energy_model
@@ -1747,18 +1704,51 @@ PYBIND11_MODULE(_helios, m)
          py::arg("device"),
          py::keep_alive<1, 2>())
 
-    .def("compute_intensity", &EnergyModel::computeIntensity)
-    .def("compute_intensity_from_cosine",
-         &EnergyModel::computeIntensityFromCosine)
-    .def("compute_transfer_from_cosine",
-         &EnergyModel::computeTransferFromCosine)
-    .def("compute_transfer_with_sigma", &EnergyModel::computeTransferWithSigma)
+    .def("compute_power_ratio",
+         &EnergyModel::computePowerRatio,
+         "Dimensionless received/whole-beam emitted peak-power ratio.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_power_ratio_with_sigma",
+         &EnergyModel::computePowerRatioWithSigma,
+         "Dimensionless ratio using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"))
+    .def("compute_received_power",
+         &EnergyModel::computeReceivedPower,
+         "Received peak power in watts.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
     .def("compute_received_power_with_sigma",
-         &EnergyModel::computeReceivedPowerWithSigma)
-    .def("compute_received_power", &EnergyModel::computeReceivedPower)
-    .def("compute_emitted_power", &EnergyModel::computeEmittedPower)
-    .def("compute_target_area", &EnergyModel::computeTargetArea)
-    .def("compute_cross_section", &EnergyModel::computeCrossSection);
+         &EnergyModel::computeReceivedPowerWithSigma,
+         "Received peak power in watts using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"))
+    .def("compute_emitted_power",
+         &EnergyModel::computeEmittedPower,
+         "Emitted subray peak power in watts.",
+         py::arg("subray_index"))
+    .def("compute_target_area",
+         &EnergyModel::computeTargetArea,
+         "Transverse subray area in square metres.",
+         py::arg("target_range_m"),
+         py::arg("subray_index"));
 
   py::class_<ScanningDevice::Subray>(m, "Subray")
     .def_readonly("rotation", &ScanningDevice::Subray::rotation)
@@ -1820,12 +1810,43 @@ PYBIND11_MODULE(_helios, m)
          &ScanningDevice::calcExactAbsoluteBeamAttitude)
     .def("computeSubrays", &ScanningDevice::computeSubrays)
     .def("initializeFullWaveform", &ScanningDevice::initializeFullWaveform)
-    .def("calcIntensity",
-         py::overload_cast<double, double, const Material&, std::size_t>(
-           &ScanningDevice::calcIntensity, py::const_))
-    .def("calcIntensity",
-         py::overload_cast<double, double, std::size_t>(
-           &ScanningDevice::calcIntensity, py::const_))
+
+    .def("compute_received_power",
+         &ScanningDevice::computeReceivedPower,
+         "Received peak power in watts.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_received_power_with_sigma",
+         &ScanningDevice::computeReceivedPowerWithSigma,
+         "Received peak power in watts using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"))
+    .def("compute_power_ratio",
+         &ScanningDevice::computePowerRatio,
+         "Dimensionless received/whole-beam peak-power ratio.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_power_ratio_with_sigma",
+         &ScanningDevice::computePowerRatioWithSigma,
+         "Dimensionless ratio using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"))
     .def("eval_range_error_expression",
          &ScanningDevice::evalRangeErrorExpression);
 
@@ -1939,8 +1960,46 @@ PYBIND11_MODULE(_helios, m)
          py::arg("value"),
          py::arg("index"))
 
-    .def("calc_transfer_from_cosine", &Scanner::calcTransferFromCosine)
-    .def("calc_transfer_with_sigma", &Scanner::calcTransferWithSigma)
+    .def("compute_received_power",
+         &Scanner::computeReceivedPower,
+         "Received peak power in watts.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index"),
+         py::arg("idx")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_received_power_with_sigma",
+         &Scanner::computeReceivedPowerWithSigma,
+         "Received peak power in watts using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"),
+         py::arg("idx"))
+    .def("compute_power_ratio",
+         &Scanner::computePowerRatio,
+         "Dimensionless received/whole-beam peak-power ratio.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index"),
+         py::arg("idx")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_power_ratio_with_sigma",
+         &Scanner::computePowerRatioWithSigma,
+         "Dimensionless ratio using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"),
+         py::arg("idx"))
     .def("get_specific_pulse_amplitude",
          py::overload_cast<size_t>(&Scanner::getPulseAmplitude, py::const_),
          py::arg("index"))
@@ -2754,15 +2813,46 @@ PYBIND11_MODULE(_helios, m)
          py::arg("num_fullwave_bins"),
          py::arg("idx"))
 
-    .def(
-      "calc_intensity",
-      py::overload_cast<double, double, const Material&, std::size_t, size_t>(
-        &MultiScanner::calcIntensity, py::const_))
-
-    .def("calc_intensity",
-         py::overload_cast<double, double, std::size_t, size_t>(
-           &MultiScanner::calcIntensity, py::const_))
-
+    .def("compute_received_power",
+         &MultiScanner::computeReceivedPower,
+         "Received peak power in watts.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index"),
+         py::arg("idx")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_received_power_with_sigma",
+         &MultiScanner::computeReceivedPowerWithSigma,
+         "Received peak power in watts using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"),
+         py::arg("idx"))
+    .def("compute_power_ratio",
+         &MultiScanner::computePowerRatio,
+         "Dimensionless received/whole-beam peak-power ratio.",
+         py::arg("incidence_cosine"),
+         py::arg("target_range_m"),
+         py::arg("material"),
+         py::arg("subray_index"),
+         py::arg("idx")
+#if DATA_ANALYTICS >= 2
+           ,
+         py::arg("radiometry_records")
+#endif
+           )
+    .def("compute_power_ratio_with_sigma",
+         &MultiScanner::computePowerRatioWithSigma,
+         "Dimensionless ratio using external sigma.",
+         py::arg("target_range_m"),
+         py::arg("sigma"),
+         py::arg("subray_index"),
+         py::arg("idx"))
     .def("set_device_index",
          &MultiScanner::setDeviceIndex,
          py::arg("new_idx"),

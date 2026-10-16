@@ -217,31 +217,7 @@ MultiScanner::initializeFullWaveform(double minHitDist_m,
 }
 
 double
-MultiScanner::calcIntensity(
-  double incidenceAngle,
-  double targetRange,
-  Material const& mat,
-  std::size_t subrayIndex,
-  size_t idx
-#if DATA_ANALYTICS >= 2
-  ,
-  std::vector<std::vector<double>>& calcIntensityRecords
-#endif
-) const
-{
-  return scanDevs[idx].calcIntensity(incidenceAngle,
-                                     targetRange,
-                                     mat,
-                                     subrayIndex
-#if DATA_ANALYTICS >= 2
-                                     ,
-                                     calcIntensityRecords
-#endif
-  );
-}
-
-double
-MultiScanner::calcIntensityFromCosine(
+MultiScanner::computeReceivedPower(
   double incidenceCosine,
   double targetRange,
   Material const& mat,
@@ -249,32 +225,33 @@ MultiScanner::calcIntensityFromCosine(
   size_t idx
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return scanDevs[idx].calcIntensityFromCosine(incidenceCosine,
-                                               targetRange,
-                                               mat,
-                                               subrayIndex
+  return scanDevs[idx].computeReceivedPower(incidenceCosine,
+                                            targetRange,
+                                            mat,
+                                            subrayIndex
 #if DATA_ANALYTICS >= 2
-                                               ,
-                                               calcIntensityRecords
+                                            ,
+                                            radiometryRecords
 #endif
   );
 }
 
 double
-MultiScanner::calcIntensity(double targetRange,
-                            double sigma,
-                            std::size_t subrayIndex,
-                            size_t idx) const
+MultiScanner::computeReceivedPowerWithSigma(double targetRange,
+                                            double sigma,
+                                            std::size_t subrayIndex,
+                                            size_t idx) const
 {
-  return scanDevs[idx].calcIntensity(targetRange, sigma, subrayIndex);
+  return scanDevs[idx].computeReceivedPowerWithSigma(
+    targetRange, sigma, subrayIndex);
 }
 
 double
-MultiScanner::calcTransferFromCosine(
+MultiScanner::computePowerRatio(
   double incidenceCosine,
   double targetRange,
   Material const& mat,
@@ -282,26 +259,27 @@ MultiScanner::calcTransferFromCosine(
   size_t idx
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return scanDevs[idx].calcTransferFromCosine(incidenceCosine,
-                                              targetRange,
-                                              mat,
-                                              subrayIndex
+  return scanDevs[idx].computePowerRatio(incidenceCosine,
+                                         targetRange,
+                                         mat,
+                                         subrayIndex
 #if DATA_ANALYTICS >= 2
-                                              ,
-                                              calcIntensityRecords
+                                         ,
+                                         radiometryRecords
 #endif
   );
 }
 
 double
-MultiScanner::calcTransferWithSigma(double targetRange,
-                                    double sigma,
-                                    std::size_t subrayIndex,
-                                    size_t idx) const
+MultiScanner::computePowerRatioWithSigma(double targetRange,
+                                         double sigma,
+                                         std::size_t subrayIndex,
+                                         size_t idx) const
 {
-  return scanDevs[idx].calcTransferWithSigma(targetRange, sigma, subrayIndex);
+  return scanDevs[idx].computePowerRatioWithSigma(
+    targetRange, sigma, subrayIndex);
 }
