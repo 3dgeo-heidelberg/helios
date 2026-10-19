@@ -2,7 +2,7 @@
 <document>
 	<scannerSettings id="als_templ" active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="200" trajectoryTimeInterval_s="0.05"/>
     <survey name="als_detailed_voxel_modes" seed="42" scene="data/scenes/voxels/detailedVoxels_mode_comparison.xml#F_BR08" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_lms-q780">
-	<FWFSettings beamSampleQuality="3" binSize_ns="0.25" maxFullwaveRange_ns="100" winSize_ns="1"/>
+	<FWFSettings beamSampleQuality="3" sampleSpacing_m="0.03747405725" maxRecordingSpan_m="14.9896229" peakWindow_m="0.149896229"/>
 		<!-- platform: Plane, deflector: rotating -->
 		
 		<leg>

@@ -10,6 +10,7 @@
 #include <gdal_priv.h>
 
 #include <assetloading/ScenePart.h>
+#include <maths/AnalyticPulse.h>
 #include <platform/GroundVehiclePlatform.h>
 #include <platform/HelicopterPlatform.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
@@ -833,11 +834,41 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("period_s", &PySurveyHookRegistration::period_s)
     .def_readwrite("callback", &PySurveyHookRegistration::callback);
 
+  py::class_<AnalyticPulse, std::shared_ptr<AnalyticPulse>>(m, "AnalyticPulse")
+    .def_static("create",
+                &AnalyticPulse::create,
+                py::arg("shape") = "gamma",
+                py::arg("fwhm_ns") = 4.0,
+                py::arg("recording_tail_tolerance") = 1e-4)
+    .def("evaluate", &AnalyticPulse::evaluate)
+    .def_property_readonly("peak_offset", &AnalyticPulse::peakOffset)
+    .def_property_readonly("recording_bounds", &AnalyticPulse::recordingBounds);
+  py::class_<GammaPulse, AnalyticPulse, std::shared_ptr<GammaPulse>>(
+    m, "GammaPulse")
+    .def(py::init<double, double>(),
+         py::arg("fwhm_ns"),
+         py::arg("recording_tail_tolerance") = 1e-4);
+  py::class_<GaussianPulse, AnalyticPulse, std::shared_ptr<GaussianPulse>>(
+    m, "GaussianPulse")
+    .def(py::init<double, double>(),
+         py::arg("fwhm_ns"),
+         py::arg("recording_tail_tolerance") = 1e-4);
+  py::class_<WaveformGrid>(m, "WaveformGrid")
+    .def(py::init<>())
+    .def_readwrite("first_sample_index", &WaveformGrid::firstSampleIndex)
+    .def_readwrite("sample_spacing", &WaveformGrid::spacing_m)
+    .def_readwrite("sample_count", &WaveformGrid::sampleCount)
+    .def("range_at", &WaveformGrid::rangeAt);
   py::class_<FWFSettings, std::shared_ptr<FWFSettings>> fwf_settings(
     m, "FWFSettings");
   fwf_settings.def(py::init<>())
     .def(py::init<const FWFSettings&>(), py::arg("fwfSettings"))
-    .def_readwrite("bin_size", &FWFSettings::binSize_ns)
+    .def_readwrite("sample_spacing", &FWFSettings::sampleSpacing_m)
+    .def_readwrite("pulse_shape", &FWFSettings::pulseShape)
+    .def_readwrite("correct_peak_offset", &FWFSettings::correctPeakOffset)
+    .def_readwrite("recording_tail_tolerance",
+                   &FWFSettings::recordingTailTolerance)
+    .def("validate", &FWFSettings::validate)
     .def_readwrite("min_echo_width", &FWFSettings::minEchoWidth)
     .def_readwrite("peak_energy", &FWFSettings::peakEnergy)
     .def_readwrite("aperture_diameter", &FWFSettings::apertureDiameter)
@@ -848,8 +879,8 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("pulse_length", &FWFSettings::pulseLength_ns)
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
     .def_readwrite("beam_sampling_factor", &FWFSettings::beamSamplingFactor)
-    .def_readwrite("win_size", &FWFSettings::winSize_ns)
-    .def_readwrite("max_fullwave_range", &FWFSettings::maxFullwaveRange_ns)
+    .def_readwrite("peak_window", &FWFSettings::peakWindow_m)
+    .def_readwrite("max_recording_span", &FWFSettings::maxRecordingSpan_m)
     .def("__str__", &FWFSettings::toString);
 
   py::class_<Rotation, std::shared_ptr<Rotation>> rotation(m, "Rotation");
@@ -1809,7 +1840,6 @@ PYBIND11_MODULE(_helios, m)
     .def("calc_exact_absolute_beam_attitude",
          &ScanningDevice::calcExactAbsoluteBeamAttitude)
     .def("computeSubrays", &ScanningDevice::computeSubrays)
-    .def("initializeFullWaveform", &ScanningDevice::initializeFullWaveform)
 
     .def("compute_received_power",
          &ScanningDevice::computeReceivedPower,
@@ -1908,10 +1938,28 @@ PYBIND11_MODULE(_helios, m)
     .def("calc_rays_number", py::overload_cast<>(&Scanner::calcRaysNumber))
     .def("calc_rays_number",
          py::overload_cast<size_t>(&Scanner::calcRaysNumber))
-    .def("prepare_discretization",
-         py::overload_cast<>(&Scanner::prepareDiscretization))
-    .def("prepare_discretization",
-         py::overload_cast<size_t>(&Scanner::prepareDiscretization))
+    .def(
+      "get_pulse_model",
+      [](Scanner& self, size_t index) {
+        if (index >= self.getNumDevices())
+          throw py::index_error("Scanner channel index out of range");
+        return self.getScanningDevice(index).getPulseModelShared();
+      },
+      py::arg("index") = 0)
+    .def(
+      "recording_grid",
+      [](Scanner& self, double minimum, double maximum, size_t index) {
+        if (index >= self.getNumDevices())
+          throw py::index_error("Scanner channel index out of range");
+        WaveformGrid grid;
+        self.initializeFullWaveform(minimum, maximum, grid, index);
+        return grid;
+      },
+      py::arg("min_range"),
+      py::arg("max_range"),
+      py::arg("index") = 0)
+    .def("prepare_pulse", py::overload_cast<>(&Scanner::preparePulse))
+    .def("prepare_pulse", py::overload_cast<size_t>(&Scanner::preparePulse))
 
     .def("calc_atmospheric_attenuation",
          py::overload_cast<>(&Scanner::calcAtmosphericAttenuation, py::const_))
@@ -2133,26 +2181,6 @@ PYBIND11_MODULE(_helios, m)
       py::overload_cast<size_t>(&Scanner::getHeadRelativeEmitterAttitudeByRef),
       py::arg("index"))
 
-    .def(
-      "get_specific_num_time_bins",
-      [](Scanner& self, size_t idx) { return self.getNumTimeBins(idx); },
-      py::arg("index"))
-    .def(
-      "set_specific_num_time_bins",
-      [](Scanner& self, int numTimeBins, size_t idx) {
-        self.setNumTimeBins(numTimeBins, idx);
-      },
-      py::arg("value"),
-      py::arg("index"))
-
-    .def("get_specific_peak_intensity_index",
-         py::overload_cast<size_t>(&Scanner::getPeakIntensityIndex, py::const_),
-         py::arg("index"))
-    .def("set_specific_peak_intensity_index",
-         py::overload_cast<int, size_t>(&Scanner::setPeakIntensityIndex),
-         py::arg("value"),
-         py::arg("index"))
-
     .def("get_specific_scanner_head",
          py::overload_cast<size_t>(&Scanner::getScannerHead),
          py::arg("index"))
@@ -2282,15 +2310,6 @@ PYBIND11_MODULE(_helios, m)
                   py::overload_cast<std::shared_ptr<AbstractDetector>>(
                     &Scanner::setDetector))
 
-    .def_property("num_time_bins",
-                  py::overload_cast<>(&Scanner::getNumTimeBins, py::const_),
-                  py::overload_cast<int>(&Scanner::setNumTimeBins))
-
-    .def_property(
-      "peak_intensity_index",
-      py::overload_cast<>(&Scanner::getPeakIntensityIndex, py::const_),
-      py::overload_cast<int>(&Scanner::setPeakIntensityIndex))
-
     .def_property(
       "pulse_freq_hz", &Scanner::getPulseFreq_Hz, &Scanner::setPulseFreq_Hz)
     .def_property("is_state_active", &Scanner::isActive, &Scanner::setActive)
@@ -2310,8 +2329,7 @@ PYBIND11_MODULE(_helios, m)
       py::overload_cast<>(&Scanner::getFWFSettings),
       py::overload_cast<const FWFSettings&>(&Scanner::setFWFSettings))
     .def_property_readonly("num_devices", &Scanner::getNumDevices)
-    .def_property_readonly("time_wave",
-                           py::overload_cast<>(&Scanner::getTimeWave))
+
     .def_property(
       "all_measurements_mutex",
       [](ScannerWrap& self) {
@@ -2538,9 +2556,7 @@ PYBIND11_MODULE(_helios, m)
          py::arg("current_gps_time"),
          py::arg("scene"))
     .def("calc_rays_number", &SingleScanner::calcRaysNumber, py::arg("idx") = 0)
-    .def("prepare_discretization",
-         &SingleScanner::prepareDiscretization,
-         py::arg("idx") = 0)
+    .def("prepare_pulse", &SingleScanner::preparePulse, py::arg("idx") = 0)
     .def("calc_atmospheric_attenuation",
          py::overload_cast<size_t>(&SingleScanner::calcAtmosphericAttenuation,
                                    py::const_))
@@ -2700,34 +2716,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("fwf_settings"),
          py::arg("index"))
 
-    .def("get_num_time_bins", &SingleScanner::getNumTimeBins, py::arg("index"))
-    .def("set_num_time_bins",
-         &SingleScanner::setNumTimeBins,
-         py::arg("value"),
-         py::arg("index"))
-
-    .def("get_time_wave", &SingleScanner::getTimeWave, py::arg("index"))
-    .def("set_time_wave",
-         static_cast<void (SingleScanner::*)(std::vector<double>&, size_t)>(
-           &SingleScanner::setTimeWave),
-         py::arg("time_wave"),
-         py::arg("index"))
-
-    .def(
-      "set_time_wave",
-      [](SingleScanner& self, std::vector<double> time_wave, size_t index) {
-        self.setTimeWave(std::move(time_wave), index);
-      },
-      py::arg("time_wave"),
-      py::arg("index"))
-    .def("get_peak_intensity_index",
-         &SingleScanner::getPeakIntensityIndex,
-         py::arg("index"))
-    .def("set_peak_intensity_index",
-         &SingleScanner::setPeakIntensityIndex,
-         py::arg("value"),
-         py::arg("index"))
-
     .def("get_scanner_head", &SingleScanner::getScannerHead, py::arg("index"))
     .def("set_scanner_head",
          &SingleScanner::setScannerHead,
@@ -2787,9 +2775,7 @@ PYBIND11_MODULE(_helios, m)
          py::arg("current_gps_time"),
          py::arg("scene"))
     .def("calc_rays_number", &MultiScanner::calcRaysNumber, py::arg("idx"))
-    .def("prepare_discretization",
-         &MultiScanner::prepareDiscretization,
-         py::arg("idx"))
+    .def("prepare_pulse", &MultiScanner::preparePulse, py::arg("idx"))
     .def("calc_absolute_beam_attitude",
          &MultiScanner::calcAbsoluteBeamAttitude,
          py::arg("idx"))
@@ -2801,17 +2787,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("nor"),
          py::arg("idx"))
     .def("compute_subrays", &MultiScanner::computeSubrays)
-    .def("initialize_full_waveform",
-         &MultiScanner::initializeFullWaveform,
-         py::arg("min_hit_dist_m"),
-         py::arg("max_hit_dist_m"),
-         py::arg("min_hit_time_ns"),
-         py::arg("max_hit_time_ns"),
-         py::arg("ns_per_bin"),
-         py::arg("distance_threshold"),
-         py::arg("peak_intensity_index"),
-         py::arg("num_fullwave_bins"),
-         py::arg("idx"))
 
     .def("compute_received_power",
          &MultiScanner::computeReceivedPower,
@@ -2992,20 +2967,6 @@ PYBIND11_MODULE(_helios, m)
          &MultiScanner::getHeadRelativeEmitterAttitudeByRef,
          py::arg("idx") = 0)
 
-    .def("get_time_wave", &MultiScanner::getTimeWave, py::arg("index"))
-    .def("set_time_wave",
-         static_cast<void (MultiScanner::*)(std::vector<double>&, size_t)>(
-           &MultiScanner::setTimeWave),
-         py::arg("time_wave"),
-         py::arg("index"))
-
-    .def(
-      "set_time_wave",
-      [](MultiScanner& self, std::vector<double> time_wave, size_t index) {
-        self.setTimeWave(std::move(time_wave), index);
-      },
-      py::arg("time_wave"),
-      py::arg("index"))
     .def("get_bt2", &MultiScanner::getBt2, py::arg("idx"))
     .def("set_bt2", &MultiScanner::setBt2, py::arg("bt2"), py::arg("idx"))
 
@@ -3027,20 +2988,6 @@ PYBIND11_MODULE(_helios, m)
     .def("set_max_nor",
          &MultiScanner::setMaxNOR,
          py::arg("max_nor"),
-         py::arg("idx"))
-
-    .def("get_num_time_bins", &MultiScanner::getNumTimeBins, py::arg("idx"))
-    .def("set_num_time_bins",
-         &MultiScanner::setNumTimeBins,
-         py::arg("num_time_bins"),
-         py::arg("idx"))
-
-    .def("get_peak_intensity_index",
-         &MultiScanner::getPeakIntensityIndex,
-         py::arg("idx"))
-    .def("set_peak_intensity_index",
-         &MultiScanner::setPeakIntensityIndex,
-         py::arg("peak_intensity_index"),
          py::arg("idx"))
 
     .def("get_received_energy_min",
@@ -3458,12 +3405,6 @@ PYBIND11_MODULE(_helios, m)
                   &ScenePartVisualizationBuffers::triangle_indices)
     .def_readonly("voxel_centers",
                   &ScenePartVisualizationBuffers::voxel_centers);
-
-  m.def("calc_time_propagation",
-        &calcTimePropagation,
-        py::arg("timeWave"),
-        py::arg("numBins"),
-        py::arg("scanner"));
 
   // Add helper methods for XML parsing
   m.def("read_survey_from_xml", &readSurveyFromXml);

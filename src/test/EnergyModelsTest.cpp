@@ -395,7 +395,13 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
   scanner.getFWFSettings(0).beamSamplingFactor = 1.0;
   scanner.getFWFSettings(1).beamSamplingFactor = 2.0;
   scanner.getFWFSettings(1).beamSampleQuality = 8;
+  scanner.getFWFSettings(1).pulseShape = "gaussian";
+  scanner.setPulseLength_ns(10.0, 1);
   scanner.prepareSimulation();
+  REQUIRE(scanner.getPulseModel(0).evaluate(-0.01) == 0);
+  REQUIRE(scanner.getPulseModel(1).evaluate(-0.01) > 0);
+  REQUIRE(scanner.getPulseModel(0).peakOffset() !=
+          scanner.getPulseModel(1).peakOffset());
   double const previousAngle =
     scanner.getScanningDevice(1).getSubrays().back().angle_rad;
   scanner.setBeamDivergence(0.003, 1);
@@ -449,12 +455,27 @@ public:
   }
 };
 
+class RecordingWaveformYielder : public FullWaveformYielder
+{
+public:
+  std::vector<FullWaveform> recorded;
+  explicit RecordingWaveformYielder(helios::filems::FMSWriteFacade& writer)
+    : FullWaveformYielder(writer, 1)
+  {
+  }
+  void digest(std::vector<FullWaveform>& copy) override
+  {
+    recorded.insert(recorded.end(), copy.begin(), copy.end());
+  }
+};
+
 class TracingTestPulse : public FullWaveformPulseRunnable
 {
 public:
   using FullWaveformPulseRunnable::computeSubrays;
   using FullWaveformPulseRunnable::digestIntersections;
   using FullWaveformPulseRunnable::FullWaveformPulseRunnable;
+  using FullWaveformPulseRunnable::populateFullWaveform;
 };
 }
 
@@ -588,122 +609,214 @@ TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
           Catch::Approx(amplitude * baseline));
 }
 
-TEST_CASE("Temporal pulse FWHM, peak normalization, and "
-          "whole-beam energy",
-          "[energy]")
+TEST_CASE("Analytic pulse normalization, FWHM, and full tails",
+          "[energy][waveform]")
 {
   double const length = GENERATE(5.0, 12.0);
-  double const bin = GENERATE(0.01, 0.1, 0.7);
-  int const count =
-    static_cast<int>(std::ceil(WaveMaths::calcPulseDuration(length) / bin));
-  std::vector<double> wave(count);
-  int const peak =
-    WaveMaths::calcPropagationTimeLegacy(wave, count, bin, length);
-  REQUIRE(wave[peak] <= 1.0 + 1e-14);
-  double integral = 0;
-  for (int i = 0; i < count; ++i) {
-    double const x = i * bin / (length / 3.394680670846504);
-    double const legacy = x * x * std::exp(-x);
-    REQUIRE(wave[i] * (16.0 / std::exp(2.0)) ==
-            Catch::Approx(4.0 * legacy).margin(1e-14));
-    integral += wave[i] * bin * 1e-9;
+  std::string const shape = GENERATE("gamma", "gaussian");
+  auto model = AnalyticPulse::create(shape, length, 1e-4);
+  double const peak = model->peakOffset();
+  REQUIRE(model->evaluate(peak) == Catch::Approx(1.0));
+  auto bounds = model->recordingBounds();
+  REQUIRE(model->evaluate(bounds.second) == Catch::Approx(1e-4));
+  REQUIRE(model->evaluate(bounds.second + 0.01) > 0);
+  double const fwhm = length * SPEEDofLIGHT_mPerNanosec / 2;
+  if (shape == "gaussian") {
+    REQUIRE(model->evaluate(peak - fwhm / 2) == Catch::Approx(0.5));
+    REQUIRE(model->evaluate(peak + fwhm / 2) == Catch::Approx(0.5));
+    REQUIRE(bounds.first < 0);
+    REQUIRE(model->evaluate(bounds.first) == Catch::Approx(1e-4));
+    REQUIRE(model->evaluate(-0.01) > 0);
+  } else {
+    REQUIRE(bounds.first == 0);
+    REQUIRE(model->evaluate(-1) == 0);
+    REQUIRE(model->evaluate(0) == 0);
+    // Independent half-height roots of x^2 exp(-x).
+    REQUIRE(model->evaluate(0.7612402293544026 * peak / 2) ==
+            Catch::Approx(0.5));
+    REQUIRE(model->evaluate(4.155920900200907 * peak / 2) ==
+            Catch::Approx(0.5));
+    REQUIRE(model->evaluate(7 * peak / 2) > 0.08);
   }
-  // Use a grid that includes the analytic peak explicitly.
-  std::vector<double> exact(3);
-  REQUIRE(WaveMaths::calcPropagationTimeLegacy(
-            exact, 3, length / 3.394680670846504, length) == 2);
-  REQUIRE(exact[2] == Catch::Approx(1.0).epsilon(1e-14));
-  auto scanner = energyScanner();
-  double const factor = GENERATE(1.0, 2.0);
-  scanner->getFWFSettings().beamSamplingFactor = factor;
-  scanner->getFWFSettings().beamSampleQuality = GENERATE(1, 3, 8);
-  scanner->prepareSimulation();
-  double power = 0;
-  auto model = scanner->getScanningDevice(0).getEnergyModel();
-  for (size_t i = 0; i < scanner->getNumRays(); ++i)
-    power += model->computeEmittedPower(i);
-  double const captured = -std::expm1(-2 * factor * factor);
-  REQUIRE(power == Catch::Approx(4.0 * captured).epsilon(1e-12));
-  REQUIRE(power * integral ==
-          Catch::Approx(4.0 * captured * integral).epsilon(1e-12));
+  REQUIRE(model->evaluate(1e300) == 0);
+  REQUIRE_THROWS_AS(AnalyticPulse::create(shape, 0, 1e-4),
+                    std::invalid_argument);
+  REQUIRE_THROWS_AS(AnalyticPulse::create(shape, length, 1),
+                    std::invalid_argument);
+}
+
+TEST_CASE(
+  "Range grid preserves spacing with distant returns and clips only recording",
+  "[energy][waveform]")
+{
+  auto model = AnalyticPulse::create("gaussian", 5, 1e-4);
+  auto near = WaveMaths::recordingGrid(10.013, 10.034, *model, 0.04, 0);
+  auto far = WaveMaths::recordingGrid(10.013, 1000, *model, 0.04, 0);
+  REQUIRE(far.sampleCount > near.sampleCount);
+  for (int i = 0; i < near.sampleCount; ++i)
+    REQUIRE(near.rangeAt(i) == far.rangeAt(i));
+  auto clipped = WaveMaths::recordingGrid(10.013, 1000, *model, 0.04, 0.105);
+  REQUIRE(clipped.sampleCount == 3);
+  REQUIRE(clipped.rangeAt(2) - clipped.rangeAt(0) <= 0.105);
+  auto shortGrid = WaveMaths::recordingGrid(10, 10, *model, 0.04, 0.001);
+  REQUIRE(shortGrid.sampleCount == 1);
+  REQUIRE_THROWS_AS(WaveMaths::recordingGrid(0, 1e100, *model, 0.04, 0),
+                    std::length_error);
+  REQUIRE_THROWS_AS(WaveMaths::recordingGrid(0, 1, *model, 0, 0),
+                    std::invalid_argument);
 }
 
 #if DATA_ANALYTICS < 2
-TEST_CASE("Recording limit clips pulse tails relative to the first return",
-          "[energy]")
+TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
+          "[energy][waveform]")
 {
+  std::string const shape = GENERATE("gamma", "gaussian");
+  auto scanner = energyScanner();
+  scanner->setDetector(
+    std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
+  scanner->getFWFSettings().pulseShape = shape;
+  scanner->preparePulse();
+  WaveformTestScene scene;
+  SimulatedPulse pulse(glm::dvec3(0), Rotation(), 0, 0, 1, 0);
+  TracingTestPulse runnable(scanner, scene, pulse);
+  std::map<double, double> reflections{ { 10.013, 1e-6 },
+                                        { 10.037, 2e-6 },
+                                        { 12.3, 1e-6 } };
+  auto const& model = scanner->getPulseModel();
+  auto grid = WaveMaths::recordingGrid(10.013, 12.3, model, 0.03, 0);
+  std::vector<double> samples(grid.sampleCount, 0);
+  runnable.populateFullWaveform(reflections, samples, grid);
+  double const width = 5 * SPEEDofLIGHT_mPerNanosec / 2;
+  for (int k = 0; k < grid.sampleCount; ++k) {
+    double expected = 0;
+    for (auto const& entry : reflections) {
+      double u = grid.rangeAt(k) - entry.first;
+      double value;
+      if (shape == "gamma") {
+        double x = u / (width / 3.394680670846504);
+        value = x < 0 ? 0 : std::exp(2.0) / 4 * x * x * std::exp(-x);
+      } else {
+        double z = u / (width / std::sqrt(8 * std::log(2.0))) - 3;
+        value = std::exp(-z * z / 2);
+      }
+      expected += entry.second * value;
+    }
+    REQUIRE(samples[k] == Catch::Approx(expected * 4e9).margin(1e-10));
+  }
+  // A recording cap must not remove a later Gaussian return's leading tail.
+  WaveformGrid clipped{ 400, 0.03, 3 };
+  std::vector<double> tail(3, 0);
+  runnable.populateFullWaveform({ { 12.3, 1 } }, tail, clipped);
+  if (shape == "gaussian")
+    REQUIRE(tail[0] > 0);
+  else
+    REQUIRE(tail[0] == 0);
+}
+
+TEST_CASE("Peak correction changes only measured ranges and preserves "
+          "amplitude detection",
+          "[energy][waveform]")
+{
+  std::string const shape = GENERATE("gamma", "gaussian");
+  double const target = GENERATE(0.02, 100.013);
   auto scanner = energyScanner();
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
   auto& settings = scanner->getFWFSettings();
-  settings.binSize_ns = 1.0;
-  settings.winSize_ns = 2.0;
-  settings.maxFullwaveRange_ns = 10.0;
-  scanner->prepareDiscretization(0);
-  REQUIRE(scanner->getTimeWave(0).size() > 10);
-
-  double minTime, maxTime, binSize, threshold;
-  int peakIndex, numBins;
-  REQUIRE(scanner->getScanningDevice(0).initializeFullWaveform(
-    100.0, 100.0, minTime, maxTime, binSize, threshold, peakIndex, numBins));
-  REQUIRE(threshold == 100.0);
-  REQUIRE(numBins <= 10);
-  REQUIRE(peakIndex + 2 < numBins);
-}
-
-TEST_CASE("Waveform detection uses scaled whole-beam amplitude", "[energy]")
-{
-  auto scanner = energyScanner();
-  scanner->setDetector(
-    std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
-  scanner->getFWFSettings().binSize_ns = GENERATE(0.25, 1.0);
-  scanner->getFWFSettings().maxFullwaveRange_ns = GENERATE(0.0, 10.0);
-  scanner->getFWFSettings().winSize_ns =
-    2 * scanner->getFWFSettings().binSize_ns;
-  scanner->prepareDiscretization(0);
+  settings.pulseShape = shape;
+  settings.sampleSpacing_m = 0.005;
+  settings.peakWindow_m = 0.01;
+  scanner->preparePulse();
   scanner->allMeasurements = std::make_shared<std::vector<Measurement>>();
   scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
   WaveformTestScene scene;
-  SimulatedPulse pulse(glm::dvec3(0), Rotation(), 0.0, 0, 1, 0);
+  SimulatedPulse pulse(glm::dvec3(0), Rotation(), 0, 0, 1, 0);
   TracingTestPulse runnable(scanner, scene, pulse);
-  runnable.AbstractPulseRunnable::initialize();
+  AbstractPulseRunnable& base = runnable;
+  base.initialize();
+  helios::filems::FMSWriteFacade writer;
+  auto recorder = std::make_shared<RecordingWaveformYielder>(writer);
+  scanner->getDetector()->fwfYielder = recorder;
+  scanner->setWriteWaveform(true);
   auto part = std::make_shared<ScenePart>();
-  part->setId("amplitude-test");
+  part->setId("waveform-test");
   AABB primitive(glm::dvec3(-1), glm::dvec3(1));
   primitive.part = part;
   primitive.material = std::make_shared<Material>();
   RaySceneIntersection intersection;
   intersection.prim = &primitive;
-  intersection.point = glm::dvec3(0, 100, 0);
-  intersection.hitDistance = 100;
+  intersection.point = glm::dvec3(0, target, 0);
+  intersection.hitDistance = target;
   std::vector<RaySceneIntersection> intersections{ intersection };
-  std::map<double, double> reflections{ { 100.0, 1e-6 } };
+  std::map<double, double> reflections{ { target, 1e-6 } };
   std::vector<std::vector<double>> matrix;
   RandomnessGenerator<double> rng(42), rng2(43);
+  rng.computeNormalDistribution(0.0, 0.0);
   glm::dvec3 direction(0, 1, 0);
-  double const peak = *std::max_element(scanner->getTimeWave(0).begin(),
-                                        scanner->getTimeWave(0).end());
-  scanner->setReceivedEnergyMin(1.5 * peak * 1e3);
-  for (double amplitude : { 0.0, 1.0, 2.0, 16.0 / std::exp(2.0) }) {
-    scanner->setPulseAmplitude(amplitude);
-    scanner->setReceivedEnergyMin(amplitude == 0.0 ? 0.0 : 1.5 * peak * 1e3);
-    scanner->allMeasurements->clear();
-    runnable.digestIntersections(
-      matrix, rng, rng2, direction, reflections, intersections);
-    if (amplitude < 1.5) {
-      REQUIRE(scanner->allMeasurements->empty());
-    } else {
-      REQUIRE(scanner->allMeasurements->size() == 1);
-      REQUIRE(scanner->allMeasurements->front().intensity ==
-              Catch::Approx(amplitude * peak * 1e3));
-      if (amplitude == 16.0 / std::exp(2.0)) {
-        double const x = scanner->getPeakIntensityIndex(0) *
-                         scanner->getFWFSettings().binSize_ns /
-                         (scanner->getPulseLength_ns() / 3.394680670846504);
-        REQUIRE(scanner->allMeasurements->front().intensity ==
-                Catch::Approx(4.0 * x * x * std::exp(-x) * 1e3));
+  WaveformGrid grid;
+  REQUIRE(scanner->initializeFullWaveform(target, target, grid, 0));
+  std::vector<double> wave(grid.sampleCount, 0);
+  runnable.populateFullWaveform(reflections, wave, grid);
+  double correctedDistance = 0;
+  for (bool corrected : { true, false }) {
+    settings.correctPeakOffset = corrected;
+    for (double amplitude : { 0.0, 1.0, 2.0, 4.0 }) {
+      scanner->setPulseAmplitude(amplitude);
+      scanner->setReceivedEnergyMin(amplitude == 0 ? 0 : 1500.0);
+      scanner->allMeasurements->clear();
+      recorder->recorded.clear();
+      runnable.digestIntersections(
+        matrix, rng, rng2, direction, reflections, intersections);
+      auto const& points = *scanner->allMeasurements;
+      if (amplitude < 1.5) {
+        REQUIRE(points.empty());
+        REQUIRE(recorder->recorded.empty());
+      } else {
+        REQUIRE(points.size() == 1);
+        REQUIRE(recorder->recorded.size() == 1);
+        auto const& exported = recorder->recorded.front();
+        REQUIRE(exported.minTime ==
+                Catch::Approx(2 * grid.rangeAt(0) / SPEEDofLIGHT_mPerNanosec));
+        REQUIRE(exported.maxTime ==
+                Catch::Approx(2 * grid.rangeAt(grid.sampleCount - 1) /
+                              SPEEDofLIGHT_mPerNanosec));
+        for (size_t k = 0; k < wave.size(); ++k)
+          REQUIRE(exported.fullwave[k] ==
+                  Catch::Approx(wave[k] * amplitude / 4));
+        double expected =
+          target + (corrected ? 0 : scanner->getPulseModel().peakOffset());
+        REQUIRE(std::abs(points[0].distance - expected) <=
+                settings.sampleSpacing_m);
+        REQUIRE(points[0].intensity ==
+                Catch::Approx(amplitude *
+                              *std::max_element(wave.begin(), wave.end()) / 4));
+        if (corrected)
+          correctedDistance = points[0].distance;
+        else
+          REQUIRE(points[0].distance - correctedDistance ==
+                  Catch::Approx(scanner->getPulseModel().peakOffset()));
       }
     }
   }
+  std::vector<double> uncorrectedWave(grid.sampleCount, 0);
+  runnable.populateFullWaveform(reflections, uncorrectedWave, grid);
+  REQUIRE(uncorrectedWave == wave);
+  if (shape == "gaussian") {
+    scanner->setCalcEchowidth(true);
+    settings.correctPeakOffset = true;
+    scanner->allMeasurements->clear();
+    runnable.digestIntersections(
+      matrix, rng, rng2, direction, reflections, intersections);
+    REQUIRE(scanner->allMeasurements->size() == 1);
+    // The existing fitter uses exp(-((x-centre)/width)^2), so
+    // width=sqrt(2)*sigma.
+    REQUIRE(scanner->allMeasurements->front().echo_width ==
+            Catch::Approx(5.0 / (2 * std::sqrt(std::log(2.0)))).epsilon(0.001));
+  }
+  reflections.clear();
+  scanner->allMeasurements->clear();
+  runnable.digestIntersections(
+    matrix, rng, rng2, direction, reflections, intersections);
+  REQUIRE(scanner->allMeasurements->empty());
 }
 #endif

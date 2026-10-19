@@ -2,7 +2,7 @@
 <document>
 	<scannerSettings id="uls_templ" active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
     <survey name="uls_detailed_voxel_modes" seed="42" scene="data/scenes/voxels/detailedVoxels_mode_comparison.xml#F_BR08" platform="data/platforms.xml#copter_linearpath" scanner="data/scanners_als.xml#riegl_vux-1uav">
-	<FWFSettings beamSampleQuality="3" binSize_ns="0.25" maxFullwaveRange_ns="100" winSize_ns="1"/>
+	<FWFSettings beamSampleQuality="3" sampleSpacing_m="0.03747405725" maxRecordingSpan_m="14.9896229" peakWindow_m="0.149896229"/>
 		<!-- platform: copter_linearpath, deflector: rotating -->
 		
 		<leg>

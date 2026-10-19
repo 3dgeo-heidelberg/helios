@@ -168,19 +168,9 @@ SingleScanner::doSimStep(unsigned int legIndex,
 }
 
 void
-SingleScanner::prepareDiscretization(size_t idx)
+SingleScanner::preparePulse(size_t idx)
 {
-  setNumTimeBins(static_cast<int>(std::ceil(
-                   WaveMaths::calcPulseDuration(getPulseLength_ns(0)) /
-                   getFWFSettings(0).binSize_ns)),
-                 0);
-  setTimeWave(vector<double>(getNumTimeBins(0)), 0);
-  setPeakIntensityIndex(
-    WaveMaths::calcPropagationTimeLegacy(getTimeWave(0),
-                                         getNumTimeBins(0),
-                                         getFWFSettings(0).binSize_ns,
-                                         getPulseLength_ns(0)),
-    0);
+  scanDev.preparePulse();
 }
 
 Rotation
@@ -225,22 +215,10 @@ SingleScanner::computeSubrays(
 bool
 SingleScanner::initializeFullWaveform(double minHitDist_m,
                                       double maxHitDist_m,
-                                      double& minHitTime_ns,
-                                      double& maxHitTime_ns,
-                                      double& nsPerBin,
-                                      double& distanceThreshold,
-                                      int& peakIntensityIndex,
-                                      int& numFullwaveBins,
+                                      WaveformGrid& grid,
                                       size_t idx)
 {
-  return scanDev.initializeFullWaveform(minHitDist_m,
-                                        maxHitDist_m,
-                                        minHitTime_ns,
-                                        maxHitTime_ns,
-                                        nsPerBin,
-                                        distanceThreshold,
-                                        peakIntensityIndex,
-                                        numFullwaveBins);
+  return scanDev.initializeFullWaveform(minHitDist_m, maxHitDist_m, grid);
 }
 
 double
