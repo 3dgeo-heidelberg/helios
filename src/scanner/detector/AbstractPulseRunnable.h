@@ -4,7 +4,6 @@
 #include <scanner/detector/AbstractDetector.h>
 #include <scanner/detector/PulseTask.h>
 class Measurement;
-#include "LasSpecification.h"
 class Scanner;
 class Scene;
 #include <scanner/SimulatedPulse.h>
