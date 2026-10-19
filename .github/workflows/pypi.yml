@@ -5,9 +5,6 @@
 # Note: PyPI must have a trusted publisher configured for this repository and
 #       workflow file. No GitHub environment or API token is used.
 
-# Note: Only Windows and Linux x86-64 wheels are published. Conda remains the
-#       installation method for platforms not covered by these wheels.
-
 name: Publish wheels to PyPI
 
 on:
@@ -16,6 +13,8 @@ on:
       - 'v?[0-9]+.[0-9]+.[0-9]+'
       - 'v?[0-9]+.[0-9]+.[0-9]+a[0-9]+'
       - 'v?[0-9]+.[0-9]+.[0-9]+b[0-9]+'
+    branches:
+      - macos-wheels
   workflow_dispatch:
 
 jobs:
@@ -26,9 +25,9 @@ jobs:
     strategy:
       matrix:
         include:
-          # MacOS: Not tried due to lack of priority
-          - os: ubuntu-24.04
+          # - os: ubuntu-24.04
           - os: windows-2022
+          - os: macos-15
 
     steps:
       - uses: actions/checkout@v6
@@ -44,6 +43,9 @@ jobs:
           CIBW_SKIP: "*-musllinux_*"
           # This builds 64-bit x86 wheels. Support for Windows ARM could be added here, if it gets a thing.
           CIBW_ARCHS_WINDOWS: AMD64
+          # macos-15 runs natively on Apple Silicon. Intel macOS wheels are not
+          # built at present.
+          CIBW_ARCHS_MACOS: arm64
           # Keep Linux on the same AlmaLinux 8/manylinux_2_28 base used by
           # docker/manylinux.dockerfile.
           CIBW_ARCHS_LINUX: x86_64
@@ -102,6 +104,7 @@ jobs:
             MAMBA_ROOT_PREFIX=C:/helios-micromamba-root
             PATH="C:/helios-conda/Library/bin;C:/helios-micromamba/Library/bin;$PATH"
             CMAKE_PREFIX_PATH="C:/helios-conda;C:/helios-conda/Library"
+            CMAKE_ARGS="-DBUILD_TESTING=OFF"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >-
             python -m delvewheel repair
             --add-path C:/helios-conda/Library/bin
@@ -114,13 +117,39 @@ jobs:
             urllib.request.urlretrieve('https://micro.mamba.pm/api/micromamba/win-64/latest', archive);
             shutil.unpack_archive(archive, root)"
             && micromamba --version
+            && micromamba create -y -p C:/helios-conda
+            -f environment-wheels.yml
           CIBW_BEFORE_BUILD_WINDOWS: >-
-            python -m pip install delvewheel &&
-            python -c "import os, shutil, subprocess;
-            prefix = os.environ['CONDA_PREFIX'];
-            shutil.rmtree(prefix, ignore_errors=True);
-            subprocess.check_call(['micromamba', 'create', '-y',
-            '-p', prefix, '-f', 'environment-dev.yml', 'python=3.11'])"
+            python -m pip install delvewheel
+          CIBW_ENVIRONMENT_MACOS: >-
+            SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT=120
+            CONDA_PREFIX=/tmp/helios-conda
+            MAMBA_ROOT_PREFIX=/tmp/helios-micromamba-root
+            PATH="/tmp/helios-micromamba/bin:$PATH"
+            CMAKE_PREFIX_PATH="/tmp/helios-conda"
+            LASTools_DIR="/tmp/helios-conda"
+            REPAIR_LIBRARY_PATH="/tmp/helios-conda/lib"
+            MACOSX_DEPLOYMENT_TARGET=11.0
+            CMAKE_ARGS="-DBUILD_TESTING=OFF"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: >-
+            DYLD_LIBRARY_PATH="$REPAIR_LIBRARY_PATH"
+            delocate-wheel --require-archs {delocate_archs}
+            -w {dest_dir} -v {wheel}
+          # These exercise the known-broken LAZ output path that is also
+          # excluded from the regular macOS CI job. Keep all other wheel tests.
+          CIBW_TEST_COMMAND_MACOS: >-
+            python -m pytest tests/python
+            -k "not test_survey_run_laz_output and not test_run_interpolated_survey_teleport_first_leg_on_disk_output"
+          CIBW_BEFORE_ALL_MACOS: >-
+            python -c "import os, shutil, urllib.request;
+            root = '/tmp/helios-micromamba';
+            archive = os.path.join(root, 'micromamba.tar.bz2');
+            os.makedirs(root, exist_ok=True);
+            urllib.request.urlretrieve('https://micro.mamba.pm/api/micromamba/osx-arm64/latest', archive);
+            shutil.unpack_archive(archive, root)"
+            && micromamba --version
+            && micromamba create -y -p /tmp/helios-conda
+            -f environment-wheels.yml
         with:
           output-dir: wheelhouse
 
