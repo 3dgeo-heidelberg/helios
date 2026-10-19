@@ -1,4 +1,5 @@
 import copy
+import json
 import os
 import shutil
 from pathlib import Path
@@ -151,6 +152,33 @@ def test_roundtrip_yaml_inline(tmp_path):
     assert loaded.trajectory_settings.teleport_to_start is True
 
 
+def test_repr_json_matches_inline_yaml_without_writing_files(tmp_path):
+    root = SerializationRoot(
+        leaf=SerializationLeaf(value=7),
+        label="rich display",
+        values=(4, 5, 6),
+    )
+
+    document = root._repr_json_()
+
+    assert list(tmp_path.iterdir()) == []
+    assert "model_ref" not in str(document)
+    assert "$schema" not in document
+    assert json.loads(json.dumps(document)) == document
+
+    yaml_path = root.to_yaml(tmp_path / "root.yaml", shallow=False)
+    with yaml_path.open("r", encoding="utf-8") as handle:
+        assert yaml.safe_load(handle) == document
+
+
+def test_repr_json_preserves_yaml_serializable_guard():
+    model = SerializationLeaf(value=9)
+    model._yaml_serializable = False
+
+    with pytest.raises(RuntimeError, match="implicitly constructed"):
+        model._repr_json_()
+
+
 def test_roundtrip_yaml_shallow_with_references(tmp_path):
     root = DynamicPlatformSettings(
         trajectory_settings=TrajectorySettings(
@@ -269,6 +297,9 @@ def test_inline_cycle_detection_raises_for_non_shallow_serialization(tmp_path):
 
     with pytest.raises(ValueError, match="Detected cyclic model graph"):
         model.to_yaml(tmp_path / "recursive.yaml", shallow=False)
+
+    with pytest.raises(ValueError, match="Detected cyclic model graph"):
+        model._repr_json_()
 
 
 def test_load_model_from_file_uses_cache(tmp_path):

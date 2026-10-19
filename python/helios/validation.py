@@ -429,6 +429,15 @@ class Model(metaclass=ValidatedModelMetaClass):
 
         return f"{Path(self._serialization_filename()).stem}.bin"
 
+    def _ensure_yaml_serializable(self) -> None:
+        """Raise if this model cannot be represented independently."""
+
+        if not getattr(self, "_yaml_serializable", True):
+            raise RuntimeError(
+                f"{self.__class__.__name__} cannot be serialized to YAML because it "
+                "was implicitly constructed via a parent object's from_xml constructor."
+            )
+
     @validate_call
     def to_yaml(self, path: Path, shallow: bool = False):
         """Serialize this model instance to YAML.
@@ -449,12 +458,7 @@ class Model(metaclass=ValidatedModelMetaClass):
 
         from helios.serialization import serialize_model_to_yaml
 
-        if not getattr(self, "_yaml_serializable", True):
-            raise RuntimeError(
-                f"{self.__class__.__name__} cannot be serialized to YAML because it "
-                "was implicitly constructed via a parent object's from_xml constructor."
-            )
-
+        self._ensure_yaml_serializable()
         return serialize_model_to_yaml(self, path=path.expanduser(), shallow=shallow)
 
     @validate_call
@@ -562,6 +566,18 @@ class Model(metaclass=ValidatedModelMetaClass):
             return f"<{self.__class__.__name__} at {hex(id(self._cpp_object))}>"
         else:
             return f"<{self.__class__.__name__} at {hex(id(self))}>"
+
+    def _repr_json_(self) -> dict[str, Any]:
+        """Return the inline serialization document for Jupyter rich display."""
+
+        from helios.serialization import (
+            _build_model_document,
+            _SerializationContext,
+        )
+
+        self._ensure_yaml_serializable()
+        context = _SerializationContext(shallow=False, binary=False)
+        return _build_model_document(self, context)
 
     @classmethod
     def _from_cpp(cls, value):

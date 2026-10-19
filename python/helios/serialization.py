@@ -163,9 +163,9 @@ def _normalize_provenance_value(value: Any):
 
 @dataclass
 class _SerializationContext:
-    root_dir: Path
     shallow: bool
     binary: bool
+    root_dir: Optional[Path] = None
     model_files: dict[int, str] = field(default_factory=dict)
     document_models: dict[str, Model] = field(default_factory=dict)
     used_yaml_filenames: set[str] = field(default_factory=set)
@@ -323,6 +323,9 @@ def deserialize_model_from_yaml(cls: Type[Model], path: Path) -> Model:
 
 def _write_model_document(model: Model, filename: str, context: _SerializationContext):
     """Build and persist one model YAML document."""
+
+    if context.root_dir is None:
+        raise RuntimeError("A root directory is required to write model documents.")
 
     model_id = id(model)
     context.model_files[model_id] = filename
@@ -828,6 +831,8 @@ def _build_model_document(
     binary_info = None
     include_fields = not _uses_from_binary_constructor_provenance(model)
     if context.binary and callable(getattr(model, "to_binary", None)):
+        if context.root_dir is None:
+            raise RuntimeError("A root directory is required for binary serialization.")
         model_id = id(model)
         if model_id in context.binary_files:
             binary_filename = context.binary_files[model_id]
