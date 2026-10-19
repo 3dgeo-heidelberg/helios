@@ -9,11 +9,12 @@ from helios.validation import (
 )
 
 from enum import IntEnum
-from pydantic import PositiveInt, BaseModel, Field
-from typing import Annotated, Optional
+from pydantic import PositiveInt, BaseModel, Field, TypeAdapter
+from typing import Annotated, Optional, Literal
 from logging import ERROR, DEBUG, INFO, WARNING
 from datetime import datetime
 import os
+import warnings
 
 import _helios
 import sys
@@ -211,46 +212,64 @@ class OutputSettings(Model, UpdateableMixin):
 
 
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
-    """Class representing the settings for full waveform processing.
+    """Analytic waveform reconstruction on a fixed grid in metres.
 
-    :param bin_size: The size of the bins to use for full waveform processing in seconds. Default is 0.25 ns.
-    :param beam_sample_quality: The beam sample quality to use for full waveform processing. Default is 3.
-    :param beam_sampling_factor: Sampling radius divided by the Gaussian 1/e^2 radius on the transverse plane. Default is 2 (99.9665% captured power).
-    :param win_size: The size of the window to use for full waveform processing in seconds. Default is 1.0 ns.
-    :param max_fullwave_range: The maximum range to use for full waveform processing in seconds. Default is 0.0 ns (no maximum range).
-    :type bin_size: TimeInterval
-    :type beam_sample_quality: PositiveInt
-    :type win_size: TimeInterval
-    :type max_fullwave_range: TimeInterval
+    Pulse FWHM remains a scanner specification in seconds. Gamma is causal at
+    zero; Gaussian has its centre at +3 sigma and retains its negative tail.
+    The recording tolerance determines only the recording bounds, never a
+    cutoff for individual returns. Peak correction affects reported ranges,
+    not waveform samples. Legacy time settings are accepted at construction.
     """
 
-    bin_size: TimeInterval = 0.25 * units.ns
+    sample_spacing: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.03747405725
     beam_sample_quality: PositiveInt = 3
     beam_sampling_factor: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 2.0
-    win_size: TimeInterval = 1.0 * units.ns
-    max_fullwave_range: TimeInterval = 0.0 * units.ns
+    peak_window: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.149896229
+    max_recording_span: Annotated[Length, Field(ge=0, allow_inf_nan=False)] = 0.0
+    pulse_shape: Literal["gamma", "gaussian"] = "gamma"
+    correct_peak_offset: bool = True
+    recording_tail_tolerance: Annotated[
+        float, Field(gt=0, lt=1, allow_inf_nan=False)
+    ] = 1e-4
+
+    @classmethod
+    def _normalize_init_kwargs(cls, kwargs):
+        kwargs = dict(kwargs)
+        for old, new in (
+            ("bin_size", "sample_spacing"),
+            ("win_size", "peak_window"),
+            ("max_fullwave_range", "max_recording_span"),
+        ):
+            if old in kwargs:
+                if new in kwargs:
+                    raise ValueError(f"Specify only one of {old} and {new}")
+                warnings.warn(
+                    f"{old} is deprecated; use {new} in metres",
+                    DeprecationWarning,
+                    stacklevel=3,
+                )
+                seconds = TypeAdapter(TimeInterval).validate_python(kwargs.pop(old))
+                kwargs[new] = seconds * (299792458.0 / 2.0)
+        return kwargs
 
     def _to_cpp(self):
-        # Convert to the underlying C++ structure, undoing SI unit conversion
+        self._cpp_object.validate()
+        return _helios.FWFSettings(self._cpp_object)
 
-        fwf = _helios.FWFSettings()
-        fwf.bin_size = self.bin_size * 1e9
-        fwf.beam_sample_quality = self.beam_sample_quality
-        fwf.beam_sampling_factor = self.beam_sampling_factor
-        fwf.win_size = self.win_size * 1e9
-        fwf.max_fullwave_range = self.max_fullwave_range * 1e9
-
-        return fwf
+    def _pre_set(self, field, value):
+        if self._during_init:
+            return
+        spacing = value if field == "sample_spacing" else self.sample_spacing
+        window = value if field == "peak_window" else self.peak_window
+        if window < 2 * spacing or window / spacing > 1e9:
+            raise ValueError(
+                "peak_window must be >= 2 * sample_spacing and representable"
+            )
 
     def _post_set(self, field):
-        if field not in {"bin_size", "win_size"}:
-            return
-
-        if self._during_init and field != "win_size":
-            return
-
-        if self.win_size < 2 * self.bin_size:
-            raise ValueError("win_size must satisfy win_size >= 2 * bin_size.")
+        # All settings are present when the final initialization field is set.
+        if not self._during_init or field == "recording_tail_tolerance":
+            self._cpp_object.validate()
 
 
 # Storage for global settings

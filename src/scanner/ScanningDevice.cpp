@@ -45,6 +45,7 @@ ScanningDevice::ScanningDevice(
   , rangeErrExpr(rangeErrExpr)
 {
   setPulseAmplitude(pulseAmplitude_W);
+  preparePulse();
   configureBeam();
   atmosphericExtinction = calcAtmosphericAttenuation();
   cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
@@ -70,9 +71,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->numRays = scdev.numRays;
   this->supportedPulseFreqs_Hz = scdev.supportedPulseFreqs_Hz;
   this->maxNOR = scdev.maxNOR;
-  this->numTimeBins = scdev.numTimeBins;
-  this->peakIntensityIndex = scdev.peakIntensityIndex;
-  this->time_wave = scdev.time_wave;
+  this->pulseModel = scdev.pulseModel;
   this->rangeErrExpr = scdev.rangeErrExpr;
   this->state_currentPulseNumber = scdev.state_currentPulseNumber;
   this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
@@ -105,6 +104,8 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 void
 ScanningDevice::prepareSimulation()
 {
+
+  preparePulse();
   buildSubrayPattern();
   energyModel = std::make_shared<EnergyModel>(*this);
 }
@@ -417,58 +418,26 @@ ScanningDevice::computeSubrays(
   }
 }
 
+void
+ScanningDevice::preparePulse()
+{
+  FWF_settings.validate();
+  pulseModel = AnalyticPulse::create(FWF_settings.pulseShape,
+                                     pulseLength_ns,
+                                     FWF_settings.recordingTailTolerance);
+}
+
 bool
 ScanningDevice::initializeFullWaveform(double minHitDist_m,
                                        double maxHitDist_m,
-                                       double& minHitTime_ns,
-                                       double& maxHitTime_ns,
-                                       double& nsPerBin,
-                                       double& distanceThreshold,
-                                       int& peakIntensityIndex,
-                                       int& numFullwaveBins)
+                                       WaveformGrid& grid)
 {
-  // Calc time at minimum and maximum distance
-  // (i.e. total beam time in fwf signal)
-  nsPerBin = FWF_settings.binSize_ns;
-  peakIntensityIndex = this->peakIntensityIndex;
-  double const peakFactor = peakIntensityIndex * nsPerBin;
-  // Time until first maximum minus rising flank
-  minHitTime_ns = minHitDist_m / SPEEDofLIGHT_mPerNanosec - peakFactor;
-  // Time until last maximum time for signal decay with 1 bin for buffer
-  double const pulseDuration_ns = time_wave.size() * nsPerBin;
-  maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec + pulseDuration_ns -
-                  peakFactor + nsPerBin; // 1 bin for buffer
-
-  // Calc ranges and threshold
-  double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
-  double const maxFullwaveRange_ns = FWF_settings.maxFullwaveRange_ns;
-  distanceThreshold = maxHitDist_m;
-  if (maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns) {
-    hitTimeDelta_ns = maxFullwaveRange_ns;
-    maxHitTime_ns = minHitTime_ns + maxFullwaveRange_ns;
-  }
-
-  // Check if full wave is possible
-  if ((detector->cfg_device_rangeMin_m / SPEEDofLIGHT_mPerNanosec) >
-      minHitTime_ns) {
-    return false;
-  }
-
-  // Compute fullwave variables
-  numFullwaveBins = ((int)std::ceil(maxHitTime_ns / nsPerBin)) -
-                    ((int)ceil(minHitTime_ns / nsPerBin));
-  if (numFullwaveBins <= 0)
-    return false;
-
-  // update maxHitTime to fit the discretized fullwave bins
-  // minus 1 is necessary as the minimum is in bin #0
-  maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
-  // The limit is a time span relative to the first return, not an absolute
-  // range.
-  distanceThreshold =
-    std::min(maxHitDist_m, SPEEDofLIGHT_mPerNanosec * maxHitTime_ns);
-
-  return true;
+  grid = WaveMaths::recordingGrid(minHitDist_m,
+                                  maxHitDist_m,
+                                  *pulseModel,
+                                  FWF_settings.sampleSpacing_m,
+                                  FWF_settings.maxRecordingSpan_m);
+  return grid.sampleCount > 0;
 }
 
 double

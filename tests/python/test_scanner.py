@@ -619,3 +619,60 @@ def test_average_power_xml_rejected_with_migration_guidance(
         _helios.read_scanner_from_xml(
             str(path), [str(p) for p in get_asset_directories()], "riegl_vq-1560i"
         )
+
+
+def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
+    from xml.etree import ElementTree
+
+    tree, element, path = _amplitude_xml(tmp_path)
+    parent = element.find("FWFSettings")
+    if parent is None:
+        parent = ElementTree.SubElement(element, "FWFSettings")
+    parent.attrib.update(
+        {
+            "pulseShape": "gamma",
+            "sampleSpacing_m": "0.02",
+            "peakWindow_m": "0.1",
+            "recordingTailTolerance": "0.00001",
+        },
+    )
+    channel = element.find("channels/channel")
+    ElementTree.SubElement(
+        channel,
+        "FWFSettings",
+        {
+            "pulseShape": "gaussian",
+            "correctPeakOffset": "false",
+            "binSize_ns": "0.25",
+            "maxRecordingSpan_m": "20",
+        },
+    )
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, "riegl_vq-1560i")._cpp_object
+    first = scanner.get_fwf_settings(0)
+    second = scanner.get_fwf_settings(1)
+    assert first.pulse_shape == "gaussian"
+    assert first.correct_peak_offset is False
+    assert first.sample_spacing == pytest.approx(0.03747405725)
+    assert first.peak_window == 0.1
+    assert first.recording_tail_tolerance == 1e-5
+    assert second.pulse_shape == "gamma"
+    assert second.sample_spacing == 0.02
+    scanner.prepare_pulse(0)
+    scanner.prepare_pulse(1)
+    saved_pulse = scanner.get_pulse_model(0)
+    assert saved_pulse.evaluate(-0.01) > 0
+    assert scanner.get_pulse_model(1).evaluate(-0.01) == 0
+    first.pulse_shape = "gamma"
+    scanner.set_fwf_settings(first, 0)
+    scanner.prepare_pulse(0)
+    assert scanner.get_pulse_model(0).evaluate(-0.01) == 0
+    assert saved_pulse.evaluate(-0.01) > 0
+    with pytest.raises(IndexError):
+        scanner.get_pulse_model(2)
+    parent.set("binSize_ns", "0.25")
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    with pytest.raises(
+        scanner_module._helios.HeliosException, match="Specify only one"
+    ):
+        Scanner.from_xml(path, "riegl_vq-1560i")

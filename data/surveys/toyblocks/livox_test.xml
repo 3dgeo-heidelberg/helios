@@ -4,7 +4,7 @@
             platform="data/platforms.xml#sr22"
             scanner="data/scanners_tls.xml#livox_mid-70">
 
-        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+        <FWFSettings sampleSpacing_m="0.0299792458" beamSampleQuality="3" />
 
         <leg>
         <!-- minimal leg: 0.01 m with speed of 0.01 m = 1 s integration time;

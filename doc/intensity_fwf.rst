@@ -57,17 +57,29 @@ If no information is given there, the scanner definition may have a set of ``FWF
      - 2
      - Sampling radius in units of the Gaussian 1/e^2 radius; captures 99.9665% of emitted power.
 
-   * - ``binSize_ns``
-     - 0.25
-     - Discretization in time (in nanoseconds).
+   * - ``sampleSpacing_m``
+     - 0.03747405725
+     - Fixed sample spacing in metres (equivalent to 0.25 ns round-trip time).
 
-   * - ``maxFullwaveRange_ns``
+   * - ``maxRecordingSpan_m``
      - 0
-     - Maximum time to record for a single pulse. A value of 0 means no limit (wait for last pulse).
+     - Maximum recording span from its first sample; zero means unlimited.
 
-   * - ``winSize_ns``
-     - ``pulseLength_ns`` / 4
-     - Window size in nanoseconds; based on the ``pulseLength`` as defined in the scanner configuration.
+   * - ``peakWindow_m``
+     - 0.149896229
+     - Peak validation neighborhood in metres; at least twice the sample spacing.
+
+   * - ``pulseShape``
+     - gamma
+     - Analytic unit-peak shape: ``gamma`` or ``gaussian``.
+
+   * - ``correctPeakOffset``
+     - true
+     - Subtract the shape's peak offset when reporting ranges.
+
+   * - ``recordingTailTolerance``
+     - 0.0001
+     - Relative unit-peak amplitude for automatic recording bounds only.
 
 
 The ``beamSampleQuality`` :math:`bSQ` is the number of concentric circles from which subrays are sampled. The angular distance of circle :math:`i` (counting from the center) depends on the beam divergence :math:`\beta` and is calculated as:
@@ -133,74 +145,87 @@ Incidence evaluation uses the cosine directly during ray tracing. For normalized
 
 Angle-based APIs remain available. The cosine path also supports normal-based voxels and their closest-face fallback. Detailed analytics convert the cosine back to radians only when recording the incidence angle.
 
-Time-Domain Beam Modeling
---------------------------
+Analytic pulses in range coordinates
+-----------------------------------
 
-In the time domain, the beam pulse is modeled using the following function:
+The implementation uses the abstract ``AnalyticPulse`` interface with ``GammaPulse`` and ``GaussianPulse`` implementations. Each scanning device holds an immutable prepared pulse selected by the factory. Waveform assembly uses the same interface for either shape.
+
+Reconstruction and peak extraction use metres. The scanner's ``pulseLength_ns`` remains a temporal FWHM specification and is converted once using :math:`x=ct/2`. Subray returns retain their exact geometric ranges :math:`r_i` and dimensionless received/whole-beam peak-power ratios :math:`A_i`.
+
+The default gamma pulse is
 
 .. math::
-   P(t) = P_0 h(t)
+   g(u)=\begin{cases}
+   \frac{e^2}{4}(u/\rho)^2\exp(-u/\rho), & u\geq0,\\
+   0, & u<0,
+   \end{cases}
+   \qquad \rho=\frac{cT_\mathrm{FWHM}}{2\times3.394680670846504}.
+
+Its reference is the onset and its peak is at :math:`2\rho`. The alternative Gaussian is
 
 .. math::
-   h(t) = \frac{t_\tau^2\exp(2)}{4} \exp(-t_\tau)
+   g(u)=\exp\left[-\frac{(u-3\sigma_r)^2}{2\sigma_r^2}\right],
+   \qquad \sigma_r=\frac{cT_\mathrm{FWHM}}{4\sqrt{2\ln2}}.
 
-where:
-
-- :math:`t_\tau = t / \tau`,
-- :math:`\tau = \text{pulseLength} / 3.394680670846504`.
-
-The sampled waveform extends to :math:`7\tau` (about 2.06 times the FWHM), so the falling flank is retained. Return buffers use this sampled duration.
-
-``pulseLength`` is the FWHM of the pulse. The prefactor :math:`\frac{\exp(2)}{4}` scales the shape such that its maximum value is 1:
+The Gaussian reference lies three standard deviations before its peak. It has no exact onset: its negative-offset tail is retained. Both shapes have unit analytic peak; equal FWHM and peak power do not imply equal pulse energy.
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
    :align: center
 
-   Time-domain pulse shape :math:`P(t)` for a typical LiDAR pulse.
+Calculating the detector signal
+------------------------------
 
-Calculating full waveform
--------------------------
+At each range sample :math:`x_k`, HELIOS++ directly evaluates
 
-After the subrays have been cast and intersected with the scene, they are aligned according to their range, where the maximum position (the peak in the previous figure) corresponds to the position of the return, and the waveform shape is not altered e.g. with respect to the incidence angle.
-Although the central pulse and each subray are cast at the same time, they inevitably make contact with different parts of the scene, leading to a temporal offset in the returning pulses.
-The waveform is the sum of these returning pulses and the maxima of this waveform are used to extract points for the output array.
-The output array is created with bins of size ``binSize_ns`` and a maximum length of ``maxFullwaveRange_ns`` (if not set to 0), which starts at the first return (``pulseLength_ns`` before the hit). 
-Subsequently, the recorded waveforms, scaled with their respective amplitudes are added into the array. As the bins are not necessarily aligned, they are cast to the next lowest bin.
+.. math::
+   S(x_k)=P_0\sum_i A_i g(x_k-r_i).
 
-The following two graphs illustrate the calculation and analysis of one such full waveform based on the return of one laser beam with a central pulse and six subrays which, for the sake of a simplified example, is aimed at an imaginary target at roughly 3 metres distance. 
-For the output, maxima are detected using a window approach, meaning that a maximum is counted as valid if a bin has the highest value in a neighborhood of ``winSize_ns``.
-The local maxima of the waveform are indicated in the graphs, along with windows for the validation of the maxima for the final return. The examples show how using full waveform can lead to more detailed and/or precise results.
+There is no histogram of return distances, pre-sampled template, integer-bin placement, or renormalization of sampled maxima. Every return contributes its full analytic shape throughout the recording interval, including contributions below the recording tolerance and beyond the former :math:`7\tau` cutoff. Samples retain the legacy nanowatt intensity scale.
+
+For gamma, automatic bounds extend from the nearest return to the furthest return plus the falling-flank tolerance crossing. For Gaussian, the pulse-relative bounds are :math:`3\sigma_r\pm\sigma_r\sqrt{-2\ln\epsilon}`. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
+
+The grid is anchored at range zero; automatic bounds round outwards to grid points. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
+
 
 .. figure:: img/onevpeak.png
    :alt: Full waveform example with one peak
    :width: 100%
    :align: center
 
-   Example of a full waveform with one peak. The central pulse and six subrays are cast at the same time, but due to different ranges and incidence angles, they return at different times and with different amplitudes. The resulting waveform is the sum of these returns, and the maximum is detected as the valid return.
+Peak extraction and timing reference
+-----------------------------------
 
-In the case of the first graph, the subrays are returned relatively close temporally to the central pulse. The resulting waveform has three local maxima, of which only one can be validated using the given window size (default=pulselength/4).
-In consequence, this full waveform pulse would result in this one point being added to the output array, in this case at a distance of c*10.16 ns (3.05 m) to the scanner.
-In comparison, the result without full waveform and evaluation of only the central pulse would have led to a less precise peak at around c*9 ns (2.7 m).
+The existing neighborhood and amplitude-threshold checks operate on the summed samples. With ``correctPeakOffset=true``, a detected peak at :math:`x` produces range :math:`x-2\rho` for gamma or :math:`x-3\sigma_r` for Gaussian. Disabling correction reports :math:`x` directly. Correction precedes object attribution and measurement-error processing and never changes the waveform itself. Overlapping returns can shift the combined maximum even after this correction.
+
+Waveform export retains its existing layout. Endpoint metadata is physical round-trip time in nanoseconds, calculated from the recorded range coordinates using :math:`t=2x/c`. It is unaffected by range correction. As before, export requires an accepted return, and optional waveform noise is added after point extraction.
 
 .. figure:: img/threevpeaks.png
    :alt: Full waveform example with three peaks
    :width: 100%
    :align: center
 
-   Example of a full waveform with three peaks. The subrays are returned at more distinct times, leading to a waveform with three local maxima. The two local maxima in the center are summarised to one return due to the window size.
+Configuration migration
+-----------------------
 
-In the case of the second graph, the subrays are further spaced around the central pulse. This leads to the development of four local maxima, with three of them being validated and included in the output array.
-In this example the increase in the number of points leads to an evident increase in detail as well as an increase in precision.
+Python uses ``sample_spacing``, ``peak_window``, ``max_recording_span``,
+``pulse_shape``, ``correct_peak_offset``, and ``recording_tail_tolerance``::
+
+   settings = helios.FullWaveformSettings(
+       sample_spacing="2 cm", peak_window="10 cm",
+       pulse_shape="gaussian", correct_peak_offset=True,
+       recording_tail_tolerance=1e-4,
+   )
+
+Old XML ``binSize_ns``, ``winSize_ns``, and ``maxFullwaveRange_ns`` inputs and Python constructor ``bin_size``, ``win_size``, and ``max_fullwave_range`` inputs are deprecated. They convert to metres using :math:`c/2`; specifying both names for one setting is an error. Old YAML documents migrate to these settings and new serialization writes only the range fields.
+
+This replaces the former one-way time coordinate, peak-aligned templates, and pulse cutoff. Simulation outputs therefore intentionally change. The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and peak offset), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples; its unit naming is not changed in this refactor.
 
 
 Echo width determination
 ------------------------
 
-If the command line parameter ``--calcEchoWidth`` was provided, a Gaussian curve is fitted to the waveform.
-This allows the determination of an echo width as the standard deviation of this Gaussian. As shown in the following figure, the maximum of the Gaussian does not align with the maximum of the pulse shape.
-For the distance measurement, the position of the maximum, as detected with the window approach, is used. Note that due to the binning in the full waveform calculation,
-this distance may be off by a maximum of ``binSize_ns``, which is 0.25 by default, corresponding to 7.5 cm. This offset only concerns non-first returns, though, and can be decreased by choosing a lower ``binSize_ns``.
+If the command line parameter ``--calcEchoWidth`` was provided, a Gaussian curve is fitted to the waveform. The existing fitter reports the width parameter of ``exp(-((x-centre)/width)^2)``, equal to sqrt(2) times the Gaussian standard deviation. As shown in the following figure, the maximum of the Gaussian does not align with the maximum of the pulse shape. The detected sample maximum, with the optional shape offset correction, determines range. The fitted Gaussian centre does not replace it. For an isolated ideal return, sampling uncertainty is bounded by one sample spacing (about 3.75 cm at the default). The fitted sample-index width is converted to metres. The reported ``echo_width`` retains nanoseconds through conversion with :math:`2/c`.
 
 .. figure:: img/echo_width.png
     :alt: 

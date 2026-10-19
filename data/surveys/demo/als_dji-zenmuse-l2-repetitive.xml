@@ -4,7 +4,7 @@
             platform="data/platforms.xml#sr22"
             scanner="data/scanners_als.xml#dji-zenmuse-l2-repetitive">
 
-        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+        <FWFSettings sampleSpacing_m="0.0299792458" beamSampleQuality="3" />
         
         <leg>
             <platformSettings x="0.0" y="-15.0" z="0.0"

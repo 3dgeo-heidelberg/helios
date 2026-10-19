@@ -18,9 +18,12 @@ public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**
-   * @brief Bin size for discretization (nanoseconds)
+   * @brief Range sample spacing (metres)
    */
-  double binSize_ns = 0.25;
+  double sampleSpacing_m = 0.03747405725;
+  std::string pulseShape = "gamma";
+  bool correctPeakOffset = true;
+  double recordingTailTolerance = 1e-4;
   /**
    * @brief Minimum echo width
    */
@@ -56,13 +59,13 @@ public:
   /** Tangent-plane sampling radius in units of the Gaussian 1/e^2 radius. */
   double beamSamplingFactor = 2.0;
   /**
-   * @brief Window size to iterate over discretization (nanoseconds)
+   * @brief Peak validation window (metres)
    */
-  double winSize_ns = pulseLength_ns / 4.0;
+  double peakWindow_m = 0.149896229;
   /**
-   * @brief Max full wave range (nanoseconds)
+   * @brief Maximum recording span (metres), zero means unlimited
    */
-  double maxFullwaveRange_ns = 0.0;
+  double maxRecordingSpan_m = 0.0;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -72,19 +75,27 @@ public:
   FWFSettings() {}
 
   /**
-   * @brief Validate the binSize_ns and winSize_ns attributes to ensure they are
-   * valid
+   * @brief Validate the sampleSpacing_m and peakWindow_m attributes to ensure
+   * they are valid
    * @throws std::invalid_argument if any setting is invalid
    */
   void validate() const
   {
     validateBeamSampling();
-    if (binSize_ns <= 0.0)
-      throw std::invalid_argument("binSize_ns must be > 0");
-    if (winSize_ns <= 0.0)
-      throw std::invalid_argument("winSize_ns must be > 0");
-    if (winSize_ns < 2.0 * binSize_ns)
-      throw std::invalid_argument("winSize_ns must be >= 2 * binSize_ns");
+    if (!std::isfinite(sampleSpacing_m) || sampleSpacing_m <= 0)
+      throw std::invalid_argument("sampleSpacing_m must be finite and > 0");
+    if (!std::isfinite(peakWindow_m) || peakWindow_m < 2 * sampleSpacing_m ||
+        peakWindow_m / sampleSpacing_m > 1000000000)
+      throw std::invalid_argument(
+        "peakWindow_m must be >= 2 * sampleSpacing_m and representable");
+    if (!std::isfinite(maxRecordingSpan_m) || maxRecordingSpan_m < 0)
+      throw std::invalid_argument("maxRecordingSpan_m must be finite and >= 0");
+    if (!std::isfinite(recordingTailTolerance) || recordingTailTolerance <= 0 ||
+        recordingTailTolerance >= 1)
+      throw std::invalid_argument(
+        "recordingTailTolerance must be between 0 and 1");
+    if (pulseShape != "gamma" && pulseShape != "gaussian")
+      throw std::invalid_argument("pulseShape must be gamma or gaussian");
   }
   void validateBeamSampling() const
   {
@@ -104,7 +115,10 @@ public:
   {
     std::stringstream ss;
     ss << "FWFSettings \"" << id << "\":\n"
-       << "binSize_ns = " << binSize_ns << "\n"
+       << "sampleSpacing_m = " << sampleSpacing_m << "\n"
+       << "pulseShape = " << pulseShape << "\n"
+       << "correctPeakOffset = " << correctPeakOffset << "\n"
+       << "recordingTailTolerance = " << recordingTailTolerance << "\n"
        << "minEchoWidth = " << minEchoWidth << "\n"
        << "peakEnergy = " << peakEnergy << "\n"
        << "apertureDiameter = " << apertureDiameter << "\n"
@@ -114,8 +128,8 @@ public:
        << "pulseLength_ns = " << pulseLength_ns << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
        << "beamSamplingFactor = " << beamSamplingFactor << "\n"
-       << "winSize_ns = " << winSize_ns << "\n"
-       << "maxFullwaveRange_ns = " << maxFullwaveRange_ns << "\n";
+       << "peakWindow_m = " << peakWindow_m << "\n"
+       << "maxRecordingSpan_m = " << maxRecordingSpan_m << "\n";
     return ss.str();
   }
   /**
