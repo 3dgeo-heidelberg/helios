@@ -139,9 +139,9 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
 
 - ``beamSampleQuality``
 - ``beamSamplingFactor``
-- ``binSize_ns``
-- ``maxFullwaveRange_ns``
-- ``winSize_ns``
+- ``sampleSpacing_m``
+- ``maxRecordingSpan_m``
+- ``peakWindow_m``
 
 **Other parameters**:
 

@@ -202,7 +202,7 @@ Scanner::applySettingsFWF(FWFSettings settings, size_t const idx)
   settings.validate();
   setFWFSettings(settings, idx);
   calcRaysNumber(idx);
-  prepareDiscretization(idx);
+  preparePulse(idx);
 }
 
 string

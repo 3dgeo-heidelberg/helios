@@ -141,19 +141,9 @@ MultiScanner::doSimStep(unsigned int legIndex,
 }
 
 void
-MultiScanner::prepareDiscretization(size_t idx)
+MultiScanner::preparePulse(size_t idx)
 {
-  setNumTimeBins(static_cast<int>(std::ceil(
-                   WaveMaths::calcPulseDuration(getPulseLength_ns(idx)) /
-                   getFWFSettings(idx).binSize_ns)),
-                 idx);
-  setTimeWave(vector<double>(getNumTimeBins(idx)), idx);
-  setPeakIntensityIndex(
-    WaveMaths::calcPropagationTimeLegacy(getTimeWave(idx),
-                                         getNumTimeBins(idx),
-                                         getFWFSettings(idx).binSize_ns,
-                                         getPulseLength_ns(idx)),
-    idx);
+  scanDevs[idx].preparePulse();
 }
 
 Rotation
@@ -199,22 +189,10 @@ MultiScanner::computeSubrays(
 bool
 MultiScanner::initializeFullWaveform(double minHitDist_m,
                                      double maxHitDist_m,
-                                     double& minHitTime_ns,
-                                     double& maxHitTime_ns,
-                                     double& nsPerBin,
-                                     double& distanceThreshold,
-                                     int& peakIntensityIndex,
-                                     int& numFullwaveBins,
+                                     WaveformGrid& grid,
                                      size_t idx)
 {
-  return scanDevs[idx].initializeFullWaveform(minHitDist_m,
-                                              maxHitDist_m,
-                                              minHitTime_ns,
-                                              maxHitTime_ns,
-                                              nsPerBin,
-                                              distanceThreshold,
-                                              peakIntensityIndex,
-                                              numFullwaveBins);
+  return scanDevs[idx].initializeFullWaveform(minHitDist_m, maxHitDist_m, grid);
 }
 
 double

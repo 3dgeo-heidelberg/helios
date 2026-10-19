@@ -1,43 +1,37 @@
-#include <WaveMaths.h>
+#include <maths/MathConstants.h>
+#include <maths/WaveMaths.h>
 
-namespace {
-// FWHM of x^2 exp(-x), expressed in units of tau.
-constexpr double pulseFwhmFactor = 3.394680670846504;
-}
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <stdexcept>
+#include <vector>
 
-double
-WaveMaths::calcPulseDuration(double pulseLength)
+WaveformGrid
+WaveMaths::recordingGrid(double minReturn_m,
+                         double maxReturn_m,
+                         AnalyticPulse const& pulse,
+                         double spacing_m,
+                         double maxSpan_m)
 {
-  // Keep the historical sampling cutoff at 7*tau, beyond the falling half
-  // maximum.
-  return 7.0 * pulseLength / pulseFwhmFactor;
-}
-
-// ***   T I M E   *** //
-// ******************* //
-int
-WaveMaths::calcPropagationTimeLegacy(std::vector<double>& timeWave,
-                                     int const numBins,
-                                     double const binSize,
-                                     double const pulseLength)
-{
-  // Prepare variables
-  double const tau = pulseLength / pulseFwhmFactor;
-  double t, t_tau, pt;
-  double peakValue = 0;
-  int peakIndex = 0;
-  // Do forward iterative process to compute nodes and pick max
-  for (int i = 0; i < numBins; ++i) {
-    t = i * binSize;
-    t_tau = t / tau;
-    // Analytic unit peak at t = 2*tau; independent of bin resolution.
-    pt = (std::exp(2.0) / 4.0) * (t_tau * t_tau) * std::exp(-t_tau);
-    timeWave[i] = pt;
-    if (pt > peakValue) {
-      peakValue = pt;
-      peakIndex = i;
-    }
-  }
-  // Return index of peak value
-  return peakIndex;
+  if (!std::isfinite(minReturn_m) || !std::isfinite(maxReturn_m) ||
+      minReturn_m > maxReturn_m || !std::isfinite(spacing_m) ||
+      spacing_m <= 0 || !std::isfinite(maxSpan_m) || maxSpan_m < 0)
+    throw std::invalid_argument("Invalid waveform recording interval");
+  auto const bounds = pulse.recordingBounds();
+  double const first = std::floor((minReturn_m + bounds.first) / spacing_m);
+  double last = std::ceil((maxReturn_m + bounds.second) / spacing_m);
+  if (maxSpan_m > 0)
+    last = std::min(last, first + std::floor(maxSpan_m / spacing_m));
+  double const count = last - first + 1;
+  // Integer indices must remain exactly representable, and fit downstream
+  // signed indexing (including peak-window arithmetic).
+  if (!std::isfinite(first) || !std::isfinite(last) ||
+      std::abs(first) > 0x1p52 || std::abs(last) > 0x1p52 ||
+      !std::isfinite(count) || count < 1 ||
+      count > std::numeric_limits<int>::max() / 2 ||
+      count > std::vector<double>().max_size() ||
+      !std::isfinite(first * spacing_m) || !std::isfinite(last * spacing_m))
+    throw std::length_error("Waveform recording grid is too large");
+  return { first, spacing_m, static_cast<int>(count) };
 }

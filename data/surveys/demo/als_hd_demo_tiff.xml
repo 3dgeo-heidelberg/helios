@@ -4,7 +4,7 @@
 	<scannerSettings id="set" active="true" pulseFreq_hz="70000" scanAngle_deg="60" scanFreq_hz="50" />
     <survey name="als_hd_demo" scene="data/scenes/demo/hd_demo.xml#hd_demo" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50-ii">
 	<!-- platform: Plane, deflector: oscillating -->
-        <FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
+        <FWFSettings beamSampleQuality="3" sampleSpacing_m="0.03747405725" peakWindow_m="0.149896229"/>
         <detectorSettings rangeMax_m="1700"/>
 
 		<leg>

@@ -89,11 +89,11 @@ def test_set_output_settings(reset_global_state):
 def test_full_waveform_settings_defaults():
     settings = FullWaveformSettings()
 
-    assert settings.bin_size == 2.5e-10
+    assert settings.sample_spacing == 0.03747405725
     assert settings.beam_sample_quality == 3
     assert settings.beam_sampling_factor == 2.0
-    assert settings.win_size == 1e-9
-    assert settings.max_fullwave_range == 0.0
+    assert settings.peak_window == 0.149896229
+    assert settings.max_recording_span == 0.0
 
 
 def test_convert_full_waveform_settings_to_cpp():
@@ -106,11 +106,11 @@ def test_convert_full_waveform_settings_to_cpp():
     )
     cpp_settings = settings._to_cpp()
 
-    assert cpp_settings.bin_size == 1.0
+    assert cpp_settings.sample_spacing == pytest.approx(0.149896229)
     assert cpp_settings.beam_sample_quality == 4
     assert cpp_settings.beam_sampling_factor == 1.5
-    assert cpp_settings.win_size == 2.0
-    assert cpp_settings.max_fullwave_range == 10.0
+    assert cpp_settings.peak_window == pytest.approx(0.299792458)
+    assert cpp_settings.max_recording_span == pytest.approx(1.49896229)
 
 
 def test_execution_settings_clone_and_deepcopy_run_survey(survey):
@@ -196,7 +196,7 @@ def _write_invalid_survey_xml(path: Path) -> None:
 
 
 def test_fullwaveform_settings_rejects_invalid_window_in_python():
-    with pytest.raises(ValueError, match="win_size must satisfy"):
+    with pytest.raises(ValueError, match="peakWindow_m must be >="):
         FullWaveformSettings(
             bin_size=0.2 * units.ns,
             win_size=0.3 * units.ns,
@@ -222,5 +222,74 @@ def test_fullwaveform_settings_rejects_invalid_window_from_xml(tmp_path):
     xml_file = tmp_path / "invalid_survey.xml"
     _write_invalid_survey_xml(xml_file)
 
-    with pytest.raises(ValueError, match="winSize_ns must be >="):
+    with pytest.raises(ValueError, match="peakWindow_m must be >="):
         Survey.from_xml(xml_file)
+
+
+@pytest.mark.parametrize("shape", ["gamma", "gaussian"])
+def test_analytic_waveform_settings_roundtrip(tmp_path, shape):
+    settings = FullWaveformSettings(
+        sample_spacing="2 cm",
+        peak_window="10 cm",
+        max_recording_span="25 m",
+        pulse_shape=shape,
+        correct_peak_offset=False,
+        recording_tail_tolerance=1e-6,
+    )
+    path = settings.to_yaml(tmp_path / "waveform.yaml")
+    text = path.read_text()
+    assert "bin_size" not in text
+    restored = FullWaveformSettings.from_yaml(path)
+    assert restored.sample_spacing == 0.02
+    assert restored.peak_window == 0.1
+    assert restored.max_recording_span == 25
+    assert restored.pulse_shape == shape
+    assert restored.correct_peak_offset is False
+    assert restored.recording_tail_tolerance == 1e-6
+
+
+def test_legacy_waveform_constructor_and_yaml(tmp_path):
+    import yaml
+
+    with pytest.warns(DeprecationWarning):
+        settings = FullWaveformSettings(bin_size="0.25 ns", win_size="1 ns")
+    assert settings.sample_spacing == pytest.approx(0.03747405725)
+    assert settings.peak_window == pytest.approx(0.149896229)
+    with pytest.raises(ValueError, match="Specify only one"):
+        FullWaveformSettings(bin_size="0.25 ns", sample_spacing=0.02)
+    path = settings.to_yaml(tmp_path / "legacy.yaml")
+    doc = yaml.safe_load(path.read_text())
+    doc["serialization_minor_version"] = 0
+    doc["fields"] = {
+        "bin_size": 0.25e-9,
+        "win_size": 1e-9,
+        "max_fullwave_range": 100e-9,
+    }
+    path.write_text(yaml.safe_dump(doc))
+    with pytest.warns(DeprecationWarning):
+        restored = FullWaveformSettings.from_yaml(path)
+    assert restored.max_recording_span == pytest.approx(14.9896229)
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"sample_spacing": 0},
+        {"sample_spacing": float("inf")},
+        {"peak_window": 0.01},
+        {"recording_tail_tolerance": 0},
+        {"recording_tail_tolerance": 1},
+        {"pulse_shape": "triangle"},
+        {"max_recording_span": -1},
+    ],
+)
+def test_analytic_waveform_invalid_settings(kwargs):
+    with pytest.raises(ValueError):
+        FullWaveformSettings(**kwargs)
+
+
+def test_range_setting_assignment_validates_before_mutation():
+    settings = FullWaveformSettings()
+    with pytest.raises(ValueError):
+        settings.sample_spacing = 1
+    assert settings.sample_spacing == 0.03747405725

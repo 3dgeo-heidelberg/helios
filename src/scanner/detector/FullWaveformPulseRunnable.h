@@ -1,5 +1,7 @@
 #pragma once
 
+#include <maths/WaveMaths.h>
+
 #include <AbstractDetector.h>
 #include <AbstractPulseRunnable.h>
 #include <FullWaveformPulseDetector.h>
@@ -147,40 +149,18 @@ private:
   void findMaxMinHitDistances(std::map<double, double>& reflections,
                               double& minHitDist_m,
                               double& maxHitDist_m);
-  /**
-   * @brief Initialize full waveform
-   * While the vector is not strictly initialized in this function,
-   * necessary variables are computed here.
-   * @param[out] nsPerBin The size of each bin in nano seconds
-   * @param[out] distanceThreshold Limit distance threshold
-   * @param[out] peakIntensityIndex Index of intensity peak
-   * @param[out] numFullwaveBins How many bins are necessary to discretize
-   *  the full waveform
-   * @return True if it is possible to initialize the full waveform,
-   * false otherwise.
-   * @see FullWaveformPulseRunnable::digestIntersections
-   */
-  bool initializeFullWaveform(double const minHitDist_m,
-                              double const maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins);
-  /**
-   * @brief Populate from dimensionless transfer coefficients, then apply
-   * whole-beam amplitude and legacy intensity scaling before detection
-   * @param[out] fullwave Full waveform vector to be populated
-   * @see FullWaveformPulseRunnable::digestIntersections
-   * @see FullWaveformPulseRunnable::initializeFullWaveform
-   */
+  /** Compute the detector recording grid in metres. */
+  bool initializeFullWaveform(double minHitDist_m,
+                              double maxHitDist_m,
+                              WaveformGrid& grid);
+
+protected:
+  /** Evaluate the sum of full analytic returns on the recording grid. */
   void populateFullWaveform(std::map<double, double> const& reflections,
                             std::vector<double>& fullwave,
-                            double const distanceThreshold,
-                            double const minHitTime_ns,
-                            double const nsPerBin,
-                            int const peakIntensityIndex);
+                            WaveformGrid const& grid);
+
+private:
   /**
    * @brief Digest a previously populated full waveform vector,
    * generating measurements
@@ -198,10 +178,7 @@ private:
                           std::vector<double> const& fullwave,
                           vector<RaySceneIntersection> const& intersects,
                           glm::dvec3 const& beamDir,
-                          double const nsPerBin,
-                          int const numFullwaveBins,
-                          int const peakIntensityIndex,
-                          double const minHitTime_ns
+                          WaveformGrid const& grid
 #if DATA_ANALYTICS >= 2
                           ,
                           std::vector<std::vector<double>>& radiometryRecords,
@@ -226,7 +203,7 @@ private:
                              double& echoWidth,
                              int const binIndex,
                              int const winSize,
-                             double const nsPerBin);
+                             double const sampleSpacing_m);
   /**
    * @brief Export measurements and full waveform data
    * @param[in] fullwave Full waveform data to export
@@ -237,8 +214,8 @@ private:
                     int const numReturns,
                     std::vector<Measurement>& pointsMeasurement,
                     glm::dvec3 const& beamDir,
-                    double const minHitTime_ns,
-                    double const maxHitTime_ns,
+                    double const minRange_m,
+                    double const maxRange_m,
                     RandomnessGenerator<double>& randGen,
                     RandomnessGenerator<double>& randGen2
 #if DATA_ANALYTICS >= 2
