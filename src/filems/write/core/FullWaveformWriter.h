@@ -5,14 +5,14 @@
 #include <filems/write/core/BaseFullWaveformWriter.h>
 #include <scanner/detector/FullWaveform.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <glm/glm.hpp>
 
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace helios {
 namespace filems {

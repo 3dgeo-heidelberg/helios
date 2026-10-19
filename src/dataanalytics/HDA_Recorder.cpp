@@ -3,7 +3,7 @@
 #include <dataanalytics/HDA_Recorder.h>
 #include <util/HeliosException.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <sstream>
 
@@ -15,8 +15,8 @@ void
 HDA_Recorder::validateOutDir()
 {
   // Check directory exists
-  if (!boost::filesystem::exists(outdir)) {
-    if (!boost::filesystem::create_directory(outdir)) {
+  if (!std::filesystem::exists(outdir)) {
+    if (!std::filesystem::create_directory(outdir)) {
       std::stringstream ss;
       ss << "HDA_SimStepRecorder::validateOutDir thrown an exception "
          << "because the output directory does not exist and cannot be"
@@ -30,7 +30,7 @@ std::string
 HDA_Recorder::craftOutputPath(std::string const& fname)
 {
   std::stringstream ss;
-  ss << outdir << boost::filesystem::path::preferred_separator << fname;
+  ss << outdir << std::filesystem::path::preferred_separator << fname;
   return ss.str();
 }
 

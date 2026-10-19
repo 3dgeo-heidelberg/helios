@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "RotateFilter.h"
-#include <boost/variant/get.hpp>
+#include <variant>
 
 ScenePart*
 RotateFilter::run()
@@ -13,7 +13,7 @@ RotateFilter::run()
   if (useLocalRotation) {
     primsOut->mRotation = localRotation.applyTo(primsOut->mRotation);
   } else {
-    Rotation rotation = boost::get<Rotation>(params["rotation"]);
+    Rotation rotation = std::get<Rotation>(params["rotation"]);
     primsOut->mRotation = rotation.applyTo(primsOut->mRotation);
   }
 

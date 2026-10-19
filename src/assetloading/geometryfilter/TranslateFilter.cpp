@@ -1,6 +1,6 @@
 #include "TranslateFilter.h"
 
-#include <boost/variant/get.hpp>
+#include <variant>
 
 ScenePart*
 TranslateFilter::run()
@@ -11,12 +11,12 @@ TranslateFilter::run()
   // Handle translation itself
   glm::dvec3 offset = localTranslation;
   if (!useLocalTranslation)
-    offset = boost::get<glm::dvec3>(params["offset"]);
+    offset = std::get<glm::dvec3>(params["offset"]);
   primsOut->mOrigin = offset;
 
   // Handle on ground
   if (params.find("onGround") != params.end()) {
-    primsOut->forceOnGround = boost::get<int>(params["onGround"]);
+    primsOut->forceOnGround = std::get<int>(params["onGround"]);
   }
 
   // Return

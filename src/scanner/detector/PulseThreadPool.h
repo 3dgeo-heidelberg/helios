@@ -2,6 +2,7 @@
 
 #include <ResThreadPool.h>
 #include <TimeWatcher.h>
+#include <functional>
 #include <noise/RandomnessGenerator.h>
 #include <noise/UniformNoiseSource.h>
 #include <scanner/detector/PulseThreadPoolInterface.h>
@@ -204,17 +205,16 @@ protected:
    * @param task Pulse task
    * @see ResThreadPool::do_task
    */
-  inline void do_res_task(
-    boost::function<void(std::vector<std::vector<double>>&,
-                         RandomnessGenerator<double>&,
-                         RandomnessGenerator<double>&,
-                         NoiseSource<double>&
+  inline void do_res_task(std::function<void(std::vector<std::vector<double>>&,
+                                             RandomnessGenerator<double>&,
+                                             RandomnessGenerator<double>&,
+                                             NoiseSource<double>&
 #if DATA_ANALYTICS >= 2
-                         ,
-                         std::shared_ptr<HDA_PulseRecorder>
+                                             ,
+                                             std::shared_ptr<HDA_PulseRecorder>
 #endif
-                         )>& task,
-    int const resourceIdx) override
+                                             )>& task,
+                          int const resourceIdx) override
   {
     task(apMatrices[resourceIdx],
          randGens[resourceIdx],
@@ -231,15 +231,15 @@ protected:
    *  the time at which first occupied thread becomes available is registered
    * @see PulseThreadPool::firstAvailableTime
    */
-  void wrap_res_task(boost::function<void(std::vector<std::vector<double>>&,
-                                          RandomnessGenerator<double>&,
-                                          RandomnessGenerator<double>&,
-                                          NoiseSource<double>&
+  void wrap_res_task(std::function<void(std::vector<std::vector<double>>&,
+                                        RandomnessGenerator<double>&,
+                                        RandomnessGenerator<double>&,
+                                        NoiseSource<double>&
 #if DATA_ANALYTICS >= 2
-                                          ,
-                                          std::shared_ptr<HDA_PulseRecorder>
+                                        ,
+                                        std::shared_ptr<HDA_PulseRecorder>
 #endif
-                                          )>& task,
+                                        )>& task,
                      int const resourceIdx) override
   {
     // Run the user supplied task.
