@@ -131,12 +131,15 @@ def test_roundtrip_yaml_inline(tmp_path):
     written = root.to_yaml(yaml_path, shallow=False)
     assert written == yaml_path
 
+    first_line = yaml_path.read_text(encoding="utf-8").splitlines()[0]
+    assert first_line == (
+        "# yaml-language-server: $schema=https://raw.githubusercontent.com/"
+        "3dgeo-heidelberg/helios/alpha-dev/python/helios/data/"
+        "serialization_schema.json"
+    )
     with yaml_path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
-    assert document["$schema"] == (
-        "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
-        "alpha-dev/python/helios/data/serialization_schema.json"
-    )
+    assert "$schema" not in document
     assert "model_ref" not in str(document["fields"]["trajectory_settings"])
     assert document["serialization_major_version"] == 0
     assert document["serialization_minor_version"] == 0
@@ -169,7 +172,12 @@ def test_roundtrip_yaml_shallow_with_references(tmp_path):
     assert trajectory_path.exists()
     with trajectory_path.open("r", encoding="utf-8") as handle:
         trajectory_document = yaml.safe_load(handle)
-    assert trajectory_document["$schema"] == document["$schema"]
+    assert trajectory_path.read_text(encoding="utf-8").startswith(
+        "# yaml-language-server: $schema=https://raw.githubusercontent.com/"
+        "3dgeo-heidelberg/helios/alpha-dev/python/helios/data/"
+        "serialization_schema.json\n"
+    )
+    assert "$schema" not in trajectory_document
 
     loaded = DynamicPlatformSettings.from_yaml(root_yaml)
     assert loaded.speed_m_s == 33.0
@@ -739,6 +747,11 @@ def test_dynamic_scene_non_binary_bundle_roundtrip(tmp_path):
     bundle_dir = tmp_path / "dynamic_scene_bundle"
     root_yaml = scene.to_bundle(bundle_dir, binary=False)
 
+    assert root_yaml.read_text(encoding="utf-8").startswith(
+        "# yaml-language-server: $schema=https://raw.githubusercontent.com/"
+        "3dgeo-heidelberg/helios/alpha-dev/python/helios/data/"
+        "serialization_schema.json\n"
+    )
     with root_yaml.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
     bundled_scene_file = document["provenance"]["constructor"]["kwargs"]["scene_file"]

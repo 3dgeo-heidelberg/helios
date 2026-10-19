@@ -328,13 +328,17 @@ def _write_model_document(model: Model, filename: str, context: _SerializationCo
     context.model_files[model_id] = filename
     context.document_models[filename] = model
 
-    document = {
-        "$schema": SERIALIZATION_SCHEMA_URL,
-        **_build_model_document(model, context),
-    }
+    document = _build_model_document(model, context)
     path = context.root_dir / filename
+    _write_yaml_document(path, document)
+
+
+def _write_yaml_document(path: Path, document: dict[str, Any]) -> None:
+    """Write a model document with its YAML language-server schema annotation."""
+
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
+        handle.write(f"# yaml-language-server: $schema={SERIALIZATION_SCHEMA_URL}\n")
         yaml.safe_dump(document, handle, sort_keys=False, allow_unicode=False)
 
 
@@ -386,8 +390,7 @@ def _rewrite_bundle_provenance_paths(
             source_model,
         )
         if changed:
-            with yaml_path.open("w", encoding="utf-8") as handle:
-                yaml.safe_dump(document, handle, sort_keys=False, allow_unicode=False)
+            _write_yaml_document(yaml_path, document)
 
 
 def _load_bundle_documents(root_yaml: Path) -> dict[Path, dict[str, Any]]:
