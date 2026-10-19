@@ -96,7 +96,7 @@ If the same setting is defined in a template and in a leg which uses the templat
         <!-- platform: quadcopter, deflector: rotating, stop and turn-mode
             OPTIONAL: detectorSettings and FWFSettings, examples below
                 <detectorSettings accuracy_m="0.001" rangeMin_m="1.5" rangeMax_m="200"/>
-                <FWFSettings winSize_ns="1.5" beamSampleQuality="3"/> -->
+                <FWFSettings peakWindow_m="0.2248443435" beamSampleQuality="3"/> -->
                     <!-- leg000 -->
             <leg>
                 <platformSettings template="platform1" x="-80.0" y="-50.0"/>
@@ -140,7 +140,7 @@ This would be the confugration for the current default settings:
 
 .. code-block:: xml
 
-    <FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
+    <FWFSettings beamSampleQuality="3" sampleSpacing_m="0.03747405725" peakWindow_m="0.149896229"/>
 
 Leg definition 
 ^^^^^^^^^^^^^^
@@ -198,7 +198,7 @@ The fourth leg starts again from the very beginning. Since all legs are defined 
         <!-- Default scanner settings: -->
         <scannerSettings id="scaset" active="true" pulseFreq_hz="70000" scanAngle_deg="60" scanFreq_hz="50" />
         <survey name="interpolated_trajectory_als" scene="data/scenes/demo/interpolated_trajectory.xml#interpolated_trajectory_demo" platform="interpolated" basePlatform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50-ii">
-        <FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
+        <FWFSettings beamSampleQuality="3" sampleSpacing_m="0.03747405725" peakWindow_m="0.149896229"/>
             <!-- Leg which interpolates the full trajectory -->
         <leg>
                 <platformSettings 

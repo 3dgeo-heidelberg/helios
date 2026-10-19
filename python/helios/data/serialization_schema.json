@@ -116,7 +116,7 @@
           "const": 0
         },
         "serialization_minor_version": {
-          "const": 0
+          "enum": [0, 1]
         },
         "model_class": {
           "enum": [
@@ -770,7 +770,13 @@
         "beam_sample_quality": {},
         "beam_sampling_factor": {},
         "win_size": {},
-        "max_fullwave_range": {}
+        "max_fullwave_range": {},
+        "sample_spacing": {},
+        "peak_window": {},
+        "max_recording_span": {},
+        "pulse_shape": {},
+        "correct_peak_offset": {},
+        "recording_tail_tolerance": {}
       }
     },
     "fields_helios_settings_OutputSettings": {

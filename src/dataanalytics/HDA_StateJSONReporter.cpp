@@ -222,9 +222,6 @@ HDA_StateJSONReporter::reportScanner()
      << craftEntry("trajectoryTimeInterval", sc->trajectoryTimeInterval_ns, 4)
      << craftEntry("lastTrajectoryTime", sc->lastTrajectoryTime, 4)
      << craftEntry("FWFSettings", sc->getFWFSettings(), 4)
-     << craftEntry("numTimeBins", sc->getNumTimeBins(), 4)
-     << craftEntry("peakIntensityIndex", sc->getPeakIntensityIndex(), 4)
-     << craftEntry("peakIntensityIndex", sc->getTimeWave(), 4)
      << craftEntry("headRelativeEmitterPosition",
                    sc->getHeadRelativeEmitterPosition(),
                    4)
@@ -443,7 +440,10 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
   std::stringstream ss;
   int const d2 = depth + 1;
   ss << openEntry(key, depth, EntryType::OBJECT)
-     << craftEntry("binSize_ns", fs.binSize_ns, d2)
+     << craftEntry("sampleSpacing_m", fs.sampleSpacing_m, d2)
+     << craftEntry("pulseShape", fs.pulseShape, d2)
+     << craftEntry("correctPeakOffset", fs.correctPeakOffset, d2)
+     << craftEntry("recordingTailTolerance", fs.recordingTailTolerance, d2)
      << craftEntry("minEchoWidth", fs.minEchoWidth, d2)
      << craftEntry("peakEntry", fs.peakEnergy, d2)
      << craftEntry("apertureDiameter", fs.apertureDiameter, d2)
@@ -453,9 +453,8 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry("pulseLength_ns", fs.pulseLength_ns, d2)
      << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
      << craftEntry("beamSamplingFactor", fs.beamSamplingFactor, d2)
-     << craftEntry("winSize_ns", fs.winSize_ns, d2)
-     << craftEntry(
-          "maxFullwaveRange_ns", fs.maxFullwaveRange_ns, d2, false, true)
+     << craftEntry("peakWindow_m", fs.peakWindow_m, d2)
+     << craftEntry("maxRecordingSpan_m", fs.maxRecordingSpan_m, d2, false, true)
      << closeEntry(depth, last, EntryType::OBJECT) // Close FWFSettings
     ;
   return ss.str();

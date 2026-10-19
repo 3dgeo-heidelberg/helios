@@ -4,6 +4,7 @@
 #include <maths/Directions.h>
 #include <maths/EnergyModel.h>
 #include <maths/Rotation.h>
+#include <maths/WaveMaths.h>
 #include <scanner/FWFSettings.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/SimulatedPulse.h>
@@ -143,26 +144,7 @@ protected:
    * @see Scanner::checkMaxNOR
    */
   int maxNOR = 0;
-  /**
-   * @brief Number of bins defining the discretization size
-   *
-   * The number of bins is computed considering full wave settings:
-   * \f[
-   *  \textrm{numTimeBins} = \left\lceil\frac{7\tau}{binSize}\right\rceil
-   * \f]
-   */
-  int numTimeBins = -1;
-  /**
-   * @brief Index of bin containing the intensity peak. It is computed
-   * through calcTimePropagation function.
-   *
-   * @see Scanner::calcTimePropagation(vector<double> &, int)
-   */
-  int peakIntensityIndex = -1;
-  /**
-   * @brief Time discretization vector
-   */
-  std::vector<double> time_wave;
+  std::shared_ptr<const AnalyticPulse> pulseModel;
 
   /**
    * @brief The expression tree to compute range errors as a function of
@@ -392,14 +374,15 @@ public:
   /**
    * @see Scanner::initializeFullWaveform
    */
+  void preparePulse();
+  AnalyticPulse const& getPulseModel() const { return *pulseModel; }
+  std::shared_ptr<const AnalyticPulse> getPulseModelShared() const
+  {
+    return pulseModel;
+  }
   bool initializeFullWaveform(double minHitDist_m,
                               double maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins);
+                              WaveformGrid& grid);
 
   /**
    * @brief Received peak power in watts.

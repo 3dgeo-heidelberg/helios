@@ -1319,22 +1319,40 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
   }
   // Given FWFSettings
   if (node != nullptr) {
-    settings->binSize_ns = XmlUtils::getAttributeCast<double>(
-      node, "binSize_ns", settings->binSize_ns);
-    settings->winSize_ns = settings->pulseLength_ns / 4.0; // By default
+    auto readRange =
+      [&](char const* name, char const* legacy, double fallback) {
+        if (node->Attribute(name) && node->Attribute(legacy))
+          throw std::invalid_argument(std::string("Specify only one of ") +
+                                      name + " and " + legacy);
+        if (node->Attribute(legacy)) {
+          logging::WARN(std::string(legacy) + " is deprecated; use " + name);
+          return XmlUtils::getAttributeCast<double>(node, legacy, 0.0) *
+                 SPEEDofLIGHT_mPerNanosec / 2.0;
+        }
+        return XmlUtils::getAttributeCast<double>(node, name, fallback);
+      };
+    settings->sampleSpacing_m =
+      readRange("sampleSpacing_m", "binSize_ns", settings->sampleSpacing_m);
+    settings->peakWindow_m =
+      readRange("peakWindow_m", "winSize_ns", settings->peakWindow_m);
+    settings->maxRecordingSpan_m = readRange("maxRecordingSpan_m",
+                                             "maxFullwaveRange_ns",
+                                             settings->maxRecordingSpan_m);
+    settings->pulseShape = XmlUtils::getAttributeCast<std::string>(
+      node, "pulseShape", settings->pulseShape);
+    settings->correctPeakOffset = XmlUtils::getAttributeCast<bool>(
+      node, "correctPeakOffset", settings->correctPeakOffset);
+    settings->recordingTailTolerance = XmlUtils::getAttributeCast<double>(
+      node, "recordingTailTolerance", settings->recordingTailTolerance);
     settings->beamSampleQuality = XmlUtils::getAttributeCast<int>(
       node, "beamSampleQuality", settings->beamSampleQuality);
     settings->beamSamplingFactor = XmlUtils::getAttributeCast<double>(
       node, "beamSamplingFactor", settings->beamSamplingFactor);
-    settings->winSize_ns = XmlUtils::getAttributeCast<double>(
-      node, "winSize_ns", settings->winSize_ns);
-    settings->maxFullwaveRange_ns = XmlUtils::getAttributeCast<double>(
-      node, "maxFullwaveRange_ns", settings->maxFullwaveRange_ns);
     settings->apertureDiameter = XmlUtils::getAttributeCast<double>(
       node, "apertureDiameter_m", settings->apertureDiameter);
   }
 
-  settings->validateBeamSampling();
+  settings->validate();
   return settings;
 }
 

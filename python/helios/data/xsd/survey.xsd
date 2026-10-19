@@ -87,6 +87,12 @@
                                             <xs:attribute type="xs:int" name="beamSampleQuality" use="optional"/>
                                             <xs:attribute type="xs:double" name="beamSamplingFactor" use="optional"/>
                                             <xs:attribute type="xs:float" name="binSize_ns" use="optional"/>
+                                            <xs:attribute type="xs:double" name="sampleSpacing_m"/>
+                                            <xs:attribute type="xs:double" name="peakWindow_m"/>
+                                            <xs:attribute type="xs:double" name="maxRecordingSpan_m"/>
+                                            <xs:attribute type="xs:string" name="pulseShape"/>
+                                            <xs:attribute type="xs:boolean" name="correctPeakOffset"/>
+                                            <xs:attribute type="xs:double" name="recordingTailTolerance"/>
                                             <xs:attribute type="xs:float" name="maxFullwaveRange_ns" use="optional"/>
                                             <xs:attribute type="xs:float" name="winSize_ns" use="optional"/>
                                         </xs:extension>

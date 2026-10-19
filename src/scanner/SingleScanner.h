@@ -95,9 +95,9 @@ public:
    */
   void calcRaysNumber(size_t const idx) override { scanDev.calcRaysNumber(); }
   /**
-   * @see Scanner::prepareDiscretization
+   * @see Scanner::preparePulse
    */
-  void prepareDiscretization(size_t const idx) override;
+  void preparePulse(size_t const idx) override;
   /**
    * @see Scanner::calcAbsoluteBeamAttitude
    */
@@ -145,12 +145,7 @@ public:
    */
   bool initializeFullWaveform(double const minHitDist_m,
                               double const maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins,
+                              WaveformGrid& grid,
                               size_t const idx) override;
   /**
    * @see Scanner::computeReceivedPower
@@ -536,54 +531,9 @@ public:
   {
     scanDev.maxNOR = maxNOR;
   }
-  /**
-   * @see Scanner::getNumTimeBins(size_t const)
-   */
-  int getNumTimeBins(size_t const idx) const override
+  AnalyticPulse const& getPulseModel(size_t idx) const override
   {
-    return scanDev.numTimeBins;
-  }
-  /**
-   * @see Scanner::setNumTimeBins(int const, size_t const)
-   */
-  void setNumTimeBins(int const numTimeBins, size_t const idx) override
-  {
-    scanDev.numTimeBins = numTimeBins;
-  }
-  /**
-   * @see Scanner::getPeakIntensityIndex(size_t const)
-   */
-  int getPeakIntensityIndex(size_t const idx) const override
-  {
-    return scanDev.peakIntensityIndex;
-  }
-  /**
-   * @see Scanner::setPeakIntensityIndex(int const, size_t const)
-   */
-  void setPeakIntensityIndex(int const pii, size_t const idx) override
-  {
-    scanDev.peakIntensityIndex = pii;
-  }
-  /**
-   * @see Scanner::getTimeWave(size_t const)
-   */
-  std::vector<double>& getTimeWave(size_t const idx) override
-  {
-    return scanDev.time_wave;
-  }
-  /**
-   * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
-   */
-  void setTimeWave(std::vector<double>& timewave, size_t const idx) override
-  {
-    scanDev.time_wave = timewave;
-  }
-  /**
-   * @see Scanner::setTimeWave(std::vector<double> &&, size_t const)
-   */
-  void setTimeWave(std::vector<double>&& timewave, size_t const idx) override
-  {
-    scanDev.time_wave = timewave;
+    return scanDev.getPulseModel();
   }
   /**
    * @see Scanner::setReceivedEnergyMin(double const, size_t const)

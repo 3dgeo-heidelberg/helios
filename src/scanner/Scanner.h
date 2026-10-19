@@ -313,17 +313,14 @@ public:
    */
   inline void calcRaysNumber() { calcRaysNumber(0); }
   /**
-   * @brief Prepare wave discretization
-   * @see Scanner::numTimeBins
-   * @see Scanner::time_wave
-   * @see Scanner::peakIntensityIndex
+   * @brief Prepare analytic pulse in range coordinates
    */
-  virtual void prepareDiscretization(size_t const idx) = 0;
+  virtual void preparePulse(size_t const idx) = 0;
   /**
-   * @brief Non index version of the Scanner::prepareDiscretization method
-   * @see Scanner::prepareDiscretization(size_t const)
+   * @brief Non index version of the Scanner::preparePulse method
+   * @see Scanner::preparePulse(size_t const)
    */
-  inline void prepareDiscretization() { this->prepareDiscretization(0); }
+  inline void preparePulse() { this->preparePulse(0); }
   /**
    * @brief Compute the footprint radius \f$f_{r}\f$
    *
@@ -417,30 +414,10 @@ public:
 #endif
     ) = 0;
 
-  /**
-   * @brief Initialize full waveform
-   * While the vector is not strictly initialized in this function,
-   * necessary variables are computed here.
-   * @param[out] nsPerBin The size of each bin in nano seconds
-   * @param[out] distanceThreshold Limit distance threshold
-   * @param[out] peakIntensityIndex Index of intensity peak
-   * @param[out] numFullwaveBins How many bins are necessary to discretize
-   *  the full waveform
-   * @param[in] idx The index of the scanning device
-   * @return True if it is possible to initialize the full waveform,
-   * false otherwise.
-   * @see FullWaveformPulseRunnable::initializeFullWaveform
-   * @see FullWaveformPulseRunnable::digestIntersections
-   * @see ScanningDevice::initializeFullWaveform
-   */
+  /** Compute the recording grid in metres. */
   virtual bool initializeFullWaveform(double const minHitDist_m,
                                       double const maxHitDist_m,
-                                      double& minHitTime_ns,
-                                      double& maxHitTime_ns,
-                                      double& nsPerBin,
-                                      double& distanceThreshold,
-                                      int& peakIntensityIndex,
-                                      int& numFullwaveBins,
+                                      WaveformGrid& grid,
                                       size_t const idx) = 0;
 
   /**
@@ -1444,114 +1421,8 @@ public:
    * @see Scanner::setMaxNOR(int const, size_t const)
    */
   inline void setMaxNOR(int const maxNOR) { setMaxNOR(maxNOR, 0); }
-  /**
-   * @brief Obtain the number of bins defining the size of the time
-   *  discretization for the scanning device
-   * @param idx Index of the scanning device which number of time bins must
-   *  be obtained
-   * @return The number of time bins for the scanning device
-   */
-  virtual int getNumTimeBins(size_t const idx) const = 0;
-  /**
-   * @brief Non index version of the Scanner::getNumTimeBins(size_t const)
-   *  method
-   * @see Scanner::getNumTimeBins(size_t const)
-   */
-  inline int getNumTimeBins() const { return getNumTimeBins(0); }
-  /**
-   * @brief Set the number of bins defining the size of the time
-   *  discretization for the scanning device
-   * @param numTimeBins The number of time bins for the scanning device
-   * @param idx The index of the scanning device which number of time bins
-   *  must be set
-   */
-  virtual void setNumTimeBins(int const numTimeBins, size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setNumTimeBins(int const, size_t const) method
-   * @see Scanner::setNumTimeBins(int const, size_t const)
-   */
-  inline void setNumTimeBins(int const numTimeBins)
-  {
-    setNumTimeBins(numTimeBins, 0);
-  }
-  /**
-   * @brief Obtain the index of the bin containing the intensity peak for
-   *  the scanning device
-   * @param idx The index of the scanning device which peak intensity index
-   *  must be obtained
-   * @return The peak intensity index of the scanning device
-   */
-  virtual int getPeakIntensityIndex(size_t const idx) const = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::getPeakIntensityIndex(size_t const) method
-   * @see Scanner::getPeakIntensityIndex(size_t const)
-   */
-  inline int getPeakIntensityIndex() const { return getPeakIntensityIndex(0); }
-  /**
-   * @brief Set the index of the bin containing the intensity peak for
-   *  the scanning device
-   * @param pii The new peak intensity index for the scanning device
-   * @param idx The index of the scanning device which peak intensity
-   *  index must be set
-   */
-  virtual void setPeakIntensityIndex(int const pii, size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setPeakIntensityIndex(int const, size_t const) method
-   * @see Scanner::setPeakIntensityIndex(int const, size_t const)
-   */
-  inline void setPeakIntensityIndex(int const pii)
-  {
-    setPeakIntensityIndex(pii, 0);
-  }
-  /**
-   * @brief Obtain the time discretization vector of the scanning device
-   * @param idx The index of the scanning device which time discretization
-   *  vector must be obtained
-   * @return The time discretization vector of the scanning device
-   */
-  virtual std::vector<double>& getTimeWave(size_t const idx) = 0;
-  /**
-   * @brief Non index version of the Scanner::getTimeWave(size_t const)
-   *  method
-   * @see Scanner::getTimeWave(size_t const)
-   */
-  inline std::vector<double>& getTimeWave() { return getTimeWave(0); }
-  /**
-   * @brief Set the time discretization vector of the scanning device
-   * @param timewave The new time discretization vector for the scanning
-   *  device
-   * @param idx The index of scanning device which time discretization
-   *  vector must be updated
-   */
-  virtual void setTimeWave(std::vector<double>& timewave, size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setTimeWave(std::vector<double> &, size_t const) method
-   * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
-   */
-  inline void setTimeWave(std::vector<double>& timewave)
-  {
-    setTimeWave(timewave, 0);
-  }
-  /**
-   * @brief Rvalue version of the
-   *  Scanner::setTimeWave(std::vector<double> &, size_t const) method
-   * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
-   */
-  virtual void setTimeWave(std::vector<double>&& timewave,
-                           size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setTimeWave(std::vector<double> &&, size_t const) method
-   * @see Scanner::setTimeWave(std::vector<double> &&, size_t const)
-   */
-  inline void setTimeWave(std::vector<double>&& timewave)
-  {
-    setTimeWave(timewave, 0);
-  }
+  virtual AnalyticPulse const& getPulseModel(size_t idx) const = 0;
+  AnalyticPulse const& getPulseModel() const { return getPulseModel(0); }
   /**
    * @brief Obtain the minimum received energy threshold of the scanning
    *  device.

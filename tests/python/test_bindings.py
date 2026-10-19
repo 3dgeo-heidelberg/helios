@@ -398,7 +398,7 @@ def test_fwf_settings_instantiation():
     assert isinstance(fwf, _helios.FWFSettings)
 
     # Check default values
-    assert fwf.bin_size == 0.25
+    assert fwf.sample_spacing == 0.03747405725
     assert fwf.min_echo_width == 2.5
     assert fwf.peak_energy == 500.0
     assert fwf.aperture_diameter == 0.15
@@ -407,15 +407,15 @@ def test_fwf_settings_instantiation():
     assert fwf.scanner_wave_length == 1550.0
     assert fwf.pulse_length == 4.0
     assert fwf.beam_sample_quality == 3
-    assert fwf.win_size == fwf.pulse_length / 4.0
-    assert fwf.max_fullwave_range == 0.0
+    assert fwf.peak_window == 0.149896229
+    assert fwf.max_recording_span == 0.0
 
 
 def test_fwf_settings_set_get_properties():
     fwf = _helios.FWFSettings()
 
     # Set properties
-    fwf.bin_size = 0.5
+    fwf.sample_spacing = 0.5
     fwf.min_echo_width = 3.0
     fwf.peak_energy = 600.0
     fwf.aperture_diameter = 0.2
@@ -424,11 +424,11 @@ def test_fwf_settings_set_get_properties():
     fwf.scanner_wave_length = 1600.0
     fwf.pulse_length = 5.0
     fwf.beam_sample_quality = 4
-    fwf.win_size = 1.25
-    fwf.max_fullwave_range = 100.0
+    fwf.peak_window = 1.25
+    fwf.max_recording_span = 100.0
 
     # Verify values
-    assert fwf.bin_size == 0.5
+    assert fwf.sample_spacing == 0.5
     assert fwf.min_echo_width == 3.0
     assert fwf.peak_energy == 600.0
     assert fwf.aperture_diameter == 0.2
@@ -437,15 +437,18 @@ def test_fwf_settings_set_get_properties():
     assert fwf.scanner_wave_length == 1600.0
     assert fwf.pulse_length == 5.0
     assert fwf.beam_sample_quality == 4
-    assert fwf.win_size == 1.25
-    assert fwf.max_fullwave_range == 100.0
+    assert fwf.peak_window == 1.25
+    assert fwf.max_recording_span == 100.0
 
 
 def test_fwf_settings_to_string():
     fwf = _helios.FWFSettings()
     expected_str = (
         'FWFSettings "":\n'
-        "binSize_ns = 0.25\n"
+        "sampleSpacing_m = 0.0374741\n"
+        "pulseShape = gamma\n"
+        "correctPeakOffset = 1\n"
+        "recordingTailTolerance = 0.0001\n"
         "minEchoWidth = 2.5\n"
         "peakEnergy = 500\n"
         "apertureDiameter = 0.15\n"
@@ -455,8 +458,8 @@ def test_fwf_settings_to_string():
         "pulseLength_ns = 4\n"
         "beamSampleQuality = 3\n"
         "beamSamplingFactor = 2\n"
-        "winSize_ns = 1\n"
-        "maxFullwaveRange_ns = 0\n"
+        "peakWindow_m = 0.149896\n"
+        "maxRecordingSpan_m = 0\n"
     )
     assert str(fwf) == expected_str
 
@@ -956,7 +959,7 @@ class ExampleScanner(_helios.Scanner):
         self._id = "TestScannerID"
         self._device_id = "Device0"
         self._num_devices = 1
-        self._time_wave = [0.0] * 10
+        self._pulse_model = _helios.AnalyticPulse.create()
         self._scanner_head = _helios.ScannerHead((0.0, 0.0, 1.0), 1.0)
         self._beam_deflector = (
             MockBeamDeflector()
@@ -964,7 +967,6 @@ class ExampleScanner(_helios.Scanner):
         self._detector = MockDetector()
         self._supported_pulse_freqs_hz = [1, 2, 3]
         self._fwf_settings = _helios.FWFSettings()
-        self._peak_intensity_index = 0
         self._received_energy_min = 0.0
 
     def computeReceivedPower(self, cosine, target_range, material, subray_index, idx):
@@ -1018,8 +1020,11 @@ class ExampleScanner(_helios.Scanner):
     def calcRaysNumber(self, idx):
         pass
 
-    def prepareDiscretization(self, idx):
+    def preparePulse(self, idx):
         pass
+
+    def getPulseModel(self, idx):
+        return self._pulse_model
 
     def calcAtmosphericAttenuation(self, idx):
         return 0.0
@@ -1192,9 +1197,6 @@ class ExampleScanner(_helios.Scanner):
     def setFixedIncidenceAngle(self, fixed_incidence_angle):
         self._fixed_incidence_angle = fixed_incidence_angle
 
-    def getTimeWave(self):
-        return self._time_wave
-
     def getScannerHead(self, idx=0):
         return self._scanner_head
 
@@ -1219,39 +1221,17 @@ class ExampleScanner(_helios.Scanner):
     def setSupportedPulseFreqs_Hz(self, supportedPulseFreqs_Hz, idx):
         self._supported_pulse_freqs_hz = supportedPulseFreqs_Hz
 
-    def getNumTimeBins(self, idx):
-        return len(self._time_wave)
-
-    def setNumTimeBins(self, numTimeBins, idx):
-        self._time_wave = [0.0] * numTimeBins
-
     def getFWFSettings(self, idx):
         return self._fwf_settings
 
     def setFWFSettings(self, fwfSettings, idx):
         self._fwf_settings = fwfSettings
 
-    def getPeakIntensityIndex(self, idx):
-        return self._peak_intensity_index
-
-    def setPeakIntensityIndex(self, pii, idx):
-        self._peak_intensity_index = pii
-
     def getReceivedEnergyMin(self, idx):
         return self._received_energy_min
 
     def setReceivedEnergyMin(self, receivedEnergyMin_W, idx):
         self._received_energy_min = receivedEnergyMin_W
-
-    def getTimeWave(self, idx):
-        return self._time_wave
-
-    def setTimeWave(self, timewave, idx=0):
-        self._time_wave = timewave
-
-    def calcTimePropagation(self, timeWave, numBins, scanner):
-        # Implement a dummy propagation calculation
-        return len(timeWave) * numBins
 
     def getHeadRelativeEmitterPositionByRef(self, idx=0):
         return self._head_relative_emitter_position
@@ -1332,10 +1312,8 @@ class TestScannerMethods:
             scanner.calc_rays_number()
             mock_method.assert_called_once()
 
-        with patch.object(
-            scanner, "prepare_discretization", return_value=None
-        ) as mock_method:
-            scanner.prepare_discretization()
+        with patch.object(scanner, "prepare_pulse", return_value=None) as mock_method:
+            scanner.prepare_pulse()
             mock_method.assert_called_once()
 
         with patch.object(
@@ -1511,9 +1489,6 @@ class TestScannerMethods:
     def test_device_id(self, scanner):
         assert scanner.getDeviceId(0) == "Device0"
 
-    def test_time_wave(self, scanner):
-        assert scanner.getTimeWave() == [0.0] * 10
-
     def test_scanner_head(self, scanner):
         head = _helios.ScannerHead(
             (1.0, 0.0, 0.0), 2.0
@@ -1536,27 +1511,14 @@ class TestScannerMethods:
         scanner.setSupportedPulseFreqs_Hz(freqs, 0)
         assert list(scanner.getSupportedPulseFreqs_Hz(0)) == freqs
 
-    def test_num_time_bins(self, scanner):
-        scanner.setNumTimeBins(10, 0)
-        assert scanner.getNumTimeBins(0) == 10
-
     def test_fwf_settings(self, scanner):
         fwf_settings = _helios.FWFSettings()  # Replace with actual initialization
         scanner.setFWFSettings(fwf_settings, 0)
         assert scanner.getFWFSettings(0) == fwf_settings
 
-    def test_peak_intensity_index(self, scanner):
-        scanner.setPeakIntensityIndex(5, 0)
-        assert scanner.getPeakIntensityIndex(0) == 5
-
     def test_received_energy_min(self, scanner):
         scanner.setReceivedEnergyMin(1.5, 0)
         assert scanner.getReceivedEnergyMin(0) == 1.5
-
-    def test_time_wave(self, scanner):
-        time_wave = np.linspace(0, 1, 100).tolist()
-        scanner.setTimeWave(time_wave, 0)
-        assert np.allclose(scanner.getTimeWave(0), time_wave)
 
     def test_scanner_head_default(self, scanner):
         head = _helios.ScannerHead(
@@ -1594,13 +1556,6 @@ class TestScannerMethods:
         attitude_ref = scanner.getHeadRelativeEmitterAttitudeByRef()
         assert attitude_ref == attitude
 
-    def test_calc_time_propagation(self, scanner):
-        time_wave = np.linspace(0, 1, 100).tolist()
-        num_bins = len(time_wave)
-        scanner.setTimeWave(time_wave)
-        result = scanner.calcTimePropagation(time_wave, num_bins, scanner)
-        assert isinstance(result, int)  # Replace with expected value if applicable
-
 
 def test_scanner_normalized_transfer_dispatch():
     scanner = ExampleScanner("transfer-test", [100000])
@@ -1612,3 +1567,17 @@ def test_scanner_received_power_dispatch():
     scanner = ExampleScanner("power-test", [100000])
     assert scanner.compute_received_power(0.5, 100.0, _helios.Material(), 0, 0) == 1.0
     assert scanner.compute_received_power_with_sigma(100.0, 2.0, 0, 0) == 6.0
+
+
+@pytest.mark.parametrize("shape", ["gamma", "gaussian"])
+def test_analytic_pulse_bindings(shape):
+    pulse = _helios.AnalyticPulse.create(shape, 5.0, 1e-4)
+    cls = _helios.GammaPulse if shape == "gamma" else _helios.GaussianPulse
+    assert isinstance(pulse, cls)
+    assert isinstance(pulse, _helios.AnalyticPulse)
+    assert cls(5).peak_offset == pulse.peak_offset
+    assert pulse.evaluate(pulse.peak_offset) == pytest.approx(1)
+    lower, upper = pulse.recording_bounds
+    assert pulse.evaluate(upper) == pytest.approx(1e-4)
+    assert pulse.evaluate(upper + 0.01) > 0
+    assert (lower < 0) == (shape == "gaussian")

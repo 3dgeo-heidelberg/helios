@@ -105,9 +105,9 @@ public:
     PYBIND11_OVERLOAD_PURE(void, Scanner, calcRaysNumber, idx);
   }
 
-  void prepareDiscretization(size_t const idx) override
+  void preparePulse(size_t const idx) override
   {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, prepareDiscretization, idx);
+    PYBIND11_OVERLOAD_PURE(void, Scanner, preparePulse, idx);
   }
 
   double calcAtmosphericAttenuation(size_t const idx) const override
@@ -149,12 +149,7 @@ public:
 
   bool initializeFullWaveform(double const minHitDist_m,
                               double const maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins,
+                              WaveformGrid& grid,
                               size_t const idx) override
   {
     PYBIND11_OVERLOAD_PURE(bool,
@@ -162,12 +157,7 @@ public:
                            initializeFullWaveform,
                            minHitDist_m,
                            maxHitDist_m,
-                           minHitTime_ns,
-                           maxHitTime_ns,
-                           nsPerBin,
-                           distanceThreshold,
-                           peakIntensityIndex,
-                           numFullwaveBins,
+                           grid,
                            idx);
   }
 
@@ -526,40 +516,9 @@ public:
     PYBIND11_OVERLOAD_PURE(void, Scanner, setMaxNOR, maxNOR, idx);
   }
 
-  int getNumTimeBins(size_t const idx) const override
+  AnalyticPulse const& getPulseModel(size_t idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(int, Scanner, getNumTimeBins, idx);
-  }
-
-  void setNumTimeBins(int const numTimeBins, size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setNumTimeBins, numTimeBins, idx);
-  }
-
-  int getPeakIntensityIndex(size_t const idx) const override
-  {
-    PYBIND11_OVERLOAD_PURE(int, Scanner, getPeakIntensityIndex, idx);
-  }
-
-  void setPeakIntensityIndex(int const pii, size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setPeakIntensityIndex, pii, idx);
-  }
-
-  std::vector<double>& getTimeWave(size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(std::vector<double>&, Scanner, getTimeWave, idx);
-  }
-
-  void setTimeWave(std::vector<double>& timewave, size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setTimeWave, timewave, idx);
-  }
-
-  void setTimeWave(std::vector<double>&& timewave, size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(
-      void, Scanner, setTimeWave, std::move(timewave), idx);
+    PYBIND11_OVERLOAD_PURE(AnalyticPulse const&, Scanner, getPulseModel, idx);
   }
 
   double getReceivedEnergyMin(size_t const idx) const override
@@ -572,16 +531,5 @@ public:
   {
     PYBIND11_OVERLOAD_PURE(
       void, Scanner, setReceivedEnetgyMin, receivedEnergyMin_W, idx);
-  }
-
-  int calcTimePropagation(std::vector<double>& timeWave,
-                          int numBins,
-                          Scanner& scanner)
-  {
-    return WaveMaths::calcPropagationTimeLegacy(
-      timeWave,
-      numBins,
-      scanner.getFWFSettings(0).binSize_ns,
-      scanner.getPulseLength_ns(0));
   }
 };

@@ -22,4 +22,5 @@ target_sources(
   "Vectorial.cpp"
   "Directions.cpp"
   "WaveMaths.cpp"
+  "AnalyticPulse.cpp"
 )

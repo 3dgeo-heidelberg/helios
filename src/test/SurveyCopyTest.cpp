@@ -101,7 +101,8 @@ TEST_CASE("Survey Copy Test")
   REQUIRE(copy->simSpeedFactor == survey->simSpeedFactor);
 
   REQUIRE(copy->scanner->name != survey->scanner->name);
-  REQUIRE(copy->scanner->getNumTimeBins() == survey->scanner->getNumTimeBins());
+  REQUIRE(copy->scanner->getPulseModel().peakOffset() ==
+          survey->scanner->getPulseModel().peakOffset());
   REQUIRE(copy->scanner->isCalcEchowidth() ==
           survey->scanner->isCalcEchowidth());
   REQUIRE(copy->scanner->getFWFSettings().minEchoWidth !=
