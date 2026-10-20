@@ -442,6 +442,8 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
   ss << openEntry(key, depth, EntryType::OBJECT)
      << craftEntry("sampleSpacing_m", fs.sampleSpacing_m, d2)
      << craftEntry("pulseShape", fs.pulseShape, d2)
+     << craftEntry("gaussianMean_ns", fs.gaussianMean_ns, d2)
+     << craftEntry("hasSampledPulse", static_cast<bool>(fs.sampledPulse), d2)
      << craftEntry("correctPeakOffset", fs.correctPeakOffset, d2)
      << craftEntry("recordingTailTolerance", fs.recordingTailTolerance, d2)
      << craftEntry("minEchoWidth", fs.minEchoWidth, d2)

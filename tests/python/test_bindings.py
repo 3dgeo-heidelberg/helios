@@ -447,6 +447,8 @@ def test_fwf_settings_to_string():
         'FWFSettings "":\n'
         "sampleSpacing_m = 0.0374741\n"
         "pulseShape = gamma\n"
+        "gaussianMean_ns = 0\n"
+        "sampledPulse = none\n"
         "correctPeakOffset = 1\n"
         "recordingTailTolerance = 0.0001\n"
         "minEchoWidth = 2.5\n"
@@ -959,7 +961,7 @@ class ExampleScanner(_helios.Scanner):
         self._id = "TestScannerID"
         self._device_id = "Device0"
         self._num_devices = 1
-        self._pulse_model = _helios.AnalyticPulse.create()
+        self._pulse_model = _helios.PulseShape.create()
         self._scanner_head = _helios.ScannerHead((0.0, 0.0, 1.0), 1.0)
         self._beam_deflector = (
             MockBeamDeflector()
@@ -1571,10 +1573,10 @@ def test_scanner_received_power_dispatch():
 
 @pytest.mark.parametrize("shape", ["gamma", "gaussian"])
 def test_analytic_pulse_bindings(shape):
-    pulse = _helios.AnalyticPulse.create(shape, 5.0, 1e-4)
+    pulse = _helios.PulseShape.create(shape, 5.0, 1e-4)
     cls = _helios.GammaPulse if shape == "gamma" else _helios.GaussianPulse
     assert isinstance(pulse, cls)
-    assert isinstance(pulse, _helios.AnalyticPulse)
+    assert isinstance(pulse, _helios.PulseShape)
     assert cls(5).peak_offset == pulse.peak_offset
     assert pulse.evaluate(pulse.peak_offset) == pytest.approx(1)
     lower, upper = pulse.recording_bounds

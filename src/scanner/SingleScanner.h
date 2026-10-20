@@ -531,7 +531,7 @@ public:
   {
     scanDev.maxNOR = maxNOR;
   }
-  AnalyticPulse const& getPulseModel(size_t idx) const override
+  PulseShape const& getPulseModel(size_t idx) const override
   {
     return scanDev.getPulseModel();
   }
