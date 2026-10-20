@@ -1421,8 +1421,8 @@ public:
    * @see Scanner::setMaxNOR(int const, size_t const)
    */
   inline void setMaxNOR(int const maxNOR) { setMaxNOR(maxNOR, 0); }
-  virtual AnalyticPulse const& getPulseModel(size_t idx) const = 0;
-  AnalyticPulse const& getPulseModel() const { return getPulseModel(0); }
+  virtual PulseShape const& getPulseModel(size_t idx) const = 0;
+  PulseShape const& getPulseModel() const { return getPulseModel(0); }
   /**
    * @brief Obtain the minimum received energy threshold of the scanning
    *  device.

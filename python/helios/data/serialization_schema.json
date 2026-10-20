@@ -101,6 +101,9 @@
               },
               {
                 "$ref": "#/$defs/model_document_helios_survey_Survey"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_settings_SampledPulse"
               }
             ]
           }
@@ -116,7 +119,10 @@
           "const": 0
         },
         "serialization_minor_version": {
-          "enum": [0, 1]
+          "enum": [
+            0,
+            1
+          ]
         },
         "model_class": {
           "enum": [
@@ -143,7 +149,8 @@
             "helios.settings.ExecutionSettings",
             "helios.settings.FullWaveformSettings",
             "helios.settings.OutputSettings",
-            "helios.survey.Survey"
+            "helios.survey.Survey",
+            "helios.settings.SampledPulse"
           ]
         },
         "fields": {
@@ -776,7 +783,9 @@
         "max_recording_span": {},
         "pulse_shape": {},
         "correct_peak_offset": {},
-        "recording_tail_tolerance": {}
+        "recording_tail_tolerance": {},
+        "gaussian_mean": {},
+        "sampled_pulse": {}
       }
     },
     "fields_helios_settings_OutputSettings": {
@@ -808,6 +817,30 @@
         "gps_time": {},
         "full_waveform_settings": {},
         "trajectory": {}
+      }
+    },
+    "model_document_helios_settings_SampledPulse": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.settings.SampledPulse"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_settings_SampledPulse"
+        }
+      }
+    },
+    "fields_helios_settings_SampledPulse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "offsets": {},
+        "amplitudes": {},
+        "peak_offset": {}
       }
     }
   }

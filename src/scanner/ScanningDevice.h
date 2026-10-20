@@ -144,7 +144,7 @@ protected:
    * @see Scanner::checkMaxNOR
    */
   int maxNOR = 0;
-  std::shared_ptr<const AnalyticPulse> pulseModel;
+  std::shared_ptr<const PulseShape> pulseModel;
 
   /**
    * @brief The expression tree to compute range errors as a function of
@@ -375,8 +375,8 @@ public:
    * @see Scanner::initializeFullWaveform
    */
   void preparePulse();
-  AnalyticPulse const& getPulseModel() const { return *pulseModel; }
-  std::shared_ptr<const AnalyticPulse> getPulseModelShared() const
+  PulseShape const& getPulseModel() const { return *pulseModel; }
+  std::shared_ptr<const PulseShape> getPulseModelShared() const
   {
     return pulseModel;
   }
