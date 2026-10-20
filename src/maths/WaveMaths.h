@@ -1,6 +1,6 @@
 #pragma once
 
-#include <maths/AnalyticPulse.h>
+#include <maths/PulseShape.h>
 
 /** A dense recording on a range grid anchored at zero. */
 struct WaveformGrid
@@ -19,7 +19,7 @@ class WaveMaths
 public:
   static WaveformGrid recordingGrid(double minReturn_m,
                                     double maxReturn_m,
-                                    AnalyticPulse const& pulse,
+                                    PulseShape const& pulse,
                                     double spacing_m,
                                     double maxSpan_m);
 };

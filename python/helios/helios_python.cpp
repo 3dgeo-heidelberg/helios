@@ -10,7 +10,7 @@
 #include <gdal_priv.h>
 
 #include <assetloading/ScenePart.h>
-#include <maths/AnalyticPulse.h>
+#include <maths/PulseShape.h>
 #include <platform/GroundVehiclePlatform.h>
 #include <platform/HelicopterPlatform.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
@@ -833,25 +833,39 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("period_s", &PySurveyHookRegistration::period_s)
     .def_readwrite("callback", &PySurveyHookRegistration::callback);
 
-  py::class_<AnalyticPulse, std::shared_ptr<AnalyticPulse>>(m, "AnalyticPulse")
+  py::class_<PulseShape, std::shared_ptr<PulseShape>>(m, "PulseShape")
     .def_static("create",
-                &AnalyticPulse::create,
+                &PulseShape::create,
                 py::arg("shape") = "gamma",
                 py::arg("fwhm_ns") = 4.0,
-                py::arg("recording_tail_tolerance") = 1e-4)
-    .def("evaluate", &AnalyticPulse::evaluate)
-    .def_property_readonly("peak_offset", &AnalyticPulse::peakOffset)
-    .def_property_readonly("recording_bounds", &AnalyticPulse::recordingBounds);
-  py::class_<GammaPulse, AnalyticPulse, std::shared_ptr<GammaPulse>>(
-    m, "GammaPulse")
+                py::arg("recording_tail_tolerance") = 1e-4,
+                py::arg("mean_ns") = 0.0)
+    .def("evaluate", &PulseShape::evaluate)
+    .def_property_readonly("peak_offset", &PulseShape::peakOffset)
+    .def_property_readonly("recording_bounds", &PulseShape::recordingBounds);
+  py::class_<GammaPulse, PulseShape, std::shared_ptr<GammaPulse>>(m,
+                                                                  "GammaPulse")
     .def(py::init<double, double>(),
          py::arg("fwhm_ns"),
          py::arg("recording_tail_tolerance") = 1e-4);
-  py::class_<GaussianPulse, AnalyticPulse, std::shared_ptr<GaussianPulse>>(
+  py::class_<GaussianPulse, PulseShape, std::shared_ptr<GaussianPulse>>(
     m, "GaussianPulse")
-    .def(py::init<double, double>(),
+    .def(py::init<double, double, double>(),
          py::arg("fwhm_ns"),
-         py::arg("recording_tail_tolerance") = 1e-4);
+         py::arg("recording_tail_tolerance") = 1e-4,
+         py::arg("mean_ns") = 0.0);
+  py::class_<SampledPulse, PulseShape, std::shared_ptr<SampledPulse>>(
+    m, "SampledPulse")
+    .def(py::init<std::vector<double>,
+                  std::vector<double>,
+                  std::optional<double>>(),
+         py::arg("offsets_ns"),
+         py::arg("amplitudes"),
+         py::arg("peak_offset_ns") = std::nullopt)
+    .def_property_readonly("offsets_ns", &SampledPulse::offsetsNanoseconds)
+    .def_property_readonly("amplitudes", &SampledPulse::amplitudes)
+    .def_property_readonly("peak_offset_ns",
+                           &SampledPulse::explicitPeakNanoseconds);
   py::class_<WaveformGrid>(m, "WaveformGrid")
     .def(py::init<>())
     .def_readwrite("first_sample_index", &WaveformGrid::firstSampleIndex)
@@ -864,6 +878,11 @@ PYBIND11_MODULE(_helios, m)
     .def(py::init<const FWFSettings&>(), py::arg("fwfSettings"))
     .def_readwrite("sample_spacing", &FWFSettings::sampleSpacing_m)
     .def_readwrite("pulse_shape", &FWFSettings::pulseShape)
+    .def_property(
+      "gaussian_mean",
+      [](FWFSettings const& s) { return s.gaussianMean_ns * 1e-9; },
+      [](FWFSettings& s, double seconds) { s.gaussianMean_ns = seconds * 1e9; })
+    .def_readwrite("sampled_pulse", &FWFSettings::sampledPulse)
     .def_readwrite("correct_peak_offset", &FWFSettings::correctPeakOffset)
     .def_readwrite("recording_tail_tolerance",
                    &FWFSettings::recordingTailTolerance)

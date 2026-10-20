@@ -422,9 +422,14 @@ void
 ScanningDevice::preparePulse()
 {
   FWF_settings.validate();
-  pulseModel = AnalyticPulse::create(FWF_settings.pulseShape,
-                                     pulseLength_ns,
-                                     FWF_settings.recordingTailTolerance);
+  if (FWF_settings.pulseShape == "sampled") {
+    pulseModel = FWF_settings.sampledPulse;
+    return;
+  }
+  pulseModel = PulseShape::create(FWF_settings.pulseShape,
+                                  pulseLength_ns,
+                                  FWF_settings.recordingTailTolerance,
+                                  FWF_settings.gaussianMean_ns);
 }
 
 bool
