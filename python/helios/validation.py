@@ -11,17 +11,63 @@ from typing_extensions import Annotated, dataclass_transform
 from numpydantic import NDArray, Shape
 
 import annotated_types
+import doiggie
 import inspect
 import multiprocessing
 import numpy as np
 import os
+import pooch
+import tarfile
 import xmlschema
+import zipfile
 
 from copy import deepcopy
+from hashlib import sha256
+from urllib.parse import unquote, urlsplit
 
 # The global registry of physical units used in Helios++. Currently there
 # are no custom units, so we go with Pint's default registry.
 units = UnitRegistry()
+
+
+def _normalize_doi(doi: str) -> str:
+    """Return a bare DOI from either a DOI or a doi.org URL."""
+
+    value = doi.strip()
+    parsed = urlsplit(value)
+    if parsed.scheme.lower() in {"http", "https"}:
+        if parsed.hostname is None or parsed.hostname.lower() not in {
+            "doi.org",
+            "dx.doi.org",
+        }:
+            raise ValueError(f"DOI URL must use the doi.org host: {doi}")
+        value = unquote(parsed.path.lstrip("/"))
+    return value
+
+
+def _doi_cache_directory(doi: str) -> Path:
+    """Return the cache directory dedicated to a DOI."""
+
+    digest = sha256(doi.encode("utf-8")).hexdigest()
+    return Path(pooch.os_cache("helios")) / "doi" / digest
+
+
+class _Unpack:
+    """Pooch processor that delegates ZIP and tar archives appropriately."""
+
+    def __call__(self, fname, action, pooch_instance):
+        if zipfile.is_zipfile(fname):
+            processor = pooch.Unzip()
+        elif tarfile.is_tarfile(fname):
+            processor = pooch.Untar()
+        else:
+            raise ValueError(
+                "Unsupported archive format for "
+                f"{Path(fname).name!r}; expected a ZIP or tar archive."
+            )
+
+        processor(fname, action, pooch_instance)
+        return processor.extract_dir
 
 
 def _unit_validator(default_unit):
@@ -542,6 +588,69 @@ class Model(metaclass=ValidatedModelMetaClass):
 
         with add_asset_directory(bundle_dir):
             return cls.from_yaml(bundle_dir / root_filename)
+
+    @classmethod
+    @validate_call
+    def from_doi(
+        cls,
+        doi: str,
+        filename: Optional[Path] = None,
+        *,
+        archive_filename: Optional[str] = None,
+    ):
+        """Load a model instance from a bundle stored in a DOI repository.
+
+        Parameters
+        ----------
+        doi : str
+            A bare DOI or an HTTP(S) URL on ``doi.org``.
+        filename : Optional[Path], optional
+            Relative path to the root YAML file within the bundle. If omitted,
+            the class default serialization filename is used.
+        archive_filename : Optional[str], optional
+            Name of a ZIP or tar archive in the DOI repository. If supplied,
+            only that file is downloaded and its extraction directory is used
+            as the bundle. Otherwise, all repository files are downloaded and
+            the repository content itself is used as the bundle.
+
+        Returns
+        -------
+        Model
+            Deserialized instance of ``cls``.
+        """
+
+        normalized_doi = _normalize_doi(doi)
+        cache_directory = _doi_cache_directory(normalized_doi)
+        repository = doiggie.DOIPooch(
+            str(cache_directory),
+            normalized_doi,
+            registry={},
+            populate_registry=True,
+        )
+
+        repository_licenses = repository.licenses()
+
+        bundle_directory = cache_directory
+        if archive_filename is None:
+            for repository_filename in repository.registry:
+                repository.fetch(repository_filename)
+        else:
+            bundle_directory = Path(
+                repository.fetch(archive_filename, processor=_Unpack())
+            )
+
+        model = cls.from_bundle(bundle_directory, filename=filename)
+
+        from helios.licensing import record_licensing_observation
+
+        record_licensing_observation(
+            doi=normalized_doi,
+            model_class=cls,
+            licenses=repository_licenses,
+            filename=filename,
+            archive_filename=archive_filename,
+        )
+        return model
 
     @classmethod
     def __get_pydantic_core_schema__(
