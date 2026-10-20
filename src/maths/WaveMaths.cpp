@@ -10,7 +10,7 @@
 WaveformGrid
 WaveMaths::recordingGrid(double minReturn_m,
                          double maxReturn_m,
-                         AnalyticPulse const& pulse,
+                         PulseShape const& pulse,
                          double spacing_m,
                          double maxSpan_m)
 {

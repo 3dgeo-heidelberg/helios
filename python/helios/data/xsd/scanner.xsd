@@ -38,6 +38,7 @@
                                             <xs:attribute type="xs:double" name="peakWindow_m"/>
                                             <xs:attribute type="xs:double" name="maxRecordingSpan_m"/>
                                             <xs:attribute type="xs:string" name="pulseShape"/>
+                                            <xs:attribute type="xs:double" name="gaussianMean_ns"/>
                                             <xs:attribute type="xs:boolean" name="correctPeakOffset"/>
                                             <xs:attribute type="xs:double" name="recordingTailTolerance"/>
                                             <xs:attribute type="xs:float" name="maxFullwaveRange_ns"/>
@@ -94,6 +95,7 @@
                                                                     <xs:attribute type="xs:double" name="peakWindow_m"/>
                                                                     <xs:attribute type="xs:double" name="maxRecordingSpan_m"/>
                                                                     <xs:attribute type="xs:string" name="pulseShape"/>
+                                                                    <xs:attribute type="xs:double" name="gaussianMean_ns"/>
                                                                     <xs:attribute type="xs:boolean" name="correctPeakOffset"/>
                                                                     <xs:attribute type="xs:double" name="recordingTailTolerance"/>
                                                                     <xs:attribute type="xs:float" name="maxFullwaveRange_ns"/>

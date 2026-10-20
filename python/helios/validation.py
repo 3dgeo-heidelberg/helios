@@ -3,7 +3,7 @@ from helios.utils import add_asset_directory, find_file, find_files, is_real_ite
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 from pint import UnitRegistry
-from pydantic import validate_call, GetCoreSchemaHandler
+from pydantic import Field, validate_call, GetCoreSchemaHandler
 from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
 from typing import Any, Literal, Optional, Type, Union, get_origin, get_args
@@ -47,6 +47,8 @@ Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
 ScanFrequency = Annotated[float, _unit_validator(units.Hz), annotated_types.Ge(0)]
 Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
+# Pulse coordinates are relative to a reference and may precede it.
+TimeOffset = Annotated[float, _unit_validator(units.s), Field(allow_inf_nan=False)]
 
 
 def _coerce_vector(length: int, name: str):
