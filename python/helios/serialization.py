@@ -9,6 +9,7 @@ from typing import Any, Callable, Optional, Type
 from jsonschema import Draft202012Validator
 from pydantic import TypeAdapter
 
+from helios import __version__
 from helios.utils import (
     add_asset_directory,
     find_file,
@@ -37,9 +38,18 @@ SERIALIZATION_FORMAT_MAJOR_VERSION = 0
 SERIALIZATION_FORMAT_MINOR_VERSION = 0
 
 
+def _serialization_schema_git_reference(version: str) -> str:
+    """Return the release tag for a clean version, or the development branch."""
+
+    if ".dev" not in version and "+" not in version:
+        return f"v{version}"
+    return "main"
+
+
 SERIALIZATION_SCHEMA_URL = (
     "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
-    "alpha-dev/python/helios/data/serialization_schema.json"
+    f"{_serialization_schema_git_reference(__version__)}/"
+    "python/helios/data/serialization_schema.json"
 )
 
 # The constant used to signal that a model field is serialized in a different file

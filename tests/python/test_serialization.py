@@ -48,6 +48,19 @@ class RecursivePayloadModel(Model):
     payload: object = None
 
 
+@pytest.mark.parametrize("version", ["2.2.2", "3.0.0a2"])
+def test_serialization_schema_git_reference_uses_clean_version_tag(version):
+    assert serialization._serialization_schema_git_reference(version) == f"v{version}"
+
+
+@pytest.mark.parametrize(
+    "version",
+    ["3.0.0a3.dev184+gc4b3ea39f", "2.2.2+dirty"],
+)
+def test_serialization_schema_git_reference_uses_main_for_unclean_version(version):
+    assert serialization._serialization_schema_git_reference(version) == "main"
+
+
 def _build_manual_survey() -> Survey:
     scanner = Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vz400")
     platform = Platform.from_xml("data/platforms.xml", platform_id="tripod")
@@ -134,9 +147,7 @@ def test_roundtrip_yaml_inline(tmp_path):
 
     first_line = yaml_path.read_text(encoding="utf-8").splitlines()[0]
     assert first_line == (
-        "# yaml-language-server: $schema=https://raw.githubusercontent.com/"
-        "3dgeo-heidelberg/helios/alpha-dev/python/helios/data/"
-        "serialization_schema.json"
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}"
     )
     with yaml_path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
@@ -201,9 +212,7 @@ def test_roundtrip_yaml_shallow_with_references(tmp_path):
     with trajectory_path.open("r", encoding="utf-8") as handle:
         trajectory_document = yaml.safe_load(handle)
     assert trajectory_path.read_text(encoding="utf-8").startswith(
-        "# yaml-language-server: $schema=https://raw.githubusercontent.com/"
-        "3dgeo-heidelberg/helios/alpha-dev/python/helios/data/"
-        "serialization_schema.json\n"
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}\n"
     )
     assert "$schema" not in trajectory_document
 
@@ -779,9 +788,7 @@ def test_dynamic_scene_non_binary_bundle_roundtrip(tmp_path):
     root_yaml = scene.to_bundle(bundle_dir, binary=False)
 
     assert root_yaml.read_text(encoding="utf-8").startswith(
-        "# yaml-language-server: $schema=https://raw.githubusercontent.com/"
-        "3dgeo-heidelberg/helios/alpha-dev/python/helios/data/"
-        "serialization_schema.json\n"
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}\n"
     )
     with root_yaml.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
