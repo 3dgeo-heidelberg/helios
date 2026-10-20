@@ -628,6 +628,8 @@ class Model(metaclass=ValidatedModelMetaClass):
             populate_registry=True,
         )
 
+        repository_licenses = repository.licenses()
+
         bundle_directory = cache_directory
         if archive_filename is None:
             for repository_filename in repository.registry:
@@ -637,7 +639,18 @@ class Model(metaclass=ValidatedModelMetaClass):
                 repository.fetch(archive_filename, processor=_Unpack())
             )
 
-        return cls.from_bundle(bundle_directory, filename=filename)
+        model = cls.from_bundle(bundle_directory, filename=filename)
+
+        from helios.licensing import record_licensing_observation
+
+        record_licensing_observation(
+            doi=normalized_doi,
+            model_class=cls,
+            licenses=repository_licenses,
+            filename=filename,
+            archive_filename=archive_filename,
+        )
+        return model
 
     @classmethod
     def __get_pydantic_core_schema__(

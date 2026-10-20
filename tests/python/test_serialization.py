@@ -9,7 +9,9 @@ import pytest
 import yaml
 
 import doiggie
+from doiggie.license import License, LicenseIdentifier, LicenseIdentifierScheme
 
+import helios
 import helios.serialization as serialization
 from helios.platforms import DynamicPlatformSettings, Platform, TrajectorySettings
 from helios.serialization import _MIGRATIONS, register_migration
@@ -1054,6 +1056,19 @@ def test_from_doi_downloads_repository_contents(tmp_path, monkeypatch):
             shutil.copy2(source_directory / repository_filename, target)
             return str(target)
 
+        def licenses(self):
+            return [
+                License(
+                    name="Creative Commons Attribution 4.0",
+                    identifiers=(
+                        LicenseIdentifier(
+                            scheme=LicenseIdentifierScheme.SPDX,
+                            value="CC-BY-4.0",
+                        ),
+                    ),
+                )
+            ]
+
     cache_root = tmp_path / "cache"
     monkeypatch.setattr(pooch, "os_cache", lambda application: cache_root)
     monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
@@ -1071,6 +1086,12 @@ def test_from_doi_downloads_repository_contents(tmp_path, monkeypatch):
     }
     assert {name for name, _ in fetches} == set(repository_files)
     assert all(processor is None for _, processor in fetches)
+
+    report = helios.licensing_report()
+    assert "DOI: 10.1234/example/bundle" in report
+    assert "Loaded objects: DynamicPlatformSettings × 1" in report
+    assert "License: Creative Commons Attribution 4.0" in report
+    assert "Identifier (spdx): CC-BY-4.0" in report
 
 
 @pytest.mark.parametrize(
@@ -1108,6 +1129,9 @@ def test_from_doi_downloads_and_extracts_archive(
             shutil.copy2(archive_path, target)
             return processor(str(target), "download", self)
 
+        def licenses(self):
+            return []
+
     monkeypatch.setattr(pooch, "os_cache", lambda application: tmp_path / "cache")
     monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
 
@@ -1134,6 +1158,9 @@ def test_from_doi_rejects_unsupported_archive_format(tmp_path, monkeypatch):
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(invalid_archive, target)
             return processor(str(target), "download", self)
+
+        def licenses(self):
+            return []
 
     monkeypatch.setattr(pooch, "os_cache", lambda application: tmp_path / "cache")
     monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
