@@ -160,6 +160,38 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
 With these parameters, custom scanners can be defined from scanner datasheets.
 Or built-in scanners can be modified, e.g., to add a tilt mount or to change the beam divergence.
 
+Scan duration
+^^^^^^^^^^^^^
+
+The duration of a scan is either directly specified by the user (``maxDuration_s`` in XMLs, ``max_duration`` in the Python API)
+or determined based on the platform or scanner behavior.
+The ``max_duration`` per-leg scanner setting is particularly useful for systems with no other
+stopping mechanism, such as scans with a static Livox Avia (no platform movement nor head rotation). It also supersedes the other stopping criteria mentioned below.
+
+Without ``max_duration``:
+
+* **Static platform** (e.g., a tripod) with a rotating-head scanner: the scan ends once the scanner finishes the specified head rotation.
+* **Moving platform** (e.g., a UAV): the scan ends once the platform reaches the next waypoint or -- in trajectory mode -- once it has finished the trajectory.
+  Completion of the head rotation does not end the scan on a moving platform.
+
+
+Scan pattern time offset
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, HELIOS++ starts every scan from the same initial state of the beam deflector (e.g., mirror angle or prism orientation),
+i.e., the first point lies at a fixed position within the scan pattern.
+This agrees with real-world scanners whose rotating mirrors are reset to a default position between scans.
+In other systems, e.g., the Risley-prism Livox scanners, the first point of a scan can lie anywhere within the pattern,
+presumably depending on the prism orientations at the end of the previous scan.
+
+To replicate such a start more accurately, the parameter ``opticsWarmupPhase_s`` (XMLs) / ``optics_warmup_phase`` (Python API)
+specifies a time offset in seconds (default: 0) from the default initial state.
+Before the first pulse is emitted, HELIOS++ advances the beam deflector and the scanner head by this time without emitting pulses.
+The offset is rounded to a whole number of pulse periods.
+The warmup phase is a phase offset within the scan pattern, not a simulated physical warmup of the instrument.
+Note that it is not part of the simulated scan: simulated GPS time starts with the first emitted pulse and the warmup time does not count toward ``max_duration``.
+
+
 Multi-channel scanner
 ^^^^^^^^^^^^^^^^^^^^^
 
