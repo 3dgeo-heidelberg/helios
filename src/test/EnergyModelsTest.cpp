@@ -614,7 +614,7 @@ TEST_CASE("Analytic pulse normalization, FWHM, and full tails",
 {
   double const length = GENERATE(5.0, 12.0);
   std::string const shape = GENERATE("gamma", "gaussian");
-  auto model = AnalyticPulse::create(shape, length, 1e-4);
+  auto model = PulseShape::create(shape, length, 1e-4);
   double const peak = model->peakOffset();
   REQUIRE(model->evaluate(peak) == Catch::Approx(1.0));
   auto bounds = model->recordingBounds();
@@ -639,17 +639,79 @@ TEST_CASE("Analytic pulse normalization, FWHM, and full tails",
     REQUIRE(model->evaluate(7 * peak / 2) > 0.08);
   }
   REQUIRE(model->evaluate(1e300) == 0);
-  REQUIRE_THROWS_AS(AnalyticPulse::create(shape, 0, 1e-4),
+  REQUIRE_THROWS_AS(PulseShape::create(shape, 0, 1e-4), std::invalid_argument);
+  REQUIRE_THROWS_AS(PulseShape::create(shape, length, 1),
                     std::invalid_argument);
-  REQUIRE_THROWS_AS(AnalyticPulse::create(shape, length, 1),
+}
+
+TEST_CASE("Gaussian mean translates the pulse and recording bounds",
+          "[energy][waveform]")
+{
+  double const mean = GENERATE(-5.0, 0.0, 3.0);
+  GaussianPulse origin(4.0);
+  GaussianPulse shifted(4.0, 1e-4, mean);
+  double const shift = mean * SPEEDofLIGHT_mPerNanosec / 2;
+  REQUIRE(shifted.peakOffset() == Catch::Approx(shift));
+  REQUIRE(shifted.recordingBounds().first ==
+          Catch::Approx(origin.recordingBounds().first + shift));
+  REQUIRE(shifted.recordingBounds().second ==
+          Catch::Approx(origin.recordingBounds().second + shift));
+  for (double x : { -0.8, -0.1, 0.0, 0.3, 1.0 })
+    REQUIRE(shifted.evaluate(x + shift) == Catch::Approx(origin.evaluate(x)));
+  REQUIRE_THROWS_AS(
+    GaussianPulse(4, 1e-4, std::numeric_limits<double>::infinity()),
+    std::invalid_argument);
+}
+
+TEST_CASE("Sampled pulses interpolate independently of input density",
+          "[energy][waveform]")
+{
+  SampledPulse coarse({ -2, 0, 3, 7 }, { 0, 4, 2, 0 });
+  SampledPulse dense({ -2, -1, 0, 1.5, 3, 5, 7 }, { 0, 2, 4, 3, 2, 1, 0 });
+  SampledPulse translated({ 1, 3, 6, 10 }, { 0, 4, 2, 0 });
+  double const scale = SPEEDofLIGHT_mPerNanosec / 2;
+  REQUIRE(coarse.peakOffset() == 0);
+  REQUIRE(coarse.evaluate(-scale) == Catch::Approx(0.5));
+  REQUIRE(coarse.evaluate(1.5 * scale) == Catch::Approx(0.75));
+  REQUIRE(coarse.evaluate(-3 * scale) == 0);
+  REQUIRE(coarse.evaluate(8 * scale) == 0);
+  for (double spacing : { 0.013, 0.037, 0.1 }) {
+    for (double x = -1; x < 2; x += spacing) {
+      REQUIRE(coarse.evaluate(x) ==
+              Catch::Approx(dense.evaluate(x)).margin(1e-14));
+      REQUIRE(coarse.evaluate(x) ==
+              Catch::Approx(translated.evaluate(x + 3 * scale)).margin(1e-14));
+    }
+  }
+  SampledPulse plateau({ -2, 0, 3, 7 }, { 0, 1, 1, 0 }, 1.5);
+  REQUIRE(plateau.peakOffset() == Catch::Approx(1.5 * scale));
+  SampledPulse endpoints({ 0, 1 }, { 1, 0.5 });
+  REQUIRE(endpoints.evaluate(0) == 1);
+  REQUIRE(endpoints.evaluate(scale) == 0.5);
+  REQUIRE(endpoints.evaluate(-0.001) == 0);
+  REQUIRE(endpoints.evaluate(scale + 0.001) == 0);
+  REQUIRE_THROWS_AS(SampledPulse({ 0 }, { 1 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 0, 1 }, { 1 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 0, 0 }, { 0, 1 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 1, 0 }, { 0, 1 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 0, 1 }, { 0, 0 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 0, 1 }, { -1, 1 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 0, 1 }, { 1, 1 }), std::invalid_argument);
+  REQUIRE_THROWS_AS(SampledPulse({ 0, 1 }, { 0, 1 }, 0.5),
                     std::invalid_argument);
+  REQUIRE_THROWS_AS(
+    SampledPulse({ 0, std::numeric_limits<double>::infinity() }, { 0, 1 }),
+    std::invalid_argument);
+  REQUIRE_THROWS_AS(
+    SampledPulse({ 0, 1 }, { 0, std::numeric_limits<double>::quiet_NaN() }),
+    std::invalid_argument);
 }
 
 TEST_CASE(
   "Range grid preserves spacing with distant returns and clips only recording",
   "[energy][waveform]")
 {
-  auto model = AnalyticPulse::create("gaussian", 5, 1e-4);
+  auto model = PulseShape::create("gaussian", 5, 1e-4);
   auto near = WaveMaths::recordingGrid(10.013, 10.034, *model, 0.04, 0);
   auto far = WaveMaths::recordingGrid(10.013, 1000, *model, 0.04, 0);
   REQUIRE(far.sampleCount > near.sampleCount);
@@ -696,7 +758,7 @@ TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
         double x = u / (width / 3.394680670846504);
         value = x < 0 ? 0 : std::exp(2.0) / 4 * x * x * std::exp(-x);
       } else {
-        double z = u / (width / std::sqrt(8 * std::log(2.0))) - 3;
+        double z = u / (width / std::sqrt(8 * std::log(2.0)));
         value = std::exp(-z * z / 2);
       }
       expected += entry.second * value;
@@ -717,13 +779,19 @@ TEST_CASE("Peak correction changes only measured ranges and preserves "
           "amplitude detection",
           "[energy][waveform]")
 {
-  std::string const shape = GENERATE("gamma", "gaussian");
-  double const target = GENERATE(0.02, 100.013);
+  std::string const shape = GENERATE("gamma", "gaussian", "sampled");
+  // Keep even uncorrected negative-mean peaks inside the detector range.
+  double const target = GENERATE(1.02, 100.013);
   auto scanner = energyScanner();
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
   auto& settings = scanner->getFWFSettings();
   settings.pulseShape = shape;
+  settings.gaussianMean_ns = GENERATE(-3.0, 0.0, 4.0);
+  if (shape == "sampled")
+    settings.sampledPulse =
+      std::make_shared<SampledPulse>(std::vector<double>{ -4, 0, 2, 5, 9 },
+                                     std::vector<double>{ 0, 0.4, 1, 0.5, 0 });
   settings.sampleSpacing_m = 0.005;
   settings.peakWindow_m = 0.01;
   scanner->preparePulse();
@@ -761,6 +829,7 @@ TEST_CASE("Peak correction changes only measured ranges and preserves "
   for (bool corrected : { true, false }) {
     settings.correctPeakOffset = corrected;
     for (double amplitude : { 0.0, 1.0, 2.0, 4.0 }) {
+      CAPTURE(shape, target, settings.gaussianMean_ns, corrected, amplitude);
       scanner->setPulseAmplitude(amplitude);
       scanner->setReceivedEnergyMin(amplitude == 0 ? 0 : 1500.0);
       scanner->allMeasurements->clear();
@@ -812,6 +881,19 @@ TEST_CASE("Peak correction changes only measured ranges and preserves "
     // width=sqrt(2)*sigma.
     REQUIRE(scanner->allMeasurements->front().echo_width ==
             Catch::Approx(5.0 / (2 * std::sqrt(std::log(2.0)))).epsilon(0.001));
+  }
+  if (shape == "gaussian") {
+    // The unresolved pair must remain at the physical combined maximum,
+    // rather than being corrected back to either surface.
+    scanner->setCalcEchowidth(false);
+    scanner->setReceivedEnergyMin(0);
+    reflections[target + 0.2] = 1e-6;
+    scanner->allMeasurements->clear();
+    runnable.digestIntersections(
+      matrix, rng, rng2, direction, reflections, intersections);
+    REQUIRE(scanner->allMeasurements->size() == 1);
+    REQUIRE(scanner->allMeasurements->front().distance ==
+            Catch::Approx(target + 0.1).margin(settings.sampleSpacing_m));
   }
   reflections.clear();
   scanner->allMeasurements->clear();

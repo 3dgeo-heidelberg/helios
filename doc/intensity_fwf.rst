@@ -71,7 +71,11 @@ If no information is given there, the scanner definition may have a set of ``FWF
 
    * - ``pulseShape``
      - gamma
-     - Analytic unit-peak shape: ``gamma`` or ``gaussian``.
+     - Unit-peak shape: ``gamma`` or ``gaussian`` in XML; Python/YAML also support ``sampled``.
+
+   * - ``gaussianMean_ns``
+     - 0
+     - Signed reference-to-peak offset for the Gaussian, in nanoseconds.
 
    * - ``correctPeakOffset``
      - true
@@ -145,10 +149,10 @@ Incidence evaluation uses the cosine directly during ray tracing. For normalized
 
 Angle-based APIs remain available. The cosine path also supports normal-based voxels and their closest-face fallback. Detailed analytics convert the cosine back to radians only when recording the incidence angle.
 
-Analytic pulses in range coordinates
------------------------------------
+Pulse shapes in range coordinates
+---------------------------------
 
-The implementation uses the abstract ``AnalyticPulse`` interface with ``GammaPulse`` and ``GaussianPulse`` implementations. Each scanning device holds an immutable prepared pulse selected by the factory. Waveform assembly uses the same interface for either shape.
+The implementation uses the abstract ``PulseShape`` interface with ``GammaPulse``, ``GaussianPulse``, and ``SampledPulse`` implementations. Each scanning device holds an immutable prepared pulse selected by the factory. Waveform assembly uses the same interface for all shapes.
 
 Reconstruction and peak extraction use metres. The scanner's ``pulseLength_ns`` remains a temporal FWHM specification and is converted once using :math:`x=ct/2`. Subray returns retain their exact geometric ranges :math:`r_i` and dimensionless received/whole-beam peak-power ratios :math:`A_i`.
 
@@ -164,10 +168,10 @@ The default gamma pulse is
 Its reference is the onset and its peak is at :math:`2\rho`. The alternative Gaussian is
 
 .. math::
-   g(u)=\exp\left[-\frac{(u-3\sigma_r)^2}{2\sigma_r^2}\right],
+   g(u)=\exp\left[-\frac{(u-\mu_r)^2}{2\sigma_r^2}\right],
    \qquad \sigma_r=\frac{cT_\mathrm{FWHM}}{4\sqrt{2\ln2}}.
 
-The Gaussian reference lies three standard deviations before its peak. It has no exact onset: its negative-offset tail is retained. Both shapes have unit analytic peak; equal FWHM and peak power do not imply equal pulse energy.
+The Gaussian mean is configurable and defaults to zero: its reference then lies at its peak. A temporal mean converts to range coordinates as :math:`\mu_r=c\mu_t/2`. It has no exact onset: its negative-offset tail is retained. Both shapes have unit analytic peak.
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
@@ -181,9 +185,7 @@ At each range sample :math:`x_k`, HELIOS++ directly evaluates
 .. math::
    S(x_k)=P_0\sum_i A_i g(x_k-r_i).
 
-There is no histogram of return distances, pre-sampled template, integer-bin placement, or renormalization of sampled maxima. Every return contributes its full analytic shape throughout the recording interval, including contributions below the recording tolerance and beyond the former :math:`7\tau` cutoff. Samples retain the legacy nanowatt intensity scale.
-
-For gamma, automatic bounds extend from the nearest return to the furthest return plus the falling-flank tolerance crossing. For Gaussian, the pulse-relative bounds are :math:`3\sigma_r\pm\sigma_r\sqrt{-2\ln\epsilon}`. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
+For gamma, automatic bounds extend from the nearest return to the furthest return plus the falling-flank tolerance crossing. For Gaussian, the pulse-relative bounds are :math:`\mu_r\pm\sigma_r\sqrt{-2\ln\epsilon}`. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
 
 The grid is anchored at range zero; automatic bounds round outwards to grid points. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
 
@@ -196,7 +198,7 @@ The grid is anchored at range zero; automatic bounds round outwards to grid poin
 Peak extraction and timing reference
 -----------------------------------
 
-The existing neighborhood and amplitude-threshold checks operate on the summed samples. With ``correctPeakOffset=true``, a detected peak at :math:`x` produces range :math:`x-2\rho` for gamma or :math:`x-3\sigma_r` for Gaussian. Disabling correction reports :math:`x` directly. Correction precedes object attribution and measurement-error processing and never changes the waveform itself. Overlapping returns can shift the combined maximum even after this correction.
+The existing neighborhood and amplitude-threshold checks operate on the summed samples. With ``correctPeakOffset=true``, a detected peak at :math:`x` produces range :math:`x-2\rho` for gamma or :math:`x-\mu_r` for Gaussian (or :math:`x-p` for a sampled pulse with reference peak :math:`p`). Disabling correction reports :math:`x` directly. Correction precedes object attribution and measurement-error processing and never changes the waveform itself.
 
 Waveform export retains its existing layout. Endpoint metadata is physical round-trip time in nanoseconds, calculated from the recorded range coordinates using :math:`t=2x/c`. It is unaffected by range correction. As before, export requires an accepted return, and optional waveform noise is added after point extraction.
 
@@ -209,23 +211,48 @@ Configuration migration
 -----------------------
 
 Python uses ``sample_spacing``, ``peak_window``, ``max_recording_span``,
-``pulse_shape``, ``correct_peak_offset``, and ``recording_tail_tolerance``::
+``pulse_shape``, ``gaussian_mean``, ``correct_peak_offset``, and ``recording_tail_tolerance``::
 
    settings = helios.FullWaveformSettings(
        sample_spacing="2 cm", peak_window="10 cm",
-       pulse_shape="gaussian", correct_peak_offset=True,
+       pulse_shape="gaussian", gaussian_mean="0 ns", correct_peak_offset=True,
        recording_tail_tolerance=1e-4,
    )
 
 Old XML ``binSize_ns``, ``winSize_ns``, and ``maxFullwaveRange_ns`` inputs and Python constructor ``bin_size``, ``win_size``, and ``max_fullwave_range`` inputs are deprecated. They convert to metres using :math:`c/2`; specifying both names for one setting is an error. Old YAML documents migrate to these settings and new serialization writes only the range fields.
 
-This replaces the former one-way time coordinate, peak-aligned templates, and pulse cutoff. Simulation outputs therefore intentionally change. The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and peak offset), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples; its unit naming is not changed in this refactor.
+The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and peak offset), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples; its unit naming is not changed in this refactor.
+
+
+Sampled pulse shapes in Python and YAML
+--------------------------------------
+
+Custom pulses are supplied as relative time coordinates and nonnegative amplitudes::
+
+   pulse = helios.SampledPulse(
+       offsets=["-2 ns", "0 ns", "3 ns"],
+       amplitudes=[0, 1, 0],
+   )
+   survey.full_waveform_settings = helios.FullWaveformSettings(
+       pulse_shape="sampled", sampled_pulse=pulse,
+   )
+   survey.to_yaml("survey.yaml", shallow=True)
+
+Bare numeric offsets and ``peak_offset`` use seconds in the high-level Python API. Coordinates must be finite and strictly increasing; nonuniform spacing is supported. At least two samples are required. Amplitudes must be finite, nonnegative, and have a positive maximum. They are normalized to unit peak, leaving absolute peak power under the scanner's amplitude setting.
+
+Evaluation uses linear interpolation between supplied samples and zero outside the supplied interval, retaining the endpoint values themselves. The full interval sets the recording bounds. ``recording_tail_tolerance`` and scanner pulse length do not truncate or stretch sampled shapes. Internal ``sample_spacing`` remains independent of the supplied sampling density, but interpolation cannot recover features absent from the input samples.
+
+The reference peak is inferred for a unique maximum. Tied maxima or a maximum plateau require an explicit ``peak_offset`` located at a maximum of the interpolated shape. That same reference is subtracted from every detected peak.
+
+Settings retain custom definitions through preparation, copying, and both inline and referenced YAML round trips. Configure pulses before running the simulation. Concurrent reconfiguration is unsupported. Custom pulse input is not supported in XML. Changing ``pulse_shape`` to an analytic shape retains but ignores ``sampled_pulse``.
+
+Low-level ``SampledPulse`` constructor coordinates are explicitly named ``offsets_ns`` and ``peak_offset_ns`` and use nanoseconds. All runtime models evaluate offsets and expose ``peak_offset`` and ``recording_bounds`` in range-equivalent metres.
 
 
 Echo width determination
 ------------------------
 
-If the command line parameter ``--calcEchoWidth`` was provided, a Gaussian curve is fitted to the waveform. The existing fitter reports the width parameter of ``exp(-((x-centre)/width)^2)``, equal to sqrt(2) times the Gaussian standard deviation. As shown in the following figure, the maximum of the Gaussian does not align with the maximum of the pulse shape. The detected sample maximum, with the optional shape offset correction, determines range. The fitted Gaussian centre does not replace it. For an isolated ideal return, sampling uncertainty is bounded by one sample spacing (about 3.75 cm at the default). The fitted sample-index width is converted to metres. The reported ``echo_width`` retains nanoseconds through conversion with :math:`2/c`.
+If the command line parameter ``--calcEchoWidth`` was provided, a Gaussian curve is fitted to the waveform. This is an optional Gaussian-fit estimate, which may not describe asymmetric or custom pulse shapes accurately. The existing fitter reports the width parameter of ``exp(-((x-centre)/width)^2)``, equal to sqrt(2) times the Gaussian standard deviation. As shown in the following figure, the maximum of the Gaussian does not align with the maximum of the pulse shape. The detected sample maximum, with the optional shape offset correction, determines range. The fitted Gaussian centre does not replace it. For an isolated ideal return, sampling uncertainty is bounded by one sample spacing (about 3.75 cm at the default). The fitted sample-index width is converted to metres. The reported ``echo_width`` retains nanoseconds through conversion with :math:`2/c`.
 
 .. figure:: img/echo_width.png
     :alt: 
@@ -304,37 +331,6 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - Controls sharpness of specular highlights (material property)
      - User: ``Ns`` in material file (`.mtl`)
      - —
-
-.. _pulse_amplitude:
-
-Whole-beam pulse amplitude
---------------------------
-
-``pulseAmplitude_W`` (Python ``scanner.pulse_amplitude``) specifies the effective peak optical power of the **entire emitted beam**, not an individual subray. Users supply or calibrate this value for their operating conditions. HELIOS++ does not infer it from manufacturer average power, repetition rate, or pulse length. The default 1 W is a reference amplitude, not a scanner specification.
-
-For amplitude :math:`P_0` and a dimensionless unit-peak temporal shape :math:`h`:
-
-.. math::
-
-   P_\mathrm{emit}(t) = P_0 h(t), \qquad E_\mathrm{pulse} = P_0 \int h(t)\,dt.
-
-Time in the energy integral is in seconds. The current shape is :math:`h(t)=(e^2/4)(t/\tau)^2 e^{-t/\tau}`, with analytic maximum one at :math:`t=2\tau`. Sampling can miss this peak. Samples are not renormalized. Pulse duration and shape therefore affect pulse energy at fixed amplitude. The existing finite sampling window and timing convention remain unchanged.
-
-Each subray receives peak power :math:`P_0 s_i`, where :math:`s_i` is its absolute Gaussian power fraction. At fixed footprint extent, the sum of these fractions is independent of subray count. With ``beamSamplingFactor`` :math:`f`, the captured fraction is :math:`1-e^{-2f^2}`. Power outside the sampling cone is not redistributed among the retained rays.
-
-The energy model computes dimensionless transfer coefficients :math:`H_i`, including these subray fractions. Waveform construction then evaluates:
-
-.. math::
-
-   P_\mathrm{received}(t) = P_0 \sum_i H_i h(t-t_i).
-
-Amplitude is applied before detection and fitting.
-
-.. versionchanged:: 3.0
-
-   ``averagePower_w`` is rejected. Use ``pulseAmplitude_W``. Python ``average_power`` becomes ``pulse_amplitude`` and C++ accessors become ``getPulseAmplitude`` / ``setPulseAmplitude`` (including indexed variants). To preserve a legacy waveform, set :math:`P_0=A_\mathrm{old}4/e^2`. The old default coefficient 4.0 corresponds to approximately 2.1653645318 W. Shipped scanner definitions explicitly use this migrated value. New definitions without an amplitude use 1 W. This conversion preserves simulated waveforms, not manufacturer average-power physics. Public emitted/received peak-power methods now use the new peak meaning.
-
-   Custom scanner subclasses must implement ``calcTransferFromCosine`` and ``calcTransferWithSigma`` for tracing. These return dimensionless transfers, without amplitude or the legacy intensity scaling. The energy model exposes corresponding Python methods ``compute_transfer_from_cosine`` and ``compute_transfer_with_sigma``. Existing public intensity methods remain amplitude-scaled.
 
 Material files
 --------------

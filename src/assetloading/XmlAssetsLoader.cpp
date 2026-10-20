@@ -1340,6 +1340,11 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
                                              settings->maxRecordingSpan_m);
     settings->pulseShape = XmlUtils::getAttributeCast<std::string>(
       node, "pulseShape", settings->pulseShape);
+    if (settings->pulseShape == "sampled")
+      throw std::invalid_argument(
+        "Sampled pulses are supported through Python and YAML only");
+    settings->gaussianMean_ns = XmlUtils::getAttributeCast<double>(
+      node, "gaussianMean_ns", settings->gaussianMean_ns);
     settings->correctPeakOffset = XmlUtils::getAttributeCast<bool>(
       node, "correctPeakOffset", settings->correctPeakOffset);
     settings->recordingTailTolerance = XmlUtils::getAttributeCast<double>(

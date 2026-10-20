@@ -634,6 +634,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
             "sampleSpacing_m": "0.02",
             "peakWindow_m": "0.1",
             "recordingTailTolerance": "0.00001",
+            "gaussianMean_ns": "-2",
         },
     )
     channel = element.find("channels/channel")
@@ -642,6 +643,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
         "FWFSettings",
         {
             "pulseShape": "gaussian",
+            "gaussianMean_ns": "3",
             "correctPeakOffset": "false",
             "binSize_ns": "0.25",
             "maxRecordingSpan_m": "20",
@@ -652,6 +654,8 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     first = scanner.get_fwf_settings(0)
     second = scanner.get_fwf_settings(1)
     assert first.pulse_shape == "gaussian"
+    assert first.gaussian_mean == pytest.approx(3e-9)
+    assert second.gaussian_mean == pytest.approx(-2e-9)
     assert first.correct_peak_offset is False
     assert first.sample_spacing == pytest.approx(0.03747405725)
     assert first.peak_window == 0.1
@@ -661,6 +665,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     scanner.prepare_pulse(0)
     scanner.prepare_pulse(1)
     saved_pulse = scanner.get_pulse_model(0)
+    assert saved_pulse.peak_offset == pytest.approx(3 * 0.149896229)
     assert saved_pulse.evaluate(-0.01) > 0
     assert scanner.get_pulse_model(1).evaluate(-0.01) == 0
     first.pulse_shape = "gamma"

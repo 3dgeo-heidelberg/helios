@@ -516,9 +516,9 @@ public:
     PYBIND11_OVERLOAD_PURE(void, Scanner, setMaxNOR, maxNOR, idx);
   }
 
-  AnalyticPulse const& getPulseModel(size_t idx) const override
+  PulseShape const& getPulseModel(size_t idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(AnalyticPulse const&, Scanner, getPulseModel, idx);
+    PYBIND11_OVERLOAD_PURE(PulseShape const&, Scanner, getPulseModel, idx);
   }
 
   double getReceivedEnergyMin(size_t const idx) const override

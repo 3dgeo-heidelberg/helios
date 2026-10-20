@@ -4,6 +4,7 @@ from helios.validation import (
     Model,
     ThreadCount,
     TimeInterval,
+    TimeOffset,
     UpdateableMixin,
     units,
 )
@@ -211,11 +212,62 @@ class OutputSettings(Model, UpdateableMixin):
     las_scale: Length = 0.0001
 
 
+class SampledPulse(Model):
+    """Immutable sampled optical pulse. Offsets and peak_offset are in seconds.
+
+    Amplitudes are normalized to unit peak; evaluation is linear between samples
+    and zero outside their interval. Supply peak_offset for tied maxima.
+    """
+
+    offsets: tuple[TimeOffset, ...]
+    amplitudes: tuple[Annotated[float, Field(ge=0, allow_inf_nan=False)], ...]
+    peak_offset: Optional[TimeOffset] = None
+
+    def _pre_set(self, field, value):
+        if not self._during_init:
+            raise AttributeError(
+                "SampledPulse is immutable; replace the pulse definition"
+            )
+
+    def _post_set(self, field):
+        if field == "peak_offset":
+            self._cpp_object = _helios.SampledPulse(
+                [t * 1e9 for t in self.offsets],
+                self.amplitudes,
+                None if self.peak_offset is None else self.peak_offset * 1e9,
+            )
+            # Store the normalized definition for persistence and inspection.
+            self._amplitudes = tuple(self._cpp_object.amplitudes)
+
+    @classmethod
+    def _from_cpp(cls, value):
+        return cls(
+            offsets=[t * 1e-9 for t in value.offsets_ns],
+            amplitudes=value.amplitudes,
+            peak_offset=(
+                None if value.peak_offset_ns is None else value.peak_offset_ns * 1e-9
+            ),
+        )
+
+    def __deepcopy__(self, memo):
+        # Both the definition and the runtime model are immutable.
+        memo[id(self)] = self
+        return self
+
+
+# Keep the public definition immutable and in seconds. The runtime base class's
+# peak_offset property is in range-equivalent metres, and its arrays are copies.
+SampledPulse.amplitudes = SampledPulse.amplitudes.getter(lambda self: self._amplitudes)
+SampledPulse.peak_offset = SampledPulse.peak_offset.getter(
+    lambda self: self._peak_offset
+)
+
+
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
-    """Analytic waveform reconstruction on a fixed grid in metres.
+    """Waveform reconstruction on a fixed grid in metres.
 
     Pulse FWHM remains a scanner specification in seconds. Gamma is causal at
-    zero; Gaussian has its centre at +3 sigma and retains its negative tail.
+    zero; Gaussian defaults to a zero mean and retains its negative tail.
     The recording tolerance determines only the recording bounds, never a
     cutoff for individual returns. Peak correction affects reported ranges,
     not waveform samples. Legacy time settings are accepted at construction.
@@ -226,7 +278,9 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     beam_sampling_factor: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 2.0
     peak_window: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.149896229
     max_recording_span: Annotated[Length, Field(ge=0, allow_inf_nan=False)] = 0.0
-    pulse_shape: Literal["gamma", "gaussian"] = "gamma"
+    pulse_shape: Literal["gamma", "gaussian", "sampled"] = "gamma"
+    gaussian_mean: TimeOffset = 0.0
+    sampled_pulse: Optional[SampledPulse] = None
     correct_peak_offset: bool = True
     recording_tail_tolerance: Annotated[
         float, Field(gt=0, lt=1, allow_inf_nan=False)
@@ -259,6 +313,10 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     def _pre_set(self, field, value):
         if self._during_init:
             return
+        shape = value if field == "pulse_shape" else self.pulse_shape
+        sampled = value if field == "sampled_pulse" else self.sampled_pulse
+        if shape == "sampled" and sampled is None:
+            raise ValueError("sampled pulse shape requires sampled_pulse")
         spacing = value if field == "sample_spacing" else self.sample_spacing
         window = value if field == "peak_window" else self.peak_window
         if window < 2 * spacing or window / spacing > 1e9:

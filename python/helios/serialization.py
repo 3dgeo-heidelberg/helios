@@ -1238,13 +1238,18 @@ def _deserialize_model_document(
                     )
                 method(**kwargs)
 
+    replace_model_fields = getattr(model_cls, "_serialization_replace_model_fields", ())
     parsed_fields: dict[str, Any] = {}
     for field_name, annotation in get_all_annotations(model_cls).items():
         if field_name not in document["fields"]:
             continue
 
         serialized_value = document["fields"][field_name]
-        if model_obj is not None and _contains_serialized_model(serialized_value):
+        if (
+            model_obj is not None
+            and field_name not in replace_model_fields
+            and _contains_serialized_model(serialized_value)
+        ):
             # If we already reconstructed via provenance, keep constructor-provided
             # model graph for model-typed fields.
             continue
@@ -1260,7 +1265,9 @@ def _deserialize_model_document(
         model_obj = model_cls(**parsed_fields)
     else:
         for field_name, value in parsed_fields.items():
-            if _contains_model_instance(value):
+            if field_name not in replace_model_fields and _contains_model_instance(
+                value
+            ):
                 continue
             try:
                 setattr(model_obj, field_name, value)
