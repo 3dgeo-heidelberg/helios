@@ -16,8 +16,6 @@
 #include <scanner/WarehouseScanningPulseProcess.h>
 #include <scene/Scene.h>
 
-using namespace std;
-
 namespace {
 std::shared_ptr<Platform>
 clonePlatformForScanner(const std::shared_ptr<Platform>& platform)
@@ -168,9 +166,10 @@ Scanner::_clone(Scanner& sc) const
 // ***  M E T H O D S  *** //
 // *********************** //
 std::shared_ptr<ScannerSettings>
-Scanner::retrieveCurrentSettings(size_t const idx)
+Scanner::retrieveCurrentSettings(std::size_t const idx)
 {
-  shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
+  std::shared_ptr<ScannerSettings> settings =
+    std::make_shared<ScannerSettings>();
   // Settings from Scanner
   std::stringstream ss;
   ss << id << "_settings";
@@ -197,7 +196,7 @@ Scanner::retrieveCurrentSettings(size_t const idx)
 }
 
 void
-Scanner::applySettingsFWF(FWFSettings settings, size_t const idx)
+Scanner::applySettingsFWF(FWFSettings settings, std::size_t const idx)
 {
   settings.validate();
   setFWFSettings(settings, idx);
@@ -205,13 +204,13 @@ Scanner::applySettingsFWF(FWFSettings settings, size_t const idx)
   preparePulse(idx);
 }
 
-string
+std::string
 Scanner::toString()
 {
   std::stringstream ss;
   ss << "Scanner: " << getScannerId() << "\n";
-  size_t const numDevices = getNumDevices();
-  for (size_t i = 0; i < numDevices; ++i) {
+  std::size_t const numDevices = getNumDevices();
+  for (std::size_t i = 0; i < numDevices; ++i) {
     ss << "Device[" << i << "]: " << getDeviceId(i) << "\n"
        << "\tWhole-beam Pulse Amplitude: " << getPulseAmplitude(i) << " W\n"
        << "\tBeam Divergence: " << getBeamDivergence(i) * 1e3 << " mrad\n"
@@ -243,7 +242,7 @@ Scanner::setPulseFreq_Hz(int pulseFreq_Hz)
   // Set new pulse frequency:
   cfg_setting_pulseFreq_Hz = pulseFreq_Hz;
 
-  stringstream ss;
+  std::stringstream ss;
   ss << "Pulse frequency set to " << this->cfg_setting_pulseFreq_Hz;
   logging::INFO(ss.str());
 }
