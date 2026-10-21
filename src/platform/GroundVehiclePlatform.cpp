@@ -1,8 +1,6 @@
 #include "GroundVehiclePlatform.h"
 #include <logger_core.hpp>
 
-using namespace std;
-
 #include <glm/gtx/norm.hpp>
 
 #include "typedef.h"
