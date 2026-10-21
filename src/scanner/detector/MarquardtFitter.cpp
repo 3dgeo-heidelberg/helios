@@ -6,10 +6,8 @@
 #include <cmath>
 #include <sstream>
 
-using namespace std;
-
 double
-MarquardtFitter::evaluate(const double x, const vector<double>& params)
+MarquardtFitter::evaluate(const double x, const std::vector<double>& params)
 {
   double const A = params[0];
   double const B = params[1];
@@ -23,10 +21,10 @@ MarquardtFitter::evaluate(const double x, const vector<double>& params)
  *      Sets the values of the original data points that are going to be fit.
  */
 void
-MarquardtFitter::setData(const vector<double>& zvalues)
+MarquardtFitter::setData(const std::vector<double>& zvalues)
 {
   X.resize(zvalues.size());
-  for (size_t i = 0; i < zvalues.size(); i++) {
+  for (std::size_t i = 0; i < zvalues.size(); i++) {
     X[i] = i;
   }
 
@@ -34,7 +32,7 @@ MarquardtFitter::setData(const vector<double>& zvalues)
 }
 
 void
-MarquardtFitter::setParameters(const vector<double>& parameters)
+MarquardtFitter::setParameters(const std::vector<double>& parameters)
 {
   A = parameters;
 }
@@ -45,7 +43,7 @@ double
 MarquardtFitter::calculateErrors()
 {
   double new_error = 0;
-  for (size_t i = 0; i < Z.size(); i++) {
+  for (std::size_t i = 0; i < Z.size(); i++) {
     double const v = evaluate(X[i], A);
     ERR[i] = Z[i] - v;
     new_error += ERR[i] * ERR[i];
@@ -56,7 +54,7 @@ MarquardtFitter::calculateErrors()
 double
 MarquardtFitter::calculateDerivative(int const k,
                                      const double x,
-                                     vector<double>& params)
+                                     std::vector<double>& params)
 {
   // Hybrid derivative
   if (k == 0) { // Use analytical derivative as it is faster for k[0], a
@@ -99,9 +97,9 @@ MarquardtFitter::calculateDerivativeFast(double const x,
 void
 MarquardtFitter::calculateDerivatives()
 {
-  vector<double> working = A;
-  for (size_t j = 0; j < A.size(); j++) {
-    for (size_t i = 0; i < Z.size(); i++) {
+  std::vector<double> working = A;
+  for (std::size_t j = 0; j < A.size(); j++) {
+    for (std::size_t i = 0; i < Z.size(); i++) {
       DERIVATIVES[i][j] = calculateDerivative(j, X[i], working);
     }
   }
@@ -116,7 +114,7 @@ MarquardtFitter::calculateDerivativesFast()
   double const coefficient = 2 * A[1] / (d * d);
 
   // Compute derivative using precomputed params
-  for (size_t i = 0; i < Z.size(); i++) {
+  for (std::size_t i = 0; i < Z.size(); i++) {
     calculateDerivativeFast(X[i], c, d, coefficient, DERIVATIVES[i]);
   }
 }
@@ -124,9 +122,9 @@ MarquardtFitter::calculateDerivativesFast()
 void
 MarquardtFitter::createBetaMatrix()
 {
-  BETA = vector<double>(A.size(), 0.0);
-  for (size_t k = 0; k < BETA.size(); k++) {
-    for (size_t i = 0; i < X.size(); i++) {
+  BETA = std::vector<double>(A.size(), 0.0);
+  for (std::size_t k = 0; k < BETA.size(); k++) {
+    for (std::size_t i = 0; i < X.size(); i++) {
       BETA[k] += ERR[i] * DERIVATIVES[i][k];
     }
   }
@@ -135,17 +133,17 @@ MarquardtFitter::createBetaMatrix()
 void
 MarquardtFitter::createAlphaPrimeMatrix()
 {
-  size_t n = A.size();
+  std::size_t n = A.size();
   alphaPrimeN = n;
   if (ALPHA_PRIME.size() < n) {
     ALPHA_PRIME.resize(n, std::vector<double>(n));
   }
 
   double v;
-  for (size_t k = 0; k < n; k++) {
-    for (size_t l = 0; l < n; l++) {
+  for (std::size_t k = 0; k < n; k++) {
+    for (std::size_t l = 0; l < n; l++) {
       v = 0.0;
-      for (size_t i = 0; i < X.size(); i++) {
+      for (std::size_t i = 0; i < X.size(); i++) {
         v += DERIVATIVES[i][k] * DERIVATIVES[i][l];
       }
       if (k == l) {
@@ -172,8 +170,8 @@ MarquardtFitter::iterateValues()
 
   int m = BETA.size();
   int n = 1;
-  vector<vector<double>> BETA_MAT =
-    vector<vector<double>>(m, std::vector<double>(n, 0.0));
+  std::vector<std::vector<double>> BETA_MAT =
+    std::vector<std::vector<double>>(m, std::vector<double>(n, 0.0));
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
       BETA_MAT[i][j] = this->BETA[i + j * m];
@@ -184,12 +182,12 @@ MarquardtFitter::iterateValues()
   m = alphaPrimeN;
   n = alphaPrimeN;
 
-  vector<int> piv(m);
+  std::vector<int> piv(m);
   for (int i = 0; i < m; i++) {
     piv[i] = i;
   }
   int pivsign = 1;
-  vector<double> LUcolj(m, 0.0);
+  std::vector<double> LUcolj(m, 0.0);
 
   // Outer loop.
 
@@ -205,11 +203,11 @@ MarquardtFitter::iterateValues()
 
     for (int i = 0; i < m; i++) {
 
-      vector<double>& LUrowi = LU[i];
+      std::vector<double>& LUrowi = LU[i];
 
       // Most of the time is spent in the following dot product.
 
-      int kmax = ::min(i, j);
+      int kmax = std::min(i, j);
       double s = 0.0;
       for (int k = 0; k < kmax; k++) {
         s += LUrowi[k] * LUcolj[k];
@@ -221,7 +219,7 @@ MarquardtFitter::iterateValues()
 
     int p = j;
     for (int i = j + 1; i < m; i++) {
-      if (::fabs(LUcolj[i]) > ::fabs(LUcolj[p])) {
+      if (std::fabs(LUcolj[i]) > std::fabs(LUcolj[p])) {
         p = i;
       }
     }
@@ -248,7 +246,7 @@ MarquardtFitter::iterateValues()
   n = alphaPrimeN;
 
   int nx = BETA_MAT[0].size();
-  vector<vector<double>> rhs = getMatrix(BETA_MAT, piv, 0, nx - 1);
+  std::vector<std::vector<double>> rhs = getMatrix(BETA_MAT, piv, 0, nx - 1);
 
   // Solve L*Y = B(piv,:)
   for (int k = 0; k < n; k++) {
@@ -273,7 +271,7 @@ MarquardtFitter::iterateValues()
     }
   }
 
-  for (size_t i = 0; i < A.size(); i++) {
+  for (std::size_t i = 0; i < A.size(); i++) {
     this->A[i] += rhs[i][0];
   }
 }
@@ -284,15 +282,15 @@ MarquardtFitter::iterateValues()
 @param j1   Final column index
 @return     A(r(:),j0:j1)
 */
-vector<vector<double>>
-MarquardtFitter::getMatrix(vector<vector<double>>& M,
-                           vector<int>& row_i,
+std::vector<std::vector<double>>
+MarquardtFitter::getMatrix(std::vector<std::vector<double>>& M,
+                           std::vector<int>& row_i,
                            int j0,
                            int j1)
 {
   int m = row_i.size();
   int n = j1 - j0 + 1;
-  vector<vector<double>> SUB;
+  std::vector<std::vector<double>> SUB;
   SUB.resize(m, std::vector<double>(n, 0.0));
 
   for (int i = 0; i < m; i++) {
@@ -306,10 +304,10 @@ MarquardtFitter::getMatrix(vector<vector<double>>& M,
 void
 MarquardtFitter::initializeWorkspace()
 {
-  ERR = vector<double>(Z.size());
-  DERIVATIVES =
-    vector<vector<double>>(Z.size(), std::vector<double>(A.size(), 0.0));
-  LAMBDA = vector<double>(A.size(), 0.01);
+  ERR = std::vector<double>(Z.size());
+  DERIVATIVES = std::vector<std::vector<double>>(
+    Z.size(), std::vector<double>(A.size(), 0.0));
+  LAMBDA = std::vector<double>(A.size(), 0.01);
 }
 
 /*
@@ -323,7 +321,7 @@ MarquardtFitter::fitData()
   double error = calculateErrors();
   double nerror, value;
 
-  vector<double> acopy(A.size());
+  std::vector<double> acopy(A.size());
 
   for (int i = 0; i < 10000; i++) {
 
@@ -331,7 +329,7 @@ MarquardtFitter::fitData()
       acopy = this->A;
       iterateValues();
     } catch (...) {
-      ostringstream s;
+      std::ostringstream s;
       s << "Broke after " << i << " iterations" /*<< printMatrix()*/;
       logging::INFO(s.str());
       return;
@@ -359,12 +357,12 @@ MarquardtFitter::fitData()
 void
 MarquardtFitter::updateLambda(double value)
 {
-  size_t n = LAMBDA.size();
+  std::size_t n = LAMBDA.size();
   if (value < 0) {
-    for (size_t i = 0; i < n; i++)
+    for (std::size_t i = 0; i < n; i++)
       LAMBDA[i] = LAMBDA[i] * 10;
   } else {
-    for (size_t i = 0; i < n; i++)
+    for (std::size_t i = 0; i < n; i++)
       LAMBDA[i] = LAMBDA[i] * 0.1;
   }
 }
@@ -372,7 +370,7 @@ MarquardtFitter::updateLambda(double value)
 /*
  *      Gets the current set of parameters values.
  */
-vector<double>
+std::vector<double>
 MarquardtFitter::getParameters()
 {
   return this->A;
@@ -381,12 +379,12 @@ MarquardtFitter::getParameters()
 /*
  * for stack traces
  */
-string
+std::string
 MarquardtFitter::printMatrix()
 {
-  stringstream message;
-  for (size_t i = 0; i < alphaPrimeN; i++) {
-    for (size_t j = 0; j < alphaPrimeN; j++) {
+  std::stringstream message;
+  for (std::size_t i = 0; i < alphaPrimeN; i++) {
+    for (std::size_t j = 0; j < alphaPrimeN; j++) {
       message << ALPHA_PRIME[i][j] << "\t";
     }
     message << "| " << BETA[i] << "\n";
@@ -394,12 +392,12 @@ MarquardtFitter::printMatrix()
   return message.str();
 }
 
-string
-MarquardtFitter::printMatrix(vector<vector<double>>& matrix)
+std::string
+MarquardtFitter::printMatrix(std::vector<std::vector<double>>& matrix)
 {
-  stringstream message;
-  for (size_t i = 0; i < matrix.size(); i++) {
-    for (size_t j = 0; j < matrix[0].size(); j++) {
+  std::stringstream message;
+  for (std::size_t i = 0; i < matrix.size(); i++) {
+    for (std::size_t j = 0; j < matrix[0].size(); j++) {
       message << matrix[i][j] << "\t";
     }
   }

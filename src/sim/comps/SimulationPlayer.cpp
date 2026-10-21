@@ -10,8 +10,6 @@ using helios::filems::FMSFacadeFactory;
 #include <scanner/Scanner.h>
 
 #include <chrono>
-using namespace std::chrono;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 SimulationPlayer::SimulationPlayer(Simulation& sim)
@@ -205,7 +203,7 @@ SimulationPlayer::restartScene(Scene& scene, bool const keepCRS)
       // Undo old CRS shift on primitives before scene update and reload
       for (Primitive* p : sp->mPrimitives) {
         Vertex* v = p->getVertices();
-        for (size_t i = 0; i < p->getNumVertices(); ++i) {
+        for (std::size_t i = 0; i < p->getNumVertices(); ++i) {
           v[i].pos = v[i].pos + oldCRSCenter;
         }
       }
@@ -247,12 +245,12 @@ SimulationPlayer::restartScene(Scene& scene, bool const keepCRS)
     for (std::shared_ptr<ScenePart> sp : scene.parts) {
       for (Primitive* p : sp->mPrimitives) {
         Vertex* v = p->getVertices();
-        for (size_t i = 0; i < p->getNumVertices(); ++i) {
+        for (std::size_t i = 0; i < p->getNumVertices(); ++i) {
           v[i].pos = v[i].pos + currentDiff;
         }
         p->update();
         // Also, find min and max coordinates
-        for (size_t i = 0; i < p->getNumVertices(); ++i) {
+        for (std::size_t i = 0; i < p->getNumVertices(); ++i) {
           glm::dvec3 const pos = v[i].pos;
           if (pos.x < xmin)
             xmin = pos.x;
@@ -304,7 +302,7 @@ SimulationPlayer::restartScene(Scene& scene, bool const keepCRS)
     for (std::shared_ptr<ScenePart> sp : scene.parts) {
       for (Primitive* p : sp->mPrimitives) {
         Vertex* v = p->getVertices();
-        for (size_t i = 0; i < p->getNumVertices(); ++i) {
+        for (std::size_t i = 0; i < p->getNumVertices(); ++i) {
           v[i].pos = v[i].pos - oldCRSCenter;
         }
         p->update();
@@ -331,8 +329,8 @@ SimulationPlayer::restartSimulation(Simulation& sim)
   sp.legProgress = 0;
   sp.mLegStarted = true;
   sp.legProgress = 0;
-  sp.legStartTime_ns =
-    duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+  sp.legStartTime_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+    std::chrono::system_clock::now().time_since_epoch());
   sp.timeStart_ns = sp.legStartTime_ns;
   sp.elapsedLength = 0;
   // Restart simulation attributes
