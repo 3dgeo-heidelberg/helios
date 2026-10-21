@@ -110,5 +110,10 @@ Utils
 Validation
 ----------
 
+.. autoexception:: helios.HeliosException
+
 .. autoapiclass:: helios.validation.Model
+   :members:
+
+.. autoapiclass:: helios.validation.ConstructorProvider
    :members:

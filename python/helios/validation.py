@@ -1,6 +1,7 @@
 from helios.utils import add_asset_directory, find_file, find_files, is_real_iterable
 
 from collections.abc import Iterable, Mapping
+from importlib import metadata
 from pathlib import Path
 from pint import UnitRegistry
 from pydantic import validate_call, GetCoreSchemaHandler
@@ -18,6 +19,7 @@ import os
 import xmlschema
 
 from copy import deepcopy
+from functools import lru_cache
 
 # The global registry of physical units used in Helios++. Currently there
 # are no custom units, so we go with Pint's default registry.
@@ -232,9 +234,88 @@ def _iter_models_in_value(value: Any):
             yield from _iter_models_in_value(item)
 
 
+class ConstructorProvider:
+    """Base class for entry-point-provided ``Model`` constructors."""
+
+    @staticmethod
+    def name() -> str:
+        raise NotImplementedError
+
+    @staticmethod
+    def construct(model_cls, *args, **kwargs):
+        raise NotImplementedError
+
+
+@lru_cache(maxsize=1)
+def _get_constructor_entry_point_index():
+    """Return the cached constructor entry-point metadata index."""
+
+    index = {}
+    entry_points = metadata.entry_points(group="helios.model_constructors.v1")
+    for entry_point in entry_points:
+        target, method = entry_point.name.split(":", 1)
+        index[target, method] = entry_point
+    return index
+
+
+class _LazyConstructorDescriptor:
+    """Descriptor which loads a constructor provider on first call."""
+
+    def __init__(self, target: str, name: str, entry_point):
+        self.target = target
+        self.name = name
+        self.entry_point = entry_point
+        self._implementation = None
+        self.__name__ = name
+        self.__qualname__ = f"{target}.{name}"
+        self.__doc__ = (
+            f"Plugin-provided constructor {name!r} for {target}. "
+            "Its implementation is loaded on first access."
+        )
+
+    def __set_name__(self, owner, name):
+        self.__name__ = name
+        self.__qualname__ = f"{owner.__qualname__}.{name}"
+
+    def __get__(self, instance, owner=None):
+        if self._implementation is None:
+            provider = self.entry_point.load()
+            self._implementation = provider.construct
+
+        def _bound_constructor(*args, **kwargs):
+            return self._implementation(owner, *args, **kwargs)
+
+        _bound_constructor.__name__ = self.__name__
+        _bound_constructor.__qualname__ = f"{owner.__qualname__}.{self.__name__}"
+        _bound_constructor.__doc__ = self._implementation.__doc__
+        return _bound_constructor
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self.target}.{self.name}>"
+
+
+def _install_constructor_descriptors(dct):
+    """Add matching lazy constructor descriptors to a class namespace."""
+
+    module = dct["__module__"]
+    qualname = dct["__qualname__"]
+    target = f"{module}.{qualname}"
+    index = _get_constructor_entry_point_index()
+    registrations = [
+        (method, entry_point)
+        for (registered_target, method), entry_point in index.items()
+        if registered_target == target
+    ]
+    for method, entry_point in sorted(registrations):
+        if method in dct:
+            continue
+        dct[method] = _LazyConstructorDescriptor(target, method, entry_point)
+
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
+        _install_constructor_descriptors(dct)
         cls = super().__new__(cls, name, bases, dct, **kwargs)
 
         annotations = get_all_annotations(cls)

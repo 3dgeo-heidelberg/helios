@@ -1,4 +1,5 @@
 from helios.validation import *
+import helios.validation as validation
 
 import copy
 import math
@@ -60,6 +61,51 @@ class CloneTrackingCppObject:
     def clone(self):
         self.__class__.clone_calls += 1
         return CloneTrackingCppObject(self.token)
+
+
+class _FakeConstructorEntryPoint:
+    group = "helios.model_constructors.v1"
+
+    def __init__(self, name, provider):
+        self.name = name
+        self.provider = provider
+        self.load_calls = 0
+
+    def load(self):
+        self.load_calls += 1
+        return self.provider
+
+
+@pytest.fixture
+def constructor_entry_points(monkeypatch):
+    entry_points = []
+
+    def _entry_points(*, group):
+        return tuple(entry_points)
+
+    monkeypatch.setattr(validation.metadata, "entry_points", _entry_points)
+    return entry_points
+
+
+@pytest.fixture(autouse=True)
+def clear_constructor_entry_point_cache():
+    validation._get_constructor_entry_point_index.cache_clear()
+    yield
+    validation._get_constructor_entry_point_index.cache_clear()
+
+
+def _make_plugin_model(name, bases=(Model,), **namespace):
+    module = namespace.pop("__module__", "test_constructor_plugins")
+    class_namespace = {
+        "__module__": module,
+        "__qualname__": name,
+        **namespace,
+    }
+    return ValidatedModelMetaClass(name, bases, class_namespace)
+
+
+def _value_model_namespace():
+    return {"__annotations__": {"value": str}, "value": ""}
 
 
 def test_validated_cpp_properties():
@@ -867,3 +913,197 @@ def test_init_optional_without_default():
 
     o = Obj()
     assert o.x is None
+
+
+def test_plugin_constructor_is_discovered_and_loaded_lazily(
+    constructor_entry_points,
+):
+    class Provider(ConstructorProvider):
+        @staticmethod
+        def name():
+            return "from_external"
+
+        @staticmethod
+        def construct(model_cls, value):
+            """Construct a model from an external value."""
+
+            return model_cls(value=value)
+
+    entry_point = _FakeConstructorEntryPoint(
+        f"test_constructor_plugins.LazyModel:{Provider.name()}", Provider
+    )
+    constructor_entry_points.append(entry_point)
+
+    LazyModel = _make_plugin_model(
+        "LazyModel",
+        **{"__annotations__": {"value": int}},
+    )
+
+    assert entry_point.load_calls == 0
+    constructor = LazyModel.from_external
+    assert callable(constructor)
+    assert entry_point.load_calls == 1
+    assert constructor.__doc__ == "Construct a model from an external value."
+    assert constructor.__doc__ == "Construct a model from an external value."
+
+    first = constructor(1)
+    second = LazyModel.from_external(2)
+
+    assert isinstance(first, LazyModel)
+    assert first.value == 1
+    assert second.value == 2
+    assert entry_point.load_calls == 1
+
+
+def test_plugin_constructor_scope_and_precedence(constructor_entry_points):
+    def provider_for(value):
+        class Provider(ConstructorProvider):
+            @staticmethod
+            def name():
+                return "from_source"
+
+            @staticmethod
+            def construct(model_cls):
+                return model_cls(value=value)
+
+        return Provider
+
+    registrations = {
+        "ScopeRoot": "global",
+        "ScopeFamily": "family",
+        "ScopeExact": "exact",
+        "ExplicitModel": "plugin",
+        "BuiltinChild": "plugin",
+    }
+    for target, value in registrations.items():
+        constructor_entry_points.append(
+            _FakeConstructorEntryPoint(
+                f"test_constructor_plugins.{target}:from_source",
+                provider_for(value),
+            )
+        )
+
+    ScopeRoot = _make_plugin_model("ScopeRoot", **_value_model_namespace())
+    ScopeSibling = _make_plugin_model("ScopeSibling", bases=(ScopeRoot,))
+    ScopeFamily = _make_plugin_model("ScopeFamily", bases=(ScopeRoot,))
+    ScopeExact = _make_plugin_model("ScopeExact", bases=(ScopeFamily,))
+
+    assert ScopeRoot.from_source().value == "global"
+    sibling = ScopeSibling.from_source()
+    assert isinstance(sibling, ScopeSibling)
+    assert sibling.value == "global"
+    assert ScopeFamily.from_source().value == "family"
+    exact = ScopeExact.from_source()
+    assert isinstance(exact, ScopeExact)
+    assert exact.value == "exact"
+
+    def _explicit_constructor(cls):
+        return cls(value="explicit")
+
+    ExplicitModel = _make_plugin_model(
+        "ExplicitModel",
+        **{
+            **_value_model_namespace(),
+            "from_source": classmethod(_explicit_constructor),
+        },
+    )
+    assert ExplicitModel.from_source().value == "explicit"
+
+    BuiltinBase = _make_plugin_model(
+        "BuiltinBase",
+        **{
+            **_value_model_namespace(),
+            "from_source": classmethod(_explicit_constructor),
+        },
+    )
+    BuiltinChild = _make_plugin_model("BuiltinChild", bases=(BuiltinBase,))
+    assert BuiltinChild.from_source().value == "plugin"
+
+
+def test_plugin_constructors_compose_and_outer_constructor_owns_provenance(
+    constructor_entry_points,
+):
+    class InnerProvider(ConstructorProvider):
+        @staticmethod
+        def name():
+            return "from_inner"
+
+        @staticmethod
+        def construct(model_cls, value):
+            result = model_cls(value=value)
+            result._set_constructor_provenance("from_inner", value=value)
+            return result
+
+    class OuterProvider(ConstructorProvider):
+        @staticmethod
+        def name():
+            return "from_outer"
+
+        @staticmethod
+        def construct(model_cls, value):
+            result = model_cls.from_inner(value)
+            result._set_constructor_provenance("from_outer", value=value)
+            return result
+
+    inner = _FakeConstructorEntryPoint(
+        f"test_constructor_plugins.ComposedModel:{InnerProvider.name()}",
+        InnerProvider,
+    )
+    outer = _FakeConstructorEntryPoint(
+        f"test_constructor_plugins.ComposedModel:{OuterProvider.name()}",
+        OuterProvider,
+    )
+    constructor_entry_points.extend([inner, outer])
+
+    ComposedModel = _make_plugin_model(
+        "ComposedModel", **{"__annotations__": {"value": int}}
+    )
+    result = ComposedModel.from_outer(42)
+
+    assert result.value == 42
+    assert result._provenance["constructor"] == {
+        "method": "from_outer",
+        "kwargs": {"value": 42},
+    }
+    assert inner.load_calls == 1
+    assert outer.load_calls == 1
+
+
+def test_plugin_constructor_replays_serialized_provenance(
+    constructor_entry_points, monkeypatch, tmp_path
+):
+    from helios.settings import ExecutionSettings
+
+    class Provider(ConstructorProvider):
+        @staticmethod
+        def name():
+            return "from_external"
+
+        @staticmethod
+        def construct(model_cls):
+            result = model_cls()
+            result._set_constructor_provenance("from_external")
+            return result
+
+    entry_point = _FakeConstructorEntryPoint(
+        f"helios.settings.ExecutionSettings:{Provider.name()}", Provider
+    )
+    constructor_entry_points.append(entry_point)
+
+    namespace = {
+        "__module__": "helios.settings",
+        "__qualname__": "ExecutionSettings",
+    }
+    validation._install_constructor_descriptors(namespace)
+    descriptor = namespace["from_external"]
+    descriptor.__set_name__(ExecutionSettings, "from_external")
+    monkeypatch.setattr(ExecutionSettings, "from_external", descriptor, raising=False)
+
+    original = ExecutionSettings()
+    original._set_constructor_provenance("from_external")
+    yaml_path = original.to_yaml(tmp_path / "plugin-model.yaml")
+
+    restored = ExecutionSettings.from_yaml(yaml_path)
+
+    assert isinstance(restored, ExecutionSettings)
+    assert entry_point.load_calls == 1
