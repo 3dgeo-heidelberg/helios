@@ -1,11 +1,9 @@
 #include "OscillatingMirrorBeamDeflector.h"
 
 #include <iostream>
-#include <sstream>
-using namespace std;
-
 #include <logging.hpp>
 #include <math.h>
+#include <sstream>
 
 #include "MathConverter.h"
 #include "maths/Directions.h"
@@ -196,7 +194,7 @@ OscillatingMirrorBeamDeflector::setScanAngle_rad(double scanAngle_rad)
 
   this->cfg_setting_scanAngle_rad =
     MathConverter::degreesToRadians(scanAngle_deg);
-  stringstream ss;
+  std::stringstream ss;
   ss << "Scan angle set to " << scanAngle_deg << " degrees.";
   logging::INFO(ss.str());
 }
@@ -217,7 +215,7 @@ OscillatingMirrorBeamDeflector::setScanFreq_Hz(double scanFreq_Hz)
       MathConverter::radiansToDegrees(this->cfg_setting_scanAngle_rad);
   }
   this->cfg_setting_scanFreq_Hz = scanFreq_Hz;
-  stringstream ss;
+  std::stringstream ss;
   ss << "Scan frequency set to " << this->cfg_setting_scanFreq_Hz << " Hz.";
   logging::INFO(ss.str());
 }
