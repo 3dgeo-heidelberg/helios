@@ -460,6 +460,33 @@ def test_optics_warmup_phase(case):
     assert np.percentile(dist, 99.0) < 0.11
 
 
+@pytest.mark.parametrize("width", [4e-9, "4 ns"])
+def test_pulse_length_units_and_channel_isolation(width):
+    scanner = riegl_vq_1560i()
+    original = scanner.pulse_length
+    scanner.set_pulse_length(width, index=1)
+    assert scanner.get_pulse_length(1) == pytest.approx(4e-9)
+    assert scanner._cpp_object.get_specific_pulse_length(1) == pytest.approx(4.0)
+    assert scanner.pulse_length == original
+    scanner.pulse_length = "6 ns"
+    assert scanner.pulse_length == pytest.approx(6e-9)
+    assert scanner.get_pulse_length(1) == pytest.approx(4e-9)
+    for index in (-1, scanner._cpp_object.num_devices):
+        with pytest.raises(IndexError):
+            scanner.get_pulse_length(index)
+        with pytest.raises(IndexError):
+            scanner.set_pulse_length(width, index)
+
+
+@pytest.mark.parametrize("invalid", [0, -1e-9, np.inf, np.nan])
+def test_pulse_length_rejects_invalid_values(invalid):
+    scanner = riegl_vz_400()
+    previous = scanner.pulse_length
+    with pytest.raises(ValueError):
+        scanner.pulse_length = invalid
+    assert scanner.pulse_length == previous
+
+
 @pytest.mark.parametrize("divergence", [0.0001, 0.003, "0.03 deg"])
 def test_beam_divergence_survives_leg_settings(divergence):
     scanner = riegl_vz_400()
