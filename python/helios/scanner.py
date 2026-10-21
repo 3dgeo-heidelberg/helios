@@ -112,6 +112,34 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 class Scanner(Model, cpp_class=_helios.Scanner):
     @property
+    def pulse_length(self) -> TimeInterval:
+        """Emitted pulse FWHM of channel 0, in seconds."""
+        return self.get_pulse_length()
+
+    @pulse_length.setter
+    def pulse_length(self, value: TimeInterval) -> None:
+        self.set_pulse_length(value)
+
+    @validate_call
+    def get_pulse_length(self, index: int = 0) -> TimeInterval:
+        """Return a channel's emitted pulse FWHM in seconds."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_pulse_length(index) * 1e-9
+
+    @validate_call
+    def set_pulse_length(self, value: TimeInterval, index: int = 0) -> None:
+        """Set emitted pulse FWHM in seconds or with units, e.g. ``"4 ns"``.
+
+        Set before running the survey; its waveform settings rebuild the pulse model.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        if not np.isfinite(value) or value <= 0 or not np.isfinite(value * 1e9):
+            raise ValueError("Pulse length must be finite and positive")
+        self._cpp_object.set_specific_pulse_length(value * 1e9, index)
+
+    @property
     def pulse_amplitude(self) -> float:
         """Whole-beam peak optical power before footprint truncation, in watts."""
         return self.get_pulse_amplitude()
