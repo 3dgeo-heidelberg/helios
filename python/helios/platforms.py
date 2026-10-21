@@ -194,7 +194,10 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         platform._is_loaded_from_xml = True
         platform._disable_yaml_serialization_for_descendants()
         platform._set_constructor_provenance(
-            "from_xml", platform_file=platform_file, platform_id=platform_id
+            "from_xml",
+            "platform_file",
+            platform_file=platform_file,
+            platform_id=platform_id,
         )
         return platform
 
