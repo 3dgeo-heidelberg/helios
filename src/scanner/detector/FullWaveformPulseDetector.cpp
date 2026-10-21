@@ -4,8 +4,6 @@ namespace fs = std::filesystem;
 #include "FullWaveformPulseDetector.h"
 #include <filems/facade/FMSFacade.h>
 
-using namespace std;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 std::shared_ptr<AbstractDetector>
@@ -28,7 +26,8 @@ FullWaveformPulseDetector::_clone(std::shared_ptr<AbstractDetector> ad)
 // ***  M E T H O D S  *** //
 // *********************** //
 void
-FullWaveformPulseDetector::applySettings(shared_ptr<ScannerSettings>& settings)
+FullWaveformPulseDetector::applySettings(
+  std::shared_ptr<ScannerSettings>& settings)
 {
   AbstractDetector::applySettings(settings); // calls empty function
 }
