@@ -13,8 +13,6 @@ on:
       - 'v?[0-9]+.[0-9]+.[0-9]+'
       - 'v?[0-9]+.[0-9]+.[0-9]+a[0-9]+'
       - 'v?[0-9]+.[0-9]+.[0-9]+b[0-9]+'
-    branches:
-      - macos-wheels
   workflow_dispatch:
 
 jobs:
@@ -25,7 +23,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # - os: ubuntu-24.04
+          - os: ubuntu-24.04
           - os: windows-2022
           - os: macos-15
 
@@ -39,7 +37,6 @@ jobs:
         env:
           # For now, we only build 3.11 and 3.13 wheels because these are the two that would go
           # into Blender 4 and 5 extensions respectively.
-          CIBW_BUILD: "cp311-* cp313-*"
           CIBW_SKIP: "*-musllinux_*"
           # This builds 64-bit x86 wheels. Support for Windows ARM could be added here, if it gets a thing.
           CIBW_ARCHS_WINDOWS: AMD64
