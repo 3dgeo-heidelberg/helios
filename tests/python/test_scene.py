@@ -1944,13 +1944,13 @@ def test_npy_beam_origin_in_scene_coordinates():
     assert np.any(np.asarray(survey.scene._cpp_object.shift) != 0)
 
     points, _ = survey.run(
-    format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+        format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
     )
     assert points.shape[0] > 0
 
     # beam_origin must share the coordinate system of position
     reconstructed = (
-    points["beam_origin"]
-    + points["beam_direction"] * points["distance"][:, np.newaxis]
+        points["beam_origin"]
+        + points["beam_direction"] * points["distance"][:, np.newaxis]
     )
     np.testing.assert_allclose(reconstructed, points["position"], atol=1e-6)
