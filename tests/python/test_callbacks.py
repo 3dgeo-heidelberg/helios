@@ -8,7 +8,6 @@ from helios import HookEndOfLegPolicy, HookPayload, HookPoint, Survey, SurveyHoo
 from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
 from tqdm.std import tqdm as tqdm_std
 
-
 _PARALLEL_TEST_THREADS = min(4, multiprocessing.cpu_count())
 _requires_parallel_workers = pytest.mark.skipif(
     _PARALLEL_TEST_THREADS < 2,
