@@ -1937,3 +1937,20 @@ def test_scene_finalization_w_finalisation():
     orig_bbox = scene.original_bbox
     assert orig_bbox is not None
     assert orig_bbox.centroid.shape == (3,)
+
+
+def test_npy_beam_origin_in_scene_coordinates():
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    assert np.any(np.asarray(survey.scene._cpp_object.shift) != 0)
+
+    points, _ = survey.run(
+    format=OutputFormat.NPY, execution_settings=ExecutionSettings(num_threads=1)
+    )
+    assert points.shape[0] > 0
+
+    # beam_origin must share the coordinate system of position
+    reconstructed = (
+    points["beam_origin"]
+    + points["beam_direction"] * points["distance"][:, np.newaxis]
+    )
+    np.testing.assert_allclose(reconstructed, points["position"], atol=1e-6)
