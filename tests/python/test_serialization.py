@@ -596,10 +596,8 @@ def test_apply_migrations_rejects_non_increasing_minor_version(monkeypatch):
 def test_clone_and_deepcopy_keep_provenance():
     obj = SerializationLeaf(value=9)
     obj._yaml_serializable = False
-    obj._provenance = {
-        "constructor": {"method": "from_example", "kwargs": {"path": "example.dat"}},
-        "operations": [{"method": "shift", "kwargs": {"x": 1}}],
-    }
+    obj._set_constructor_provenance("from_example", "path", path=Path("example.dat"))
+    obj._append_operation_provenance("shift", x=1)
 
     cloned = obj.clone()
     copied = copy.deepcopy(obj)
@@ -608,8 +606,27 @@ def test_clone_and_deepcopy_keep_provenance():
     assert copied._provenance == obj._provenance
     assert cloned._provenance is not obj._provenance
     assert copied._provenance is not obj._provenance
+    assert cloned._primary_filename == Path("example.dat")
+    assert copied._primary_filename == Path("example.dat")
     assert cloned._yaml_serializable is False
     assert copied._yaml_serializable is False
+
+
+def test_constructor_provenance_without_primary_filename():
+    obj = SerializationLeaf(value=9)
+
+    obj._set_constructor_provenance("from_example", None, value=9)
+
+    assert not hasattr(obj, "_primary_filename")
+    assert obj._provenance["constructor"]["kwargs"] == {"value": 9}
+
+
+def test_scene_part_filename_is_read_only():
+    part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+
+    assert part.filename.name == "cylinder.obj"
+    with pytest.raises(AttributeError):
+        part.filename = Path("replacement.obj")
 
 
 def test_scenepart_transform_provenance_roundtrip(tmp_path):
@@ -792,6 +809,9 @@ def test_from_constructors_store_provenance():
     assert platform._provenance["constructor"]["method"] == "from_xml"
     assert platform._provenance["constructor"]["kwargs"]["platform_id"] == "tripod"
     assert survey._provenance["constructor"]["method"] == "from_xml"
+    assert scanner._primary_filename.name == "scanners_als.xml"
+    assert platform._primary_filename.name == "platforms.xml"
+    assert survey._primary_filename.name == "als_toyblocks.xml"
     assert scanner._yaml_serializable is True
     assert platform._yaml_serializable is True
     assert survey._yaml_serializable is True

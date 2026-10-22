@@ -20,14 +20,37 @@ using helios::analytics::HDA_StateJSONReporter;
 #endif
 
 #include "Simulation.h"
-#include <DateTimeUtils.h>
 #include <TimeWatcher.h>
 #include <filems/facade/FMSFacade.h>
 
 #include <algorithm>
+#include <ctime>
 #include <stdexcept>
 
 namespace {
+// Convert a UTC "YYYY-MM-DD hh:mm:ss" string to seconds since the Unix epoch.
+long
+dateTimeStrToSeconds(const std::string& str)
+{
+  std::tm t{};
+  t.tm_year = std::stoi(str.substr(0, 4)) - 1900;
+  t.tm_mon = std::stoi(str.substr(5, 2)) - 1;
+  t.tm_mday = std::stoi(str.substr(8, 2));
+  t.tm_hour = std::stoi(str.substr(11, 2));
+  t.tm_min = std::stoi(str.substr(14, 2));
+  t.tm_sec = std::stoi(str.substr(17, 2));
+
+#ifdef _WIN32
+  std::time_t const tt = _mkgmtime(&t);
+#else
+  std::time_t const tt = timegm(&t);
+#endif
+
+  return duration_cast<seconds>(
+           system_clock::from_time_t(tt).time_since_epoch())
+    .count();
+}
+
 std::string
 resolveMeasurementOutputPath(const std::shared_ptr<Scanner>& scanner,
                              bool const exportToFile)
@@ -638,7 +661,7 @@ Simulation::calcCurrentGpsTime()
     if (fixedGpsTimeStart != "") {
       if (fixedGpsTimeStart.find(":") != std::string::npos) {
         // "YYYY-MM-DD hh:mm:ss"
-        now = DateTimeUtils::dateTimeStrToSeconds(fixedGpsTimeStart);
+        now = dateTimeStrToSeconds(fixedGpsTimeStart);
       } else {
         now = std::stol(fixedGpsTimeStart);
       }

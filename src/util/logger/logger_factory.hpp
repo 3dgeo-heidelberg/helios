@@ -2,11 +2,13 @@
 
 #include <file_logger.hpp>
 #include <full_logger.hpp>
+#include <logger.hpp>
 #include <logging_common.hpp>
-#include <logging_creation.hpp>
 #include <std_out_logger.hpp>
 
-#include <exception>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
 
 /**
  * @brief Logger factory class can be used to build loggers
@@ -14,6 +16,8 @@
 class logger_factory
 {
 protected:
+  using logger_creator = logger* (*)(const logging_config_t&);
+
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**

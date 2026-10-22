@@ -2,11 +2,11 @@
 #include <FileUtils.h>
 #include <Triangle.h>
 #include <Vertex.h>
-#include <boost/variant/get.hpp>
 #include <fstream>
 #include <logging.hpp>
 #include <ogrsf_frmts.h>
 #include <sstream>
+#include <variant>
 // ***  R U N  *** //
 // *************** //
 ScenePart*

@@ -100,6 +100,7 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
         material = cls._from_cpp(_cpp_material)
         material._set_constructor_provenance(
             "from_file",
+            "material_file",
             material_file=material_file,
             material_id=material_id,
         )
@@ -192,6 +193,11 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
         ForceOnGroundStrategy.NONE
     )
+
+    @property
+    def filename(self) -> Path:
+        """The primary file from which the scene part was loaded."""
+        return self._primary_filename
 
     @property
     def bbox(self) -> BoundingBox:
@@ -358,6 +364,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part._disable_yaml_serialization_for_descendants()
         scene_part._set_constructor_provenance(
             "from_xml",
+            "scene_part_file",
             scene_part_file=scene_part_file,
             id=id,
         )
@@ -395,6 +402,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_obj",
+            "obj_file",
             obj_file=obj_file,
             up_axis=up_axis,
             id=id,
@@ -425,6 +433,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_tiff",
+            "tiff_file",
             tiff_file=tiff_file,
             id=id,
         )
@@ -548,6 +557,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_xyz",
+            "xyz_file",
             xyz_file=xyz_file,
             voxel_size=voxel_size,
             separator=separator,
@@ -679,6 +689,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         scene_part.id = id
         scene_part._set_constructor_provenance(
             "from_vox",
+            "vox_file",
             vox_file=vox_file,
             intersection_mode=intersection_mode,
             intersection_argument=intersection_argument,
@@ -1140,7 +1151,9 @@ class StaticScene(_Scene, cpp_class=_helios.StaticScene):
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
         scene._disable_yaml_serialization_for_descendants()
-        scene._set_constructor_provenance("from_xml", scene_file=scene_file)
+        scene._set_constructor_provenance(
+            "from_xml", "scene_file", scene_file=scene_file
+        )
         return scene
 
     @classonlymethod
@@ -1154,7 +1167,9 @@ class StaticScene(_Scene, cpp_class=_helios.StaticScene):
         """
         _cpp_scene = _helios.StaticScene.from_binary(str(binary_file))
         scene = cls._from_cpp(_cpp_scene)
-        scene._set_constructor_provenance("from_binary", binary_file=binary_file)
+        scene._set_constructor_provenance(
+            "from_binary", "binary_file", binary_file=binary_file
+        )
         return scene
 
     @validate_call
@@ -1361,5 +1376,7 @@ class DynamicScene(_Scene, cpp_class=_helios.DynamicScene):
         scene = cls._from_cpp(_cpp_scene)
         scene._is_loaded_from_xml = True
         scene._disable_yaml_serialization_for_descendants()
-        scene._set_constructor_provenance("from_xml", scene_file=scene_file)
+        scene._set_constructor_provenance(
+            "from_xml", "scene_file", scene_file=scene_file
+        )
         return scene

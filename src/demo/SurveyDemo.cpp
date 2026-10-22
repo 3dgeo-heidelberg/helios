@@ -2,22 +2,22 @@
 
 #include <SurveyDemo.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 using namespace HeliosDemos;
 
 bool
 SurveyDemo::validateSurveyPath()
 {
-  return boost::filesystem::exists(surveyPath) &&
-         boost::filesystem::is_regular_file(surveyPath);
+  return std::filesystem::exists(surveyPath) &&
+         std::filesystem::is_regular_file(surveyPath);
 }
 
 bool
 SurveyDemo::validateAssetsPath()
 {
-  return boost::filesystem::exists(assetsPath) &&
-         boost::filesystem::is_directory(assetsPath);
+  return std::filesystem::exists(assetsPath) &&
+         std::filesystem::is_directory(assetsPath);
 }
 
 #endif

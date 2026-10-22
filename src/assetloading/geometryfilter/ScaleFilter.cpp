@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <boost/variant/get.hpp>
 #include <logging.hpp>
+#include <variant>
 
 #include "ScaleFilter.h"
 
@@ -12,7 +12,7 @@ ScaleFilter::run()
     double scaleFactor = localScaleFactor;
     if (!useLocalScaleFactor) {
       std::map<std::string, ObjectT>::iterator it = params.find("scale");
-      scaleFactor = boost::get<double>(it->second);
+      scaleFactor = std::get<double>(it->second);
     }
 
     if (scaleFactor != 0) {

@@ -1,15 +1,15 @@
 #include "logging.hpp"
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 #include <string>
 
 #include <chrono>
 #include <memory>
 using namespace std::chrono;
 
-#include <boost/filesystem.hpp>
-#include <boost/format.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "AbstractDetector.h"
 #include "HelicopterPlatform.h"
@@ -250,7 +250,7 @@ SurveyPlayback::getCurrentLegIndex()
 }
 
 string
-SurveyPlayback::getLegOutputPrefix(std::string format)
+SurveyPlayback::getLegOutputPrefix(int width)
 {
   std::shared_ptr<Leg> leg = getCurrentLeg();
   std::shared_ptr<ScanningStrip> strip = leg->getStrip();
@@ -258,11 +258,12 @@ SurveyPlayback::getLegOutputPrefix(std::string format)
   // Mark leg as processed
   leg->wasProcessed = true;
 
-  stringstream ss;
+  std::ostringstream ss;
+  ss << std::setfill('0');
   if (strip != nullptr) { // Handle prefix when leg belongs to a split
-    ss << "strip" << boost::str(boost::format(format) % strip->getStripId());
+    ss << "strip" << std::setw(width) << strip->getStripId();
   } else { // Handle prefix when leg does not belong to a split
-    ss << "leg" << boost::str(boost::format(format) % leg->getSerialId());
+    ss << "leg" << std::internal << std::setw(width) << leg->getSerialId();
   }
   return ss.str();
 }

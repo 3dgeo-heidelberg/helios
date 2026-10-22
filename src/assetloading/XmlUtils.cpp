@@ -138,9 +138,9 @@ XmlUtils::createVec3dFromXml(tinyxml2::XMLElement* node, std::string attrPrefix)
   }
 
   return glm::dvec3(
-    boost::get<double>(getAttribute(node, attrPrefix + "x", "double", 0.0)),
-    boost::get<double>(getAttribute(node, attrPrefix + "y", "double", 0.0)),
-    boost::get<double>(getAttribute(node, attrPrefix + "z", "double", 0.0)));
+    std::get<double>(getAttribute(node, attrPrefix + "x", "double", 0.0)),
+    std::get<double>(getAttribute(node, attrPrefix + "y", "double", 0.0)),
+    std::get<double>(getAttribute(node, attrPrefix + "z", "double", 0.0)));
 }
 
 std::shared_ptr<NoiseSource<double>>
@@ -219,18 +219,10 @@ XmlUtils::getAttribute(tinyxml2::XMLElement* element,
     ss.flush();
     ss.str("");
 
-    if (!defaultVal.empty()) {
-      result = defaultVal;
-      ss << defaultMsg << " '" << attrName
-         << "' : " << boost::apply_visitor(stringVisitor{}, defaultVal);
-      logging::INFO(ss.str());
-    } else {
-      ss << "Exception:\n" << e.what() << "\n";
-      ss << "ERROR: No default value specified for attribute '" << attrName
-         << "'. Aborting.";
-      logging::ERR(ss.str());
-      throw HeliosException(ss.str());
-    }
+    result = defaultVal;
+    ss << defaultMsg << " '" << attrName
+       << "' : " << std::visit(stringVisitor{}, defaultVal);
+    logging::INFO(ss.str());
   }
 
   return result;

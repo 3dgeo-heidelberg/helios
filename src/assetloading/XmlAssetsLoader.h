@@ -11,14 +11,14 @@
 
 #include <tinyxml2.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 /**
  * @brief Class for asset loading from XML file.

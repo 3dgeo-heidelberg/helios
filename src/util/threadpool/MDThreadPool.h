@@ -3,6 +3,7 @@
 #include <HeliosException.h>
 #include <SimpleThreadPool.h>
 #include <boost/asio/post.hpp>
+#include <functional>
 #include <unordered_map>
 
 /**
@@ -53,12 +54,10 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    boost::asio::post(
-      this->io_context_,
-      boost::bind(&MDThreadPool<MDType, TaskArgs...>::wrap_md_task,
-                  this,
-                  boost::function<void(TaskArgs...)>(task),
-                  data));
+    boost::asio::post(this->io_context_,
+                      [this,
+                       task = std::function<void(TaskArgs...)>(task),
+                       data]() mutable { wrap_md_task(task, data); });
   }
 
   /**
@@ -89,12 +88,10 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    boost::asio::post(
-      this->io_context_,
-      boost::bind(&MDThreadPool<MDType, TaskArgs...>::wrap_md_task,
-                  this,
-                  boost::function<void(TaskArgs...)>(task),
-                  data));
+    boost::asio::post(this->io_context_,
+                      [this,
+                       task = std::function<void(TaskArgs...)>(task),
+                       data]() mutable { wrap_md_task(task, data); });
     return true;
   }
 
@@ -121,7 +118,7 @@ protected:
    *  do it at do_md_task implementation. It is safe to do so because it will
    *  not be used later by any MDThreadPool stage
    */
-  virtual void wrap_md_task(boost::function<void(TaskArgs...)>& task,
+  virtual void wrap_md_task(std::function<void(TaskArgs...)>& task,
                             MDType* data)
   {
     // Run supplied data task
@@ -148,7 +145,7 @@ protected:
    * @brief Throw exception when calling non data do_task
    * @see ThreadPool::do_task
    */
-  void do_task(boost::function<void(TaskArgs...)>& task) override
+  void do_task(std::function<void(TaskArgs...)>& task) override
   {
     throw HeliosException("MDThreadPool::do_task MUST NOT be invoked.\n"
                           "Please, avoid this call or override implementation");
@@ -159,7 +156,7 @@ protected:
    * @param task Task to be invoked
    * @param data The data associated with the task
    */
-  virtual void do_md_task(boost::function<void(TaskArgs...)>& task,
+  virtual void do_md_task(std::function<void(TaskArgs...)>& task,
                           MDType* data) = 0;
 
 public:
