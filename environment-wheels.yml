@@ -1,0 +1,16 @@
+name: helios-wheels
+channels:
+  - conda-forge
+dependencies:
+  # Native dependencies required to build and repair binary wheels on
+  # platforms where we source the libraries from conda-forge.
+  - armadillo
+  - blas
+  - cereal
+  - glm
+  - lapack
+  - lastools >=2.0.4
+  - libboost-devel
+  - libgdal
+  - tinyxml2
+  - zlib
