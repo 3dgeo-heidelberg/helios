@@ -114,8 +114,8 @@ public:
   {
     out << m.hitObjectId << "," << m.position << "," << m.beamDirection << ","
         << m.beamOrigin << "," << m.distance << "," << m.incidenceAngle << ","
-        << m.intensity << "," << m.echo_width << "," << m.returnNumber << "," 
-        << m.pulseReturnNumber << "," << m.fullwaveIndex << "," 
+        << m.intensity << "," << m.echo_width << "," << m.returnNumber << ","
+        << m.pulseReturnNumber << "," << m.fullwaveIndex << ","
         << m.classification << "," << m.gpsTime;
     return out;
   }
