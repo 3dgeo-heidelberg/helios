@@ -653,10 +653,15 @@ class Model(metaclass=ValidatedModelMetaClass):
             for model in _iter_models_in_value(getattr(self, field)):
                 model._set_yaml_serializable(False, recursive=True, _seen=_seen)
 
-    def _set_constructor_provenance(self, method: str, **kwargs):
+    def _set_constructor_provenance(
+        self, method: str, primary_filename_key: Optional[str], **kwargs
+    ):
         """Initialize constructor provenance metadata for this model instance."""
 
         from helios.serialization import _normalize_provenance_value
+
+        if primary_filename_key is not None:
+            self._primary_filename = kwargs[primary_filename_key]
 
         self._provenance = {
             "constructor": {
@@ -748,6 +753,8 @@ class Model(metaclass=ValidatedModelMetaClass):
 
             if hasattr(self, "_provenance"):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
+            if hasattr(self, "_primary_filename"):
+                reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
             if hasattr(self, "_provided_fields"):
@@ -766,6 +773,8 @@ class Model(metaclass=ValidatedModelMetaClass):
 
             if hasattr(self, "_provenance"):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
+            if hasattr(self, "_primary_filename"):
+                reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
             if hasattr(self, "_provided_fields"):

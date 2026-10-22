@@ -441,7 +441,9 @@ class Survey(Model, cpp_class=_helios.Survey):
         survey._is_loaded_from_xml = True
         survey.scene._is_loaded_from_xml = True
         survey._disable_yaml_serialization_for_descendants()
-        survey._set_constructor_provenance("from_xml", survey_file=survey_file)
+        survey._set_constructor_provenance(
+            "from_xml", "survey_file", survey_file=survey_file
+        )
 
         return survey
 
