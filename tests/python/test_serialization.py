@@ -61,6 +61,22 @@ def test_serialization_schema_git_reference_uses_main_for_unclean_version(versio
     assert serialization._serialization_schema_git_reference(version) == "main"
 
 
+def test_replace_nonfinite_values_recursively_replaces_nonfinite_floats():
+    value = {
+        "finite": 1.5,
+        "nested": [float("nan"), {"positive_inf": float("inf")}],
+        "tuple": (float("-inf"), "unchanged"),
+    }
+
+    result = serialization.replace_nonfinite_values(value, replacement="nonfinite")
+
+    assert result == {
+        "finite": 1.5,
+        "nested": ["nonfinite", {"positive_inf": "nonfinite"}],
+        "tuple": ("nonfinite", "unchanged"),
+    }
+
+
 def _build_manual_survey() -> Survey:
     scanner = Scanner.from_xml("data/scanners_tls.xml", scanner_id="riegl_vz400")
     platform = Platform.from_xml("data/platforms.xml", platform_id="tripod")

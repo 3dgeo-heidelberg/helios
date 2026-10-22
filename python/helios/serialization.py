@@ -20,6 +20,7 @@ from helios.validation import Model, get_all_annotations
 
 import importlib_resources as resources
 import json
+import math
 import numpy as np
 import os
 import shlex
@@ -1315,3 +1316,16 @@ def _class_identifier(cls: Type[Model]) -> str:
     """Return the fully qualified identifier for a model class."""
 
     return f"{cls.__module__}.{cls.__qualname__}"
+
+
+def replace_nonfinite_values(obj: Any, replacement: Any = None) -> Any:
+    """Recursively replace NaN and +/-Inf in nested structures."""
+    if isinstance(obj, dict):
+        return {k: replace_nonfinite_values(v, replacement) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [replace_nonfinite_values(v, replacement) for v in obj]
+    if isinstance(obj, tuple):
+        return tuple(replace_nonfinite_values(v, replacement) for v in obj)
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return replacement
+    return obj

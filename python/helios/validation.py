@@ -573,11 +573,13 @@ class Model(metaclass=ValidatedModelMetaClass):
         from helios.serialization import (
             _build_model_document,
             _SerializationContext,
+            replace_nonfinite_values,
         )
 
         self._ensure_yaml_serializable()
         context = _SerializationContext(shallow=False, binary=False)
-        return _build_model_document(self, context)
+        doc = _build_model_document(self, context)
+        return replace_nonfinite_values(doc)
 
     @classmethod
     def _from_cpp(cls, value):
