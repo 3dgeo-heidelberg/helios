@@ -181,8 +181,8 @@ Scan pattern time offset
 By default, HELIOS++ starts every scan from the same initial state of the beam deflector (e.g., mirror angle or prism orientation),
 i.e., the first point lies at a fixed position within the scan pattern.
 This agrees with real-world scanners whose rotating mirrors are reset to a default position between scans.
-In other systems, e.g., the Risley-prism Livox scanners, the first point of a scan can lie anywhere within the pattern,
-presumably depending on the prism orientations at the end of the previous scan.
+In other systems, the first point of a scan can lie anywhere within the pattern.
+This is for instance the case with Risley prism Livox scanners, where the prisms continuously rotate even when no points are being recorded.
 
 To replicate such a start more accurately, the parameter ``opticsWarmupPhase_s`` (XMLs) / ``optics_warmup_phase`` (Python API)
 specifies a time offset in seconds (default: 0) from the default initial state.
