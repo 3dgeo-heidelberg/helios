@@ -188,7 +188,7 @@ FullWaveformPulseRunnable::handleSubray(
 #if DATA_ANALYTICS >= 2
   subrayHit = false;
 #endif
-  // Rotate around the circle:
+  // Map the prepared emitter-local subray into the pulse attitude:
   glm::dvec3 subrayDirection =
     pulse.getAttitude().applyTo(subrayRotation).applyTo(Directions::forward);
   std::vector<double> tMinMax =
@@ -261,8 +261,7 @@ FullWaveformPulseRunnable::handleSubray(
         auto const& subray = scanner->getScanningDevice(pulse.getDeviceIndex())
                                .getSubrays()
                                .at(subrayIndex);
-        record[6] = distance * std::cos(subray.angle_rad) *
-                    std::tan(subray.outerAngle_rad);
+        record[6] = distance * std::sin(subray.angle_rad);
         record[8] = sigma;
         record[9] =
           powerRatio * scanner->getPulseAmplitude(pulse.getDeviceIndex());

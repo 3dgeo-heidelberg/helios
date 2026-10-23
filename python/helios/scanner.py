@@ -164,7 +164,7 @@ class Scanner(Model, cpp_class=_helios.Scanner):
 
     @property
     def beam_divergence(self) -> Angle:
-        """Full beam divergence of channel 0, in radians."""
+        """Legacy X-axis divergence; assigning a value sets both axes."""
         return self.get_beam_divergence()
 
     @beam_divergence.setter
@@ -173,7 +173,7 @@ class Scanner(Model, cpp_class=_helios.Scanner):
 
     @validate_call
     def get_beam_divergence(self, index: int = 0) -> Angle:
-        """Return a channel's full beam divergence in radians."""
+        """Return a channel's X-axis full divergence in radians."""
         if not 0 <= index < self._cpp_object.num_devices:
             raise IndexError("Scanner channel index out of range")
         return self._cpp_object.get_specific_beam_divergence(index)
@@ -187,6 +187,57 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         if not 0 <= index < self._cpp_object.num_devices:
             raise IndexError("Scanner channel index out of range")
         self._cpp_object.set_specific_beam_divergence(value, index)
+
+    @property
+    def beam_divergence_x(self) -> Angle:
+        """Full 1/e² divergence along emitter-local right."""
+        return self.get_beam_divergence_x()
+
+    @beam_divergence_x.setter
+    def beam_divergence_x(self, value: Angle) -> None:
+        self.set_beam_divergence_x(value)
+
+    @validate_call
+    def get_beam_divergence_x(self, index: int = 0) -> Angle:
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_divergence_x(index)
+
+    @validate_call
+    def set_beam_divergence_x(self, value: Angle, index: int = 0) -> None:
+        """Update only the X axis; accepts radians or angles with units."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergence_x(value, index)
+
+    @property
+    def beam_divergence_y(self) -> Angle:
+        """Full 1/e² divergence along emitter-local up."""
+        return self.get_beam_divergence_y()
+
+    @beam_divergence_y.setter
+    def beam_divergence_y(self, value: Angle) -> None:
+        self.set_beam_divergence_y(value)
+
+    @validate_call
+    def get_beam_divergence_y(self, index: int = 0) -> Angle:
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_divergence_y(index)
+
+    @validate_call
+    def set_beam_divergence_y(self, value: Angle, index: int = 0) -> None:
+        """Update only the Y axis; accepts radians or angles with units."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergence_y(value, index)
+
+    @validate_call
+    def set_beam_divergences(self, x: Angle, y: Angle, index: int = 0) -> None:
+        """Atomically set both full-angle divergences before running a survey."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergences(x, y, index)
 
     @classonlymethod
     @validate_call

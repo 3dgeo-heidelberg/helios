@@ -37,7 +37,8 @@ protected:
    *
    * [5] -> The target area in squared meters.
    *
-   * [6] -> The radius in meters, i.e., the distance between the beam's
+   * [6] -> Actual transverse hit radius R*sin(theta) in meters (not the
+   *  annular boundary radius), i.e., the distance between the beam's
    *  center line and the intersection point.
    *
    * [7] -> The bidirectional reflectance distribution function (BRDF).

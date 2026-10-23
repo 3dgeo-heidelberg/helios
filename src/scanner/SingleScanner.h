@@ -254,7 +254,7 @@ public:
    */
   double getBeamDivergence(size_t const idx) const override
   {
-    return scanDev.beamDivergence_rad;
+    return scanDev.beamDivergenceX_rad;
   }
   /**
    * @see Scanner::setBeamDivergence
@@ -262,6 +262,14 @@ public:
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
     scanDev.setBeamDivergence(beamDivergence);
+  }
+  double getBeamDivergenceY(size_t const idx = 0) const override
+  {
+    return scanDev.getBeamDivergenceY();
+  }
+  void setBeamDivergences(double x, double y, size_t const idx = 0) override
+  {
+    scanDev.setBeamDivergences(x, y);
   }
   /**
    * @see Scanner::getPulseAmplitude
@@ -362,21 +370,6 @@ public:
                                 size_t const idx) override
   {
     scanDev.atmosphericExtinction = atmosphericExtinction;
-  }
-  /**
-   * @see Scanner::getBeamWaistRadius
-   */
-  double getBeamWaistRadius(size_t const idx) const override
-  {
-    return scanDev.beamWaistRadius;
-  }
-  /**
-   * @see Scanner::setBeamWaistRadius
-   */
-  void setBeamWaistRadius(double const beamWaistRadius,
-                          size_t const idx) override
-  {
-    scanDev.beamWaistRadius = beamWaistRadius;
   }
   /**
    * @see Scanner::getHeadRelativeEmitterPosition

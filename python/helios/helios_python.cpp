@@ -1805,7 +1805,9 @@ PYBIND11_MODULE(_helios, m)
     .def_readonly("angle_rad", &ScanningDevice::Subray::angle_rad)
     .def_readonly("share", &ScanningDevice::Subray::share)
     .def_readonly("area_factor", &ScanningDevice::Subray::areaFactor)
-    .def_readonly("outer_angle_rad", &ScanningDevice::Subray::outerAngle_rad);
+    .def_readonly("rho", &ScanningDevice::Subray::rho)
+    .def_readonly("inner_rho", &ScanningDevice::Subray::innerRho)
+    .def_readonly("outer_rho", &ScanningDevice::Subray::outerRho);
 
   py::class_<ScanningDevice, std::shared_ptr<ScanningDevice>> scanning_device(
     m, "ScanningDevice");
@@ -1824,6 +1826,16 @@ PYBIND11_MODULE(_helios, m)
                   double,
                   double>())
 
+    .def_property("beam_divergence_x",
+                  &ScanningDevice::getBeamDivergenceX,
+                  &ScanningDevice::setBeamDivergenceX)
+    .def_property("beam_divergence_y",
+                  &ScanningDevice::getBeamDivergenceY,
+                  &ScanningDevice::setBeamDivergenceY)
+    .def("set_beam_divergences",
+         &ScanningDevice::setBeamDivergences,
+         py::arg("x"),
+         py::arg("y"))
     .def_readwrite("cached_dr2", &ScanningDevice::cached_Dr2)
     .def_readwrite("cached_bt2", &ScanningDevice::cached_Bt2)
     .def_property_readonly(
@@ -2019,6 +2031,33 @@ PYBIND11_MODULE(_helios, m)
          py::overload_cast<bool, size_t>(&Scanner::setLastPulseWasHit),
          py::arg("value"),
          py::arg("index"))
+    .def("get_beam_divergence_x",
+         &Scanner::getBeamDivergenceX,
+         py::arg("index") = 0)
+    .def("set_beam_divergence_x",
+         &Scanner::setBeamDivergenceX,
+         py::arg("value"),
+         py::arg("index") = 0)
+    .def_property(
+      "beam_divergence_x",
+      [](Scanner const& s) { return s.getBeamDivergenceX(); },
+      [](Scanner& s, double value) { s.setBeamDivergenceX(value); })
+    .def("get_beam_divergence_y",
+         &Scanner::getBeamDivergenceY,
+         py::arg("index") = 0)
+    .def("set_beam_divergence_y",
+         &Scanner::setBeamDivergenceY,
+         py::arg("value"),
+         py::arg("index") = 0)
+    .def_property(
+      "beam_divergence_y",
+      [](Scanner const& s) { return s.getBeamDivergenceY(); },
+      [](Scanner& s, double value) { s.setBeamDivergenceY(value); })
+    .def("set_beam_divergences",
+         &Scanner::setBeamDivergences,
+         py::arg("x"),
+         py::arg("y"),
+         py::arg("index") = 0)
     .def("get_specific_beam_divergence",
          py::overload_cast<size_t>(&Scanner::getBeamDivergence, py::const_),
          py::arg("index"))
@@ -2120,14 +2159,6 @@ PYBIND11_MODULE(_helios, m)
       py::arg("index"))
     .def("set_specific_atmospheric_extinction",
          py::overload_cast<double, size_t>(&Scanner::setAtmosphericExtinction),
-         py::arg("value"),
-         py::arg("index"))
-
-    .def("get_specific_beam_waist_radius",
-         py::overload_cast<size_t>(&Scanner::getBeamWaistRadius, py::const_),
-         py::arg("index"))
-    .def("set_specific_beam_waist_radius",
-         py::overload_cast<double, size_t>(&Scanner::setBeamWaistRadius),
          py::arg("value"),
          py::arg("index"))
 
@@ -2297,10 +2328,6 @@ PYBIND11_MODULE(_helios, m)
       "atmospheric_extinction",
       py::overload_cast<>(&Scanner::getAtmosphericExtinction, py::const_),
       py::overload_cast<double>(&Scanner::setAtmosphericExtinction))
-
-    .def_property("beam_waist_radius",
-                  py::overload_cast<>(&Scanner::getBeamWaistRadius, py::const_),
-                  py::overload_cast<double>(&Scanner::setBeamWaistRadius))
 
     .def_property("max_nor",
                   py::overload_cast<>(&Scanner::getMaxNOR, py::const_),
@@ -2673,15 +2700,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("value"),
          py::arg("index"))
 
-    .def(
-      "get_specific_beam_waist_radius",
-      py::overload_cast<size_t>(&SingleScanner::getBeamWaistRadius, py::const_),
-      py::arg("index"))
-    .def("set_specific_beam_waist_radius",
-         py::overload_cast<double, size_t>(&SingleScanner::setBeamWaistRadius),
-         py::arg("value"),
-         py::arg("index"))
-
     .def("get_head_relative_emitter_attitude",
          py::overload_cast<size_t>(
            &SingleScanner::getHeadRelativeEmitterAttitude, py::const_),
@@ -2953,14 +2971,6 @@ PYBIND11_MODULE(_helios, m)
     .def("set_atmospheric_extinction",
          &MultiScanner::setAtmosphericExtinction,
          py::arg("atmospheric_extinction"),
-         py::arg("idx"))
-
-    .def("get_beam_waist_radius",
-         &MultiScanner::getBeamWaistRadius,
-         py::arg("idx"))
-    .def("set_beam_waist_radius",
-         &MultiScanner::setBeamWaistRadius,
-         py::arg("beam_waist_radius"),
          py::arg("idx"))
 
     .def("get_head_relative_emitter_position",

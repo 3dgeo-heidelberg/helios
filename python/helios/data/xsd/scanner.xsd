@@ -146,6 +146,8 @@
                                             <xs:attribute type="xs:string" name="id" use="required"/>
                                             <xs:attribute type="xs:float" name="accuracy_m" use="optional"/>
                                             <xs:attribute type="xs:float" name="beamDivergence_rad" use="optional"/>
+                                            <xs:attribute type="xs:float" name="beamDivergenceX_rad" use="optional"/>
+                                            <xs:attribute type="xs:float" name="beamDivergenceY_rad" use="optional"/>
                                             <xs:attribute type="xs:string" name="name" use="optional"/>
                                             <xs:attribute type="opticsType" name="optics" use="optional"/>
                                             <xs:attribute type="xs:string" name="pulseFreqs_Hz" use="optional"/>
@@ -184,6 +186,8 @@
                         <xs:attribute type="xs:string" name="id" use="required"/>
                         <xs:attribute type="xs:float" name="accuracy_m" use="optional"/>
                         <xs:attribute type="xs:float" name="beamDivergence_rad" use="optional"/>
+                        <xs:attribute type="xs:float" name="beamDivergenceX_rad" use="optional"/>
+                        <xs:attribute type="xs:float" name="beamDivergenceY_rad" use="optional"/>
                         <xs:attribute type="xs:string" name="name" use="optional"/>
                         <xs:attribute type="opticsType" name="optics" use="required"/>
                         <xs:attribute type="xs:string" name="pulseFreqs_Hz" use="optional"/>
