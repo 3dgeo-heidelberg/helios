@@ -12,46 +12,6 @@ TEST_CASE("Energy Models Test ")
 {
   double const eps = 0.00001;
 
-  SECTION("Test Emitted Received Power")
-  {
-    // Generate values for the tests
-    // Format: I0, lambda, R, R0, r, w0, Dr2, Bt2, etaSys, ae, sigma
-    auto [I0, lambda, R, R0, r, w0, Dr2, Bt2, etaSys, ae, sigma] = GENERATE(
-      std::make_tuple(450., 0.3, 7.5, 5.0, 0.33, 0.9, 0.9, 0.7, 1.1, 0.0, 3.0),
-      std::make_tuple(575., 0.6, 6.3, 9.0, 0.67, 0.6, 0.8, 0.6, 0.3, 0.05, 0.5),
-      std::make_tuple(
-        250., 0.0001, 1.0, 0.1, 0.09, 0.05, 0.1, 0.5, 0.6, 0.1, 0.4),
-      std::make_tuple(75., 0.001, 5.0, 0.5, 13., 0.1, 0.2, 0.4, 0.9, 0.15, 0.3),
-      std::make_tuple(
-        370., 0.005, 10.0, 1.0, 0.55, 0.3, 0.7, 0.05, 1.2, 0.23, 0.6),
-      std::make_tuple(
-        40., 0.01, 15.0, 5.0, 0.26, 1.0, 0.3, 0.1, 1.0, 0.17, 0.7),
-      std::make_tuple(
-        30., 0.05, 20.0, 10.0, 0.19, 1.5, 0.6, 0.2, 0.5, 0.09, 1.5),
-      std::make_tuple(
-        900., 0.1, 30.0, 15.0, 7.4, 1.3, 0.5, 0.3, 0.1, 0.009, 2.0));
-
-    // Compute tests
-    // Test emitted power for i-th case
-    double const PeNew =
-      EnergyMaths::calcEmittedPower(I0, lambda, R, R0, r, w0);
-    double const PeOld =
-      EnergyMaths::calcEmittedPowerLegacy(I0, lambda, R, R0, r, w0);
-    REQUIRE(std::fabs(PeNew - PeOld) <= eps);
-    // Test received power for i-th case
-    double const PrNew = EnergyMaths::calcReceivedPower(
-      I0, lambda, R, R0, r, w0, Dr2, Bt2, etaSys, ae, sigma);
-    double const PrOld = EnergyMaths::calcReceivedPowerLegacy(
-      PeOld,
-      Dr2,
-      R,
-      Bt2,
-      etaSys,
-      EnergyMaths::calcAtmosphericFactor(R, ae),
-      sigma);
-    REQUIRE(std::fabs(PrNew - PrOld) <= eps);
-  }
-
   SECTION("Test Emitted Subray Wise Power")
   {
     // Values for the tests
@@ -119,7 +79,7 @@ TEST_CASE("Energy Models Test ")
     scanner->setWavelength(1064e-06);
     scanner->setBeamWaistRadius(0.0011289390629985112);
     scanner->setAtmosphericExtinction(9.07603791e-6);
-    scanner->prepareSimulation(false);
+    scanner->prepareSimulation();
     // Get reference to scanning device
     ScanningDevice& scanDev = scanner->getScanningDevice(0);
 

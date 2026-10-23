@@ -69,9 +69,9 @@ public:
     // This can be a shallow or deep copy depending on your needs
     return std::make_shared<ScannerWrap>(*this);
   }
-  void prepareSimulation(bool const legacyEnergyModel) override
+  void prepareSimulation() override
   {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, prepareSimulation, legacyEnergyModel);
+    PYBIND11_OVERLOAD_PURE(void, Scanner, prepareSimulation, );
   }
 
   std::shared_ptr<ScannerSettings> retrieveCurrentSettings(

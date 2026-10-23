@@ -98,7 +98,7 @@ public:
   /**
    * @see Scanner::prepareSimulation
    */
-  void prepareSimulation(bool const legacyEnergyModel = 0) override;
+  void prepareSimulation() override;
   /**
    * @see Scanner::applySettings
    */
