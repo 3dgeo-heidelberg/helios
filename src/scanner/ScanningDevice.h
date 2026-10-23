@@ -82,10 +82,6 @@ protected:
    */
   double pulseAmplitude_W = 1.0;
   /**
-   * @brief Beam quality
-   */
-  double beamQuality;
-  /**
    * @brief Device efficiency
    */
   double efficiency;
@@ -204,16 +200,6 @@ public:
    * @see ScanningDevice::receiverDiameter_m
    */
   double cached_Dr2;
-  /**
-   * @brief Legacy square of X-axis beam divergence (diagnostic only)
-   *
-   * \f[
-   *  B_{t2} = \textrm{beamDivergence}^{2}
-   * \f]
-   *
-   * @see ScanningDevice::beamDivergenceX_rad
-   */
-  double cached_Bt2;
   struct Subray
   {
     Rotation rotation;
@@ -253,7 +239,6 @@ public:
     std::list<int> const& pulseFreqs,
     double pulseLength_ns,
     double pulseAmplitude,
-    double beamQuality,
     double efficiency,
     double receiverDiameter_m,
     double atmosphericVisibility_km,
@@ -298,12 +283,6 @@ public:
   /** Atomically update both axes and the prepared sampling geometry. */
   void setBeamDivergences(double x_rad, double y_rad);
 
-  /**
-   * @brief Refresh the legacy X-axis divergence-squared diagnostic.
-   * @see ScanningDevice::beamDivergenceX_rad
-   * @see ScanningDevice::cached_Bt2
-   */
-  void configureBeam();
   /**
    * @brief Compute the Kruse atmospheric extinction coefficient (per metre).
    * Uses wavelength in micrometres and visibility in kilometres. Outside

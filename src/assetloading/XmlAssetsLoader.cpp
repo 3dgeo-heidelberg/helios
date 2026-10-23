@@ -869,8 +869,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
       "4/exp(2); this is not an average-to-peak power conversion.");
   double pulseAmplitude =
     XmlUtils::getAttributeCast<double>(scannerNode, "pulseAmplitude_W", 1.0);
-  double beamQuality =
-    XmlUtils::getAttributeCast<double>(scannerNode, "beamQualityFactor", 1.0);
   double efficiency =
     XmlUtils::getAttributeCast<double>(scannerNode, "opticalEfficiency", 0.99);
   double receiverDiameter =
@@ -900,7 +898,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                pulseFreqs,
                                pulseLength_ns,
                                pulseAmplitude,
-                               beamQuality,
                                efficiency,
                                receiverDiameter,
                                visibility,
@@ -930,7 +927,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               pulseLength_ns,
                                               id,
                                               pulseAmplitude,
-                                              beamQuality,
                                               efficiency,
                                               receiverDiameter,
                                               visibility,
