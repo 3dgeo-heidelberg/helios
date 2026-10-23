@@ -14,7 +14,6 @@ SingleScanner::SingleScanner(
   double pulseLength_ns,
   std::string id,
   double pulseAmplitude,
-  double beamQuality,
   double efficiency,
   double receiverDiameter,
   double atmosphericVisibility,
@@ -40,7 +39,6 @@ SingleScanner::SingleScanner(
             pulseFreqs,
             pulseLength_ns,
             pulseAmplitude,
-            beamQuality,
             efficiency,
             receiverDiameter,
             atmosphericVisibility,
@@ -130,7 +128,6 @@ SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
   setActive(settings->active);
   trajectoryTimeInterval_ns = settings->trajectoryTimeInterval * 1000000000.0;
   scanDev.setOpticsWarmupPhase_s(settings->opticsWarmupPhase_s);
-  scanDev.configureBeam();
 
   // Configure other components
   getDetector(0)->applySettings(settings);

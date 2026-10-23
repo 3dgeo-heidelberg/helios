@@ -23,7 +23,6 @@ ScanningDevice::ScanningDevice(
   std::list<int> const& pulseFreqs,
   double pulseLength_ns,
   double pulseAmplitude_W,
-  double beamQuality,
   double efficiency,
   double receiverDiameter_m,
   double atmosphericVisibility_km,
@@ -37,7 +36,6 @@ ScanningDevice::ScanningDevice(
   , beamDivergenceY_rad(beamDiv_rad)
   , pulseLength_ns(pulseLength_ns)
   , pulseAmplitude_W(pulseAmplitude_W)
-  , beamQuality(beamQuality)
   , efficiency(efficiency)
   , receiverDiameter_m(receiverDiameter_m)
   , visibility_km(atmosphericVisibility_km)
@@ -47,7 +45,6 @@ ScanningDevice::ScanningDevice(
 {
   setPulseAmplitude(pulseAmplitude_W);
   preparePulse();
-  configureBeam();
   atmosphericExtinction = calcAtmosphericAttenuation();
   cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
 }
@@ -62,7 +59,6 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->beamDivergenceY_rad = scdev.beamDivergenceY_rad;
   this->pulseLength_ns = scdev.pulseLength_ns;
   this->pulseAmplitude_W = scdev.pulseAmplitude_W;
-  this->beamQuality = scdev.beamQuality;
   this->efficiency = scdev.efficiency;
   this->receiverDiameter_m = scdev.receiverDiameter_m;
   this->visibility_km = scdev.visibility_km;
@@ -79,7 +75,6 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->cfg_setting_opticsWarmupPhase_s = scdev.cfg_setting_opticsWarmupPhase_s;
   this->state_opticsWarmupApplied = scdev.state_opticsWarmupApplied;
   this->cached_Dr2 = scdev.cached_Dr2;
-  this->cached_Bt2 = scdev.cached_Bt2;
 
   if (scdev.scannerHead == nullptr)
     this->scannerHead = nullptr;
@@ -230,13 +225,6 @@ ScanningDevice::setBeamDivergences(double x_rad, double y_rad)
     beamDivergenceY_rad = previousY;
     throw;
   }
-  configureBeam();
-}
-
-void
-ScanningDevice::configureBeam()
-{
-  cached_Bt2 = beamDivergenceX_rad * beamDivergenceX_rad;
 }
 
 // Simulate energy loss from aerial particles (Carlsson et al., 2001)

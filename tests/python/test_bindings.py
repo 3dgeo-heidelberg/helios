@@ -948,7 +948,6 @@ class ExampleScanner(_helios.Scanner):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._max_nor = 10
-        self._bt2 = 0.5
         self._dr2 = 0.1
         self._head_relative_emitter_attitude = _helios.Rotation()
         self._head_relative_emitter_position = (0.0, 0.0, 0.0)
@@ -1082,12 +1081,6 @@ class ExampleScanner(_helios.Scanner):
     def setPulseAmplitude(self, pulseAmplitude, idx):
         pass  # Default implementation
 
-    def getBeamQuality(self, idx):
-        return 0.0  # Default implementation
-
-    def setBeamQuality(self, beamQuality, idx):
-        pass  # Default implementation
-
     def to_string(self):
         return "Scanner Info"  # Default implementation
 
@@ -1143,12 +1136,6 @@ class ExampleScanner(_helios.Scanner):
 
     def setHeadRelativeEmitterPosition(self, position, idx=0):
         self._head_relative_emitter_position = position
-
-    def getBt2(self, idx=0):
-        return self._bt2
-
-    def setBt2(self, bt2, idx=0):
-        self._bt2 = bt2
 
     def getDr2(self, idx=0):
         return self._dr2
@@ -1444,9 +1431,6 @@ class TestScannerMethods:
         position = (1.0, 2.0, 3.0)
         assert scanner.getHeadRelativeEmitterPosition() == (0.0, 0.0, 0.0)
 
-    def test_bt2(self, scanner):
-        assert scanner.getBt2() == 0.5
-
     def test_dr2(self, scanner):
         assert scanner.getDr2() == 0.1
 
@@ -1575,7 +1559,6 @@ def test_elliptical_subray_metadata():
         [100000],
         5.0,
         4.0,
-        1.0,
         0.99,
         0.15,
         23.0,

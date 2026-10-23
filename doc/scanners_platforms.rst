@@ -146,11 +146,6 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
 
 **Other parameters**:
 
-- ``beamQualityFactor``: Beam quality metadata retained in scanner definitions.
-  The far-field energy model uses divergence and sampling coverage directly;
-  beam quality and minimum detector range do not affect subray shares.
-  ``beamSampleQuality`` controls spatial resolution.
-
 - ``opticalEfficiency``: Efficiency of the scanner, i.e. :math:`\eta_{\text{Sys}}` in the LiDAR equation :cite:p:`HoeflePfeifer.2007` (default: 0.99).
 
 - ``atmosphericVisibility_km``: Used to calculate atmospheric attenuation, i.e. :math:`\eta_{\text{Atm}}`, following :cite:t:`Carlsson.2001`. The calculation depends on the scanner's wavelength (default: 23.0 km).

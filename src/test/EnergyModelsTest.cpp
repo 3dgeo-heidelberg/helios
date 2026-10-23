@@ -29,7 +29,6 @@ energyScanner(double amplitude = 4.0)
                                                  5.0,
                                                  "energy-test",
                                                  amplitude,
-                                                 1.0,
                                                  0.99,
                                                  0.15,
                                                  23.0,
@@ -368,7 +367,6 @@ TEST_CASE("Subray settings changes and copies cannot use stale tables",
   scanner->setBeamDivergence(0.0006);
   REQUIRE(device.isSubrayPatternCurrent());
   REQUIRE(device.getSubrays().back().angle_rad > previousAngle);
-  REQUIRE(device.cached_Bt2 == Catch::Approx(0.0006 * 0.0006));
   scanner->getFWFSettings().beamSamplingFactor = 1.0;
   REQUIRE_FALSE(device.isSubrayPatternCurrent());
   scanner->getFWFSettings().beamSampleQuality = 8;
@@ -427,7 +425,6 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
                          std::list<int>{ 100000 },
                          5.0,
                          4.0,
-                         1.0,
                          0.99,
                          0.15,
                          23.0,
