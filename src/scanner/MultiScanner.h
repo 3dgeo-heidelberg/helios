@@ -295,20 +295,6 @@ public:
     scanDevs[idx].setPulseAmplitude(pulseAmplitude);
   }
   /**
-   * @see Scanner::getBeamQuality
-   */
-  double getBeamQuality(size_t const idx) const override
-  {
-    return scanDevs[idx].beamQuality;
-  }
-  /**
-   * @see Scanner::setBeamQuality
-   */
-  void setBeamQuality(double const beamQuality, size_t const idx) override
-  {
-    scanDevs[idx].beamQuality = beamQuality;
-  }
-  /**
    * @see Scanner::getEfficiency
    */
   double getEfficiency(size_t const idx) const override
@@ -423,20 +409,6 @@ public:
   Rotation& getHeadRelativeEmitterAttitudeByRef(size_t const idx = 0) override
   {
     return scanDevs[idx].headRelativeEmitterAttitude;
-  }
-  /**
-   * @see Scanner::getBt2
-   */
-  double getBt2(size_t const idx) const override
-  {
-    return scanDevs[idx].cached_Bt2;
-  }
-  /**
-   * @see Scanner::setBt2
-   */
-  void setBt2(double const bt2, size_t const idx) override
-  {
-    scanDevs[idx].cached_Bt2 = bt2;
   }
   /**
    * @see Scanner::getDr2

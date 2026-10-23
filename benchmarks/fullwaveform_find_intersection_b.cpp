@@ -179,7 +179,6 @@ makeScanner()
                                     5.0,                // pulseLength_ns
                                     "benchmarkScanner", // id
                                     4.0,                // pulseAmplitude
-                                    1.0,                // beamQuality
                                     0.99,               // efficiency
                                     0.15,               // receiverDiameter
                                     23.0,               // atmosphericVisibility

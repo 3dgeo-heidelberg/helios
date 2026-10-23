@@ -173,7 +173,6 @@
                                             <xs:attribute type="xs:float" name="refrIndex_air" use="optional"/>
                                             <xs:attribute type="xs:float" name="pulseAmplitude_W" use="optional"/>
                                             <xs:attribute type="xs:short" name="numFibers" use="optional"/>
-                                            <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
                                             <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
                                             <xs:attribute type="xs:float" name="atmosphericVisibility_km" use="optional"/>
                                             <xs:attribute type="xs:float" name="headRotatePerSecMax_deg" use="optional"/>
@@ -213,7 +212,6 @@
                         <xs:attribute type="xs:float" name="refrIndex_air" use="optional"/>
                         <xs:attribute type="xs:float" name="pulseAmplitude_W" use="optional"/>
                         <xs:attribute type="xs:short" name="numFibers" use="optional"/>
-                        <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
                         <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
                         <xs:attribute type="xs:float" name="atmosphericVisibility_km" use="optional"/>
                         <xs:attribute type="xs:float" name="headRotatePerSecMax_deg" use="optional"/>
