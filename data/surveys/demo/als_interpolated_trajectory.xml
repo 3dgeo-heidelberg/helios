@@ -11,7 +11,7 @@
 			<rot axis="x" angle_deg="180" />
 			<rot axis="z" angle_deg="175" />
 		</scannerMount>        
-		<FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
+		<FWFSettings beamSampleQuality="3" sampleSpacing_m="0.03747405725" peakWindow_m="0.149896229"/>
 		<!-- Leg which interpolates the full trajectory -->
         <leg>
             <platformSettings 

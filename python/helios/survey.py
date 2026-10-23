@@ -122,6 +122,8 @@ class Survey(Model, cpp_class=_helios.Survey):
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
     full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
+    # Configuration overrides survive YAML replay of an XML-loaded survey.
+    _serialization_replace_model_fields = frozenset({"full_waveform_settings"})
 
     @validate_call(config={"arbitrary_types_allowed": True})
     def run(

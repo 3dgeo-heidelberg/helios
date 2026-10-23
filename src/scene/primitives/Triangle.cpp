@@ -11,7 +11,6 @@
 #include <glm/gtx/vector_angle.hpp>
 
 using namespace glm;
-using namespace std;
 
 // ***    CONSTRUCTION / DESTRUCTION    *** //
 // **************************************** //
@@ -80,9 +79,8 @@ Triangle::getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                                 const glm::dvec3& rayDir,
                                 const glm::dvec3& intersectionPoint)
 {
-  double const angle = glm::angle(faceNormal, rayDir);
-  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
-  // If (PI_HALF - min. angle), then 0 rad does no longer mean orthogonal
+  return std::acos(
+    getIncidenceAngleCosine(rayOrigin, rayDir, intersectionPoint));
 }
 
 // These naive methods are much faster than the built-in in Vector3D
@@ -224,16 +222,16 @@ Triangle::buildAABB()
   aabb = new AABB(min, max);
 }
 
-string
+std::string
 Triangle::toString()
 {
-  stringstream ss;
+  std::stringstream ss;
   ss << verts[0].getX() << " " << verts[0].getY() << " " << verts[0].getZ()
-     << endl;
+     << std::endl;
   ss << verts[1].getX() << " " << verts[1].getY() << " " << verts[1].getZ()
-     << endl;
+     << std::endl;
   ss << verts[2].getX() << " " << verts[2].getY() << " " << verts[2].getZ()
-     << endl;
+     << std::endl;
   return ss.str();
 }
 
@@ -280,7 +278,7 @@ Triangle::euclideanDistance2D(const glm::dvec3& v1, const glm::dvec3& v2)
 {
   double diffX = (v1.x - v2.x) * (v1.x - v2.x);
   double diffY = (v1.y - v2.y) * (v1.y - v2.y);
-  return sqrt(diffX + diffY);
+  return std::sqrt(diffX + diffY);
 }
 
 std::ostream&
@@ -289,4 +287,12 @@ operator<<(std::ostream& out, Triangle* t)
   out << t->getVertices() << " " << t->getVertices() + 1 << " "
       << t->getVertices() + 2;
   return out;
+}
+
+double
+Triangle::getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                                  const glm::dvec3& rayDir,
+                                  const glm::dvec3& intersectionPoint)
+{
+  return std::min(1.0, std::abs(glm::dot(faceNormal, rayDir)));
 }

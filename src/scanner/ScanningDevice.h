@@ -2,8 +2,9 @@
 
 #include <assetloading/Asset.h>
 #include <maths/Directions.h>
+#include <maths/EnergyModel.h>
 #include <maths/Rotation.h>
-#include <maths/model/EnergyModel.h>
+#include <maths/WaveMaths.h>
 #include <scanner/FWFSettings.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/SimulatedPulse.h>
@@ -68,21 +69,18 @@ protected:
    */
   Rotation headRelativeEmitterAttitude = Rotation(Directions::right, 0);
   /**
-   * @brief Beam divergence (radians)
+   * @brief Full 1/e^2 divergences along emitter-local right (X) and up (Y).
    */
-  double beamDivergence_rad = 0;
+  double beamDivergenceX_rad = 0;
+  double beamDivergenceY_rad = 0;
   /**
    * @brief Pulse length (nanoseconds)
    */
   double pulseLength_ns = 0;
   /**
-   * @brief Average power (watts)
+   * @brief Whole-beam peak optical power before footprint truncation (watts)
    */
-  double averagePower_w;
-  /**
-   * @brief Beam quality
-   */
-  double beamQuality;
+  double pulseAmplitude_W = 1.0;
   /**
    * @brief Device efficiency
    */
@@ -100,13 +98,9 @@ protected:
    */
   double wavelength_m;
   /**
-   * @brief Atmospheric extinction
+   * @brief Atmospheric extinction coefficient (per metre)
    */
   double atmosphericExtinction;
-  /**
-   * @brief Beam waist radius
-   */
-  double beamWaistRadius;
   /**
    * @brief Scanner head composing the scanning device
    * @see ScannerHead
@@ -132,7 +126,7 @@ protected:
    * @brief Number of rays computed by the calcRaysNumber function
    * @see ScanningDevice::calcRaysNumber
    */
-  int numRays = 0;
+  std::size_t numRays = 0;
   /**
    * @brief Pulse frequencies (hertz) supoported by the scanner
    */
@@ -143,26 +137,7 @@ protected:
    * @see Scanner::checkMaxNOR
    */
   int maxNOR = 0;
-  /**
-   * @brief Number of bins defining the discretization size
-   *
-   * The number of bins is computed considering full wave settings:
-   * \f[
-   *  \textrm{numTimeBins} = \frac{\textrm{pulseLength}}{binSize}
-   * \f]
-   */
-  int numTimeBins = -1;
-  /**
-   * @brief Index of bin containing the intensity peak. It is computed
-   * through calcTimePropagation function.
-   *
-   * @see Scanner::calcTimePropagation(vector<double> &, int)
-   */
-  int peakIntensityIndex = -1;
-  /**
-   * @brief Time discretization vector
-   */
-  std::vector<double> time_wave;
+  std::shared_ptr<const PulseShape> pulseModel;
 
   /**
    * @brief The expression tree to compute range errors as a function of
@@ -225,50 +200,49 @@ public:
    * @see ScanningDevice::receiverDiameter_m
    */
   double cached_Dr2;
-  /**
-   * @brief \f$B_{t2}\f$ understood as the square of beam divergence
-   *
-   * \f[
-   *  B_{t2} = \textrm{beamDivergence}^{2}
-   * \f]
-   *
-   * @see ScanningDevice::beamDivergence_rad
-   */
-  double cached_Bt2;
-  /**
-   * @brief The rotation representing the subray divergence wrt to the
-   *  central ray.
-   */
-  std::vector<Rotation> cached_subrayRotation;
-  /**
-   * @brief The divergence angle for each subray.
-   */
-  std::vector<double> cached_subrayDivergenceAngle_rad;
-  /**
-   * @brief The subray radius step or iteration.
-   */
-  std::vector<int> cached_subrayRadiusStep;
+  struct Subray
+  {
+    Rotation rotation;
+    double angle_rad;
+    double share;      // Fraction of total emitted Gaussian power.
+    double areaFactor; // Patch area per squared axial range.
+    double rho;        // Dimensionless sample radius in Gaussian coordinates.
+    double innerRho;   // Inner boundary of the represented annulus.
+    double outerRho; // Outer boundary; last annulus ends at beamSamplingFactor.
+  };
+
+private:
+  std::vector<Subray> subrays;
+  double sampledDivergenceX_rad = 0.0;
+  double sampledDivergenceY_rad = 0.0;
+  double sampledFactor = 0.0;
+  int sampledQuality = 0;
 
 public:
+  /** Build only between pulse batches, before worker threads read the table. */
+  void buildSubrayPattern();
+  bool isSubrayPatternCurrent() const;
+  /** Read-only sampling geometry and power fractions. Requires preparation. */
+  std::vector<Subray> const& getSubrays() const;
+
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
   /**
    * @brief ScanningDevice constructor from given values
    */
   ScanningDevice(
-    size_t const devIdx,
-    std::string const id,
-    double const beamDiv_rad,
-    glm::dvec3 const beamOrigin,
-    Rotation const beamOrientation,
+    size_t devIdx,
+    std::string id,
+    double beamDiv_rad,
+    glm::dvec3 beamOrigin,
+    Rotation beamOrientation,
     std::list<int> const& pulseFreqs,
-    double const pulseLength_ns,
-    double const averagePower,
-    double const beamQuality,
-    double const efficiency,
-    double const receiverDiameter_m,
-    double const atmosphericVisibility_km,
-    double const wavelength_m,
+    double pulseLength_ns,
+    double pulseAmplitude,
+    double efficiency,
+    double receiverDiameter_m,
+    double atmosphericVisibility_km,
+    double wavelength_m,
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr);
   /**
    * @brief Copy constructor for the ScanningDevice
@@ -287,22 +261,34 @@ public:
    */
   void prepareSimulation();
 
+  /** Set whole-beam peak power; requires a finite, nonnegative value. */
+  void setPulseAmplitude(double amplitude);
+
   /**
-   * @brief Configure beam related attributes. It is recommended to
-   *  reconfigure beam attributes always that beam divergence, beam quality
-   *  or wavelength are updated.
-   * @see ScanningDevice::beamDivergence_rad
-   * @see ScanningDevice::beamQuality
-   * @see ScanningDevice::wavelength_m
-   * @see ScanningDevice::beamWaistRadius
-   * @see ScanningDevice::cached_Bt2
+   * @brief Set the full divergence in radians and refresh derived beam state.
+   * @throws std::invalid_argument If the beam or sampling cone is invalid.
    */
-  void configureBeam();
+  void setBeamDivergence(double divergence_rad);
+  /** Full 1/e^2 divergences along emitter-local right and up. */
+  double getBeamDivergenceX() const { return beamDivergenceX_rad; }
+  double getBeamDivergenceY() const { return beamDivergenceY_rad; }
+  void setBeamDivergenceX(double value)
+  {
+    setBeamDivergences(value, beamDivergenceY_rad);
+  }
+  void setBeamDivergenceY(double value)
+  {
+    setBeamDivergences(beamDivergenceX_rad, value);
+  }
+  /** Atomically update both axes and the prepared sampling geometry. */
+  void setBeamDivergences(double x_rad, double y_rad);
+
   /**
-   * @brief Compute the atmospheric attenuation to be used as the
-   *  atmospheric extinction
-   * @return Atmospheric attenuation
-   * @see Scanner::atmosphericExtinction
+   * @brief Compute the Kruse atmospheric extinction coefficient (per metre).
+   * Uses wavelength in micrometres and visibility in kilometres. Outside
+   * 0.5-2.0 micrometres, warns and returns zero (no attenuation).
+   * @return Atmospheric extinction coefficient (per metre)
+   * @see ScanningDevice::atmosphericExtinction
    */
   double calcAtmosphericAttenuation() const;
   /**
@@ -320,9 +306,9 @@ public:
    */
   void doSimStep(
     unsigned int legIndex,
-    double const currentGpsTime,
-    int const simFreq_Hz,
-    bool const isActive,
+    double currentGpsTime,
+    int simFreq_Hz,
+    bool isActive,
     glm::dvec3 const& platformPosition,
     Rotation const& platformAttitude,
     std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
@@ -330,7 +316,7 @@ public:
   /**
    * @brief Advance head/deflector without emitting pulses to apply warmup.
    */
-  void applyWarmupPhase(int const simFreq_Hz);
+  void applyWarmupPhase(int simFreq_Hz);
   /**
    * @brief Compute the absolute beam attitude of the scanning device
    *  with respect to given absolute platform attitude
@@ -354,7 +340,7 @@ public:
    */
   void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -375,80 +361,57 @@ public:
   /**
    * @see Scanner::initializeFullWaveform
    */
-  bool initializeFullWaveform(double const minHitDist_m,
-                              double const maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins);
+  void preparePulse();
+  PulseShape const& getPulseModel() const { return *pulseModel; }
+  std::shared_ptr<const PulseShape> getPulseModelShared() const
+  {
+    return pulseModel;
+  }
+  bool initializeFullWaveform(double minHitDist_m,
+                              double maxHitDist_m,
+                              WaveformGrid& grid);
 
   /**
-   * @brief Compute intensity. It is the strength of the laser going back
-   *  to the detector considering the emitted power \f$P_e\f$, and its
-   *  corresponding received power \f$P_r\f$.
+   * @brief Received peak power in watts.
+   * The energy model multiplies whole-beam pulseAmplitude_W by a transfer
+   * coefficient containing the absolute subray share, geometry, material
+   * response, efficiency, and atmospheric transmission.
+   * @see EnergyModel::computePowerRatio
    *
-   * Let \f$I_0\f$ be the average power of the scanning device, \f$\lambda\f$
-   *  be the wavelength, \f$R\f$ be the target range, \f$R_0\f$ be the
-   *  minimum range, and \f$w_0\f$ be the beam waist radius. Thus, the
-   *  emitted power \f$P_e\f$ can be defined:
-   * \f[
-   *  P_e = I_0 \exp\left[- \frac{
-   *          2 \pi^2 r^2 w_0^2
-   *      }{
-   *          \lambda^2 \left(R_0^2 + R^2\right)
-   *      }\right]
-   * \f]
-   *
-   * Note that if \f$a_e\f$ is the atmospheric extinction coefficient, then
-   *  the atmospheric factor \f$\eta_a\f$ is:
-   * \f[
-   *  \eta_a = \exp\left(-2Ra_e\right)
-   * \f]
-   *
-   * Now, let \f$\eta_s\f$ be the efficiency of the scanning device,
-   *  \f$\sigma\f$ be the cross section between the target area and the
-   *  incidence angle, \f$D_{r2}\f$ the squared receiver diameter, and
-   *  \f$B_{t2}\f$ the squared beam divergence. Thus, the received power
-   *  can be calculated as:
-   * \f[
-   * \begin{split}
-   *  P_r =& \frac{P_e D_r^2 \eta_s \eta_a \sigma}{4 \pi R^4 B_t^2} \\
-   *   =& \frac{
-   *          I_0 D_r^2 \eta_s \sigma
-   *      }{
-   *          4 \pi R^4 B_t^2
-   *      }
-   *      \exp\left[-\left(
-   *          \frac{2\pi^2r^2w_0^2}{\lambda^2\left(R_0^2 + R^2\right)} +
-   *          2Ra_e
-   *      \right)\right]
-   * \end{split}
-   * \f]
-   *
-   * Finally, the intensity would be \f$P_r 10^9\f$.
-   *
-   * @return Computed intensity \f$P_r 10^9\f$
+   * Received peak power in watts; range in metres, incidence cosine in [-1, 1].
    */
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       int const subrayRadiusStep
+  double computeReceivedPower(
+    double incidenceCosine,
+    double targetRange,
+    Material const& mat,
+    std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
-                       ,
-                       std::vector<std::vector<double>>& calcIntensityRecords
+    ,
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
+   * share. */
+  double computePowerRatio(double incidenceCosine,
+                           double targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords
+#endif
+  ) const;
+  double computePowerRatioWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex) const;
 
   /**
-   * @brief Version of ScanningDevice::calcIntensity with precomputed
-   *  \f$\sigma\f$
-   * @see ScanningDevice::calcIntensity
+   * @brief Received peak power in watts with externally supplied sigma.
+   * @see ScanningDevice::computeReceivedPowerWithSigma
    */
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       int const subrayRadiusStep) const;
+  double computeReceivedPowerWithSigma(double targetRange,
+                                       double sigma,
+                                       std::size_t subrayIndex) const;
 
   int calcTimePropagation(std::vector<double>& timeWave);
 
@@ -480,7 +443,7 @@ public:
    * @param lastPulseWasHit New last pulse hit specification
    * @see Scanner::state_lastPulseWasHit
    */
-  void setLastPulseWasHit(bool const value);
+  void setLastPulseWasHit(bool value);
   /**
    * @brief Set the relative emitter position
    * @see ScanningDevice::headRelativeEmitterPosition
@@ -586,14 +549,14 @@ public:
    * @param receivedEnergyMin_W The new minimum received energy threshold
    *  for the scanning device.
    */
-  inline void setReceivedEnergyMin(double const receivedEnergyMin_W)
+  inline void setReceivedEnergyMin(double receivedEnergyMin_W)
   {
     this->receivedEnergyMin_W = receivedEnergyMin_W;
   }
   /**
    * @brief Set warmup phase and mark it for application in next active step.
    */
-  inline void setOpticsWarmupPhase_s(double const opticsWarmupPhase_s)
+  inline void setOpticsWarmupPhase_s(double opticsWarmupPhase_s)
   {
     cfg_setting_opticsWarmupPhase_s = opticsWarmupPhase_s;
     state_opticsWarmupApplied = false;

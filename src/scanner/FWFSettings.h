@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Asset.h"
+#include <maths/PulseShape.h>
 
+#include <cmath>
 #include <ostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 /**
@@ -16,9 +19,14 @@ public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**
-   * @brief Bin size for discretization (nanoseconds)
+   * @brief Range sample spacing (metres)
    */
-  double binSize_ns = 0.25;
+  double sampleSpacing_m = 0.03747405725;
+  std::string pulseShape = "gamma";
+  double gaussianMean_ns = 0.0;
+  std::shared_ptr<SampledPulse> sampledPulse;
+  bool correctPeakOffset = true;
+  double recordingTailTolerance = 1e-4;
   /**
    * @brief Minimum echo width
    */
@@ -44,10 +52,6 @@ public:
    */
   double scannerWaveLength = 1550.0;
   /**
-   * @brief Beam divergence (radians)
-   */
-  double beamDivergence_rad = 0.0003;
-  /**
    * @brief Pulse length (nanoseconds)
    */
   double pulseLength_ns = 4.0;
@@ -55,14 +59,16 @@ public:
    * @brief Beam sample quality
    */
   int beamSampleQuality = 3;
+  /** Dimensionless rho_max cutoff in normalized Gaussian coordinates. */
+  double beamSamplingFactor = 2.0;
   /**
-   * @brief Window size to iterate over discretization (nanoseconds)
+   * @brief Peak validation window (metres)
    */
-  double winSize_ns = pulseLength_ns / 4.0;
+  double peakWindow_m = 0.149896229;
   /**
-   * @brief Max full wave range (nanoseconds)
+   * @brief Maximum recording span (metres), zero means unlimited
    */
-  double maxFullwaveRange_ns = 0.0;
+  double maxRecordingSpan_m = 0.0;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -72,18 +78,40 @@ public:
   FWFSettings() {}
 
   /**
-   * @brief Validate the binSize_ns and winSize_ns attributes to ensure they are
-   * valid
+   * @brief Validate the sampleSpacing_m and peakWindow_m attributes to ensure
+   * they are valid
    * @throws std::invalid_argument if any setting is invalid
    */
   void validate() const
   {
-    if (binSize_ns <= 0.0)
-      throw std::invalid_argument("binSize_ns must be > 0");
-    if (winSize_ns <= 0.0)
-      throw std::invalid_argument("winSize_ns must be > 0");
-    if (winSize_ns < 2.0 * binSize_ns)
-      throw std::invalid_argument("winSize_ns must be >= 2 * binSize_ns");
+    validateBeamSampling();
+    if (!std::isfinite(sampleSpacing_m) || sampleSpacing_m <= 0)
+      throw std::invalid_argument("sampleSpacing_m must be finite and > 0");
+    if (!std::isfinite(peakWindow_m) || peakWindow_m < 2 * sampleSpacing_m ||
+        peakWindow_m / sampleSpacing_m > 1000000000)
+      throw std::invalid_argument(
+        "peakWindow_m must be >= 2 * sampleSpacing_m and representable");
+    if (!std::isfinite(maxRecordingSpan_m) || maxRecordingSpan_m < 0)
+      throw std::invalid_argument("maxRecordingSpan_m must be finite and >= 0");
+    if (!std::isfinite(recordingTailTolerance) || recordingTailTolerance <= 0 ||
+        recordingTailTolerance >= 1)
+      throw std::invalid_argument(
+        "recordingTailTolerance must be between 0 and 1");
+    if (!std::isfinite(gaussianMean_ns))
+      throw std::invalid_argument("gaussianMean_ns must be finite");
+    if (pulseShape != "gamma" && pulseShape != "gaussian" &&
+        pulseShape != "sampled")
+      throw std::invalid_argument(
+        "pulseShape must be gamma, gaussian or sampled");
+    if (pulseShape == "sampled" && !sampledPulse)
+      throw std::invalid_argument("sampled pulse shape requires sampledPulse");
+  }
+  void validateBeamSampling() const
+  {
+    if (beamSampleQuality < 1)
+      throw std::invalid_argument("beamSampleQuality must be >= 1");
+    if (!std::isfinite(beamSamplingFactor) || beamSamplingFactor <= 0.0)
+      throw std::invalid_argument("beamSamplingFactor must be finite and > 0");
   }
 
   // ***  TO STRING  *** //
@@ -96,18 +124,23 @@ public:
   {
     std::stringstream ss;
     ss << "FWFSettings \"" << id << "\":\n"
-       << "binSize_ns = " << binSize_ns << "\n"
+       << "sampleSpacing_m = " << sampleSpacing_m << "\n"
+       << "pulseShape = " << pulseShape << "\n"
+       << "gaussianMean_ns = " << gaussianMean_ns << "\n"
+       << "sampledPulse = " << (sampledPulse ? "present" : "none") << "\n"
+       << "correctPeakOffset = " << correctPeakOffset << "\n"
+       << "recordingTailTolerance = " << recordingTailTolerance << "\n"
        << "minEchoWidth = " << minEchoWidth << "\n"
        << "peakEnergy = " << peakEnergy << "\n"
        << "apertureDiameter = " << apertureDiameter << "\n"
        << "scannerEfficiency = " << scannerEfficiency << "\n"
        << "atmosphericVisibility = " << atmosphericVisibility << "\n"
        << "scannerWaveLength = " << scannerWaveLength << "\n"
-       << "beamDivergence_rad = " << beamDivergence_rad << "\n"
        << "pulseLength_ns = " << pulseLength_ns << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
-       << "winSize_ns = " << winSize_ns << "\n"
-       << "maxFullwaveRange_ns = " << maxFullwaveRange_ns << "\n";
+       << "beamSamplingFactor = " << beamSamplingFactor << "\n"
+       << "peakWindow_m = " << peakWindow_m << "\n"
+       << "maxRecordingSpan_m = " << maxRecordingSpan_m << "\n";
     return ss.str();
   }
   /**

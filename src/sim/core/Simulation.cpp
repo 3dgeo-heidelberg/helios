@@ -2,11 +2,9 @@
 #include <HeliosException.h>
 #include <iostream>
 
-#include <chrono>
-using namespace std::chrono;
-
 #include "AbstractDetector.h"
 #include <HeliosException.h>
+#include <chrono>
 #include <platform/InterpolatedMovingPlatform.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <scanner/BuddingScanningPulseProcess.h>
@@ -46,8 +44,8 @@ dateTimeStrToSeconds(const std::string& str)
   std::time_t const tt = timegm(&t);
 #endif
 
-  return duration_cast<seconds>(
-           system_clock::from_time_t(tt).time_since_epoch())
+  return std::chrono::duration_cast<std::chrono::seconds>(
+           std::chrono::system_clock::from_time_t(tt).time_since_epoch())
     .count();
 }
 
@@ -409,8 +407,8 @@ Simulation::dispatchHook(SurveyHookRegistration& reg, HookContext const& ctx)
   std::vector<Trajectory> trajectoriesPayload;
   std::vector<Measurement> const* pointsPayloadPtr = nullptr;
   std::vector<Trajectory> const* trajectoriesPayloadPtr = nullptr;
-  size_t nextMeasurementIndex = reg.lastMeasurementIndex;
-  size_t nextTrajectoryIndex = reg.lastTrajectoryIndex;
+  std::size_t nextMeasurementIndex = reg.lastMeasurementIndex;
+  std::size_t nextTrajectoryIndex = reg.lastTrajectoryIndex;
 
   bool const needsPayload = reg.payload != HookPayload::METADATA_ONLY;
   bool const canSnapshot = mScanner != nullptr &&
@@ -435,15 +433,16 @@ Simulation::dispatchHook(SurveyHookRegistration& reg, HookContext const& ctx)
   if (canSnapshot) {
     std::unique_lock<std::mutex> lock(*mScanner->allMeasurementsMutex);
 
-    size_t const totalPoints = mScanner->allMeasurements->size();
-    size_t const totalTrajectories = mScanner->allTrajectories->size();
+    std::size_t const totalPoints = mScanner->allMeasurements->size();
+    std::size_t const totalTrajectories = mScanner->allTrajectories->size();
 
     localCtx.totalPoints = totalPoints;
     localCtx.totalTrajectories = totalTrajectories;
 
     if (reg.payload == HookPayload::SINCE_LAST) {
-      size_t const firstPoint = std::min(reg.lastMeasurementIndex, totalPoints);
-      size_t const firstTrajectory =
+      std::size_t const firstPoint =
+        std::min(reg.lastMeasurementIndex, totalPoints);
+      std::size_t const firstTrajectory =
         std::min(reg.lastTrajectoryIndex, totalTrajectories);
 
       pointsPayload.assign(mScanner->allMeasurements->cbegin() + firstPoint,
@@ -520,8 +519,8 @@ Simulation::start()
   // Prepare to execute the main loop of simulation
   prepareSimulation(mScanner->getPulseFreq_Hz());
   initializeHooksForRun();
-  timeStart_ns =
-    duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+  timeStart_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+    std::chrono::system_clock::now().time_since_epoch());
   maxDurationStartGpsTime_ns = currentGpsTime_ns;
   maxDurationDeferredUntilFirstPulse = false;
   maxDurationStartPulseNumber = mScanner->getCurrentPulseNumber();
@@ -584,8 +583,8 @@ Simulation::start()
 
   // Finish the main loop of the simulation
   std::chrono::nanoseconds timeMainLoopFinish =
-    duration_cast<std::chrono::nanoseconds>(
-      system_clock::now().time_since_epoch());
+    std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::system_clock::now().time_since_epoch());
   double const seconds =
     ((double)(timeMainLoopFinish - timeStart_ns).count()) / 1000000000.0;
   reporter.preFinishReport(seconds);
@@ -593,8 +592,8 @@ Simulation::start()
 
   // End of simulation report
   std::chrono::nanoseconds const timeFinishAll =
-    duration_cast<std::chrono::nanoseconds>(
-      system_clock::now().time_since_epoch());
+    std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::system_clock::now().time_since_epoch());
   double const secondsAll =
     ((double)(timeFinishAll - timeStart_ns).count()) / 1000000000.0;
   reporter.postFinishReport(secondsAll);
@@ -665,8 +664,9 @@ Simulation::calcCurrentGpsTime()
       }
     } else {
       // Calc GPS time for non fixed start time
-      now =
-        duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+      now = std::chrono::duration_cast<std::chrono::seconds>(
+              std::chrono::system_clock::now().time_since_epoch())
+              .count();
     }
   } catch (std::exception& ex) {
     std::stringstream ss;
@@ -699,7 +699,7 @@ Simulation::setSimSpeedFactor(double factor)
 
   this->mSimSpeedFactor = factor;
 
-  stringstream ss;
+  std::stringstream ss;
   ss << "Simulation speed set to " << mSimSpeedFactor;
   logging::INFO(ss.str());
 }

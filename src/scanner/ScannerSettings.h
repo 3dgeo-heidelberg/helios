@@ -70,10 +70,6 @@ public:
    */
   double scanFreq_Hz = 0;
   /**
-   * @brief Beam divergence angle (radians)
-   */
-  double beamDivAngle = 0.003;
-  /**
    * @brief Time interval between trajectory recollections (seconds)
    */
   double trajectoryTimeInterval = 0.0; // In seconds
@@ -131,7 +127,6 @@ public:
     this->verticalAngleMin_rad = other->verticalAngleMin_rad;
     this->verticalAngleMax_rad = other->verticalAngleMax_rad;
     this->scanFreq_Hz = other->scanFreq_Hz;
-    this->beamDivAngle = other->beamDivAngle;
     this->trajectoryTimeInterval = other->trajectoryTimeInterval;
     this->maxDuration_s = other->maxDuration_s;
     this->opticsWarmupPhase_s = other->opticsWarmupPhase_s;
@@ -190,8 +185,6 @@ public:
       settings->verticalAngleMax_rad = cherries->verticalAngleMax_rad;
     if (hasCherry("scanFreq_Hz"))
       settings->scanFreq_Hz = cherries->scanFreq_Hz;
-    if (hasCherry("beamDivAngle"))
-      settings->beamDivAngle = cherries->beamDivAngle;
     if (hasCherry("trajectoryTimeInterval"))
       settings->trajectoryTimeInterval = cherries->trajectoryTimeInterval;
     if (hasCherry("opticsWarmupPhase_s"))
@@ -293,7 +286,6 @@ public:
          << "\ttemplate.verticalAngleMax_rad = "
          << baseTemplate->verticalAngleMax_rad << "\n"
          << "\ttemplate.scanFreq_Hz = " << baseTemplate->scanFreq_Hz << "\n"
-         << "\ttemplate.beamDivAngle = " << baseTemplate->beamDivAngle << "\n"
          << "\ttemplate.trajectoryTimeInterval = "
          << baseTemplate->trajectoryTimeInterval << "\n"
          << "\ttemplate.opticsWarmupPhase_s = "
@@ -308,7 +300,6 @@ public:
        << "verticalAngleMin_rad = " << verticalAngleMin_rad << "\n"
        << "verticalAngleMax_rad = " << verticalAngleMax_rad << "\n"
        << "scanFreq_Hz = " << scanFreq_Hz << "\n"
-       << "beamDivAngle = " << beamDivAngle << "\n"
        << "trajectoryTimeInterval = " << trajectoryTimeInterval << "\n"
        << "opticsWarmupPhase_s = " << opticsWarmupPhase_s << "\n"
        << "verticalResolution_rad = " << verticalResolution_rad << "\n"

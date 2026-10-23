@@ -101,6 +101,9 @@
               },
               {
                 "$ref": "#/$defs/model_document_helios_survey_Survey"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_settings_SampledPulse"
               }
             ]
           }
@@ -116,7 +119,10 @@
           "const": 0
         },
         "serialization_minor_version": {
-          "const": 0
+          "enum": [
+            0,
+            1
+          ]
         },
         "model_class": {
           "enum": [
@@ -143,7 +149,8 @@
             "helios.settings.ExecutionSettings",
             "helios.settings.FullWaveformSettings",
             "helios.settings.OutputSettings",
-            "helios.survey.Survey"
+            "helios.survey.Survey",
+            "helios.settings.SampledPulse"
           ]
         },
         "fields": {
@@ -690,7 +697,6 @@
         "min_vertical_angle": {},
         "max_vertical_angle": {},
         "scan_frequency": {},
-        "beam_divergence_angle": {},
         "trajectory_time_interval": {},
         "vertical_resolution": {},
         "horizontal_resolution": {},
@@ -769,8 +775,17 @@
       "properties": {
         "bin_size": {},
         "beam_sample_quality": {},
+        "beam_sampling_factor": {},
         "win_size": {},
-        "max_fullwave_range": {}
+        "max_fullwave_range": {},
+        "sample_spacing": {},
+        "peak_window": {},
+        "max_recording_span": {},
+        "pulse_shape": {},
+        "correct_peak_offset": {},
+        "recording_tail_tolerance": {},
+        "gaussian_mean": {},
+        "sampled_pulse": {}
       }
     },
     "fields_helios_settings_OutputSettings": {
@@ -802,6 +817,30 @@
         "gps_time": {},
         "full_waveform_settings": {},
         "trajectory": {}
+      }
+    },
+    "model_document_helios_settings_SampledPulse": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.settings.SampledPulse"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_settings_SampledPulse"
+        }
+      }
+    },
+    "fields_helios_settings_SampledPulse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "offsets": {},
+        "amplitudes": {},
+        "peak_offset": {}
       }
     }
   }
