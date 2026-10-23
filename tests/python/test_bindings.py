@@ -1126,13 +1126,6 @@ class ExampleScanner(_helios.Scanner):
     def setAtmosphericExtinction(self, atmosphericExtinction, idx):
         pass
 
-    def getBeamWaistRadius(self, idx):
-        # Default value for simplicity
-        return 1.0
-
-    def setBeamWaistRadius(self, beamWaistRadius, idx):
-        pass
-
     def getMaxNOR(self, idx=0):
         return self._max_nor
 
@@ -1439,19 +1432,6 @@ class TestScannerMethods:
             scanner.setAtmosphericExtinction(0.2, 0)
             mock_set.assert_called_once_with(0.2, 0)
 
-    def test_beam_waist_radius(self, scanner):
-        with patch.object(scanner, "getBeamWaistRadius", return_value=1.0) as mock_get:
-            assert scanner.getBeamWaistRadius(0) == 1.0
-            mock_get.assert_called_once_with(0)
-
-        with patch.object(scanner, "getBeamWaistRadius", return_value=1.0) as mock_get:
-            assert scanner.getBeamWaistRadius() == 1.0
-            mock_get.assert_called_once()
-
-        with patch.object(scanner, "setBeamWaistRadius") as mock_set:
-            scanner.setBeamWaistRadius(1.5, 0)
-            mock_set.assert_called_once_with(1.5, 0)
-
     def test_max_nor(self, scanner):
         assert scanner.getMaxNOR() == 10
 
@@ -1583,3 +1563,34 @@ def test_analytic_pulse_bindings(shape):
     assert pulse.evaluate(upper) == pytest.approx(1e-4)
     assert pulse.evaluate(upper + 0.01) > 0
     assert (lower < 0) == (shape == "gaussian")
+
+
+def test_elliptical_subray_metadata():
+    device = _helios.ScanningDevice(
+        0,
+        "ellipse",
+        0.0003,
+        (0.0, 0.0, 0.0),
+        _helios.Rotation(),
+        [100000],
+        5.0,
+        4.0,
+        1.0,
+        0.99,
+        0.15,
+        23.0,
+        1064e-9,
+    )
+    device.set_beam_divergences(0.0003, 0.001)
+    rays = device.subrays
+    assert len(rays) == 19
+    assert rays[0].rho == 0.0
+    assert rays[0].inner_rho == 0.0
+    assert rays[-1].outer_rho == 2.0
+    assert not hasattr(rays[0], "outer_angle_rad")
+    assert sum(ray.share for ray in rays) == pytest.approx(1 - np.exp(-8))
+    assert rays[1].share == rays[2].share
+    assert rays[1].angle_rad != rays[2].angle_rad
+    device.beam_divergence_y = 0.0003
+    assert device.beam_divergence_x == device.beam_divergence_y
+    assert device.subrays[1].angle_rad == pytest.approx(device.subrays[2].angle_rad)

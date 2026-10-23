@@ -391,9 +391,9 @@ def _do_by_incidence_angle_plots(
         ax,
         incidence_angle_a,
         arec["radius_m"],
-        title="A-Radius (m)",
+        title="A-Transverse hit radius (m)",
         xlabel=f"Incidence angle ({unit})",
-        ylabel="Radius (m)",
+        ylabel="Transverse hit radius (m)",
         color="tab:red",
     )
     ax = fig.add_subplot(3, 4, 6)  # Initialize BRDF A subplot
@@ -469,9 +469,9 @@ def _do_by_incidence_angle_plots(
         ax,
         incidence_angle_b,
         brec["radius_m"],
-        title="B-Radius (m)",
+        title="B-Transverse hit radius (m)",
         xlabel=f"Incidence angle ({unit})",
-        ylabel="Radius (m)",
+        ylabel="Transverse hit radius (m)",
         color="tab:red",
     )
     ax = fig.add_subplot(3, 4, 8)  # Initialize BRDF B subplot

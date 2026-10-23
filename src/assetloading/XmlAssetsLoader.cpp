@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <sstream>
+#include <utility>
 #include <vector>
 
 #include <glm/gtx/norm.hpp>
@@ -45,6 +46,33 @@ namespace fs = std::filesystem;
 
 #include "MathConverter.h"
 #include "TimeWatcher.h"
+
+namespace {
+// A node specifies a complete pair; an absent node-level setting inherits.
+std::pair<double, double>
+readBeamDivergences(tinyxml2::XMLElement* node,
+                    double inheritedX,
+                    double inheritedY)
+{
+  bool const scalar = XmlUtils::hasAttribute(node, "beamDivergence_rad");
+  bool const hasX = XmlUtils::hasAttribute(node, "beamDivergenceX_rad");
+  bool const hasY = XmlUtils::hasAttribute(node, "beamDivergenceY_rad");
+  double x = inheritedX, y = inheritedY;
+  if (scalar)
+    x = y = XmlUtils::getAttributeCast<double>(node, "beamDivergence_rad", x);
+  if (hasX)
+    x = XmlUtils::getAttributeCast<double>(node, "beamDivergenceX_rad", x);
+  if (hasY)
+    y = XmlUtils::getAttributeCast<double>(node, "beamDivergenceY_rad", y);
+  if (!scalar && hasX != hasY) {
+    if (hasX)
+      y = x;
+    else
+      x = y;
+  }
+  return { x, y };
+}
+}
 
 // ***  CONSTANTS  *** //
 // ******************* //
@@ -828,8 +856,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // --- END : Read range error
 
   // ########### BEGIN Read all the rest #############
-  double beamDiv_rad = XmlUtils::getAttributeCast<double>(
-    scannerNode, "beamDivergence_rad", 0.0003);
+  auto const divergences = readBeamDivergences(scannerNode, 0.0003, 0.0003);
+  double const beamDiv_rad = divergences.first;
   double pulseLength_ns =
     XmlUtils::getAttributeCast<double>(scannerNode, "pulseLength_ns", 4.0);
   std::string id = XmlUtils::getAttributeCast<std::string>(
@@ -878,6 +906,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                visibility,
                                wavelength * 1e-9,
                                rangeErrExpr);
+    baseScanDev.setBeamDivergences(divergences.first, divergences.second);
     baseScanDev.setReceivedEnergyMin(XmlUtils::getAttributeCast<double>(
       scannerNode, "receivedEnergyMin_W", 0.0001));
     std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
@@ -912,6 +941,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               false,
                                               false,
                                               rangeErrExpr);
+    scanner->setBeamDivergences(divergences.first, divergences.second);
     // Parse max number of returns per pulse
     scanner->setMaxNOR(
       XmlUtils::getAttributeCast<int>(scannerNode, "maxNOR", 0));
@@ -1631,10 +1661,9 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
         chan, "pulseAmplitude_W", scanner->getPulseAmplitude(idx)),
       idx);
     // Check general attributes
-    scanner->setBeamDivergence(
-      XmlUtils::getAttributeCast<double>(
-        chan, "beamDivergence_rad", scanner->getBeamDivergence(idx)),
-      idx);
+    auto const divergences = readBeamDivergences(
+      chan, scanner->getBeamDivergenceX(idx), scanner->getBeamDivergenceY(idx));
+    scanner->setBeamDivergences(divergences.first, divergences.second, idx);
     scanner->setPulseLength_ns(XmlUtils::getAttributeCast<double>(
       chan, "pulseLength_ns", scanner->getPulseLength_ns(idx)));
     if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {

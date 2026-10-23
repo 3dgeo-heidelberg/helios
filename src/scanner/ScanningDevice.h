@@ -69,9 +69,10 @@ protected:
    */
   Rotation headRelativeEmitterAttitude = Rotation(Directions::right, 0);
   /**
-   * @brief Full 1/e^2 beam divergence angle (radians)
+   * @brief Full 1/e^2 divergences along emitter-local right (X) and up (Y).
    */
-  double beamDivergence_rad = 0;
+  double beamDivergenceX_rad = 0;
+  double beamDivergenceY_rad = 0;
   /**
    * @brief Pulse length (nanoseconds)
    */
@@ -104,10 +105,6 @@ protected:
    * @brief Atmospheric extinction coefficient (per metre)
    */
   double atmosphericExtinction;
-  /**
-   * @brief Beam waist radius
-   */
-  double beamWaistRadius;
   /**
    * @brief Scanner head composing the scanning device
    * @see ScannerHead
@@ -208,27 +205,30 @@ public:
    */
   double cached_Dr2;
   /**
-   * @brief \f$B_{t2}\f$ understood as the square of beam divergence
+   * @brief Legacy square of X-axis beam divergence (diagnostic only)
    *
    * \f[
    *  B_{t2} = \textrm{beamDivergence}^{2}
    * \f]
    *
-   * @see ScanningDevice::beamDivergence_rad
+   * @see ScanningDevice::beamDivergenceX_rad
    */
   double cached_Bt2;
   struct Subray
   {
     Rotation rotation;
     double angle_rad;
-    double share;      // Fraction of total sampled Gaussian power.
+    double share;      // Fraction of total emitted Gaussian power.
     double areaFactor; // Patch area per squared axial range.
-    double outerAngle_rad;
+    double rho;        // Dimensionless sample radius in Gaussian coordinates.
+    double innerRho;   // Inner boundary of the represented annulus.
+    double outerRho; // Outer boundary; last annulus ends at beamSamplingFactor.
   };
 
 private:
   std::vector<Subray> subrays;
-  double sampledDivergence_rad = 0.0;
+  double sampledDivergenceX_rad = 0.0;
+  double sampledDivergenceY_rad = 0.0;
   double sampledFactor = 0.0;
   int sampledQuality = 0;
 
@@ -284,15 +284,23 @@ public:
    * @throws std::invalid_argument If the beam or sampling cone is invalid.
    */
   void setBeamDivergence(double divergence_rad);
+  /** Full 1/e^2 divergences along emitter-local right and up. */
+  double getBeamDivergenceX() const { return beamDivergenceX_rad; }
+  double getBeamDivergenceY() const { return beamDivergenceY_rad; }
+  void setBeamDivergenceX(double value)
+  {
+    setBeamDivergences(value, beamDivergenceY_rad);
+  }
+  void setBeamDivergenceY(double value)
+  {
+    setBeamDivergences(beamDivergenceX_rad, value);
+  }
+  /** Atomically update both axes and the prepared sampling geometry. */
+  void setBeamDivergences(double x_rad, double y_rad);
 
   /**
-   * @brief Configure beam related attributes. It is recommended to
-   *  reconfigure beam attributes always that beam divergence, beam quality
-   *  or wavelength are updated.
-   * @see ScanningDevice::beamDivergence_rad
-   * @see ScanningDevice::beamQuality
-   * @see ScanningDevice::wavelength_m
-   * @see ScanningDevice::beamWaistRadius
+   * @brief Refresh the legacy X-axis divergence-squared diagnostic.
+   * @see ScanningDevice::beamDivergenceX_rad
    * @see ScanningDevice::cached_Bt2
    */
   void configureBeam();

@@ -708,3 +708,117 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
         scanner_module._helios.HeliosException, match="Specify only one"
     ):
         Scanner.from_xml(path, "riegl_vq-1560i")
+
+
+@pytest.mark.parametrize("factory", [riegl_vz_400, riegl_vq_1560i])
+def test_elliptical_beam_api(factory):
+    scanner = factory()
+    index = scanner._cpp_object.num_devices - 1
+    scanner.set_beam_divergences("0.03 deg", "0.06 deg", index=index)
+    assert scanner.get_beam_divergence_x(index) == pytest.approx(np.deg2rad(0.03))
+    assert scanner.get_beam_divergence_y(index) == pytest.approx(np.deg2rad(0.06))
+    assert scanner.get_beam_divergence(index) == scanner.get_beam_divergence_x(index)
+    copy = scanner.clone()
+    scanner.set_beam_divergence_x(0.001, index)
+    assert scanner.get_beam_divergence_y(index) == copy.get_beam_divergence_y(index)
+    scanner.set_beam_divergence_y(0.002, index)
+    assert scanner.get_beam_divergence_x(index) == 0.001
+    for invalid in (0, -1, np.pi, np.inf, np.nan):
+        for x, y in ((invalid, 0.003), (0.003, invalid)):
+            with pytest.raises(ValueError):
+                scanner.set_beam_divergences(x, y, index)
+            assert scanner.get_beam_divergence_x(index) == 0.001
+            assert scanner.get_beam_divergence_y(index) == 0.002
+    scanner._cpp_object.apply_settings(ScannerSettings()._cpp_object, index)
+    assert scanner.get_beam_divergence_y(index) == 0.002
+    scanner.set_beam_divergence(0.0005, index)
+    assert scanner.get_beam_divergence_y(index) == 0.0005
+    scanner.beam_divergence_x = "0.02 deg"
+    scanner.beam_divergence_y = "0.04 deg"
+    assert scanner.beam_divergence_y == pytest.approx(np.deg2rad(0.04))
+    if index:
+        assert scanner.get_beam_divergence_y(index) == 0.0005
+    for bad_index in (-1, scanner._cpp_object.num_devices):
+        with pytest.raises(IndexError):
+            scanner.set_beam_divergences(0.001, 0.002, bad_index)
+        for axis in ("x", "y"):
+            with pytest.raises(IndexError):
+                getattr(scanner, f"get_beam_divergence_{axis}")(bad_index)
+            with pytest.raises(IndexError):
+                getattr(scanner, f"set_beam_divergence_{axis}")(0.001, bad_index)
+
+
+@pytest.mark.parametrize(
+    "attributes, expected",
+    [
+        ({}, (0.0003, 0.0003)),
+        ({"beamDivergence_rad": 0.001}, (0.001, 0.001)),
+        ({"beamDivergenceX_rad": 0.001}, (0.001, 0.001)),
+        ({"beamDivergenceY_rad": 0.002}, (0.002, 0.002)),
+        ({"beamDivergenceX_rad": 0.001, "beamDivergenceY_rad": 0.002}, (0.001, 0.002)),
+        ({"beamDivergence_rad": 0.003, "beamDivergenceX_rad": 0.001}, (0.001, 0.003)),
+        ({"beamDivergence_rad": 0.003, "beamDivergenceY_rad": 0.002}, (0.003, 0.002)),
+        (
+            {
+                "beamDivergence_rad": 0.003,
+                "beamDivergenceX_rad": 0.001,
+                "beamDivergenceY_rad": 0.002,
+            },
+            (0.001, 0.002),
+        ),
+    ],
+)
+def test_elliptical_xml_resolution(tmp_path, attributes, expected):
+    from pathlib import Path
+    from xml.etree import ElementTree as ET
+    from helios.scanner import Scanner
+
+    source = Path(scanner_module.__file__).parent / "data/scanners_tls.xml"
+    tree = ET.parse(source)
+    node = tree.getroot().find("scanner[@id='riegl_vz400']")
+    assert node is not None
+    node.attrib.pop("beamDivergence_rad", None)
+    node.attrib.update({key: str(value) for key, value in attributes.items()})
+    path = tmp_path / "scanner.xml"
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, node.get("id"))
+    assert scanner.beam_divergence_x == expected[0]
+    assert scanner.beam_divergence_y == expected[1]
+
+
+@pytest.mark.parametrize(
+    "override, expected",
+    [
+        ({}, (0.001, 0.002)),
+        ({"beamDivergenceX_rad": "0.003"}, (0.003, 0.003)),
+        ({"beamDivergenceY_rad": "0.004"}, (0.004, 0.004)),
+        ({"beamDivergence_rad": "0.005"}, (0.005, 0.005)),
+        (
+            {"beamDivergence_rad": "0.005", "beamDivergenceY_rad": "0.004"},
+            (0.005, 0.004),
+        ),
+        (
+            {"beamDivergenceX_rad": "0.003", "beamDivergenceY_rad": "0.004"},
+            (0.003, 0.004),
+        ),
+    ],
+)
+def test_elliptical_channel_inheritance(tmp_path, override, expected):
+    from pathlib import Path
+    from xml.etree import ElementTree as ET
+    from helios.scanner import Scanner
+
+    source = Path(scanner_module.__file__).parent / "data/scanners_als.xml"
+    tree = ET.parse(source)
+    node = tree.getroot().find("scanner[@id='riegl_vq-1560i']")
+    node.attrib.pop("beamDivergence_rad", None)
+    node.set("beamDivergenceX_rad", "0.001")
+    node.set("beamDivergenceY_rad", "0.002")
+    node.find("channels/channel").attrib.update(override)
+    path = tmp_path / "scanner.xml"
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, node.get("id"))
+    assert scanner.beam_divergence_x == expected[0]
+    assert scanner.beam_divergence_y == expected[1]
+    assert scanner.get_beam_divergence_x(1) == 0.001
+    assert scanner.get_beam_divergence_y(1) == 0.002

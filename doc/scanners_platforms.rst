@@ -51,7 +51,8 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
 
 **Emitter**:
 
-* ``beamDivergence_rad``: The full-angle beam divergence at the :math:`1/e^2` intensity points, in radians (default: 0.0003 rad).
+* ``beamDivergenceX_rad`` / ``beamDivergenceY_rad``: Full-angle divergences at the :math:`1/e^2` intensity boundary along emitter-local right/up, in radians. A lone axis value sets both axes. No values inherit the parent pair, with a root default of 0.0003 rad on both axes. Existing emitter orientation rotates the ellipse. See :doc:`intensity_fwf` for sampling and channel examples.
+* ``beamDivergence_rad``: Circular shorthand. When combined with explicit axes, the scalar sets both defaults and explicit axes override them.
 
   If a technical specification provides the beam divergence at the :math:`1/e` power points or at 50% peak intensity (i.e., Full Width at Half Maximum, FWHM), it must be converted to the :math:`1/e^2` reference using the following relationships:
 
@@ -145,12 +146,10 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
 
 **Other parameters**:
 
-- ``beamQualityFactor``: How well the beam is focused. The beam waist radius :math:`w_0` is calculated as
-
-  .. math::
-     w_0 = \frac{\text{beamQualityFactor} \cdot \lambda}{\pi \cdot \text{beamDivergence}}
-
-  for diagnostic reporting only. The far-field energy model uses divergence and sampling coverage directly; beam quality and minimum detector range do not affect subray shares. ``beamSampleQuality`` controls spatial resolution.
+- ``beamQualityFactor``: Beam quality metadata retained in scanner definitions.
+  The far-field energy model uses divergence and sampling coverage directly;
+  beam quality and minimum detector range do not affect subray shares.
+  ``beamSampleQuality`` controls spatial resolution.
 
 - ``opticalEfficiency``: Efficiency of the scanner, i.e. :math:`\eta_{\text{Sys}}` in the LiDAR equation :cite:p:`HoeflePfeifer.2007` (default: 0.99).
 

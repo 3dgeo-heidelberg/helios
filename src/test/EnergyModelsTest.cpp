@@ -6,6 +6,8 @@
 #include "logging.hpp"
 
 #include <algorithm>
+#include <chrono>
+#include <filesystem>
 #include <limits>
 #include <maths/EnergyModel.h>
 #include <maths/WaveMaths.h>
@@ -205,30 +207,32 @@ TEST_CASE(
   REQUIRE(grazing == Catch::Approx(geometry * expectedGrazing).epsilon(1e-12));
 }
 
-TEST_CASE("Subray table conserves captured Gaussian power", "[energy]")
+TEST_CASE("Rho sampling conserves elliptical Gaussian power and area",
+          "[energy]")
 {
   int const quality = GENERATE(1, 2, 3, 8, 32);
   double const factor = GENERATE(0.1, 1.0, 1.5, 2.0, 4.0);
-  double const divergence = GENERATE(0.0003, 0.2);
+  double const divergenceX = GENERATE(0.0003, 0.2);
+  double const divergenceY = GENERATE(0.0003, 0.001, 0.2);
   auto scanner = energyScanner();
-  scanner->setBeamDivergence(divergence);
+  scanner->setBeamDivergences(divergenceX, divergenceY);
   auto& settings = scanner->getFWFSettings();
   settings.beamSampleQuality = quality;
   settings.beamSamplingFactor = factor;
   scanner->prepareSimulation();
   auto const& device = scanner->getScanningDevice(0);
   auto const& rays = device.getSubrays();
-  double const tangent0 = std::tan(divergence / 2.0);
-  double const cutoff = std::atan(factor * tangent0);
+  double const tx = std::tan(divergenceX / 2.0);
+  double const ty = std::tan(divergenceY / 2.0);
   double sum = 0.0, patchArea = 0.0;
   size_t index = 0;
   double inner = 0.0;
   for (int ring = 0; ring < quality; ++ring) {
     int const count = ring == 0 ? 1 : static_cast<int>(2.0 * PI * ring);
-    double const outer = cutoff * (ring + 0.5) / (quality - 0.5);
+    double const outer = factor * (ring + 0.5) / (quality - 0.5);
+    double const rho = factor * ring / (quality - 0.5);
     double const expectedRingShare =
-      std::exp(-2 * std::pow(std::tan(inner) / tangent0, 2)) -
-      std::exp(-2 * std::pow(std::tan(outer) / tangent0, 2));
+      std::exp(-2 * inner * inner) - std::exp(-2 * outer * outer);
     double ringShare = 0.0;
     for (int j = 0; j < count; ++j, ++index) {
       auto const& ray = rays.at(index);
@@ -236,18 +240,25 @@ TEST_CASE("Subray table conserves captured Gaussian power", "[energy]")
       REQUIRE(ray.share >= 0.0);
       auto rotation = ray.rotation;
       auto const direction = rotation.applyTo(Directions::forward);
-      double const actualAngle =
-        std::atan2(glm::length(glm::cross(direction, Directions::forward)),
-                   glm::dot(direction, Directions::forward));
-      REQUIRE(actualAngle ==
-              Catch::Approx(cutoff * ring / (quality - 0.5)).margin(1e-14));
+      double const x = direction.x / direction.y;
+      double const y = direction.z / direction.y;
+      REQUIRE(
+        x ==
+        Catch::Approx(rho * tx * std::sin(2 * PI * j / count)).margin(1e-14));
+      REQUIRE(
+        y ==
+        Catch::Approx(rho * ty * std::cos(2 * PI * j / count)).margin(1e-14));
+      REQUIRE(std::hypot(x / tx, y / ty) == Catch::Approx(rho).margin(1e-14));
+      REQUIRE(ray.angle_rad ==
+              Catch::Approx(std::atan2(std::hypot(x, y), 1.0)).margin(1e-14));
       REQUIRE(glm::length(direction) == Catch::Approx(1.0).margin(1e-14));
-      REQUIRE(ray.outerAngle_rad == Catch::Approx(outer).margin(1e-14));
-      REQUIRE(ray.areaFactor == Catch::Approx(PI *
-                                              (std::pow(std::tan(outer), 2) -
-                                               std::pow(std::tan(inner), 2)) /
-                                              count)
-                                  .epsilon(1e-12));
+      REQUIRE(ray.rho == Catch::Approx(rho).margin(1e-14));
+      REQUIRE(ray.innerRho == Catch::Approx(inner).margin(1e-14));
+      REQUIRE(ray.outerRho == Catch::Approx(outer).margin(1e-14));
+      REQUIRE(ray.share == rays[index - j].share);
+      REQUIRE(
+        ray.areaFactor ==
+        Catch::Approx(PI * tx * ty * (outer * outer - inner * inner) / count));
       ringShare += ray.share;
       patchArea += ray.areaFactor;
     }
@@ -260,15 +271,46 @@ TEST_CASE("Subray table conserves captured Gaussian power", "[energy]")
   REQUIRE(sum ==
           Catch::Approx(-std::expm1(-2 * factor * factor)).epsilon(1e-12));
   REQUIRE(patchArea ==
-          Catch::Approx(PI * std::pow(factor * tangent0, 2)).epsilon(1e-12));
-  REQUIRE(rays.back().outerAngle_rad == cutoff);
-  scanner->prepareSimulation();
-  REQUIRE(device.getSubrays().size() == index);
+          Catch::Approx(PI * factor * factor * tx * ty).epsilon(1e-12));
+  REQUIRE(rays.back().outerRho == factor);
+}
+
+TEST_CASE("Elliptical divergence updates are atomic and axis specific",
+          "[energy]")
+{
+  auto scanner = energyScanner();
+  scanner->setBeamDivergences(0.0003, 0.001);
+  auto const before = scanner->getScanningDevice(0).getSubrays();
+  for (double bad : { 0.0,
+                      -1.0,
+                      PI,
+                      std::numeric_limits<double>::infinity(),
+                      std::numeric_limits<double>::quiet_NaN() }) {
+    REQUIRE_THROWS_AS(scanner->setBeamDivergences(0.002, bad),
+                      std::invalid_argument);
+    REQUIRE_THROWS_AS(scanner->setBeamDivergences(bad, 0.002),
+                      std::invalid_argument);
+    REQUIRE(scanner->getBeamDivergenceX() == 0.0003);
+    REQUIRE(scanner->getBeamDivergenceY() == 0.001);
+    REQUIRE(scanner->getScanningDevice(0).isSubrayPatternCurrent());
+    REQUIRE(scanner->getScanningDevice(0).getSubrays().back().angle_rad ==
+            before.back().angle_rad);
+  }
+  scanner->setBeamDivergenceX(0.0006);
+  REQUIRE(scanner->getBeamDivergenceY() == 0.001);
+  scanner->setBeamDivergenceY(0.002);
+  REQUIRE(scanner->getBeamDivergence() == 0.0006);
+  auto copy = scanner->clone();
+  REQUIRE(copy->getBeamDivergenceY() == 0.002);
+  scanner->setBeamDivergence(0.003);
+  REQUIRE(scanner->getBeamDivergenceY() == 0.003);
+  REQUIRE(copy->getBeamDivergenceY() == 0.002);
 }
 
 TEST_CASE("Far field returns use absolute shares", "[energy]")
 {
   auto scanner = energyScanner();
+  scanner->setBeamDivergences(0.0003, GENERATE(0.0003, 0.001));
   scanner->getFWFSettings().beamSamplingFactor = GENERATE(1.0, 2.0);
   scanner->getFWFSettings().beamSampleQuality = GENERATE(1, 3, 8);
   scanner->prepareSimulation();
@@ -485,6 +527,7 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
   double const xmin = GENERATE(-1.0, 0.002);
   bool const fixedIncidence = GENERATE(false, true);
   auto scanner = energyScanner();
+  scanner->setBeamDivergences(0.0003, GENERATE(0.0003, 0.001));
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
   scanner->prepareSimulation();
@@ -504,7 +547,8 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
     part->mPrimitives.push_back(primitive);
   }
   REQUIRE(scene.finalizeLoading());
-  SimulatedPulse pulse(-scene.getShift(), Rotation(), 0.0, 0, 1, 0);
+  Rotation attitude(Directions::forward, GENERATE(0.0, PI / 2));
+  SimulatedPulse pulse(-scene.getShift(), attitude, 0.0, 0, 1, 0);
   TracingTestPulse runnable(scanner, scene, pulse);
   runnable.AbstractPulseRunnable::initialize();
   UniformNoiseSource<double> noise("42");
@@ -517,7 +561,7 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
   auto const& rays = scanner->getScanningDevice(0).getSubrays();
   for (auto const& ray : rays) {
     auto rotation = ray.rotation;
-    auto direction = rotation.applyTo(Directions::forward);
+    auto direction = attitude.applyTo(rotation.applyTo(Directions::forward));
     if (100.0 * direction.x / direction.y < xmin)
       continue;
     ++expectedHits;
@@ -900,5 +944,85 @@ TEST_CASE("Peak correction changes only measured ranges and preserves "
   runnable.digestIntersections(
     matrix, rng, rng2, direction, reflections, intersections);
   REQUIRE(scanner->allMeasurements->empty());
+}
+#endif
+
+#if DATA_ANALYTICS >= 2
+namespace {
+class AnalyticsTriangle : public Triangle
+{
+public:
+  using Triangle::Triangle;
+  bool useSigma = false;
+  bool canComputeSigmaWithLadLut() override { return useSigma; }
+  double computeSigmaWithLadLut(glm::dvec3 const&) override { return 0.01; }
+};
+class AnalyticsTestPulse : public FullWaveformPulseRunnable
+{
+public:
+  using FullWaveformPulseRunnable::computeSubrays;
+  using FullWaveformPulseRunnable::FullWaveformPulseRunnable;
+};
+}
+TEST_CASE("Both analytics paths record transverse hit radii", "[energy]")
+{
+  bool const useSigma = GENERATE(false, true);
+  auto scanner = energyScanner();
+  scanner->setBeamDivergences(0.0003, 0.001);
+  scanner->setDetector(
+    std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
+  scanner->prepareSimulation();
+  Scene scene;
+  auto part = std::make_shared<ScenePart>();
+  auto material = std::make_shared<Material>();
+  material->reflectance = 0.5;
+  material->kd[0] = 1.0;
+  scene.primitives.push_back(new AnalyticsTriangle(
+    Vertex(-1, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
+  scene.primitives.push_back(new AnalyticsTriangle(
+    Vertex(-1, 100, -1), Vertex(1, 100, 1), Vertex(-1, 100, 1)));
+  for (auto primitive : scene.primitives) {
+    primitive->part = part;
+    primitive->material = material;
+    static_cast<AnalyticsTriangle*>(primitive)->useSigma = useSigma;
+    part->mPrimitives.push_back(primitive);
+  }
+  REQUIRE(scene.finalizeLoading());
+  Rotation attitude(Directions::forward, GENERATE(0.0, PI / 2));
+  SimulatedPulse pulse(-scene.getShift(), attitude, 0.0, 0, 1, 0);
+  AnalyticsTestPulse runnable(scanner, scene, pulse);
+  runnable.AbstractPulseRunnable::initialize();
+  UniformNoiseSource<double> noise("42");
+  auto const& rays = scanner->getScanningDevice(0).getSubrays();
+  auto const nonce =
+    std::chrono::steady_clock::now().time_since_epoch().count();
+  struct RecordDirectory
+  {
+    std::filesystem::path path;
+    ~RecordDirectory()
+    {
+      std::error_code ec;
+      std::filesystem::remove_all(path, ec);
+    }
+  } directory{ std::filesystem::temp_directory_path() /
+               ("helios_elliptical_records_" + std::to_string(nonce)) };
+  std::filesystem::create_directory(directory.path);
+  auto recorder = std::make_shared<helios::analytics::HDA_PulseRecorder>(
+    directory.path.string());
+  std::map<double, double> reflections;
+  std::vector<RaySceneIntersection> intersections;
+  std::vector<std::vector<double>> records;
+  runnable.computeSubrays(noise, reflections, intersections, records, recorder);
+  REQUIRE(records.size() == rays.size());
+  REQUIRE(intersections.size() == rays.size());
+  for (size_t i = 0; i < rays.size(); ++i) {
+    auto const point = intersections.at(i).point + scene.getShift();
+    REQUIRE(records[i][6] ==
+            Catch::Approx(std::hypot(point.x, point.z)).margin(1e-12));
+    if (i == 0)
+      REQUIRE(records[i][6] == 0.0);
+    REQUIRE(records[i][5] > 0.0);
+    REQUIRE(records[i][9] > 0.0);
+  }
 }
 #endif

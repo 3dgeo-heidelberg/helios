@@ -59,7 +59,7 @@ public:
    * @brief Beam sample quality
    */
   int beamSampleQuality = 3;
-  /** Tangent-plane sampling radius in units of the Gaussian 1/e^2 radius. */
+  /** Dimensionless rho_max cutoff in normalized Gaussian coordinates. */
   double beamSamplingFactor = 2.0;
   /**
    * @brief Peak validation window (metres)
