@@ -33,7 +33,8 @@ ScanningDevice::ScanningDevice(
   , id(id)
   , headRelativeEmitterPosition(beamOrigin)
   , headRelativeEmitterAttitude(beamOrientation)
-  , beamDivergence_rad(beamDiv_rad)
+  , beamDivergenceX_rad(beamDiv_rad)
+  , beamDivergenceY_rad(beamDiv_rad)
   , pulseLength_ns(pulseLength_ns)
   , pulseAmplitude_W(pulseAmplitude_W)
   , beamQuality(beamQuality)
@@ -57,7 +58,8 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->id = scdev.id;
   this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
   this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
-  this->beamDivergence_rad = scdev.beamDivergence_rad;
+  this->beamDivergenceX_rad = scdev.beamDivergenceX_rad;
+  this->beamDivergenceY_rad = scdev.beamDivergenceY_rad;
   this->pulseLength_ns = scdev.pulseLength_ns;
   this->pulseAmplitude_W = scdev.pulseAmplitude_W;
   this->beamQuality = scdev.beamQuality;
@@ -66,7 +68,6 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->visibility_km = scdev.visibility_km;
   this->wavelength_m = scdev.wavelength_m;
   this->atmosphericExtinction = scdev.atmosphericExtinction;
-  this->beamWaistRadius = scdev.beamWaistRadius;
   this->FWF_settings = scdev.FWF_settings;
   this->numRays = scdev.numRays;
   this->supportedPulseFreqs_Hz = scdev.supportedPulseFreqs_Hz;
@@ -113,7 +114,8 @@ ScanningDevice::prepareSimulation()
 bool
 ScanningDevice::isSubrayPatternCurrent() const
 {
-  return !subrays.empty() && sampledDivergence_rad == beamDivergence_rad &&
+  return !subrays.empty() && sampledDivergenceX_rad == beamDivergenceX_rad &&
+         sampledDivergenceY_rad == beamDivergenceY_rad &&
          sampledFactor == FWF_settings.beamSamplingFactor &&
          sampledQuality == FWF_settings.beamSampleQuality;
 }
@@ -133,72 +135,77 @@ ScanningDevice::buildSubrayPattern()
   if (isSubrayPatternCurrent())
     return;
   FWF_settings.validateBeamSampling();
-  if (!std::isfinite(beamDivergence_rad) || beamDivergence_rad <= 0.0 ||
-      beamDivergence_rad >= PI)
-    throw std::invalid_argument(
-      "Full beam divergence must be finite and in (0, pi)");
 
+  /* Validate beamDivergence */
+  for (double divergence : { beamDivergenceX_rad, beamDivergenceY_rad }) {
+    if (!std::isfinite(divergence) || divergence <= 0.0 || divergence >= PI)
+      throw std::invalid_argument(
+        "Full beam divergences must be finite and in (0, pi)");
+  }
   int const quality = FWF_settings.beamSampleQuality;
 
-  /* Tangent of half beam divergence */
-  double const tangent0 = std::tan(beamDivergence_rad / 2.0);
+  /* 1/e^2 tangents; generally different in x and y directions*/
+  double const tangentX = std::tan(beamDivergenceX_rad / 2.0);
+  double const tangentY = std::tan(beamDivergenceY_rad / 2.0);
 
-  /* Define cutoff of sampled angular space as a multiple of the tangent */
-  double const cutoffTangent = FWF_settings.beamSamplingFactor * tangent0;
-  double const cutoff = std::atan(cutoffTangent);
-  if (!std::isfinite(cutoffTangent) || cutoff <= 0.0 || cutoff >= PI / 2.0)
-    throw std::invalid_argument("Sampling cone is not representable");
+  /* rhoMax represents the sampling cutoff */
+  double const rhoMax = FWF_settings.beamSamplingFactor;
+
+  /* Validate 1/e^2 tangents */
+  for (double tangent : { tangentX, tangentY }) {
+    double const cutoff = rhoMax * tangent;
+    if (!std::isfinite(cutoff) || cutoff <= 0.0 ||
+        std::atan(cutoff) >= PI / 2.0)
+      throw std::invalid_argument("Sampling cone is not representable");
+  }
 
   std::vector<Subray> generated;
-  double innerTangent = 0.0;
+  double innerRho = 0.0;
   for (int ring = 0; ring < quality; ++ring) {
-    /* The innermost annulus always holds exactly one subray (population = 1)*/
+    /* Determine number of subrays (population) per annulus */
     double const population = (ring == 0) ? 1.0 : std::floor(PI_2 * ring);
+
+    /* Validate population */
     if (population >= static_cast<double>(generated.max_size()))
       throw std::invalid_argument("Too many subrays");
     std::size_t const count = static_cast<std::size_t>(population);
     if (count > generated.max_size() - generated.size())
       throw std::invalid_argument("Too many subrays");
 
-    /* Calculate the angle of the subrays within the current annulus */
-    double const angle = cutoff * ring / (quality - 0.5);
+    /* Placement and integration use normalized Gaussian coordinates. */
+    double const rho = rhoMax * (ring / (quality - 0.5));
+    double const outerRho = (ring == quality - 1)
+                              ? rhoMax
+                              : rhoMax * ((ring + 0.5) / (quality - 0.5));
+    double const extent = (outerRho - innerRho) * (outerRho + innerRho);
 
-    /* Calculate the angle of the outer edge of the current annulus */
-    double const outerAngle =
-      (ring == quality - 1) ? cutoff : cutoff * (ring + 0.5) / (quality - 0.5);
-    double const outerTangent =
-      (ring == quality - 1) ? cutoffTangent : std::tan(outerAngle);
-
-    /* Compute power share of a subray within this annulus */
-    double const innerRatio = innerTangent / tangent0;
-    double const outerRatio = outerTangent / tangent0;
-    double const exponent = 2.0 * innerRatio * innerRatio;
-    double const delta =
-      2.0 * (outerRatio - innerRatio) * (outerRatio + innerRatio);
-    // expm1 preserves the power of narrow annuli without subtracting
-    // near-equals.
-    double const share = std::exp(-exponent) * -std::expm1(-delta) / count;
-    double const extentSquared =
-      (outerTangent - innerTangent) * (outerTangent + innerTangent) / count;
-    if (!std::isfinite(share) || !std::isfinite(PI * extentSquared) ||
-        extentSquared <= 0.0)
+    /* Power share per-subray in current annulus */
+    double const share =
+      std::exp(-2.0 * innerRho * innerRho) * -std::expm1(-2.0 * extent) / count;
+    double const areaFactor = PI * tangentX * tangentY * extent / count;
+    if (!std::isfinite(share) || !std::isfinite(areaFactor) ||
+        areaFactor <= 0.0)
       throw std::invalid_argument("Subray patch is not representable");
 
-    /* Define the orientation of the subray */
-    Rotation const tilt(Directions::right, angle);
+    /* Determine direction of each subray */
     for (std::size_t j = 0; j < count; ++j) {
-      Rotation const azimuth(Directions::forward, PI_2 * j / count);
-      generated.push_back({ azimuth.applyTo(tilt),
-                            angle,
-                            share,
-                            PI * extentSquared,
-                            outerAngle });
+      double const phase = PI_2 * j / count;
+      double const u = rho * tangentX * std::sin(phase);
+      double const v = rho * tangentY * std::cos(phase);
+      double const angle = std::atan2(std::hypot(u, v), 1.0);
+      glm::dvec3 const direction =
+        Directions::forward + u * Directions::right + v * Directions::up;
+      Rotation const rotation =
+        ring == 0 ? Rotation() : Rotation(Directions::forward, direction);
+      generated.push_back(
+        { rotation, angle, share, areaFactor, rho, innerRho, outerRho });
     }
-    innerTangent = outerTangent;
+    innerRho = outerRho;
   }
   subrays = std::move(generated);
   numRays = subrays.size();
-  sampledDivergence_rad = beamDivergence_rad;
+  sampledDivergenceX_rad = beamDivergenceX_rad;
+  sampledDivergenceY_rad = beamDivergenceY_rad;
   sampledFactor = FWF_settings.beamSamplingFactor;
   sampledQuality = quality;
 }
@@ -206,12 +213,21 @@ ScanningDevice::buildSubrayPattern()
 void
 ScanningDevice::setBeamDivergence(double divergence_rad)
 {
-  double const previous = beamDivergence_rad;
-  beamDivergence_rad = divergence_rad;
+  setBeamDivergences(divergence_rad, divergence_rad);
+}
+
+void
+ScanningDevice::setBeamDivergences(double x_rad, double y_rad)
+{
+  double const previousX = beamDivergenceX_rad;
+  double const previousY = beamDivergenceY_rad;
+  beamDivergenceX_rad = x_rad;
+  beamDivergenceY_rad = y_rad;
   try {
     buildSubrayPattern();
   } catch (...) {
-    beamDivergence_rad = previous;
+    beamDivergenceX_rad = previousX;
+    beamDivergenceY_rad = previousY;
     throw;
   }
   configureBeam();
@@ -220,8 +236,7 @@ ScanningDevice::setBeamDivergence(double divergence_rad)
 void
 ScanningDevice::configureBeam()
 {
-  cached_Bt2 = beamDivergence_rad * beamDivergence_rad;
-  beamWaistRadius = (beamQuality * wavelength_m) / (PI * beamDivergence_rad);
+  cached_Bt2 = beamDivergenceX_rad * beamDivergenceX_rad;
 }
 
 // Simulate energy loss from aerial particles (Carlsson et al., 2001)
