@@ -213,7 +213,8 @@ Scanner::toString()
   for (std::size_t i = 0; i < numDevices; ++i) {
     ss << "Device[" << i << "]: " << getDeviceId(i) << "\n"
        << "\tWhole-beam Pulse Amplitude: " << getPulseAmplitude(i) << " W\n"
-       << "\tBeam Divergence: " << getBeamDivergence(i) * 1e3 << " mrad\n"
+       << "\tBeam Divergence: " << getBeamDivergenceX(i) * 1e3 << " / "
+       << getBeamDivergenceY(i) * 1e3 << " mrad (X/Y)\n"
        << "\tWavelength: " << (int)(getWavelength(i) * 1e9) << " nm\n"
        << "\tVisibility: " << getVisibility(i) << " km\n";
   }

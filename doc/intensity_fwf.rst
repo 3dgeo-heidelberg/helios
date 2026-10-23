@@ -26,20 +26,39 @@ HELIOS++ supports simulation of full waveform data by simulating a laser beam co
 Beam divergence
 ^^^^^^^^^^^^^^^
 
-The scanner XML attribute ``beamDivergence_rad`` defines the full beam divergence in radians. Individual ``<channel>`` elements can override it. In Python, change the divergence before running a simulation:
+The scanner XML attributes ``beamDivergenceX_rad`` and ``beamDivergenceY_rad`` define full-angle divergences at the Gaussian 1/e² intensity boundary. The axes are emitter-local right and up. HELIOS uses local forward as the propagation axis. Emitter orientation rotates the ellipse with the beam.
 
-   scanner.beam_divergence = 0.003  # radians, channel 0
-   scanner.beam_divergence = "0.03 deg"  # angles with units are supported
-   scanner.set_beam_divergence(0.0005, index=1)  # a multi-channel scanner
-   angle = scanner.get_beam_divergence(index=1)
+``beamDivergence_rad`` remains circular shorthand. At each scanner or channel:
 
-These setters refresh the derived beam state automatically. Divergence must be finite and strictly between zero and pi radians.
+* No divergence attributes: inherit the parent pair (root default: 0.0003 rad on both axes).
+* One axis alone: use that value for both axes.
+* Two axes: use the explicit pair.
+* Scalar plus axes: use the scalar for both, then override the explicitly supplied axes.
+
+For example::
+
+   <scanner ... beamDivergenceX_rad="0.0003" beamDivergenceY_rad="0.0006">
+     <channels>
+       <channel id="0" /> <!-- inherits the ellipse -->
+       <channel id="1" beamDivergence_rad="0.0004" /> <!-- circular -->
+     </channels>
+   </scanner>
+
+In Python, configure divergence before running a simulation::
+
+   scanner.set_beam_divergences("0.03 deg", "0.06 deg", index=1)
+   scanner.beam_divergence_x = 0.0003  # changes only X, channel 0
+   scanner.beam_divergence_y = 0.0006  # changes only Y, channel 0
+   y = scanner.get_beam_divergence_y(index=1)
+   scanner.beam_divergence = 0.0003  # sets BOTH axes to a circular beam
+   x = scanner.get_beam_divergence(index=1)  # legacy getter returns X
+
+Both divergences must be finite and strictly between zero and pi radians. Setters refresh the sampling geometry. Invalid updates preserve the previous beam. Each channel owns its own pair and sampling table.
 
 Subray quantification
 ^^^^^^^^^^^^^^^^^^^^^
 
-The quality of the simulation can be adjusted by the ``beamSampleQuality`` attribute of the ``<FWFSettings [...]/>`` tag in the survey XML.
-If no information is given there, the scanner definition may have a set of ``FWFSettings`` instead. If this is also not present, hardcoded default values are used, as shown in the following table:
+The quality of the simulation can be adjusted by the ``beamSampleQuality`` attribute of the ``<FWFSettings [...]/>`` tag in the survey XML. If no information is given there, the scanner definition may have a set of ``FWFSettings`` instead. If this is also not present, hardcoded default values are used, as shown in the following table:
 
 .. list-table:: HELIOS++ Pulse Sampling and Timing Parameters
    :widths: 25 20 55
@@ -51,11 +70,11 @@ If no information is given there, the scanner definition may have a set of ``FWF
 
    * - ``beamSampleQuality``
      - 3
-     - 3 concentric circles of subrays, 19 subrays total; discretization in space.
+     - 3 concentric elliptical rings of subrays, 19 subrays total; discretization in space.
 
    * - ``beamSamplingFactor``
      - 2
-     - Sampling radius in units of the Gaussian 1/e^2 radius; captures 99.9665% of emitted power.
+     - Dimensionless cutoff rho_max in normalized Gaussian coordinates; captures 99.9665% of emitted power.
 
    * - ``sampleSpacing_m``
      - 0.03747405725
@@ -86,33 +105,31 @@ If no information is given there, the scanner definition may have a set of ``FWF
      - Relative unit-peak amplitude for automatic recording bounds only.
 
 
-The ``beamSampleQuality`` :math:`bSQ` is the number of concentric circles from which subrays are sampled. The angular distance of circle :math:`i` (counting from the center) depends on the beam divergence :math:`\beta` and is calculated as:
+The quality :math:`Q` is the number of rings, including the central ray. Set :math:`\rho_{\max}=\text{beamSamplingFactor}`. For ring :math:`i`,
 
 .. math::
-   \theta_s = \arctan\left(k\tan(\beta/2)\right), \qquad
-   \alpha_i = \frac{i\theta_s}{bSQ-1/2}, \quad 0 \le i < bSQ
+   \rho_i=\frac{\rho_{\max}i}{Q-1/2},\qquad
+   \rho_{i,\mathrm{in}}=\frac{\rho_{\max}\max(0,i-1/2)}{Q-1/2},\qquad
+   \rho_{i,\mathrm{out}}=\frac{\rho_{\max}(i+1/2)}{Q-1/2}.
 
-Here :math:`\beta` is the full 1/e^2 divergence and :math:`k` is ``beamSamplingFactor``. Annular boundaries lie halfway between ring directions, starting at zero and ending exactly at :math:`\theta_s`. A single central ray represents the entire sampled disk when ``beamSampleQuality = 1``. Increasing coverage at fixed quality makes spatial sampling coarser.
+The final boundary is exactly :math:`\rho_{\max}`. A single central ray represents the whole sampled ellipse for :math:`Q=1`. Ring populations are :math:`N_0=1` and :math:`N_i=\lfloor2\pi i\rfloor` for :math:`i>0`. The total is :math:`1+\sum_{i=1}^{Q-1}\lfloor2\pi i\rfloor`.
 
-On each circle, :math:`k` subrays are sampled, where:
-
-.. math::
-   N_0 = 1, \qquad N_i = \left\lfloor 2\pi i \right\rfloor \quad (i > 0)
-
-The subrays are distributed evenly around the circle. The total number of subrays for a given ``beamSampleQuality`` :math:`bSQ` is:
+Samples are uniform in scaled azimuth :math:`\phi`, starting at local up and progressing toward local right. With :math:`a_x=\tan(\beta_x/2)` and :math:`a_y=\tan(\beta_y/2)`, transverse slopes are
 
 .. math::
-   n_{\text{Rays}} = 1 + \sum_{i=1}^{bSQ-1} \left\lfloor 2\pi i \right\rfloor
+   u=\rho_i a_x\cos(\phi),\qquad v=\rho_i a_y\sin(\phi),\qquad
+   \mathbf d=\frac{\mathbf{forward}+u \mathbf{right}+v \mathbf{up}}
+                     {\sqrt{1+u^2+v^2}}.
 
-For example, with ``beamSampleQuality = 3``, the subray distribution appears as follows (color represents relative amplitude, see next section):
+The physical polar angle is :math:`\theta=\arctan\sqrt{u^2+v^2}` and varies around an elliptical ring. Scaled azimuth is generally different from physical azimuth. The directional boundary angle is
 
-.. figure:: /img/polar_subsampling_grid.png
-   :alt: Subray distribution for beamSampleQuality = 3
-   :width: 60%
-   :align: center
+.. math::
+   \theta_{\mathrm{out}}(\phi)=\arctan\left(
+   \rho_{\mathrm{out}}\sqrt{a_x^2\cos^2(\phi)+a_y^2\sin^2(\phi)}\right).
 
-   Subray distribution.
+Equal divergences recover a circular Gaussian.
 
+Subray metadata exposes ``rho``, ``inner_rho``, and ``outer_rho`` in Python. These are dimensionless; ``outer_rho`` is the individual annulus boundary, while ``beamSamplingFactor`` is the global cutoff. ``angle_rad`` remains the individual ray's physical polar angle.
 
 .. _amplitude_evaluation:
 
@@ -124,12 +141,19 @@ For each subray, the returned waveform is computed by intersecting the ray with 
 The received amplitude is derived from the LiDAR equation, considering the following components:
 
 1. **Transmitted power**
-   Geometry and weights use one circular far-field Gaussian. At axial distance :math:`z`, the radius is :math:`w=z\tan(\beta/2)`. The power share :math:`s_{p,i}` assigned to each subray of annulus :math:`i` is its integrated fraction of total emitted power :math:`P_0`:
+   Geometry and weights use an elliptical far-field Gaussian with radii :math:`w_x=za_x` and :math:`w_y=za_y` at axial distance :math:`z`. The fraction of total emitted power assigned to each subray on ring :math:`i` is
 
    .. math::
-      s_{p,i} = \frac{1}{N_i}\left[\exp{\left(-\frac{2\tan^2(\theta_i)}{\tan^2(\beta/2)}\right)} - \exp{\left(-\frac{2\tan^2(\theta_{i+1})}{\tan^2(\beta/2)}\right)}\right].
+      s_i=\frac{e^{-2\rho_{i,\mathrm{in}}^2}-e^{-2\rho_{i,\mathrm{out}}^2}}{N_i}.
 
-   The shares sum to :math:`1-e^{-2k^2}`, independently of range and sample quality. No power from the omitted Gaussian tail is shifted into the sampled cone.
+   Shares are equal within a ring and independent of both divergences. They sum to :math:`1-e^{-2\rho_{\max}^2}`, independently of range and sample quality. The transverse patch area is
+
+   .. math::
+      A_i=\frac{\pi a_xa_y}{N_i}
+          (\rho_{i,\mathrm{out}}^2-\rho_{i,\mathrm{in}}^2)z^2,
+      \qquad z=R\cos\theta.
+
+   Here :math:`R` is the distance along the individual subray, not axial range.
 
 2. **Material reflectance**  
    The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BRDF) :cite:p:`Phong.1975`.
@@ -298,7 +322,7 @@ Currently, for its calculation HELIOS++ takes the following factors into account
 
    * - Beam divergence
      - Increase of the beam diameter with increasing range (radians)
-     - User: ``beamDivergence_rad`` in **scanner XML**
+     - User: ``beamDivergenceX_rad`` / ``beamDivergenceY_rad`` (or circular ``beamDivergence_rad``) in **scanner XML**
      - 0.0003 rad
 
    * - Range

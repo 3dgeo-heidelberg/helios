@@ -281,6 +281,15 @@ public:
       void, Scanner, setBeamDivergence, beamDivergence, idx);
   }
 
+  double getBeamDivergenceY(size_t const idx) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double, Scanner, getBeamDivergenceY, idx);
+  }
+  void setBeamDivergences(double x, double y, size_t idx) override
+  {
+    PYBIND11_OVERLOAD_PURE(void, Scanner, setBeamDivergences, x, y, idx);
+  }
+
   double getPulseAmplitude(size_t const idx) const override
   {
     PYBIND11_OVERLOAD_PURE(double, Scanner, getPulseAmplitude, idx);
@@ -354,18 +363,6 @@ public:
   {
     PYBIND11_OVERLOAD_PURE(
       void, Scanner, setAtmosphericExtinction, atmosphericExtinction, idx);
-  }
-
-  double getBeamWaistRadius(size_t const idx) const override
-  {
-    PYBIND11_OVERLOAD_PURE(double, Scanner, getBeamWaistRadius, idx);
-  }
-
-  void setBeamWaistRadius(double const beamWaistRadius,
-                          size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(
-      void, Scanner, setBeamWaistRadius, beamWaistRadius, idx);
   }
 
   glm::dvec3 getHeadRelativeEmitterPosition(size_t const idx = 0) const override

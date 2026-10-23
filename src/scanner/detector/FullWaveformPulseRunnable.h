@@ -88,13 +88,11 @@ protected:
   );
 private:
   /**
-   * @brief Handle sub-rays along the circle
+   * @brief Handle a subray of the prepared Gaussian sampling pattern
    * @param[in] tMinMax Minimum and maximum time to intersection with respect
    *  to the axis aligned bounding box that bounds the scene
    * @param[in] subrayRotation The rotation that must be applied to the ray
-   *  to obtain the subray. It is typically a composition of two rotations,
-   *  one to model the radius (i.e., how far from the center) and other
-   *  to model the circumference (i.e., at which angle in the circle).
+   *  to obtain the individual subray direction in the elliptical beam.
    * @see FullWaveformPulseRunnable::computeSubrays
    */
   void handleSubray(Rotation const& subrayRotation,
