@@ -653,9 +653,24 @@ public:
    * @param idx The index of the scanning device which beam divergence must
    *  be obtained (by default 0, it is the first one)
    * @return Beam divergence (radians)
-   * @see ScanningDevice::beamDivergence_rad
+   * @see ScanningDevice::beamDivergenceX_rad
    */
+  // Legacy scalar reads return X; scalar writes set both axes.
   virtual double getBeamDivergence(size_t const idx) const = 0;
+  double getBeamDivergenceX(size_t idx = 0) const
+  {
+    return getBeamDivergence(idx);
+  }
+  virtual double getBeamDivergenceY(size_t idx = 0) const = 0;
+  virtual void setBeamDivergences(double x, double y, size_t idx = 0) = 0;
+  void setBeamDivergenceX(double value, size_t idx = 0)
+  {
+    setBeamDivergences(value, getBeamDivergenceY(idx), idx);
+  }
+  void setBeamDivergenceY(double value, size_t idx = 0)
+  {
+    setBeamDivergences(getBeamDivergenceX(idx), value, idx);
+  }
   /**
    * @brief No index argument version of the Scanner::getBeamDivergence
    *  method
@@ -667,7 +682,7 @@ public:
    * @param beamDivergence New beam divergence (radians)
    * @param idx The index of the scanning device which beam divergence must
    *  be set (by default 0, it is the first one)
-   * @see ScanningDevice::beamDivergence_rad
+   * @see ScanningDevice::beamDivergenceX_rad
    */
   virtual void setBeamDivergence(double const beamDivergence,
                                  size_t const idx) = 0;
@@ -900,38 +915,6 @@ public:
     setAtmosphericExtinction(atmosphericExtinction, 0);
   }
 
-  /**
-   * @brief Obtain beam waist radius
-   * @param idx The index of the scanning device which beam waist radius must
-   *  be obtained (by default 0, it is the first one)
-   * @return Beam waist radius
-   * @see ScanningDevice::beamWaistRadius
-   */
-  virtual double getBeamWaistRadius(size_t const idx) const = 0;
-  /**
-   * @brief No index argument version of the Scanner::getBeamWaistRadius
-   *  method
-   * @see Scanner::getBeamWaistRadius(size_t const)
-   */
-  inline double getBeamWaistRadius() const { return getBeamWaistRadius(0); }
-  /**
-   * @brief Set beam waist radius
-   * @param beamWaistRadius New beam waist radius
-   * @param idx The index of the scanning device which beam waist radius must
-   *  be set (by default 0, it is the first one)
-   * @see ScanningDevice::beamWaistRadius
-   */
-  virtual void setBeamWaistRadius(double const beamWaistRadius,
-                                  size_t const idx) = 0;
-  /**
-   * @brief No index argument version of the Scanner::setBeamWaistRadius
-   *  method
-   * @see Scanner::setBeamWaistRadius(double const, size_t const)
-   */
-  inline void setBeamWaistRadius(double const beamWaistRadius)
-  {
-    setBeamWaistRadius(beamWaistRadius, 0);
-  }
   /**
    * @brief Obtain the head's relative emitter position
    * @param idx The index of the scanning device which head's relative

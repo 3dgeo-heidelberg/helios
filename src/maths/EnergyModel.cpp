@@ -97,8 +97,7 @@ EnergyModel::computePowerRatio(
   radiometryRecords.emplace_back(13, std::numeric_limits<double>::quiet_NaN());
   auto& record = radiometryRecords.back();
   auto const& subray = sd.getSubrays().at(subrayIndex);
-  record[6] =
-    targetRange * std::cos(subray.angle_rad) * std::tan(subray.outerAngle_rad);
+  record[6] = targetRange * std::sin(subray.angle_rad);
   record[3] = std::acos(incidenceCosine);
   record[4] = targetRange;
   record[5] = area;
