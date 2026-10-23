@@ -6,6 +6,27 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
+SingleScanner::SingleScanner(ScanningDevice const& device,
+                             std::string const& id)
+  : Scanner(id,
+            device.supportedPulseFreqs_Hz,
+            false,
+            false,
+            false,
+            false,
+            false)
+  , scanDev(device)
+{
+  scanDev.devIdx = 0;
+}
+
+void
+SingleScanner::setScanningDevice(ScanningDevice const& device)
+{
+  scanDev = ScanningDevice(device);
+  scanDev.devIdx = 0;
+}
+
 SingleScanner::SingleScanner(
   double const beamDiv_rad,
   glm::dvec3 const beamOrigin,

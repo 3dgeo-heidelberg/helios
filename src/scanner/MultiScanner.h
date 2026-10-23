@@ -206,6 +206,19 @@ public:
     return scanDevs[idx];
   }
   /**
+   * @brief Replace the scanning devices owned by this scanner.
+   * @param devices The devices to copy into the scanner
+   */
+  void setScanningDevices(std::vector<ScanningDevice> const& devices)
+  {
+    scanDevs.clear();
+    scanDevs.reserve(devices.size());
+    for (size_t i = 0; i < devices.size(); ++i) {
+      scanDevs.emplace_back(devices[i]);
+      scanDevs.back().devIdx = i;
+    }
+  }
+  /**
    * @see Scanner::setDeviceIndex
    */
   void setDeviceIndex(size_t const newIdx, size_t const oldIdx) override

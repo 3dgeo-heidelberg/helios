@@ -23,7 +23,7 @@ class ScannerWrap : public Scanner
 {
 public:
   ScannerWrap()
-    : Scanner("", std::list<int>())
+    : Scanner("", std::list<int>{ 0 })
   {
   }
 

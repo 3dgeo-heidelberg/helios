@@ -22,6 +22,8 @@ protected:
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
+  SingleScanner(ScanningDevice const& device, std::string const& id);
+
   /**
    * @brief SingleScanner constructor from given values
    * @see Scanner::Scanner
@@ -182,6 +184,11 @@ public:
   {
     return scanDev;
   }
+  /**
+   * @brief Replace the scanning device owned by this scanner.
+   * @param device The device to copy into the scanner
+   */
+  void setScanningDevice(ScanningDevice const& device);
   /**
    * @see Scanner::setDeviceIndex
    */

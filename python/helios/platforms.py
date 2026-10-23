@@ -1,4 +1,5 @@
 from helios.scene import DynamicScene, StaticScene
+from helios.rotation import Rotation
 from helios.utils import (
     classonlymethod,
     get_asset_directories,
@@ -7,6 +8,7 @@ from helios.utils import (
 from helios.validation import (
     AssetPath,
     Model,
+    R3Vector,
     UpdateableMixin,
     get_all_annotations,
     validate_xml_file,
@@ -178,6 +180,24 @@ class DynamicPlatformSettings(PlatformSettings):
 class Platform(Printable, Model, cpp_class=_helios.Platform):
     # TODO: should platform_settings get set from xml as well?
     platform_settings: Optional[PlatformSettings] = None
+    id: str
+    name: str = ""
+    scanner_mount_position: R3Vector = (0.0, 0.0, 0.0)
+    scanner_mount_attitude: Rotation = Rotation()
+
+    def _never_serialize_shallow(self) -> bool:
+        return True
+
+    @classmethod
+    def _from_cpp(cls, value):
+        if cls is Platform:
+            if isinstance(value, _helios.GroundVehiclePlatform):
+                return GroundVehiclePlatform._from_cpp(value)
+            if isinstance(value, _helios.LinearPathPlatform):
+                return LinearPathPlatform._from_cpp(value)
+            if type(value) is _helios.Platform:
+                return StaticPlatform._from_cpp(value)
+        return Model._from_cpp.__func__(cls, value)
 
     @classonlymethod
     @validate_call
@@ -241,6 +261,18 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         )
         cppplatform = cls._from_cpp(_cpp_interpolated_platform)
         return cppplatform
+
+
+class StaticPlatform(Platform, cpp_class=_helios.Platform):
+    pass
+
+
+class LinearPathPlatform(Platform, cpp_class=_helios.LinearPathPlatform):
+    pass
+
+
+class GroundVehiclePlatform(Platform, cpp_class=_helios.GroundVehiclePlatform):
+    drag: float = 1.0
 
 
 #

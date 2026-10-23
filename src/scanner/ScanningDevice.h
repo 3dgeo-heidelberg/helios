@@ -24,6 +24,7 @@ using helios::analytics::HDA_PulseRecorder;
 #include <map>
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 class Scanner;
 class SingleScanner;
@@ -486,6 +487,84 @@ public:
    * @see Scanner::state_lastPulseWasHit
    */
   void setLastPulseWasHit(bool const value);
+  inline std::string const& getId() const { return id; }
+  inline void setId(std::string const& value) { id = value; }
+  inline std::list<int> const& getSupportedPulseFrequencies() const
+  {
+    return supportedPulseFreqs_Hz;
+  }
+  inline void setSupportedPulseFrequencies(std::list<int> const& value)
+  {
+    supportedPulseFreqs_Hz = value;
+  }
+  inline glm::dvec3 const& getHeadRelativeEmitterPosition() const
+  {
+    return headRelativeEmitterPosition;
+  }
+  inline Rotation const& getHeadRelativeEmitterAttitude() const
+  {
+    return headRelativeEmitterAttitude;
+  }
+  inline double getBeamDivergence() const { return beamDivergence_rad; }
+  inline void setBeamDivergence(double const value)
+  {
+    beamDivergence_rad = value;
+    configureBeam();
+  }
+  inline double getPulseLength() const { return pulseLength_ns; }
+  inline void setPulseLength(double const value) { pulseLength_ns = value; }
+  inline double getWavelength() const { return wavelength_m; }
+  inline void setWavelength(double const value)
+  {
+    wavelength_m = value;
+    configureBeam();
+    atmosphericExtinction = calcAtmosphericAttenuation();
+  }
+  inline double getAveragePower() const { return averagePower_w; }
+  inline void setAveragePower(double const value) { averagePower_w = value; }
+  inline double getBeamQualityFactor() const { return beamQuality; }
+  inline void setBeamQualityFactor(double const value)
+  {
+    beamQuality = value;
+    configureBeam();
+  }
+  inline double getOpticalEfficiency() const { return efficiency; }
+  inline void setOpticalEfficiency(double const value) { efficiency = value; }
+  inline double getReceiverDiameter() const { return receiverDiameter_m; }
+  inline void setReceiverDiameter(double const value)
+  {
+    receiverDiameter_m = value;
+    cached_Dr2 = value * value;
+  }
+  inline double getAtmosphericVisibility() const { return visibility_km; }
+  inline void setAtmosphericVisibility(double const value)
+  {
+    visibility_km = value;
+    atmosphericExtinction = calcAtmosphericAttenuation();
+  }
+  inline int getMaxReturns() const { return maxNOR; }
+  inline void setMaxReturns(int const value) { maxNOR = value; }
+  inline std::shared_ptr<ScannerHead> getHead() const { return scannerHead; }
+  inline void setHead(std::shared_ptr<ScannerHead> value)
+  {
+    scannerHead = std::move(value);
+  }
+  inline std::shared_ptr<AbstractBeamDeflector> getOptics() const
+  {
+    return beamDeflector;
+  }
+  inline void setOptics(std::shared_ptr<AbstractBeamDeflector> value)
+  {
+    beamDeflector = std::move(value);
+  }
+  inline std::shared_ptr<AbstractDetector> getDetector() const
+  {
+    return detector;
+  }
+  inline void setDetector(std::shared_ptr<AbstractDetector> value)
+  {
+    detector = std::move(value);
+  }
   /**
    * @brief Set the relative emitter position
    * @see ScanningDevice::headRelativeEmitterPosition

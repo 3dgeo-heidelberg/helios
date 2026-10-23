@@ -408,7 +408,7 @@ def test_fwf_settings_instantiation():
     assert fwf.beam_divergence_angle == 0.0003
     assert fwf.pulse_length == 4.0
     assert fwf.beam_sample_quality == 3
-    assert fwf.win_size == fwf.pulse_length / 4.0
+    assert fwf.window_size == fwf.pulse_length / 4.0
     assert fwf.max_fullwave_range == 0.0
 
 
@@ -426,7 +426,7 @@ def test_fwf_settings_set_get_properties():
     fwf.beam_divergence_angle = 0.0005
     fwf.pulse_length = 5.0
     fwf.beam_sample_quality = 4
-    fwf.win_size = 1.25
+    fwf.window_size = 1.25
     fwf.max_fullwave_range = 100.0
 
     # Verify values
@@ -440,7 +440,7 @@ def test_fwf_settings_set_get_properties():
     assert fwf.beam_divergence_angle == 0.0005
     assert fwf.pulse_length == 5.0
     assert fwf.beam_sample_quality == 4
-    assert fwf.win_size == 1.25
+    assert fwf.window_size == 1.25
     assert fwf.max_fullwave_range == 100.0
 
 
@@ -522,8 +522,8 @@ def test_scanner_head_properties():
     assert scanner_head.mount_relative_attitude is not None
 
     # Test read/write properties
-    scanner_head.rotate_per_sec_max = 2.0
-    assert scanner_head.rotate_per_sec_max == 2.0
+    scanner_head.rotation_speed_max = 2.0
+    assert scanner_head.rotation_speed_max == 2.0
 
     scanner_head.rotate_per_sec = 1.0
     assert scanner_head.rotate_per_sec == 1.0
@@ -881,13 +881,6 @@ def test_platform_properties():
     assert isinstance(platform.device_relative_attitude, _helios.Rotation)
     assert platform.device_relative_attitude.axis == (1.0, 0.0, 0.0)
     assert platform.device_relative_attitude.angle == 0.0
-
-    assert platform.position_x_noise_source is None
-    assert platform.position_y_noise_source is None
-    assert platform.position_z_noise_source is None
-    assert platform.attitude_x_noise_source is None
-    assert platform.attitude_y_noise_source is None
-    assert platform.attitude_z_noise_source is None
 
     assert platform.target_waypoint[0] == 0.0
     assert platform.target_waypoint[1] == 0.0

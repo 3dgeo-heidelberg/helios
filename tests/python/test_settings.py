@@ -91,22 +91,23 @@ def test_full_waveform_settings_defaults():
 
     assert settings.bin_size == 2.5e-10
     assert settings.beam_sample_quality == 3
-    assert settings.win_size == 1e-9
+    assert settings.window_size is None
     assert settings.max_fullwave_range == 0.0
+    assert settings.aperture_diameter == 0.15
 
 
 def test_convert_full_waveform_settings_to_cpp():
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
-        win_size=2.0 * units.ns,
+        window_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
     cpp_settings = settings._to_cpp()
 
     assert cpp_settings.bin_size == 1.0
     assert cpp_settings.beam_sample_quality == 4
-    assert cpp_settings.win_size == 2.0
+    assert cpp_settings.window_size == 2.0
     assert cpp_settings.max_fullwave_range == 10.0
 
 
@@ -148,7 +149,7 @@ def test_full_waveform_settings_clone_and_deepcopy_run_survey(survey):
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
-        win_size=2.0 * units.ns,
+        window_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
     settings.runtime_note = "temporary"
@@ -193,10 +194,10 @@ def _write_invalid_survey_xml(path: Path) -> None:
 
 
 def test_fullwaveform_settings_rejects_invalid_window_in_python():
-    with pytest.raises(ValueError, match="win_size must satisfy"):
+    with pytest.raises(ValueError, match="window_size must satisfy"):
         FullWaveformSettings(
             bin_size=0.2 * units.ns,
-            win_size=0.3 * units.ns,
+            window_size=0.3 * units.ns,
         )
 
 

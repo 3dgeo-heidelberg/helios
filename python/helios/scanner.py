@@ -6,16 +6,24 @@ from helios.validation import (
     Frequency,
     Length,
     Model,
+    TimeIntervalNanoSeconds,
+    Power,
+    R3Vector,
     ScanFrequency,
+    Visibility,
     units,
     UpdateableMixin,
     TimeInterval,
     validate_xml_file,
 )
+from helios.rotation import Rotation
+from helios.settings import FullWaveformSettings
 from pydantic import validate_call
-from typing import Callable
+from pydantic import Field
+from typing import Annotated, Callable
 
 import _helios
+import math
 import numpy as np
 
 
@@ -113,7 +121,121 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
     pass
 
 
+class BeamDeflector(Model, cpp_class=_helios.AbstractBeamDeflector):
+    scan_angle_max: Angle = 0.0
+    scan_frequency_min: ScanFrequency = 0.0
+    scan_frequency_max: ScanFrequency = 0.0
+
+    @classmethod
+    def _from_cpp(cls, value):
+        if cls is BeamDeflector:
+            if isinstance(value, _helios.PolygonMirrorBeamDeflector):
+                return RotatingOptics._from_cpp(value)
+            if isinstance(value, _helios.OscillatingMirrorBeamDeflector):
+                return OscillatingOptics._from_cpp(value)
+            if isinstance(value, _helios.ConicBeamDeflector):
+                return ConicOptics._from_cpp(value)
+            if isinstance(value, _helios.FiberArrayBeamDeflector):
+                return LineOptics._from_cpp(value)
+            if isinstance(value, _helios.RisleyBeamDeflector):
+                return RisleyOptics._from_cpp(value)
+        return Model._from_cpp.__func__(cls, value)
+
+
+class OscillatingOptics(
+    BeamDeflector, cpp_class=_helios.OscillatingMirrorBeamDeflector
+):
+    scan_product: Annotated[int, Field(gt=0)] = 1_000_000
+
+
+class ConicOptics(BeamDeflector, cpp_class=_helios.ConicBeamDeflector):
+    pass
+
+
+class LineOptics(BeamDeflector, cpp_class=_helios.FiberArrayBeamDeflector):
+    number_of_fibers: Annotated[int, Field(gt=0)] = 1
+
+
+class RotatingOptics(BeamDeflector, cpp_class=_helios.PolygonMirrorBeamDeflector):
+    scan_angle_effective_max: Angle = 0.0
+
+
+class Prism(Model, cpp_class=_helios.Prism):
+    angle: Angle
+    inclined_on_left: bool
+    refractive_index: Annotated[float, Field(gt=0)]
+    rotation_speed: AngleVelocity
+
+
+class RisleyOptics(Model, cpp_class=_helios.RisleyBeamDeflector):
+    prisms: tuple[Prism, ...]
+    air_refractive_index: Annotated[float, Field(gt=0)] = 1.0
+    incident_beam: R3Vector = (0.0, 1.0, 0.0)
+
+
+Optics = OscillatingOptics | ConicOptics | LineOptics | RotatingOptics | RisleyOptics
+
+
+class Detector(Model, cpp_class=_helios.FullWaveformPulseDetector):
+    accuracy: Length = 0.0
+    range_min: Length = 0.0
+    range_max: Length = math.inf
+
+
+class ScannerHead(Model, cpp_class=_helios.ScannerHead):
+    rotation_axis: R3Vector = (0.0, 0.0, 1.0)
+    rotation_speed_max: AngleVelocity = 0.0
+
+
+class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
+    id: str
+    supported_pulse_frequencies: tuple[Frequency, ...]
+    optics: Optics
+
+    beam_origin_position: R3Vector = (0.0, 0.0, 0.0)
+    beam_origin_attitude: Rotation = Rotation()
+    beam_divergence: Angle = 0.0003
+    pulse_length: TimeIntervalNanoSeconds = 4.0
+    wavelength: Length = 1064.0 * units.nm
+    average_power: Power = 4.0
+    beam_quality_factor: Annotated[float, Field(gt=0)] = 1.0
+    optical_efficiency: Annotated[float, Field(ge=0, le=1)] = 0.99
+    receiver_diameter: Length = 0.15
+    atmospheric_visibility: Visibility = 23.0
+    received_energy_min: Power = 0.0001
+    max_returns: Annotated[int, Field(ge=0)] = 0
+
+    detector: Detector = Detector()
+    head: ScannerHead = ScannerHead()
+    full_waveform: FullWaveformSettings = FullWaveformSettings()
+
+    def _post_set(self, field):
+        if field == "full_waveform" and self.full_waveform.window_size is None:
+            self.full_waveform.window_size = self.pulse_length / 4.0 * units.ns
+
+    @classmethod
+    def _from_cpp(cls, value):
+        obj = Model._from_cpp.__func__(cls, value)
+        obj._optics = BeamDeflector._from_cpp(value.optics)
+        return obj
+
+
 class Scanner(Model, cpp_class=_helios.Scanner):
+    id: str
+    name: str = ""
+
+    def _never_serialize_shallow(self) -> bool:
+        return True
+
+    @classmethod
+    def _from_cpp(cls, value):
+        if cls is Scanner:
+            if isinstance(value, _helios.SingleScanner):
+                return SingleScanner._from_cpp(value)
+            if isinstance(value, _helios.MultiScanner):
+                return MultiScanner._from_cpp(value)
+        return Model._from_cpp.__func__(cls, value)
+
     @classonlymethod
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
@@ -141,6 +263,14 @@ class Scanner(Model, cpp_class=_helios.Scanner):
             scanner_id=scanner_id,
         )
         return scanner
+
+
+class SingleScanner(Scanner, cpp_class=_helios.SingleScanner):
+    device: ScanningDevice
+
+
+class MultiScanner(Scanner, cpp_class=_helios.MultiScanner):
+    channels: tuple[ScanningDevice, ...]
 
 
 #
