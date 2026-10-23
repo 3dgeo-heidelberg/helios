@@ -728,36 +728,6 @@ public:
   }
 
   /**
-   * @brief Get beam quality
-   * @param idx The index of the scanning device which beam quality must be
-   *  obtained (by default 0, it is the first one)
-   * @return Beam quality
-   * @see ScanningDevice::beamQuality
-   */
-  virtual double getBeamQuality(size_t const idx) const = 0;
-  /**
-   * @brief No index argument version of the Scanner::getBeamQuality method
-   * @see Scanner::getBeamQuality(size_t const)
-   */
-  inline double getBeamQuality() const { return getBeamQuality(0); }
-  /**
-   * @brief Set beam quality
-   * @param beamQuality New beam quality
-   * @param idx The index of the scanning device which beam quality must be
-   *  obtained (by default 0, it is the first one)
-   * @see ScanningDevice::beamQuality
-   */
-  virtual void setBeamQuality(double const beamQuality, size_t const idx) = 0;
-  /**
-   * @brief No index argument version of the Scanner::setBeamQuality method
-   * @see Scanner::setBeamQuality(double const, size_t const)
-   */
-  inline void setBeamQuality(double const beamQuality)
-  {
-    setBeamQuality(beamQuality, 0);
-  }
-
-  /**
    * @brief Obtain device efficiency
    * @param idx The index of the scanning device which efficiency must be
    *  obtained (by default 0, it is the first one)
@@ -970,33 +940,6 @@ public:
    */
   virtual Rotation& getHeadRelativeEmitterAttitudeByRef(
     size_t const idx = 0) = 0;
-
-  /**
-   * @brief Obtain \f$B_{t2}\f$
-   * @param idx The index of the scanning device which cached Bt2 (square of
-   *  beam divergence) must be obtained (by default 0, it is the first one)
-   * @return \f$B_{t2}\f$
-   * @see ScanningDevice::cached_Bt2
-   */
-  virtual double getBt2(size_t const idx) const = 0;
-  /**
-   * @brief No index argument version of the Scanner::getBt2 method
-   * @see Scanner::getBt2(size_t const)
-   */
-  inline double getBt2() const { return getBt2(0); }
-  /**
-   * @brief Set \f$B_{t2}\f$
-   * @param bt2 New \f$B_{t2}\f$
-   * @param idx The index of the scanning device which cached Bt2 (square of
-   *  beam divergence) must be set (by default 0, it is the first one)
-   * @see ScanningDevice::cached_Bt2
-   */
-  virtual void setBt2(double const bt2, size_t const idx) = 0;
-  /**
-   * @brief No index argument version of the Scanner::setBt2 method
-   * @Scanner::setBt2(double const, size_t const)
-   */
-  inline void setBt2(double const bt2) { setBt2(bt2, 0); }
 
   /**
    * @brief Obtain \f$D_{r2}\f$

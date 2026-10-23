@@ -301,16 +301,6 @@ public:
       void, Scanner, setPulseAmplitude, pulseAmplitude, idx);
   }
 
-  double getBeamQuality(size_t const idx) const override
-  {
-    PYBIND11_OVERLOAD_PURE(double, Scanner, getBeamQuality, idx);
-  }
-
-  void setBeamQuality(double const beamQuality, size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setBeamQuality, beamQuality, idx);
-  }
-
   double getEfficiency(size_t const idx) const override
   {
     PYBIND11_OVERLOAD_PURE(double, Scanner, getEfficiency, idx);
@@ -401,16 +391,6 @@ public:
   {
     PYBIND11_OVERLOAD_PURE(
       Rotation&, Scanner, getHeadRelativeEmitterAttitudeByRef, idx);
-  }
-
-  double getBt2(size_t const idx) const override
-  {
-    PYBIND11_OVERLOAD_PURE(double, Scanner, getBt2, idx);
-  }
-
-  void setBt2(double const bt2, size_t const idx) override
-  {
-    PYBIND11_OVERLOAD_PURE(void, Scanner, setBt2, bt2, idx);
   }
 
   double getDr2(size_t const idx) const override
