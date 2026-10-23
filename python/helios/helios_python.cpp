@@ -1823,7 +1823,6 @@ PYBIND11_MODULE(_helios, m)
                   double,
                   double,
                   double,
-                  double,
                   double>())
 
     .def_property("beam_divergence_x",
@@ -1837,7 +1836,7 @@ PYBIND11_MODULE(_helios, m)
          py::arg("x"),
          py::arg("y"))
     .def_readwrite("cached_dr2", &ScanningDevice::cached_Dr2)
-    .def_readwrite("cached_bt2", &ScanningDevice::cached_Bt2)
+
     .def_property_readonly(
       "subrays", &ScanningDevice::getSubrays, py::return_value_policy::copy)
     .def("build_subray_table", &ScanningDevice::buildSubrayPattern)
@@ -1862,7 +1861,7 @@ PYBIND11_MODULE(_helios, m)
     .def("set_head_relative_emitter_attitude",
          &ScanningDevice::setHeadRelativeEmitterAttitude)
     .def("prepare_simulation", &ScanningDevice::prepareSimulation)
-    .def("configure_beam", &ScanningDevice::configureBeam)
+
     .def("calcAtmosphericAttenuation",
          &ScanningDevice::calcAtmosphericAttenuation)
     .def("calcRaysNumber", &ScanningDevice::calcRaysNumber)
@@ -2114,14 +2113,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("value"),
          py::arg("index"))
 
-    .def("get_specific_beam_quality",
-         py::overload_cast<size_t>(&Scanner::getBeamQuality, py::const_),
-         py::arg("index"))
-    .def("set_specific_beam_quality",
-         py::overload_cast<double, size_t>(&Scanner::setBeamQuality),
-         py::arg("value"),
-         py::arg("index"))
-
     .def("get_specific_efficiency",
          py::overload_cast<size_t>(&Scanner::getEfficiency, py::const_),
          py::arg("index"))
@@ -2187,14 +2178,6 @@ PYBIND11_MODULE(_helios, m)
     .def("set_head_relative_emitter_position",
          py::overload_cast<const glm::dvec3&, size_t>(
            &Scanner::setHeadRelativeEmitterPosition),
-         py::arg("value"),
-         py::arg("index"))
-
-    .def("get_specific_bt2",
-         py::overload_cast<size_t>(&Scanner::getBt2, py::const_),
-         py::arg("index"))
-    .def("set_specific_bt2",
-         py::overload_cast<double, size_t>(&Scanner::setBt2),
          py::arg("value"),
          py::arg("index"))
 
@@ -2308,9 +2291,7 @@ PYBIND11_MODULE(_helios, m)
     .def_property("pulse_amplitude",
                   py::overload_cast<>(&Scanner::getPulseAmplitude, py::const_),
                   py::overload_cast<double>(&Scanner::setPulseAmplitude))
-    .def_property("beam_quality",
-                  py::overload_cast<>(&Scanner::getBeamQuality, py::const_),
-                  py::overload_cast<double>(&Scanner::setBeamQuality))
+
     .def_property("efficiency",
                   py::overload_cast<>(&Scanner::getEfficiency, py::const_),
                   py::overload_cast<double>(&Scanner::setEfficiency))
@@ -2332,10 +2313,6 @@ PYBIND11_MODULE(_helios, m)
     .def_property("max_nor",
                   py::overload_cast<>(&Scanner::getMaxNOR, py::const_),
                   py::overload_cast<int>(&Scanner::setMaxNOR))
-
-    .def_property("bt2",
-                  py::overload_cast<>(&Scanner::getBt2, py::const_),
-                  py::overload_cast<double>(&Scanner::setBt2))
 
     .def_property("dr2",
                   py::overload_cast<>(&Scanner::getDr2, py::const_),
@@ -2555,7 +2532,6 @@ PYBIND11_MODULE(_helios, m)
                   double,
                   double,
                   double,
-                  double,
                   int,
                   bool,
                   bool,
@@ -2569,7 +2545,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("pulse_length"),
          py::arg("id"),
          py::arg("pulse_amplitude"),
-         py::arg("beam_quality"),
          py::arg("efficiency"),
          py::arg("receiver_diameter"),
          py::arg("atmospheric_visibility"),
@@ -2649,14 +2624,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("value"),
          py::arg("index"))
 
-    .def("get_specific_beam_quality",
-         py::overload_cast<size_t>(&SingleScanner::getBeamQuality, py::const_),
-         py::arg("index"))
-    .def("set_specific_beam_quality",
-         py::overload_cast<double, size_t>(&SingleScanner::setBeamQuality),
-         py::arg("value"),
-         py::arg("index"))
-
     .def("get_specific_efficiency",
          py::overload_cast<size_t>(&SingleScanner::getEfficiency, py::const_),
          py::arg("index"))
@@ -2728,9 +2695,6 @@ PYBIND11_MODULE(_helios, m)
          &SingleScanner::getHeadRelativeEmitterAttitudeByRef,
          py::return_value_policy::reference_internal,
          py::arg("index"))
-
-    .def("get_bt2", &SingleScanner::getBt2, py::arg("index"))
-    .def("set_bt2", &SingleScanner::setBt2, py::arg("value"), py::arg("index"))
 
     .def("get_dr2", &SingleScanner::getDr2, py::arg("index"))
     .def("set_dr2", &SingleScanner::setDr2, py::arg("value"), py::arg("index"))
@@ -2933,12 +2897,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("fwf_settings"),
          py::arg("idx"))
 
-    .def("get_beam_quality", &MultiScanner::getBeamQuality, py::arg("idx"))
-    .def("set_beam_quality",
-         &MultiScanner::setBeamQuality,
-         py::arg("beam_quality"),
-         py::arg("idx"))
-
     .def("get_efficiency", &MultiScanner::getEfficiency, py::arg("idx"))
     .def("set_efficiency",
          &MultiScanner::setEfficiency,
@@ -2995,9 +2953,6 @@ PYBIND11_MODULE(_helios, m)
     .def("get_head_relative_emitter_attitude_by_ref",
          &MultiScanner::getHeadRelativeEmitterAttitudeByRef,
          py::arg("idx") = 0)
-
-    .def("get_bt2", &MultiScanner::getBt2, py::arg("idx"))
-    .def("set_bt2", &MultiScanner::setBt2, py::arg("bt2"), py::arg("idx"))
 
     .def("get_dr2", &MultiScanner::getDr2, py::arg("idx"))
     .def("set_dr2", &MultiScanner::setDr2, py::arg("dr2"), py::arg("idx"))
