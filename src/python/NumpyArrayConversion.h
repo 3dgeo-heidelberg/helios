@@ -181,6 +181,7 @@ numpy_to_measurements(py::array arr)
       });
     m.distance = read_field<double>(row, offsets.at("distance"));
     m.intensity = read_field<double>(row, offsets.at("intensity"));
+    m.incidenceAngle = read_field<double>(row, offsets.at("incidence_angle"));
     m.echo_width = read_field<double>(row, offsets.at("echo_width"));
     m.returnNumber = read_field<int32_t>(row, offsets.at("return_number"));
     m.pulseReturnNumber =
