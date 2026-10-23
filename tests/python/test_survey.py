@@ -1000,3 +1000,41 @@ def test_survey_run_with_invalid_vert_angle_limits(scene):
 
     with pytest.raises(HeliosException):
         survey.run(format=OutputFormat.NPY)
+
+
+def test_measurement_fields(survey):
+    points, _ = survey.run(format=OutputFormat.NPY)
+
+    expected_fields = {
+        "channel_id",
+        "hit_object_id",
+        "position",
+        "beam_direction",
+        "beam_origin",
+        "distance",
+        "incidence_angle",
+        "intensity",
+        "echo_width",
+        "return_number",
+        "number_of_returns",
+        "fullwave_index",
+        "classification",
+        "gps_time",
+        "point_source_id",
+    }
+
+    assert set(points.dtype.names) == expected_fields
+
+
+def test_trajectory_fields(survey):
+    _, trajectory = survey.run(format=OutputFormat.NPY)
+
+    expected_fields = {
+        "gps_time",
+        "position",
+        "roll",
+        "pitch",
+        "yaw",
+    }
+
+    assert set(trajectory.dtype.names) == expected_fields
