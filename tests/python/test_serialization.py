@@ -1,4 +1,5 @@
 import copy
+import json
 import os
 import shutil
 from pathlib import Path
@@ -45,6 +46,35 @@ class OperationModel(Model):
 
 class RecursivePayloadModel(Model):
     payload: object = None
+
+
+@pytest.mark.parametrize("version", ["2.2.2", "3.0.0a2"])
+def test_serialization_schema_git_reference_uses_clean_version_tag(version):
+    assert serialization._serialization_schema_git_reference(version) == f"v{version}"
+
+
+@pytest.mark.parametrize(
+    "version",
+    ["3.0.0a3.dev184+gc4b3ea39f", "2.2.2+dirty"],
+)
+def test_serialization_schema_git_reference_uses_main_for_unclean_version(version):
+    assert serialization._serialization_schema_git_reference(version) == "main"
+
+
+def test_replace_nonfinite_values_recursively_replaces_nonfinite_floats():
+    value = {
+        "finite": 1.5,
+        "nested": [float("nan"), {"positive_inf": float("inf")}],
+        "tuple": (float("-inf"), "unchanged"),
+    }
+
+    result = serialization.replace_nonfinite_values(value, replacement="nonfinite")
+
+    assert result == {
+        "finite": 1.5,
+        "nested": ["nonfinite", {"positive_inf": "nonfinite"}],
+        "tuple": ("nonfinite", "unchanged"),
+    }
 
 
 def _build_manual_survey() -> Survey:
@@ -131,12 +161,13 @@ def test_roundtrip_yaml_inline(tmp_path):
     written = root.to_yaml(yaml_path, shallow=False)
     assert written == yaml_path
 
+    first_line = yaml_path.read_text(encoding="utf-8").splitlines()[0]
+    assert first_line == (
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}"
+    )
     with yaml_path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
-    assert document["$schema"] == (
-        "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
-        "alpha-dev/python/helios/data/serialization_schema.json"
-    )
+    assert "$schema" not in document
     assert "model_ref" not in str(document["fields"]["trajectory_settings"])
     assert document["serialization_major_version"] == 0
     assert document["serialization_minor_version"] == 0
@@ -146,6 +177,33 @@ def test_roundtrip_yaml_inline(tmp_path):
     assert loaded.trajectory_settings.start_time == 1.5
     assert loaded.trajectory_settings.end_time == 9.0
     assert loaded.trajectory_settings.teleport_to_start is True
+
+
+def test_repr_json_matches_inline_yaml_without_writing_files(tmp_path):
+    root = SerializationRoot(
+        leaf=SerializationLeaf(value=7),
+        label="rich display",
+        values=(4, 5, 6),
+    )
+
+    document = root._repr_json_()
+
+    assert list(tmp_path.iterdir()) == []
+    assert "model_ref" not in str(document)
+    assert "$schema" not in document
+    assert json.loads(json.dumps(document)) == document
+
+    yaml_path = root.to_yaml(tmp_path / "root.yaml", shallow=False)
+    with yaml_path.open("r", encoding="utf-8") as handle:
+        assert yaml.safe_load(handle) == document
+
+
+def test_repr_json_preserves_yaml_serializable_guard():
+    model = SerializationLeaf(value=9)
+    model._yaml_serializable = False
+
+    with pytest.raises(RuntimeError, match="implicitly constructed"):
+        model._repr_json_()
 
 
 def test_roundtrip_yaml_shallow_with_references(tmp_path):
@@ -169,7 +227,10 @@ def test_roundtrip_yaml_shallow_with_references(tmp_path):
     assert trajectory_path.exists()
     with trajectory_path.open("r", encoding="utf-8") as handle:
         trajectory_document = yaml.safe_load(handle)
-    assert trajectory_document["$schema"] == document["$schema"]
+    assert trajectory_path.read_text(encoding="utf-8").startswith(
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}\n"
+    )
+    assert "$schema" not in trajectory_document
 
     loaded = DynamicPlatformSettings.from_yaml(root_yaml)
     assert loaded.speed_m_s == 33.0
@@ -261,6 +322,9 @@ def test_inline_cycle_detection_raises_for_non_shallow_serialization(tmp_path):
 
     with pytest.raises(ValueError, match="Detected cyclic model graph"):
         model.to_yaml(tmp_path / "recursive.yaml", shallow=False)
+
+    with pytest.raises(ValueError, match="Detected cyclic model graph"):
+        model._repr_json_()
 
 
 def test_load_model_from_file_uses_cache(tmp_path):
@@ -756,6 +820,9 @@ def test_dynamic_scene_non_binary_bundle_roundtrip(tmp_path):
     bundle_dir = tmp_path / "dynamic_scene_bundle"
     root_yaml = scene.to_bundle(bundle_dir, binary=False)
 
+    assert root_yaml.read_text(encoding="utf-8").startswith(
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}\n"
+    )
     with root_yaml.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
     bundled_scene_file = document["provenance"]["constructor"]["kwargs"]["scene_file"]
