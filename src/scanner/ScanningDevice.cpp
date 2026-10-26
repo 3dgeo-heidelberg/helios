@@ -3,8 +3,7 @@
 #include <logging.hpp>
 #include <maths/EnergyMaths.h>
 #include <maths/MathConstants.h>
-#include <maths/model/BaseEnergyModel.h>
-#include <maths/model/ImprovedEnergyModel.h>
+#include <maths/model/EnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
@@ -96,7 +95,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
 // ***  M E T H O D S  *** //
 // *********************** //
 void
-ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+ScanningDevice::prepareSimulation()
 {
   // Reset cached subray data for a clean elliptical sampling pass
   cached_subrayRotation.clear();
@@ -137,11 +136,7 @@ ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
   }
 
   // Prepare energy model
-  if (legacyEnergyModel) {
-    energyModel = std::make_shared<BaseEnergyModel>(*this);
-  } else {
-    energyModel = std::make_shared<ImprovedEnergyModel>(*this);
-  }
+  energyModel = std::make_shared<EnergyModel>(*this);
 }
 
 void
@@ -421,20 +416,8 @@ ScanningDevice::calcIntensity(double const targetRange,
                               double const sigma,
                               int const subrayRadiusStep) const
 {
-  return EnergyMaths::calcReceivedPower(
-           averagePower_w,
-           wavelength_m,
-           targetRange,
-           detector->cfg_device_rangeMin_m,
-           targetRange *
-             std::sin(cached_subrayDivergenceAngle_rad[subrayRadiusStep]),
-           beamWaistRadius,
-           cached_Dr2,
-           cached_Bt2,
-           efficiency,
-           atmosphericExtinction,
-           sigma) *
-         1000000000.0;
+  return energyModel->computeReceivedPowerWithSigma(
+    targetRange, sigma, subrayRadiusStep);
 }
 
 // ***  GETTERs and SETTERs  *** //

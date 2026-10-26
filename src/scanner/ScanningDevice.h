@@ -46,8 +46,7 @@ protected:
   friend class Scanner;
   friend class SingleScanner;
   friend class MultiScanner;
-  friend class BaseEnergyModel;
-  friend class ImprovedEnergyModel;
+  friend class EnergyModel;
   friend class HeliosTests::EnergyModelsTest;
 
   // ***  DEVICE ATTRIBUTES  *** //
@@ -181,7 +180,6 @@ protected:
    * @brief The energy model to compute the intensity for any pulse
    *  emitted by the scanning device.
    * @see EnergyModel
-   * @see BaseEnergyModel
    */
   std::shared_ptr<EnergyModel> energyModel = nullptr;
   /**
@@ -286,11 +284,8 @@ public:
    *
    * For example, data related to the subray generation process will be
    *  cached to avoid redundant operations.
-   *
-   * @param legacyEnergyModel Whether to use the legacy energy model (True)
-   *  or not (False).
    */
-  void prepareSimulation(bool const legacyEnergyModel = false);
+  void prepareSimulation();
 
   /**
    * @brief Configure beam related attributes. It is recommended to
