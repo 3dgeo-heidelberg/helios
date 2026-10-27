@@ -98,6 +98,10 @@ public:
   double getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                                const glm::dvec3& rayDir,
                                const glm::dvec3& intersectionPoint) override;
+  /** Cosine of the smaller incidence angle; rayDir must be normalized. */
+  double getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                                 const glm::dvec3& rayDir,
+                                 const glm::dvec3& intersectionPoint) override;
   /**
    * @see Primitive::getRayIntersection
    */

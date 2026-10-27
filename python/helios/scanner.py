@@ -44,7 +44,6 @@ class ScannerSettings(ScannerSettingsBase):
     :param min_vertical_angle: The minimum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
     :param max_vertical_angle: The maximum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
     :param scan_frequency: The scan frequency of the scanner in Hz.
-    :param beam_divergence_angle: The beam divergence angle of the scanner in radians.
     :param trajectory_time_interval: The time interval in seconds at which the trajectory points are written.
     :param vertical_resolution: The vertical resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
     :param horizontal_resolution: The horizontal resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
@@ -59,7 +58,6 @@ class ScannerSettings(ScannerSettingsBase):
     :type min_vertical_angle: Angle
     :type max_vertical_angle: Angle
     :type scan_frequency: Frequency
-    :type beam_divergence_angle: Angle
     :type trajectory_time_interval: TimeInterval
     :type vertical_resolution: Angle
     :type horizontal_resolution: Angle
@@ -77,7 +75,6 @@ class ScannerSettings(ScannerSettingsBase):
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
     scan_frequency: ScanFrequency = 200
-    beam_divergence_angle: Angle = 0.003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Angle = 0
     horizontal_resolution: Angle = 0
@@ -114,6 +111,161 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 
 class Scanner(Model, cpp_class=_helios.Scanner):
+    @property
+    def pulse_length(self) -> TimeInterval:
+        """Emitted pulse FWHM of channel 0, in seconds."""
+        return self.get_pulse_length()
+
+    @pulse_length.setter
+    def pulse_length(self, value: TimeInterval) -> None:
+        self.set_pulse_length(value)
+
+    @validate_call
+    def get_pulse_length(self, index: int = 0) -> TimeInterval:
+        """Return a channel's emitted pulse FWHM in seconds."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_pulse_length(index) * 1e-9
+
+    @validate_call
+    def set_pulse_length(self, value: TimeInterval, index: int = 0) -> None:
+        """Set emitted pulse FWHM in seconds or with units, e.g. ``"4 ns"``.
+
+        Set before running the survey; its waveform settings rebuild the pulse model.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        if not np.isfinite(value) or value <= 0 or not np.isfinite(value * 1e9):
+            raise ValueError("Pulse length must be finite and positive")
+        self._cpp_object.set_specific_pulse_length(value * 1e9, index)
+
+    @property
+    def pulse_amplitude(self) -> float:
+        """Whole-beam peak optical power before footprint truncation, in watts."""
+        return self.get_pulse_amplitude()
+
+    @pulse_amplitude.setter
+    def pulse_amplitude(self, value: float) -> None:
+        self.set_pulse_amplitude(value)
+
+    @validate_call
+    def get_pulse_amplitude(self, index: int = 0) -> float:
+        """Return a channel's whole-beam peak optical power in watts."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_pulse_amplitude(index)
+
+    @validate_call
+    def set_pulse_amplitude(self, value: float, index: int = 0) -> None:
+        """Set finite, nonnegative whole-beam peak power in watts; zero disables returns."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_specific_pulse_amplitude(value, index)
+
+    @property
+    def beam_rotation(self) -> Angle:
+        """Channel 0 footprint rotation in radians, from local right toward up."""
+        return self.get_beam_rotation()
+
+    @beam_rotation.setter
+    def beam_rotation(self, value: Angle) -> None:
+        self.set_beam_rotation(value)
+
+    @validate_call
+    def get_beam_rotation(self, index: int = 0) -> Angle:
+        """Return a channel's footprint rotation in [0, 2*pi) radians."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_rotation(index)
+
+    @validate_call
+    def set_beam_rotation(self, value: Angle, index: int = 0) -> None:
+        """Rotate the footprint before running a survey, e.g. ``"45 deg"``.
+
+        Accepts finite radians or angles with units; wraps complete turns.
+        Positive rotation moves emitter-local right toward up.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_rotation(value, index)
+
+    @property
+    def beam_divergence(self) -> Angle:
+        """Legacy X-axis divergence; assigning a value sets both axes."""
+        return self.get_beam_divergence()
+
+    @beam_divergence.setter
+    def beam_divergence(self, value: Angle) -> None:
+        self.set_beam_divergence(value)
+
+    @validate_call
+    def get_beam_divergence(self, index: int = 0) -> Angle:
+        """Return a channel's X-axis full divergence in radians."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_beam_divergence(index)
+
+    @validate_call
+    def set_beam_divergence(self, value: Angle, index: int = 0) -> None:
+        """Set a channel's full divergence and refresh derived beam state.
+
+        Accepts radians or angles with units, for example ``"0.03 deg"``.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_specific_beam_divergence(value, index)
+
+    @property
+    def beam_divergence_x(self) -> Angle:
+        """Full 1/e² divergence along the beam X principal axis (right at zero rotation)."""
+        return self.get_beam_divergence_x()
+
+    @beam_divergence_x.setter
+    def beam_divergence_x(self, value: Angle) -> None:
+        self.set_beam_divergence_x(value)
+
+    @validate_call
+    def get_beam_divergence_x(self, index: int = 0) -> Angle:
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_divergence_x(index)
+
+    @validate_call
+    def set_beam_divergence_x(self, value: Angle, index: int = 0) -> None:
+        """Update only the X axis; accepts radians or angles with units."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergence_x(value, index)
+
+    @property
+    def beam_divergence_y(self) -> Angle:
+        """Full 1/e² divergence along the beam Y principal axis (up at zero rotation)."""
+        return self.get_beam_divergence_y()
+
+    @beam_divergence_y.setter
+    def beam_divergence_y(self, value: Angle) -> None:
+        self.set_beam_divergence_y(value)
+
+    @validate_call
+    def get_beam_divergence_y(self, index: int = 0) -> Angle:
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_divergence_y(index)
+
+    @validate_call
+    def set_beam_divergence_y(self, value: Angle, index: int = 0) -> None:
+        """Update only the Y axis; accepts radians or angles with units."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergence_y(value, index)
+
+    @validate_call
+    def set_beam_divergences(self, x: Angle, y: Angle, index: int = 0) -> None:
+        """Atomically set both full-angle divergences before running a survey."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergences(x, y, index)
+
     @classonlymethod
     @validate_call
     def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
@@ -124,6 +276,20 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         :type scanner_file: AssetPath
         :type scanner_id: str
         """
+
+        # Explain the removed setting before schema validation rejects it.
+        from xml.etree import ElementTree
+
+        for element in ElementTree.parse(scanner_file).iter():
+            if (
+                element.tag in ("scanner", "channel")
+                and "averagePower_w" in element.attrib
+            ):
+                raise ValueError(
+                    "averagePower_w was removed; use pulseAmplitude_W for whole-beam "
+                    "peak power. To preserve legacy waveforms, multiply the old "
+                    "coefficient by 4/exp(2); this is not an average-to-peak conversion."
+                )
 
         # Validate the XML
         validate_xml_file(scanner_file, "xsd/scanner.xsd")

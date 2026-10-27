@@ -37,10 +37,11 @@ protected:
    *
    * [5] -> The target area in squared meters.
    *
-   * [6] -> The radius in meters, i.e., the distance between the beam's
+   * [6] -> Actual transverse hit radius R*sin(theta) in meters (not the
+   *  annular boundary radius), i.e., the distance between the beam's
    *  center line and the intersection point.
    *
-   * [7] -> The bidirectional reflectance function (BDRF).
+   * [7] -> The bidirectional reflectance distribution function (BRDF).
    *
    * [8] -> The cross-section in squared meters.
    *
@@ -50,7 +51,7 @@ protected:
    *
    * [11] -> The emitted power.
    *
-   * [12] -> The radius step on the discrete elliptical footprint method.
+   * [12] -> The direct index in the device's subray table.
    *
    */
   std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> intensityCalc;

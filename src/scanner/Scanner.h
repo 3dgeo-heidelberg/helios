@@ -313,17 +313,14 @@ public:
    */
   inline void calcRaysNumber() { calcRaysNumber(0); }
   /**
-   * @brief Prepare wave discretization
-   * @see Scanner::numTimeBins
-   * @see Scanner::time_wave
-   * @see Scanner::peakIntensityIndex
+   * @brief Prepare analytic pulse in range coordinates
    */
-  virtual void prepareDiscretization(size_t const idx) = 0;
+  virtual void preparePulse(size_t const idx) = 0;
   /**
-   * @brief Non index version of the Scanner::prepareDiscretization method
-   * @see Scanner::prepareDiscretization(size_t const)
+   * @brief Non index version of the Scanner::preparePulse method
+   * @see Scanner::preparePulse(size_t const)
    */
-  inline void prepareDiscretization() { this->prepareDiscretization(0); }
+  inline void preparePulse() { this->preparePulse(0); }
   /**
    * @brief Compute the footprint radius \f$f_{r}\f$
    *
@@ -397,7 +394,7 @@ public:
    */
   virtual void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -417,59 +414,59 @@ public:
 #endif
     ) = 0;
 
-  /**
-   * @brief Initialize full waveform
-   * While the vector is not strictly initialized in this function,
-   * necessary variables are computed here.
-   * @param[out] nsPerBin The size of each bin in nano seconds
-   * @param[out] distanceThreshold Limit distance threshold
-   * @param[out] peakIntensityIndex Index of intensity peak
-   * @param[out] numFullwaveBins How many bins are necessary to discretize
-   *  the full waveform
-   * @param[in] idx The index of the scanning device
-   * @return True if it is possible to initialize the full waveform,
-   * false otherwise.
-   * @see FullWaveformPulseRunnable::initializeFullWaveform
-   * @see FullWaveformPulseRunnable::digestIntersections
-   * @see ScanningDevice::initializeFullWaveform
-   */
+  /** Compute the recording grid in metres. */
   virtual bool initializeFullWaveform(double const minHitDist_m,
                                       double const maxHitDist_m,
-                                      double& minHitTime_ns,
-                                      double& maxHitTime_ns,
-                                      double& nsPerBin,
-                                      double& distanceThreshold,
-                                      int& peakIntensityIndex,
-                                      int& numFullwaveBins,
+                                      WaveformGrid& grid,
                                       size_t const idx) = 0;
 
   /**
-   * @brief Handle to which scanning device request the intensity computation
+   * @brief Handle to which scanning device request the received-power
+   * computation
    * @param idx The index of the scanning device that must compute the
-   *  intensity
-   * @see ScanningDevice::calcIntensity
-   */
-  virtual double calcIntensity(
-    double const incidenceAngle,
+   *  received power
+   * @see ScanningDevice::computeReceivedPower
+   *
+   * Received peak power in watts, using incidence cosine. */
+  virtual double computeReceivedPower(
+    double const incidenceCosine,
     double const targetRange,
     Material const& mat,
-    int const subrayRadiusStep,
+    std::size_t subrayIndex,
     size_t const idx
 #if DATA_ANALYTICS >= 2
     ,
-    std::vector<std::vector<double>>& calcIntensityRecords
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const = 0;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
+   * share. */
+  virtual double computePowerRatio(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
+#if DATA_ANALYTICS >= 2
+    ,
+    std::vector<std::vector<double>>& radiometryRecords
+#endif
+  ) const = 0;
+  virtual double computePowerRatioWithSigma(double targetRange,
+                                            double sigma,
+                                            std::size_t subrayIndex,
+                                            size_t idx) const = 0;
   /**
-   * @brief Handle to which scanning device request the intensity computation
+   * @brief Handle to which scanning device request the received-power
+   * computation
    * @param idx The index of the scanning device that must compute the
-   *  intensity
-   * @see ScanningDevice::calcIntensity
+   *  received power
+   * @see ScanningDevice::computeReceivedPowerWithSigma
    */
-  virtual double calcIntensity(double const targetRange,
-                               double const sigma,
-                               int const subrayRadiusStep,
-                               size_t const idx) const = 0;
+  virtual double computeReceivedPowerWithSigma(double const targetRange,
+                                               double const sigma,
+                                               std::size_t subrayIndex,
+                                               size_t const idx) const = 0;
 
   // ***  SIM STEP UTILS  *** //
   // ************************ //
@@ -551,13 +548,13 @@ public:
    * @return Number of rays of the scanning device
    * @see ScanningDevice::numRays
    */
-  virtual int getNumRays(size_t const idx) const = 0;
+  virtual std::size_t getNumRays(size_t const idx) const = 0;
   /**
    * @brief Non index version of the Scanner::getNumRays(size_t const)
    *  method
    * @see Scanner::getNumRays(size_t const)
    */
-  inline int getNumRays() const { return getNumRays(0); }
+  inline std::size_t getNumRays() const { return getNumRays(0); }
   /**
    * @brief Set the number of rays of the scanning device
    * @param numRays New number of rays for the scanning device
@@ -565,13 +562,13 @@ public:
    *  be set
    * @see ScanningDevice::numRays
    */
-  virtual void setNumRays(int const numRays, size_t const idx) = 0;
+  virtual void setNumRays(std::size_t numRays, size_t const idx) = 0;
   /**
    * @brief Non index version of the
-   *  Scanner::setNumRays(int const, size_t const) method
-   * @see Scanner::setNumRays(int const, size_t const)
+   *  Scanner::setNumRays(std::size_t, size_t const) method
+   * @see Scanner::setNumRays(std::size_t, size_t const)
    */
-  inline void setNumRays(int const numRays) { setNumRays(numRays, 0); }
+  inline void setNumRays(std::size_t numRays) { setNumRays(numRays, 0); }
 
   /**
    * @brief Obtain the pulse frequency
@@ -656,9 +653,30 @@ public:
    * @param idx The index of the scanning device which beam divergence must
    *  be obtained (by default 0, it is the first one)
    * @return Beam divergence (radians)
-   * @see ScanningDevice::beamDivergence_rad
+   * @see ScanningDevice::beamDivergenceX_rad
    */
+  // Legacy scalar reads return X; scalar writes set both axes.
   virtual double getBeamDivergence(size_t const idx) const = 0;
+  double getBeamDivergenceX(size_t idx = 0) const
+  {
+    return getBeamDivergence(idx);
+  }
+  /** Beam footprint rotation in radians, positive from local right toward up.
+   */
+  virtual double getBeamRotation(size_t idx = 0) const = 0;
+  /** Normalize and refresh the selected device's table before tracing. */
+  virtual void setBeamRotation(double radians, size_t idx = 0) = 0;
+
+  virtual double getBeamDivergenceY(size_t idx = 0) const = 0;
+  virtual void setBeamDivergences(double x, double y, size_t idx = 0) = 0;
+  void setBeamDivergenceX(double value, size_t idx = 0)
+  {
+    setBeamDivergences(value, getBeamDivergenceY(idx), idx);
+  }
+  void setBeamDivergenceY(double value, size_t idx = 0)
+  {
+    setBeamDivergences(getBeamDivergenceX(idx), value, idx);
+  }
   /**
    * @brief No index argument version of the Scanner::getBeamDivergence
    *  method
@@ -666,11 +684,11 @@ public:
    */
   inline double getBeamDivergence() const { return getBeamDivergence(0); }
   /**
-   * @brief Set beam divergence
+   * @brief Set beam divergence and refresh the subray table and beam caches.
    * @param beamDivergence New beam divergence (radians)
    * @param idx The index of the scanning device which beam divergence must
    *  be set (by default 0, it is the first one)
-   * @see ScanningDevice::beamDivergence_rad
+   * @see ScanningDevice::beamDivergenceX_rad
    */
   virtual void setBeamDivergence(double const beamDivergence,
                                  size_t const idx) = 0;
@@ -685,63 +703,34 @@ public:
   }
 
   /**
-   * @brief Obtain average power
-   * @param idx The index of the scanning device which average power must be
-   *  obtained (by default 0, it is the first one)
-   * @return Average power (watts)
-   * @see ScanningDevice::averagePower_w
+   * @brief Obtain whole-beam peak power
+   * @param idx The index of the scanning device which whole-beam peak power
+   * must be obtained (by default 0, it is the first one)
+   * @return Whole-beam peak power (watts)
+   * @see ScanningDevice::pulseAmplitude_W
    */
-  virtual double getAveragePower(size_t const idx) const = 0;
+  virtual double getPulseAmplitude(size_t const idx) const = 0;
   /**
-   * @brief No index argument version of the Scanner::getAveragePower method
-   * @see Scanner::getAveragePower(size_t const)
+   * @brief No index argument version of the Scanner::getPulseAmplitude method
+   * @see Scanner::getPulseAmplitude(size_t const)
    */
-  inline double getAveragePower() const { return getAveragePower(0); }
+  inline double getPulseAmplitude() const { return getPulseAmplitude(0); }
   /**
-   * @brief Set average power
-   * @param averagePower New average power (watts)
-   * @param idx The index of the scanning device which average power must be
-   *  set (by default 0, it is the first one)
-   * @see ScanningDevice::averagePower_w
+   * @brief Set whole-beam peak power
+   * @param pulseAmplitude New whole-beam peak power (watts)
+   * @param idx The index of the scanning device which whole-beam peak power
+   * must be set (by default 0, it is the first one)
+   * @see ScanningDevice::pulseAmplitude_W
    */
-  virtual void setAveragePower(double const averagePower, size_t const idx) = 0;
+  virtual void setPulseAmplitude(double const pulseAmplitude,
+                                 size_t const idx) = 0;
   /**
-   * @brief No index argument version of the Scanner::setAveragePower method
-   * @see Scanner::setAveragePower(double const, size_t const)
+   * @brief No index argument version of the Scanner::setPulseAmplitude method
+   * @see Scanner::setPulseAmplitude(double const, size_t const)
    */
-  inline void setAveragePower(double const averagePower)
+  inline void setPulseAmplitude(double const pulseAmplitude)
   {
-    setAveragePower(averagePower, 0);
-  }
-
-  /**
-   * @brief Get beam quality
-   * @param idx The index of the scanning device which beam quality must be
-   *  obtained (by default 0, it is the first one)
-   * @return Beam quality
-   * @see ScanningDevice::beamQuality
-   */
-  virtual double getBeamQuality(size_t const idx) const = 0;
-  /**
-   * @brief No index argument version of the Scanner::getBeamQuality method
-   * @see Scanner::getBeamQuality(size_t const)
-   */
-  inline double getBeamQuality() const { return getBeamQuality(0); }
-  /**
-   * @brief Set beam quality
-   * @param beamQuality New beam quality
-   * @param idx The index of the scanning device which beam quality must be
-   *  obtained (by default 0, it is the first one)
-   * @see ScanningDevice::beamQuality
-   */
-  virtual void setBeamQuality(double const beamQuality, size_t const idx) = 0;
-  /**
-   * @brief No index argument version of the Scanner::setBeamQuality method
-   * @see Scanner::setBeamQuality(double const, size_t const)
-   */
-  inline void setBeamQuality(double const beamQuality)
-  {
-    setBeamQuality(beamQuality, 0);
+    setPulseAmplitude(pulseAmplitude, 0);
   }
 
   /**
@@ -903,38 +892,6 @@ public:
   }
 
   /**
-   * @brief Obtain beam waist radius
-   * @param idx The index of the scanning device which beam waist radius must
-   *  be obtained (by default 0, it is the first one)
-   * @return Beam waist radius
-   * @see ScanningDevice::beamWaistRadius
-   */
-  virtual double getBeamWaistRadius(size_t const idx) const = 0;
-  /**
-   * @brief No index argument version of the Scanner::getBeamWaistRadius
-   *  method
-   * @see Scanner::getBeamWaistRadius(size_t const)
-   */
-  inline double getBeamWaistRadius() const { return getBeamWaistRadius(0); }
-  /**
-   * @brief Set beam waist radius
-   * @param beamWaistRadius New beam waist radius
-   * @param idx The index of the scanning device which beam waist radius must
-   *  be set (by default 0, it is the first one)
-   * @see ScanningDevice::beamWaistRadius
-   */
-  virtual void setBeamWaistRadius(double const beamWaistRadius,
-                                  size_t const idx) = 0;
-  /**
-   * @brief No index argument version of the Scanner::setBeamWaistRadius
-   *  method
-   * @see Scanner::setBeamWaistRadius(double const, size_t const)
-   */
-  inline void setBeamWaistRadius(double const beamWaistRadius)
-  {
-    setBeamWaistRadius(beamWaistRadius, 0);
-  }
-  /**
    * @brief Obtain the head's relative emitter position
    * @param idx The index of the scanning device which head's relative
    *  emitter position must be obtained (by default 0, it is the first one)
@@ -989,33 +946,6 @@ public:
    */
   virtual Rotation& getHeadRelativeEmitterAttitudeByRef(
     size_t const idx = 0) = 0;
-
-  /**
-   * @brief Obtain \f$B_{t2}\f$
-   * @param idx The index of the scanning device which cached Bt2 (square of
-   *  beam divergence) must be obtained (by default 0, it is the first one)
-   * @return \f$B_{t2}\f$
-   * @see ScanningDevice::cached_Bt2
-   */
-  virtual double getBt2(size_t const idx) const = 0;
-  /**
-   * @brief No index argument version of the Scanner::getBt2 method
-   * @see Scanner::getBt2(size_t const)
-   */
-  inline double getBt2() const { return getBt2(0); }
-  /**
-   * @brief Set \f$B_{t2}\f$
-   * @param bt2 New \f$B_{t2}\f$
-   * @param idx The index of the scanning device which cached Bt2 (square of
-   *  beam divergence) must be set (by default 0, it is the first one)
-   * @see ScanningDevice::cached_Bt2
-   */
-  virtual void setBt2(double const bt2, size_t const idx) = 0;
-  /**
-   * @brief No index argument version of the Scanner::setBt2 method
-   * @Scanner::setBt2(double const, size_t const)
-   */
-  inline void setBt2(double const bt2) { setBt2(bt2, 0); }
 
   /**
    * @brief Obtain \f$D_{r2}\f$
@@ -1423,114 +1353,8 @@ public:
    * @see Scanner::setMaxNOR(int const, size_t const)
    */
   inline void setMaxNOR(int const maxNOR) { setMaxNOR(maxNOR, 0); }
-  /**
-   * @brief Obtain the number of bins defining the size of the time
-   *  discretization for the scanning device
-   * @param idx Index of the scanning device which number of time bins must
-   *  be obtained
-   * @return The number of time bins for the scanning device
-   */
-  virtual int getNumTimeBins(size_t const idx) const = 0;
-  /**
-   * @brief Non index version of the Scanner::getNumTimeBins(size_t const)
-   *  method
-   * @see Scanner::getNumTimeBins(size_t const)
-   */
-  inline int getNumTimeBins() const { return getNumTimeBins(0); }
-  /**
-   * @brief Set the number of bins defining the size of the time
-   *  discretization for the scanning device
-   * @param numTimeBins The number of time bins for the scanning device
-   * @param idx The index of the scanning device which number of time bins
-   *  must be set
-   */
-  virtual void setNumTimeBins(int const numTimeBins, size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setNumTimeBins(int const, size_t const) method
-   * @see Scanner::setNumTimeBins(int const, size_t const)
-   */
-  inline void setNumTimeBins(int const numTimeBins)
-  {
-    setNumTimeBins(numTimeBins, 0);
-  }
-  /**
-   * @brief Obtain the index of the bin containing the intensity peak for
-   *  the scanning device
-   * @param idx The index of the scanning device which peak intensity index
-   *  must be obtained
-   * @return The peak intensity index of the scanning device
-   */
-  virtual int getPeakIntensityIndex(size_t const idx) const = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::getPeakIntensityIndex(size_t const) method
-   * @see Scanner::getPeakIntensityIndex(size_t const)
-   */
-  inline int getPeakIntensityIndex() const { return getPeakIntensityIndex(0); }
-  /**
-   * @brief Set the index of the bin containing the intensity peak for
-   *  the scanning device
-   * @param pii The new peak intensity index for the scanning device
-   * @param idx The index of the scanning device which peak intensity
-   *  index must be set
-   */
-  virtual void setPeakIntensityIndex(int const pii, size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setPeakIntensityIndex(int const, size_t const) method
-   * @see Scanner::setPeakIntensityIndex(int const, size_t const)
-   */
-  inline void setPeakIntensityIndex(int const pii)
-  {
-    setPeakIntensityIndex(pii, 0);
-  }
-  /**
-   * @brief Obtain the time discretization vector of the scanning device
-   * @param idx The index of the scanning device which time discretization
-   *  vector must be obtained
-   * @return The time discretization vector of the scanning device
-   */
-  virtual std::vector<double>& getTimeWave(size_t const idx) = 0;
-  /**
-   * @brief Non index version of the Scanner::getTimeWave(size_t const)
-   *  method
-   * @see Scanner::getTimeWave(size_t const)
-   */
-  inline std::vector<double>& getTimeWave() { return getTimeWave(0); }
-  /**
-   * @brief Set the time discretization vector of the scanning device
-   * @param timewave The new time discretization vector for the scanning
-   *  device
-   * @param idx The index of scanning device which time discretization
-   *  vector must be updated
-   */
-  virtual void setTimeWave(std::vector<double>& timewave, size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setTimeWave(std::vector<double> &, size_t const) method
-   * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
-   */
-  inline void setTimeWave(std::vector<double>& timewave)
-  {
-    setTimeWave(timewave, 0);
-  }
-  /**
-   * @brief Rvalue version of the
-   *  Scanner::setTimeWave(std::vector<double> &, size_t const) method
-   * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
-   */
-  virtual void setTimeWave(std::vector<double>&& timewave,
-                           size_t const idx) = 0;
-  /**
-   * @brief Non index version of the
-   *  Scanner::setTimeWave(std::vector<double> &&, size_t const) method
-   * @see Scanner::setTimeWave(std::vector<double> &&, size_t const)
-   */
-  inline void setTimeWave(std::vector<double>&& timewave)
-  {
-    setTimeWave(timewave, 0);
-  }
+  virtual PulseShape const& getPulseModel(size_t idx) const = 0;
+  PulseShape const& getPulseModel() const { return getPulseModel(0); }
   /**
    * @brief Obtain the minimum received energy threshold of the scanning
    *  device.

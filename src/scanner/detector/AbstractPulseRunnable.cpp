@@ -2,7 +2,6 @@
 
 #include "MathConstants.h"
 #include "math.h"
-#include <maths/EnergyMaths.h>
 
 #include "AbstractDetector.h"
 #include <filems/facade/FMSFacade.h>
@@ -56,8 +55,8 @@ AbstractPulseRunnable::capturePoint(
   std::mutex* allMeasurementsMutex
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<double>& calcIntensityRecord,
-  std::vector<int>& calcIntensityIndices,
+  std::vector<double>& radiometryRecord,
+  std::vector<int>& radiometryIndices,
   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 )
@@ -77,9 +76,9 @@ AbstractPulseRunnable::capturePoint(
   // known from ray intersection point at FullWaveformPulseRunnable
   m.position = m.beamOrigin + m.beamDirection * m.distance;
 #if DATA_ANALYTICS >= 2
-  calcIntensityRecord[10] = 1;
-  pulseRecorder->recordIntensityCalculation(calcIntensityRecord,
-                                            calcIntensityIndices);
+  radiometryRecord[10] = 1;
+  pulseRecorder->recordIntensityCalculation(radiometryRecord,
+                                            radiometryIndices);
 #endif
   if (allMeasurements != nullptr) {
     std::unique_lock<std::mutex> lock(*allMeasurementsMutex);

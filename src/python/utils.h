@@ -18,20 +18,6 @@ handlePythonIndex(long _index, size_t n)
 }
 }
 
-int
-calcTimePropagation(std::vector<double>& timeWave,
-                    int numBins,
-                    Scanner& scanner)
-{
-  return WaveMaths::calcPropagationTimeLegacy(
-    timeWave,
-    numBins,
-    scanner.getFWFSettings(0).binSize_ns,
-    scanner.getPulseLength_ns(0),
-    7.0 // 3.5 too many ops., 7.0 just one op.
-  );
-}
-
 template<typename T, size_t N>
 py::array_t<T>
 create_numpy_array(T (&arr)[N])

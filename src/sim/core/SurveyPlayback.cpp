@@ -5,10 +5,8 @@
 #include <string>
 
 #include <chrono>
-#include <memory>
-using namespace std::chrono;
-
 #include <filesystem>
+#include <memory>
 namespace fs = std::filesystem;
 
 #include "AbstractDetector.h"
@@ -22,19 +20,17 @@ namespace fs = std::filesystem;
 
 using helios::filems::SimpleSyncFileWriter;
 
-using namespace std;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 SurveyPlayback::SurveyPlayback(
-  shared_ptr<Survey> survey,
+  std::shared_ptr<Survey> survey,
   int const parallelizationStrategy,
   std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
   int const chunkSize,
   std::string fixedGpsTimeStart,
   bool const exportToFile,
   bool const disableShutdown,
-  shared_ptr<helios::filems::FMSFacade> fms)
+  std::shared_ptr<helios::filems::FMSFacade> fms)
   : Simulation(parallelizationStrategy,
                pulseThreadPoolInterface,
                chunkSize,
@@ -57,13 +53,13 @@ SurveyPlayback::SurveyPlayback(
   // ############### BEGIN If the leg has no survey defined, create a default
   // one ################
   if (mSurvey->legs.size() == 0) {
-    shared_ptr<Leg> leg(new Leg());
+    std::shared_ptr<Leg> leg(new Leg());
 
     // Set leg scanner settings:
-    leg->mScannerSettings = make_shared<ScannerSettings>();
+    leg->mScannerSettings = std::make_shared<ScannerSettings>();
 
     // Set leg position to the center of the scene:
-    shared_ptr<PlatformSettings> ps = make_shared<PlatformSettings>();
+    std::shared_ptr<PlatformSettings> ps = std::make_shared<PlatformSettings>();
     ps->setPosition(mSurvey->requireScene().getAABB()->getCentroid());
     leg->mPlatformSettings = ps;
 
@@ -80,8 +76,9 @@ SurveyPlayback::SurveyPlayback(
   }
 
   // If platform is interpolated from data, sync GPS time if requested
-  shared_ptr<InterpolatedMovingPlatform> imp =
-    dynamic_pointer_cast<InterpolatedMovingPlatform>(getScanner()->platform);
+  std::shared_ptr<InterpolatedMovingPlatform> imp =
+    std::dynamic_pointer_cast<InterpolatedMovingPlatform>(
+      getScanner()->platform);
   if (imp != nullptr && imp->isSyncGPSTime()) {
     if (mSurvey->legs[0]->mTrajectorySettings->hasStartTime()) {
       // Use start time of first leg
@@ -111,8 +108,9 @@ SurveyPlayback::estimateTime(int legCurrentProgress, double legElapsedLength)
       legProgress) { // Do stuff only if leg progress incremented at least 1%
     legProgress = (double)legCurrentProgress;
 
-    chrono::nanoseconds currentTime =
-      duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+    std::chrono::nanoseconds currentTime =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::system_clock::now().time_since_epoch());
     legElapsedTime_ns = currentTime - legStartTime_ns;
     legRemainingTime_ns = (long long)((100 - legProgress) / legProgress *
                                       legElapsedTime_ns.count());
@@ -212,8 +210,8 @@ SurveyPlayback::doSimStep()
       clearPointcloudFile();
 
     legProgress = 0;
-    legStartTime_ns =
-      duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+    legStartTime_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::system_clock::now().time_since_epoch());
   }
 
   trackProgress();
@@ -222,7 +220,7 @@ SurveyPlayback::doSimStep()
   // else onLegComplete(); // Profiling only (uncomment for profiling)
 }
 
-shared_ptr<Leg>
+std::shared_ptr<Leg>
 SurveyPlayback::getCurrentLeg()
 {
   if (mCurrentLegIndex < mSurvey->legs.size()) {
@@ -233,7 +231,7 @@ SurveyPlayback::getCurrentLeg()
   return nullptr;
 }
 
-shared_ptr<Leg>
+std::shared_ptr<Leg>
 SurveyPlayback::getPreviousLeg()
 {
   if (mCurrentLegIndex == 0)
@@ -247,7 +245,7 @@ SurveyPlayback::getCurrentLegIndex()
   return mCurrentLegIndex;
 }
 
-string
+std::string
 SurveyPlayback::getLegOutputPrefix(int width)
 {
   std::shared_ptr<Leg> leg = getCurrentLeg();
@@ -296,12 +294,12 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   mCurrentLegIndex = legIndex;
   syncCurrentLegSerialId();
   legProgress = 0;
-  legStartTime_ns =
-    duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
-  legElapsedTime_ns = nanoseconds::zero();
+  legStartTime_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+    std::chrono::system_clock::now().time_since_epoch());
+  legElapsedTime_ns = std::chrono::nanoseconds::zero();
   legRemainingTime_ns = 0;
-  shared_ptr<Leg> leg = getCurrentLeg();
-  ostringstream oss;
+  std::shared_ptr<Leg> leg = getCurrentLeg();
+  std::ostringstream oss;
   oss << "Starting leg with serial ID: " << leg->getSerialId() << " and role: "
       << (leg->getRole() == Leg::LegRole::SOURCE     ? "SOURCE"
           : leg->getRole() == Leg::LegRole::TELEPORT ? "TELEPORT"
@@ -319,7 +317,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   maxDurationDeferredUntilFirstPulse =
     getScanner()->isActive() && getScanner()->hasMaxDuration();
 
-  shared_ptr<Platform> platform(getScanner()->platform);
+  std::shared_ptr<Platform> platform(getScanner()->platform);
   mSurvey->scanner->lastTrajectoryTime = 0L;
 
   // Apply platform settings:
@@ -331,7 +329,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
 
     if (nextLegIndex < mSurvey->legs.size()) {
       // Set destination to position of next leg:
-      shared_ptr<Leg> nextLeg = mSurvey->legs.at(nextLegIndex);
+      std::shared_ptr<Leg> nextLeg = mSurvey->legs.at(nextLegIndex);
 
       glm::dvec3 rawOrigin;
       glm::dvec3 rawTarget;
@@ -372,7 +370,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
         platform->setAfterDestination(
           nextLeg->mPlatformSettings->getPosition());
       }
-      stringstream ss;
+      std::stringstream ss;
       ss << (leg->getRole() == Leg::LegRole::SOURCE     ? "SOURCE"
              : leg->getRole() == Leg::LegRole::TELEPORT ? "TELEPORT"
                                                         : "STOP")
@@ -401,7 +399,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
     if (leg->mTrajectorySettings != nullptr &&
         leg->mTrajectorySettings->hasStartTime()) {
       std::shared_ptr<InterpolatedMovingPlatform> imp =
-        dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+        std::dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
       if (!imp) {
         std::stringstream ss;
         ss << "Expected InterpolatedMovingPlatform, but received a different "
@@ -415,7 +413,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
     // Set the interpolated moving platform time difference from target leg
     if (platform->isInterpolated()) {
       std::shared_ptr<InterpolatedMovingPlatform> imp =
-        dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+        std::dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
       if (!(leg->mTrajectorySettings->hasStartTime() ||
             leg->mTrajectorySettings->hasEndTime())) { // If stop leg
         imp->setCurrentLegTimeDiff(0);
@@ -431,7 +429,7 @@ SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual)
   }
 
   // Restart deflector if previous leg was not active
-  shared_ptr<Leg> previousLeg = getPreviousLeg();
+  std::shared_ptr<Leg> previousLeg = getPreviousLeg();
   if (previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
       leg->mScannerSettings->active) {
     mSurvey->scanner->getBeamDeflector()->restartDeflector();

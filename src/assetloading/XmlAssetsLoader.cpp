@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <sstream>
+#include <utility>
 #include <vector>
 
 #include <glm/gtx/norm.hpp>
@@ -45,6 +46,49 @@ namespace fs = std::filesystem;
 
 #include "MathConverter.h"
 #include "TimeWatcher.h"
+
+namespace {
+double
+readBeamRotation(tinyxml2::XMLElement* node, double inheritedRadians)
+{
+  if (!XmlUtils::hasAttribute(node, "beamRotation_deg"))
+    return inheritedRadians;
+
+  double const degrees =
+    XmlUtils::getAttributeCast<double>(node, "beamRotation_deg", 0.0);
+  if (!std::isfinite(degrees))
+    throw std::invalid_argument("beamRotation_deg must be finite");
+
+  /* Reduce before conversion so even large finite degree values are safe. */
+  return normalizeBeamRotation(
+    MathConverter::degreesToRadians(std::fmod(degrees, 360.0)));
+}
+
+// A node specifies a complete pair; an absent node-level setting inherits.
+std::pair<double, double>
+readBeamDivergences(tinyxml2::XMLElement* node,
+                    double inheritedX,
+                    double inheritedY)
+{
+  bool const scalar = XmlUtils::hasAttribute(node, "beamDivergence_rad");
+  bool const hasX = XmlUtils::hasAttribute(node, "beamDivergenceX_rad");
+  bool const hasY = XmlUtils::hasAttribute(node, "beamDivergenceY_rad");
+  double x = inheritedX, y = inheritedY;
+  if (scalar)
+    x = y = XmlUtils::getAttributeCast<double>(node, "beamDivergence_rad", x);
+  if (hasX)
+    x = XmlUtils::getAttributeCast<double>(node, "beamDivergenceX_rad", x);
+  if (hasY)
+    y = XmlUtils::getAttributeCast<double>(node, "beamDivergenceY_rad", y);
+  if (!scalar && hasX != hasY) {
+    if (hasX)
+      y = x;
+    else
+      x = y;
+  }
+  return { x, y };
+}
+}
 
 // ***  CONSTANTS  *** //
 // ******************* //
@@ -828,16 +872,20 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // --- END : Read range error
 
   // ########### BEGIN Read all the rest #############
-  double beamDiv_rad = XmlUtils::getAttributeCast<double>(
-    scannerNode, "beamDivergence_rad", 0.0003);
+  auto const divergences = readBeamDivergences(scannerNode, 0.0003, 0.0003);
+  double const beamDiv_rad = divergences.first;
+  double const beamRotation_rad = readBeamRotation(scannerNode, 0.0);
   double pulseLength_ns =
     XmlUtils::getAttributeCast<double>(scannerNode, "pulseLength_ns", 4.0);
   std::string id = XmlUtils::getAttributeCast<std::string>(
     scannerNode, "id", std::string("Default"));
-  double avgPower =
-    XmlUtils::getAttributeCast<double>(scannerNode, "averagePower_w", 4.0);
-  double beamQuality =
-    XmlUtils::getAttributeCast<double>(scannerNode, "beamQualityFactor", 1.0);
+  if (XmlUtils::hasAttribute(scannerNode, "averagePower_w"))
+    throw HeliosException(
+      "averagePower_w was removed; use pulseAmplitude_W for whole-beam peak "
+      "power. To preserve legacy waveforms, multiply the old coefficient by "
+      "4/exp(2); this is not an average-to-peak power conversion.");
+  double pulseAmplitude =
+    XmlUtils::getAttributeCast<double>(scannerNode, "pulseAmplitude_W", 1.0);
   double efficiency =
     XmlUtils::getAttributeCast<double>(scannerNode, "opticalEfficiency", 0.99);
   double receiverDiameter =
@@ -866,13 +914,14 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                emitterAttitude,
                                pulseFreqs,
                                pulseLength_ns,
-                               avgPower,
-                               beamQuality,
+                               pulseAmplitude,
                                efficiency,
                                receiverDiameter,
                                visibility,
                                wavelength * 1e-9,
                                rangeErrExpr);
+    baseScanDev.setBeamDivergences(divergences.first, divergences.second);
+    baseScanDev.setBeamRotation(beamRotation_rad);
     baseScanDev.setReceivedEnergyMin(XmlUtils::getAttributeCast<double>(
       scannerNode, "receivedEnergyMin_W", 0.0001));
     std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
@@ -895,8 +944,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               pulseFreqs,
                                               pulseLength_ns,
                                               id,
-                                              avgPower,
-                                              beamQuality,
+                                              pulseAmplitude,
                                               efficiency,
                                               receiverDiameter,
                                               visibility,
@@ -907,6 +955,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               false,
                                               false,
                                               rangeErrExpr);
+    scanner->setBeamDivergences(divergences.first, divergences.second);
+    scanner->setBeamRotation(beamRotation_rad);
     // Parse max number of returns per pulse
     scanner->setMaxNOR(
       XmlUtils::getAttributeCast<int>(scannerNode, "maxNOR", 0));
@@ -1240,11 +1290,6 @@ XmlAssetsLoader::createScannerSettingsFromXml(
     settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
   settings->scanFreq_Hz = XmlUtils::getAttributeCast<double>(
     node, "scanFreq_hz", template1->scanFreq_Hz, defaultScannerSettingsMsg);
-  settings->beamDivAngle =
-    XmlUtils::getAttributeCast<double>(node,
-                                       "beamDivergence_rad",
-                                       template1->beamDivAngle,
-                                       defaultScannerSettingsMsg);
   settings->trajectoryTimeInterval =
     XmlUtils::getAttributeCast<double>(node,
                                        "trajectoryTimeInterval_s",
@@ -1319,19 +1364,47 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
   }
   // Given FWFSettings
   if (node != nullptr) {
-    settings->binSize_ns = XmlUtils::getAttributeCast<double>(
-      node, "binSize_ns", settings->binSize_ns);
-    settings->winSize_ns = settings->pulseLength_ns / 4.0; // By default
+    auto readRange =
+      [&](char const* name, char const* legacy, double fallback) {
+        if (node->Attribute(name) && node->Attribute(legacy))
+          throw std::invalid_argument(std::string("Specify only one of ") +
+                                      name + " and " + legacy);
+        if (node->Attribute(legacy)) {
+          logging::WARN(std::string(legacy) + " is deprecated; use " + name);
+          return XmlUtils::getAttributeCast<double>(node, legacy, 0.0) *
+                 SPEEDofLIGHT_mPerNanosec / 2.0;
+        }
+        return XmlUtils::getAttributeCast<double>(node, name, fallback);
+      };
+    settings->sampleSpacing_m =
+      readRange("sampleSpacing_m", "binSize_ns", settings->sampleSpacing_m);
+    settings->peakWindow_m =
+      readRange("peakWindow_m", "winSize_ns", settings->peakWindow_m);
+    settings->maxRecordingSpan_m = readRange("maxRecordingSpan_m",
+                                             "maxFullwaveRange_ns",
+                                             settings->maxRecordingSpan_m);
+    settings->pulseShape = XmlUtils::getAttributeCast<std::string>(
+      node, "pulseShape", settings->pulseShape);
+    if (settings->pulseShape == "sampled")
+      throw std::invalid_argument(
+        "Sampled pulses are supported through Python and YAML only");
+    settings->gaussianMean_ns = XmlUtils::getAttributeCast<double>(
+      node, "gaussianMean_ns", settings->gaussianMean_ns);
+    settings->correctPeakOffset = XmlUtils::getAttributeCast<bool>(
+      node, "correctPeakOffset", settings->correctPeakOffset);
+    settings->recordingTailTolerance = XmlUtils::getAttributeCast<double>(
+      node, "recordingTailTolerance", settings->recordingTailTolerance);
+    if (auto const* method = node->Attribute("beamSamplingMethod"))
+      settings->beamSamplingMethod = parseBeamSamplingMethod(method);
     settings->beamSampleQuality = XmlUtils::getAttributeCast<int>(
       node, "beamSampleQuality", settings->beamSampleQuality);
-    settings->winSize_ns = XmlUtils::getAttributeCast<double>(
-      node, "winSize_ns", settings->winSize_ns);
-    settings->maxFullwaveRange_ns = XmlUtils::getAttributeCast<double>(
-      node, "maxFullwaveRange_ns", settings->maxFullwaveRange_ns);
+    settings->beamSamplingFactor = XmlUtils::getAttributeCast<double>(
+      node, "beamSamplingFactor", settings->beamSamplingFactor);
     settings->apertureDiameter = XmlUtils::getAttributeCast<double>(
       node, "apertureDiameter_m", settings->apertureDiameter);
   }
 
+  settings->validate();
   return settings;
 }
 
@@ -1595,9 +1668,21 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
       _scanHead->cfg_device_rotateAxis = shra;
     }
     scanner->setScannerHead(_scanHead, idx);
+    if (XmlUtils::hasAttribute(chan, "averagePower_w"))
+      throw HeliosException(
+        "averagePower_w was removed; use pulseAmplitude_W for whole-beam peak "
+        "power. To preserve legacy waveforms, multiply the old coefficient by "
+        "4/exp(2); this is not an average-to-peak power conversion.");
+    scanner->setPulseAmplitude(
+      XmlUtils::getAttributeCast<double>(
+        chan, "pulseAmplitude_W", scanner->getPulseAmplitude(idx)),
+      idx);
     // Check general attributes
-    scanner->setBeamDivergence(XmlUtils::getAttributeCast<double>(
-      chan, "beamDivergence_rad", scanner->getBeamDivergence(idx)));
+    auto const divergences = readBeamDivergences(
+      chan, scanner->getBeamDivergenceX(idx), scanner->getBeamDivergenceY(idx));
+    scanner->setBeamDivergences(divergences.first, divergences.second, idx);
+    scanner->setBeamRotation(
+      readBeamRotation(chan, scanner->getBeamRotation(idx)), idx);
     scanner->setPulseLength_ns(XmlUtils::getAttributeCast<double>(
       chan, "pulseLength_ns", scanner->getPulseLength_ns(idx)));
     if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
@@ -1744,7 +1829,7 @@ void
 XmlAssetsLoader::trackNonDefaultScannerSettings(
   std::shared_ptr<ScannerSettings> base,
   std::shared_ptr<ScannerSettings> ref,
-  std::string const defaultTemplateId,
+  std::string defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)
@@ -1767,8 +1852,6 @@ XmlAssetsLoader::trackNonDefaultScannerSettings(
     fields.insert("verticalAngleMax_rad");
   if (base->scanFreq_Hz != ref->scanFreq_Hz)
     fields.insert("scanFreq_Hz");
-  if (base->beamDivAngle != ref->beamDivAngle)
-    fields.insert("beamDivAngle");
   if (base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
     fields.insert("trajectoryTimeInterval");
   if (base->opticsWarmupPhase_s != ref->opticsWarmupPhase_s)
@@ -1783,7 +1866,7 @@ void
 XmlAssetsLoader::trackNonDefaultPlatformSettings(
   std::shared_ptr<PlatformSettings> base,
   std::shared_ptr<PlatformSettings> ref,
-  std::string const defaultTemplateId,
+  std::string defaultTemplateId,
   std::unordered_set<std::string>& fields)
 {
   if (ref->id != defaultTemplateId)

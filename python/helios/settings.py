@@ -4,16 +4,18 @@ from helios.validation import (
     Model,
     ThreadCount,
     TimeInterval,
+    TimeOffset,
     UpdateableMixin,
     units,
 )
 
 from enum import IntEnum
-from pydantic import PositiveInt, BaseModel
-from typing import Optional
+from pydantic import PositiveInt, BaseModel, Field, TypeAdapter
+from typing import Annotated, Optional, Literal
 from logging import ERROR, DEBUG, INFO, WARNING
 from datetime import datetime
 import os
+import warnings
 
 import _helios
 import sys
@@ -210,44 +212,123 @@ class OutputSettings(Model, UpdateableMixin):
     las_scale: Length = 0.0001
 
 
-class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
-    """Class representing the settings for full waveform processing.
+class SampledPulse(Model):
+    """Immutable sampled optical pulse. Offsets and peak_offset are in seconds.
 
-    :param bin_size: The size of the bins to use for full waveform processing in seconds. Default is 0.25 ns.
-    :param beam_sample_quality: The beam sample quality to use for full waveform processing. Default is 3.
-    :param win_size: The size of the window to use for full waveform processing in seconds. Default is 1.0 ns.
-    :param max_fullwave_range: The maximum range to use for full waveform processing in seconds. Default is 0.0 ns (no maximum range).
-    :type bin_size: TimeInterval
-    :type beam_sample_quality: PositiveInt
-    :type win_size: TimeInterval
-    :type max_fullwave_range: TimeInterval
+    Amplitudes are normalized to unit peak; evaluation is linear between samples
+    and zero outside their interval. Supply peak_offset for tied maxima.
     """
 
-    bin_size: TimeInterval = 0.25 * units.ns
-    beam_sample_quality: PositiveInt = 3
-    win_size: TimeInterval = 1.0 * units.ns
-    max_fullwave_range: TimeInterval = 0.0 * units.ns
+    offsets: tuple[TimeOffset, ...]
+    amplitudes: tuple[Annotated[float, Field(ge=0, allow_inf_nan=False)], ...]
+    peak_offset: Optional[TimeOffset] = None
 
-    def _to_cpp(self):
-        # Convert to the underlying C++ structure, undoing SI unit conversion
-
-        fwf = _helios.FWFSettings()
-        fwf.bin_size = self.bin_size * 1e9
-        fwf.beam_sample_quality = self.beam_sample_quality
-        fwf.win_size = self.win_size * 1e9
-        fwf.max_fullwave_range = self.max_fullwave_range * 1e9
-
-        return fwf
+    def _pre_set(self, field, value):
+        if not self._during_init:
+            raise AttributeError(
+                "SampledPulse is immutable; replace the pulse definition"
+            )
 
     def _post_set(self, field):
-        if field not in {"bin_size", "win_size"}:
-            return
+        if field == "peak_offset":
+            self._cpp_object = _helios.SampledPulse(
+                [t * 1e9 for t in self.offsets],
+                self.amplitudes,
+                None if self.peak_offset is None else self.peak_offset * 1e9,
+            )
+            # Store the normalized definition for persistence and inspection.
+            self._amplitudes = tuple(self._cpp_object.amplitudes)
 
-        if self._during_init and field != "win_size":
-            return
+    @classmethod
+    def _from_cpp(cls, value):
+        return cls(
+            offsets=[t * 1e-9 for t in value.offsets_ns],
+            amplitudes=value.amplitudes,
+            peak_offset=(
+                None if value.peak_offset_ns is None else value.peak_offset_ns * 1e-9
+            ),
+        )
 
-        if self.win_size < 2 * self.bin_size:
-            raise ValueError("win_size must satisfy win_size >= 2 * bin_size.")
+    def __deepcopy__(self, memo):
+        # Both the definition and the runtime model are immutable.
+        memo[id(self)] = self
+        return self
+
+
+# Keep the public definition immutable and in seconds. The runtime base class's
+# peak_offset property is in range-equivalent metres, and its arrays are copies.
+SampledPulse.amplitudes = SampledPulse.amplitudes.getter(lambda self: self._amplitudes)
+SampledPulse.peak_offset = SampledPulse.peak_offset.getter(
+    lambda self: self._peak_offset
+)
+
+
+class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
+    """Waveform reconstruction on a fixed grid in metres.
+
+    Pulse FWHM remains a scanner specification in seconds. Gamma is causal at
+    zero; Gaussian defaults to a zero mean and retains its negative tail.
+    The recording tolerance determines only the recording bounds, never a
+    cutoff for individual returns. Peak correction affects reported ranges,
+    not waveform samples. Legacy time settings are accepted at construction.
+    """
+
+    sample_spacing: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.03747405725
+    beam_sampling_method: Literal["annular", "cartesian"] = "annular"
+    beam_sample_quality: PositiveInt = 3
+    beam_sampling_factor: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 2.0
+    peak_window: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.149896229
+    max_recording_span: Annotated[Length, Field(ge=0, allow_inf_nan=False)] = 0.0
+    pulse_shape: Literal["gamma", "gaussian", "sampled"] = "gamma"
+    gaussian_mean: TimeOffset = 0.0
+    sampled_pulse: Optional[SampledPulse] = None
+    correct_peak_offset: bool = True
+    recording_tail_tolerance: Annotated[
+        float, Field(gt=0, lt=1, allow_inf_nan=False)
+    ] = 1e-4
+
+    @classmethod
+    def _normalize_init_kwargs(cls, kwargs):
+        kwargs = dict(kwargs)
+        for old, new in (
+            ("bin_size", "sample_spacing"),
+            ("win_size", "peak_window"),
+            ("max_fullwave_range", "max_recording_span"),
+        ):
+            if old in kwargs:
+                if new in kwargs:
+                    raise ValueError(f"Specify only one of {old} and {new}")
+                warnings.warn(
+                    f"{old} is deprecated; use {new} in metres",
+                    DeprecationWarning,
+                    stacklevel=3,
+                )
+                seconds = TypeAdapter(TimeInterval).validate_python(kwargs.pop(old))
+                kwargs[new] = seconds * (299792458.0 / 2.0)
+        return kwargs
+
+    def _to_cpp(self):
+        self._cpp_object.validate()
+        return _helios.FWFSettings(self._cpp_object)
+
+    def _pre_set(self, field, value):
+        if self._during_init:
+            return
+        shape = value if field == "pulse_shape" else self.pulse_shape
+        sampled = value if field == "sampled_pulse" else self.sampled_pulse
+        if shape == "sampled" and sampled is None:
+            raise ValueError("sampled pulse shape requires sampled_pulse")
+        spacing = value if field == "sample_spacing" else self.sample_spacing
+        window = value if field == "peak_window" else self.peak_window
+        if window < 2 * spacing or window / spacing > 1e9:
+            raise ValueError(
+                "peak_window must be >= 2 * sample_spacing and representable"
+            )
+
+    def _post_set(self, field):
+        # All settings are present when the final initialization field is set.
+        if not self._during_init or field == "recording_tail_tolerance":
+            self._cpp_object.validate()
 
 
 # Storage for global settings

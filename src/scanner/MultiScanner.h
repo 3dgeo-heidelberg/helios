@@ -118,9 +118,9 @@ public:
     scanDevs[idx].calcRaysNumber();
   }
   /**
-   * @see Scanner::prepareDiscretization
+   * @see Scanner::preparePulse
    */
-  void prepareDiscretization(size_t const idx) override;
+  void preparePulse(size_t const idx) override;
   /**
    * @see Scanner::calcAbsoluteBeamAttitude
    */
@@ -144,7 +144,7 @@ public:
    */
   void computeSubrays(
     std::function<void(Rotation const& subrayRotation,
-                       int const subrayRadiusStep,
+                       std::size_t subrayIndex,
                        NoiseSource<double>& intersectionHandlingNoiseSource,
                        std::map<double, double>& reflections,
                        vector<RaySceneIntersection>& intersects
@@ -168,33 +168,47 @@ public:
    */
   bool initializeFullWaveform(double const minHitDist_m,
                               double const maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins,
+                              WaveformGrid& grid,
                               size_t const idx) override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPower
+   *
+   * Received peak power in watts; range in metres, incidence cosine in [-1, 1].
    */
-  double calcIntensity(double const incidenceAngle,
-                       double const targetRange,
-                       Material const& mat,
-                       int const subrayRadiusStep,
-                       size_t const idx
+  double computeReceivedPower(
+    double const incidenceCosine,
+    double const targetRange,
+    Material const& mat,
+    std::size_t subrayIndex,
+    size_t const idx
 #if DATA_ANALYTICS >= 2
-                       ,
-                       std::vector<std::vector<double>>& calcIntensityRecords
+    ,
+    std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const override;
+  /** Dimensionless received/whole-beam peak-power ratio, including subray
+   * share. */
+  double computePowerRatio(double const incidenceCosine,
+                           double const targetRange,
+                           Material const& mat,
+                           std::size_t subrayIndex,
+                           size_t const idx
+#if DATA_ANALYTICS >= 2
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords
+#endif
+  ) const override;
+  double computePowerRatioWithSigma(double targetRange,
+                                    double sigma,
+                                    std::size_t subrayIndex,
+                                    size_t idx) const override;
   /**
-   * @see Scanner::calcIntensity
+   * @see Scanner::computeReceivedPowerWithSigma
    */
-  double calcIntensity(double const targetRange,
-                       double const sigma,
-                       int const subrayRadiusStep,
-                       size_t const idx) const override;
+  double computeReceivedPowerWithSigma(double const targetRange,
+                                       double const sigma,
+                                       std::size_t subrayIndex,
+                                       size_t const idx) const override;
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
@@ -249,42 +263,44 @@ public:
    */
   double getBeamDivergence(size_t const idx) const override
   {
-    return scanDevs[idx].beamDivergence_rad;
+    return scanDevs[idx].beamDivergenceX_rad;
   }
   /**
    * @see Scanner::setBeamDivergence
    */
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
-    scanDevs[idx].beamDivergence_rad = beamDivergence;
+    scanDevs.at(idx).setBeamDivergence(beamDivergence);
+  }
+  double getBeamRotation(size_t const idx = 0) const override
+  {
+    return scanDevs.at(idx).getBeamRotation();
+  }
+  void setBeamRotation(double radians, size_t const idx = 0) override
+  {
+    scanDevs.at(idx).setBeamRotation(radians);
+  }
+  double getBeamDivergenceY(size_t const idx = 0) const override
+  {
+    return scanDevs.at(idx).getBeamDivergenceY();
+  }
+  void setBeamDivergences(double x, double y, size_t const idx = 0) override
+  {
+    scanDevs.at(idx).setBeamDivergences(x, y);
   }
   /**
-   * @see Scanner::getAveragePower
+   * @see Scanner::getPulseAmplitude
    */
-  double getAveragePower(size_t const idx) const override
+  double getPulseAmplitude(size_t const idx) const override
   {
-    return scanDevs[idx].averagePower_w;
+    return scanDevs[idx].pulseAmplitude_W;
   }
   /**
-   * @see Scanner::setAveragePower
+   * @see Scanner::setPulseAmplitude
    */
-  void setAveragePower(double const averagePower, size_t const idx) override
+  void setPulseAmplitude(double const pulseAmplitude, size_t const idx) override
   {
-    scanDevs[idx].averagePower_w = averagePower;
-  }
-  /**
-   * @see Scanner::getBeamQuality
-   */
-  double getBeamQuality(size_t const idx) const override
-  {
-    return scanDevs[idx].beamQuality;
-  }
-  /**
-   * @see Scanner::setBeamQuality
-   */
-  void setBeamQuality(double const beamQuality, size_t const idx) override
-  {
-    scanDevs[idx].beamQuality = beamQuality;
+    scanDevs[idx].setPulseAmplitude(pulseAmplitude);
   }
   /**
    * @see Scanner::getEfficiency
@@ -359,21 +375,6 @@ public:
     scanDevs[idx].atmosphericExtinction = atmosphericExtinction;
   }
   /**
-   * @see Scanner::getBeamWaistRadius
-   */
-  double getBeamWaistRadius(size_t const idx) const override
-  {
-    return scanDevs[idx].beamWaistRadius;
-  }
-  /**
-   * @see Scanner::setBeamWaistRadius
-   */
-  void setBeamWaistRadius(double const beamWaistRadius,
-                          size_t const idx) override
-  {
-    scanDevs[idx].beamWaistRadius = beamWaistRadius;
-  }
-  /**
    * @see Scanner::getHeadRelativeEmitterPosition
    */
   glm::dvec3 getHeadRelativeEmitterPosition(size_t const idx) const override
@@ -418,20 +419,6 @@ public:
     return scanDevs[idx].headRelativeEmitterAttitude;
   }
   /**
-   * @see Scanner::getBt2
-   */
-  double getBt2(size_t const idx) const override
-  {
-    return scanDevs[idx].cached_Bt2;
-  }
-  /**
-   * @see Scanner::setBt2
-   */
-  void setBt2(double const bt2, size_t const idx) override
-  {
-    scanDevs[idx].cached_Bt2 = bt2;
-  }
-  /**
    * @see Scanner::getDr2
    */
   double getDr2(size_t const idx) const override
@@ -455,14 +442,14 @@ public:
   /**
    * @see Scanner::getNumRays
    */
-  int getNumRays(size_t const idx) const override
+  std::size_t getNumRays(size_t const idx) const override
   {
     return scanDevs[idx].numRays;
   }
   /**
    * @see Scanner::setNumRays
    */
-  void setNumRays(int const numRays, size_t const idx) override
+  void setNumRays(std::size_t numRays, size_t const idx) override
   {
     scanDevs[idx].numRays = numRays;
   }
@@ -569,54 +556,9 @@ public:
   {
     scanDevs[idx].maxNOR = maxNOR;
   }
-  /**
-   * @see Scanner::getNumTimeBins(size_t const)
-   */
-  int getNumTimeBins(size_t const idx) const override
+  PulseShape const& getPulseModel(size_t idx) const override
   {
-    return scanDevs[idx].numTimeBins;
-  }
-  /**
-   * @see Scanner::setNumTimeBins(int const, size_t const)
-   */
-  void setNumTimeBins(int const numTimeBins, size_t const idx) override
-  {
-    scanDevs[idx].numTimeBins = numTimeBins;
-  }
-  /**
-   * @see Scanner::getPeakIntensityIndex(size_t const)
-   */
-  int getPeakIntensityIndex(size_t const idx) const override
-  {
-    return scanDevs[idx].peakIntensityIndex;
-  }
-  /**
-   * @see Scanner::setPeakIntensityIndex(int const, size_t const)
-   */
-  void setPeakIntensityIndex(int const pii, size_t const idx) override
-  {
-    scanDevs[idx].peakIntensityIndex = pii;
-  }
-  /**
-   * @see Scanner::getTimeWave(size_t const)
-   */
-  std::vector<double>& getTimeWave(size_t const idx) override
-  {
-    return scanDevs[idx].time_wave;
-  }
-  /**
-   * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
-   */
-  void setTimeWave(std::vector<double>& timewave, size_t const idx) override
-  {
-    scanDevs[idx].time_wave = timewave;
-  }
-  /**
-   * @see Scanner::setTimeWave(std::vector<double> &&, size_t const)
-   */
-  void setTimeWave(std::vector<double>&& timewave, size_t const idx) override
-  {
-    scanDevs[idx].time_wave = timewave;
+    return scanDevs[idx].getPulseModel();
   }
   /**
    * @see Scanner::setReceivedEnergyMin(double const, size_t const)

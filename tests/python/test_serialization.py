@@ -170,7 +170,10 @@ def test_roundtrip_yaml_inline(tmp_path):
     assert "$schema" not in document
     assert "model_ref" not in str(document["fields"]["trajectory_settings"])
     assert document["serialization_major_version"] == 0
-    assert document["serialization_minor_version"] == 0
+    assert (
+        document["serialization_minor_version"]
+        == serialization.SERIALIZATION_FORMAT_MINOR_VERSION
+    )
 
     loaded = DynamicPlatformSettings.from_yaml(yaml_path)
     assert loaded.speed_m_s == 42.0
@@ -737,7 +740,10 @@ def test_dynamic_scene_yaml_roundtrip_replays_only_xml_provenance(tmp_path):
         document = yaml.safe_load(handle)
 
     assert document["serialization_major_version"] == 0
-    assert document["serialization_minor_version"] == 0
+    assert (
+        document["serialization_minor_version"]
+        == serialization.SERIALIZATION_FORMAT_MINOR_VERSION
+    )
     assert document["model_class"] == "helios.scene.DynamicScene"
     assert document["fields"] == {}
     assert document["provenance"] == {
