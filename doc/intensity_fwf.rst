@@ -68,13 +68,17 @@ The quality of the simulation can be adjusted by the ``beamSampleQuality`` attri
      - **Default Value**
      - **Comment**
 
+   * - ``beamSamplingMethod``
+     - annular
+     - Sampling geometry: ``annular`` or ``cartesian``.
+
    * - ``beamSampleQuality``
      - 3
-     - 3 concentric elliptical rings of subrays, 19 subrays total; discretization in space.
+     - Annular: 3 rings, 19 rays. Cartesian: 5 by 5 cells, 25 rays.
 
    * - ``beamSamplingFactor``
      - 2
-     - Dimensionless cutoff rho_max in normalized Gaussian coordinates; captures 99.9665% of emitted power.
+     - Normalized radial cutoff (annular) or per-axis cutoff (Cartesian).
 
    * - ``sampleSpacing_m``
      - 0.03747405725
@@ -105,7 +109,7 @@ The quality of the simulation can be adjusted by the ``beamSampleQuality`` attri
      - Relative unit-peak amplitude for automatic recording bounds only.
 
 
-The quality :math:`Q` is the number of rings, including the central ray. Set :math:`\rho_{\max}=\text{beamSamplingFactor}`. For ring :math:`i`,
+For the default ``annular`` method, the quality :math:`Q` is the number of rings, including the central ray. Set :math:`\rho_{\max}=\text{beamSamplingFactor}`. For ring :math:`i`,
 
 .. math::
    \rho_i=\frac{\rho_{\max}i}{Q-1/2},\qquad
@@ -117,7 +121,7 @@ The final boundary is exactly :math:`\rho_{\max}`. A single central ray represen
 Samples are uniform in scaled azimuth :math:`\phi`, starting at local up and progressing toward local right. With :math:`a_x=\tan(\beta_x/2)` and :math:`a_y=\tan(\beta_y/2)`, transverse slopes are
 
 .. math::
-   u=\rho_i a_x\cos(\phi),\qquad v=\rho_i a_y\sin(\phi),\qquad
+   u=\rho_i a_x\sin(\phi),\qquad v=\rho_i a_y\cos(\phi),\qquad
    \mathbf d=\frac{\mathbf{forward}+u \mathbf{right}+v \mathbf{up}}
                      {\sqrt{1+u^2+v^2}}.
 
@@ -125,11 +129,40 @@ The physical polar angle is :math:`\theta=\arctan\sqrt{u^2+v^2}` and varies arou
 
 .. math::
    \theta_{\mathrm{out}}(\phi)=\arctan\left(
-   \rho_{\mathrm{out}}\sqrt{a_x^2\cos^2(\phi)+a_y^2\sin^2(\phi)}\right).
+   \rho_{\mathrm{out}}\sqrt{a_x^2\sin^2(\phi)+a_y^2\cos^2(\phi)}\right).
 
 Equal divergences recover a circular Gaussian.
 
-Subray metadata exposes ``rho``, ``inner_rho``, and ``outer_rho`` in Python. These are dimensionless; ``outer_rho`` is the individual annulus boundary, while ``beamSamplingFactor`` is the global cutoff. ``angle_rad`` remains the individual ray's physical polar angle.
+Subray metadata is available through ``ray.cell`` in Python. Annular samples have an ``AnnularCell`` with ``rho``, ``inner_rho``, and ``outer_rho`` in normalized Gaussian coordinates. Migrate previous accesses such as ``ray.inner_rho`` to ``ray.cell.inner_rho``. The old top-level metadata attributes have been removed. ``ray.angle_rad`` remains the physical polar angle for either method.
+
+Cartesian sampling
+~~~~~~~~~~~~~~~~~~
+
+Select the optional rectangular grid in XML::
+
+   <FWFSettings beamSamplingMethod="cartesian"
+                beamSampleQuality="3" beamSamplingFactor="2.0"/>
+
+Or in Python::
+
+   FullWaveformSettings(beam_sampling_method="cartesian",
+                        beam_sample_quality=3, beam_sampling_factor=2.0)
+
+YAML uses the same snake_case settings names. Omitting the method preserves annular sampling, including inherited scanner/channel settings.
+
+Define normalized slopes :math:`u=\tan(\theta_x)/a_x` and :math:`v=\tan(\theta_y)/a_y`. The grid partitions :math:`[-c,c]^2`, where :math:`c=\text{beamSamplingFactor}`, into :math:`(2Q-1)^2` equal cells. Thus spacing is uniform in normalized slopes, not in angles. Each ray passes through a cell midpoint with direction proportional to :math:`\mathbf{forward}+a_xu\mathbf{right}+a_yv\mathbf{up}`. Equal divergences recover a circular Gaussian without changing the algorithm.
+
+For cell bounds :math:`[u_0,u_1]\times[v_0,v_1]`, the power share and transverse area coefficient are
+
+.. math::
+   s=\frac14[\operatorname{erf}(\sqrt2u_1)-\operatorname{erf}(\sqrt2u_0)]
+             [\operatorname{erf}(\sqrt2v_1)-\operatorname{erf}(\sqrt2v_0)],
+   \qquad A/z^2=a_xa_y(u_1-u_0)(v_1-v_0).
+
+``CartesianCell`` metadata exposes ``u``, ``v``, ``u_min``, ``u_max``, ``v_min``, and ``v_max`` through ``ray.cell``. Cells are ordered by increasing ``v``, then increasing ``u``. The central ray is at index ``(len(subrays)-1)//2``. Quality 1 gives a single central ray representing the whole rectangle.
+
+The Cartesian cutoff is rectangular, while the annular cutoff is elliptical. Their captured power fractions are respectively
+:math:`\operatorname{erf}(\sqrt2c)^2` and :math:`1-\exp(-2c^2)`. Shares are fractions of the whole Gaussian and are never renormalized to sum to one. Equal quality settings imply different ray counts and computational costs.
 
 .. _amplitude_evaluation:
 

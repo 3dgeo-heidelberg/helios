@@ -109,10 +109,7 @@ ScanningDevice::prepareSimulation()
 bool
 ScanningDevice::isSubrayPatternCurrent() const
 {
-  return !subrays.empty() && sampledDivergenceX_rad == beamDivergenceX_rad &&
-         sampledDivergenceY_rad == beamDivergenceY_rad &&
-         sampledFactor == FWF_settings.beamSamplingFactor &&
-         sampledQuality == FWF_settings.beamSampleQuality;
+  return sampledKey && *sampledKey == samplingKey();
 }
 
 std::vector<ScanningDevice::Subray> const&
@@ -129,80 +126,11 @@ ScanningDevice::buildSubrayPattern()
 {
   if (isSubrayPatternCurrent())
     return;
-  FWF_settings.validateBeamSampling();
-
-  /* Validate beamDivergence */
-  for (double divergence : { beamDivergenceX_rad, beamDivergenceY_rad }) {
-    if (!std::isfinite(divergence) || divergence <= 0.0 || divergence >= PI)
-      throw std::invalid_argument(
-        "Full beam divergences must be finite and in (0, pi)");
-  }
-  int const quality = FWF_settings.beamSampleQuality;
-
-  /* 1/e^2 tangents; generally different in x and y directions*/
-  double const tangentX = std::tan(beamDivergenceX_rad / 2.0);
-  double const tangentY = std::tan(beamDivergenceY_rad / 2.0);
-
-  /* rhoMax represents the sampling cutoff */
-  double const rhoMax = FWF_settings.beamSamplingFactor;
-
-  /* Validate 1/e^2 tangents */
-  for (double tangent : { tangentX, tangentY }) {
-    double const cutoff = rhoMax * tangent;
-    if (!std::isfinite(cutoff) || cutoff <= 0.0 ||
-        std::atan(cutoff) >= PI / 2.0)
-      throw std::invalid_argument("Sampling cone is not representable");
-  }
-
-  std::vector<Subray> generated;
-  double innerRho = 0.0;
-  for (int ring = 0; ring < quality; ++ring) {
-    /* Determine number of subrays (population) per annulus */
-    double const population = (ring == 0) ? 1.0 : std::floor(PI_2 * ring);
-
-    /* Validate population */
-    if (population >= static_cast<double>(generated.max_size()))
-      throw std::invalid_argument("Too many subrays");
-    std::size_t const count = static_cast<std::size_t>(population);
-    if (count > generated.max_size() - generated.size())
-      throw std::invalid_argument("Too many subrays");
-
-    /* Placement and integration use normalized Gaussian coordinates. */
-    double const rho = rhoMax * (ring / (quality - 0.5));
-    double const outerRho = (ring == quality - 1)
-                              ? rhoMax
-                              : rhoMax * ((ring + 0.5) / (quality - 0.5));
-    double const extent = (outerRho - innerRho) * (outerRho + innerRho);
-
-    /* Power share per-subray in current annulus */
-    double const share =
-      std::exp(-2.0 * innerRho * innerRho) * -std::expm1(-2.0 * extent) / count;
-    double const areaFactor = PI * tangentX * tangentY * extent / count;
-    if (!std::isfinite(share) || !std::isfinite(areaFactor) ||
-        areaFactor <= 0.0)
-      throw std::invalid_argument("Subray patch is not representable");
-
-    /* Determine direction of each subray */
-    for (std::size_t j = 0; j < count; ++j) {
-      double const phase = PI_2 * j / count;
-      double const u = rho * tangentX * std::sin(phase);
-      double const v = rho * tangentY * std::cos(phase);
-      double const angle = std::atan2(std::hypot(u, v), 1.0);
-      glm::dvec3 const direction =
-        Directions::forward + u * Directions::right + v * Directions::up;
-      Rotation const rotation =
-        ring == 0 ? Rotation() : Rotation(Directions::forward, direction);
-      generated.push_back(
-        { rotation, angle, share, areaFactor, rho, innerRho, outerRho });
-    }
-    innerRho = outerRho;
-  }
+  auto const key = samplingKey();
+  auto generated = makeSubrayPattern(key.beam, key.settings);
   subrays = std::move(generated);
   numRays = subrays.size();
-  sampledDivergenceX_rad = beamDivergenceX_rad;
-  sampledDivergenceY_rad = beamDivergenceY_rad;
-  sampledFactor = FWF_settings.beamSamplingFactor;
-  sampledQuality = quality;
+  sampledKey = key;
 }
 
 void

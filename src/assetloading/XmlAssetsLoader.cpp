@@ -1375,6 +1375,8 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
       node, "correctPeakOffset", settings->correctPeakOffset);
     settings->recordingTailTolerance = XmlUtils::getAttributeCast<double>(
       node, "recordingTailTolerance", settings->recordingTailTolerance);
+    if (auto const* method = node->Attribute("beamSamplingMethod"))
+      settings->beamSamplingMethod = parseBeamSamplingMethod(method);
     settings->beamSampleQuality = XmlUtils::getAttributeCast<int>(
       node, "beamSampleQuality", settings->beamSampleQuality);
     settings->beamSamplingFactor = XmlUtils::getAttributeCast<double>(

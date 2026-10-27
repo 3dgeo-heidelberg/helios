@@ -274,6 +274,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     """
 
     sample_spacing: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.03747405725
+    beam_sampling_method: Literal["annular", "cartesian"] = "annular"
     beam_sample_quality: PositiveInt = 3
     beam_sampling_factor: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 2.0
     peak_window: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.149896229

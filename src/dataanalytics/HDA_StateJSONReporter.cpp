@@ -452,6 +452,8 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry("atmosphericVisibility", fs.atmosphericVisibility, d2)
      << craftEntry("scannerWaveLength", fs.scannerWaveLength, d2)
      << craftEntry("pulseLength_ns", fs.pulseLength_ns, d2)
+     << craftEntry(
+          "beamSamplingMethod", toString(fs.beamSamplingMethod), d2, true)
      << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
      << craftEntry("beamSamplingFactor", fs.beamSamplingFactor, d2)
      << craftEntry("peakWindow_m", fs.peakWindow_m, d2)

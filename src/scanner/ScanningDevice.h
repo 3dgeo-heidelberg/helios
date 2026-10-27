@@ -23,6 +23,7 @@ using helios::analytics::HDA_PulseRecorder;
 
 #include <list>
 #include <map>
+#include <optional>
 #include <string>
 #include <unordered_map>
 
@@ -200,23 +201,18 @@ public:
    * @see ScanningDevice::receiverDiameter_m
    */
   double cached_Dr2;
-  struct Subray
-  {
-    Rotation rotation;
-    double angle_rad;
-    double share;      // Fraction of total emitted Gaussian power.
-    double areaFactor; // Patch area per squared axial range.
-    double rho;        // Dimensionless sample radius in Gaussian coordinates.
-    double innerRho;   // Inner boundary of the represented annulus.
-    double outerRho; // Outer boundary; last annulus ends at beamSamplingFactor.
-  };
+  using Subray = ::Subray;
 
 private:
   std::vector<Subray> subrays;
-  double sampledDivergenceX_rad = 0.0;
-  double sampledDivergenceY_rad = 0.0;
-  double sampledFactor = 0.0;
-  int sampledQuality = 0;
+  std::optional<BeamSamplingKey> sampledKey;
+  BeamSamplingKey samplingKey() const
+  {
+    return { { beamDivergenceX_rad, beamDivergenceY_rad },
+             { FWF_settings.beamSamplingMethod,
+               FWF_settings.beamSampleQuality,
+               FWF_settings.beamSamplingFactor } };
+  }
 
 public:
   /** Build only between pulse batches, before worker threads read the table. */

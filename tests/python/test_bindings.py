@@ -458,6 +458,7 @@ def test_fwf_settings_to_string():
         "atmosphericVisibility = 0.9\n"
         "scannerWaveLength = 1550\n"
         "pulseLength_ns = 4\n"
+        "beamSamplingMethod = annular\n"
         "beamSampleQuality = 3\n"
         "beamSamplingFactor = 2\n"
         "peakWindow_m = 0.149896\n"
@@ -1567,9 +1568,9 @@ def test_elliptical_subray_metadata():
     device.set_beam_divergences(0.0003, 0.001)
     rays = device.subrays
     assert len(rays) == 19
-    assert rays[0].rho == 0.0
-    assert rays[0].inner_rho == 0.0
-    assert rays[-1].outer_rho == 2.0
+    assert rays[0].cell.rho == 0.0
+    assert rays[0].cell.inner_rho == 0.0
+    assert rays[-1].cell.outer_rho == 2.0
     assert not hasattr(rays[0], "outer_angle_rad")
     assert sum(ray.share for ray in rays) == pytest.approx(1 - np.exp(-8))
     assert rays[1].share == rays[2].share
