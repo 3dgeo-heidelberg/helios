@@ -281,6 +281,15 @@ public:
       void, Scanner, setBeamDivergence, beamDivergence, idx);
   }
 
+  double getBeamRotation(size_t const idx) const override
+  {
+    PYBIND11_OVERLOAD_PURE(double, Scanner, getBeamRotation, idx);
+  }
+  void setBeamRotation(double radians, size_t idx) override
+  {
+    PYBIND11_OVERLOAD_PURE(void, Scanner, setBeamRotation, radians, idx);
+  }
+
   double getBeamDivergenceY(size_t const idx) const override
   {
     PYBIND11_OVERLOAD_PURE(double, Scanner, getBeamDivergenceY, idx);

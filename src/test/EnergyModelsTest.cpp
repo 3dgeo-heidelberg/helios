@@ -449,6 +449,9 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
   scanner.getFWFSettings(1).beamSamplingMethod = method;
   scanner.getFWFSettings(1).pulseShape = "gaussian";
   scanner.setPulseLength_ns(10.0, 1);
+  scanner.setBeamRotation(PI / 4, 1);
+  REQUIRE(scanner.getBeamRotation(0) == 0.0);
+  REQUIRE(scanner.getBeamRotation(1) == PI / 4);
   scanner.prepareSimulation();
   REQUIRE(scanner.getPulseModel(0).evaluate(-0.01) == 0);
   REQUIRE(scanner.getPulseModel(1).evaluate(-0.01) > 0);
@@ -545,6 +548,7 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
   scanner->getFWFSettings().beamSamplingMethod =
     GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
   scanner->setBeamDivergences(0.0003, GENERATE(0.0003, 0.001));
+  scanner->setBeamRotation(GENERATE(0.0, PI / 4, 3 * PI / 4));
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
   scanner->prepareSimulation();
@@ -1084,4 +1088,43 @@ TEST_CASE("Sampling method changes preserve table lifecycle", "[energy]")
   scanner->prepareSimulation();
   REQUIRE(scanner->getNumRays() == 19);
   REQUIRE(copy->getNumRays() == 25);
+}
+
+TEST_CASE("Beam rotation updates atomically and survives copies", "[energy]")
+{
+  auto scanner = energyScanner();
+  scanner->getFWFSettings().beamSamplingMethod =
+    GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
+  scanner->prepareSimulation();
+  auto& device = scanner->getScanningDevice(0);
+  auto const baseline = device.getSubrays();
+  scanner->setBeamRotation(PI / 2);
+  REQUIRE(device.isSubrayPatternCurrent());
+  REQUIRE(device.getBeamRotation() == PI / 2);
+  auto const* table = device.getSubrays().data();
+  scanner->setBeamRotation(5 * PI / 2);
+  REQUIRE(device.getSubrays().data() == table);
+  auto copy = scanner->clone();
+  REQUIRE(copy->getBeamRotation() == PI / 2);
+  REQUIRE(copy->getScanningDevice(0).isSubrayPatternCurrent());
+  for (double invalid : { std::numeric_limits<double>::infinity(),
+                          std::numeric_limits<double>::quiet_NaN() }) {
+    REQUIRE_THROWS_AS(scanner->setBeamRotation(invalid), std::invalid_argument);
+    REQUIRE(scanner->getBeamRotation() == PI / 2);
+    REQUIRE(device.getSubrays().data() == table);
+  }
+  auto& settings = scanner->getFWFSettings();
+  settings.beamSampleQuality = 0;
+  REQUIRE_THROWS_AS(scanner->setBeamRotation(PI), std::invalid_argument);
+  REQUIRE(scanner->getBeamRotation() == PI / 2);
+  settings.beamSampleQuality = 3;
+  REQUIRE(device.getSubrays().data() == table);
+  scanner->setBeamRotation(PI_2);
+  REQUIRE(scanner->getBeamRotation() == 0.);
+  REQUIRE(copy->getBeamRotation() == PI / 2);
+  for (std::size_t i = 0; i < baseline.size(); ++i) {
+    auto a = baseline[i].rotation;
+    auto b = device.getSubrays()[i].rotation;
+    REQUIRE(a.applyTo(Directions::forward) == b.applyTo(Directions::forward));
+  }
 }

@@ -26,7 +26,7 @@ HELIOS++ supports simulation of full waveform data by simulating a laser beam co
 Beam divergence
 ^^^^^^^^^^^^^^^
 
-The scanner XML attributes ``beamDivergenceX_rad`` and ``beamDivergenceY_rad`` define full-angle divergences at the Gaussian 1/e² intensity boundary. The axes are emitter-local right and up. HELIOS uses local forward as the propagation axis. Emitter orientation rotates the ellipse with the beam.
+The scanner XML attributes ``beamDivergenceX_rad`` and ``beamDivergenceY_rad`` define full-angle divergences at the Gaussian 1/e² intensity boundary. At zero beam rotation, the axes are emitter-local right and up. HELIOS uses local forward as the propagation axis. Emitter orientation rotates the ellipse with the beam.
 
 ``beamDivergence_rad`` remains circular shorthand. At each scanner or channel:
 
@@ -54,6 +54,37 @@ In Python, configure divergence before running a simulation::
    x = scanner.get_beam_divergence(index=1)  # legacy getter returns X
 
 Both divergences must be finite and strictly between zero and pi radians. Setters refresh the sampling geometry. Invalid updates preserve the previous beam. Each channel owns its own pair and sampling table.
+
+Beam footprint rotation
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Set ``beamRotation_deg`` on a scanner or channel to rotate the footprint and its Gaussian power distribution around local forward. The default is zero. Channels inherit the scanner value unless they override it::
+
+   <scanner ... beamDivergenceX_rad="0.0003" beamDivergenceY_rad="0.0006"
+                beamRotation_deg="45">
+     <channels>
+       <channel id="0" /> <!-- inherits 45 degrees -->
+       <channel id="1" beamRotation_deg="135" />
+     </channels>
+   </scanner>
+
+Positive rotation moves emitter-local right toward up: at 90 degrees the beam's X principal axis points up and its Y principal axis points left. Divergences always describe the principal axes. The rotation applies before the existing emitter-to-world transformation, for both sampling methods.
+
+In Python, bare numbers are radians and unit strings are also accepted::
+
+   scanner.beam_rotation = "45 deg"  # channel 0
+   scanner.set_beam_rotation("135 deg", index=1)
+   angle_rad = scanner.get_beam_rotation(index=1)
+
+C++ and low-level Python use radians. All interfaces accept finite angles, wrap complete turns, and return an angle in :math:`[0,2\pi)` radians. Thus 360 degrees becomes zero and -45 degrees becomes 315 degrees. NaN and infinity are rejected. Configure rotation before running a survey. Setters refresh the sampling table and preserve the previous state on failure.
+
+Each ray carries its existing cell power share and area to the rotated position. Ray ordering, polar angles, and total captured power are preserved. ``ray.cell`` coordinates stay in the unrotated principal-axis frame. For a Cartesian cell, map its normalized coordinates to physical slopes using :math:`s_x=\tan(\beta_x/2)u` and :math:`s_y=\tan(\beta_y/2)v`, then apply
+
+.. math::
+   s_x'=s_x\cos\alpha-s_y\sin\alpha,\qquad
+   s_y'=s_x\sin\alpha+s_y\cos\alpha.
+
+A circular Gaussian has the same continuous power distribution under rotation, but its discrete rays can move. Some annular rings have odd ray counts, so a half turn does not necessarily reproduce the same ray positions. Rotation therefore retains the full 360-degree range.
 
 Subray quantification
 ^^^^^^^^^^^^^^^^^^^^^
@@ -244,7 +275,7 @@ At each range sample :math:`x_k`, HELIOS++ directly evaluates
 
 For gamma, automatic bounds extend from the nearest return to the furthest return plus the falling-flank tolerance crossing. For Gaussian, the pulse-relative bounds are :math:`\mu_r\pm\sigma_r\sqrt{-2\ln\epsilon}`. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
 
-The grid is anchored at range zero; automatic bounds round outwards to grid points. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
+The grid is anchored at range zero. Automatic bounds round outwards to grid points. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
 
 
 .. figure:: img/onevpeak.png
@@ -276,9 +307,9 @@ Python uses ``sample_spacing``, ``peak_window``, ``max_recording_span``,
        recording_tail_tolerance=1e-4,
    )
 
-Old XML ``binSize_ns``, ``winSize_ns``, and ``maxFullwaveRange_ns`` inputs and Python constructor ``bin_size``, ``win_size``, and ``max_fullwave_range`` inputs are deprecated. They convert to metres using :math:`c/2`; specifying both names for one setting is an error. Old YAML documents migrate to these settings and new serialization writes only the range fields.
+Old XML ``binSize_ns``, ``winSize_ns``, and ``maxFullwaveRange_ns`` inputs and Python constructor ``bin_size``, ``win_size``, and ``max_fullwave_range`` inputs are deprecated. They convert to metres using :math:`c/2`. Specifying both names for one setting is an error. Old YAML documents migrate to these settings and new serialization writes only the range fields.
 
-The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and peak offset), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples; its unit naming is not changed in this refactor.
+The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and peak offset), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples. Its unit naming is not changed in this refactor.
 
 
 Sampled pulse shapes in Python and YAML
@@ -295,7 +326,7 @@ Custom pulses are supplied as relative time coordinates and nonnegative amplitud
    )
    survey.to_yaml("survey.yaml", shallow=True)
 
-Bare numeric offsets and ``peak_offset`` use seconds in the high-level Python API. Coordinates must be finite and strictly increasing; nonuniform spacing is supported. At least two samples are required. Amplitudes must be finite, nonnegative, and have a positive maximum. They are normalized to unit peak, leaving absolute peak power under the scanner's amplitude setting.
+Bare numeric offsets and ``peak_offset`` use seconds in the high-level Python API. Coordinates must be finite and strictly increasing. Nonuniform spacing is supported. At least two samples are required. Amplitudes must be finite, nonnegative, and have a positive maximum. They are normalized to unit peak, leaving absolute peak power under the scanner's amplitude setting.
 
 Evaluation uses linear interpolation between supplied samples and zero outside the supplied interval, retaining the endpoint values themselves. The full interval sets the recording bounds. ``recording_tail_tolerance`` and scanner pulse length do not truncate or stretch sampled shapes. Internal ``sample_spacing`` remains independent of the supplied sampling density, but interpolation cannot recover features absent from the input samples.
 

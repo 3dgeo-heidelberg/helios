@@ -2,6 +2,7 @@
 
 #include <scanner/Scanner.h>
 #include <scanner/ScanningDevice.h>
+#include <stdexcept>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -261,6 +262,18 @@ public:
   void setBeamDivergence(double const beamDivergence, size_t const idx) override
   {
     scanDev.setBeamDivergence(beamDivergence);
+  }
+  double getBeamRotation(size_t const idx = 0) const override
+  {
+    if (idx != 0)
+      throw std::out_of_range("Scanner channel index out of range");
+    return scanDev.getBeamRotation();
+  }
+  void setBeamRotation(double radians, size_t const idx = 0) override
+  {
+    if (idx != 0)
+      throw std::out_of_range("Scanner channel index out of range");
+    scanDev.setBeamRotation(radians);
   }
   double getBeamDivergenceY(size_t const idx = 0) const override
   {

@@ -15,10 +15,15 @@ toString(BeamSamplingMethod method);
 BeamSamplingMethod
 parseBeamSamplingMethod(std::string const& value);
 
+/** Normalize a finite beam rotation to [0, 2*pi), including positive zero. */
+double
+normalizeBeamRotation(double radians);
+
 struct BeamGeometry
 {
   double divergenceX_rad; // Full divergence angles.
   double divergenceY_rad;
+  double rotation_rad = 0.0; // Positive rotation moves local right toward up.
 };
 
 struct BeamSamplingSettings
@@ -39,12 +44,14 @@ struct BeamSamplingKey
      */
     return beam.divergenceX_rad == other.beam.divergenceX_rad &&
            beam.divergenceY_rad == other.beam.divergenceY_rad &&
+           beam.rotation_rad == other.beam.rotation_rad &&
            settings.method == other.settings.method &&
            settings.quality == other.settings.quality &&
            settings.cutoff == other.settings.cutoff;
   }
 };
 
+// Cell metadata stays in the unrotated principal-axis coordinate system.
 struct AnnularCell
 {
   double rho;

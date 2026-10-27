@@ -826,3 +826,94 @@ def test_elliptical_channel_inheritance(tmp_path, override, expected):
     assert scanner.beam_divergence_y == expected[1]
     assert scanner.get_beam_divergence_x(1) == 0.001
     assert scanner.get_beam_divergence_y(1) == 0.002
+
+
+@pytest.mark.parametrize("factory", [riegl_vz_400, riegl_vq_1560i])
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (np.pi / 4, np.pi / 4),
+        ("90 deg", np.pi / 2),
+        ("-45 deg", 7 * np.pi / 4),
+        ("450 deg", np.pi / 2),
+        ("360 deg", 0.0),
+    ],
+)
+def test_beam_rotation_units_channels_and_copies(factory, value, expected):
+    scanner = factory()
+    assert scanner.beam_rotation == 0.0
+    scanner.beam_rotation = value
+    assert scanner.beam_rotation == pytest.approx(expected)
+    copied = scanner.clone()
+    assert copied.beam_rotation == pytest.approx(expected)
+    scanner._cpp_object.apply_settings(ScannerSettings()._cpp_object, 0)
+    assert scanner.beam_rotation == pytest.approx(expected)
+    if scanner._cpp_object.num_devices > 1:
+        assert scanner.get_beam_rotation(1) == 0.0
+        scanner.set_beam_rotation("135 deg", index=1)
+        assert scanner.get_beam_rotation(1) == pytest.approx(3 * np.pi / 4)
+        assert scanner.beam_rotation == pytest.approx(expected)
+    scanner.beam_rotation = 0
+    assert copied.beam_rotation == pytest.approx(expected)
+    for index in (-1, scanner._cpp_object.num_devices):
+        with pytest.raises(IndexError):
+            scanner.get_beam_rotation(index)
+        with pytest.raises(IndexError):
+            scanner.set_beam_rotation(0, index)
+        with pytest.raises((IndexError, TypeError)):
+            scanner._cpp_object.get_beam_rotation(index)
+        with pytest.raises((IndexError, TypeError)):
+            scanner._cpp_object.set_beam_rotation(0, index)
+
+
+@pytest.mark.parametrize("invalid", [np.inf, -np.inf, np.nan])
+def test_beam_rotation_rejects_nonfinite_values(invalid):
+    scanner = riegl_vz_400()
+    scanner.beam_rotation = "45 deg"
+    with pytest.raises(ValueError, match="finite"):
+        scanner.beam_rotation = invalid
+    assert scanner.beam_rotation == pytest.approx(np.pi / 4)
+
+
+def test_beam_rotation_xml_inheritance_and_override(tmp_path):
+    tree, element, path = _amplitude_xml(tmp_path)
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, "riegl_vq-1560i")
+    assert scanner.get_beam_rotation(0) == scanner.get_beam_rotation(1) == 0
+    element.set("beamRotation_deg", "45")
+    element.find("channels/channel").set("beamRotation_deg", "135")
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, "riegl_vq-1560i")
+    assert scanner.get_beam_rotation(0) == pytest.approx(3 * np.pi / 4)
+    assert scanner.get_beam_rotation(1) == pytest.approx(np.pi / 4)
+
+
+@pytest.mark.parametrize("degrees", [0.0, 45.0, 360.0, -45.0, 450.0, 1e308])
+def test_single_scanner_xml_beam_rotation(tmp_path, degrees):
+    from pathlib import Path
+    from xml.etree import ElementTree
+
+    source = Path(scanner_module.__file__).parent / "data/scanners_tls.xml"
+    tree = ElementTree.parse(source)
+    element = tree.getroot().find("scanner")
+    element.set("beamRotation_deg", str(degrees))
+    path = tmp_path / "rotation.xml"
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    scanner = Scanner.from_xml(path, element.get("id"))
+    assert scanner.beam_rotation == pytest.approx(np.deg2rad(degrees % 360))
+
+
+@pytest.mark.parametrize("channel", [False, True])
+@pytest.mark.parametrize("invalid", ["nan", "inf", "-inf"])
+def test_beam_rotation_xml_rejects_nonfinite_values(tmp_path, channel, invalid):
+    import _helios
+    from helios.utils import get_asset_directories
+
+    tree, element, path = _amplitude_xml(tmp_path)
+    node = element.find("channels/channel") if channel else element
+    node.set("beamRotation_deg", invalid)
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    with pytest.raises((ValueError, _helios.HeliosException), match="finite"):
+        _helios.read_scanner_from_xml(
+            str(path), [str(p) for p in get_asset_directories()], "riegl_vq-1560i"
+        )

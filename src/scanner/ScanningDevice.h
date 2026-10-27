@@ -70,7 +70,7 @@ protected:
    */
   Rotation headRelativeEmitterAttitude = Rotation(Directions::right, 0);
   /**
-   * @brief Full 1/e^2 divergences along emitter-local right (X) and up (Y).
+   * @brief Full 1/e^2 divergences along the beam principal axes (X and Y).
    */
   double beamDivergenceX_rad = 0;
   double beamDivergenceY_rad = 0;
@@ -204,11 +204,12 @@ public:
   using Subray = ::Subray;
 
 private:
+  double beamRotation_rad = 0.0;
   std::vector<Subray> subrays;
   std::optional<BeamSamplingKey> sampledKey;
   BeamSamplingKey samplingKey() const
   {
-    return { { beamDivergenceX_rad, beamDivergenceY_rad },
+    return { { beamDivergenceX_rad, beamDivergenceY_rad, beamRotation_rad },
              { FWF_settings.beamSamplingMethod,
                FWF_settings.beamSampleQuality,
                FWF_settings.beamSamplingFactor } };
@@ -265,7 +266,13 @@ public:
    * @throws std::invalid_argument If the beam or sampling cone is invalid.
    */
   void setBeamDivergence(double divergence_rad);
-  /** Full 1/e^2 divergences along emitter-local right and up. */
+  /** Beam rotation in [0, 2*pi), positive from local right toward up. */
+  double getBeamRotation() const { return beamRotation_rad; }
+  /** Set before tracing; refresh the table atomically, accepting finite
+   * radians. */
+  void setBeamRotation(double radians);
+
+  /** Full 1/e^2 divergences along the beam principal axes. */
   double getBeamDivergenceX() const { return beamDivergenceX_rad; }
   double getBeamDivergenceY() const { return beamDivergenceY_rad; }
   void setBeamDivergenceX(double value)

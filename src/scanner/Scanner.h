@@ -661,6 +661,12 @@ public:
   {
     return getBeamDivergence(idx);
   }
+  /** Beam footprint rotation in radians, positive from local right toward up.
+   */
+  virtual double getBeamRotation(size_t idx = 0) const = 0;
+  /** Normalize and refresh the selected device's table before tracing. */
+  virtual void setBeamRotation(double radians, size_t idx = 0) = 0;
+
   virtual double getBeamDivergenceY(size_t idx = 0) const = 0;
   virtual void setBeamDivergences(double x, double y, size_t idx = 0) = 0;
   void setBeamDivergenceX(double value, size_t idx = 0)
