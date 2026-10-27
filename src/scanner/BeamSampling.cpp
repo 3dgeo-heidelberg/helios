@@ -46,7 +46,28 @@ BeamSamplingSettings::validate() const
     throw std::invalid_argument("beamSamplingFactor must be finite and > 0");
 }
 
+double
+normalizeBeamRotation(double radians)
+{
+  if (!std::isfinite(radians))
+    throw std::invalid_argument("Beam rotation must be finite");
+
+  /* Wrap complete turns while preserving all discrete pattern orientations. */
+  double angle = std::fmod(radians, PI_2);
+  if (angle < 0.0)
+    angle += PI_2;
+
+  // Adding a tiny negative remainder to 2*pi may round up to a full turn.
+  return angle == 0.0 || angle == PI_2 ? 0.0 : angle;
+}
+
 namespace {
+struct TransverseBasis
+{
+  glm::dvec3 right = Directions::right;
+  glm::dvec3 up = Directions::up;
+};
+
 // Integral of a normalized one-dimensional Gaussian. Avoid subtracting
 // two erf values rounded to one in the tails.
 double
@@ -67,7 +88,11 @@ gaussianShare(double lo, double hi)
 }
 
 std::vector<Subray>
-makeCartesianPattern(int quality, double cutoff, double tx, double ty)
+makeCartesianPattern(int quality,
+                     double cutoff,
+                     double tx,
+                     double ty,
+                     TransverseBasis const& basis)
 {
   /* An odd number of cells per axis preserves a central ray. Check counts
    * before allocating the quadratic subray table. */
@@ -125,7 +150,7 @@ makeCartesianPattern(int quality, double cutoff, double tx, double ty)
     for (auto const& x : intervals) {
       double const sx = tx * x.mid, sy = ty * y.mid;
       auto const direction =
-        Directions::forward + sx * Directions::right + sy * Directions::up;
+        Directions::forward + sx * basis.right + sy * basis.up;
       Rotation const rotation = x.mid == 0.0 && y.mid == 0.0
                                   ? Rotation()
                                   : Rotation(Directions::forward, direction);
@@ -144,7 +169,11 @@ makeCartesianPattern(int quality, double cutoff, double tx, double ty)
 }
 
 std::vector<Subray>
-makePolarPattern(int quality, double rhoMax, double tangentX, double tangentY)
+makePolarPattern(int quality,
+                 double rhoMax,
+                 double tangentX,
+                 double tangentY,
+                 TransverseBasis const& basis)
 {
   /* Build adjacent annuli outward from the central ray. */
   std::vector<Subray> generated;
@@ -182,7 +211,7 @@ makePolarPattern(int quality, double rhoMax, double tangentX, double tangentY)
       double const v = rho * tangentY * std::cos(phase);
       double const angle = std::atan2(std::hypot(u, v), 1.0);
       glm::dvec3 const direction =
-        Directions::forward + u * Directions::right + v * Directions::up;
+        Directions::forward + u * basis.right + v * basis.up;
       Rotation const rotation =
         ring == 0 ? Rotation() : Rotation(Directions::forward, direction);
 
@@ -207,6 +236,7 @@ makeSubrayPattern(BeamGeometry const& beam,
                   BeamSamplingSettings const& settings)
 {
   settings.validate();
+  double const rotation = normalizeBeamRotation(beam.rotation_rad);
 
   /* Validate beamDivergence */
   for (double divergence : { beam.divergenceX_rad, beam.divergenceY_rad }) {
@@ -228,8 +258,19 @@ makeSubrayPattern(BeamGeometry const& beam,
       throw std::invalid_argument("Sampling cone is not representable");
   }
 
-  if (settings.method == BeamSamplingMethod::Cartesian)
-    return makeCartesianPattern(quality, settings.cutoff, tangentX, tangentY);
+  /* Rotate physical slopes after scaling by the principal-axis divergences.
+   * Keep the original basis for zero rotation to preserve existing results. */
+  TransverseBasis basis;
+  if (rotation != 0.0) {
+    double const cosine = std::cos(rotation);
+    double const sine = std::sin(rotation);
+    basis.right = cosine * Directions::right + sine * Directions::up;
+    basis.up = -sine * Directions::right + cosine * Directions::up;
+  }
 
-  return makePolarPattern(quality, settings.cutoff, tangentX, tangentY);
+  if (settings.method == BeamSamplingMethod::Cartesian)
+    return makeCartesianPattern(
+      quality, settings.cutoff, tangentX, tangentY, basis);
+
+  return makePolarPattern(quality, settings.cutoff, tangentX, tangentY, basis);
 }

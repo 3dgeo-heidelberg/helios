@@ -57,6 +57,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
   this->beamDivergenceX_rad = scdev.beamDivergenceX_rad;
   this->beamDivergenceY_rad = scdev.beamDivergenceY_rad;
+  this->beamRotation_rad = scdev.beamRotation_rad;
   this->pulseLength_ns = scdev.pulseLength_ns;
   this->pulseAmplitude_W = scdev.pulseAmplitude_W;
   this->efficiency = scdev.efficiency;
@@ -131,6 +132,20 @@ ScanningDevice::buildSubrayPattern()
   subrays = std::move(generated);
   numRays = subrays.size();
   sampledKey = key;
+}
+
+void
+ScanningDevice::setBeamRotation(double radians)
+{
+  double const normalized = normalizeBeamRotation(radians);
+  double const previous = beamRotation_rad;
+  beamRotation_rad = normalized;
+  try {
+    buildSubrayPattern();
+  } catch (...) {
+    beamRotation_rad = previous;
+    throw;
+  }
 }
 
 void

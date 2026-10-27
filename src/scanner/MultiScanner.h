@@ -272,6 +272,14 @@ public:
   {
     scanDevs.at(idx).setBeamDivergence(beamDivergence);
   }
+  double getBeamRotation(size_t const idx = 0) const override
+  {
+    return scanDevs.at(idx).getBeamRotation();
+  }
+  void setBeamRotation(double radians, size_t const idx = 0) override
+  {
+    scanDevs.at(idx).setBeamRotation(radians);
+  }
   double getBeamDivergenceY(size_t const idx = 0) const override
   {
     return scanDevs.at(idx).getBeamDivergenceY();
