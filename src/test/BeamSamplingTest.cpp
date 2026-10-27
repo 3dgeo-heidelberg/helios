@@ -143,3 +143,127 @@ TEST_CASE("Sampling method names round trip", "[beam]")
                     std::invalid_argument);
   REQUIRE_THROWS_AS(parseBeamSamplingMethod(""), std::invalid_argument);
 }
+
+TEST_CASE("Beam rotation carries geometry and Gaussian cell power together",
+          "[beam]")
+{
+  auto const method =
+    GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
+  double const dy = GENERATE(0.0003, 0.001);
+  double const pi = std::acos(-1.0);
+  double const angle = GENERATE(0., 45., 90., 135., 180., 360.) * pi / 180.;
+  BeamSamplingSettings const settings{ method, 5, 2.0 };
+  auto const original = makeSubrayPattern({ 0.0003, dy }, settings);
+  auto const rotated = makeSubrayPattern({ 0.0003, dy, angle }, settings);
+  REQUIRE(rotated.size() == original.size());
+
+  // HELIOS positive roll goes from right toward down, so negate the angle.
+  Rotation expectedRotation(Directions::forward, -angle);
+  double xx = 0., xy = 0., yy = 0.;
+  double rotatedXX = 0., rotatedXY = 0., rotatedYY = 0.;
+  for (std::size_t i = 0; i < original.size(); ++i) {
+    auto before = original[i].rotation;
+    auto after = rotated[i].rotation;
+    auto const d = before.applyTo(Directions::forward);
+    auto const r = after.applyTo(Directions::forward);
+    auto const expected = expectedRotation.applyTo(d);
+    REQUIRE(r.x == Catch::Approx(expected.x).margin(1e-14));
+    REQUIRE(r.y == Catch::Approx(expected.y).margin(1e-14));
+    REQUIRE(r.z == Catch::Approx(expected.z).margin(1e-14));
+    REQUIRE(rotated[i].share == original[i].share);
+    REQUIRE(rotated[i].areaFactor == original[i].areaFactor);
+    REQUIRE(rotated[i].angle_rad == original[i].angle_rad);
+    if (method == BeamSamplingMethod::Annular) {
+      auto const& a = std::get<AnnularCell>(original[i].cell);
+      auto const& b = std::get<AnnularCell>(rotated[i].cell);
+      REQUIRE(a.rho == b.rho);
+      REQUIRE(a.innerRho == b.innerRho);
+      REQUIRE(a.outerRho == b.outerRho);
+    } else {
+      auto const& a = std::get<CartesianCell>(original[i].cell);
+      auto const& b = std::get<CartesianCell>(rotated[i].cell);
+      REQUIRE(a.u == b.u);
+      REQUIRE(a.v == b.v);
+      REQUIRE(a.uMin == b.uMin);
+      REQUIRE(a.uMax == b.uMax);
+      REQUIRE(a.vMin == b.vMin);
+      REQUIRE(a.vMax == b.vMax);
+    }
+    if (original[i].angle_rad == 0.) {
+      REQUIRE(r.x == 0.);
+      REQUIRE(r.y == 1.);
+      REQUIRE(r.z == 0.);
+    }
+    double const weight = original[i].share;
+    xx += weight * d.x * d.x / (d.y * d.y);
+    xy += weight * d.x * d.z / (d.y * d.y);
+    yy += weight * d.z * d.z / (d.y * d.y);
+    rotatedXX += weight * r.x * r.x / (r.y * r.y);
+    rotatedXY += weight * r.x * r.z / (r.y * r.y);
+    rotatedYY += weight * r.z * r.z / (r.y * r.y);
+  }
+
+  // The weighted footprint tensor must transform as R M R^T.
+  double const c = std::cos(angle), s = std::sin(angle);
+  REQUIRE(
+    rotatedXX ==
+    Catch::Approx(c * c * xx - 2 * c * s * xy + s * s * yy).margin(1e-20));
+  REQUIRE(
+    rotatedXY ==
+    Catch::Approx(c * s * (xx - yy) + (c * c - s * s) * xy).margin(1e-20));
+  REQUIRE(
+    rotatedYY ==
+    Catch::Approx(s * s * xx + 2 * c * s * xy + c * c * yy).margin(1e-20));
+}
+
+TEST_CASE("Beam rotation wraps full turns and rejects nonfinite input",
+          "[beam]")
+{
+  double const pi = std::acos(-1.0);
+  REQUIRE(normalizeBeamRotation(-pi / 2) == Catch::Approx(3 * pi / 2));
+  REQUIRE(normalizeBeamRotation(5 * pi / 2) == Catch::Approx(pi / 2));
+  for (double angle : { 0., -0., 2 * pi, -2 * pi, 4 * pi }) {
+    REQUIRE(normalizeBeamRotation(angle) == 0.);
+    REQUIRE_FALSE(std::signbit(normalizeBeamRotation(angle)));
+  }
+  for (double angle : { std::numeric_limits<double>::max(),
+                        -std::numeric_limits<double>::max(),
+                        -std::numeric_limits<double>::denorm_min() }) {
+    REQUIRE(normalizeBeamRotation(angle) >= 0.);
+    REQUIRE(normalizeBeamRotation(angle) < 2 * pi);
+  }
+  for (auto method :
+       { BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian }) {
+    BeamSamplingSettings const settings{ method, 3, 2.0 };
+    auto const baseline = makeSubrayPattern({ 0.0003, 0.001 }, settings);
+    auto const fullTurn =
+      makeSubrayPattern({ 0.0003, 0.001, 2 * pi }, settings);
+    for (std::size_t i = 0; i < baseline.size(); ++i) {
+      auto a = baseline[i].rotation;
+      auto b = fullTurn[i].rotation;
+      REQUIRE(a.applyTo(Directions::forward) == b.applyTo(Directions::forward));
+    }
+    for (double invalid : { std::numeric_limits<double>::infinity(),
+                            -std::numeric_limits<double>::infinity(),
+                            std::numeric_limits<double>::quiet_NaN() }) {
+      REQUIRE_THROWS_AS(normalizeBeamRotation(invalid), std::invalid_argument);
+      REQUIRE_THROWS_AS(makeSubrayPattern({ 0.0003, 0.001, invalid }, settings),
+                        std::invalid_argument);
+    }
+  }
+}
+
+TEST_CASE("Half turns retain distinct odd annular ray populations", "[beam]")
+{
+  BeamSamplingSettings const settings{ BeamSamplingMethod::Annular, 5, 2.0 };
+  auto const baseline = makeSubrayPattern({ 0.2, 0.4 }, settings);
+  auto const halfTurn =
+    makeSubrayPattern({ 0.2, 0.4, std::acos(-1.0) }, settings);
+  // The outer ring has 25 rays; a half turn must not collapse to zero rotation.
+  auto rotation = halfTurn.back().rotation;
+  auto const rotatedDirection = rotation.applyTo(Directions::forward);
+  for (auto ray : baseline) {
+    auto const direction = ray.rotation.applyTo(Directions::forward);
+    REQUIRE(glm::length(direction - rotatedDirection) > 1e-8);
+  }
+}

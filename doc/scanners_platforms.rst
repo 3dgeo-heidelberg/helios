@@ -51,7 +51,8 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
 
 **Emitter**:
 
-* ``beamDivergenceX_rad`` / ``beamDivergenceY_rad``: Full-angle divergences at the :math:`1/e^2` intensity boundary along emitter-local right/up, in radians. A lone axis value sets both axes. No values inherit the parent pair, with a root default of 0.0003 rad on both axes. Existing emitter orientation rotates the ellipse. See :doc:`intensity_fwf` for sampling and channel examples.
+* ``beamDivergenceX_rad`` / ``beamDivergenceY_rad``: Full-angle divergences at the :math:`1/e^2` intensity boundary along the beam principal axes, in radians (emitter-local right/up at zero beam rotation). A lone axis value sets both axes. No values inherit the parent pair, with a root default of 0.0003 rad on both axes. Existing emitter orientation rotates the ellipse. See :doc:`intensity_fwf` for sampling and channel examples.
+* ``beamRotation_deg``: Optional footprint rotation about local forward, default 0 degrees. Positive angles rotate local right toward up. Channels inherit the scanner value unless overridden. Finite angles wrap modulo 360 degrees.
 * ``beamDivergence_rad``: Circular shorthand. When combined with explicit axes, the scalar sets both defaults and explicit axes override them.
 
   If a technical specification provides the beam divergence at the :math:`1/e` power points or at 50% peak intensity (i.e., Full Width at Half Maximum, FWHM), it must be converted to the :math:`1/e^2` reference using the following relationships:
@@ -67,7 +68,7 @@ Then there are parameters for the the emittor, the deflector, the detector, the 
 * ``pulseFreqs_Hz``: List of supported pulse frequency or frequencies [Hz].
 * ``pulseLength_ns``: Laser pulse length/duration [ns] (default: 4.0).
 * ``wavelength_nm``: Wavelength [nm] (default: 1064).
-* ``pulseAmplitude_W``: Effective peak optical power of the entire emitted beam before footprint truncation [W] (default: 1.0, a reference amplitude). Supply or calibrate this value for the operating conditions; it is not inferred from average power or pulse frequency. Subrays receive fractions of this power, so their number does not change the total. Channels inherit the scanner value unless overridden. Values must be finite and nonnegative; zero produces no detected returns. See :ref:`pulse_amplitude` for migration.
+* ``pulseAmplitude_W``: Effective peak optical power of the entire emitted beam before footprint truncation [W] (default: 1.0, a reference amplitude). Supply or calibrate this value for the operating conditions. It is not inferred from average power or pulse frequency. Subrays receive fractions of this power, so their number does not change the total. Channels inherit the scanner value unless overridden. Values must be finite and nonnegative. Zero produces no detected returns. See :ref:`pulse_amplitude` for migration.
 
 **Deflector**:
 

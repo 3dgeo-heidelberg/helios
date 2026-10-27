@@ -1841,6 +1841,9 @@ PYBIND11_MODULE(_helios, m)
                   double,
                   double>())
 
+    .def_property("beam_rotation",
+                  &ScanningDevice::getBeamRotation,
+                  &ScanningDevice::setBeamRotation)
     .def_property("beam_divergence_x",
                   &ScanningDevice::getBeamDivergenceX,
                   &ScanningDevice::setBeamDivergenceX)
@@ -2046,6 +2049,15 @@ PYBIND11_MODULE(_helios, m)
          py::overload_cast<bool, size_t>(&Scanner::setLastPulseWasHit),
          py::arg("value"),
          py::arg("index"))
+    .def("get_beam_rotation", &Scanner::getBeamRotation, py::arg("index") = 0)
+    .def("set_beam_rotation",
+         &Scanner::setBeamRotation,
+         py::arg("value"),
+         py::arg("index") = 0)
+    .def_property(
+      "beam_rotation",
+      [](Scanner const& s) { return s.getBeamRotation(); },
+      [](Scanner& s, double value) { s.setBeamRotation(value); })
     .def("get_beam_divergence_x",
          &Scanner::getBeamDivergenceX,
          py::arg("index") = 0)

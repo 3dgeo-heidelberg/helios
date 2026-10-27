@@ -194,3 +194,27 @@ def test_sampling_method_switch_and_typed_metadata(energy_device):
     energy_device.prepare_simulation()
     assert [r.share for r in energy_device.subrays] == [r.share for r in annular]
     assert len(copied.subrays) == 25
+
+
+@pytest.mark.parametrize("method", ["annular", "cartesian"])
+def test_device_beam_rotation_preserves_power_and_area(energy_device, method):
+    settings = _helios.FWFSettings()
+    settings.beam_sampling_method = method
+    energy_device.fwf_settings = settings
+    energy_device.set_beam_divergences(0.0003, 0.001)
+    baseline = energy_device.subrays
+    model = energy_device.energy_model
+    power = [model.compute_emitted_power(i) for i in range(len(baseline))]
+    area = [model.compute_target_area(100, i) for i in range(len(baseline))]
+    energy_device.beam_rotation = math.pi / 2
+    for i, (before, after) in enumerate(zip(baseline, energy_device.subrays)):
+        assert after.share == before.share
+        assert after.angle_rad == before.angle_rad
+        assert after.area_factor == before.area_factor
+        assert model.compute_emitted_power(i) == power[i]
+        assert model.compute_target_area(100, i) == area[i]
+    copied = _helios.ScanningDevice(energy_device)
+    assert copied.beam_rotation == math.pi / 2
+    energy_device.beam_rotation = 2 * math.pi
+    assert energy_device.beam_rotation == 0
+    assert copied.beam_rotation == math.pi / 2

@@ -48,6 +48,22 @@ namespace fs = std::filesystem;
 #include "TimeWatcher.h"
 
 namespace {
+double
+readBeamRotation(tinyxml2::XMLElement* node, double inheritedRadians)
+{
+  if (!XmlUtils::hasAttribute(node, "beamRotation_deg"))
+    return inheritedRadians;
+
+  double const degrees =
+    XmlUtils::getAttributeCast<double>(node, "beamRotation_deg", 0.0);
+  if (!std::isfinite(degrees))
+    throw std::invalid_argument("beamRotation_deg must be finite");
+
+  /* Reduce before conversion so even large finite degree values are safe. */
+  return normalizeBeamRotation(
+    MathConverter::degreesToRadians(std::fmod(degrees, 360.0)));
+}
+
 // A node specifies a complete pair; an absent node-level setting inherits.
 std::pair<double, double>
 readBeamDivergences(tinyxml2::XMLElement* node,
@@ -858,6 +874,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   // ########### BEGIN Read all the rest #############
   auto const divergences = readBeamDivergences(scannerNode, 0.0003, 0.0003);
   double const beamDiv_rad = divergences.first;
+  double const beamRotation_rad = readBeamRotation(scannerNode, 0.0);
   double pulseLength_ns =
     XmlUtils::getAttributeCast<double>(scannerNode, "pulseLength_ns", 4.0);
   std::string id = XmlUtils::getAttributeCast<std::string>(
@@ -904,6 +921,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                wavelength * 1e-9,
                                rangeErrExpr);
     baseScanDev.setBeamDivergences(divergences.first, divergences.second);
+    baseScanDev.setBeamRotation(beamRotation_rad);
     baseScanDev.setReceivedEnergyMin(XmlUtils::getAttributeCast<double>(
       scannerNode, "receivedEnergyMin_W", 0.0001));
     std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
@@ -938,6 +956,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               false,
                                               rangeErrExpr);
     scanner->setBeamDivergences(divergences.first, divergences.second);
+    scanner->setBeamRotation(beamRotation_rad);
     // Parse max number of returns per pulse
     scanner->setMaxNOR(
       XmlUtils::getAttributeCast<int>(scannerNode, "maxNOR", 0));
@@ -1662,6 +1681,8 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
     auto const divergences = readBeamDivergences(
       chan, scanner->getBeamDivergenceX(idx), scanner->getBeamDivergenceY(idx));
     scanner->setBeamDivergences(divergences.first, divergences.second, idx);
+    scanner->setBeamRotation(
+      readBeamRotation(chan, scanner->getBeamRotation(idx)), idx);
     scanner->setPulseLength_ns(XmlUtils::getAttributeCast<double>(
       chan, "pulseLength_ns", scanner->getPulseLength_ns(idx)));
     if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
