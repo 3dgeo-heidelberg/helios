@@ -658,6 +658,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     parent.attrib.update(
         {
             "pulseShape": "gamma",
+            "beamSamplingMethod": "cartesian",
             "sampleSpacing_m": "0.02",
             "peakWindow_m": "0.1",
             "recordingTailTolerance": "0.00001",
@@ -670,6 +671,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
         "FWFSettings",
         {
             "pulseShape": "gaussian",
+            "beamSamplingMethod": "annular",
             "gaussianMean_ns": "3",
             "correctPeakOffset": "false",
             "binSize_ns": "0.25",
@@ -680,6 +682,8 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     scanner = Scanner.from_xml(path, "riegl_vq-1560i")._cpp_object
     first = scanner.get_fwf_settings(0)
     second = scanner.get_fwf_settings(1)
+    assert first.beam_sampling_method == "annular"
+    assert second.beam_sampling_method == "cartesian"
     assert first.pulse_shape == "gaussian"
     assert first.gaussian_mean == pytest.approx(3e-9)
     assert second.gaussian_mean == pytest.approx(-2e-9)

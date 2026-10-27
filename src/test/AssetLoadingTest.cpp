@@ -114,13 +114,26 @@ TEST_CASE("Asset Loading Tests")
             2.0);
     tinyxml2::XMLDocument document;
     REQUIRE(
-      document.Parse(
-        "<FWFSettings beamSamplingFactor='1.5' beamSampleQuality='8'/>") ==
+      document.Parse("<FWFSettings beamSamplingMethod='cartesian' "
+                     "beamSamplingFactor='1.5' beamSampleQuality='8'/>") ==
       tinyxml2::XML_SUCCESS);
     auto node = document.RootElement();
     auto settings = loader.createFWFSettingsFromXml(node);
     REQUIRE(settings->beamSamplingFactor == 1.5);
     REQUIRE(settings->beamSampleQuality == 8);
+    REQUIRE(settings->beamSamplingMethod == BeamSamplingMethod::Cartesian);
+    REQUIRE(loader.createFWFSettingsFromXml(nullptr)->beamSamplingMethod ==
+            BeamSamplingMethod::Annular);
+    node->DeleteAttribute("beamSamplingMethod");
+    REQUIRE(
+      loader.createFWFSettingsFromXml(node, settings)->beamSamplingMethod ==
+      BeamSamplingMethod::Cartesian);
+    node->SetAttribute("beamSamplingMethod", "invalid");
+    REQUIRE_THROWS_AS(loader.createFWFSettingsFromXml(node),
+                      std::invalid_argument);
+    node->SetAttribute("beamSamplingMethod", "annular");
+    REQUIRE(loader.createFWFSettingsFromXml(node)->beamSamplingMethod ==
+            BeamSamplingMethod::Annular);
     node->DeleteAttribute("beamSamplingFactor");
     REQUIRE(
       loader.createFWFSettingsFromXml(node, settings)->beamSamplingFactor ==

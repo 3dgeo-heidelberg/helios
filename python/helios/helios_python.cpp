@@ -896,6 +896,12 @@ PYBIND11_MODULE(_helios, m)
                    &FWFSettings::atmosphericVisibility)
     .def_readwrite("scanner_wave_length", &FWFSettings::scannerWaveLength)
     .def_readwrite("pulse_length", &FWFSettings::pulseLength_ns)
+    .def_property(
+      "beam_sampling_method",
+      [](FWFSettings const& s) { return toString(s.beamSamplingMethod); },
+      [](FWFSettings& s, std::string const& value) {
+        s.beamSamplingMethod = parseBeamSamplingMethod(value);
+      })
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
     .def_readwrite("beam_sampling_factor", &FWFSettings::beamSamplingFactor)
     .def_readwrite("peak_window", &FWFSettings::peakWindow_m)
@@ -1800,14 +1806,24 @@ PYBIND11_MODULE(_helios, m)
          py::arg("target_range_m"),
          py::arg("subray_index"));
 
+  py::class_<AnnularCell>(m, "AnnularCell")
+    .def_readonly("rho", &AnnularCell::rho)
+    .def_readonly("inner_rho", &AnnularCell::innerRho)
+    .def_readonly("outer_rho", &AnnularCell::outerRho);
+  py::class_<CartesianCell>(m, "CartesianCell")
+    .def_readonly("u", &CartesianCell::u)
+    .def_readonly("v", &CartesianCell::v)
+    .def_readonly("u_min", &CartesianCell::uMin)
+    .def_readonly("u_max", &CartesianCell::uMax)
+    .def_readonly("v_min", &CartesianCell::vMin)
+    .def_readonly("v_max", &CartesianCell::vMax);
+
   py::class_<ScanningDevice::Subray>(m, "Subray")
     .def_readonly("rotation", &ScanningDevice::Subray::rotation)
     .def_readonly("angle_rad", &ScanningDevice::Subray::angle_rad)
     .def_readonly("share", &ScanningDevice::Subray::share)
     .def_readonly("area_factor", &ScanningDevice::Subray::areaFactor)
-    .def_readonly("rho", &ScanningDevice::Subray::rho)
-    .def_readonly("inner_rho", &ScanningDevice::Subray::innerRho)
-    .def_readonly("outer_rho", &ScanningDevice::Subray::outerRho);
+    .def_readonly("cell", &ScanningDevice::Subray::cell);
 
   py::class_<ScanningDevice, std::shared_ptr<ScanningDevice>> scanning_device(
     m, "ScanningDevice");

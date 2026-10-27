@@ -251,9 +251,12 @@ TEST_CASE("Rho sampling conserves elliptical Gaussian power and area",
       REQUIRE(ray.angle_rad ==
               Catch::Approx(std::atan2(std::hypot(x, y), 1.0)).margin(1e-14));
       REQUIRE(glm::length(direction) == Catch::Approx(1.0).margin(1e-14));
-      REQUIRE(ray.rho == Catch::Approx(rho).margin(1e-14));
-      REQUIRE(ray.innerRho == Catch::Approx(inner).margin(1e-14));
-      REQUIRE(ray.outerRho == Catch::Approx(outer).margin(1e-14));
+      REQUIRE(std::get<AnnularCell>(ray.cell).rho ==
+              Catch::Approx(rho).margin(1e-14));
+      REQUIRE(std::get<AnnularCell>(ray.cell).innerRho ==
+              Catch::Approx(inner).margin(1e-14));
+      REQUIRE(std::get<AnnularCell>(ray.cell).outerRho ==
+              Catch::Approx(outer).margin(1e-14));
       REQUIRE(ray.share == rays[index - j].share);
       REQUIRE(
         ray.areaFactor ==
@@ -271,7 +274,7 @@ TEST_CASE("Rho sampling conserves elliptical Gaussian power and area",
           Catch::Approx(-std::expm1(-2 * factor * factor)).epsilon(1e-12));
   REQUIRE(patchArea ==
           Catch::Approx(PI * factor * factor * tx * ty).epsilon(1e-12));
-  REQUIRE(rays.back().outerRho == factor);
+  REQUIRE(std::get<AnnularCell>(rays.back().cell).outerRho == factor);
 }
 
 TEST_CASE("Elliptical divergence updates are atomic and axis specific",
@@ -309,6 +312,8 @@ TEST_CASE("Elliptical divergence updates are atomic and axis specific",
 TEST_CASE("Far field returns use absolute shares", "[energy]")
 {
   auto scanner = energyScanner();
+  scanner->getFWFSettings().beamSamplingMethod =
+    GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
   scanner->setBeamDivergences(0.0003, GENERATE(0.0003, 0.001));
   scanner->getFWFSettings().beamSamplingFactor = GENERATE(1.0, 2.0);
   scanner->getFWFSettings().beamSampleQuality = GENERATE(1, 3, 8);
@@ -340,7 +345,10 @@ TEST_CASE("Far field returns use absolute shares", "[energy]")
     sumReturn += receivedPower_W;
   }
   double const factor = scanner->getFWFSettings().beamSamplingFactor;
-  double const captured = -std::expm1(-2 * factor * factor);
+  double const captured =
+    scanner->getFWFSettings().beamSamplingMethod == BeamSamplingMethod::Annular
+      ? -std::expm1(-2 * factor * factor)
+      : std::pow(std::erf(std::sqrt(2.) * factor), 2);
   REQUIRE(sumPower == Catch::Approx(4 * captured).epsilon(1e-12));
   REQUIRE(sumReturn == Catch::Approx(PI * 4 * captured * 0.15 * 0.15 * 0.99 *
                                      0.5 / (4 * range * range))
@@ -379,6 +387,8 @@ TEST_CASE("Subray settings changes and copies cannot use stale tables",
 TEST_CASE("Subray sampling validates settings", "[energy]")
 {
   auto scanner = energyScanner();
+  scanner->getFWFSettings().beamSamplingMethod =
+    GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
   auto& settings = scanner->getFWFSettings();
   SECTION("Invalid quality")
   {
@@ -434,6 +444,9 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
   scanner.getFWFSettings(0).beamSamplingFactor = 1.0;
   scanner.getFWFSettings(1).beamSamplingFactor = 2.0;
   scanner.getFWFSettings(1).beamSampleQuality = 8;
+  auto const method =
+    GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
+  scanner.getFWFSettings(1).beamSamplingMethod = method;
   scanner.getFWFSettings(1).pulseShape = "gaussian";
   scanner.setPulseLength_ns(10.0, 1);
   scanner.prepareSimulation();
@@ -453,9 +466,14 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
     double sum = 0;
     for (auto const& ray : device.getSubrays())
       sum += ray.share;
-    REQUIRE(sum ==
-            Catch::Approx(-std::expm1(-2.0 * (channel + 1) * (channel + 1))));
-    REQUIRE(scanner.getNumRays(channel) == (channel == 0 ? 19 : 173));
+    bool const cartesian =
+      channel == 1 && method == BeamSamplingMethod::Cartesian;
+    double const captured =
+      cartesian ? std::pow(std::erf(std::sqrt(2.) * 2), 2)
+                : -std::expm1(-2.0 * (channel + 1) * (channel + 1));
+    REQUIRE(sum == Catch::Approx(captured));
+    REQUIRE(scanner.getNumRays(channel) ==
+            (channel == 0 ? 19 : (cartesian ? 225 : 173)));
   }
 }
 
@@ -524,6 +542,8 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
   double const xmin = GENERATE(-1.0, 0.002);
   bool const fixedIncidence = GENERATE(false, true);
   auto scanner = energyScanner();
+  scanner->getFWFSettings().beamSamplingMethod =
+    GENERATE(BeamSamplingMethod::Annular, BeamSamplingMethod::Cartesian);
   scanner->setBeamDivergences(0.0003, GENERATE(0.0003, 0.001));
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
@@ -1023,3 +1043,45 @@ TEST_CASE("Both analytics paths record transverse hit radii", "[energy]")
   }
 }
 #endif
+
+TEST_CASE("Sampling method changes preserve table lifecycle", "[energy]")
+{
+  auto scanner = energyScanner();
+  scanner->prepareSimulation();
+  auto& device = scanner->getScanningDevice(0);
+  auto const annular = device.getSubrays();
+  auto& settings = scanner->getFWFSettings();
+  settings.beamSamplingMethod = BeamSamplingMethod::Annular;
+  scanner->prepareSimulation();
+  REQUIRE(device.getSubrays().size() == annular.size());
+  for (std::size_t i = 0; i < annular.size(); ++i) {
+    REQUIRE(device.getSubrays()[i].share == annular[i].share);
+    REQUIRE(device.getSubrays()[i].angle_rad == annular[i].angle_rad);
+    REQUIRE(device.getSubrays()[i].areaFactor == annular[i].areaFactor);
+  }
+  settings.beamSamplingMethod = BeamSamplingMethod::Cartesian;
+  REQUIRE_FALSE(device.isSubrayPatternCurrent());
+  REQUIRE_THROWS_AS(device.getSubrays(), std::logic_error);
+  auto staleCopy = scanner->clone();
+  REQUIRE_FALSE(staleCopy->getScanningDevice(0).isSubrayPatternCurrent());
+  staleCopy->prepareSimulation();
+  REQUIRE(staleCopy->getNumRays() == 25);
+  scanner->prepareSimulation();
+  REQUIRE(scanner->getNumRays() == 25);
+  auto const* table = device.getSubrays().data();
+  scanner->prepareSimulation();
+  REQUIRE(device.getSubrays().data() == table);
+  auto copy = scanner->clone();
+  REQUIRE(copy->getScanningDevice(0).isSubrayPatternCurrent());
+  REQUIRE(std::holds_alternative<CartesianCell>(
+    copy->getScanningDevice(0).getSubrays()[0].cell));
+  settings.beamSampleQuality = 0;
+  REQUIRE_THROWS_AS(device.buildSubrayPattern(), std::invalid_argument);
+  REQUIRE_FALSE(device.isSubrayPatternCurrent());
+  settings.beamSampleQuality = 3;
+  REQUIRE(device.getSubrays().data() == table);
+  settings.beamSamplingMethod = BeamSamplingMethod::Annular;
+  scanner->prepareSimulation();
+  REQUIRE(scanner->getNumRays() == 19);
+  REQUIRE(copy->getNumRays() == 25);
+}

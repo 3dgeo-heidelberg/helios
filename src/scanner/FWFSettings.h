@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Asset.h"
+#include "BeamSampling.h"
 #include <maths/PulseShape.h>
 
 #include <cmath>
@@ -55,11 +56,11 @@ public:
    * @brief Pulse length (nanoseconds)
    */
   double pulseLength_ns = 4.0;
-  /**
-   * @brief Beam sample quality
-   */
+  /** Sampling geometry; annular preserves the default ray pattern. */
+  BeamSamplingMethod beamSamplingMethod = BeamSamplingMethod::Annular;
+  /** Ring count, or Cartesian axis cell count (2 * quality - 1). */
   int beamSampleQuality = 3;
-  /** Dimensionless rho_max cutoff in normalized Gaussian coordinates. */
+  /** Normalized radial cutoff (annular) or per-axis cutoff (Cartesian). */
   double beamSamplingFactor = 2.0;
   /**
    * @brief Peak validation window (metres)
@@ -108,10 +109,10 @@ public:
   }
   void validateBeamSampling() const
   {
-    if (beamSampleQuality < 1)
-      throw std::invalid_argument("beamSampleQuality must be >= 1");
-    if (!std::isfinite(beamSamplingFactor) || beamSamplingFactor <= 0.0)
-      throw std::invalid_argument("beamSamplingFactor must be finite and > 0");
+    BeamSamplingSettings{ beamSamplingMethod,
+                          beamSampleQuality,
+                          beamSamplingFactor }
+      .validate();
   }
 
   // ***  TO STRING  *** //
@@ -137,6 +138,7 @@ public:
        << "atmosphericVisibility = " << atmosphericVisibility << "\n"
        << "scannerWaveLength = " << scannerWaveLength << "\n"
        << "pulseLength_ns = " << pulseLength_ns << "\n"
+       << "beamSamplingMethod = " << ::toString(beamSamplingMethod) << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
        << "beamSamplingFactor = " << beamSamplingFactor << "\n"
        << "peakWindow_m = " << peakWindow_m << "\n"

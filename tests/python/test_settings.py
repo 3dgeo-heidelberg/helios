@@ -209,10 +209,15 @@ def test_fullwaveform_settings_rejects_invalid_sampling_factor(factor):
         FullWaveformSettings(beam_sampling_factor=factor)
 
 
-def test_fullwaveform_sampling_settings_roundtrip(tmp_path):
-    settings = FullWaveformSettings(beam_sample_quality=8, beam_sampling_factor=1.5)
+@pytest.mark.parametrize("method", ["annular", "cartesian"])
+def test_fullwaveform_sampling_settings_roundtrip(tmp_path, method):
+    settings = FullWaveformSettings(
+        beam_sampling_method=method, beam_sample_quality=8, beam_sampling_factor=1.5
+    )
     path = settings.to_yaml(tmp_path / "sampling.yaml", shallow=False)
     restored = FullWaveformSettings.from_yaml(path)
+    assert restored.beam_sampling_method == method
+    assert restored._to_cpp().beam_sampling_method == method
     assert restored.beam_sample_quality == 8
     assert restored.beam_sampling_factor == 1.5
     assert restored._to_cpp().beam_sampling_factor == 1.5
@@ -293,3 +298,27 @@ def test_range_setting_assignment_validates_before_mutation():
     with pytest.raises(ValueError):
         settings.sample_spacing = 1
     assert settings.sample_spacing == 0.03747405725
+
+
+@pytest.mark.parametrize("method", ["Cartesian", "", "sunflower"])
+def test_invalid_beam_sampling_method(method):
+    import _helios
+
+    with pytest.raises(ValueError):
+        FullWaveformSettings(beam_sampling_method=method)
+    with pytest.raises(ValueError, match="beamSamplingMethod"):
+        _helios.FWFSettings().beam_sampling_method = method
+
+
+def test_default_beam_sampling_method():
+    assert FullWaveformSettings().beam_sampling_method == "annular"
+
+
+def test_legacy_yaml_defaults_to_annular(tmp_path):
+    import yaml
+
+    path = FullWaveformSettings().to_yaml(tmp_path / "legacy.yaml")
+    document = yaml.safe_load(path.read_text())
+    del document["fields"]["beam_sampling_method"]
+    path.write_text(yaml.safe_dump(document))
+    assert FullWaveformSettings.from_yaml(path).beam_sampling_method == "annular"

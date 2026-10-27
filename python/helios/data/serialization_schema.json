@@ -774,6 +774,7 @@
       "additionalProperties": false,
       "properties": {
         "bin_size": {},
+        "beam_sampling_method": {},
         "beam_sample_quality": {},
         "beam_sampling_factor": {},
         "win_size": {},

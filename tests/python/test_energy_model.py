@@ -104,17 +104,23 @@ def test_device_prepares_concrete_energy_model(energy_device):
 
 @pytest.mark.parametrize("quality", [1, 3, 8])
 @pytest.mark.parametrize("factor", [0.5, 1.0, 2.0])
-def test_subray_table_captured_power(energy_device, quality, factor):
+@pytest.mark.parametrize("method", ["annular", "cartesian"])
+def test_subray_table_captured_power(energy_device, quality, factor, method):
     settings = _helios.FWFSettings()
+    settings.beam_sampling_method = method
     settings.beam_sample_quality = quality
     settings.beam_sampling_factor = factor
     energy_device.fwf_settings = settings
-    if quality != 3 or factor != 2.0:
+    if quality != 3 or factor != 2.0 or method != "annular":
         with pytest.raises(RuntimeError, match="prepare"):
             _ = energy_device.subrays
     energy_device.prepare_simulation()
     rays = energy_device.subrays
-    captured = -math.expm1(-2 * factor**2)
+    captured = (
+        -math.expm1(-2 * factor**2)
+        if method == "annular"
+        else math.erf(math.sqrt(2) * factor) ** 2
+    )
     assert sum(ray.share for ray in rays) == pytest.approx(captured, rel=1e-12)
     assert sum(
         energy_device.energy_model.compute_emitted_power(i) for i in range(len(rays))
@@ -159,3 +165,32 @@ def test_triangle_incidence_cosine(side):
         math.cos(angle)
     )
     assert triangle.incidence_angle(origin, direction, point) == pytest.approx(angle)
+
+
+def test_sampling_method_switch_and_typed_metadata(energy_device):
+    annular = energy_device.subrays
+    assert isinstance(annular[0].cell, _helios.AnnularCell)
+    assert annular[0].cell.rho == 0
+    assert not hasattr(annular[0], "inner_rho")
+    settings = _helios.FWFSettings(energy_device.fwf_settings)
+    settings.beam_sampling_method = "cartesian"
+    energy_device.fwf_settings = settings
+    with pytest.raises(RuntimeError, match="prepare"):
+        _ = energy_device.subrays
+    energy_device.prepare_simulation()
+    rays = energy_device.subrays
+    assert len(rays) == 25
+    assert isinstance(rays[0].cell, _helios.CartesianCell)
+    assert rays[0].cell.u_min == -2
+    assert rays[-1].cell.v_max == 2
+    assert rays[12].cell.u == rays[12].cell.v == rays[12].angle_rad == 0
+    with pytest.raises(AttributeError):
+        rays[0].cell.u_min = 0
+    copied = _helios.ScanningDevice(energy_device)
+    assert len(copied.subrays) == 25
+    assert copied.fwf_settings.beam_sampling_method == "cartesian"
+    settings.beam_sampling_method = "annular"
+    energy_device.fwf_settings = settings
+    energy_device.prepare_simulation()
+    assert [r.share for r in energy_device.subrays] == [r.share for r in annular]
+    assert len(copied.subrays) == 25

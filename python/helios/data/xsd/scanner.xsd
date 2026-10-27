@@ -31,6 +31,14 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
+                                            <xs:attribute name="beamSamplingMethod">
+                                                <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                        <xs:enumeration value="annular"/>
+                                                        <xs:enumeration value="cartesian"/>
+                                                    </xs:restriction>
+                                                </xs:simpleType>
+                                            </xs:attribute>
                                             <xs:attribute type="xs:int" name="beamSampleQuality"/>
                                             <xs:attribute type="xs:double" name="beamSamplingFactor"/>
                                             <xs:attribute type="xs:float" name="binSize_ns"/>
@@ -88,6 +96,14 @@
                                                         <xs:complexType>
                                                             <xs:simpleContent>
                                                                 <xs:extension base="xs:string">
+                                                                    <xs:attribute name="beamSamplingMethod">
+                                                                        <xs:simpleType>
+                                                                            <xs:restriction base="xs:string">
+                                                                                <xs:enumeration value="annular"/>
+                                                                                <xs:enumeration value="cartesian"/>
+                                                                            </xs:restriction>
+                                                                        </xs:simpleType>
+                                                                    </xs:attribute>
                                                                     <xs:attribute type="xs:int" name="beamSampleQuality"/>
                                                                     <xs:attribute type="xs:double" name="beamSamplingFactor"/>
                                                                     <xs:attribute type="xs:float" name="binSize_ns"/>

@@ -138,6 +138,7 @@ The x, y, z coordinates of the position of the origin of the laser beam are set 
 
 These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform and intensity modelling <intensity_fwf>`.
 
+- ``beamSamplingMethod`` (``annular`` by default, or ``cartesian``)
 - ``beamSampleQuality``
 - ``beamSamplingFactor``
 - ``sampleSpacing_m``
