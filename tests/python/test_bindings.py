@@ -1073,6 +1073,12 @@ class ExampleScanner(_helios.Scanner):
     def getBeamDivergence(self, idx):
         return 0.0  # Default implementation
 
+    def getBeamRotation(self, idx):
+        return getattr(self, "_beam_rotation", 0.0)
+
+    def setBeamRotation(self, value, idx):
+        self._beam_rotation = value
+
     def setBeamDivergence(self, beamDivergence, idx):
         pass  # Default implementation
 
@@ -1578,3 +1584,11 @@ def test_elliptical_subray_metadata():
     device.beam_divergence_y = 0.0003
     assert device.beam_divergence_x == device.beam_divergence_y
     assert device.subrays[1].angle_rad == pytest.approx(device.subrays[2].angle_rad)
+
+
+def test_scanner_beam_rotation_trampoline():
+    scanner = ExampleScanner(id="rotation-test", pulseFreqs=[100000])
+    scanner.set_beam_rotation(0.75)
+    assert scanner.get_beam_rotation() == 0.75
+    scanner.beam_rotation = 1.25
+    assert scanner.beam_rotation == 1.25

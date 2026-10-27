@@ -163,6 +163,33 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         self._cpp_object.set_specific_pulse_amplitude(value, index)
 
     @property
+    def beam_rotation(self) -> Angle:
+        """Channel 0 footprint rotation in radians, from local right toward up."""
+        return self.get_beam_rotation()
+
+    @beam_rotation.setter
+    def beam_rotation(self, value: Angle) -> None:
+        self.set_beam_rotation(value)
+
+    @validate_call
+    def get_beam_rotation(self, index: int = 0) -> Angle:
+        """Return a channel's footprint rotation in [0, 2*pi) radians."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_rotation(index)
+
+    @validate_call
+    def set_beam_rotation(self, value: Angle, index: int = 0) -> None:
+        """Rotate the footprint before running a survey, e.g. ``"45 deg"``.
+
+        Accepts finite radians or angles with units; wraps complete turns.
+        Positive rotation moves emitter-local right toward up.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_rotation(value, index)
+
+    @property
     def beam_divergence(self) -> Angle:
         """Legacy X-axis divergence; assigning a value sets both axes."""
         return self.get_beam_divergence()
@@ -190,7 +217,7 @@ class Scanner(Model, cpp_class=_helios.Scanner):
 
     @property
     def beam_divergence_x(self) -> Angle:
-        """Full 1/e² divergence along emitter-local right."""
+        """Full 1/e² divergence along the beam X principal axis (right at zero rotation)."""
         return self.get_beam_divergence_x()
 
     @beam_divergence_x.setter
@@ -212,7 +239,7 @@ class Scanner(Model, cpp_class=_helios.Scanner):
 
     @property
     def beam_divergence_y(self) -> Angle:
-        """Full 1/e² divergence along emitter-local up."""
+        """Full 1/e² divergence along the beam Y principal axis (up at zero rotation)."""
         return self.get_beam_divergence_y()
 
     @beam_divergence_y.setter
