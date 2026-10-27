@@ -12,6 +12,7 @@ target_sources(
   PRIVATE
   "WarehouseScanningPulseProcess.cpp"
   "ScanningDevice.cpp"
+  "BeamSampling.cpp"
   "SingleScanner.cpp"
   "Scanner.cpp"
   "beamDeflector/AbstractBeamDeflector.cpp"
