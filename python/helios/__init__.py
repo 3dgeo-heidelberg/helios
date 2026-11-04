@@ -5,6 +5,7 @@ __version__ = metadata.version("heliospp")
 del metadata
 
 from helios.leg import Leg
+from helios.licensing import licensing_report
 from helios.platforms import (
     Platform,
     PlatformSettings,
