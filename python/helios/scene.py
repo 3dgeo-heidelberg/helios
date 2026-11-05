@@ -964,9 +964,6 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     def _apply_material_to_all_primitives(self, material: Material):
         """Apply a material to all primitives in the scene part."""
         range_start = 0
-        # TODO(review): for an empty scene part range_stop is -1, which the C++ binding
-        # rejects (size_t) with an unclear error. Consider an explicit error/early
-        # return when num_primitives == 0. Same applies to the range variant in the method below
         range_stop = self._cpp_object.num_primitives - 1
         _helios.apply_material_to_primitives_range(
             self._cpp_object, material._cpp_object, range_start, range_stop
@@ -1031,6 +1028,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :type range_start: Optional[int]
         :type range_stop: Optional[int]
         """
+        if self._cpp_object.num_primitives == 0:
+            raise ValueError(
+                "Cannot update material: the scene part contains no primitives."
+            )
         if indices is not None:
             self._apply_material_to_indices(material, indices)
         elif range_start is not None or range_stop is not None:
@@ -1110,11 +1111,7 @@ class StaticScene(_Scene, cpp_class=_helios.StaticScene):
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):
         """Finalize the scene, making it ready for rendering."""
-        # TODO(review): `primitives` copies the full primitive list into Python on
-        # every access (O(n)). Consider `self._cpp_object.num_primitives` instead.
-        # UNCERTAIN: the Scene binding of `num_primitives` (helios_python.cpp ~l.1309)
-        # takes `const ScenePart&`; verify it works on a Scene object before switching.
-        if len(self._cpp_object.primitives) == 0:
+        if self._cpp_object.num_primitives == 0:
             execution_settings = compose_execution_settings(
                 execution_settings, parameters
             )

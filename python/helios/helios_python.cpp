@@ -1307,7 +1307,7 @@ PYBIND11_MODULE(_helios, m)
       "kd_grove_factory", &Scene::getKDGroveFactory, &Scene::setKDGroveFactory)
     .def_property_readonly(
       "num_primitives",
-      [](const ScenePart& self) -> size_t { return self.mPrimitives.size(); })
+      [](const Scene& self) -> size_t { return self.primitives.size(); })
     .def_property_readonly("shift", &Scene::getShift)
     .def_property(
       "dyn_scene_step",
