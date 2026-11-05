@@ -995,9 +995,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         # silently dropped here, so the C++ range check in
         # applyMaterialToPrimitivesIndices never raises for them.
         num_primitives = self._cpp_object.num_primitives
-        valid_indices = [
-            i for i in indices if 0 <= i < num_primitives
-        ]
+        valid_indices = [i for i in indices if 0 <= i < num_primitives]
         if not valid_indices:
             raise IndexError(
                 "No valid indices provided. Indices must be within the range of existing primitives."
