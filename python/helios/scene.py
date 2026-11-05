@@ -964,7 +964,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     def _apply_material_to_all_primitives(self, material: Material):
         """Apply a material to all primitives in the scene part."""
         range_start = 0
-        range_stop = len(self._cpp_object.primitives) - 1
+        range_stop = self._cpp_object.num_primitives - 1
         _helios.apply_material_to_primitives_range(
             self._cpp_object, material._cpp_object, range_start, range_stop
         )
@@ -978,7 +978,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             raise ValueError("Provided range is invalid")
 
         range_start = start
-        range_stop = min(stop, len(self._cpp_object.primitives) - 1)
+        range_stop = min(stop, self._cpp_object.num_primitives - 1)
         _helios.apply_material_to_primitives_range(
             self._cpp_object, material._cpp_object, range_start, range_stop
         )
@@ -986,9 +986,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @validate_call
     def _apply_material_to_indices(self, material: Material, indices: list[int]):
         """Apply a material to primitives at specific indices in the scene part."""
-        valid_indices = [
-            i for i in indices if 0 <= i < len(self._cpp_object.primitives)
-        ]
+        # TODO(review): `@validate_call` validates every element of `list[int]`
+        # (O(k)); the list is then filtered again in Python. Check whether the
+        # annotation/validation can be relaxed. Note that out-of-range indices are
+        # silently dropped here, so the C++ range check in
+        # applyMaterialToPrimitivesIndices never raises for them.
+        num_primitives = self._cpp_object.num_primitives
+        valid_indices = [i for i in indices if 0 <= i < num_primitives]
         if not valid_indices:
             raise IndexError(
                 "No valid indices provided. Indices must be within the range of existing primitives."
@@ -1024,6 +1028,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :type range_start: Optional[int]
         :type range_stop: Optional[int]
         """
+        if self._cpp_object.num_primitives == 0:
+            raise ValueError(
+                "Cannot update material: the scene part contains no primitives."
+            )
         if indices is not None:
             self._apply_material_to_indices(material, indices)
         elif range_start is not None or range_stop is not None:
@@ -1031,7 +1039,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             range_stop = (
                 range_stop
                 if range_stop is not None
-                else len(self._cpp_object.primitives)
+                else self._cpp_object.num_primitives
             )
 
             self._apply_material_to_primitives_in_specific_range(
@@ -1103,7 +1111,7 @@ class StaticScene(_Scene, cpp_class=_helios.StaticScene):
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):
         """Finalize the scene, making it ready for rendering."""
-        if len(self._cpp_object.primitives) == 0:
+        if self._cpp_object.num_primitives == 0:
             execution_settings = compose_execution_settings(
                 execution_settings, parameters
             )
