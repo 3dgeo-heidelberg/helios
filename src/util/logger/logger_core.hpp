@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <cstdint>
 #include <fstream>
@@ -64,6 +65,16 @@ bool
 is_stopped() noexcept;
 
 namespace detail {
+// Minimum enabled level, read at every log call site before the message is built.
+extern std::atomic<std::uint8_t> min_level;
+
+inline bool
+is_enabled(log_level level) noexcept
+{
+  return static_cast<std::uint8_t>(level) >=
+         min_level.load(std::memory_order_relaxed);
+}
+
 bool
 submit(log_level level,
        std::string message,
@@ -76,8 +87,15 @@ submit(log_level level,
 
 #define LOG(level, msg)                                                        \
   do {                                                                         \
-    ::logging::detail::submit((level), (msg), __FILE__, __LINE__, __func__);   \
+    const ::logging::log_level helios_log_level_ = (level);                    \
+    if (::logging::detail::is_enabled(helios_log_level_)) {                    \
+      ::logging::detail::submit(                                               \
+        helios_log_level_, (msg), __FILE__, __LINE__, __func__);               \
+    }                                                                          \
   } while (0)
+
+#define LOG_IS_ENABLED(level_name)                                             \
+  (::logging::detail::is_enabled(::logging::log_level::level_name))
 
 #define LOG_TRACE(msg) LOG(::logging::log_level::TRACE, msg)
 #define LOG_DEBUG(msg) LOG(::logging::log_level::DEBUG, msg)

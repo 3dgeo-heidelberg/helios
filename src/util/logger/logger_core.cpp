@@ -12,6 +12,11 @@
 #include <logger_core.hpp>
 
 namespace logging {
+namespace detail {
+std::atomic<std::uint8_t> min_level{ static_cast<std::uint8_t>(
+  log_level::INFO) };
+}
+
 namespace {
 inline std::int64_t
 now_unix_time() noexcept
@@ -37,8 +42,6 @@ private:
   std::size_t capacity_;
 
   std::atomic<bool> stopping_{ false };
-  std::atomic<std::uint8_t> min_level_{ static_cast<std::uint8_t>(
-    log_level::INFO) };
   std::atomic<std::uint64_t> overflow_dropped_{ 0 };
   std::atomic<std::uint64_t> shutdown_dropped_{ 0 };
 
@@ -52,8 +55,8 @@ public:
   {
     std::lock_guard<std::mutex> guard(mutex_);
     capacity_ = cfg.capacity == 0 ? 1 : cfg.capacity;
-    min_level_.store(static_cast<std::uint8_t>(cfg.min_level),
-                     std::memory_order_release);
+    detail::min_level.store(static_cast<std::uint8_t>(cfg.min_level),
+                            std::memory_order_relaxed);
     stopping_.store(false, std::memory_order_release);
 
     if (cfg.clear_queue) {
@@ -78,8 +81,8 @@ public:
 
   void set_min_level(log_level level) noexcept
   {
-    min_level_.store(static_cast<std::uint8_t>(level),
-                     std::memory_order_release);
+    detail::min_level.store(static_cast<std::uint8_t>(level),
+                            std::memory_order_relaxed);
   }
 
   bool is_stopped() const noexcept
@@ -95,10 +98,6 @@ public:
 
   bool push(log_event ev)
   {
-    if (!enabled(ev.level)) {
-      return true;
-    }
-
     std::unique_lock<std::mutex> lock(mutex_);
 
     if (stopping_.load(std::memory_order_acquire)) {
@@ -166,13 +165,6 @@ public:
   {
     overflow_dropped_.store(0, std::memory_order_relaxed);
     shutdown_dropped_.store(0, std::memory_order_relaxed);
-  }
-
-private:
-  bool enabled(log_level level) const noexcept
-  {
-    return static_cast<std::uint8_t>(level) >=
-           min_level_.load(std::memory_order_acquire);
   }
 };
 
@@ -251,6 +243,11 @@ submit(log_level level,
        int line,
        const char* function)
 {
+  // Callers bypassing the LOG macro still skip event construction
+  if (!is_enabled(level)) {
+    return true;
+  }
+
   log_event ev;
   ev.level = level;
   ev.message = std::move(message);
