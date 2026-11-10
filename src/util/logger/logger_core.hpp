@@ -65,7 +65,8 @@ bool
 is_stopped() noexcept;
 
 namespace detail {
-// Minimum enabled level, read at every log call site before the message is built.
+// Minimum enabled level, read at every log call site before the message is
+// built.
 extern std::atomic<std::uint8_t> min_level;
 
 inline bool

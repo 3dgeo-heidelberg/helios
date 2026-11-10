@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iomanip>
-#include <sstream>
 #include <logger_core.hpp>
+#include <sstream>
 #include <string>
 
 #include <chrono>
