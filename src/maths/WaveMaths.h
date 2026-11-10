@@ -2,15 +2,16 @@
 
 #include <maths/PulseShape.h>
 
-/** A dense recording on a range grid anchored at zero. */
+/** A dense recording anchored at the earliest return plus the pulse lower
+ * bound. */
 struct WaveformGrid
 {
-  double firstSampleIndex = 0;
+  double firstSampleRange_m = 0;
   double spacing_m = 0;
   int sampleCount = 0;
   double rangeAt(int index) const
   {
-    return (firstSampleIndex + index) * spacing_m;
+    return firstSampleRange_m + index * spacing_m;
   }
 };
 
