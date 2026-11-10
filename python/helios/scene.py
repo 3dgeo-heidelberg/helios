@@ -36,10 +36,11 @@ from pydantic import (
     NonNegativeFloat,
     NonNegativeInt,
     validate_call,
+    Field,
 )
 from enum import Enum, auto
 from pathlib import Path
-from typing import Literal, Optional, Union, Tuple, Any
+from typing import Annotated, Literal, Optional, Union, Tuple, Any
 import numpy as np
 import vedo
 import weakref
@@ -49,7 +50,7 @@ import _helios
 
 class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
     """
-    Class representing a material that can be applied to primitives in a scene part. A material defines the visual properties of the primitives, such as their color and reflectance,
+    Class representing a material that can be applied to primitives in a scene part. A material defines lidar scattering properties of the primitives, such as reflectance,
     but also helios-specific properties such as the classification and whether the scene part should be considered as ground.
 
     :param name: The name of the material. This is used to reference the material when applying it to primitives in a scene part.
@@ -58,10 +59,8 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
     :param reflectance: The reflectance of the material. This is used in the intensity calculation for returns on the respective scene parts.
     :param specularity: The specularity of the material. This is used in the intensity calculation for returns on the respective scene parts.
     :param specular_exponent: The specular exponent of the material. This is used in the intensity calculation for returns on the respective scene parts.
+    :param is_direction_independent: Use reflectance without angular modulation, overriding specularity.
     :param classification: The classification of the material. This is used to assign a classification value to points that hit the respective scene parts.
-    :param ambient_components: The ambient components of the material. In .mtl files, this is the Ka component. This is used in the intensity calculation for returns on the respective scene parts.
-    :param diffuse_components: The diffuse components of the material. In .mtl files, this is the Kd component. This is used in the intensity calculation for returns on the respective scene parts.
-    :param specular_components: The specular components of the material. In .mtl files, this is the Ks component. This is used in the intensity calculation for returns on the respective scene parts.
     :type name: str
     :type is_ground: bool
     :type spectra: str
@@ -69,27 +68,16 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
     :type specularity: float
     :type specular_exponent: float
     :type classification: int
-    :type ambient_components: NDArray[Shape["4"], np.float64]
-    :type diffuse_components: NDArray[Shape["4"], np.float64]
-    :type specular_components: NDArray[Shape["4"], np.float64]
     """
 
     name: str = ""
     is_ground: bool = False
     spectra: str = ""
     reflectance: float = np.nan
-    specularity: float = 0
-    specular_exponent: float = 10
+    specularity: Annotated[float, Field(ge=0, le=1, allow_inf_nan=False)] = 0
+    specular_exponent: Annotated[float, Field(ge=0, allow_inf_nan=False)] = 10
     classification: int = 0
-    ambient_components: NDArray[Shape["4"], np.float64] = np.array(
-        [0, 0, 0, 0], dtype=np.float64
-    )
-    diffuse_components: NDArray[Shape["4"], np.float64] = np.array(
-        [0, 0, 0, 0], dtype=np.float64
-    )
-    specular_components: NDArray[Shape["4"], np.float64] = np.array(
-        [0, 0, 0, 0], dtype=np.float64
-    )
+    is_direction_independent: bool = False
 
     @classmethod
     @validate_call

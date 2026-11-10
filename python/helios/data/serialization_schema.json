@@ -116,12 +116,11 @@
           "format": "uri"
         },
         "serialization_major_version": {
-          "const": 0
+          "const": 1
         },
         "serialization_minor_version": {
           "enum": [
-            0,
-            1
+            0
           ]
         },
         "model_class": {
@@ -730,9 +729,7 @@
         "specularity": {},
         "specular_exponent": {},
         "classification": {},
-        "ambient_components": {},
-        "diffuse_components": {},
-        "specular_components": {}
+        "is_direction_independent": {}
       }
     },
     "fields_helios_scene_ScenePart": {

@@ -147,6 +147,5 @@ SpectralLibrary::setReflectances(Scene* scene)
 
     prim->material->reflectance =
       reflectanceMap.find(prim->material->spectra)->second;
-    prim->material->setSpecularity();
   }
 }

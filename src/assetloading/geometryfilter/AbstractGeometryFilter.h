@@ -100,8 +100,7 @@ public:
   // ******************* //
   /**
    * @brief Parse materials specified through "matfile", which can be
-   * concreted through "matname" parameter. It can also handle random
-   * materials when parameter "randomMaterials" is set.
+   * selected through "matname" parameter.
    * @return Vector of shared pointers to parsed materials
    */
   std::vector<std::shared_ptr<Material>> parseMaterials();

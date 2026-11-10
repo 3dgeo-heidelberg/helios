@@ -1155,19 +1155,10 @@ def test_update_material_attribute_for_specific_primitives(xyz_file):
         intersection_mode="scaled",
         intersection_argument=0.5,
     )
-    scene_part_vox.materials["default"].specular_components = [0.1437, 0.2, 0.3434, 0.4]
-    assert (
-        round(
-            scene_part_vox._cpp_object.primitives[0].material.specular_components[0], 4
-        )
-        == 0.1437
-    )
-    assert (
-        round(
-            scene_part_vox._cpp_object.primitives[0].material.specular_components[2], 4
-        )
-        == 0.3434
-    )
+    scene_part_vox.materials["default"].specularity = 0.1437
+    scene_part_vox.materials["default"].is_direction_independent = True
+    assert scene_part_vox._cpp_object.primitives[0].material.specularity == 0.1437
+    assert scene_part_vox._cpp_object.primitives[0].material.is_direction_independent
 
     scene_part_tif = ScenePart.from_tiff("data/test/dem_hd_sub.tif")
     scene_part_tif.materials["default"].specular_exponent = 25.0
@@ -1954,3 +1945,13 @@ def test_npy_beam_origin_in_scene_coordinates():
         + points["beam_direction"] * points["distance"][:, np.newaxis]
     )
     np.testing.assert_allclose(reconstructed, points["position"], atol=1e-6)
+
+
+@pytest.mark.parametrize("value", [-0.1, 1.1, float("nan"), float("inf")])
+def test_material_rejects_invalid_specularity(value):
+    with pytest.raises(ValueError):
+        Material(specularity=value)
+    material = Material()
+    with pytest.raises(ValueError):
+        material.specularity = value
+    assert material.specularity == 0

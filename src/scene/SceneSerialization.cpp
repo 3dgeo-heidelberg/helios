@@ -31,6 +31,24 @@
 #include <unordered_map>
 
 namespace {
+void
+writeHeader(std::ostream& out)
+{
+  out.write("HELIOSSC", 8);
+  std::uint32_t const version = 1;
+  out.write(reinterpret_cast<char const*>(&version), sizeof(version));
+}
+void
+readHeader(std::istream& in)
+{
+  char magic[8] = {};
+  std::uint32_t version = 0;
+  in.read(magic, 8);
+  in.read(reinterpret_cast<char*>(&version), sizeof(version));
+  if (!in || std::string(magic, 8) != "HELIOSSC" || version != 1)
+    throw HeliosException("Unsupported scene format; regenerate the binary "
+                          "scene from source assets");
+}
 
 bool
 isLikelyZlibStream(std::istream& in)
@@ -156,13 +174,11 @@ struct MaterialDTO
   std::string matFilePath;
   std::string map_Kd;
   double reflectance = std::numeric_limits<double>::quiet_NaN();
+  bool isDirectionIndependent = false;
   double specularity = 0.0;
   double specularExponent = 10.0;
   int classification = 0;
   std::string spectra;
-  float ka[4] = { 0, 0, 0, 0 };
-  float kd[4] = { 0, 0, 0, 0 };
-  float ks[4] = { 0, 0, 0, 0 };
 
   template<class Archive>
   void serialize(Archive& ar)
@@ -177,18 +193,7 @@ struct MaterialDTO
        specularExponent,
        classification,
        spectra,
-       ka[0],
-       ka[1],
-       ka[2],
-       ka[3],
-       kd[0],
-       kd[1],
-       kd[2],
-       kd[3],
-       ks[0],
-       ks[1],
-       ks[2],
-       ks[3]);
+       isDirectionIndependent);
   }
 };
 
@@ -527,11 +532,8 @@ toDTO(Material const& m)
   dto.specularExponent = m.specularExponent;
   dto.classification = m.classification;
   dto.spectra = m.spectra;
-  for (int i = 0; i < 4; ++i) {
-    dto.ka[i] = m.ka[i];
-    dto.kd[i] = m.kd[i];
-    dto.ks[i] = m.ks[i];
-  }
+  m.validate();
+  dto.isDirectionIndependent = m.isDirectionIndependent;
   return dto;
 }
 
@@ -549,11 +551,8 @@ fromDTO(MaterialDTO const& dto)
   m->specularExponent = dto.specularExponent;
   m->classification = dto.classification;
   m->spectra = dto.spectra;
-  for (int i = 0; i < 4; ++i) {
-    m->ka[i] = dto.ka[i];
-    m->kd[i] = dto.kd[i];
-    m->ks[i] = dto.ks[i];
-  }
+  m->isDirectionIndependent = dto.isDirectionIndependent;
+  m->validate();
   return m;
 }
 
@@ -1307,6 +1306,7 @@ Scene::saveCereal(std::string const& path, int const compressionLevel) const
 
   int const normalizedLevel = normalizeCompressionLevel(compressionLevel);
   if (normalizedLevel == 0) {
+    writeHeader(ofs);
     cereal::BinaryOutputArchive archive(ofs);
     archive(dto);
     return;
@@ -1317,6 +1317,7 @@ Scene::saveCereal(std::string const& path, int const compressionLevel) const
   compressedOut.push(boost::iostreams::zlib_compressor(zp));
   compressedOut.push(ofs);
 
+  writeHeader(compressedOut);
   cereal::BinaryOutputArchive archive(compressedOut);
   archive(dto);
   compressedOut.reset();
@@ -1336,10 +1337,12 @@ Scene::loadCereal(std::string const& path)
     boost::iostreams::filtering_istream compressedIn;
     compressedIn.push(boost::iostreams::zlib_decompressor());
     compressedIn.push(ifs);
+    readHeader(compressedIn);
     cereal::BinaryInputArchive archive(compressedIn);
     archive(dto);
     compressedIn.reset();
   } else {
+    readHeader(ifs);
     cereal::BinaryInputArchive archive(ifs);
     archive(dto);
   }
