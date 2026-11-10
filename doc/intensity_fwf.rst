@@ -275,7 +275,7 @@ At each range sample :math:`x_k`, HELIOS++ directly evaluates
 
 For gamma, automatic bounds extend from the nearest return to the furthest return plus the falling-flank tolerance crossing. For Gaussian, the pulse-relative bounds are :math:`\mu_r\pm\sigma_r\sqrt{-2\ln\epsilon}`, where :math:`\epsilon` is ``recordingTailTolerance`` (default ``1e-4``), the pulse amplitude relative to its peak at the recording bounds. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
 
-The grid is anchored at range zero. Automatic bounds round outwards to grid points. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
+The grid starts at the nearest return plus the pulse's lower recording bound, without rounding this origin to a multiple of the sample spacing. For gamma pulses this is exactly the nearest return; Gaussian and sampled pulses retain any leading flank before their reference. The upper bound rounds outwards to a grid point relative to this origin. Translating all returns translates the grid by the same amount. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
 
 
 .. figure:: img/onevpeak.png
