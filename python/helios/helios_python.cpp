@@ -869,7 +869,7 @@ PYBIND11_MODULE(_helios, m)
                            &SampledPulse::explicitPeakNanoseconds);
   py::class_<WaveformGrid>(m, "WaveformGrid")
     .def(py::init<>())
-    .def_readwrite("first_sample_index", &WaveformGrid::firstSampleIndex)
+    .def_readwrite("first_sample_range", &WaveformGrid::firstSampleRange_m)
     .def_readwrite("sample_spacing", &WaveformGrid::spacing_m)
     .def_readwrite("sample_count", &WaveformGrid::sampleCount)
     .def("range_at", &WaveformGrid::rangeAt);

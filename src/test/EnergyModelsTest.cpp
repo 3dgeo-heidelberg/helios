@@ -772,6 +772,31 @@ TEST_CASE("Sampled pulses interpolate independently of input density",
     std::invalid_argument);
 }
 
+TEST_CASE("Range grid follows fractional translations of the earliest return",
+          "[energy][waveform]")
+{
+  std::string const shape = GENERATE("gamma", "gaussian");
+  auto model = PulseShape::create(shape, 5, 1e-4);
+  double const firstReturn = 10.013;
+  double const shift = 0.001;
+  auto grid = WaveMaths::recordingGrid(firstReturn, 12.3, *model, 0.04, 0);
+  auto moved = WaveMaths::recordingGrid(
+    firstReturn + shift, 12.3 + shift, *model, 0.04, 0);
+
+  REQUIRE(grid.rangeAt(0) == firstReturn + model->recordingBounds().first);
+  REQUIRE(moved.sampleCount == grid.sampleCount);
+  REQUIRE(grid.rangeAt(grid.sampleCount - 1) >=
+          12.3 + model->recordingBounds().second);
+
+  for (int i = 0; i < grid.sampleCount; ++i) {
+    REQUIRE(moved.rangeAt(i) - grid.rangeAt(i) ==
+            Catch::Approx(shift).margin(1e-12));
+    REQUIRE(model->evaluate(moved.rangeAt(i) - firstReturn - shift) ==
+            Catch::Approx(model->evaluate(grid.rangeAt(i) - firstReturn))
+              .margin(1e-12));
+  }
+}
+
 TEST_CASE(
   "Range grid preserves spacing with distant returns and clips only recording",
   "[energy][waveform]")
@@ -836,7 +861,7 @@ TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
     REQUIRE(samples[k] == Catch::Approx(expected * 4e9).margin(1e-10));
   }
   // A recording cap must not remove a later Gaussian return's leading tail.
-  WaveformGrid clipped{ 400, 0.03, 3 };
+  WaveformGrid clipped{ 12.0, 0.03, 3 };
   std::vector<double> tail(3, 0);
   runnable.populateFullWaveform({ { 12.3, 1 } }, tail, clipped);
   if (shape == "gaussian")
