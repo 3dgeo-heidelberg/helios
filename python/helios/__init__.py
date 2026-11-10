@@ -14,6 +14,7 @@ from helios.logger import (
 )
 
 from helios.leg import Leg
+from helios.licensing import licensing_report
 from helios.platforms import (
     Platform,
     PlatformSettings,
