@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "logging.hpp"
+#include "logger_core.hpp"
 
 #include "Survey.h"
 #include "XmlSurveyLoader.h"
@@ -71,7 +71,7 @@ LidarSim::init(std::string surveyPath,
      << "kdtJobs: " << kdtJobs << "\n"
      << "kdtGeomJobs: " << kdtGeomJobs << "\n"
      << "sahLossNodes: " << sahLossNodes << std::endl;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 
   // Load survey description from XML file:
   std::shared_ptr<XmlSurveyLoader> xmlreader =
@@ -82,7 +82,7 @@ LidarSim::init(std::string surveyPath,
   xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
   std::shared_ptr<Survey> survey = xmlreader->load(legNoiseDisabled);
   if (survey == nullptr) {
-    logging::ERR("Failed to load survey!");
+    LOG_ERR("Failed to load survey!");
     exit(-1);
   }
 
@@ -127,7 +127,7 @@ LidarSim::init(std::string surveyPath,
                                      fms);
 
   // Start simulation
-  logging::INFO("Running simulation...");
+  LOG_INFO("Running simulation...");
   TimeWatcher tw;
   tw.start();
   playback->start();

@@ -15,7 +15,7 @@ the empty center.
 */
 
 #include <benchmark/benchmark.h>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include <Scene.h>
 #include <Triangle.h>
@@ -31,10 +31,6 @@ the empty center.
 #include <memory>
 #include <stdexcept>
 #include <vector>
-
-bool logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-  logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
-  logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 namespace {
 

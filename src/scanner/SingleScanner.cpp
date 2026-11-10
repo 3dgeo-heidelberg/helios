@@ -48,7 +48,7 @@ SingleScanner::SingleScanner(
             rangeErrExpr)
 {
   // Report scanner state through logging system
-  logging::INFO(toString());
+  LOG_INFO(toString());
 }
 
 SingleScanner::SingleScanner(SingleScanner& scanner)

@@ -4,7 +4,7 @@
 #include <sstream>
 using namespace std;
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <math.h>
 
 #include "MathConverter.h"
@@ -187,9 +187,9 @@ OscillatingMirrorBeamDeflector::setScanAngle_rad(double scanAngle_rad)
   // Max. scan angle is limited by scan product:
   if (scanAngle_deg * this->cfg_setting_scanFreq_Hz >
       this->cfg_device_scanProduct) {
-    logging::WARN("ERROR: Requested scan angle exceeds device limitations "
-                  "as defined by scan product. "
-                  "Will set it to maximal possible value.");
+    LOG_WARN("ERROR: Requested scan angle exceeds device limitations "
+             "as defined by scan product. "
+             "Will set it to maximal possible value.");
     scanAngle_deg =
       ((double)this->cfg_device_scanProduct) / this->cfg_setting_scanFreq_Hz;
   }
@@ -198,7 +198,7 @@ OscillatingMirrorBeamDeflector::setScanAngle_rad(double scanAngle_rad)
     MathConverter::degreesToRadians(scanAngle_deg);
   stringstream ss;
   ss << "Scan angle set to " << scanAngle_deg << " degrees.";
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
@@ -208,10 +208,9 @@ OscillatingMirrorBeamDeflector::setScanFreq_Hz(double scanFreq_Hz)
   if (MathConverter::radiansToDegrees(this->cfg_setting_scanAngle_rad) *
         scanFreq_Hz >
       this->cfg_device_scanProduct) {
-    logging::WARN(
-      "WARNING: Requested scan frequency exceeds device limitations "
-      "as defined by scan product. "
-      "Will set it to maximal possible value.");
+    LOG_WARN("WARNING: Requested scan frequency exceeds device limitations "
+             "as defined by scan product. "
+             "Will set it to maximal possible value.");
     scanFreq_Hz =
       ((double)this->cfg_device_scanProduct) /
       MathConverter::radiansToDegrees(this->cfg_setting_scanAngle_rad);
@@ -219,5 +218,5 @@ OscillatingMirrorBeamDeflector::setScanFreq_Hz(double scanFreq_Hz)
   this->cfg_setting_scanFreq_Hz = scanFreq_Hz;
   stringstream ss;
   ss << "Scan frequency set to " << this->cfg_setting_scanFreq_Hz << " Hz.";
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }

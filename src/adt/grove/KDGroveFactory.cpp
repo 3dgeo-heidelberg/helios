@@ -203,7 +203,7 @@ KDGroveFactory::makeCommon(std::vector<std::shared_ptr<ScenePart>> parts,
   if (computeKDGroveStats) {
     handleKDGroveStats(kdgrove, buildingTimes, numPrimitives);
     if (reportKDGroveStats)
-      logging::INFO(kdgrove->getStats()->toString());
+      LOG_INFO(kdgrove->getStats()->toString());
   }
 
   // Return built kdgrove

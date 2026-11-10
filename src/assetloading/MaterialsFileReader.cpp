@@ -7,7 +7,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include "MaterialsFileReader.h"
 
@@ -19,7 +19,7 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
   std::map<std::string, std::shared_ptr<Material>> newMats;
   bool firstMaterial = true;
 
-  logging::DEBUG("Reading materials from .mtl file '" + filePathString + "'");
+  LOG_DEBUG("Reading materials from .mtl file '" + filePathString + "'");
   std::string line;
 
   try {
@@ -101,7 +101,7 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
     newMats[newMat.name] = std::make_shared<Material>(newMat);
     std::stringstream ss;
     ss << newMats.size() << " material(s) loaded.";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
   } catch (std::exception& e) {
     throw std::runtime_error("Error reading materials file '" + filePathString +
                              "': " + e.what());

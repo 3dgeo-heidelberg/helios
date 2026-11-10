@@ -5,7 +5,7 @@
 #include <string>
 
 #include "MathConverter.h"
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -79,7 +79,7 @@ AbstractBeamDeflector::setScanAngle_rad(double scanAngle_rad)
   std::stringstream ss;
   ss << "Scan angle set to "
      << MathConverter::radiansToDegrees(this->cfg_setting_scanAngle_rad);
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 bool

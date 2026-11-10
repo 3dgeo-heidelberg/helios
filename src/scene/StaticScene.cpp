@@ -1,4 +1,3 @@
-#include <logging.hpp>
 #include <scene/StaticScene.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

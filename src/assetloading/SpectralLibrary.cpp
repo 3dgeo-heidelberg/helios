@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <iostream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <set>
 #include <typeinfo>
 
@@ -39,7 +39,7 @@ SpectralLibrary::readFileAster(fs::path path)
     std::ifstream ins(path.string(), std::ifstream::binary);
     if (!ins.is_open()) {
 
-      logging::ERR("failed to open " + path.string());
+      LOG_ERR("failed to open " + path.string());
       throw std::exception();
     }
     float wavelength = 0;
@@ -79,15 +79,15 @@ SpectralLibrary::readFileAster(fs::path path)
     }
     reflectanceMap.insert(std::pair<std::string, float>(file, reflectance));
   } catch (std::exception& e) {
-    logging::WARN("Error: readFileAster " + path.string() + "\n" +
-                  "EXCEPTION: " + e.what());
+    LOG_WARN("Error: readFileAster " + path.string() + "\n" +
+             "EXCEPTION: " + e.what());
   }
 }
 
 void
 SpectralLibrary::readReflectances()
 {
-  logging::INFO("Reading Spectral Library...");
+  LOG_INFO("Reading Spectral Library...");
 
   bool found = false;
   for (const auto path : assetsDir) {
@@ -101,13 +101,13 @@ SpectralLibrary::readReflectances()
   }
 
   if (!found) {
-    logging::ERR("ERROR: folder " + spectra + " not found");
+    LOG_ERR("ERROR: folder " + spectra + " not found");
     return;
   }
 
   std::stringstream ss;
   ss << reflectanceMap.size() << " materials found";
-  logging::WARN(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
@@ -126,10 +126,9 @@ SpectralLibrary::setReflectances(Scene* scene)
     if (prim->material->spectra.empty()) {
       if (matsMissing.find(prim->material->spectra) == matsMissing.end()) {
         matsMissing.insert(prim->material->spectra);
-        logging::WARN("Warning: material " + prim->material->name +
-                      " of primitive " + typeid(*prim).name() + " (" +
-                      prim->material->matFilePath +
-                      ") has no spectral definition");
+        LOG_WARN("Warning: material " + prim->material->name +
+                 " of primitive " + typeid(*prim).name() + " (" +
+                 prim->material->matFilePath + ") has no spectral definition");
       }
       continue;
     }
@@ -137,9 +136,9 @@ SpectralLibrary::setReflectances(Scene* scene)
     if (reflectanceMap.find(prim->material->spectra) == reflectanceMap.end()) {
       if (matsMissing.find(prim->material->spectra) == matsMissing.end()) {
         matsMissing.insert(prim->material->spectra);
-        logging::WARN("Warning: spectra " + prim->material->spectra + " (" +
-                      prim->material->matFilePath +
-                      ") is not in the spectral library");
+        LOG_WARN("Warning: spectra " + prim->material->spectra + " (" +
+                 prim->material->matFilePath +
+                 ") is not in the spectral library");
       }
       continue;
     }

@@ -1,7 +1,17 @@
 import click
 from clickqt_utils.extensions import PathWithExtensions
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
-from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
+from helios.logger import (
+    configure_logging,
+    install_default_excepthook,
+    shutdown_logging,
+)
+from helios.settings import (
+    ExecutionSettings,
+    OutputSettings,
+    LogVerbosity,
+    build_logging_config,
+)
 from helios.survey import Survey
 from helios.utils import add_asset_directory, set_rng_seed
 from helios import __version__
@@ -239,15 +249,6 @@ from pathlib import Path
 def cli(**kw):
     """Runs a single Helios++ survey specified in SURVEY_FILE_PATH"""
 
-    for asset in kw["assets"]:
-        add_asset_directory(asset)
-
-    seed = kw.get("seed")
-    if seed is not None:
-        set_rng_seed(seed)
-    else:
-        set_rng_seed()
-
     verbosity = LogVerbosity.DEFAULT
     if kw.get("verbose") == 1:
         verbosity = LogVerbosity.VERBOSE
@@ -282,17 +283,39 @@ def cli(**kw):
     output_settings.write_pulse = kw.get("writepulse")
     output_settings.las_scale = kw.get("lasscale")
 
-    survey_file_path = Path(kw.get("survey_file_path"))
-    if survey_file_path.suffix.lower() in (".yml", ".yaml"):
-        survey = Survey.from_yaml(survey_file_path)
-    else:
-        survey = Survey.from_xml(survey_file_path)
-    if gps := kw.get("gpsstarttime"):
-        survey.gps_time = gps
+    logging_service = configure_logging(
+        build_logging_config(
+            execution_settings, log_dir=Path(output_settings.output_dir) / "logs"
+        ),
+        force=True,
+    )
+    install_default_excepthook(logging_service)
 
-    if kw.get("dryrun"):
-        return
-    survey.run(execution_settings=execution_settings, output_settings=output_settings)
+    try:
+        for asset in kw["assets"]:
+            add_asset_directory(asset)
+
+        seed = kw.get("seed")
+        if seed is not None:
+            set_rng_seed(seed)
+        else:
+            set_rng_seed()
+
+        survey_file_path = Path(kw.get("survey_file_path"))
+        if survey_file_path.suffix.lower() in (".yml", ".yaml"):
+            survey = Survey.from_yaml(survey_file_path)
+        else:
+            survey = Survey.from_xml(survey_file_path)
+        if gps := kw.get("gpsstarttime"):
+            survey.gps_time = gps
+
+        if kw.get("dryrun"):
+            return
+        survey.run(
+            execution_settings=execution_settings, output_settings=output_settings
+        )
+    finally:
+        shutdown_logging()
 
 
 if __name__ == "__main__":

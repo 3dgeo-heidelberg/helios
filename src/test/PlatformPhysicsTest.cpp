@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 #include <HelicopterPlatform.h>
 #include <MathConstants.h>

@@ -1,5 +1,5 @@
 #include "KDTreeRaycaster.h"
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 std::map<double, Primitive*>
 KDTreeRaycaster::searchAll(glm::dvec3 const rayOrigin,
@@ -56,7 +56,7 @@ KDTreeRaycaster::searchAll_recursive(LightKDTreeNode* node,
       std::vector<double> tMinMax =
         prim->getRayIntersection(search.rayOrigin, search.rayDir);
       if (tMinMax.empty()) {
-        logging::DEBUG("searchAll_recursive: tMinMax is empty");
+        LOG_DEBUG("searchAll_recursive: tMinMax is empty");
         continue;
       }
       double newDistance = tMinMax[0];

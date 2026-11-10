@@ -1,4 +1,4 @@
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <maths/Directions.h>
 #include <platform/InterpolatedMovingPlatform.h>
 #include <platform/trajectory/DesignTrajectoryFunction.h>
@@ -63,7 +63,7 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
       ss << "InterpolatedMovingPlatform::InterpolatedMovingPlatform "
          << "failed to construct because an unexpected RotationSpec "
          << "was given";
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
   }
   // Configure update function to be computed once at each sim step

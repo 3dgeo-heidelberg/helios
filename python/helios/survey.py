@@ -26,7 +26,7 @@ from helios.settings import (
     OutputSettings,
     compose_execution_settings,
     compose_output_settings,
-    apply_log_writing,
+    build_logging_config,
 )
 from helios.utils import (
     get_asset_directories,
@@ -43,6 +43,7 @@ from helios.validation import (
     validate_xml_file,
 )
 from helios.live import LiveViewer
+from helios.logger import configure_logging
 
 from datetime import datetime, timezone
 from numpydantic import NDArray
@@ -164,8 +165,12 @@ class Survey(Model, cpp_class=_helios.Survey):
         progressbar_controller = None
 
         # Update logs settings
-        apply_log_writing(execution_settings)
-        execution_settings.verbosity.apply()
+        configure_logging(
+            build_logging_config(
+                execution_settings, log_dir=Path(output_settings.output_dir) / "logs"
+            ),
+            force=False,
+        )
 
         # Throw if there are still unknown parameters left
         if parameters:

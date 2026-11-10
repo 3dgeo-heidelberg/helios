@@ -1,6 +1,6 @@
-#include "logging.hpp"
 #include <HeliosException.h>
 #include <iostream>
+#include <logger_core.hpp>
 
 #include <chrono>
 using namespace std::chrono;
@@ -130,7 +130,7 @@ Simulation::doSimStep()
     std::stringstream ss;
     ss << "Max duration reached (" << elapsed_s
        << " s >= " << mScanner->getMaxDuration() << " s). Ending leg.";
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
     onLegComplete();
     return;
   }
@@ -145,7 +145,7 @@ Simulation::doSimStep()
           "duration set.\n"
        << "Simulation would run indefinitely. To avoid this, simulation is "
           "aborted.";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -554,7 +554,7 @@ Simulation::start()
 
     ss.str("");
     ss << "Starting simulation loop " << simLoopIndex + 1 << " ...";
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
     doSimLoop(
 #ifdef DATA_ANALYTICS
       ssr
@@ -569,11 +569,11 @@ Simulation::start()
     // because end of simulation will handle it.
     ss.str("");
     ss << "Finishing simulation loop " << simLoopIndex + 1 << " ...";
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
     simPlayer->endPlay();
     ss.str("");
     ss << "Finished simulation loop " << simLoopIndex + 1 << ".";
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
     ++simLoopIndex;
   }
   simPlayer = nullptr;
@@ -677,7 +677,7 @@ Simulation::calcCurrentGpsTime()
        << "empty string \n"
        << "or a datetime with EXACT format: \"YYYY-MM-DD hh:mm:ss\" "
        << "(Don't forget the quotes)";
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw ex;
   }
 
@@ -703,7 +703,7 @@ Simulation::setSimSpeedFactor(double factor)
 
   stringstream ss;
   ss << "Simulation speed set to " << mSimSpeedFactor;
-  logging::INFO(ss.str());
+  LOG_INFO(ss.str());
 }
 
 void
@@ -713,7 +713,7 @@ Simulation::setScanner(std::shared_ptr<Scanner> scanner)
     return;
   }
 
-  logging::INFO("Simulation: Scanner changed!");
+  LOG_INFO("Simulation: Scanner changed!");
 
   this->mScanner = std::shared_ptr<Scanner>(scanner);
 }

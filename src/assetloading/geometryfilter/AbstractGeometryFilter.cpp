@@ -38,7 +38,7 @@ AbstractGeometryFilter::parseMaterials()
   if (!found) {
     std::stringstream ss;
     ss << "Material file not found: " << matfilePath.string();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
 
@@ -52,7 +52,7 @@ AbstractGeometryFilter::parseMaterials()
       std::stringstream ss;
       ss << "Material with name '" << matname
          << "' was not found in material file: " << matfilePath.string();
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw HeliosException(ss.str());
     }
     matvec.push_back(it->second);

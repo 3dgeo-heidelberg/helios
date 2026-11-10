@@ -6,7 +6,7 @@
 #include <ScenePart.h>
 #include <Triangle.h>
 #include <WavefrontObj.h>
-#include <util/logger/logging.hpp>
+#include <util/logger/logger_core.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -94,7 +94,7 @@ ScenePart::addObj(WavefrontObj* obj)
 {
   std::stringstream ss;
   ss << "Adding primitive to Scenepart ...";
-  logging::DEBUG(ss.str());
+  LOG_DEBUG(ss.str());
   ss.str("");
   size_t oldNumPrimitives = mPrimitives.size();
 
@@ -112,7 +112,7 @@ ScenePart::addObj(WavefrontObj* obj)
   }
 
   ss << "# new primitives added: " << mPrimitives.size() - oldNumPrimitives;
-  logging::DEBUG(ss.str());
+  LOG_DEBUG(ss.str());
 }
 
 std::vector<Vertex*>
@@ -180,7 +180,7 @@ ScenePart::splitSubparts()
     std::stringstream ss;
     ss << "Could not update subpart ID from \"" << mId << "\".\n "
        << "Thus, splitting subparts is aborted";
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
     return false;
   }
 

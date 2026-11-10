@@ -103,7 +103,7 @@ protected:
     catch (const std::exception& e) {
       std::stringstream ss;
       ss << "ThreadPool::wrap_task EXCEPTION: " << e.what();
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
     }
 
     // Task has finished, so increment count of available threads.

@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <string>
-#include <util/logger/logging.hpp>
+#include <util/logger/logger_core.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -44,7 +44,7 @@ WavefrontObjFileLoader::run()
       std::stringstream ss;
       ss << "Error: 'up'-axis in the scene XML file may only be one of 'y' or "
             "'z'.\nSetting 'up' to 'z'.";
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
     }
   } catch (std::exception& e) {
     std::stringstream ss;
@@ -52,7 +52,7 @@ WavefrontObjFileLoader::run()
        << "Assuming 'z' axis points upwards for scene part \"" << filePathString
        << "\".\n"
        << "Set up axis explicitly to silence this warning.\n";
-    logging::INFO(ss.str());
+    LOG_INFO(ss.str());
   }
   // ######### END Read up axis ###########
 
@@ -78,7 +78,7 @@ WavefrontObjFileLoader::run()
       ss << "Loading .obj from cache";
     }
 
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
     if (loadedObj != nullptr) {
       // TODO Restore addObj below
       // primsOut->addObj(cache.get(pathString));
@@ -103,7 +103,7 @@ WavefrontObjFileLoader::run()
   // Report
   std::stringstream ss;
   ss << "# total primitives loaded: " << primsOut->mPrimitives.size();
-  logging::DEBUG(ss.str());
+  LOG_DEBUG(ss.str());
 
   // Return
 
@@ -131,7 +131,7 @@ WavefrontObjFileLoader::readVertex(std::vector<std::string> const& lineParts,
   } catch (boost::bad_lexical_cast& e) {
     v.pos = glm::dvec3(0, 0, 0);
     ss << "Error reading vertex.\nEXCEPTION: " << e.what() << std::endl;
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
     ss.str("");
   }
 
@@ -145,7 +145,7 @@ WavefrontObjFileLoader::readVertex(std::vector<std::string> const& lineParts,
       b = boost::lexical_cast<float>(lineParts[6]);
     } catch (boost::bad_lexical_cast& e) {
       ss << "Error reading vertex color.\nEXCEPTION: " << e.what() << std::endl;
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
       ss.str("");
     }
 
@@ -173,7 +173,7 @@ WavefrontObjFileLoader::readNormalVector(
   } catch (boost::bad_lexical_cast& e) {
     std::stringstream ss;
     ss << "Error reading normal vector.\nEXCEPTION: " << e.what();
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 
   return glm::dvec3{};
@@ -214,7 +214,7 @@ WavefrontObjFileLoader::readPrimitive(WavefrontObj* loadedObj,
       ss << "Exception during attempt to read primitive:\n\t" << e.what()
          << "\n"
          << "\tInput file: \"" << pathString << "\"";
-      logging::WARN(ss.str());
+      LOG_WARN(ss.str());
       ss.str("");
       return;
     }
@@ -241,7 +241,7 @@ WavefrontObjFileLoader::readPrimitive(WavefrontObj* loadedObj,
     }
   } else {
     ss << "Unsupported primitive!";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
     ss.str("");
   }
 }
@@ -254,13 +254,13 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
   WavefrontObj* loadedObj = new WavefrontObj();
 
   ss << "Reading 3D model from .obj file '" << pathString << "'...";
-  logging::DEBUG(ss.str());
+  LOG_DEBUG(ss.str());
   ss.str("");
 
   fs::path filePath(pathString);
   if (!fs::exists(filePath)) {
     ss << "File not found: " << pathString << std::endl;
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     throw HeliosException(ss.str());
   }
   try {
@@ -319,7 +319,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
         // Read materials
         else if (lineParts[0] == "mtllib") {
           if (lineParts.size() < 2) {
-            logging::WARN("Encountered 'mtllib' without a material filename.");
+            LOG_WARN("Encountered 'mtllib' without a material filename.");
           } else {
             std::string mtlFileName;
             for (std::size_t i = 1; i < lineParts.size(); ++i) {
@@ -346,7 +346,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
 
         else {
           ss << "Unknown line '" << line << "'";
-          logging::DEBUG(ss.str());
+          LOG_DEBUG(ss.str());
           ss.str("");
         }
       }
@@ -354,7 +354,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
       // This exception is okay, since it means the reader has finished
     } catch (std::exception& e) {
       ss << "Error reading primitives.\nEXCEPTION: " << e.what();
-      logging::ERR(ss.str());
+      LOG_ERR(ss.str());
       throw;
     }
 
@@ -362,7 +362,7 @@ WavefrontObjFileLoader::loadObj(std::string const& pathString, bool const yIsUp)
   } catch (std::exception& ex) {
     ss << "Unexpected exception when trying to read:\n\"" << pathString
        << "\"\n\t" << ex.what();
-    logging::ERR(ss.str());
+    LOG_ERR(ss.str());
     ss.str("");
     throw;
   }

@@ -1,10 +1,9 @@
 #include "GroundVehiclePlatform.h"
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 using namespace std;
 
 #include <glm/gtx/norm.hpp>
-#include <logging.hpp>
 
 #include "typedef.h"
 
@@ -55,7 +54,7 @@ GroundVehiclePlatform::doControlStep(int simFrequency_hz)
         headingChange_rad += 0.1 * sign * glm::l2Norm(this->getVelocity());
       } else {
         mTurnMode = 1;
-        logging::INFO("Turn mode 1");
+        LOG_INFO("Turn mode 1");
         mTempWaypoint = getPosition() + (cached_dir_current * 1.0);
       }
     }
@@ -66,7 +65,7 @@ GroundVehiclePlatform::doControlStep(int simFrequency_hz)
 
     if (glm::distance(getPosition(), mTempWaypoint) < 0.5) {
       mTurnMode = 2;
-      logging::INFO("Turn mode 2");
+      LOG_INFO("Turn mode 2");
     }
   }
 

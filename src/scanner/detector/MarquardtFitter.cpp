@@ -1,6 +1,6 @@
 #include "MarquardtFitter.h"
 
-#include "logging.hpp"
+#include <logger_core.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -333,7 +333,7 @@ MarquardtFitter::fitData()
     } catch (...) {
       ostringstream s;
       s << "Broke after " << i << " iterations" /*<< printMatrix()*/;
-      logging::INFO(s.str());
+      LOG_INFO(s.str());
       return;
     }
 

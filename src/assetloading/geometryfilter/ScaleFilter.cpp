@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <variant>
 
 #include "ScaleFilter.h"
@@ -19,7 +19,7 @@ ScaleFilter::run()
       primsOut->mScale = scaleFactor;
     }
   } catch (std::exception& e) {
-    logging::WARN(e.what());
+    LOG_WARN(e.what());
   }
   return primsOut;
 }

@@ -45,6 +45,6 @@ template<typename... WriteArgs>
 void
 BasePulseWriter<WriteArgs...>::setOutputFilePath(std::string const& path)
 {
-  logging::INFO("Pulses are written to: \"" + path + "\"");
+  LOG_INFO("Pulses are written to: \"" + path + "\"");
   sfw = makeWriter(path);
 }

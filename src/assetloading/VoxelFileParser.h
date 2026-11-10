@@ -4,7 +4,7 @@
 #include <HeliosException.h>
 #include <fstream>
 #include <iostream>
-#include <logging.hpp>
+#include <logger_core.hpp>
 #include <string>
 #include <vector>
 

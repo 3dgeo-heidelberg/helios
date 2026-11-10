@@ -11,6 +11,7 @@ target_sources(
   PRIVATE
   "PrintUtils.cpp"
   "threadpool/SharedTaskSequencer.cpp"
+  "logger/logger_core.cpp"
   "TimeWatcher.cpp"
   "helios_version.cpp"
 )

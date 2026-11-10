@@ -1,12 +1,11 @@
 #include "HelicopterPlatform.h"
-#include <logging.hpp>
+#include <logger_core.hpp>
 
 #include "maths/Directions.h"
 
 #include "PrintUtils.h"
 #include "Vectorial.h"
 #include <glm/gtx/norm.hpp>
-#include <logging.hpp>
 #include <maths/MathConstants.h>
 
 // ***  CONSTRUCTION / DESTRUCTION *** //
@@ -79,7 +78,7 @@ HelicopterPlatform::initLegManual()
     dirAttitudeXY = Rotation(cached_dir_current_xy, targetDirXY)
                       .applyTo(getDirectionalAttitude());
   } catch (std::exception& e) {
-    logging::WARN(e.what());
+    LOG_WARN(e.what());
   }
 
   // Parent manual leg initialization (MovingPlatform)
@@ -108,7 +107,7 @@ HelicopterPlatform::waypointReached()
     if (cache_turnIterations <= 0) {
       cache_turning = false;
       cache_speedUpFinished = false;
-      logging::INFO("Waypoint passed (smooth turn)!");
+      LOG_INFO("Waypoint passed (smooth turn)!");
       wayPointReached = true;
     }
   }
@@ -412,7 +411,7 @@ HelicopterPlatform::computeTurningAngles()
     std::stringstream ss;
     ss << "HelicopterPlatform::computeRotationAngles EXCEPTION:\n\t"
        << e.what();
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 }
 
@@ -431,7 +430,7 @@ HelicopterPlatform::rotate(double roll, double pitch, double yaw)
   } catch (std::exception& e) {
     std::stringstream ss;
     ss << "HelicopterPlatform::rotate EXCEPTION:\n\t" << e.what();
-    logging::WARN(ss.str());
+    LOG_WARN(ss.str());
   }
 }
 

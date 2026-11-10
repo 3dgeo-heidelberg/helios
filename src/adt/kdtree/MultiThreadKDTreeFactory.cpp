@@ -93,7 +93,7 @@ MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
      */
     std::stringstream ss;
     ss << "Null KDTree with no primitives was built";
-    logging::DEBUG(ss.str());
+    LOG_DEBUG(ss.str());
   } else {
     if (computeStats) {
       computeKDTreeStats(root);

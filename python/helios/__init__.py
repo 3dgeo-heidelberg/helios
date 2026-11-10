@@ -4,6 +4,15 @@ from importlib import metadata
 __version__ = metadata.version("heliospp")
 del metadata
 
+from helios.logger import (
+    configure_logging,
+    get_logger,
+    shutdown_logging,
+    LoggingConfig,
+    LogFormat,
+    LoggingService,
+)
+
 from helios.leg import Leg
 from helios.platforms import (
     Platform,
@@ -29,6 +38,7 @@ from helios.settings import (
     ProgressBarStrategy,
     set_execution_settings,
     set_output_settings,
+    build_logging_config,
 )
 from helios.callbacks import (
     HookEndOfLegPolicy,
