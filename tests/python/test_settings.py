@@ -264,6 +264,7 @@ def test_legacy_waveform_constructor_and_yaml(tmp_path):
         FullWaveformSettings(bin_size="0.25 ns", sample_spacing=0.02)
     path = settings.to_yaml(tmp_path / "legacy.yaml")
     doc = yaml.safe_load(path.read_text())
+    doc["serialization_major_version"] = 0
     doc["serialization_minor_version"] = 0
     doc["fields"] = {
         "bin_size": 0.25e-9,
@@ -271,9 +272,8 @@ def test_legacy_waveform_constructor_and_yaml(tmp_path):
         "max_fullwave_range": 100e-9,
     }
     path.write_text(yaml.safe_dump(doc))
-    with pytest.warns(DeprecationWarning):
-        restored = FullWaveformSettings.from_yaml(path)
-    assert restored.max_recording_span == pytest.approx(14.9896229)
+    with pytest.raises(ValueError, match="Invalid YAML serialization format"):
+        FullWaveformSettings.from_yaml(path)
 
 
 @pytest.mark.parametrize(

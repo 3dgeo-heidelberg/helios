@@ -173,14 +173,11 @@ TEST_CASE(
   "[energy]")
 {
   double const angle = GENERATE(0.0, 0.2, PI / 4.0, 1.2, PI / 2.0 - 1e-8);
-  int const lighting = GENERATE(0, 1, 2);
+  int const lighting = GENERATE(0, 1, 2, 3);
   Material material;
   material.reflectance = 0.4;
-  if (lighting > 0)
-    material.kd[0] = 0.75;
-  if (lighting == 2)
-    material.ks[0] = 0.25;
-  material.setSpecularity();
+  material.isDirectionIndependent = lighting == 0;
+  material.specularity = lighting == 2 ? 0.25 : (lighting == 3 ? 1.0 : 0.0);
   material.specularExponent = 2.5;
   double const cosine = std::cos(angle);
   auto scanner = energyScanner();
@@ -192,12 +189,12 @@ TEST_CASE(
   double expected = material.reflectance;
   if (lighting == 1)
     expected *= cosine;
-  if (lighting == 2)
+  if (lighting >= 2)
     expected *=
       (1 - material.specularity) * cosine +
       material.specularity * std::pow(std::abs(std::cos(2 * angle)), 2.5);
   REQUIRE(ratio(*model, cosine, 100.0, material) ==
-          Catch::Approx(geometry * expected).epsilon(1e-12));
+          Catch::Approx(geometry * expected).epsilon(1e-12).margin(1e-20));
   double const grazing = ratio(*model, 0.0, 100.0, material);
   REQUIRE(std::isfinite(grazing));
   double const expectedGrazing =
@@ -556,7 +553,6 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
   auto part = std::make_shared<ScenePart>();
   auto material = std::make_shared<Material>();
   material->reflectance = 0.5;
-  material->kd[0] = 1.0;
   scanner->setFixedIncidenceAngle(fixedIncidence);
   scene.primitives.push_back(new CosineOnlyTriangle(
     Vertex(xmin, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
@@ -1027,7 +1023,6 @@ TEST_CASE("Both analytics paths record transverse hit radii", "[energy]")
   auto part = std::make_shared<ScenePart>();
   auto material = std::make_shared<Material>();
   material->reflectance = 0.5;
-  material->kd[0] = 1.0;
   scene.primitives.push_back(new AnalyticsTriangle(
     Vertex(-1, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
   scene.primitives.push_back(new AnalyticsTriangle(
@@ -1157,4 +1152,25 @@ TEST_CASE("Beam rotation updates atomically and survives copies", "[energy]")
     auto b = device.getSubrays()[i].rotation;
     REQUIRE(a.applyTo(Directions::forward) == b.applyTo(Directions::forward));
   }
+}
+
+TEST_CASE("Invalid material scattering parameters are rejected",
+          "[energy][material]")
+{
+  auto scanner = energyScanner();
+  scanner->prepareSimulation();
+  auto model = scanner->getScanningDevice(0).getEnergyModel();
+  Material material;
+  material.reflectance = 0.5;
+  material.isDirectionIndependent = GENERATE(false, true);
+  for (double value : { -0.1,
+                        1.1,
+                        std::numeric_limits<double>::infinity(),
+                        std::numeric_limits<double>::quiet_NaN() }) {
+    material.specularity = value;
+    REQUIRE_THROWS_AS(ratio(*model, 0.8, 100, material), std::invalid_argument);
+  }
+  material.specularity = 0;
+  material.specularExponent = -1;
+  REQUIRE_THROWS_AS(ratio(*model, 0.8, 100, material), std::invalid_argument);
 }

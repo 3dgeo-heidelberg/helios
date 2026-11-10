@@ -495,13 +495,6 @@ The ``matname`` parameter specifies a specific material (here: "leaves") in the 
     <param type="string" key="matfile" value="data/sceneparts/arbaro/tree.mtl" />
     <param type="string" key="matname" value="leaves" />
 
-Furthermore, voxel material also supports uniform randomization. For this, a number of random materials and a random range has to be specified:
-
-.. code-block:: xml
-
-    <param type="integer" key="randomMaterials" value="5" />
-    <param type="double" key="randomRange" value="0.1" />
-
 Read more about materials including custom HELIOS parameters on the page :doc:`Full waveform and intensity modelling <../intensity_fwf>`.
 
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/

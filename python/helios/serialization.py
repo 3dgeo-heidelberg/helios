@@ -31,12 +31,12 @@ import yaml
 # Do this only when there is strong need to, you will invalidate all
 # data that users might have serialized already. You can also delete
 # all migrations below in that case, as they are no longer relevant.
-SERIALIZATION_FORMAT_MAJOR_VERSION = 0
+SERIALIZATION_FORMAT_MAJOR_VERSION = 1
 
 # Bump this every time you change the serialization format. Alongside
 # this bump, you should adapt the schema in python/helios/data/serialization_schema.json
 # and add a new migration as described below.
-SERIALIZATION_FORMAT_MINOR_VERSION = 1
+SERIALIZATION_FORMAT_MINOR_VERSION = 0
 
 
 def _serialization_schema_git_reference(version: str) -> str:
@@ -94,20 +94,6 @@ def register_migration(from_minor_version: int):
 #
 # Minor version migrations. Add one per new minor version.
 #
-
-
-@register_migration(from_minor_version=0)
-def _migrate_v0_to_v1(document: dict[str, Any]) -> dict[str, Any]:
-    """Convert waveform time settings to physical range settings."""
-    migrated = dict(document)
-    if migrated.get("model_class") == "helios.settings.FullWaveformSettings":
-        from helios.settings import FullWaveformSettings
-
-        migrated["fields"] = FullWaveformSettings._normalize_init_kwargs(
-            migrated["fields"]
-        )
-    migrated["serialization_minor_version"] = 1
-    return migrated
 
 
 def _normalize_provenance_value(value: Any):
@@ -1090,14 +1076,14 @@ def _apply_migrations(document: dict[str, Any], path: Optional[Path]) -> dict[st
     if not isinstance(major_version, int):
         location = str(path) if path is not None else "<inline>"
         raise ValueError(
-            "Invalid serialization_major_version " f"in {location}: {major_version!r}"
+            f"Invalid serialization_major_version in {location}: {major_version!r}"
         )
 
     minor_version = document.get("serialization_minor_version")
     if not isinstance(minor_version, int):
         location = str(path) if path is not None else "<inline>"
         raise ValueError(
-            "Invalid serialization_minor_version " f"in {location}: {minor_version!r}"
+            f"Invalid serialization_minor_version in {location}: {minor_version!r}"
         )
 
     if major_version != SERIALIZATION_FORMAT_MAJOR_VERSION:

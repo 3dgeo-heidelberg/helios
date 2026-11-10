@@ -1,7 +1,9 @@
 #include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -41,26 +43,13 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
         // Before starting a new material, put previous material to the map:
         if (firstMaterial)
           firstMaterial = false;
-        else
+        else {
+          newMat.validate();
           newMats[newMat.name] = std::make_shared<Material>(newMat);
+        }
         newMat = Material();
         newMat.matFilePath = filePathString;
         newMat.name = lineParts[1];
-      } else if (lineParts[0] == "Ka" && lineParts.size() >= 4) {
-        // Read ambient
-        newMat.ka[0] = boost::lexical_cast<float>(lineParts[1]);
-        newMat.ka[1] = boost::lexical_cast<float>(lineParts[2]);
-        newMat.ka[2] = boost::lexical_cast<float>(lineParts[3]);
-      } else if (lineParts[0] == "Kd" && lineParts.size() >= 4) {
-        // Read diffuse
-        newMat.kd[0] = boost::lexical_cast<float>(lineParts[1]);
-        newMat.kd[1] = boost::lexical_cast<float>(lineParts[2]);
-        newMat.kd[2] = boost::lexical_cast<float>(lineParts[3]);
-      } else if (lineParts[0] == "Ks" && lineParts.size() >= 4) {
-        // Read specular
-        newMat.ks[0] = boost::lexical_cast<float>(lineParts[1]);
-        newMat.ks[1] = boost::lexical_cast<float>(lineParts[2]);
-        newMat.ks[2] = boost::lexical_cast<float>(lineParts[3]);
       } else if (lineParts[0] == "Ns" && lineParts.size() >= 2) {
         // Read specular exponent
         newMat.specularExponent = boost::lexical_cast<double>(lineParts[1]);
@@ -71,7 +60,28 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
 
       // ######### BEGIN HELIOS-specific additions to the wavefront .mtl
       // standard #########
-      else if (lineParts[0] == "helios_reflectance" && lineParts.size() >= 2) {
+      else if (lineParts[0] == "helios_specularity") {
+        if (lineParts.size() < 2)
+          throw std::invalid_argument("Missing helios_specularity");
+
+        newMat.specularity = boost::lexical_cast<double>(lineParts[1]);
+      } else if (lineParts[0] == "helios_is_direction_independent") {
+        if (lineParts.size() < 2)
+          throw std::invalid_argument("Missing direction-independent flag");
+
+        auto value = lineParts[1];
+        std::transform(value.begin(),
+                       value.end(),
+                       value.begin(),
+                       [](unsigned char c) { return std::tolower(c); });
+
+        if (value != "true" && value != "false" && value != "1" && value != "0")
+          throw std::invalid_argument(
+            "Invalid direction-independent flag for " + newMat.name);
+
+        newMat.isDirectionIndependent = value == "true" || value == "1";
+      } else if (lineParts[0] == "helios_reflectance" &&
+                 lineParts.size() >= 2) {
         newMat.reflectance = boost::lexical_cast<double>(lineParts[1]);
       }
 
@@ -97,14 +107,14 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
     }
 
     // Don't forget to put final material to the map:
-    newMat.setSpecularity(); // Specularity scalar from components
+    newMat.validate();
     newMats[newMat.name] = std::make_shared<Material>(newMat);
     std::stringstream ss;
     ss << newMats.size() << " material(s) loaded.";
     logging::DEBUG(ss.str());
   } catch (std::exception& e) {
     throw std::runtime_error("Error reading materials file '" + filePathString +
-                             "': " + e.what());
+                             "' (material " + newMat.name + "): " + e.what());
   }
   ifs.close();
 

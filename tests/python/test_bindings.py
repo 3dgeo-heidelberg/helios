@@ -588,14 +588,12 @@ def test_material_properties():
     material.spectra = "SpectraData"
     assert material.spectra == "SpectraData"
 
-    # Test readonly properties (assuming ka, kd, ks are arrays in the material class)
-    ka_array = np.array([0, 0, 0, 0], dtype=np.float32)
-    kd_array = np.array([0, 0, 0, 0], dtype=np.float32)
-    ks_array = np.array([0, 0, 0, 0], dtype=np.float32)
-
-    assert np.array_equal(material.ambient_components, ka_array)
-    assert np.array_equal(material.diffuse_components, kd_array)
-    assert np.array_equal(material.specular_components, ks_array)
+    assert material.is_direction_independent is False
+    material.is_direction_independent = True
+    assert _helios.Material(material).is_direction_independent is True
+    for value in [-0.1, 1.1, float("nan"), float("inf")]:
+        with pytest.raises(ValueError):
+            material.specularity = value
 
 
 def test_survey_instantiation():

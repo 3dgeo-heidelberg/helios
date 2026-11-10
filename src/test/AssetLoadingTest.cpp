@@ -1,3 +1,4 @@
+#include <assetloading/MaterialsFileReader.h>
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -724,20 +725,56 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(tri->material != nullptr);
     REQUIRE(tri->material->matFilePath == mtlPath.string());
     REQUIRE(tri->material->name == "SpaceMat");
-    const float eps = 1e-5f;
-
-    REQUIRE(tri->material->ka[0] == Catch::Approx(0.10f).margin(eps));
-    REQUIRE(tri->material->ka[1] == Catch::Approx(0.20f).margin(eps));
-    REQUIRE(tri->material->ka[2] == Catch::Approx(0.30f).margin(eps));
-
-    REQUIRE(tri->material->kd[0] == Catch::Approx(0.40f).margin(eps));
-    REQUIRE(tri->material->kd[1] == Catch::Approx(0.50f).margin(eps));
-    REQUIRE(tri->material->kd[2] == Catch::Approx(0.60f).margin(eps));
-
-    REQUIRE(tri->material->ks[0] == Catch::Approx(0.70f).margin(eps));
-    REQUIRE(tri->material->ks[1] == Catch::Approx(0.80f).margin(eps));
-    REQUIRE(tri->material->ks[2] == Catch::Approx(0.90f).margin(eps));
+    REQUIRE(tri->material->specularity == 0);
+    REQUIRE_FALSE(tri->material->isDirectionIndependent);
 
     fs::remove_all(tempDir);
   }
+}
+
+TEST_CASE("MTL scattering properties are explicit and independent of RGB",
+          "[assetloading][material]")
+{
+  auto path = std::filesystem::temp_directory_path() /
+              "helios_explicit_material_test.mtl";
+  struct Cleanup
+  {
+    std::filesystem::path path;
+    ~Cleanup() { std::filesystem::remove(path); }
+  } cleanup{ path };
+  {
+    std::ofstream out(path);
+    out << "newmtl first\nhelios_specularity 0.25\nNs 4\nKd 0 0 0\nKs 0 0 0\n"
+           "newmtl second\nhelios_is_direction_independent "
+           "TRUE\nhelios_specularity 0\n"
+           "newmtl last\nKd 1 1 1\nKs 1 1 1\n";
+  }
+  auto mats = MaterialsFileReader::loadMaterials(path.string());
+  REQUIRE(mats.at("first")->specularity == 0.25);
+  REQUIRE(mats.at("first")->specularExponent == 4);
+  REQUIRE_FALSE(mats.at("first")->isDirectionIndependent);
+  REQUIRE(mats.at("second")->isDirectionIndependent);
+  REQUIRE(mats.at("second")->specularity == 0);
+  REQUIRE(mats.at("last")->specularity == 0);
+  for (auto value : { "-1", "1.1", "nan", "inf" }) {
+    {
+      std::ofstream out(path);
+      out << "newmtl invalid\nhelios_specularity " << value
+          << "\nnewmtl next\n";
+    }
+    REQUIRE_THROWS(MaterialsFileReader::loadMaterials(path.string()));
+  }
+  {
+    std::ofstream out(path);
+    out << "newmtl invalid\nhelios_is_direction_independent maybe\n";
+  }
+  REQUIRE_THROWS(MaterialsFileReader::loadMaterials(path.string()));
+}
+
+TEST_CASE("Obsolete material randomization is rejected",
+          "[assetloading][material]")
+{
+  WavefrontObjFileLoader loader;
+  loader.params[GENERATE("randomMaterials", "randomRange")] = 1;
+  REQUIRE_THROWS(loader.parseMaterials());
 }

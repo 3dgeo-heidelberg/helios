@@ -136,8 +136,6 @@ def test_cosine_power_matches_phong_formula(energy_device, angle):
     model = _helios.EnergyModel(energy_device)
     material = _helios.Material()
     material.reflectance = 0.4
-    material.diffuse_components = [0.75, 0, 0, 0]
-    material.specular_components = [0.25, 0, 0, 0]
     material.specularity = 0.25
     material.specular_exponent = 2.5
     cosine = math.cos(angle)

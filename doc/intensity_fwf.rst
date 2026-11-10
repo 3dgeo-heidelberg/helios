@@ -410,7 +410,7 @@ Currently, for its calculation HELIOS++ takes the following factors into account
    * - Specularity
      - Specularity of the target surface.
        Calculated as: :math:`\sum k_d / \sum (k_d + k_s)`
-     - User: ``ks`` and ``kd`` in material file (`.mtl`)
+     - User: ``helios_specularity`` in material file (`.mtl`)
      - —
 
    * - Specular exponent
@@ -436,9 +436,8 @@ The default material, in case no material file is provided, looks like this:
 .. code-block::
 
     newmtl default  
-    Ka 0.0 0.0 0.0  
-    Kd 0.0 0.0 0.0  
-    Ks 0.0 0.0 0.0  
+    helios_specularity 0
+    helios_is_direction_independent false
     Ns 10  
     helios_classification 0  
     helios_reflectance 50
@@ -450,7 +449,7 @@ The default material, in case no material file is provided, looks like this:
 HELIOS-specific parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are four HELIOS-specific parameters, that can be added to material files by inserting respective lines in the material definitions.
+The following HELIOS-specific parameters that can be added to material files by inserting respective lines in the material definitions.
 
 * ``helios_reflectance``: This parameter specifies the reflectance of the target surface, e.g. ``helios_reflectance 70.8``. (default: 50.0)
 * ``helios_spectra``: Instead of setting reflectance values of the materials by hand, they can be retrieved from the ECOSTRESS spectral library (formally ASTER spectral library). For each material, this library provides a file specifying its reflectance for different wavelengths in range [0, 100]. HELIOS includes a small set of these spectra in the ``python/helios/data/spectra`` folder, such as asphalt, grass, wood or gray and red shingles. More spectra can be downloaded from NASA's JPL or users can add their own spectra (resulting from spectrometer measurements). The spectra files contained in any asset directory can be referenced by their name, e.g. ``helios_spectra grass``. Now HELIOS++ will select the appropriate reflectance for the material given the wavelength of the laser. If the selected wavelength is not specified in the library (as they are discrete values) the reflectance will be interpolated. If no spectra or reflectance is specified in the .mtl, the reflectance will be set to the default and a warning will be displayed.
@@ -466,7 +465,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 1. **BRDF Calculation**
 
-   The BRDF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (defined by the material parameters ``kd`` :math:`(k_d)`, ``ks`` :math:`(k_s)`, and the specular exponent ``Ns`` :math:`(N_s)`). The incidence angle :math:`\varphi` is determined from the ray-object intersection.
+   The BRDF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (set explicitly with ``helios_specularity``), together with the specular exponent ``Ns`` :math:`(N_s)`. The incidence angle :math:`\varphi` is determined from the ray-object intersection.
 
    .. math::
       \text{BRDF}_r = \rho \cdot BRDF(\varphi, \text{spec}, N_s)
@@ -478,15 +477,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
    with :math:`\varphi^* = \varphi - \pi/2` if :math:`\varphi > \pi/2`, otherwise :math:`\varphi^* = \varphi`.
 
-   The specularity :math:`\text{spec}` is computed as:
-
-   .. math::
-      \text{spec} = \frac{k_s[0] + k_s[1] + k_s[2]}{k_d[0] + k_d[1] + k_d[2] + k_s[0] + k_s[1] + k_s[2]}
-
-   Please note:
-
-   - If ``ks`` is 0, the material is fully diffuse and the BRDF simplifies to :math:`\text{BRDF}_r = \rho \cdot \cos(\varphi)` (Lambertian reflectance).
-   - If both ``kd`` and ``ks`` are 0, the material reflectance is direction-independent and the BRDF simplifies to :math:`\text{BRDF}_r = \rho`.
+   Specularity is supplied explicitly, with default zero. At zero, the response is Lambertian. With ``helios_is_direction_independent true``, the response equals reflectance regardless of incidence angle or specularity.
 
 
 2. **Lidar Cross Section Calculation**
@@ -530,3 +521,22 @@ References
 .. bibliography:: refs.bib
    :style: apa_recent
    :filter: docname in docnames
+
+
+Explicit lidar material properties
+----------------------------------
+
+Material scattering uses ``specularity`` (finite, between 0 and 1; default 0) and ``specular_exponent`` (finite and nonnegative; default 10). The default response is Lambertian. Set ``is_direction_independent=True`` to use reflectance without angular modulation; this overrides specularity.
+
+MTL files accept::
+
+   newmtl example
+   helios_specularity 0.25
+   helios_is_direction_independent false
+   Ns 10
+
+The flag accepts true/false (case-insensitive) or 1/0. ``Ns`` supplies the specular exponent. Both scalar parameters describe the chosen scattering model. They are not inferred from visible-light colors.
+
+``Ka``, ``Kd``, and ``Ks`` are ignored. Python ``ambient_components``, ``diffuse_components``, and ``specular_components`` have been removed, together with XML ``randomMaterials``/``randomRange``. Spectral-library loading only updates reflectance and preserves explicit specularity.
+
+Python document format is now 1.0. Old documents and binary scene files must be regenerated from source assets. Old binary layouts are rejected before decoding.

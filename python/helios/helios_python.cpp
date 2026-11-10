@@ -970,47 +970,29 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("use_vertex_colors", &Material::useVertexColors)
     .def_readwrite("mat_file_path", &Material::matFilePath)
     .def_readwrite("reflectance", &Material::reflectance)
-    .def_readwrite("specularity", &Material::specularity)
-    .def_readwrite("specular_exponent", &Material::specularExponent)
+    .def_property(
+      "specularity",
+      [](Material const& m) { return m.specularity; },
+      [](Material& m, double value) {
+        Material copy(m);
+        copy.specularity = value;
+        copy.validate();
+        m.specularity = value;
+      })
+    .def_property(
+      "specular_exponent",
+      [](Material const& m) { return m.specularExponent; },
+      [](Material& m, double value) {
+        Material copy(m);
+        copy.specularExponent = value;
+        copy.validate();
+        m.specularExponent = value;
+      })
     .def_readwrite("classification", &Material::classification)
     .def_readwrite("spectra", &Material::spectra)
     .def_readwrite("map_kd", &Material::map_Kd)
-    .def_property(
-      "ambient_components",
-      [](Material& m) {
-        return std::vector<float>(std::begin(m.ka), std::end(m.ka));
-      },
-      [](Material& m, const std::vector<float>& value) {
-        if (value.size() != 4) {
-          throw std::runtime_error(
-            "ambient_components must have exactly 4 elements");
-        }
-        std::copy(value.begin(), value.end(), m.ka);
-      })
-    .def_property(
-      "diffuse_components",
-      [](Material& m) {
-        return std::vector<float>(std::begin(m.kd), std::end(m.kd));
-      },
-      [](Material& m, const std::vector<float>& value) {
-        if (value.size() != 4) {
-          throw std::runtime_error(
-            "diffuse_components must have exactly 4 elements");
-        }
-        std::copy(value.begin(), value.end(), m.kd);
-      })
-    .def_property(
-      "specular_components",
-      [](Material& m) {
-        return std::vector<float>(std::begin(m.ks), std::end(m.ks));
-      },
-      [](Material& m, const std::vector<float>& value) {
-        if (value.size() != 4) {
-          throw std::runtime_error(
-            "specular_components must have exactly 4 elements");
-        }
-        std::copy(value.begin(), value.end(), m.ks);
-      });
+    .def_readwrite("is_direction_independent",
+                   &Material::isDirectionIndependent);
 
   py::class_<Survey, Asset, std::shared_ptr<Survey>> survey(
     m, "Survey", py::module_local());
