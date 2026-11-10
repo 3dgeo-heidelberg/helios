@@ -146,6 +146,15 @@ public:
   double getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                                const glm::dvec3& rayDir,
                                const glm::dvec3& intersectionPoint) override;
+  /** Cosine of the smaller incidence angle; rayDir must be normalized. */
+  double getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                                 const glm::dvec3& rayDir,
+                                 const glm::dvec3& intersectionPoint) override;
+  /** Cosine counterpart of getIncidenceAngleClosestFace_rad. */
+  double getIncidenceAngleClosestFaceCosine(
+    const glm::dvec3& rayOrigin,
+    const glm::dvec3& rayDir,
+    const glm::dvec3& intersectionPoint);
   /**
    * @brief Obtain the incidence angle with respect to closest face for
    * given intersection point.

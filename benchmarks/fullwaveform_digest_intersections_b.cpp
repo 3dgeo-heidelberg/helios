@@ -60,7 +60,7 @@ struct BenchmarkContext
   RandomnessGenerator<double> randGen1;
   RandomnessGenerator<double> randGen2;
   glm::dvec3 beamDir;
-  std::map<double, double> reflections; // distance_m -> intensity
+  std::map<double, double> reflections; // distance_m -> dimensionless transfer
   std::vector<RaySceneIntersection> intersects;
 
   // Keep a valid Primitive graph for hitObject/classification logic.
@@ -69,7 +69,8 @@ struct BenchmarkContext
   std::unique_ptr<AABB> prim;
 
   explicit BenchmarkContext(int const beamSampleQuality,
-                            std::size_t const numReflections)
+                            std::size_t const numReflections,
+                            double const stepDist = 5.0)
     : scene(makeScene())
     , scanner(makeScanner(beamSampleQuality))
     , runnable(scanner, *scene, makePulse())
@@ -110,11 +111,10 @@ struct BenchmarkContext
     // Distances are chosen to produce separated waveform peaks.
     // Use strictly increasing distances to avoid map key collisions.
     double const startDist = 10.0;
-    double const stepDist = 5.0;
     for (std::size_t i = 0; i < numReflections; ++i) {
       double const d = startDist + stepDist * static_cast<double>(i);
       double const intensity = 5000.0 / (1.0 + static_cast<double>(i));
-      reflections.emplace(d, intensity);
+      reflections.emplace(d, intensity / (scanner->getPulseAmplitude(0) * 1e9));
 
       RaySceneIntersection rsi;
       rsi.prim = prim.get();
@@ -157,8 +157,7 @@ struct BenchmarkContext
                                       std::list<int>({ 100000 }), // pulse freqs
                                       5.0,                // pulseLength_ns
                                       "benchmarkScanner", // id
-                                      4.0,                // averagePower
-                                      1.0,                // beamQuality
+                                      4.0,                // pulseAmplitude
                                       0.99,               // efficiency
                                       0.15,               // receiverDiameter
                                       23.0,  // atmosphericVisibility
@@ -182,6 +181,7 @@ struct BenchmarkContext
                                                   ),
       0);
 
+    scanner->applySettingsFWF(scanner->getFWFSettings(0));
     scanner->prepareSimulation();
     return scanner;
   }
@@ -193,7 +193,8 @@ fullwaveform_digest_intersections_benchmark(benchmark::State& state)
   // Parameterize by number of reflections/intersections.
   std::size_t const numReflections = static_cast<std::size_t>(state.range(0));
 
-  BenchmarkContext ctx(/*beamSampleQuality=*/3, numReflections);
+  BenchmarkContext ctx(
+    /*beamSampleQuality=*/3, numReflections, state.range(1) / 1000.0);
 
   for (auto _ : state) {
     // Keep capture buffers stable.
@@ -213,6 +214,11 @@ fullwaveform_digest_intersections_benchmark(benchmark::State& state)
     benchmark::ClobberMemory();
   }
 
+  WaveformGrid grid;
+  ctx.scanner->initializeFullWaveform(
+    ctx.reflections.begin()->first, ctx.reflections.rbegin()->first, grid, 0);
+  state.counters["sample_buffer_bytes"] = grid.sampleCount * sizeof(double);
+  state.counters["samples"] = grid.sampleCount;
   state.counters["reflections"] =
     benchmark::Counter(static_cast<double>(ctx.reflections.size()));
 }
@@ -220,10 +226,9 @@ fullwaveform_digest_intersections_benchmark(benchmark::State& state)
 } // namespace
 
 BENCHMARK(fullwaveform_digest_intersections_benchmark)
-  ->Arg(1)
-  ->Arg(3)
-  ->Arg(8)
-  ->Arg(16)
-  ->Arg(32);
+  ->Args({ 1, 0 })
+  ->Args({ 32, 10 })
+  ->Args({ 32, 5000 })
+  ->Args({ 32, 20000 });
 
 BENCHMARK_MAIN();

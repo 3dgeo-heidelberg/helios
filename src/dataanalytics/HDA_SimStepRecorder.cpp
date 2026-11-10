@@ -394,7 +394,7 @@ HDA_SimStepRecorder::recordStochastic()
   size_t const N_SAMPLES = 1000000;
   double const ERR_BASE = 1000; // Distance without error
   double err;
-  FullWaveformPulseRunnable fwpr(sp->getScanner(), fakePulse);
+  FullWaveformPulseRunnable fwpr(sp->getScanner(), sp->getScene(), fakePulse);
   fwpr.detector = s.getDetector();
   for (size_t i = 0; i < N_SAMPLES; ++i) {
     err = ERR_BASE;

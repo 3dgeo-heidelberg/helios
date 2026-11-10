@@ -1,5 +1,7 @@
 #include "Voxel.h"
 #include <MathConstants.h>
+#include <algorithm>
+#include <cmath>
 #include <glm/gtx/vector_angle.hpp>
 
 // ***  CONSTRUCTION  *** //
@@ -58,21 +60,38 @@ Voxel::getIncidenceAngle_rad(const glm::dvec3& rayOrigin,
                              const glm::dvec3& rayDir,
                              const glm::dvec3& intersectionPoint)
 {
-  // If there is no valid normal, use closest face strategy
-  if (!hasNormal()) {
-    return getIncidenceAngleClosestFace_rad(
-      rayOrigin, rayDir, intersectionPoint);
-  }
-
-  // Determine incidence angle considering voxel normal
-  double const angle = glm::angle(v.normal, rayDir);
-  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
+  return std::acos(
+    getIncidenceAngleCosine(rayOrigin, rayDir, intersectionPoint));
 }
 
 double
 Voxel::getIncidenceAngleClosestFace_rad(const glm::dvec3& rayOrigin,
                                         const glm::dvec3& rayDir,
                                         const glm::dvec3& intersectionPoint)
+{
+  return std::acos(
+    getIncidenceAngleClosestFaceCosine(rayOrigin, rayDir, intersectionPoint));
+}
+
+double
+Voxel::getIncidenceAngleCosine(const glm::dvec3& rayOrigin,
+                               const glm::dvec3& rayDir,
+                               const glm::dvec3& intersectionPoint)
+{
+  // If there is no valid normal, use closest face strategy
+  if (!hasNormal()) {
+    return getIncidenceAngleClosestFaceCosine(
+      rayOrigin, rayDir, intersectionPoint);
+  }
+
+  // Determine incidence angle considering voxel normal
+  return std::min(1.0, std::abs(glm::dot(v.normal, rayDir)));
+}
+
+double
+Voxel::getIncidenceAngleClosestFaceCosine(const glm::dvec3& rayOrigin,
+                                          const glm::dvec3& rayDir,
+                                          const glm::dvec3& intersectionPoint)
 {
   // TODO Pending : Use dot^2 instead of distance should be more efficient
   // Determine normal of closest face to compute incidence angle
@@ -111,8 +130,7 @@ Voxel::getIncidenceAngleClosestFace_rad(const glm::dvec3& rayOrigin,
   }
 
   // Compute incidence angle
-  double const angle = glm::angle(normal, rayDir);
-  return (angle > PI_HALF) ? PI - angle : angle; // Return min. angle
+  return std::min(1.0, std::abs(glm::dot(normal, rayDir)));
 }
 
 std::vector<double>

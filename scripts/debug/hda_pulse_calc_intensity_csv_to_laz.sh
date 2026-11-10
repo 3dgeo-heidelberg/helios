@@ -43,7 +43,7 @@ ${TXT2LAS} -i "$1" \
     -add_attribute 10 'target_range_m' 'target_range_m' \
     -add_attribute 10 'target_area_m2' 'target_area_m2' \
     -add_attribute 10 'radius_m' 'radius_m' \
-    -add_attribute 10 'bdrf' 'bdrf' \
+    -add_attribute 10 'brdf' 'brdf' \
     -add_attribute 10 'cross_section_m2' 'cross_section_m2' \
     -add_attribute 10 'received_power' 'received_power' \
     -add_attribute 2 'captured' 'captured' \

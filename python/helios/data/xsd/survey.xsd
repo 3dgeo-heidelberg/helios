@@ -28,7 +28,6 @@
                     <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
-                    <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
                     <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="opticsWarmupPhase_s" use="optional"/>
@@ -85,8 +84,24 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
+                                            <xs:attribute name="beamSamplingMethod">
+                                                <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                        <xs:enumeration value="annular"/>
+                                                        <xs:enumeration value="cartesian"/>
+                                                    </xs:restriction>
+                                                </xs:simpleType>
+                                            </xs:attribute>
                                             <xs:attribute type="xs:int" name="beamSampleQuality" use="optional"/>
+                                            <xs:attribute type="xs:double" name="beamSamplingFactor" use="optional"/>
                                             <xs:attribute type="xs:float" name="binSize_ns" use="optional"/>
+                                            <xs:attribute type="xs:double" name="sampleSpacing_m"/>
+                                            <xs:attribute type="xs:double" name="peakWindow_m"/>
+                                            <xs:attribute type="xs:double" name="maxRecordingSpan_m"/>
+                                            <xs:attribute type="xs:string" name="pulseShape"/>
+                                            <xs:attribute type="xs:double" name="gaussianMean_ns"/>
+                                            <xs:attribute type="xs:boolean" name="correctPeakOffset"/>
+                                            <xs:attribute type="xs:double" name="recordingTailTolerance"/>
                                             <xs:attribute type="xs:float" name="maxFullwaveRange_ns" use="optional"/>
                                             <xs:attribute type="xs:float" name="winSize_ns" use="optional"/>
                                         </xs:extension>
@@ -176,7 +191,6 @@
                                                         <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
-                                                        <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
                                                         <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="opticsWarmupPhase_s" use="optional"/>

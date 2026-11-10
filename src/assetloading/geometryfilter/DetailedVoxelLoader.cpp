@@ -77,12 +77,6 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
   mat.reflectance = 0.5;
   mat.specularity = 0.5;
   mat.classification = 1;
-  mat.ka[0] = 0.5;    mat.ka[1] = 0.5;
-  mat.ka[2] = 0.5;    mat.ka[2] = 0.5;
-  mat.kd[0] = 0.5;    mat.kd[1] = 0.5;
-  mat.kd[2] = 0.5;    mat.kd[3] = 0.5;
-  mat.ks[0] = 0.5;    mat.ks[1] = 0.5;
-  mat.ks[2] = 0.5;    mat.ks[3] = 0.5;
   mat.spectra = "wood";*/
 
   // Parse detailed voxels

@@ -26,7 +26,6 @@ TEST_CASE("Survey Copy Test")
                                     4.0,
                                     "MyScanner",
                                     80.5,
-                                    3.0,
                                     0.9,
                                     0.7,
                                     0.8,
@@ -63,8 +62,8 @@ TEST_CASE("Survey Copy Test")
                       std::vector<int>({ 1, 2 }),
                       std::vector<double>({ 0.1, 0.2, 0.3 })));
   baseScene->primitives[1]->material = std::make_shared<Material>();
-  baseScene->primitives[1]->material->ka[0] = 1.1;
-  baseScene->primitives[1]->material->ks[1] = 1.2;
+  baseScene->primitives[1]->material->specularExponent = 1.1;
+  baseScene->primitives[1]->material->specularity = 0.2;
 
   // Copy base Survey
   std::shared_ptr<Survey> copy = std::make_shared<Survey>(*survey, true);
@@ -91,7 +90,7 @@ TEST_CASE("Survey Copy Test")
   std::shared_ptr<Scene> copyScene = copy->scene;
   copyScene->primitives[0]->getVertices()[0].pos.x += 0.1;
   copyScene->primitives[0]->part->onRayIntersectionArgument += 0.034;
-  copyScene->primitives[1]->material->ks[1] += 0.1;
+  copyScene->primitives[1]->material->specularity += 0.1;
   DetailedVoxel* copyDv = (DetailedVoxel*)copyScene->primitives[1];
   (*copyDv)[1] += 0.1;
 
@@ -101,7 +100,8 @@ TEST_CASE("Survey Copy Test")
   REQUIRE(copy->simSpeedFactor == survey->simSpeedFactor);
 
   REQUIRE(copy->scanner->name != survey->scanner->name);
-  REQUIRE(copy->scanner->getNumTimeBins() == survey->scanner->getNumTimeBins());
+  REQUIRE(copy->scanner->getPulseModel().peakOffset() ==
+          survey->scanner->getPulseModel().peakOffset());
   REQUIRE(copy->scanner->isCalcEchowidth() ==
           survey->scanner->isCalcEchowidth());
   REQUIRE(copy->scanner->getFWFSettings().minEchoWidth !=
@@ -150,10 +150,10 @@ TEST_CASE("Survey Copy Test")
           baseScene->primitives[0]->getVertices()[0].pos.y);
   REQUIRE(copyScene->primitives[0]->part->onRayIntersectionArgument !=
           baseScene->primitives[0]->part->onRayIntersectionArgument);
-  REQUIRE(copyScene->primitives[1]->material->ks[0] ==
-          baseScene->primitives[1]->material->ks[0]);
-  REQUIRE(copyScene->primitives[1]->material->ks[1] !=
-          baseScene->primitives[1]->material->ks[1]);
+  REQUIRE(copyScene->primitives[1]->material->specularExponent ==
+          baseScene->primitives[1]->material->specularExponent);
+  REQUIRE(copyScene->primitives[1]->material->specularity !=
+          baseScene->primitives[1]->material->specularity);
 
   DetailedVoxel* baseDv = (DetailedVoxel*)baseScene->primitives[1];
   REQUIRE((*copyDv)[1] != (*baseDv)[1]);
