@@ -284,6 +284,7 @@ FullWaveformPulseRunnable::handleSubray(
       if (!rayContinues) { // If ray is not continuing
         // Then register hit by default
         reflections.insert(pair<double, double>(distance, intensity));
+        intersect->incidenceAngle = incidenceAngle;
         intersects.push_back(*intersect);
       }
 #if DATA_ANALYTICS >= 2
@@ -550,6 +551,7 @@ FullWaveformPulseRunnable::digestFullWaveform(
 
     string hitObject;
     int classification = 0;
+    double incidenceAngle = 0.0;
     if (closestIntersection != nullptr) {
       hitObject = closestIntersection->prim->part->mId;
       if (closestIntersection->prim->part->getType() ==
@@ -558,6 +560,7 @@ FullWaveformPulseRunnable::digestFullWaveform(
         hitObject = hitObject.substr(5);
       }
       classification = closestIntersection->prim->material->classification;
+      incidenceAngle = closestIntersection->incidenceAngle;
     }
 
     // Add distance error (mechanical range error)
@@ -573,6 +576,7 @@ FullWaveformPulseRunnable::digestFullWaveform(
     tmp.beamDirection = beamDir;
     tmp.distance = distance;
     tmp.echo_width = echo_width;
+    tmp.incidenceAngle = incidenceAngle;
     tmp.intensity = fullwave.at(i);
     tmp.fullwaveIndex = pulse.getPulseNumber();
     tmp.hitObjectId = hitObject;

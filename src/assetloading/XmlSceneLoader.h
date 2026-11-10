@@ -100,25 +100,19 @@ public:
    *  be instantiated, otherwise it will be nullptr
    *
    * @param scenePartNode XML part node defining the scene part
-   * @param[out] holistic Used to specify if all vertices defining each
-   *  primitive must be considered as a whole (true) or not
    * @return Built scene part if any, nullptr otherwise
    * @see XmlSceneLoader::loadfilter
    */
-  std::shared_ptr<ScenePart> loadFilters(tinyxml2::XMLElement* scenePartNode,
-                                         bool& holistic);
+  std::shared_ptr<ScenePart> loadFilters(tinyxml2::XMLElement* scenePartNode);
 
   /**
    * @brief Load a filter from a XML filter node.
    * @param filterNode XML node defining the filter.
-   * @param[out] holistic Used to specify if all vertices defining each
-   *  primitive must be considered as a whole (true) or not
    * @param scenePart The scene part to be transformed by the filter.
    * @return Built filter if any, nullptr otherwise
    * @see XmlSceneLoader::loadFilters
    */
   AbstractGeometryFilter* loadFilter(tinyxml2::XMLElement* filterNode,
-                                     bool& holistic,
                                      ScenePart* scenePart);
 
   /**
@@ -163,8 +157,6 @@ public:
    *  integrated in the scene and totally configured
    * @param scenePart The scene part object to be digested
    * @param scene The scene where the scene part belongs
-   * @param holistic Flag used to specify if all vertices defining each
-   *  primitive must be considered as a whole (true) or not (false)
    * @param splitPart Flag to specify if scene part must be splitted into
    *  subparts (true) or not (false)
    * @param dynObject Flag to specify if the scene part corresponds to a
@@ -175,7 +167,6 @@ public:
    */
   void digestScenePart(std::shared_ptr<ScenePart>& scenePart,
                        std::shared_ptr<StaticScene>& scene,
-                       bool holistic,
                        bool splitPart,
                        bool dynObject,
                        int& partIndex);

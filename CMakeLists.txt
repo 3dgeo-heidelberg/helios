@@ -27,13 +27,6 @@ project(Helios++
 # We also store relevant CMake modules in the cmake/ directory
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 
-# Set CMake policies for this project
-
-# We allow <Package>_ROOT (env) variables for locating dependencies
-cmake_policy(SET CMP0074 NEW)
-# We allow target_sources to convert relative paths to absolute paths
-cmake_policy(SET CMP0076 NEW)
-
 # Initialize some default paths
 include(GNUInstallDirs)
 
@@ -66,7 +59,7 @@ add_library(helios)
 find_package(GDAL CONFIG REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread regex filesystem iostreams random)
+find_package(Boost REQUIRED COMPONENTS thread regex iostreams random)
 find_package(Armadillo REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
@@ -111,7 +104,6 @@ target_link_libraries(helios
     Boost::headers
     Boost::thread
     Boost::regex
-    Boost::filesystem
     Boost::iostreams
     Boost::random
     cereal::cereal

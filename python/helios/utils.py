@@ -580,6 +580,7 @@ meas_dtype = np.dtype(
         ("beam_direction", "3f8"),
         ("beam_origin", "3f8"),
         ("distance", "f8"),
+        ("incidence_angle", "f8"),
         ("intensity", "f8"),
         ("echo_width", "f8"),
         ("return_number", "i4"),

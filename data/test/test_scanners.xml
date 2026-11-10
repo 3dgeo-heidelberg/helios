@@ -306,4 +306,29 @@
 
   <!--######## END DJI Zenmuse L2 ####### -->
 
+  <!-- ##### BEGIN ADJUSTED RIEGL VZ-400 (noise-free) ##### -->
+  <scanner  id                         = "riegl_vz400_adj"
+            name                       = "RIEGL VZ-400 (noise-free)"
+            accuracy_m                 = "0.0"
+            beamDivergence_rad         = "0.0003"
+            headRotatePerSecMax_deg    = "60"
+            optics                     = "rotating"
+            pulseFreqs_Hz              = "100000,300000"
+            pulseLength_ns             = "5"
+            rangeMin_m                 = "1.5"
+            scanAngleMax_deg           = "120"
+            scanAngleEffectiveMax_deg  = "50"
+            scanFreqMin_Hz             = "3"
+            scanFreqMax_Hz             = "120">
+
+    <beamOrigin x="0" y="0" z="0.2">
+      <rot axis="y" angle_deg="0" />
+      <rot axis="z" angle_deg="0" />
+      <rot axis="x" angle_deg="0" />
+    </beamOrigin>
+    <headRotateAxis x="0" y="0" z="1"/>
+
+  </scanner>
+  <!-- ##### END RIEGL VZ-400 (no noise) ##### -->
+
 </document>

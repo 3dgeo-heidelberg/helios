@@ -4,10 +4,10 @@
 #include <LadLutLoader.h>
 #include <assetloading/MaterialsFileReader.h>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <noise/UniformNoiseSource.h>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 ScenePart*
 DetailedVoxelLoader::run()
@@ -16,7 +16,7 @@ DetailedVoxelLoader::run()
   bool transmittiveMode = false;
   if (params.find("intersectionMode") != params.end()) {
     primsOut->onRayIntersectionMode =
-      boost::get<std::string>(params["intersectionMode"]);
+      std::get<std::string>(params["intersectionMode"]);
     boost::to_upper(primsOut->onRayIntersectionMode);
     if (primsOut->onRayIntersectionMode == "SCALED") {
       primsOut->onRayIntersectionArgument = 0.5;
@@ -25,10 +25,10 @@ DetailedVoxelLoader::run()
     transmittiveMode = true;
   if (params.find("intersectionArgument") != params.end()) {
     primsOut->onRayIntersectionArgument =
-      boost::get<double>(params["intersectionArgument"]);
+      std::get<double>(params["intersectionArgument"]);
   }
   if (params.find("randomShift") != params.end()) {
-    primsOut->randomShift = boost::get<bool>(params["randomShift"]);
+    primsOut->randomShift = std::get<bool>(params["randomShift"]);
   }
 
   // Determine filepath
@@ -129,7 +129,7 @@ DetailedVoxelLoader::loadLadlut()
     return;
 
   // Load LadLut
-  std::string ladlutPath = boost::get<std::string>(params["ladlut"]);
+  std::string ladlutPath = std::get<std::string>(params["ladlut"]);
   LadLutLoader ladlutLoader;
   primsOut->ladlut = ladlutLoader.load(ladlutPath);
 }

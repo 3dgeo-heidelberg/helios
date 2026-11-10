@@ -4,11 +4,11 @@
 #include <filems/write/core/HeliosWriter.h>
 #include <scanner/Trajectory.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <memory>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace helios {
 namespace filems {
@@ -91,7 +91,10 @@ public:
   /**
    * @see filems::TrajectoryWriter::getOutputFilePath
    */
-  inline std::string getOutputPath() const { return sfw->getPath(); }
+  inline std::string getOutputPath() const
+  {
+    return sfw == nullptr ? "" : sfw->getPath();
+  }
 };
 
 }

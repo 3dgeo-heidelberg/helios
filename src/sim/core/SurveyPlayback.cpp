@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 #include <logger_core.hpp>
 #include <string>
 
@@ -7,9 +8,8 @@
 #include <memory>
 using namespace std::chrono;
 
-#include <boost/filesystem.hpp>
-#include <boost/format.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "AbstractDetector.h"
 #include "HelicopterPlatform.h"
@@ -153,7 +153,13 @@ SurveyPlayback::estimateTemporalLegProgress()
   double const t0 = imp->getCurrentLegStartTime();
   double const t = imp->getStepLoop().getCurrentTime();
   double const Dt = imp->getCurrentLegTimeDiff();
-  return (int)(100 * t / (t0 + Dt));
+  double const legDuration = t0 + Dt;
+  // Zero-duration legs (e.g. TELEPORT/STOP legs, which have Dt == 0 and can
+  // start at t0 == 0) would otherwise divide by zero here; such legs are
+  // considered complete as soon as they start.
+  if (legDuration <= 0.0)
+    return 100;
+  return (int)(100 * t / legDuration);
 }
 
 void
@@ -244,7 +250,7 @@ SurveyPlayback::getCurrentLegIndex()
 }
 
 string
-SurveyPlayback::getLegOutputPrefix(std::string format)
+SurveyPlayback::getLegOutputPrefix(int width)
 {
   std::shared_ptr<Leg> leg = getCurrentLeg();
   std::shared_ptr<ScanningStrip> strip = leg->getStrip();
@@ -252,11 +258,12 @@ SurveyPlayback::getLegOutputPrefix(std::string format)
   // Mark leg as processed
   leg->wasProcessed = true;
 
-  stringstream ss;
+  std::ostringstream ss;
+  ss << std::setfill('0');
   if (strip != nullptr) { // Handle prefix when leg belongs to a split
-    ss << "strip" << boost::str(boost::format(format) % strip->getStripId());
+    ss << "strip" << std::setw(width) << strip->getStripId();
   } else { // Handle prefix when leg does not belong to a split
-    ss << "leg" << boost::str(boost::format(format) % leg->getSerialId());
+    ss << "leg" << std::internal << std::setw(width) << leg->getSerialId();
   }
   return ss.str();
 }

@@ -1,10 +1,10 @@
 #include <FMSWriteFacade.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <sstream>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace helios::filems {
 

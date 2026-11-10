@@ -84,7 +84,10 @@ AbstractPulseRunnable::capturePoint(
   if (allMeasurements != nullptr) {
     std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
     allMeasurements->push_back(m);
-    (allMeasurements->end() - 1)->position += scene.getShift();
+    glm::dvec3 const& shift = scene.getShift();
+    Measurement& stored_m = allMeasurements->back();
+    stored_m.position += shift;
+    stored_m.beamOrigin += shift;
   }
   if (detector->pcloudYielder != nullptr)
     detector->pcloudYielder->push(m);

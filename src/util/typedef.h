@@ -3,27 +3,24 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <variant>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 
 #include "maths/Rotation.h"
 
-#include <boost/variant/get.hpp>
-#include <boost/variant/variant.hpp>
-
 /**
- * @brief Define boost::variant based type for common objects
+ * @brief Define std::variant based type for common objects
  */
-typedef boost::
-  variant<bool, int, float, double, std::string, glm::dvec3, Rotation>
-    ObjectT;
+using ObjectT =
+  std::variant<bool, int, float, double, std::string, glm::dvec3, Rotation>;
 
 /**
  * @brief stringVisitor defines a different string building behavior for
  *  different printable objects
  */
-struct stringVisitor : public boost::static_visitor<std::string>
+struct stringVisitor
 {
   /**
    * @brief String visitor behavior fo bool type

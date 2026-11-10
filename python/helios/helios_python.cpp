@@ -58,6 +58,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <scene/primitives/Primitive.h>
 #include <scene/primitives/Triangle.h>
 #include <scene/primitives/Vertex.h>
+#include <scene/primitives/Voxel.h>
 #include <sim/core/SurveyHooks.h>
 
 #include <DynMovingObject.h>
@@ -487,7 +488,10 @@ PYBIND11_MODULE(_helios, m)
     .def_property_readonly("centroid", &AABB::getCentroid)
     .def("__str__", &AABB::toString);
 
-  py::class_<DetailedVoxel, std::shared_ptr<DetailedVoxel>, Primitive>
+  py::class_<Voxel, std::shared_ptr<Voxel>, Primitive> voxel(m, "Voxel");
+  voxel.def_readonly("half_size", &Voxel::halfSize);
+
+  py::class_<DetailedVoxel, std::shared_ptr<DetailedVoxel>, Voxel>
     detailed_voxel(m, "DetailedVoxel");
   detailed_voxel.def(py::init<>())
     .def(py::init<glm::dvec3, double, std::vector<int>, std::vector<double>>(),
@@ -628,6 +632,7 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("beam_direction", &Measurement::beamDirection)
     .def_readwrite("beam_origin", &Measurement::beamOrigin)
     .def_readwrite("distance", &Measurement::distance)
+    .def_readwrite("incidence_angle", &Measurement::incidenceAngle)
     .def_readwrite("intensity", &Measurement::intensity)
     .def_readwrite("echo_width", &Measurement::echo_width)
     .def_readwrite("return_number", &Measurement::returnNumber)
@@ -1355,7 +1360,7 @@ PYBIND11_MODULE(_helios, m)
       "kd_grove_factory", &Scene::getKDGroveFactory, &Scene::setKDGroveFactory)
     .def_property_readonly(
       "num_primitives",
-      [](const ScenePart& self) -> size_t { return self.mPrimitives.size(); })
+      [](const Scene& self) -> size_t { return self.primitives.size(); })
     .def_property_readonly("shift", &Scene::getShift)
     .def_property(
       "dyn_scene_step",

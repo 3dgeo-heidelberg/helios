@@ -13,13 +13,13 @@
 #include <dataanalytics/HDA_GlobalVarsReporter.h>
 #endif
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gdal_priv.h>
 #include <logger_core.hpp>
 
 #include <iomanip>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 // ***  DECLARATIONS  *** //
 // ********************** //

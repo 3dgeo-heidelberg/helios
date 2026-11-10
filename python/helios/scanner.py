@@ -136,6 +136,7 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         scanner._disable_yaml_serialization_for_descendants()
         scanner._set_constructor_provenance(
             "from_xml",
+            "scanner_file",
             scanner_file=scanner_file,
             scanner_id=scanner_id,
         )

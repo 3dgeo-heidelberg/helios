@@ -10,13 +10,13 @@
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <chrono>
 #include <memory>
 #include <unordered_set>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 std::shared_ptr<Survey>
 XmlSurveyLoader::load(bool legNoiseDisabled)

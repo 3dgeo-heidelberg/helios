@@ -300,8 +300,12 @@ def cli(**kw):
             set_rng_seed(seed)
         else:
             set_rng_seed()
-
-        survey = Survey.from_xml(kw.get("survey_file_path"))
+            
+        survey_file_path = Path(kw.get("survey_file_path"))
+        if survey_file_path.suffix.lower() in (".yml", ".yaml"):
+            survey = Survey.from_yaml(survey_file_path)
+        else:
+            survey = Survey.from_xml(kw.get("survey_file_path"))
         if gps := kw.get("gpsstarttime"):
             survey.gps_time = gps
 

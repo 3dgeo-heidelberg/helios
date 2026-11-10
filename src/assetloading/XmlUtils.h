@@ -103,7 +103,7 @@ public:
     std::string const defaultMsg = "Using default value for attribute")
   {
     std::string type = typenameHelper<T>::name();
-    return boost::get<T>(XmlUtils::getAttribute(
+    return std::get<T>(XmlUtils::getAttribute(
       element, attrName, type, defaultValue, defaultMsg));
   }
 

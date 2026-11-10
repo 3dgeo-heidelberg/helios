@@ -9,7 +9,6 @@
 SwapOnRepeatHandler::SwapOnRepeatHandler()
   : currentTimeToLive(1)
   , discardOnReplay(false)
-  , holistic(false)
   , onSwapFirstPlay(false)
   , keepCRS(true)
   , baseline(nullptr)
@@ -85,11 +84,6 @@ SwapOnRepeatHandler::doSwap(ScenePart& sp)
     ScenePart* genSP = filter->run();
     // Update the geometry if a new one has been loaded
     if (genSP != nullptr && genSP != std::addressof(sp)) {
-      // Make holistic only if geometry is derived from a point cloud
-      holistic = false;
-      if (dynamic_cast<XYZPointCloudFileLoader*>(filter) != nullptr) {
-        holistic = true;
-      }
       // Free primitives memory from scene part
       for (Primitive* p : sp.mPrimitives)
         delete p;

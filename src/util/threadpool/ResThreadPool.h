@@ -3,6 +3,7 @@
 #include <HeliosException.h>
 #include <SimpleThreadPool.h>
 #include <boost/asio/post.hpp>
+#include <functional>
 /**
  * @verison 1.0
  * @brief Abstract class extending basic thread pool implementation to provide
@@ -88,11 +89,11 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    boost::asio::post(this->io_context_,
-                      boost::bind(&ResThreadPool<TaskArgs...>::wrap_res_task,
-                                  this,
-                                  boost::function<void(TaskArgs...)>(task),
-                                  resourceIdx));
+    boost::asio::post(
+      this->io_context_,
+      [this,
+       task = std::function<void(TaskArgs...)>(task),
+       resourceIdx]() mutable { wrap_res_task(task, resourceIdx); });
   }
 
   /**
@@ -124,11 +125,11 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    boost::asio::post(this->io_context_,
-                      boost::bind(&ResThreadPool<TaskArgs...>::wrap_res_task,
-                                  this,
-                                  boost::function<void(TaskArgs...)>(task),
-                                  resourceIdx));
+    boost::asio::post(
+      this->io_context_,
+      [this,
+       task = std::function<void(TaskArgs...)>(task),
+       resourceIdx]() mutable { wrap_res_task(task, resourceIdx); });
     return true;
   }
 
@@ -141,7 +142,7 @@ protected:
    *  necessary to release associated resources so other tasks can use
    *  them later
    */
-  virtual void wrap_res_task(boost::function<void(TaskArgs...)>& task,
+  virtual void wrap_res_task(std::function<void(TaskArgs...)>& task,
                              int const resourceIdx)
   {
     // Run the user supplied task.
@@ -167,7 +168,7 @@ protected:
    * @brief Throw exception when calling non resource do_task
    * @see ThreadPool::do_task
    */
-  void do_task(boost::function<void(TaskArgs...)>& task) override
+  void do_task(std::function<void(TaskArgs...)>& task) override
   {
     throw HeliosException("ResThreadPool::do_task MUST NOT be invoked.\n"
                           "Please, avoid this call or override implementation"
@@ -182,6 +183,6 @@ protected:
    * @param resourceIdx Index of resources associated with thread invoking
    *  the task
    */
-  virtual void do_res_task(boost::function<void(TaskArgs...)>& task,
+  virtual void do_res_task(std::function<void(TaskArgs...)>& task,
                            int const resourceIdx) = 0;
 };

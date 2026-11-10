@@ -9,6 +9,7 @@ from typing import Any, Callable, Optional, Type
 from jsonschema import Draft202012Validator
 from pydantic import TypeAdapter
 
+from helios import __version__
 from helios.utils import (
     add_asset_directory,
     find_file,
@@ -19,6 +20,7 @@ from helios.validation import Model, get_all_annotations
 
 import importlib_resources as resources
 import json
+import math
 import numpy as np
 import os
 import shlex
@@ -37,9 +39,18 @@ SERIALIZATION_FORMAT_MAJOR_VERSION = 0
 SERIALIZATION_FORMAT_MINOR_VERSION = 0
 
 
+def _serialization_schema_git_reference(version: str) -> str:
+    """Return the release tag for a clean version, or the development branch."""
+
+    if ".dev" not in version and "+" not in version:
+        return f"v{version}"
+    return "main"
+
+
 SERIALIZATION_SCHEMA_URL = (
     "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
-    "alpha-dev/python/helios/data/serialization_schema.json"
+    f"{_serialization_schema_git_reference(__version__)}/"
+    "python/helios/data/serialization_schema.json"
 )
 
 # The constant used to signal that a model field is serialized in a different file
@@ -163,9 +174,9 @@ def _normalize_provenance_value(value: Any):
 
 @dataclass
 class _SerializationContext:
-    root_dir: Path
     shallow: bool
     binary: bool
+    root_dir: Optional[Path] = None
     model_files: dict[int, str] = field(default_factory=dict)
     document_models: dict[str, Model] = field(default_factory=dict)
     used_yaml_filenames: set[str] = field(default_factory=set)
@@ -324,17 +335,24 @@ def deserialize_model_from_yaml(cls: Type[Model], path: Path) -> Model:
 def _write_model_document(model: Model, filename: str, context: _SerializationContext):
     """Build and persist one model YAML document."""
 
+    if context.root_dir is None:
+        raise RuntimeError("A root directory is required to write model documents.")
+
     model_id = id(model)
     context.model_files[model_id] = filename
     context.document_models[filename] = model
 
-    document = {
-        "$schema": SERIALIZATION_SCHEMA_URL,
-        **_build_model_document(model, context),
-    }
+    document = _build_model_document(model, context)
     path = context.root_dir / filename
+    _write_yaml_document(path, document)
+
+
+def _write_yaml_document(path: Path, document: dict[str, Any]) -> None:
+    """Write a model document with its YAML language-server schema annotation."""
+
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
+        handle.write(f"# yaml-language-server: $schema={SERIALIZATION_SCHEMA_URL}\n")
         yaml.safe_dump(document, handle, sort_keys=False, allow_unicode=False)
 
 
@@ -386,8 +404,7 @@ def _rewrite_bundle_provenance_paths(
             source_model,
         )
         if changed:
-            with yaml_path.open("w", encoding="utf-8") as handle:
-                yaml.safe_dump(document, handle, sort_keys=False, allow_unicode=False)
+            _write_yaml_document(yaml_path, document)
 
 
 def _load_bundle_documents(root_yaml: Path) -> dict[Path, dict[str, Any]]:
@@ -825,6 +842,8 @@ def _build_model_document(
     binary_info = None
     include_fields = not _uses_from_binary_constructor_provenance(model)
     if context.binary and callable(getattr(model, "to_binary", None)):
+        if context.root_dir is None:
+            raise RuntimeError("A root directory is required for binary serialization.")
         model_id = id(model)
         if model_id in context.binary_files:
             binary_filename = context.binary_files[model_id]
@@ -1297,3 +1316,16 @@ def _class_identifier(cls: Type[Model]) -> str:
     """Return the fully qualified identifier for a model class."""
 
     return f"{cls.__module__}.{cls.__qualname__}"
+
+
+def replace_nonfinite_values(obj: Any, replacement: Any = None) -> Any:
+    """Recursively replace NaN and +/-Inf in nested structures."""
+    if isinstance(obj, dict):
+        return {k: replace_nonfinite_values(v, replacement) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [replace_nonfinite_values(v, replacement) for v in obj]
+    if isinstance(obj, tuple):
+        return tuple(replace_nonfinite_values(v, replacement) for v in obj)
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return replacement
+    return obj

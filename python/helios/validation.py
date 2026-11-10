@@ -429,6 +429,15 @@ class Model(metaclass=ValidatedModelMetaClass):
 
         return f"{Path(self._serialization_filename()).stem}.bin"
 
+    def _ensure_yaml_serializable(self) -> None:
+        """Raise if this model cannot be represented independently."""
+
+        if not getattr(self, "_yaml_serializable", True):
+            raise RuntimeError(
+                f"{self.__class__.__name__} cannot be serialized to YAML because it "
+                "was implicitly constructed via a parent object's from_xml constructor."
+            )
+
     @validate_call
     def to_yaml(self, path: Path, shallow: bool = False):
         """Serialize this model instance to YAML.
@@ -449,12 +458,7 @@ class Model(metaclass=ValidatedModelMetaClass):
 
         from helios.serialization import serialize_model_to_yaml
 
-        if not getattr(self, "_yaml_serializable", True):
-            raise RuntimeError(
-                f"{self.__class__.__name__} cannot be serialized to YAML because it "
-                "was implicitly constructed via a parent object's from_xml constructor."
-            )
-
+        self._ensure_yaml_serializable()
         return serialize_model_to_yaml(self, path=path.expanduser(), shallow=shallow)
 
     @validate_call
@@ -563,6 +567,20 @@ class Model(metaclass=ValidatedModelMetaClass):
         else:
             return f"<{self.__class__.__name__} at {hex(id(self))}>"
 
+    def _repr_json_(self) -> dict[str, Any]:
+        """Return the inline serialization document for Jupyter rich display."""
+
+        from helios.serialization import (
+            _build_model_document,
+            _SerializationContext,
+            replace_nonfinite_values,
+        )
+
+        self._ensure_yaml_serializable()
+        context = _SerializationContext(shallow=False, binary=False)
+        doc = _build_model_document(self, context)
+        return replace_nonfinite_values(doc)
+
     @classmethod
     def _from_cpp(cls, value):
         params = {}
@@ -653,10 +671,15 @@ class Model(metaclass=ValidatedModelMetaClass):
             for model in _iter_models_in_value(getattr(self, field)):
                 model._set_yaml_serializable(False, recursive=True, _seen=_seen)
 
-    def _set_constructor_provenance(self, method: str, **kwargs):
+    def _set_constructor_provenance(
+        self, method: str, primary_filename_key: Optional[str], **kwargs
+    ):
         """Initialize constructor provenance metadata for this model instance."""
 
         from helios.serialization import _normalize_provenance_value
+
+        if primary_filename_key is not None:
+            self._primary_filename = kwargs[primary_filename_key]
 
         self._provenance = {
             "constructor": {
@@ -748,6 +771,8 @@ class Model(metaclass=ValidatedModelMetaClass):
 
             if hasattr(self, "_provenance"):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
+            if hasattr(self, "_primary_filename"):
+                reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
             if hasattr(self, "_provided_fields"):
@@ -766,6 +791,8 @@ class Model(metaclass=ValidatedModelMetaClass):
 
             if hasattr(self, "_provenance"):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
+            if hasattr(self, "_primary_filename"):
+                reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
             if hasattr(self, "_provided_fields"):

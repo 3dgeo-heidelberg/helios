@@ -120,4 +120,11 @@ InterpolatedMovingPlatform::toTrajectoryTime(double const t)
     h = t - tf->getFpiem().getT();
     tf->getFpiem().eval(h);
   }
+  // Keep DesignTrajectoryFunction::lastTime in sync with the fpiem's
+  // internal clock, otherwise the next eval(t) call (driven by
+  // stepLoop time) computes its delta against a stale lastTime left
+  // over from before this seek (e.g. from a prior leg or a previous
+  // survey run), which can send the iterative solver a large negative
+  // step it is not designed to handle.
+  tf->setLastTime(t);
 }

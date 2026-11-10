@@ -11,16 +11,10 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
-#include <boost/variant/get.hpp>
-#include <boost/variant/variant.hpp>
+#include <variant>
 
-#include "maths/Rotation.h"
-typedef boost::
-  variant<bool, int, float, double, std::string, glm::dvec3, Rotation>
-    ObjectT;
-
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 #include <FileUtils.h>
 
 #include "Triangle.h"
@@ -43,7 +37,7 @@ WavefrontObjFileLoader::run()
   bool yIsUp = false;
   try {
     // ######### BEGIN Read up axis ###########
-    std::string const& upAxis = boost::get<std::string const&>(params["up"]);
+    std::string const& upAxis = std::get<std::string>(params["up"]);
     if (upAxis == "y") {
       yIsUp = true;
     } else if (upAxis != "z") {
@@ -97,7 +91,7 @@ WavefrontObjFileLoader::run()
   }
 
   // Post-processing
-  bool rvn = boost::get<bool>(params["recomputeVertexNormals"]);
+  bool rvn = std::get<bool>(params["recomputeVertexNormals"]);
 
   if (rvn) {
     // TODO 5: Find out why this does really weird things (distorted triangles)

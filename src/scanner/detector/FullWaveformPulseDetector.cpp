@@ -1,5 +1,5 @@
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "FullWaveformPulseDetector.h"
 #include <filems/facade/FMSFacade.h>
