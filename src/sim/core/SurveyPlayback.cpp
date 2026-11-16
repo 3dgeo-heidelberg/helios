@@ -32,15 +32,13 @@ SurveyPlayback::SurveyPlayback(
   std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
   int const chunkSize,
   std::string fixedGpsTimeStart,
-  bool const legacyEnergyModel,
   bool const exportToFile,
   bool const disableShutdown,
   shared_ptr<helios::filems::FMSFacade> fms)
   : Simulation(parallelizationStrategy,
                pulseThreadPoolInterface,
                chunkSize,
-               fixedGpsTimeStart,
-               legacyEnergyModel)
+               fixedGpsTimeStart)
   , fms(fms)
   , disableShutdown(disableShutdown)
 {
