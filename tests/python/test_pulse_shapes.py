@@ -31,7 +31,7 @@ def test_sampled_definition_units_ownership_and_immutability():
         peak_offset="1 ns",
     )
     assert plateau.peak_offset == pytest.approx(1e-9)
-    assert plateau._cpp_object.peak_offset == pytest.approx(0.149896229)
+    assert plateau._cpp_object.evaluate(0) == pytest.approx(1)
 
 
 @pytest.mark.parametrize(
@@ -67,7 +67,6 @@ def test_pulse_settings_yaml_and_cpp_roundtrip(tmp_path, shallow, explicit):
     settings = FullWaveformSettings(
         pulse_shape="sampled",
         sampled_pulse=pulse,
-        gaussian_mean="-3 ns",
     )
     path = settings.to_yaml(tmp_path / "settings.yaml", shallow=shallow)
     restored = FullWaveformSettings.from_yaml(path)
@@ -76,11 +75,10 @@ def test_pulse_settings_yaml_and_cpp_roundtrip(tmp_path, shallow, explicit):
         copy.deepcopy(settings),
         FullWaveformSettings._from_cpp(settings._to_cpp()),
     ]:
-        assert result.gaussian_mean == pytest.approx(-3e-9)
         assert result.sampled_pulse.offsets == pytest.approx(pulse.offsets)
         assert result.sampled_pulse.amplitudes == pulse.amplitudes
         assert result.sampled_pulse.peak_offset == pulse.peak_offset
-        assert result._to_cpp().sampled_pulse.peak_offset == pytest.approx(0.149896229)
+        assert result._to_cpp().sampled_pulse.evaluate(0) == pytest.approx(1)
     settings.pulse_shape = "gamma"
     assert settings.sampled_pulse is pulse
     settings.pulse_shape = "sampled"
@@ -89,24 +87,16 @@ def test_pulse_settings_yaml_and_cpp_roundtrip(tmp_path, shallow, explicit):
     assert settings.sampled_pulse is pulse
 
 
-def test_gaussian_mean_and_old_yaml_default(tmp_path):
-    assert _helios.GaussianPulse(4).peak_offset == 0
-    settings = FullWaveformSettings(pulse_shape="gaussian", gaussian_mean="-3 ns")
-    assert settings._to_cpp().gaussian_mean == pytest.approx(-3e-9)
-    assert _helios.PulseShape.create(
-        "gaussian", 4, 1e-4, -3
-    ).peak_offset == pytest.approx(-0.449688687)
-    with pytest.raises(ValueError):
-        FullWaveformSettings(gaussian_mean=float("inf"))
-    with pytest.raises(ValueError):
-        FullWaveformSettings(pulse_shape="sampled")
-    path = settings.to_yaml(tmp_path / "legacy.yaml")
+def test_peak_centered_settings_serialization_version(tmp_path):
+    settings = FullWaveformSettings(pulse_shape="gaussian")
+    assert not hasattr(_helios.GaussianPulse(4), "peak_offset")
+    path = settings.to_yaml(tmp_path / "settings.yaml")
     data = yaml.safe_load(path.read_text())
-    data["serialization_minor_version"] = 0
-    del data["fields"]["gaussian_mean"]
-    del data["fields"]["sampled_pulse"]
-    path.write_text(yaml.safe_dump(data))
-    assert FullWaveformSettings.from_yaml(path).gaussian_mean == 0
+    assert data["serialization_minor_version"] == 0
+    assert "gaussian_mean" not in data["fields"]
+    assert "correct_peak_offset" not in data["fields"]
+    restored = FullWaveformSettings.from_yaml(path)
+    assert restored.pulse_shape == "gaussian"
 
 
 def test_multichannel_preparation_and_switching():
@@ -120,15 +110,14 @@ def test_multichannel_preparation_and_switching():
     first = scanner.get_pulse_model(0)
     assert isinstance(first, _helios.SampledPulse)
     scanner.prepare_pulse(0)
-    assert scanner.get_pulse_model(0).evaluate(first.peak_offset) == 1
+    assert scanner.get_pulse_model(0).evaluate(0) == 1
     scanner.prepare_pulse(1)
     assert not isinstance(scanner.get_pulse_model(1), _helios.SampledPulse)
     settings.pulse_shape = "gaussian"
-    settings.gaussian_mean = -2e-9
     scanner.set_fwf_settings(settings, 0)
     scanner.prepare_pulse(0)
-    assert scanner.get_pulse_model(0).peak_offset == pytest.approx(-0.299792458)
-    assert first.evaluate(first.peak_offset) == 1
+    assert scanner.get_pulse_model(0).evaluate(0) == pytest.approx(1)
+    assert first.evaluate(0) == 1
     settings.pulse_shape = "sampled"
     scanner.set_fwf_settings(settings, 0)
     scanner.prepare_pulse(0)
@@ -149,11 +138,9 @@ def test_sampled_survey_copy_and_yaml(tmp_path):
         assert item.full_waveform_settings._to_cpp().sampled_pulse.evaluate(0) == 1
 
 
-@pytest.mark.parametrize("mean", ["-2 ns", "0 ns", "3 ns"])
-def test_sampled_shape_survives_survey_run(survey, mean):
+def test_sampled_shape_survives_survey_run(survey):
     survey.full_waveform_settings = FullWaveformSettings(
         pulse_shape="sampled",
-        gaussian_mean=mean,
         sampled_pulse=SampledPulse(offsets=[-4e-9, 1e-9, 8e-9], amplitudes=[0, 1, 0]),
     )
     for item in [survey, copy.deepcopy(survey)]:
@@ -163,4 +150,28 @@ def test_sampled_shape_survives_survey_run(survey, mean):
         assert len(points) > 0
         model = item.scanner._cpp_object.get_pulse_model()
         assert isinstance(model, _helios.SampledPulse)
-        assert model.peak_offset == pytest.approx(0.149896229)
+        assert model.evaluate(0) == pytest.approx(1)
+
+
+@pytest.mark.parametrize("selector", [None, 2])
+def test_translated_definitions_have_identical_runtime(selector):
+    first = _helios.SampledPulse([0, 2, 5], [0, 4, 0], selector)
+    second = _helios.SampledPulse(
+        [7, 9, 12], [0, 4, 0], None if selector is None else selector + 7
+    )
+    assert first.recording_bounds == pytest.approx(second.recording_bounds)
+    for offset in np.linspace(-1, 1, 100):
+        assert first.evaluate(offset) == pytest.approx(second.evaluate(offset))
+    assert first.evaluate(0) == 1
+    assert first.offsets_ns == [0, 2, 5]
+    assert not hasattr(first, "peak_offset")
+
+
+def test_tied_maxima_selection_and_unrepresentable_centering():
+    for selector in [0, 2]:
+        pulse = _helios.SampledPulse([0, 1, 2], [1, 0, 1], selector)
+        assert pulse.evaluate(0) == 1
+    with pytest.raises(ValueError):
+        _helios.SampledPulse([0, 1, 2], [1, 0, 1], 1)
+    with pytest.raises(ValueError):
+        _helios.SampledPulse([-1e308, 0, 1], [1, 0, 0])

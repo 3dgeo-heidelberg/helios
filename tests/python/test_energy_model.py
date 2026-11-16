@@ -194,7 +194,7 @@ def test_sampling_method_switch_and_typed_metadata(energy_device):
     assert len(copied.subrays) == 25
 
 
-@pytest.mark.parametrize("method", ["annular", "cartesian"])
+@pytest.mark.parametrize("method", ["polar", "cartesian"])
 def test_device_beam_rotation_preserves_power_and_area(energy_device, method):
     settings = _helios.FWFSettings()
     settings.beam_sampling_method = method

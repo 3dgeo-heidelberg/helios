@@ -892,10 +892,8 @@ PYBIND11_MODULE(_helios, m)
                 &PulseShape::create,
                 py::arg("shape") = "gamma",
                 py::arg("fwhm_ns") = 4.0,
-                py::arg("recording_tail_tolerance") = 1e-4,
-                py::arg("mean_ns") = 0.0)
+                py::arg("recording_tail_tolerance") = 1e-4)
     .def("evaluate", &PulseShape::evaluate)
-    .def_property_readonly("peak_offset", &PulseShape::peakOffset)
     .def_property_readonly("recording_bounds", &PulseShape::recordingBounds);
   py::class_<GammaPulse, PulseShape, std::shared_ptr<GammaPulse>>(m,
                                                                   "GammaPulse")
@@ -904,10 +902,9 @@ PYBIND11_MODULE(_helios, m)
          py::arg("recording_tail_tolerance") = 1e-4);
   py::class_<GaussianPulse, PulseShape, std::shared_ptr<GaussianPulse>>(
     m, "GaussianPulse")
-    .def(py::init<double, double, double>(),
+    .def(py::init<double, double>(),
          py::arg("fwhm_ns"),
-         py::arg("recording_tail_tolerance") = 1e-4,
-         py::arg("mean_ns") = 0.0);
+         py::arg("recording_tail_tolerance") = 1e-4);
   py::class_<SampledPulse, PulseShape, std::shared_ptr<SampledPulse>>(
     m, "SampledPulse")
     .def(py::init<std::vector<double>,
@@ -932,12 +929,7 @@ PYBIND11_MODULE(_helios, m)
     .def(py::init<const FWFSettings&>(), py::arg("fwfSettings"))
     .def_readwrite("sample_spacing", &FWFSettings::sampleSpacing_m)
     .def_readwrite("pulse_shape", &FWFSettings::pulseShape)
-    .def_property(
-      "gaussian_mean",
-      [](FWFSettings const& s) { return s.gaussianMean_ns * 1e-9; },
-      [](FWFSettings& s, double seconds) { s.gaussianMean_ns = seconds * 1e9; })
     .def_readwrite("sampled_pulse", &FWFSettings::sampledPulse)
-    .def_readwrite("correct_peak_offset", &FWFSettings::correctPeakOffset)
     .def_readwrite("recording_tail_tolerance",
                    &FWFSettings::recordingTailTolerance)
     .def("validate", &FWFSettings::validate)

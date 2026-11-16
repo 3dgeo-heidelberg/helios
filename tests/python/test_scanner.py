@@ -662,7 +662,6 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
             "sampleSpacing_m": "0.02",
             "peakWindow_m": "0.1",
             "recordingTailTolerance": "0.00001",
-            "gaussianMean_ns": "-2",
         },
     )
     channel = element.find("channels/channel")
@@ -672,8 +671,6 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
         {
             "pulseShape": "gaussian",
             "beamSamplingMethod": "polar",
-            "gaussianMean_ns": "3",
-            "correctPeakOffset": "false",
             "binSize_ns": "0.25",
             "maxRecordingSpan_m": "20",
         },
@@ -685,9 +682,6 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     assert first.beam_sampling_method == "polar"
     assert second.beam_sampling_method == "cartesian"
     assert first.pulse_shape == "gaussian"
-    assert first.gaussian_mean == pytest.approx(3e-9)
-    assert second.gaussian_mean == pytest.approx(-2e-9)
-    assert first.correct_peak_offset is False
     assert first.sample_spacing == pytest.approx(0.03747405725)
     assert first.peak_window == 0.1
     assert first.recording_tail_tolerance == 1e-5
@@ -696,16 +690,24 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     scanner.prepare_pulse(0)
     scanner.prepare_pulse(1)
     saved_pulse = scanner.get_pulse_model(0)
-    assert saved_pulse.peak_offset == pytest.approx(3 * 0.149896229)
+    assert saved_pulse.evaluate(0) == 1
     assert saved_pulse.evaluate(-0.01) > 0
-    assert scanner.get_pulse_model(1).evaluate(-0.01) == 0
+    assert scanner.get_pulse_model(1).evaluate(-0.01) > 0
     first.pulse_shape = "gamma"
     scanner.set_fwf_settings(first, 0)
     scanner.prepare_pulse(0)
-    assert scanner.get_pulse_model(0).evaluate(-0.01) == 0
+    assert scanner.get_pulse_model(0).evaluate(-0.01) > 0
     assert saved_pulse.evaluate(-0.01) > 0
     with pytest.raises(IndexError):
         scanner.get_pulse_model(2)
+    for removed in ("gaussianMean_ns", "correctPeakOffset"):
+        parent.set(removed, "0")
+        tree.write(path, encoding="utf-8", xml_declaration=True)
+        from xmlschema.validators.exceptions import XMLSchemaValidationError
+
+        with pytest.raises(XMLSchemaValidationError, match="attribute not allowed"):
+            Scanner.from_xml(path, "riegl_vq-1560i")
+        del parent.attrib[removed]
     parent.set("binSize_ns", "0.25")
     tree.write(path, encoding="utf-8", xml_declaration=True)
     with pytest.raises(

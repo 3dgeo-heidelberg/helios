@@ -450,10 +450,10 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
   REQUIRE(scanner.getBeamRotation(0) == 0.0);
   REQUIRE(scanner.getBeamRotation(1) == PI / 4);
   scanner.prepareSimulation();
-  REQUIRE(scanner.getPulseModel(0).evaluate(-0.01) == 0);
+  REQUIRE(scanner.getPulseModel(0).evaluate(-0.01) > 0);
   REQUIRE(scanner.getPulseModel(1).evaluate(-0.01) > 0);
-  REQUIRE(scanner.getPulseModel(0).peakOffset() !=
-          scanner.getPulseModel(1).peakOffset());
+  REQUIRE(scanner.getPulseModel(0).recordingBounds().second !=
+          scanner.getPulseModel(1).recordingBounds().second);
   double const previousAngle =
     scanner.getScanningDevice(1).getSubrays().back().angle_rad;
   scanner.setBeamDivergence(0.003, 1);
@@ -676,7 +676,8 @@ TEST_CASE("Analytic pulse normalization, FWHM, and full tails",
   double const length = GENERATE(5.0, 12.0);
   std::string const shape = GENERATE("gamma", "gaussian");
   auto model = PulseShape::create(shape, length, 1e-4);
-  double const peak = model->peakOffset();
+  double const peak = 0;
+  double const rho = length * SPEEDofLIGHT_mPerNanosec / 2 / 3.394680670846504;
   REQUIRE(model->evaluate(peak) == Catch::Approx(1.0));
   auto bounds = model->recordingBounds();
   REQUIRE(model->evaluate(bounds.second) == Catch::Approx(1e-4));
@@ -689,39 +690,20 @@ TEST_CASE("Analytic pulse normalization, FWHM, and full tails",
     REQUIRE(model->evaluate(bounds.first) == Catch::Approx(1e-4));
     REQUIRE(model->evaluate(-0.01) > 0);
   } else {
-    REQUIRE(bounds.first == 0);
-    REQUIRE(model->evaluate(-1) == 0);
-    REQUIRE(model->evaluate(0) == 0);
+    REQUIRE(bounds.first == Catch::Approx(-2 * rho));
+    REQUIRE(model->evaluate(-2 * rho - 1) == 0);
+    REQUIRE(model->evaluate(-2 * rho) == 0);
     // Independent half-height roots of x^2 exp(-x).
-    REQUIRE(model->evaluate(0.7612402293544026 * peak / 2) ==
+    REQUIRE(model->evaluate((0.7612402293544026 - 2) * rho) ==
             Catch::Approx(0.5));
-    REQUIRE(model->evaluate(4.155920900200907 * peak / 2) ==
+    REQUIRE(model->evaluate((4.155920900200907 - 2) * rho) ==
             Catch::Approx(0.5));
-    REQUIRE(model->evaluate(7 * peak / 2) > 0.08);
+    REQUIRE(model->evaluate(5 * rho) > 0.08);
   }
   REQUIRE(model->evaluate(1e300) == 0);
   REQUIRE_THROWS_AS(PulseShape::create(shape, 0, 1e-4), std::invalid_argument);
   REQUIRE_THROWS_AS(PulseShape::create(shape, length, 1),
                     std::invalid_argument);
-}
-
-TEST_CASE("Gaussian mean translates the pulse and recording bounds",
-          "[energy][waveform]")
-{
-  double const mean = GENERATE(-5.0, 0.0, 3.0);
-  GaussianPulse origin(4.0);
-  GaussianPulse shifted(4.0, 1e-4, mean);
-  double const shift = mean * SPEEDofLIGHT_mPerNanosec / 2;
-  REQUIRE(shifted.peakOffset() == Catch::Approx(shift));
-  REQUIRE(shifted.recordingBounds().first ==
-          Catch::Approx(origin.recordingBounds().first + shift));
-  REQUIRE(shifted.recordingBounds().second ==
-          Catch::Approx(origin.recordingBounds().second + shift));
-  for (double x : { -0.8, -0.1, 0.0, 0.3, 1.0 })
-    REQUIRE(shifted.evaluate(x + shift) == Catch::Approx(origin.evaluate(x)));
-  REQUIRE_THROWS_AS(
-    GaussianPulse(4, 1e-4, std::numeric_limits<double>::infinity()),
-    std::invalid_argument);
 }
 
 TEST_CASE("Sampled pulses interpolate independently of input density",
@@ -731,7 +713,7 @@ TEST_CASE("Sampled pulses interpolate independently of input density",
   SampledPulse dense({ -2, -1, 0, 1.5, 3, 5, 7 }, { 0, 2, 4, 3, 2, 1, 0 });
   SampledPulse translated({ 1, 3, 6, 10 }, { 0, 4, 2, 0 });
   double const scale = SPEEDofLIGHT_mPerNanosec / 2;
-  REQUIRE(coarse.peakOffset() == 0);
+  REQUIRE(coarse.evaluate(0) == 1);
   REQUIRE(coarse.evaluate(-scale) == Catch::Approx(0.5));
   REQUIRE(coarse.evaluate(1.5 * scale) == Catch::Approx(0.75));
   REQUIRE(coarse.evaluate(-3 * scale) == 0);
@@ -741,11 +723,11 @@ TEST_CASE("Sampled pulses interpolate independently of input density",
       REQUIRE(coarse.evaluate(x) ==
               Catch::Approx(dense.evaluate(x)).margin(1e-14));
       REQUIRE(coarse.evaluate(x) ==
-              Catch::Approx(translated.evaluate(x + 3 * scale)).margin(1e-14));
+              Catch::Approx(translated.evaluate(x)).margin(1e-14));
     }
   }
   SampledPulse plateau({ -2, 0, 3, 7 }, { 0, 1, 1, 0 }, 1.5);
-  REQUIRE(plateau.peakOffset() == Catch::Approx(1.5 * scale));
+  REQUIRE(plateau.evaluate(0) == 1);
   SampledPulse endpoints({ 0, 1 }, { 1, 0.5 });
   REQUIRE(endpoints.evaluate(0) == 1);
   REQUIRE(endpoints.evaluate(scale) == 0.5);
@@ -846,7 +828,7 @@ TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
       double u = grid.rangeAt(k) - entry.first;
       double value;
       if (shape == "gamma") {
-        double x = u / (width / 3.394680670846504);
+        double x = u / (width / 3.394680670846504) + 2;
         value = x < 0 ? 0 : std::exp(2.0) / 4 * x * x * std::exp(-x);
       } else {
         double z = u / (width / std::sqrt(8 * std::log(2.0)));
@@ -856,29 +838,25 @@ TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
     }
     REQUIRE(samples[k] == Catch::Approx(expected * 4e9).margin(1e-10));
   }
-  // A recording cap must not remove a later Gaussian return's leading tail.
+  // A recording cap must not remove a later return's leading tail.
   WaveformGrid clipped{ 12.0, 0.03, 3 };
   std::vector<double> tail(3, 0);
   runnable.populateFullWaveform({ { 12.3, 1 } }, tail, clipped);
-  if (shape == "gaussian")
-    REQUIRE(tail[0] > 0);
-  else
-    REQUIRE(tail[0] == 0);
+  REQUIRE(tail[0] > 0);
 }
 
-TEST_CASE("Peak correction changes only measured ranges and preserves "
+TEST_CASE("Centered waveform peaks agree with reported ranges and preserve "
           "amplitude detection",
           "[energy][waveform]")
 {
   std::string const shape = GENERATE("gamma", "gaussian", "sampled");
-  // Keep even uncorrected negative-mean peaks inside the detector range.
+  // Keep returns inside the detector range.
   double const target = GENERATE(1.02, 100.013);
   auto scanner = energyScanner();
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
   auto& settings = scanner->getFWFSettings();
   settings.pulseShape = shape;
-  settings.gaussianMean_ns = GENERATE(-3.0, 0.0, 4.0);
   if (shape == "sampled")
     settings.sampledPulse =
       std::make_shared<SampledPulse>(std::vector<double>{ -4, 0, 2, 5, 9 },
@@ -916,11 +894,9 @@ TEST_CASE("Peak correction changes only measured ranges and preserves "
   REQUIRE(scanner->initializeFullWaveform(target, target, grid, 0));
   std::vector<double> wave(grid.sampleCount, 0);
   runnable.populateFullWaveform(reflections, wave, grid);
-  double correctedDistance = 0;
-  for (bool corrected : { true, false }) {
-    settings.correctPeakOffset = corrected;
+  {
     for (double amplitude : { 0.0, 1.0, 2.0, 4.0 }) {
-      CAPTURE(shape, target, settings.gaussianMean_ns, corrected, amplitude);
+      CAPTURE(shape, target, amplitude);
       scanner->setPulseAmplitude(amplitude);
       scanner->setReceivedEnergyMin(amplitude == 0 ? 0 : 1500.0);
       scanner->allMeasurements->clear();
@@ -943,27 +919,26 @@ TEST_CASE("Peak correction changes only measured ranges and preserves "
         for (size_t k = 0; k < wave.size(); ++k)
           REQUIRE(exported.fullwave[k] ==
                   Catch::Approx(wave[k] * amplitude / 4));
-        double expected =
-          target + (corrected ? 0 : scanner->getPulseModel().peakOffset());
+        double const expected = target;
         REQUIRE(std::abs(points[0].distance - expected) <=
                 settings.sampleSpacing_m);
         REQUIRE(points[0].intensity ==
                 Catch::Approx(amplitude *
                               *std::max_element(wave.begin(), wave.end()) / 4));
-        if (corrected)
-          correctedDistance = points[0].distance;
-        else
-          REQUIRE(points[0].distance - correctedDistance ==
-                  Catch::Approx(scanner->getPulseModel().peakOffset()));
+        auto const maximum =
+          std::max_element(exported.fullwave.begin(), exported.fullwave.end());
+        double const peakRange =
+          exported.minTime * SPEEDofLIGHT_mPerNanosec / 2 +
+          std::distance(exported.fullwave.begin(), maximum) * grid.spacing_m;
+        REQUIRE(points[0].distance == Catch::Approx(peakRange));
       }
     }
   }
-  std::vector<double> uncorrectedWave(grid.sampleCount, 0);
-  runnable.populateFullWaveform(reflections, uncorrectedWave, grid);
-  REQUIRE(uncorrectedWave == wave);
+  std::vector<double> repeatedWave(grid.sampleCount, 0);
+  runnable.populateFullWaveform(reflections, repeatedWave, grid);
+  REQUIRE(repeatedWave == wave);
   if (shape == "gaussian") {
     scanner->setCalcEchowidth(true);
-    settings.correctPeakOffset = true;
     scanner->allMeasurements->clear();
     runnable.digestIntersections(
       matrix, rng, rng2, direction, reflections, intersections);

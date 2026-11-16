@@ -238,18 +238,19 @@ def test_analytic_waveform_settings_roundtrip(tmp_path, shape):
         peak_window="10 cm",
         max_recording_span="25 m",
         pulse_shape=shape,
-        correct_peak_offset=False,
         recording_tail_tolerance=1e-6,
     )
     path = settings.to_yaml(tmp_path / "waveform.yaml")
     text = path.read_text()
     assert "bin_size" not in text
+    assert "correct_peak_offset" not in text
+    assert "gaussian_mean" not in text
     restored = FullWaveformSettings.from_yaml(path)
     assert restored.sample_spacing == 0.02
     assert restored.peak_window == 0.1
     assert restored.max_recording_span == 25
     assert restored.pulse_shape == shape
-    assert restored.correct_peak_offset is False
+    assert not hasattr(restored, "correct_peak_offset")
     assert restored.recording_tail_tolerance == 1e-6
 
 

@@ -447,9 +447,7 @@ def test_fwf_settings_to_string():
         'FWFSettings "":\n'
         "sampleSpacing_m = 0.0374741\n"
         "pulseShape = gamma\n"
-        "gaussianMean_ns = 0\n"
         "sampledPulse = none\n"
-        "correctPeakOffset = 1\n"
         "recordingTailTolerance = 0.0001\n"
         "minEchoWidth = 2.5\n"
         "peakEnergy = 500\n"
@@ -1546,12 +1544,12 @@ def test_analytic_pulse_bindings(shape):
     cls = _helios.GammaPulse if shape == "gamma" else _helios.GaussianPulse
     assert isinstance(pulse, cls)
     assert isinstance(pulse, _helios.PulseShape)
-    assert cls(5).peak_offset == pulse.peak_offset
-    assert pulse.evaluate(pulse.peak_offset) == pytest.approx(1)
+    assert not hasattr(pulse, "peak_offset")
+    assert pulse.evaluate(0) == pytest.approx(1)
     lower, upper = pulse.recording_bounds
     assert pulse.evaluate(upper) == pytest.approx(1e-4)
     assert pulse.evaluate(upper + 0.01) > 0
-    assert (lower < 0) == (shape == "gaussian")
+    assert lower < 0
 
 
 def test_elliptical_subray_metadata():

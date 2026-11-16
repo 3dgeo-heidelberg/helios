@@ -6,54 +6,48 @@
 #include <utility>
 #include <vector>
 
-/** Immutable, unit-peak optical pulse evaluated in range-equivalent metres.
- * Analytic recording bounds suggest an acquisition interval, not a cutoff.
- * Sampled pulses have finite support defined by their supplied coordinates.
+/** Immutable, zero-centered unit-peak optical pulse evaluated in
+ * range-equivalent metres. Analytic recording bounds suggest an acquisition
+ * interval, not a cutoff. Sampled pulses have finite support centered on their
+ * selected input peak.
  */
 class PulseShape
 {
 public:
   virtual ~PulseShape() = default;
   virtual double evaluate(double offset_m) const = 0;
-  virtual double peakOffset() const = 0;
   virtual std::pair<double, double> recordingBounds() const = 0;
 
   static std::shared_ptr<PulseShape> create(std::string const& shape,
                                             double fwhm_ns,
-                                            double recordingTailTolerance,
-                                            double mean_ns = 0.0);
+                                            double recordingTailTolerance);
 };
 
-/** Gaussian with a configurable reference-to-peak offset. */
+/** Gaussian centered at zero. */
 class GaussianPulse : public PulseShape
 {
 public:
-  explicit GaussianPulse(double fwhm_ns,
-                         double recordingTailTolerance = 1e-4,
-                         double mean_ns = 0.0);
+  explicit GaussianPulse(double fwhm_ns, double recordingTailTolerance = 1e-4);
   double evaluate(double offset_m) const override;
-  double peakOffset() const override { return mean_m; }
   std::pair<double, double> recordingBounds() const override
   {
-    return { peakOffset() - extent_m, peakOffset() + extent_m };
+    return { -extent_m, extent_m };
   }
 
 private:
-  double const mean_m;
   double const sigma_m;
   double const extent_m;
 };
 
-/** Causal gamma pulse with onset at zero and peak at 2*rho. */
+/** Causal gamma pulse with onset at -2*rho and peak at zero. */
 class GammaPulse : public PulseShape
 {
 public:
   explicit GammaPulse(double fwhm_ns, double recordingTailTolerance = 1e-4);
   double evaluate(double offset_m) const override;
-  double peakOffset() const override { return 2 * rho_m; }
   std::pair<double, double> recordingBounds() const override
   {
-    return { 0, upperBound_m };
+    return { -2 * rho_m, upperBound_m - 2 * rho_m };
   }
 
 private:
@@ -70,7 +64,6 @@ public:
                std::vector<double> amplitudes,
                std::optional<double> peak_offset_ns = std::nullopt);
   double evaluate(double offset_m) const override;
-  double peakOffset() const override { return peak_m; }
   std::pair<double, double> recordingBounds() const override
   {
     return { offsets_m.front(), offsets_m.back() };
@@ -87,5 +80,4 @@ private:
   std::vector<double> offsets_m;
   std::vector<double> values;
   std::optional<double> explicitPeak_ns;
-  double peak_m;
 };

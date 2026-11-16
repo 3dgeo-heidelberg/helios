@@ -22,26 +22,21 @@ validatedFwhm(double fwhm_ns, double tolerance)
 }
 
 std::shared_ptr<PulseShape>
-PulseShape::create(std::string const& shape,
-                   double fwhm_ns,
-                   double tolerance,
-                   double mean_ns)
+PulseShape::create(std::string const& shape, double fwhm_ns, double tolerance)
 {
   if (shape == "gamma")
     return std::make_shared<GammaPulse>(fwhm_ns, tolerance);
   if (shape == "gaussian")
-    return std::make_shared<GaussianPulse>(fwhm_ns, tolerance, mean_ns);
+    return std::make_shared<GaussianPulse>(fwhm_ns, tolerance);
   throw std::invalid_argument("pulseShape must be gamma or gaussian");
 }
 
-GaussianPulse::GaussianPulse(double fwhm_ns, double tolerance, double mean_ns)
-  : mean_m(mean_ns * (SPEEDofLIGHT_mPerNanosec / 2.0))
-  , sigma_m(validatedFwhm(fwhm_ns, tolerance) /
+GaussianPulse::GaussianPulse(double fwhm_ns, double tolerance)
+  : sigma_m(validatedFwhm(fwhm_ns, tolerance) /
             (2 * std::sqrt(2 * std::log(2.0))))
   , extent_m(sigma_m * std::sqrt(-2 * std::log(tolerance)))
 {
-  if (sigma_m <= 0 || !std::isfinite(mean_m) ||
-      !std::isfinite(mean_m - extent_m) || !std::isfinite(mean_m + extent_m))
+  if (sigma_m <= 0 || !std::isfinite(extent_m))
     throw std::invalid_argument(
       "Gaussian pulse bounds cannot be represented in metres");
 }
@@ -49,7 +44,7 @@ GaussianPulse::GaussianPulse(double fwhm_ns, double tolerance, double mean_ns)
 double
 GaussianPulse::evaluate(double offset_m) const
 {
-  double const z = (offset_m - mean_m) / sigma_m;
+  double const z = offset_m / sigma_m;
   return std::exp(-0.5 * z * z);
 }
 
@@ -87,7 +82,7 @@ GammaPulse::GammaPulse(double fwhm_ns, double tolerance)
 double
 GammaPulse::evaluate(double offset_m) const
 {
-  double const x = offset_m / rho_m;
+  double const x = offset_m / rho_m + 2;
   if (x <= 0 || !std::isfinite(x))
     return 0;
   // e^2/4 * x^2 * exp(-x), without overflowing x^2 for distant returns.
@@ -129,11 +124,20 @@ SampledPulse::SampledPulse(std::vector<double> offsets_ns,
     std::max_element(values.begin(), values.end()) - values.begin();
   for (double& value : values)
     value /= maximum;
-  peak_m = peak_offset_ns ? *peak_offset_ns * (SPEEDofLIGHT_mPerNanosec / 2.0)
+  double const peak_m = peak_offset_ns
+                          ? *peak_offset_ns * (SPEEDofLIGHT_mPerNanosec / 2.0)
                           : offsets_m[peakIndex];
   if (!std::isfinite(peak_m) || evaluate(peak_m) != 1.0)
     throw std::invalid_argument(
       "Explicit peak offset must lie at a pulse maximum");
+  for (size_t i = 0; i < offsets_m.size(); ++i) {
+    offsets_m[i] -= peak_m;
+    if (!std::isfinite(offsets_m[i]) ||
+        (i && (offsets_m[i] <= offsets_m[i - 1] ||
+               !std::isfinite(offsets_m[i] - offsets_m[i - 1]))))
+      throw std::invalid_argument(
+        "Centered pulse coordinates cannot be represented");
+  }
 }
 
 double

@@ -780,9 +780,7 @@
         "peak_window": {},
         "max_recording_span": {},
         "pulse_shape": {},
-        "correct_peak_offset": {},
         "recording_tail_tolerance": {},
-        "gaussian_mean": {},
         "sampled_pulse": {}
       }
     },

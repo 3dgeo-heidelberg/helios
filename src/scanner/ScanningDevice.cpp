@@ -374,8 +374,7 @@ ScanningDevice::preparePulse()
   }
   pulseModel = PulseShape::create(FWF_settings.pulseShape,
                                   pulseLength_ns,
-                                  FWF_settings.recordingTailTolerance,
-                                  FWF_settings.gaussianMean_ns);
+                                  FWF_settings.recordingTailTolerance);
 }
 
 bool
