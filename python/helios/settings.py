@@ -223,7 +223,9 @@ class SampledPulse(Model):
     """Immutable sampled optical pulse. Offsets and peak_offset are in seconds.
 
     Amplitudes are normalized to unit peak; evaluation is linear between samples
-    and zero outside their interval. Supply peak_offset for tied maxima.
+    and zero outside their centered interval. Supply peak_offset for tied maxima.
+    Original coordinates are preserved; runtime evaluation subtracts the selected
+    peak coordinate so that the peak lies at zero.
     """
 
     offsets: tuple[TimeOffset, ...]
@@ -263,7 +265,7 @@ class SampledPulse(Model):
 
 
 # Keep the public definition immutable and in seconds. The runtime base class's
-# peak_offset property is in range-equivalent metres, and its arrays are copies.
+# evaluation uses peak-relative metres; definition arrays are copies.
 SampledPulse.amplitudes = SampledPulse.amplitudes.getter(lambda self: self._amplitudes)
 SampledPulse.peak_offset = SampledPulse.peak_offset.getter(
     lambda self: self._peak_offset
@@ -273,11 +275,10 @@ SampledPulse.peak_offset = SampledPulse.peak_offset.getter(
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     """Waveform reconstruction on a fixed grid in metres.
 
-    Pulse FWHM remains a scanner specification in seconds. Gamma is causal at
-    zero; Gaussian defaults to a zero mean and retains its negative tail.
+    Pulse FWHM remains a scanner specification in seconds. All runtime pulses peak at
+    zero and retain their negative-offset portions.
     The recording tolerance determines only the recording bounds, never a
-    cutoff for individual returns. Peak correction affects reported ranges,
-    not waveform samples. Legacy time settings are accepted at construction.
+    cutoff for individual returns. Waveform and reported ranges share the same peak reference. Legacy time settings are accepted at construction.
     """
 
     sample_spacing: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.03747405725
@@ -287,9 +288,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     peak_window: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.149896229
     max_recording_span: Annotated[Length, Field(ge=0, allow_inf_nan=False)] = 0.0
     pulse_shape: Literal["gamma", "gaussian", "sampled"] = "gamma"
-    gaussian_mean: TimeOffset = 0.0
     sampled_pulse: Optional[SampledPulse] = None
-    correct_peak_offset: bool = True
     recording_tail_tolerance: Annotated[
         float, Field(gt=0, lt=1, allow_inf_nan=False)
     ] = 1e-4

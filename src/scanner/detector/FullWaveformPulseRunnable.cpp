@@ -507,8 +507,6 @@ FullWaveformPulseRunnable::digestFullWaveform(
 
     // Compute distance
     double distance = grid.rangeAt(i);
-    if (scanner->getFWFSettings(devIdx).correctPeakOffset)
-      distance -= scanner->getPulseModel(devIdx).peakOffset();
 
     // Build list of objects that produced this return
     double minDifference = std::numeric_limits<double>::max();

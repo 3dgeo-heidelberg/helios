@@ -127,14 +127,6 @@ The quality of the simulation can be adjusted by the ``beamSampleQuality`` attri
      - gamma
      - Unit-peak shape: ``gamma`` or ``gaussian`` in XML; Python/YAML also support ``sampled``.
 
-   * - ``gaussianMean_ns``
-     - 0
-     - Signed reference-to-peak offset for the Gaussian, in nanoseconds.
-
-   * - ``correctPeakOffset``
-     - true
-     - Subtract the shape's peak offset when reporting ranges.
-
    * - ``recordingTailTolerance``
      - 0.0001
      - Relative unit-peak amplitude for automatic recording bounds only.
@@ -248,18 +240,18 @@ The default gamma pulse is
 
 .. math::
    g(u)=\begin{cases}
-   \frac{e^2}{4}(u/\rho)^2\exp(-u/\rho), & u\geq0,\\
-   0, & u<0,
+   \frac{e^2}{4}(u/\rho+2)^2\exp(-(u/\rho+2)), & u\geq-2\rho,\\
+   0, & u<-2\rho,
    \end{cases}
    \qquad \rho=\frac{cT_\mathrm{FWHM}}{2\times3.394680670846504}.
 
-Its reference is the onset and its peak is at :math:`2\rho`. The alternative Gaussian is
+Its reference is the peak at zero and its onset is at :math:`-2\rho`. The alternative Gaussian is
 
 .. math::
-   g(u)=\exp\left[-\frac{(u-\mu_r)^2}{2\sigma_r^2}\right],
+   g(u)=\exp\left[-\frac{u^2}{2\sigma_r^2}\right],
    \qquad \sigma_r=\frac{cT_\mathrm{FWHM}}{4\sqrt{2\ln2}}.
 
-The Gaussian mean is configurable and defaults to zero: its reference then lies at its peak. A temporal mean converts to range coordinates as :math:`\mu_r=c\mu_t/2`. It has no exact onset: its negative-offset tail is retained. Both shapes have unit analytic peak.
+The Gaussian is centered at zero and retains its negative-offset tail. Both shapes have an analytic peak of 1.
 
 .. figure:: img/outgoing_waveform.png
    :alt: Time-domain pulse shape
@@ -273,7 +265,7 @@ At each range sample :math:`x_k`, HELIOS++ directly evaluates
 .. math::
    S(x_k)=P_0\sum_i A_i g(x_k-r_i).
 
-For gamma, automatic bounds extend from the nearest return to the furthest return plus the falling-flank tolerance crossing. For Gaussian, the pulse-relative bounds are :math:`\mu_r\pm\sigma_r\sqrt{-2\ln\epsilon}`, where :math:`\epsilon` is ``recordingTailTolerance`` (default ``1e-4``), the pulse amplitude relative to its peak at the recording bounds. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
+For gamma, automatic bounds extend from the nearest return minus :math:`2\rho` to the furthest return plus the falling-flank tolerance crossing minus :math:`2\rho`. For Gaussian, the pulse-relative bounds are :math:`\pm\sigma_r\sqrt{-2\ln\epsilon}`, where :math:`\epsilon` is ``recordingTailTolerance`` (default ``1e-4``), the pulse amplitude relative to its peak at the recording bounds. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
 
 The grid starts at the nearest return plus the pulse's lower recording bound, without rounding this origin to a multiple of the sample spacing. For gamma pulses this is exactly the nearest return; Gaussian and sampled pulses retain any leading flank before their reference. The upper bound rounds outwards to a grid point relative to this origin. Translating all returns translates the grid by the same amount. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
 
@@ -286,7 +278,7 @@ The grid starts at the nearest return plus the pulse's lower recording bound, wi
 Peak extraction and timing reference
 -----------------------------------
 
-The existing neighborhood and amplitude-threshold checks operate on the summed samples. With ``correctPeakOffset=true``, a detected peak at :math:`x` produces range :math:`x-2\rho` for gamma or :math:`x-\mu_r` for Gaussian (or :math:`x-p` for a sampled pulse with reference peak :math:`p`). Disabling correction reports :math:`x` directly. Correction precedes object attribution and measurement-error processing and never changes the waveform itself.
+The existing neighborhood and amplitude-threshold checks operate on the summed samples. A detected peak at range x produces range x before measurement-error processing. All pulse models are peak-centered; no subsequent offset correction is applied.
 
 Waveform export retains its existing layout. Endpoint metadata is physical round-trip time in nanoseconds, calculated from the recorded range coordinates using :math:`t=2x/c`. It is unaffected by range correction. As before, export requires an accepted return, and optional waveform noise is added after point extraction.
 
@@ -299,15 +291,15 @@ Configuration migration
 -----------------------
 
 Python uses ``sample_spacing``, ``peak_window``, ``max_recording_span``,
-``pulse_shape``, ``gaussian_mean``, ``correct_peak_offset``, and ``recording_tail_tolerance``::
+``pulse_shape`` and ``recording_tail_tolerance``::
 
    settings = helios.FullWaveformSettings(
        sample_spacing="2 cm", peak_window="10 cm",
-       pulse_shape="gaussian", gaussian_mean="0 ns", correct_peak_offset=True,
+       pulse_shape="gaussian",
        recording_tail_tolerance=1e-4,
    )
 
-The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and peak offset), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples. Its unit naming is not changed in this refactor.
+The old ``prepare_discretization``, template-array, sample-count, peak-index, and ``calc_time_propagation`` APIs are removed. Use ``prepare_pulse``, ``get_pulse_model`` (evaluation and recording bounds), and ``recording_grid`` instead. The historical ``receivedEnergyMin_W`` setting still compares directly with legacy intensity samples. Its unit naming is not changed in this refactor.
 
 
 Sampled pulse shapes in Python and YAML
@@ -328,17 +320,17 @@ Bare numeric offsets and ``peak_offset`` use seconds in the high-level Python AP
 
 Evaluation uses linear interpolation between supplied samples and zero outside the supplied interval, retaining the endpoint values themselves. The full interval sets the recording bounds. ``recording_tail_tolerance`` and scanner pulse length do not truncate or stretch sampled shapes. Internal ``sample_spacing`` remains independent of the supplied sampling density, but interpolation cannot recover features absent from the input samples.
 
-The reference peak is inferred for a unique maximum. Tied maxima or a maximum plateau require an explicit ``peak_offset`` located at a maximum of the interpolated shape. That same reference is subtracted from every detected peak.
+The reference peak is inferred for a unique maximum. Tied maxima or a maximum plateau require an explicit ``peak_offset`` located at a maximum of the interpolated shape. That reference is subtracted from the input coordinates before runtime evaluation. Original coordinates and the optional selector are preserved for inspection and serialization.
 
 Settings retain custom definitions through preparation, copying, and both inline and referenced YAML round trips. Configure pulses before running the simulation. Concurrent reconfiguration is unsupported. Custom pulse input is not supported in XML. Changing ``pulse_shape`` to an analytic shape retains but ignores ``sampled_pulse``.
 
-Low-level ``SampledPulse`` constructor coordinates are explicitly named ``offsets_ns`` and ``peak_offset_ns`` and use nanoseconds. All runtime models evaluate offsets and expose ``peak_offset`` and ``recording_bounds`` in range-equivalent metres.
+Low-level ``SampledPulse`` constructor coordinates are explicitly named ``offsets_ns`` and ``peak_offset_ns`` and use nanoseconds. All runtime models evaluate offsets and expose ``recording_bounds`` in range-equivalent metres.
 
 
 Echo width determination
 ------------------------
 
-If the command line parameter ``--calcEchoWidth`` was provided, a Gaussian curve is fitted to the waveform. This is an optional Gaussian-fit estimate, which may not describe asymmetric or custom pulse shapes accurately. The existing fitter reports the width parameter of ``exp(-((x-centre)/width)^2)``, equal to sqrt(2) times the Gaussian standard deviation. As shown in the following figure, the maximum of the Gaussian does not align with the maximum of the pulse shape. The detected sample maximum, with the optional shape offset correction, determines range. The fitted Gaussian centre does not replace it. For an isolated ideal return, sampling uncertainty is bounded by one sample spacing (about 3.75 cm at the default). The fitted sample-index width is converted to metres. The reported ``echo_width`` retains nanoseconds through conversion with :math:`2/c`.
+If the command line parameter ``--calcEchoWidth`` was provided, a Gaussian curve is fitted to the waveform. This is an optional Gaussian-fit estimate, which may not describe asymmetric or custom pulse shapes accurately. The existing fitter reports the width parameter of ``exp(-((x-centre)/width)^2)``, equal to sqrt(2) times the Gaussian standard deviation. As shown in the following figure, the maximum of the Gaussian does not align with the maximum of the pulse shape. The detected sample maximum,  determines range. The fitted Gaussian centre does not replace it. For an isolated ideal return, sampling uncertainty is bounded by one sample spacing (about 3.75 cm at the default). The fitted sample-index width is converted to metres. The reported ``echo_width`` retains nanoseconds through conversion with :math:`2/c`.
 
 .. figure:: img/echo_width.png
     :alt: 

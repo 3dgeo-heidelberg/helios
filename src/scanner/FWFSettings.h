@@ -24,9 +24,7 @@ public:
    */
   double sampleSpacing_m = 0.03747405725;
   std::string pulseShape = "gamma";
-  double gaussianMean_ns = 0.0;
   std::shared_ptr<SampledPulse> sampledPulse;
-  bool correctPeakOffset = true;
   double recordingTailTolerance = 1e-4;
   /**
    * @brief Minimum echo width
@@ -98,8 +96,6 @@ public:
         recordingTailTolerance >= 1)
       throw std::invalid_argument(
         "recordingTailTolerance must be between 0 and 1");
-    if (!std::isfinite(gaussianMean_ns))
-      throw std::invalid_argument("gaussianMean_ns must be finite");
     if (pulseShape != "gamma" && pulseShape != "gaussian" &&
         pulseShape != "sampled")
       throw std::invalid_argument(
@@ -127,9 +123,7 @@ public:
     ss << "FWFSettings \"" << id << "\":\n"
        << "sampleSpacing_m = " << sampleSpacing_m << "\n"
        << "pulseShape = " << pulseShape << "\n"
-       << "gaussianMean_ns = " << gaussianMean_ns << "\n"
        << "sampledPulse = " << (sampledPulse ? "present" : "none") << "\n"
-       << "correctPeakOffset = " << correctPeakOffset << "\n"
        << "recordingTailTolerance = " << recordingTailTolerance << "\n"
        << "minEchoWidth = " << minEchoWidth << "\n"
        << "peakEnergy = " << peakEnergy << "\n"
