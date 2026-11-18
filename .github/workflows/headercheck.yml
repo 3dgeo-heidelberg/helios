@@ -14,8 +14,13 @@ jobs:
     env:
       CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
 
-    runs-on: ubuntu-latest
-    name: Header sanity check
+    # Header self-containment can differ between compilers.
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    name: Header sanity check (${{ matrix.os }})
     steps:
       - uses: actions/checkout@v7
         with:
@@ -52,12 +57,11 @@ jobs:
           conda run -n helios-dev python --version
 
       - name: Install Conda GCC
+        if: runner.os == 'Linux'
         run: |
           conda install -y -c conda-forge gcc gxx
 
-      - name: Install Helios
+      - name: Build header checks
         run: |
-          mkdir build
-          cd build
-          cmake -DHELIOS_HEADERCHECK="ON" ..
-          make
+          cmake -S . -B build -DHELIOS_HEADERCHECK=ON -DBUILD_TESTING=OFF
+          cmake --build build --config Debug
