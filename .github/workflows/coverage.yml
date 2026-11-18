@@ -1,56 +1,13 @@
 name: Coverage testing
 
 on:
-  push:
-    branches:
-      - main
-      - alpha-dev
-  pull_request:
-    branches:
-      - main
-      - alpha-dev
+  workflow_call:
   workflow_dispatch:
 
 jobs:
-  changes:
-    name: Check for changes affecting coverage
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
-    outputs:
-      coverage: ${{ steps.filter.outputs.coverage }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Filter changes
-        if: github.event_name != 'workflow_dispatch'
-        uses: dorny/paths-filter@v4
-        id: filter
-        with:
-          # Compare pushes against the previous commit on the same branch.
-          # Pull requests always compare against their target branch.
-          base: ${{ github.ref }}
-          filters: |
-            coverage:
-              - '.github/workflows/coverage.yml'
-              - 'cmake/**'
-              - 'data/**'
-              - 'python/**'
-              - 'src/**'
-              - 'tests/python/**'
-              - 'CMakeLists.txt'
-              - 'environment-dev.yml'
-              - 'pyproject.toml'
-              - 'codecov.yml'
-
   coverage:
     runs-on: ubuntu-latest
     name: Coverage Testing
-    needs: changes
-    if: ${{ needs.changes.outputs.coverage == 'true' || github.event_name == 'workflow_dispatch' }}
 
     defaults:
       run:

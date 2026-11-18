@@ -1,4 +1,4 @@
-name: Build + Test
+name: CI
 
 on:
   push:
@@ -18,201 +18,24 @@ on:
 
 jobs:
   changes:
-    name: Check for changes in C++ and Python directories
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/changes.yml
     permissions:
       contents: read
       pull-requests: read
-    outputs:
-      cpp: ${{ steps.filter.outputs.cpp }}
-      python: ${{ steps.filter.outputs.python }}
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-
-    - name: Filter changes
-      if: github.event_name != 'workflow_dispatch'
-      uses: dorny/paths-filter@v4
-      id: filter
-      with:
-        # Compare pushes against the previous commit on the same branch.
-        # Pull requests always compare against their target branch.
-        base: ${{ github.ref }}
-        filters: |
-          cpp:
-            - '.github/workflows/ci.yml'
-            - 'benchmarks/**'
-            - 'cmake/**'
-            - 'doc/CMakeLists.txt'
-            - 'python/**/*.cpp'
-            - 'python/**/*.h'
-            - 'python/**/*.hpp'
-            - 'pyproject.toml'
-            - 'src/**'
-            - 'tests/headercheck/**'
-            - 'CMakeLists.txt'
-            - 'environment-dev.yml'
-          python:
-            - '.github/workflows/ci.yml'
-            - 'data/**'
-            - 'python/**'
-            - 'pyproject.toml'
-            - 'tests/python/**'
+  coverage:
+    needs: changes
+    if: ${{ needs.changes.outputs.coverage == 'true' || github.event_name == 'workflow_dispatch' }}
+    uses: ./.github/workflows/coverage.yml
 
   build-and-test:
-    runs-on: ${{ matrix.os }}
-    name: Testing on ${{ matrix.os }} with Python ${{ matrix.python }}
     needs: changes
     if: ${{ needs.changes.outputs.cpp == 'true' || needs.changes.outputs.python == 'true' || github.event_name == 'workflow_dispatch' }}
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
-        python:
-          - "3.10"
-          - "3.14"
-    
-    defaults:
-      run:
-        # Conda requires a login shell in order to work properly
-        shell: bash -l {0}  
-
-    env:
-      CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
-    
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v4
-        with:
-          installation-dir: ${{ env.CONDA_INSTALL_DIR }}
-          auto-update-conda: true
-          conda-remove-defaults: true
-          channels: conda-forge
-          auto-activate: false
-          activate-environment: helios-dev
-          python-version: ${{ matrix.python }}
-          miniconda-version: "latest"
-
-      - name: Restore conda environment cache
-        id: conda-cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
-          key: conda-env-v4-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('environment-dev.yml') }}
-
-      - name: Pin Python version in environment file
-        if: steps.conda-cache.outputs.cache-hit != 'true'
-        run: |
-          sed "s/^  - python$/  - python=${{ matrix.python }}/" environment-dev.yml > environment-dev-ci.yml
-
-      - name: Create Helios dev environment
-        if: steps.conda-cache.outputs.cache-hit != 'true'
-        run: |
-          conda env update -n helios-dev -f environment-dev-ci.yml --prune || conda env create -n helios-dev -f environment-dev-ci.yml
-          conda run -n helios-dev python --version
-
-      - name: Install Conda GCC
-        if: runner.os == 'Linux'
-        run: |
-          conda install -y -c conda-forge gcc gxx
-
-      - name: Install Linux Open3D system dependencies
-        if: runner.os == 'Linux' && matrix.python != '3.14'
-        run: |
-          sudo apt-get install --yes libegl1
-
-      - name: Install open3d test dependencies
-        if: matrix.python != '3.14'
-        run: |
-          python -m pip install open3d
-
-      - name: Install Helios
-        run: |
-          python -m pip install --no-build-isolation --config-settings=cmake.build-type="Release" --config-settings=build-dir="build" --config-settings=cmake.define.BUILD_TESTING="ON" --config-settings=cmake.define.BUILD_BENCHMARKS="ON" -v .
-        env:
-          SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
-
-      - name: Run C++ test suite
-        run: |
-          ctest --output-on-failure --test-dir build -C Release
-
-      # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
-      # more efforts into investigating broken LAZ files written by Helios on MacOS.
-      - name: Run tests (excl. regression tests)
-        if: runner.os != 'macOS'
-        run: |
-          python -m pytest
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v7
-        if: always() && github.event.inputs.upload-outputs == 'true' && runner.os == 'Windows'
-        with:
-          name: test-results
-          path: pytest-output/*
-          retention-days: 1
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      upload-outputs: ${{ inputs.upload-outputs == true }}
 
   headercheck:
-    defaults:
-      run:
-        # Conda requires a login shell in order to work properly
-        shell: bash -l {0}  
-
-    env:
-      CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
-  
-    runs-on: ubuntu-latest
-    name: Header sanity check
     needs: changes
     if: ${{ needs.changes.outputs.cpp == 'true' || github.event_name == 'workflow_dispatch' }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v4
-        with:
-          installation-dir: ${{ env.CONDA_INSTALL_DIR }}
-          auto-update-conda: true
-          conda-remove-defaults: true
-          channels: conda-forge
-          auto-activate: false
-          activate-environment: helios-dev
-          python-version: "3.10"
-          miniconda-version: "latest"
-
-      - name: Restore conda environment cache
-        id: conda-cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
-          key: conda-env-v4-${{ runner.os }}-py3.10-${{ hashFiles('environment-dev.yml') }}
-
-      - name: Pin Python version in environment file
-        if: steps.conda-cache.outputs.cache-hit != 'true'
-        run: |
-          sed "s/^  - python$/  - python=3.10/" environment-dev.yml > environment-dev-ci.yml
-
-      - name: Create Helios dev environment
-        if: steps.conda-cache.outputs.cache-hit != 'true'
-        run: |
-          conda env update -n helios-dev -f environment-dev-ci.yml --prune || conda env create -n helios-dev -f environment-dev-ci.yml
-          conda run -n helios-dev python --version
-
-      - name: Install Conda GCC
-        run: |
-          conda install -y -c conda-forge gcc gxx
-
-      - name: Install Helios
-        run: |
-          mkdir build
-          cd build
-          cmake -DHELIOS_HEADERCHECK="ON" ..
-          make
+    uses: ./.github/workflows/headercheck.yml
