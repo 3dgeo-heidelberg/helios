@@ -49,4 +49,6 @@ repos:
   # Tidy up bibtex files
   hooks:
   - id: bibtex-tidy
+    language: node
+    entry: bibtex-tidy --modify
     args: ['--align=16', '--curly', '--sort', '--sort-fields']
