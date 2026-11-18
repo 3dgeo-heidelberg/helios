@@ -17,9 +17,54 @@ on:
         type: boolean
 
 jobs:
+  changes:
+    name: Check for changes in C++ and Python directories
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      cpp: ${{ steps.filter.outputs.cpp }}
+      python: ${{ steps.filter.outputs.python }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Filter changes
+      if: github.event_name != 'workflow_dispatch'
+      uses: dorny/paths-filter@v4
+      id: filter
+      with:
+        # Compare pushes against the previous commit on the same branch.
+        # Pull requests always compare against their target branch.
+        base: ${{ github.ref }}
+        filters: |
+          cpp:
+            - '.github/workflows/ci.yml'
+            - 'benchmarks/**'
+            - 'cmake/**'
+            - 'doc/CMakeLists.txt'
+            - 'python/**/*.cpp'
+            - 'python/**/*.h'
+            - 'python/**/*.hpp'
+            - 'pyproject.toml'
+            - 'src/**'
+            - 'tests/headercheck/**'
+            - 'CMakeLists.txt'
+            - 'environment-dev.yml'
+          python:
+            - '.github/workflows/ci.yml'
+            - 'data/**'
+            - 'python/**'
+            - 'pyproject.toml'
+            - 'tests/python/**'
+
   build-and-test:
     runs-on: ${{ matrix.os }}
     name: Testing on ${{ matrix.os }} with Python ${{ matrix.python }}
+    needs: changes
+    if: ${{ needs.changes.outputs.cpp == 'true' || needs.changes.outputs.python == 'true' || github.event_name == 'workflow_dispatch' }}
     strategy:
       matrix:
         os:
@@ -124,6 +169,8 @@ jobs:
   
     runs-on: ubuntu-latest
     name: Header sanity check
+    needs: changes
+    if: ${{ needs.changes.outputs.cpp == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@v7
         with:
