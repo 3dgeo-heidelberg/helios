@@ -43,3 +43,12 @@ repos:
     args:
       - --style=Mozilla
     types_or: [c++]
+
+- repo: https://github.com/FlamingTempura/bibtex-tidy
+  rev: v1.14.0
+  # Tidy up bibtex files
+  hooks:
+  - id: bibtex-tidy
+    language: node
+    entry: bibtex-tidy --modify
+    args: ['--align=16', '--curly', '--sort', '--sort-fields']
