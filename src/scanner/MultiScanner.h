@@ -333,14 +333,14 @@ public:
    */
   double getVisibility(size_t const idx) const override
   {
-    return scanDevs[idx].visibility_km;
+    return scanDevs[idx].visibility_m;
   }
   /**
    * @see Scanner::setVisibility
    */
   void setVisibility(double const visibility, size_t const idx) override
   {
-    scanDevs[idx].visibility_km = visibility;
+    scanDevs[idx].visibility_m = visibility;
   }
   /**
    * @see Scanner::getWavelength

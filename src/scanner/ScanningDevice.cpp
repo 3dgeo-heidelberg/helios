@@ -25,7 +25,7 @@ ScanningDevice::ScanningDevice(
   double const beamQuality,
   double const efficiency,
   double const receiverDiameter_m,
-  double const atmosphericVisibility_km,
+  double const atmosphericVisibility_m,
   double const wavelength_m,
   std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr)
   : devIdx(deviceIndex)
@@ -38,7 +38,7 @@ ScanningDevice::ScanningDevice(
   , beamQuality(beamQuality)
   , efficiency(efficiency)
   , receiverDiameter_m(receiverDiameter_m)
-  , visibility_km(atmosphericVisibility_km)
+  , visibility_m(atmosphericVisibility_m)
   , wavelength_m(wavelength_m)
   , supportedPulseFreqs_Hz(pulseFreqs)
   , rangeErrExpr(rangeErrExpr)
@@ -60,7 +60,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->beamQuality = scdev.beamQuality;
   this->efficiency = scdev.efficiency;
   this->receiverDiameter_m = scdev.receiverDiameter_m;
-  this->visibility_km = scdev.visibility_km;
+  this->visibility_m = scdev.visibility_m;
   this->wavelength_m = scdev.wavelength_m;
   this->atmosphericExtinction = scdev.atmosphericExtinction;
   this->beamWaistRadius = scdev.beamWaistRadius;
@@ -158,7 +158,8 @@ ScanningDevice::calcAtmosphericAttenuation() const
 {
   double q;
   double const lambda = wavelength_m * 1e9;
-  double const Vm = visibility_km;
+  // The attenuation model defines meteorological visibility in kilometers.
+  double const Vm = visibility_m * 1e-3;
 
   if (lambda < 500 && lambda > 2000) {
     // Do nothing if wavelength is outside range, approximation will be bad

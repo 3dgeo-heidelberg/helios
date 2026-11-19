@@ -810,8 +810,8 @@ public:
    * @brief Get device visibility
    * @param idx The index of the scanning device which visibility must be
    *  obtained (by default 0, it is the first one)
-   * @return Device visibility (kilometers)
-   * @see ScanningDevice::visibility_km
+   * @return Device visibility (meters)
+   * @see ScanningDevice::visibility_m
    */
   virtual double getVisibility(size_t const idx) const = 0;
   /**
@@ -821,10 +821,10 @@ public:
   inline double getVisibility() const { return getVisibility(0); }
   /**
    * @brief Set device visibility
-   * @param visibility New device visibility (kilometers)
+   * @param visibility New device visibility (meters)
    * @param idx The index of the scanning device which visibility must be
    *  set (by default 0, it is the first one)
-   * @see ScanningDevice::visibility_km
+   * @see ScanningDevice::visibility_m
    */
   virtual void setVisibility(double const visibility, size_t const idx) = 0;
   /**

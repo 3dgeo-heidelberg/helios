@@ -94,9 +94,9 @@ protected:
    */
   double receiverDiameter_m;
   /**
-   * @brief Visibility (kilometers)
+   * @brief Visibility (meters)
    */
-  double visibility_km;
+  double visibility_m;
   /**
    * @brief Wave length (meters)
    */
@@ -270,7 +270,7 @@ public:
     double const beamQuality,
     double const efficiency,
     double const receiverDiameter_m,
-    double const atmosphericVisibility_km,
+    double const atmosphericVisibility_m,
     double const wavelength_m,
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr);
   /**
@@ -536,10 +536,10 @@ public:
     receiverDiameter_m = value;
     cached_Dr2 = value * value;
   }
-  inline double getAtmosphericVisibility() const { return visibility_km; }
+  inline double getAtmosphericVisibility() const { return visibility_m; }
   inline void setAtmosphericVisibility(double const value)
   {
-    visibility_km = value;
+    visibility_m = value;
     atmosphericExtinction = calcAtmosphericAttenuation();
   }
   inline int getMaxReturns() const { return maxNOR; }

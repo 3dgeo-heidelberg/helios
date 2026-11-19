@@ -57,7 +57,7 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
   const double beamQuality = 1.0;
   const double efficiency = 0.99;
   const double receiverDiameter = 0.15;
-  const double atmosphericVisibility = 23.0;
+  const double atmosphericVisibility = 23000.0;
   const int wavelength = 1064;
   // create a dummy range error expression tree (constant 0)
   auto rangeErrExpr = std::make_shared<UnivarExprTreeNode<double>>();

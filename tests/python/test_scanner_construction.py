@@ -68,6 +68,7 @@ def test_single_scanner_construction_and_backend_propagation():
         beam_origin_position=(0, 0, 0.2),
         pulse_length=5 * units.ns,
         wavelength=1064 * units.nm,
+        atmospheric_visibility=23 * units.km,
         optics=RotatingOptics(
             scan_angle_max=120 * units.deg,
             scan_angle_effective_max=50 * units.deg,
@@ -86,6 +87,7 @@ def test_single_scanner_construction_and_backend_propagation():
     assert scanner.device._cpp_object is scanner._cpp_object.device
     assert scanner.device.pulse_length == 5.0
     assert scanner.device.wavelength == pytest.approx(1064e-9)
+    assert scanner.device.atmospheric_visibility == 23_000.0
     assert scanner.device.full_waveform.window_size == pytest.approx(1.25e-9)
 
     scanner.device.pulse_length = 8 * units.ns

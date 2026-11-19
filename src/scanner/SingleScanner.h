@@ -40,7 +40,7 @@ public:
     double const beamQuality,
     double const efficiency,
     double const receiverDiameter,
-    double const atmosphericVisibility,
+    double const atmosphericVisibility_m,
     int const wavelength,
     bool const writeWaveform = false,
     bool const writePulse = false,
@@ -315,14 +315,14 @@ public:
    */
   double getVisibility(size_t const idx) const override
   {
-    return scanDev.visibility_km;
+    return scanDev.visibility_m;
   }
   /**
    * @see Scanner::setVisibility
    */
   void setVisibility(double const visibility, size_t const idx) override
   {
-    scanDev.visibility_km = visibility;
+    scanDev.visibility_m = visibility;
   }
   /**
    * @see Scanner::getWavelength

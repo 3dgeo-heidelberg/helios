@@ -10,7 +10,6 @@ from helios.validation import (
     Power,
     R3Vector,
     ScanFrequency,
-    Visibility,
     units,
     UpdateableMixin,
     TimeInterval,
@@ -200,7 +199,7 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
     beam_quality_factor: PositiveFloat = 1.0
     optical_efficiency: Annotated[float, Field(ge=0, le=1)] = 0.99
     receiver_diameter: Length = 0.15
-    atmospheric_visibility: Visibility = 23.0
+    atmospheric_visibility: Length = 23_000.0
     received_energy_min: Power = 0.0001
     max_returns: NonNegativeInt = 0
 

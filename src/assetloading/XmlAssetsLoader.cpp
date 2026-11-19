@@ -842,8 +842,11 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
     XmlUtils::getAttributeCast<double>(scannerNode, "opticalEfficiency", 0.99);
   double receiverDiameter =
     XmlUtils::getAttributeCast<double>(scannerNode, "receiverDiameter_m", 0.15);
-  double visibility = XmlUtils::getAttributeCast<double>(
-    scannerNode, "atmosphericVisibility_km", 23.0);
+  // XML visibility remains expressed in kilometers for compatibility. The
+  // backend stores it in meters.
+  double visibility_m =
+    1000.0 * XmlUtils::getAttributeCast<double>(
+               scannerNode, "atmosphericVisibility_km", 23.0);
   int wavelength =
     XmlUtils::getAttributeCast<int>(scannerNode, "wavelength_nm", 1064);
   // ########### END Read all the rest #############
@@ -870,7 +873,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                beamQuality,
                                efficiency,
                                receiverDiameter,
-                               visibility,
+                               visibility_m,
                                wavelength * 1e-9,
                                rangeErrExpr);
     baseScanDev.setReceivedEnergyMin(XmlUtils::getAttributeCast<double>(
@@ -899,7 +902,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               beamQuality,
                                               efficiency,
                                               receiverDiameter,
-                                              visibility,
+                                              visibility_m,
                                               wavelength,
                                               false,
                                               false,

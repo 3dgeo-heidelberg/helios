@@ -38,7 +38,7 @@ SingleScanner::SingleScanner(
   double const beamQuality,
   double const efficiency,
   double const receiverDiameter,
-  double const atmosphericVisibility,
+  double const atmosphericVisibility_m,
   int const wavelength,
   bool const writeWaveform,
   bool const writePulse,
@@ -64,7 +64,7 @@ SingleScanner::SingleScanner(
             beamQuality,
             efficiency,
             receiverDiameter,
-            atmosphericVisibility,
+            atmosphericVisibility_m,
             wavelength / 1000000000.0,
             rangeErrExpr)
 {

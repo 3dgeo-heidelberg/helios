@@ -109,13 +109,13 @@ private:
                                       1.0,                // beamQuality
                                       0.99,               // efficiency
                                       0.15,               // receiverDiameter
-                                      23.0,  // atmosphericVisibility
-                                      1064,  // wavelength (nm)
-                                      false, // writeWaveform
-                                      false, // writePulse
-                                      false, // calcEchowidth
-                                      false, // fullWaveNoise
-                                      false  // platformNoiseDisabled
+                                      23000.0, // atmosphericVisibility
+                                      1064,    // wavelength (nm)
+                                      false,   // writeWaveform
+                                      false,   // writePulse
+                                      false,   // calcEchowidth
+                                      false,   // fullWaveNoise
+                                      false    // platformNoiseDisabled
       );
 
     scanner->getFWFSettings(0).beamSampleQuality = beamSampleQuality;
