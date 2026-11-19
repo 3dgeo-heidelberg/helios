@@ -221,9 +221,6 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
 
 
 class Scanner(Model, cpp_class=_helios.Scanner):
-    id: str
-    name: str = ""
-
     def _never_serialize_shallow(self) -> bool:
         return True
 

@@ -81,12 +81,12 @@ def test_single_scanner_construction_and_backend_propagation():
         ),
         full_waveform=FullWaveformSettings(beam_sample_quality=3),
     )
-    scanner = SingleScanner(id="riegl_vz400", name="RIEGL VZ-400", device=device)
+    scanner = SingleScanner(device=device)
 
     assert scanner.device._cpp_object is scanner._cpp_object.device
     assert scanner.device.pulse_length == 5.0
     assert scanner.device.wavelength == pytest.approx(1064e-9)
-    assert scanner.device.full_waveform.window_size == 1.25
+    assert scanner.device.full_waveform.window_size == pytest.approx(1.25e-9)
 
     scanner.device.pulse_length = 8 * units.ns
     assert scanner._cpp_object.device.pulse_length == 8.0
@@ -105,8 +105,6 @@ def test_multiscanner_channels_are_scanner_owned_and_independent():
         scan_frequency_max=600 * units.Hz,
     )
     scanner = MultiScanner(
-        id="riegl_vq-1560i",
-        name="RIEGL VQ-1560i (Dual-Channel)",
         channels=(
             make_device(
                 "0",
@@ -140,8 +138,6 @@ def test_multiscanner_channels_are_scanner_owned_and_independent():
 
 def test_programmatic_scanner_yaml_roundtrip(tmp_path):
     scanner = SingleScanner(
-        id="scanner",
-        name="Programmatic scanner",
         device=make_device("device", pulse_length=6 * units.ns),
     )
 
@@ -149,8 +145,6 @@ def test_programmatic_scanner_yaml_roundtrip(tmp_path):
     assert "model_ref" not in path.read_text(encoding="utf-8")
     loaded = SingleScanner.from_yaml(path)
 
-    assert loaded.id == "scanner"
-    assert loaded.name == "Programmatic scanner"
     assert loaded.device.id == "device"
     assert loaded.device.pulse_length == 6.0
     assert isinstance(loaded.device.optics, ConicOptics)
@@ -158,7 +152,6 @@ def test_programmatic_scanner_yaml_roundtrip(tmp_path):
 
 def test_programmatic_scanner_and_platform_run_survey():
     scanner = SingleScanner(
-        id="programmatic",
         device=make_device(
             "programmatic",
             supported_pulse_frequencies=(2_000 * units.Hz,),
@@ -175,7 +168,7 @@ def test_programmatic_scanner_and_platform_run_survey():
             ),
         ),
     )
-    platform = StaticPlatform(id="tripod", scanner_mount_position=(0, 0, 1.5))
+    platform = StaticPlatform(scanner_mount_position=(0, 0, 1.5))
     scene = StaticScene(
         scene_parts=(ScenePart.from_obj("data/sceneparts/basic/box/box100.obj"),)
     )
@@ -202,12 +195,9 @@ def test_programmatic_scanner_and_platform_run_survey():
 
 def test_platform_construction_and_backend_propagation(tmp_path):
     platform = StaticPlatform(
-        id="tripod",
-        name="TLS Tripod",
         scanner_mount_position=(0, 0, 1.5),
     )
 
-    assert platform._cpp_object.id == "tripod"
     assert platform._cpp_object.scanner_mount_position == (0.0, 0.0, 1.5)
 
     path = platform.to_yaml(tmp_path / "platform.yaml", shallow=True)

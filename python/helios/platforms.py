@@ -180,8 +180,6 @@ class DynamicPlatformSettings(PlatformSettings):
 class Platform(Printable, Model, cpp_class=_helios.Platform):
     # TODO: should platform_settings get set from xml as well?
     platform_settings: Optional[PlatformSettings] = None
-    id: str
-    name: str = ""
     scanner_mount_position: R3Vector = (0.0, 0.0, 0.0)
     scanner_mount_attitude: Rotation = Rotation()
 

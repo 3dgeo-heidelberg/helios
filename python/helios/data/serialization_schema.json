@@ -911,8 +911,6 @@
       "additionalProperties": false,
       "properties": {
         "platform_settings": {},
-        "id": {},
-        "name": {},
         "scanner_mount_position": {},
         "scanner_mount_attitude": {}
       }
@@ -983,10 +981,7 @@
     "fields_helios_scanner_Scanner": {
       "type": "object",
       "additionalProperties": false,
-      "properties": {
-        "id": {},
-        "name": {}
-      }
+      "maxProperties": 0
     },
     "fields_helios_scanner_ScannerSettings": {
       "type": "object",
@@ -1090,8 +1085,6 @@
       "additionalProperties": false,
       "properties": {
         "platform_settings": {},
-        "id": {},
-        "name": {},
         "scanner_mount_position": {},
         "scanner_mount_attitude": {}
       }
@@ -1101,8 +1094,6 @@
       "additionalProperties": false,
       "properties": {
         "platform_settings": {},
-        "id": {},
-        "name": {},
         "scanner_mount_position": {},
         "scanner_mount_attitude": {}
       }
@@ -1112,8 +1103,6 @@
       "additionalProperties": false,
       "properties": {
         "platform_settings": {},
-        "id": {},
-        "name": {},
         "scanner_mount_position": {},
         "scanner_mount_attitude": {},
         "drag": {}
@@ -1241,8 +1230,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "id": {},
-        "name": {},
         "device": {}
       }
     },
@@ -1250,8 +1237,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "id": {},
-        "name": {},
         "channels": {}
       }
     },
