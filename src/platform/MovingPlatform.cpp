@@ -8,7 +8,6 @@
 
 #include "MovingPlatform.h"
 #include "PrintUtils.h"
-using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //

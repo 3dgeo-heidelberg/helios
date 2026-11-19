@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="360" viewBox="0 0 800 360">
+<rect width="800" height="360" fill="white"/>
+<g font-family="sans-serif" fill="#253047" text-anchor="middle">
+<text x="200" y="28" font-size="17">Circular: equal divergences</text>
+<ellipse cx="200" cy="185" rx="26.0" ry="26.0" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+<ellipse cx="200" cy="185" rx="78.0" ry="78.0" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+<ellipse cx="200" cy="185" rx="130" ry="130" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+<circle cx="200.00000" cy="185.00000" r="5" fill="#b32934"/>
+<circle cx="200.00000" cy="133.00000" r="5" fill="#df9140"/>
+<circle cx="245.03332" cy="159.00000" r="5" fill="#df9140"/>
+<circle cx="245.03332" cy="211.00000" r="5" fill="#df9140"/>
+<circle cx="200.00000" cy="237.00000" r="5" fill="#df9140"/>
+<circle cx="154.96668" cy="211.00000" r="5" fill="#df9140"/>
+<circle cx="154.96668" cy="159.00000" r="5" fill="#df9140"/>
+<circle cx="200.00000" cy="81.00000" r="5" fill="#4676b5"/>
+<circle cx="252.00000" cy="94.93336" r="5" fill="#4676b5"/>
+<circle cx="290.06664" cy="133.00000" r="5" fill="#4676b5"/>
+<circle cx="304.00000" cy="185.00000" r="5" fill="#4676b5"/>
+<circle cx="290.06664" cy="237.00000" r="5" fill="#4676b5"/>
+<circle cx="252.00000" cy="275.06664" r="5" fill="#4676b5"/>
+<circle cx="200.00000" cy="289.00000" r="5" fill="#4676b5"/>
+<circle cx="148.00000" cy="275.06664" r="5" fill="#4676b5"/>
+<circle cx="109.93336" cy="237.00000" r="5" fill="#4676b5"/>
+<circle cx="96.00000" cy="185.00000" r="5" fill="#4676b5"/>
+<circle cx="109.93336" cy="133.00000" r="5" fill="#4676b5"/>
+<circle cx="148.00000" cy="94.93336" r="5" fill="#4676b5"/>
+<text x="200" y="345" font-size="13">Emitter-local right → · up ↑</text>
+<text x="600" y="28" font-size="17">Elliptical: 2:1 tangent slopes</text>
+<ellipse cx="600" cy="185" rx="26.0" ry="13.0" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+<ellipse cx="600" cy="185" rx="78.0" ry="39.0" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+<ellipse cx="600" cy="185" rx="130" ry="65.0" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+<circle cx="600.00000" cy="185.00000" r="5" fill="#b32934"/>
+<circle cx="600.00000" cy="159.00000" r="5" fill="#df9140"/>
+<circle cx="645.03332" cy="172.00000" r="5" fill="#df9140"/>
+<circle cx="645.03332" cy="198.00000" r="5" fill="#df9140"/>
+<circle cx="600.00000" cy="211.00000" r="5" fill="#df9140"/>
+<circle cx="554.96668" cy="198.00000" r="5" fill="#df9140"/>
+<circle cx="554.96668" cy="172.00000" r="5" fill="#df9140"/>
+<circle cx="600.00000" cy="133.00000" r="5" fill="#4676b5"/>
+<circle cx="652.00000" cy="139.96668" r="5" fill="#4676b5"/>
+<circle cx="690.06664" cy="159.00000" r="5" fill="#4676b5"/>
+<circle cx="704.00000" cy="185.00000" r="5" fill="#4676b5"/>
+<circle cx="690.06664" cy="211.00000" r="5" fill="#4676b5"/>
+<circle cx="652.00000" cy="230.03332" r="5" fill="#4676b5"/>
+<circle cx="600.00000" cy="237.00000" r="5" fill="#4676b5"/>
+<circle cx="548.00000" cy="230.03332" r="5" fill="#4676b5"/>
+<circle cx="509.93336" cy="211.00000" r="5" fill="#4676b5"/>
+<circle cx="496.00000" cy="185.00000" r="5" fill="#4676b5"/>
+<circle cx="509.93336" cy="159.00000" r="5" fill="#4676b5"/>
+<circle cx="548.00000" cy="139.96668" r="5" fill="#4676b5"/>
+<text x="600" y="345" font-size="13">Emitter-local right → · up ↑</text>
+</g></svg>

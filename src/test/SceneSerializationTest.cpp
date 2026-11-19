@@ -1,5 +1,7 @@
+#include <assetloading/SpectralLibrary.h>
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <fstream>
 #undef INFO
 #undef WARN
 
@@ -72,22 +74,17 @@ populateMixedScene(Scene& scene)
   sharedMat->name = "shared";
   sharedMat->reflectance = 18.5;
   sharedMat->specularity = 0.23;
+  sharedMat->isDirectionIndependent = true;
   sharedMat->specularExponent = 6.0;
   sharedMat->classification = 2;
   sharedMat->isGround = false;
   sharedMat->useVertexColors = true;
-  sharedMat->ka[0] = 0.1f;
-  sharedMat->kd[1] = 0.2f;
-  sharedMat->ks[2] = 0.3f;
 
   auto detailedMat = std::make_shared<Material>();
   detailedMat->name = "detailed";
   detailedMat->reflectance = 42.0;
   detailedMat->classification = 6;
   detailedMat->isGround = true;
-  detailedMat->ka[0] = 0.7f;
-  detailedMat->kd[1] = 0.8f;
-  detailedMat->ks[2] = 0.9f;
 
   Triangle* tri = new Triangle(
     Vertex(-0.6, -0.6, 0.0), Vertex(0.7, -0.4, 0.0), Vertex(0.0, 0.8, 0.0));
@@ -383,4 +380,42 @@ TEST_CASE("SceneSerialization: compression levels and validation")
     REQUIRE_THROWS_AS(scene.saveCereal(archive.path.string(), 10),
                       HeliosException);
   }
+}
+
+TEST_CASE("Binary scene rejects obsolete headers and preserves scattering",
+          "[serialization][material]")
+{
+  Scene scene;
+  populateMixedScene(scene);
+  for (int level : { 0, 6 }) {
+    TempArchivePath archive("material_roundtrip");
+    scene.saveCereal(archive.path.string(), level);
+    Scene restored;
+    restored.loadCereal(archive.path.string());
+    REQUIRE(restored.primitives[0]->material->isDirectionIndependent);
+    REQUIRE(restored.primitives[0]->material->specularity == 0.23);
+  }
+  TempArchivePath old("material_old");
+  {
+    std::ofstream out(old.path, std::ios::binary);
+    out << "old binary scene layout";
+  }
+  Scene restored;
+  REQUIRE_THROWS(restored.loadCereal(old.path.string()));
+}
+
+TEST_CASE("Spectral loading preserves explicit scattering",
+          "[material][assetloading]")
+{
+  Scene scene;
+  populateMixedScene(scene);
+  auto material = scene.primitives[0]->material;
+  material->reflectance = std::numeric_limits<double>::quiet_NaN();
+  material->spectra = "grass";
+  SpectralLibrary library(1.064e-6, { "python/helios/data" }, "spectra");
+  library.readReflectances();
+  library.setReflectances(&scene);
+  REQUIRE(std::isfinite(material->reflectance));
+  REQUIRE(material->specularity == 0.23);
+  REQUIRE(material->isDirectionIndependent);
 }

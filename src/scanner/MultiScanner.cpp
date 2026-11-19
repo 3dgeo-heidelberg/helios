@@ -85,20 +85,18 @@ MultiScanner::prepareSimulation()
 
 void
 MultiScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
-                            size_t const idx)
+                            size_t idx)
 {
   // Configure scanner
   setMaxDuration(settings->maxDuration_s);
   setPulseFreq_Hz(settings->pulseFreq_Hz);
   setActive(settings->active);
-  setBeamDivergence(settings->beamDivAngle, 0);
   trajectoryTimeInterval_ns = settings->trajectoryTimeInterval * 1e9;
 
   // Configure scanning devices and their components
   size_t const numScanDevs = scanDevs.size();
   for (size_t i = 0; i < numScanDevs; ++i) {
     scanDevs[i].setOpticsWarmupPhase_s(settings->opticsWarmupPhase_s);
-    scanDevs[i].configureBeam();
     getDetector(i)->applySettings(settings);
     getScannerHead(i)->applySettings(settings);
     getBeamDeflector(i)->applySettings(settings);
@@ -107,7 +105,7 @@ MultiScanner::applySettings(std::shared_ptr<ScannerSettings> settings,
 
 void
 MultiScanner::doSimStep(unsigned int legIndex,
-                        double const currentGpsTime,
+                        double currentGpsTime,
                         Scene& scene)
 {
   // Check whether the scanner is active or not
@@ -142,22 +140,13 @@ MultiScanner::doSimStep(unsigned int legIndex,
 }
 
 void
-MultiScanner::prepareDiscretization(size_t const idx)
+MultiScanner::preparePulse(size_t idx)
 {
-  setNumTimeBins(getPulseLength_ns(idx) / getFWFSettings(idx).binSize_ns, idx);
-  setTimeWave(vector<double>(getNumTimeBins(idx)), idx);
-  setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
-                          getTimeWave(idx),
-                          getNumTimeBins(idx),
-                          getFWFSettings(idx).binSize_ns,
-                          getPulseLength_ns(idx),
-                          7.0 // 3.5 too many ops., 7.0 just one op.
-                          ),
-                        idx);
+  scanDevs[idx].preparePulse();
 }
 
 Rotation
-MultiScanner::calcAbsoluteBeamAttitude(size_t const idx)
+MultiScanner::calcAbsoluteBeamAttitude(size_t idx)
 {
   return scanDevs[idx].calcAbsoluteBeamAttitude(
     platform->getAbsoluteMountAttitude());
@@ -165,7 +154,7 @@ MultiScanner::calcAbsoluteBeamAttitude(size_t const idx)
 void
 MultiScanner::computeSubrays(
   std::function<void(Rotation const& subrayRotation,
-                     int const subrayRadiusStep,
+                     std::size_t subrayIndex,
                      NoiseSource<double>& intersectionHandlingNoiseSource,
                      std::map<double, double>& reflections,
                      vector<RaySceneIntersection>& intersects
@@ -178,7 +167,7 @@ MultiScanner::computeSubrays(
   NoiseSource<double>& intersectionHandlingNoiseSource,
   std::map<double, double>& reflections,
   vector<RaySceneIntersection>& intersects,
-  size_t const idx
+  size_t idx
 #if DATA_ANALYTICS >= 2
   ,
   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
@@ -197,55 +186,78 @@ MultiScanner::computeSubrays(
 }
 
 bool
-MultiScanner::initializeFullWaveform(double const minHitDist_m,
-                                     double const maxHitDist_m,
-                                     double& minHitTime_ns,
-                                     double& maxHitTime_ns,
-                                     double& nsPerBin,
-                                     double& distanceThreshold,
-                                     int& peakIntensityIndex,
-                                     int& numFullwaveBins,
-                                     size_t const idx)
+MultiScanner::initializeFullWaveform(double minHitDist_m,
+                                     double maxHitDist_m,
+                                     WaveformGrid& grid,
+                                     size_t idx)
 {
-  return scanDevs[idx].initializeFullWaveform(minHitDist_m,
-                                              maxHitDist_m,
-                                              minHitTime_ns,
-                                              maxHitTime_ns,
-                                              nsPerBin,
-                                              distanceThreshold,
-                                              peakIntensityIndex,
-                                              numFullwaveBins);
+  return scanDevs[idx].initializeFullWaveform(minHitDist_m, maxHitDist_m, grid);
 }
 
 double
-MultiScanner::calcIntensity(
-  double const incidenceAngle,
-  double const targetRange,
+MultiScanner::computeReceivedPower(
+  double incidenceCosine,
+  double targetRange,
   Material const& mat,
-  int const subrayRadiusStep,
-  size_t const idx
+  std::size_t subrayIndex,
+  size_t idx
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return scanDevs[idx].calcIntensity(incidenceAngle,
-                                     targetRange,
-                                     mat,
-                                     subrayRadiusStep
+  return scanDevs[idx].computeReceivedPower(incidenceCosine,
+                                            targetRange,
+                                            mat,
+                                            subrayIndex
 #if DATA_ANALYTICS >= 2
-                                     ,
-                                     calcIntensityRecords
+                                            ,
+                                            radiometryRecords
 #endif
   );
 }
 
 double
-MultiScanner::calcIntensity(double const targetRange,
-                            double const sigma,
-                            int const subrayRadiusStep,
-                            size_t const idx) const
+MultiScanner::computeReceivedPowerWithSigma(double targetRange,
+                                            double sigma,
+                                            std::size_t subrayIndex,
+                                            size_t idx) const
 {
-  return scanDevs[idx].calcIntensity(targetRange, sigma, subrayRadiusStep);
+  return scanDevs[idx].computeReceivedPowerWithSigma(
+    targetRange, sigma, subrayIndex);
+}
+
+double
+MultiScanner::computePowerRatio(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex,
+  size_t idx
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& radiometryRecords
+#endif
+) const
+{
+  return scanDevs[idx].computePowerRatio(incidenceCosine,
+                                         targetRange,
+                                         mat,
+                                         subrayIndex
+#if DATA_ANALYTICS >= 2
+                                         ,
+                                         radiometryRecords
+#endif
+  );
+}
+
+double
+MultiScanner::computePowerRatioWithSigma(double targetRange,
+                                         double sigma,
+                                         std::size_t subrayIndex,
+                                         size_t idx) const
+{
+  return scanDevs[idx].computePowerRatioWithSigma(
+    targetRange, sigma, subrayIndex);
 }

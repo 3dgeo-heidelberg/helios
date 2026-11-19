@@ -10,6 +10,7 @@ target_sources(
   "AssetLoadingTest.cpp"
   "DiscreteTimeTest.cpp"
   "EnergyModelsTest.cpp"
+  "BeamSamplingTest.cpp"
   "ExprTreeTest.cpp"
   "FluxionumTest.cpp"
   "FunctionalPlatformTest.cpp"
