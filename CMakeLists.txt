@@ -145,7 +145,10 @@ if(BUILD_PYTHON)
   find_package(Boost REQUIRED COMPONENTS python)
 
   add_library(_pyhelios MODULE)
-
+  if(MSVC)
+    target_compile_options(helios PRIVATE /bigobj)
+    target_compile_options(_pyhelios PRIVATE /bigobj)
+  endif()
   target_link_libraries(_pyhelios
   PRIVATE
     helios
