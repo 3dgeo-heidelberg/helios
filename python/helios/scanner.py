@@ -18,8 +18,7 @@ from helios.validation import (
 )
 from helios.rotation import Rotation
 from helios.settings import FullWaveformSettings
-from pydantic import validate_call
-from pydantic import Field
+from pydantic import Field, NonNegativeInt, PositiveFloat, PositiveInt, validate_call
 from typing import Annotated, Callable
 
 import _helios
@@ -145,7 +144,7 @@ class BeamDeflector(Model, cpp_class=_helios.AbstractBeamDeflector):
 class OscillatingOptics(
     BeamDeflector, cpp_class=_helios.OscillatingMirrorBeamDeflector
 ):
-    scan_product: Annotated[int, Field(gt=0)] = 1_000_000
+    scan_product: PositiveInt = 1_000_000
 
 
 class ConicOptics(BeamDeflector, cpp_class=_helios.ConicBeamDeflector):
@@ -153,7 +152,7 @@ class ConicOptics(BeamDeflector, cpp_class=_helios.ConicBeamDeflector):
 
 
 class LineOptics(BeamDeflector, cpp_class=_helios.FiberArrayBeamDeflector):
-    number_of_fibers: Annotated[int, Field(gt=0)] = 1
+    number_of_fibers: PositiveInt = 1
 
 
 class RotatingOptics(BeamDeflector, cpp_class=_helios.PolygonMirrorBeamDeflector):
@@ -163,13 +162,13 @@ class RotatingOptics(BeamDeflector, cpp_class=_helios.PolygonMirrorBeamDeflector
 class Prism(Model, cpp_class=_helios.Prism):
     angle: Angle
     inclined_on_left: bool
-    refractive_index: Annotated[float, Field(gt=0)]
+    refractive_index: PositiveFloat
     rotation_speed: AngleVelocity
 
 
 class RisleyOptics(Model, cpp_class=_helios.RisleyBeamDeflector):
     prisms: tuple[Prism, ...]
-    air_refractive_index: Annotated[float, Field(gt=0)] = 1.0
+    air_refractive_index: PositiveFloat = 1.0
     incident_beam: R3Vector = (0.0, 1.0, 0.0)
 
 
@@ -198,12 +197,12 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
     pulse_length: TimeIntervalNanoSeconds = 4.0
     wavelength: Length = 1064.0 * units.nm
     average_power: Power = 4.0
-    beam_quality_factor: Annotated[float, Field(gt=0)] = 1.0
+    beam_quality_factor: PositiveFloat = 1.0
     optical_efficiency: Annotated[float, Field(ge=0, le=1)] = 0.99
     receiver_diameter: Length = 0.15
     atmospheric_visibility: Visibility = 23.0
     received_energy_min: Power = 0.0001
-    max_returns: Annotated[int, Field(ge=0)] = 0
+    max_returns: NonNegativeInt = 0
 
     detector: Detector = Detector()
     head: ScannerHead = ScannerHead()
