@@ -188,7 +188,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # Set the fullwave form settings on the scanner
         self.scanner._cpp_object.apply_settings_FWF(
-            self.full_waveform_settings._to_cpp()
+            self.full_waveform_settings._cpp_object
         )
 
         # also, for proper writing into the file, we need to set IDs for the scene parts

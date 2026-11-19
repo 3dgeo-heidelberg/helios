@@ -859,7 +859,7 @@ PYBIND11_MODULE(_helios, m)
     m, "FWFSettings");
   fwf_settings.def(py::init<>())
     .def(py::init<const FWFSettings&>(), py::arg("fwfSettings"))
-    .def_readwrite("bin_size", &FWFSettings::binSize_ns)
+    .def_readwrite("bin_size", &FWFSettings::binSize_s)
     .def_readwrite("min_echo_width", &FWFSettings::minEchoWidth)
     .def_readwrite("peak_energy", &FWFSettings::peakEnergy)
     .def_readwrite("aperture_diameter", &FWFSettings::apertureDiameter)
@@ -868,16 +868,16 @@ PYBIND11_MODULE(_helios, m)
                    &FWFSettings::atmosphericVisibility)
     .def_readwrite("scanner_wave_length", &FWFSettings::scannerWaveLength)
     .def_readwrite("beam_divergence_angle", &FWFSettings::beamDivergence_rad)
-    .def_readwrite("pulse_length", &FWFSettings::pulseLength_ns)
+    .def_readwrite("pulse_length", &FWFSettings::pulseLength_s)
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
     .def_property(
       "window_size",
-      [](FWFSettings const& self) { return self.winSize_ns; },
+      [](FWFSettings const& self) { return self.winSize_s; },
       [](FWFSettings& self, py::object value) {
         if (!value.is_none())
-          self.winSize_ns = value.cast<double>();
+          self.winSize_s = value.cast<double>();
       })
-    .def_readwrite("max_fullwave_range", &FWFSettings::maxFullwaveRange_ns)
+    .def_readwrite("max_fullwave_range", &FWFSettings::maxFullwaveRange_s)
     .def("__str__", &FWFSettings::toString);
 
   py::class_<Rotation, std::shared_ptr<Rotation>> rotation(m, "Rotation");
@@ -1988,10 +1988,10 @@ PYBIND11_MODULE(_helios, m)
     .def("set_specific_num_rays",
          py::overload_cast<int, size_t>(&Scanner::setNumRays))
     .def("get_specific_pulse_length",
-         py::overload_cast<size_t>(&Scanner::getPulseLength_ns, py::const_),
+         py::overload_cast<size_t>(&Scanner::getPulseLength, py::const_),
          py::arg("index"))
     .def("set_specific_pulse_length",
-         py::overload_cast<double, size_t>(&Scanner::setPulseLength_ns),
+         py::overload_cast<double, size_t>(&Scanner::setPulseLength),
          py::arg("value"),
          py::arg("index"))
     .def("get_specific_last_pulse_was_hit",
@@ -2228,8 +2228,8 @@ PYBIND11_MODULE(_helios, m)
                   py::overload_cast<>(&Scanner::getNumRays, py::const_),
                   py::overload_cast<int>(&Scanner::setNumRays))
     .def_property("pulse_length",
-                  py::overload_cast<>(&Scanner::getPulseLength_ns, py::const_),
-                  py::overload_cast<double>(&Scanner::setPulseLength_ns))
+                  py::overload_cast<>(&Scanner::getPulseLength, py::const_),
+                  py::overload_cast<double>(&Scanner::setPulseLength))
     .def_property("last_pulse_was_hit",
                   py::overload_cast<>(&Scanner::lastPulseWasHit, py::const_),
                   py::overload_cast<bool>(&Scanner::setLastPulseWasHit))
@@ -2615,11 +2615,10 @@ PYBIND11_MODULE(_helios, m)
          py::overload_cast<size_t>(&SingleScanner::getNumRays, py::const_))
     .def("set_specific_num_rays",
          py::overload_cast<int, size_t>(&SingleScanner::setNumRays))
-    .def(
-      "get_specific_pulse_length",
-      py::overload_cast<size_t>(&SingleScanner::getPulseLength_ns, py::const_))
+    .def("get_specific_pulse_length",
+         py::overload_cast<size_t>(&SingleScanner::getPulseLength, py::const_))
     .def("set_specific_pulse_length",
-         py::overload_cast<double, size_t>(&SingleScanner::setPulseLength_ns))
+         py::overload_cast<double, size_t>(&SingleScanner::setPulseLength))
     .def("get_specific_last_pulse_was_hit",
          py::overload_cast<size_t>(&SingleScanner::lastPulseWasHit, py::const_))
     .def("set_specific_last_pulse_was_hit",
@@ -2941,9 +2940,9 @@ PYBIND11_MODULE(_helios, m)
          py::arg("device_id"),
          py::arg("idx"))
 
-    .def("get_pulse_length", &MultiScanner::getPulseLength_ns, py::arg("idx"))
+    .def("get_pulse_length", &MultiScanner::getPulseLength, py::arg("idx"))
     .def("set_pulse_length",
-         &MultiScanner::setPulseLength_ns,
+         &MultiScanner::setPulseLength,
          py::arg("pulse_length"),
          py::arg("idx"))
 

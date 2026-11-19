@@ -52,7 +52,7 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
   glm::dvec3 beamOrigin(0, 0, 0);
   Rotation beamOrientation(Directions::right, 0);
   std::list<int> pulseFreqs = { 100000, 300000 };
-  const double pulseLength_ns = 5;
+  const double pulseLength_s = 5e-9;
   const double averagePower = 4.0;
   const double beamQuality = 1.0;
   const double efficiency = 0.99;
@@ -71,7 +71,7 @@ scanning_device_sim_step_benchmark(benchmark::State& state)
                                               beamOrigin,
                                               beamOrientation,
                                               pulseFreqs,
-                                              pulseLength_ns,
+                                              pulseLength_s,
                                               averagePower,
                                               beamQuality,
                                               efficiency,

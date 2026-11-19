@@ -32,7 +32,7 @@ SingleScanner::SingleScanner(
   glm::dvec3 const beamOrigin,
   Rotation const beamOrientation,
   std::list<int> const& pulseFreqs,
-  double const pulseLength_ns,
+  double const pulseLength_s,
   std::string const id,
   double const averagePower,
   double const beamQuality,
@@ -59,7 +59,7 @@ SingleScanner::SingleScanner(
             beamOrigin,
             beamOrientation,
             pulseFreqs,
-            pulseLength_ns,
+            pulseLength_s,
             averagePower,
             beamQuality,
             efficiency,
@@ -192,13 +192,13 @@ SingleScanner::doSimStep(unsigned int legIndex,
 void
 SingleScanner::prepareDiscretization(size_t const idx)
 {
-  setNumTimeBins(getPulseLength_ns(0) / getFWFSettings(0).binSize_ns, 0);
+  setNumTimeBins(getPulseLength(0) / getFWFSettings(0).binSize_s, 0);
   setTimeWave(vector<double>(getNumTimeBins(0)), 0);
   setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
                           getTimeWave(0),
                           getNumTimeBins(0),
-                          getFWFSettings(0).binSize_ns,
-                          getPulseLength_ns(0),
+                          getFWFSettings(0).binSize_s * 1e9,
+                          getPulseLength(0) * 1e9,
                           7.0 // 3.5 too many ops., 7.0 just one op.
                           ),
                         0);

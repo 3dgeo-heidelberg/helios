@@ -6,7 +6,6 @@ from helios.validation import (
     Frequency,
     Length,
     Model,
-    TimeIntervalNanoSeconds,
     Power,
     R3Vector,
     ScanFrequency,
@@ -193,7 +192,7 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
     beam_origin_position: R3Vector = (0.0, 0.0, 0.0)
     beam_origin_attitude: Rotation = Rotation()
     beam_divergence: Angle = 0.0003
-    pulse_length: TimeIntervalNanoSeconds = 4.0
+    pulse_length: TimeInterval = 4.0 * units.ns
     wavelength: Length = 1064.0 * units.nm
     average_power: Power = 4.0
     beam_quality_factor: PositiveFloat = 1.0
@@ -209,7 +208,7 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
 
     def _post_set(self, field):
         if field == "full_waveform" and self.full_waveform.window_size is None:
-            self.full_waveform.window_size = self.pulse_length / 4.0 * units.ns
+            self.full_waveform.window_size = self.pulse_length / 4.0
 
     @classmethod
     def _from_cpp(cls, value):

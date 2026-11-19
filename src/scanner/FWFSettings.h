@@ -16,9 +16,9 @@ public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**
-   * @brief Bin size for discretization (nanoseconds)
+   * @brief Bin size for discretization (seconds)
    */
-  double binSize_ns = 0.25;
+  double binSize_s = 0.25e-9;
   /**
    * @brief Minimum echo width
    */
@@ -48,21 +48,21 @@ public:
    */
   double beamDivergence_rad = 0.0003;
   /**
-   * @brief Pulse length (nanoseconds)
+   * @brief Pulse length (seconds)
    */
-  double pulseLength_ns = 4.0;
+  double pulseLength_s = 4.0e-9;
   /**
    * @brief Beam sample quality
    */
   int beamSampleQuality = 3;
   /**
-   * @brief Window size to iterate over discretization (nanoseconds)
+   * @brief Window size to iterate over discretization (seconds)
    */
-  double winSize_ns = pulseLength_ns / 4.0;
+  double winSize_s = pulseLength_s / 4.0;
   /**
-   * @brief Max full wave range (nanoseconds)
+   * @brief Max full wave range (seconds)
    */
-  double maxFullwaveRange_ns = 0.0;
+  double maxFullwaveRange_s = 0.0;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -72,18 +72,18 @@ public:
   FWFSettings() {}
 
   /**
-   * @brief Validate the binSize_ns and winSize_ns attributes to ensure they are
+   * @brief Validate the binSize_s and winSize_s attributes to ensure they are
    * valid
    * @throws std::invalid_argument if any setting is invalid
    */
   void validate() const
   {
-    if (binSize_ns <= 0.0)
-      throw std::invalid_argument("binSize_ns must be > 0");
-    if (winSize_ns <= 0.0)
-      throw std::invalid_argument("winSize_ns must be > 0");
-    if (winSize_ns < 2.0 * binSize_ns)
-      throw std::invalid_argument("winSize_ns must be >= 2 * binSize_ns");
+    if (binSize_s <= 0.0)
+      throw std::invalid_argument("binSize_s must be > 0");
+    if (winSize_s <= 0.0)
+      throw std::invalid_argument("winSize_s must be > 0");
+    if (winSize_s < 2.0 * binSize_s)
+      throw std::invalid_argument("winSize_s must be >= 2 * binSize_s");
   }
 
   // ***  TO STRING  *** //
@@ -96,7 +96,7 @@ public:
   {
     std::stringstream ss;
     ss << "FWFSettings \"" << id << "\":\n"
-       << "binSize_ns = " << binSize_ns << "\n"
+       << "binSize_s = " << binSize_s << "\n"
        << "minEchoWidth = " << minEchoWidth << "\n"
        << "peakEnergy = " << peakEnergy << "\n"
        << "apertureDiameter = " << apertureDiameter << "\n"
@@ -104,10 +104,10 @@ public:
        << "atmosphericVisibility = " << atmosphericVisibility << "\n"
        << "scannerWaveLength = " << scannerWaveLength << "\n"
        << "beamDivergence_rad = " << beamDivergence_rad << "\n"
-       << "pulseLength_ns = " << pulseLength_ns << "\n"
+       << "pulseLength_s = " << pulseLength_s << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
-       << "winSize_ns = " << winSize_ns << "\n"
-       << "maxFullwaveRange_ns = " << maxFullwaveRange_ns << "\n";
+       << "winSize_s = " << winSize_s << "\n"
+       << "maxFullwaveRange_s = " << maxFullwaveRange_s << "\n";
     return ss.str();
   }
   /**

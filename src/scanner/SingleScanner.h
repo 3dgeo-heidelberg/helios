@@ -34,7 +34,7 @@ public:
     glm::dvec3 const beamOrigin,
     Rotation const beamOrientation,
     std::list<int> const& pulseFreqs,
-    double const pulseLength_ns,
+    double const pulseLength_s,
     std::string const id,
     double const averagePower,
     double const beamQuality,
@@ -226,18 +226,18 @@ public:
     scanDev.numRays = numRays;
   }
   /**
-   * @see Scanner::getPulseLength_ns
+   * @see Scanner::getPulseLength
    */
-  double getPulseLength_ns(size_t const idx) const override
+  double getPulseLength(size_t const idx) const override
   {
-    return scanDev.pulseLength_ns;
+    return scanDev.pulseLength_s;
   }
   /**
-   * @see Scanner::setPulseLength_ns
+   * @see Scanner::setPulseLength
    */
-  void setPulseLength_ns(double const pulseLength_ns, size_t const idx) override
+  void setPulseLength(double const pulseLength_s, size_t const idx) override
   {
-    scanDev.pulseLength_ns = pulseLength_ns;
+    scanDev.pulseLength_s = pulseLength_s;
   }
   /**
    * @see Scanner::getBeamDivergence

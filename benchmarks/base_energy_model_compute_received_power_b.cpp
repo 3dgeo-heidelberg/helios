@@ -84,7 +84,7 @@ private:
                                       glm::dvec3(0, 0, 0), // beamOrigin
                                       Rotation(),          // beamOrientation
                                       std::list<int>({ 100000 }), // pulse freqs
-                                      5.0,                // pulseLength_ns
+                                      5.0e-9,             // pulseLength_s
                                       "benchmarkScanner", // id
                                       4.0,                // averagePower
                                       1.0,                // beamQuality

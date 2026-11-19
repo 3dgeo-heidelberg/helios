@@ -244,18 +244,18 @@ public:
    */
   size_t getNumDevices() const override { return scanDevs.size(); }
   /**
-   * @see Scanner::getPulseLength_ns
+   * @see Scanner::getPulseLength
    */
-  double getPulseLength_ns(size_t const idx) const override
+  double getPulseLength(size_t const idx) const override
   {
-    return scanDevs[idx].pulseLength_ns;
+    return scanDevs[idx].pulseLength_s;
   }
   /**
-   * @see Scanner::setPulseLength_ns
+   * @see Scanner::setPulseLength
    */
-  void setPulseLength_ns(double const pulseLength_ns, size_t const idx) override
+  void setPulseLength(double const pulseLength_s, size_t const idx) override
   {
-    scanDevs[idx].pulseLength_ns = pulseLength_ns;
+    scanDevs[idx].pulseLength_s = pulseLength_s;
   }
   /**
    * @see Scanner::getBeamDivergence

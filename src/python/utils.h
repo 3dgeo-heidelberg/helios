@@ -26,8 +26,8 @@ calcTimePropagation(std::vector<double>& timeWave,
   return WaveMaths::calcPropagationTimeLegacy(
     timeWave,
     numBins,
-    scanner.getFWFSettings(0).binSize_ns,
-    scanner.getPulseLength_ns(0),
+    scanner.getFWFSettings(0).binSize_s * 1e9,
+    scanner.getPulseLength(0) * 1e9,
     7.0 // 3.5 too many ops., 7.0 just one op.
   );
 }

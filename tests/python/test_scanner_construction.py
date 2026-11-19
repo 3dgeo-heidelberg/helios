@@ -85,13 +85,13 @@ def test_single_scanner_construction_and_backend_propagation():
     scanner = SingleScanner(device=device)
 
     assert scanner.device._cpp_object is scanner._cpp_object.device
-    assert scanner.device.pulse_length == 5.0
+    assert scanner.device.pulse_length == pytest.approx(5e-9)
     assert scanner.device.wavelength == pytest.approx(1064e-9)
     assert scanner.device.atmospheric_visibility == 23_000.0
     assert scanner.device.full_waveform.window_size == pytest.approx(1.25e-9)
 
     scanner.device.pulse_length = 8 * units.ns
-    assert scanner._cpp_object.device.pulse_length == 8.0
+    assert scanner._cpp_object.device.pulse_length == pytest.approx(8e-9)
     scanner._cpp_object.device.average_power = 7.0
     assert scanner.device.average_power == 7.0
 
@@ -148,7 +148,7 @@ def test_programmatic_scanner_yaml_roundtrip(tmp_path):
     loaded = SingleScanner.from_yaml(path)
 
     assert loaded.device.id == "device"
-    assert loaded.device.pulse_length == 6.0
+    assert loaded.device.pulse_length == pytest.approx(6e-9)
     assert isinstance(loaded.device.optics, ConicOptics)
 
 

@@ -501,7 +501,7 @@ FullWaveformPulseRunnable::digestFullWaveform(
   size_t const devIdx = pulse.getDeviceIndex();
   numReturns = 0;
   int win_size =
-    (int)(scanner->getFWFSettings(pulse.getDeviceIndex()).winSize_ns /
+    (int)(scanner->getFWFSettings(pulse.getDeviceIndex()).winSize_s * 1e9 /
           nsPerBin);
   // search for peaks around [-win_size, win_size]
 

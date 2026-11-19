@@ -203,7 +203,7 @@ HDA_StateJSONReporter::reportScanner()
      << craftEntry("numRays", sc->getNumRays(), 4)
      << craftEntry("fixedIncidenceAngle", sc->isFixedIncidenceAngle(), 4)
      << craftEntry("beamDivergence_rad", sc->getBeamDivergence(), 4)
-     << craftEntry("pulseLength_ns", sc->getPulseLength_ns(), 4)
+     << craftEntry("pulseLength_s", sc->getPulseLength(), 4)
      << craftEntry("pulseFreq_Hz", sc->getPulseFreq_Hz(), 4)
      << craftEntry("deviceID", sc->getDeviceId(), 4, true)
      << craftEntry("averagePower_w", sc->getAveragePower(), 4)
@@ -443,7 +443,7 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
   std::stringstream ss;
   int const d2 = depth + 1;
   ss << openEntry(key, depth, EntryType::OBJECT)
-     << craftEntry("binSize_ns", fs.binSize_ns, d2)
+     << craftEntry("binSize_s", fs.binSize_s, d2)
      << craftEntry("minEchoWidth", fs.minEchoWidth, d2)
      << craftEntry("peakEntry", fs.peakEnergy, d2)
      << craftEntry("apertureDiameter", fs.apertureDiameter, d2)
@@ -451,11 +451,10 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry("atmosphericVisibility", fs.atmosphericVisibility, d2)
      << craftEntry("scannerWaveLength", fs.scannerWaveLength, d2)
      << craftEntry("beamDivergence_rad", fs.beamDivergence_rad, d2)
-     << craftEntry("pulseLength_ns", fs.pulseLength_ns, d2)
+     << craftEntry("pulseLength_s", fs.pulseLength_s, d2)
      << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
-     << craftEntry("winSize_ns", fs.winSize_ns, d2)
-     << craftEntry(
-          "maxFullwaveRange_ns", fs.maxFullwaveRange_ns, d2, false, true)
+     << craftEntry("winSize_s", fs.winSize_s, d2)
+     << craftEntry("maxFullwaveRange_s", fs.maxFullwaveRange_s, d2, false, true)
      << closeEntry(depth, last, EntryType::OBJECT) // Close FWFSettings
     ;
   return ss.str();

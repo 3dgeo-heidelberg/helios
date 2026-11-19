@@ -93,7 +93,7 @@ TEST_CASE("Energy Models Test ")
       glm::dvec3(0, 0, 0),                // beamOrigin,
       Rotation(),                         // beamOrientation
       std::list<int>({ 100000, 300000 }), // pulse freqs.
-      5,                                  // pulseLength_ns
+      5e-9,                               // pulseLength_s
       "scanDev0",                         // id
       4.0,                                // averagePower_w
       1.0,                                // beamQuality

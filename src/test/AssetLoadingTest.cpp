@@ -153,7 +153,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 83000);
     REQUIRE(scanner->getPulseFreq_Hz() == 83000);
-    REQUIRE(scanner->getPulseLength_ns() == 10);
+    REQUIRE(scanner->getPulseLength() == 10e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 200);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.6544985) <= eps);
@@ -178,7 +178,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(*pfsit++ == 60000);
     REQUIRE(*pfsit++ == 150000);
     REQUIRE(scanner->getPulseFreq_Hz() == 20000);
-    REQUIRE(scanner->getPulseLength_ns() == 10);
+    REQUIRE(scanner->getPulseLength() == 10e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 200);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.6544985) <= eps);
@@ -200,7 +200,7 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 33000);
-    REQUIRE(scanner->getPulseLength_ns() == 8);
+    REQUIRE(scanner->getPulseLength() == 8e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 1);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.3490659) <= eps);
@@ -244,7 +244,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(*pfsit++ == 180000);
     REQUIRE(*pfsit++ == 200000);
     REQUIRE(*pfsit++ == 240000);
-    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getPulseLength() == 4e-9);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.7853982) <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(
@@ -272,7 +272,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(*pfsit++ == 300000);
     REQUIRE(*pfsit++ == 600000);
     REQUIRE(*pfsit++ == 900000);
-    REQUIRE(scanner->getPulseLength_ns() == 2);
+    REQUIRE(scanner->getPulseLength() == 2e-9);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.3490659) <= eps);
     REQUIRE(scanner->getBeamDeflector()->cfg_device_scanFreqMin_Hz == 28);
@@ -307,7 +307,7 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 100000);
-    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getPulseLength() == 4e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 2);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector())
@@ -352,7 +352,7 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 240000);
-    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getPulseLength() == 4e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 2);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector())
@@ -411,9 +411,9 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 50000);
-    REQUIRE(scanner->getPulseLength_ns(0) == 4);
-    REQUIRE(scanner->getPulseLength_ns(1) == 4);
-    REQUIRE(scanner->getPulseLength_ns(2) == 4);
+    REQUIRE(scanner->getPulseLength(0) == 4e-9);
+    REQUIRE(scanner->getPulseLength(1) == 4e-9);
+    REQUIRE(scanner->getPulseLength(2) == 4e-9);
     REQUIRE(scanner->getDetector(0)->cfg_device_rangeMin_m == 2);
     REQUIRE(scanner->getDetector(1)->cfg_device_rangeMin_m == 2);
     REQUIRE(scanner->getDetector(2)->cfg_device_rangeMin_m == 2);

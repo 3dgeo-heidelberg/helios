@@ -47,9 +47,6 @@ Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
 ScanFrequency = Annotated[float, _unit_validator(units.Hz), annotated_types.Ge(0)]
 Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
-TimeIntervalNanoSeconds = Annotated[
-    float, _unit_validator(units.ns), annotated_types.Ge(0)
-]
 Power = Annotated[float, _unit_validator(units.W), annotated_types.Ge(0)]
 
 

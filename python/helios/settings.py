@@ -231,30 +231,6 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     max_fullwave_range: TimeInterval = 0.0 * units.ns
     aperture_diameter: Length = 0.15
 
-    _NANOSECOND_FIELDS = {"bin_size", "window_size", "max_fullwave_range"}
-
-    def _post_get(self, field, value):
-        if field in self._NANOSECOND_FIELDS and value is not None:
-            return value * 1e-9
-        return value
-
-    def _pre_set(self, field, value):
-        if field in self._NANOSECOND_FIELDS and value is not None:
-            return value * 1e9
-        return value
-
-    def _to_cpp(self):
-        # The public Python model follows the usual SI convention and stores
-        # intervals in seconds. The waveform backend uses nanoseconds.
-        fwf = _helios.FWFSettings()
-        fwf.bin_size = self.bin_size * 1e9
-        fwf.beam_sample_quality = self.beam_sample_quality
-        if self.window_size is not None:
-            fwf.window_size = self.window_size * 1e9
-        fwf.max_fullwave_range = self.max_fullwave_range * 1e9
-        fwf.aperture_diameter = self.aperture_diameter
-        return fwf
-
     def _post_set(self, field):
         if field not in {"bin_size", "window_size"}:
             return

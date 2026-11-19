@@ -74,9 +74,9 @@ protected:
    */
   double beamDivergence_rad = 0;
   /**
-   * @brief Pulse length (nanoseconds)
+   * @brief Pulse length (seconds)
    */
-  double pulseLength_ns = 0;
+  double pulseLength_s = 0;
   /**
    * @brief Average power (watts)
    */
@@ -265,7 +265,7 @@ public:
     glm::dvec3 const beamOrigin,
     Rotation const beamOrientation,
     std::list<int> const& pulseFreqs,
-    double const pulseLength_ns,
+    double const pulseLength_s,
     double const averagePower,
     double const beamQuality,
     double const efficiency,
@@ -511,8 +511,8 @@ public:
     beamDivergence_rad = value;
     configureBeam();
   }
-  inline double getPulseLength() const { return pulseLength_ns; }
-  inline void setPulseLength(double const value) { pulseLength_ns = value; }
+  inline double getPulseLength() const { return pulseLength_s; }
+  inline void setPulseLength(double const value) { pulseLength_s = value; }
   inline double getWavelength() const { return wavelength_m; }
   inline void setWavelength(double const value)
   {
