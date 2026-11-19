@@ -5,6 +5,7 @@
 #include "logging.hpp"
 
 #define _USE_MATH_DEFINES
+#include <algorithm>
 #include <cmath>
 
 #include "maths/Rotation.h"
@@ -71,13 +72,20 @@ FullWaveformPulseRunnable::operator()(
   // Ray casting (find intersections)
   map<double, double> reflections;
   vector<RaySceneIntersection> intersects;
+  std::vector<DiscreteSubrayReturn> discreteSubrayReturns;
+  FWFSettings const& fwfSettings =
+    scanner->getFWFSettings(pulse.getDeviceIndex());
+  bool const collectDiscreteSubrayReturns =
+    fwfSettings.snapToSurface && fwfSettings.beamSampleQuality > 1;
 #if DATA_ANALYTICS >= 2
   std::vector<std::vector<double>> calcIntensityRecords;
   std::vector<std::vector<int>> calcIntensityIndices;
 #endif
   computeSubrays(intersectionHandlingNoiseSource,
                  reflections,
-                 intersects
+                 intersects,
+                 discreteSubrayReturns,
+                 collectDiscreteSubrayReturns
 #if DATA_ANALYTICS >= 2
                  ,
                  calcIntensityRecords,
@@ -98,7 +106,8 @@ FullWaveformPulseRunnable::operator()(
                       randGen2,
                       beamDir,
                       reflections,
-                      intersects
+                      intersects,
+                      discreteSubrayReturns
 #if DATA_ANALYTICS >= 2
                       ,
                       calcIntensityRecords,
@@ -120,7 +129,9 @@ void
 FullWaveformPulseRunnable::computeSubrays(
   NoiseSource<double>& intersectionHandlingNoiseSource,
   std::map<double, double>& reflections,
-  vector<RaySceneIntersection>& intersects
+  vector<RaySceneIntersection>& intersects,
+  std::vector<DiscreteSubrayReturn>& discreteSubrayReturns,
+  bool const collectDiscreteSubrayReturns
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords,
@@ -144,7 +155,9 @@ FullWaveformPulseRunnable::computeSubrays(
                    subrayRadiusStep,
                    intersectionHandlingNoiseSource,
                    reflections,
-                   intersects
+                   intersects,
+                   discreteSubrayReturns,
+                   collectDiscreteSubrayReturns
 #if DATA_ANALYTICS >= 2
                    ,
                    subrayHit,
@@ -170,7 +183,9 @@ FullWaveformPulseRunnable::handleSubray(
   int const subrayRadiusStep,
   NoiseSource<double>& intersectionHandlingNoiseSource,
   map<double, double>& reflections,
-  vector<RaySceneIntersection>& intersects
+  vector<RaySceneIntersection>& intersects,
+  std::vector<DiscreteSubrayReturn>& discreteSubrayReturns,
+  bool const collectDiscreteSubrayReturns
 #if DATA_ANALYTICS >= 2
   ,
   bool& subrayHit,
@@ -284,7 +299,15 @@ FullWaveformPulseRunnable::handleSubray(
       if (!rayContinues) { // If ray is not continuing
         // Then register hit by default
         reflections.insert(pair<double, double>(distance, intensity));
+        std::size_t const intersectsIndex = intersects.size();
         intersects.push_back(*intersect);
+        if (collectDiscreteSubrayReturns) {
+          DiscreteSubrayReturn dsr;
+          dsr.subrayRadiusStep = subrayRadiusStep;
+          dsr.intensity = intensity;
+          dsr.intersectsIndex = intersectsIndex;
+          discreteSubrayReturns.push_back(dsr);
+        }
       }
 #if DATA_ANALYTICS >= 2
       std::vector<double>& calcIntensityRecord = calcIntensityRecords.back();
@@ -311,7 +334,8 @@ FullWaveformPulseRunnable::digestIntersections(
   RandomnessGenerator<double>& randGen2,
   glm::dvec3& beamDir,
   std::map<double, double>& reflections,
-  vector<RaySceneIntersection>& intersects
+  vector<RaySceneIntersection>& intersects,
+  std::vector<DiscreteSubrayReturn> const& discreteSubrayReturns
 #if DATA_ANALYTICS >= 2
   ,
   vector<vector<double>>& calcIntensityRecords,
@@ -375,7 +399,8 @@ FullWaveformPulseRunnable::digestIntersections(
                      nsPerBin,
                      numFullwaveBins,
                      peakIntensityIndex,
-                     minHitTime_ns
+                     minHitTime_ns,
+                     discreteSubrayReturns
 #if DATA_ANALYTICS >= 2
                      ,
                      calcIntensityRecords,
@@ -488,7 +513,8 @@ FullWaveformPulseRunnable::digestFullWaveform(
   double const nsPerBin,
   int const numFullwaveBins,
   int const peakIntensityIndex,
-  double const minHitTime_ns
+  double const minHitTime_ns,
+  std::vector<DiscreteSubrayReturn> const& discreteSubrayReturns
 #if DATA_ANALYTICS >= 2
   ,
   std::vector<std::vector<double>>& calcIntensityRecords,
@@ -511,6 +537,24 @@ FullWaveformPulseRunnable::digestFullWaveform(
 
   double echo_width = 0.0;
 
+  // Pre-compute per-intersection distances for use in intersection matching
+  std::vector<double> intersectDistances;
+  intersectDistances.reserve(intersects.size());
+  for (RaySceneIntersection const& isc : intersects) {
+    intersectDistances.push_back(
+      glm::distance(isc.point, pulse.getOriginRef()));
+  }
+
+  // Surface snapping: snap returns to actual mesh hit points, eliminating
+  // angle-dependent slant bias in full waveform Gaussian peak distances
+  FWFSettings const& fwfSettings =
+    scanner->getFWFSettings(pulse.getDeviceIndex());
+  bool const snapToSurface =
+    fwfSettings.snapToSurface && fwfSettings.beamSampleQuality > 1;
+  vector<double> const& timeWave = scanner->getTimeWave(pulse.getDeviceIndex());
+  bool const canSnapToSurface =
+    snapToSurface && !discreteSubrayReturns.empty() && !timeWave.empty();
+
 #if DATA_ANALYTICS >= 2
   std::unordered_set<std::size_t> capturedIndices;
 #endif
@@ -526,28 +570,72 @@ FullWaveformPulseRunnable::digestFullWaveform(
     // Build list of objects that produced this return
     double minDifference = numeric_limits<double>::max();
     shared_ptr<RaySceneIntersection> closestIntersection = nullptr;
+    std::size_t closestIntersectionIdx = 0;
 
-#ifdef DATA_ANALYTICS
-    size_t intersectionIdx = 0;
-    size_t closestIntersectionIdx = 0;
-#endif
-    for (RaySceneIntersection intersect : intersects) {
-      double const intersectDist =
-        glm::distance(intersect.point, pulse.getOriginRef());
-      double const absDistDiff = std::fabs(intersectDist - distance);
+    // First priority: surface snapping — prefer the innermost contributing
+    // subray ring, then the closest hit within that ring.
+    if (canSnapToSurface && i < numFullwaveBins) {
+      int bestRadiusStep = numeric_limits<int>::max();
+      double bestRadiusDistance = numeric_limits<double>::max();
+      bool foundValidCandidate = false;
+      for (std::size_t discreteIdx = 0;
+           discreteIdx < discreteSubrayReturns.size();
+           ++discreteIdx) {
+        DiscreteSubrayReturn const& candidate =
+          discreteSubrayReturns[discreteIdx];
+        std::size_t const candidateIntersectIdx = candidate.intersectsIndex;
+        if (candidateIntersectIdx >= intersects.size())
+          continue;
 
-      if (absDistDiff < minDifference) {
-        minDifference = absDistDiff;
-        closestIntersection = make_shared<RaySceneIntersection>(intersect);
-#ifdef DATA_ANALYTICS
-        closestIntersectionIdx = intersectionIdx;
-#endif
+        double const candidateDistance =
+          intersectDistances[candidateIntersectIdx];
+        double const wavePeakTime_ns =
+          candidateDistance / SPEEDofLIGHT_mPerNanosec;
+        int const binStart =
+          std::max((((int)((wavePeakTime_ns - minHitTime_ns) / nsPerBin)) -
+                    peakIntensityIndex),
+                   0);
+        if (binStart >= numFullwaveBins || i < binStart)
+          continue;
+
+        int const waveBinIdx = i - binStart;
+        if (waveBinIdx < 0 || waveBinIdx >= (int)timeWave.size())
+          continue;
+        if (timeWave[waveBinIdx] * candidate.intensity <= 0.0)
+          continue;
+
+        if (!foundValidCandidate ||
+            candidate.subrayRadiusStep < bestRadiusStep ||
+            (candidate.subrayRadiusStep == bestRadiusStep &&
+             candidateDistance < bestRadiusDistance)) {
+          foundValidCandidate = true;
+          bestRadiusStep = candidate.subrayRadiusStep;
+          bestRadiusDistance = candidateDistance;
+          closestIntersectionIdx = candidateIntersectIdx;
+        }
       }
-#ifdef DATA_ANALYTICS
-      ++intersectionIdx;
-#endif
+      if (foundValidCandidate && closestIntersectionIdx < intersects.size()) {
+        distance = intersectDistances[closestIntersectionIdx];
+        closestIntersection =
+          make_shared<RaySceneIntersection>(intersects[closestIntersectionIdx]);
+      }
+    }
+    // Fallback: standard closest-by-distance
+    if (closestIntersection == nullptr) {
+      for (std::size_t iIdx = 0; iIdx < intersects.size(); ++iIdx) {
+        double const absDistDiff =
+          std::fabs(intersectDistances[iIdx] - distance);
+        if (absDistDiff < minDifference) {
+          minDifference = absDistDiff;
+          closestIntersection =
+            make_shared<RaySceneIntersection>(intersects[iIdx]);
+          closestIntersectionIdx = iIdx;
+        }
+      }
     }
 
+    // Compute measurement beam direction from actual surface hit when snapping
+    glm::dvec3 measurementBeamDirection = beamDir;
     string hitObject;
     int classification = 0;
     if (closestIntersection != nullptr) {
@@ -558,6 +646,15 @@ FullWaveformPulseRunnable::digestFullWaveform(
         hitObject = hitObject.substr(5);
       }
       classification = closestIntersection->prim->material->classification;
+      if (canSnapToSurface) {
+        glm::dvec3 const discreteDirection =
+          closestIntersection->point - pulse.getOriginRef();
+        double const discreteDirectionNorm = glm::length(discreteDirection);
+        if (discreteDirectionNorm > 0.0) {
+          measurementBeamDirection = discreteDirection / discreteDirectionNorm;
+          distance = discreteDirectionNorm;
+        }
+      }
     }
 
     // Add distance error (mechanical range error)
@@ -570,7 +667,7 @@ FullWaveformPulseRunnable::digestFullWaveform(
     tmp.devIdx = devIdx;
     tmp.devId = scanner->getDeviceId(devIdx);
     tmp.beamOrigin = pulse.getOrigin();
-    tmp.beamDirection = beamDir;
+    tmp.beamDirection = measurementBeamDirection;
     tmp.distance = distance;
     tmp.echo_width = echo_width;
     tmp.intensity = fullwave.at(i);

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<document>
+    <survey name="toyblocks_uls_snapToSurface" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#dji-zenmuse-l2-non-repetitive" scene="data/scenes/toyblocks/tiny_toyblocks_scene.xml#tiny_toyblocks_scene">
+	<!-- platform: sr22, deflector: risley -->
+	<!-- sensor: dji-zenmuse-l2-non-repetitive -->
+
+	<!-- Can change platform to "copter-linearpath" and sensor to "riegl_vux-1uav22" to test a rotating deflector.
+		The effect is still present, but less pronounced. -->
+
+	<!-- scene: a scaled down version of the toyblocks scene. 
+		This amplifies the percentage effect of the snapToSurface option and places the cylinder at 60cm diameter, 
+		equivalent to a large tree. The effect lessens as object size increases with a static survey/sensor configuration.-->
+	
+	<FWFSettings snapToSurface="true" beamSampleQuality="5" binSize_ns="0.25"/>
+		<!-- snapToSurface ON: same 4 strips -->
+		<!-- To test the default output, change snapToSurface to false -->
+		<leg stripId="0">
+			<platformSettings x="-30.0" y="-30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="true" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+		<leg stripId="0">
+			<platformSettings x="30.0" y="-30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="false" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+
+		<leg stripId="1">
+			<platformSettings x="30.0" y="30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="true" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+		<leg stripId="1">
+			<platformSettings x="-30.0" y="30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="false" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+
+		<leg stripId="2">
+			<platformSettings x="-30.0" y="-30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="true" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+		<leg stripId="2">
+			<platformSettings x="-30.0" y="30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="false" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+
+		<leg stripId="3">
+			<platformSettings x="30.0" y="30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="true" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+		<leg stripId="3">
+			<platformSettings x="30.0" y="-30.0" z="80.000" onGround="false" movePerSec_m="1" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings active="false" pulseFreq_hz="40000" scanAngle_deg="50" trajectoryTimeInterval_s="0.01">
+				<FWFSettings beamSampleQuality="5" snapToSurface="true"/>
+			</scannerSettings>
+		</leg>
+	</survey>
+</document>

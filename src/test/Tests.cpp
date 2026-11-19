@@ -16,6 +16,7 @@
 #include <test/RigidMotionTest.h>
 #include <test/ScenePartSplitTest.h>
 #include <test/SerializationTest.h>
+#include <test/SnapToSurfaceTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/VoxelParsingTest.h>
 
@@ -101,6 +102,9 @@ doTests(std::string const& testDir)
 
   ScenePartSplitTest scenePartSplitTest;
   passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
+
+  SnapToSurfaceTest snapToSurfaceTest;
+  passed &= snapToSurfaceTest.test(std::cout, TEST_COLOR);
 
   ExprTreeTest exprTreeTest;
   passed &= exprTreeTest.test(std::cout, TEST_COLOR);

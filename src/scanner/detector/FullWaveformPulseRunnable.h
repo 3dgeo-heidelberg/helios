@@ -17,6 +17,22 @@
 
 #include <vector>
 
+namespace HeliosTests {
+class SnapToSurfaceTest;
+}
+
+/**
+ * @brief Holds the result of a single subray intersection for use in
+ *  surface-snapping full waveform processing
+ * @see FullWaveformPulseRunnable
+ */
+struct DiscreteSubrayReturn
+{
+  int subrayRadiusStep = 0;
+  double intensity = 0.0;
+  std::size_t intersectsIndex = 0; // Index into intersects array
+};
+
 /**
  * @brief Concrete implementation of abstract pulse runnable to compute full
  * waveform pulses
@@ -25,6 +41,8 @@
  */
 class FullWaveformPulseRunnable : public AbstractPulseRunnable
 {
+  friend class HeliosTests::SnapToSurfaceTest;
+
 private:
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -75,7 +93,9 @@ private:
    */
   void computeSubrays(NoiseSource<double>& intersectionHandlingNoiseSource,
                       std::map<double, double>& reflections,
-                      vector<RaySceneIntersection>& intersects
+                      vector<RaySceneIntersection>& intersects,
+                      std::vector<DiscreteSubrayReturn>& discreteSubrayReturns,
+                      bool const collectDiscreteSubrayReturns
 #if DATA_ANALYTICS >= 2
                       ,
                       std::vector<std::vector<double>>& calcIntensityRecords,
@@ -96,7 +116,9 @@ private:
                     int const subrayRadiusStep,
                     NoiseSource<double>& intersectionHandlingNoiseSource,
                     std::map<double, double>& reflections,
-                    vector<RaySceneIntersection>& intersects
+                    vector<RaySceneIntersection>& intersects,
+                    std::vector<DiscreteSubrayReturn>& discreteSubrayReturns,
+                    bool const collectDiscreteSubrayReturns
 #if DATA_ANALYTICS >= 2
                     ,
                     bool& subrayHit,
@@ -124,7 +146,8 @@ private:
     RandomnessGenerator<double>& randGen2,
     glm::dvec3& beamDir,
     std::map<double, double>& reflections,
-    vector<RaySceneIntersection>& intersects
+    vector<RaySceneIntersection>& intersects,
+    std::vector<DiscreteSubrayReturn> const& discreteSubrayReturns
 #if DATA_ANALYTICS >= 2
     ,
     std::vector<std::vector<double>>& calcIntensityRecords,
@@ -195,7 +218,8 @@ private:
     double const nsPerBin,
     int const numFullwaveBins,
     int const peakIntensityIndex,
-    double const minHitTime_ns
+    double const minHitTime_ns,
+    std::vector<DiscreteSubrayReturn> const& discreteSubrayReturns
 #if DATA_ANALYTICS >= 2
     ,
     std::vector<std::vector<double>>& calcIntensityRecords,

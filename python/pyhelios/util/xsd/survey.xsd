@@ -89,6 +89,7 @@
                                             <xs:attribute type="xs:float" name="binSize_ns" use="optional"/>
                                             <xs:attribute type="xs:float" name="maxFullwaveRange_ns" use="optional"/>
                                             <xs:attribute type="xs:float" name="winSize_ns" use="optional"/>
+                                            <xs:attribute type="xs:boolean" name="snapToSurface" use="optional"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>

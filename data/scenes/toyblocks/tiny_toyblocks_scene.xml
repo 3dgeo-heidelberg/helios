@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="tiny_toyblocks_scene" name="ToyblocksScene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="2.1" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="0.6;0;0" />
+			</filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.03" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="45" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.015" />
+            </filter>
+			<filter type="translate">
+				<param type="integer" key="onGround" value="-1" />
+                <param type="vec3" key="offset" value="-1.35;0.3;0.3" />
+			</filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/sphere.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.015" />
+            </filter>
+        </part>
+         <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cylinder.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.03" />
+            </filter>
+        </part>
+    </scene>
+</document>
