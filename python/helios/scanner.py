@@ -510,8 +510,8 @@ def riegl_vux_1uav() -> Scanner:
                 scan_angle_effective_max=2.8797932657906435,
             ),
             beam_origin_position=(0, 0.085, 0.06),
-            beam_origin_attitude=Rotation(
-                q0=0.5000000000000001, q1=-0.5, q2=-0.4999999999999999, q3=-0.5
+            beam_origin_attitude=Rotation.from_axis_angles(
+                rotations=(("x", 90 * units.deg), ("z", 90 * units.deg))
             ),
             beam_divergence=0.0005,
             pulse_length=4e-09,
@@ -544,8 +544,8 @@ def riegl_vux_1uav22() -> Scanner:
                 scan_angle_effective_max=3.141592653589793,
             ),
             beam_origin_position=(0, 0.085, 0.06),
-            beam_origin_attitude=Rotation(
-                q0=0.5000000000000001, q1=-0.5, q2=-0.4999999999999999, q3=-0.5
+            beam_origin_attitude=Rotation.from_axis_angles(
+                rotations=(("x", 90 * units.deg), ("z", 90 * units.deg))
             ),
             beam_divergence=0.0005,
             pulse_length=4e-09,
@@ -577,8 +577,8 @@ def riegl_vux_1ha22() -> Scanner:
                 scan_angle_effective_max=3.141592653589793,
             ),
             beam_origin_position=(0, 0.015, 0),
-            beam_origin_attitude=Rotation(
-                q0=0.5000000000000001, q1=-0.5, q2=-0.4999999999999999, q3=-0.5
+            beam_origin_attitude=Rotation.from_axis_angles(
+                rotations=(("x", 90 * units.deg), ("z", 90 * units.deg))
             ),
             beam_divergence=0.0005,
             pulse_length=4e-09,
@@ -687,8 +687,8 @@ def livox_mid70_als() -> Scanner:
                 air_refractive_index=1,
                 incident_beam=(0, 1, 0),
             ),
-            beam_origin_attitude=Rotation(
-                q0=0.5000000000000001, q1=-0.5, q2=-0.4999999999999999, q3=-0.5
+            beam_origin_attitude=Rotation.from_axis_angles(
+                rotations=(("x", 90 * units.deg), ("z", 90 * units.deg))
             ),
             beam_divergence=0.00089,
             pulse_length=4e-09,
@@ -996,8 +996,8 @@ def riegl_vq_450() -> Scanner:
                 scan_angle_effective_max=6.283185307179586,
             ),
             beam_origin_position=(0, 0.14, 0.126),
-            beam_origin_attitude=Rotation(
-                q0=0.5000000000000001, q1=-0.5, q2=-0.4999999999999999, q3=-0.5
+            beam_origin_attitude=Rotation.from_axis_angles(
+                rotations=(("x", 90 * units.deg), ("z", 90 * units.deg))
             ),
             beam_divergence=0.0003,
             pulse_length=4e-09,
@@ -1722,8 +1722,8 @@ def pano_scanner() -> Scanner:
                 scan_angle_effective_max=2.6179938779914944,
             ),
             beam_origin_position=(0, 0, 0.2),
-            beam_origin_attitude=Rotation(
-                q0=0.7071067811865476, q1=-0.7071067811865475, q2=0, q3=0
+            beam_origin_attitude=Rotation.from_axis_angles(
+                rotations=(("x", 90 * units.deg),)
             ),
             beam_divergence=0.0003,
             pulse_length=5e-09,
