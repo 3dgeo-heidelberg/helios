@@ -326,7 +326,7 @@ public:
   void setReceiverDiameter(double const receiverDiameter,
                            size_t const idx) override
   {
-    scanDevs[idx].receiverDiameter_m = receiverDiameter;
+    scanDevs[idx].setReceiverDiameter(receiverDiameter);
   }
   /**
    * @see Scanner::getVisibility
@@ -340,7 +340,7 @@ public:
    */
   void setVisibility(double const visibility, size_t const idx) override
   {
-    scanDevs[idx].visibility_m = visibility;
+    scanDevs[idx].setAtmosphericVisibility(visibility);
   }
   /**
    * @see Scanner::getWavelength
@@ -354,7 +354,7 @@ public:
    */
   void setWavelength(double const wavelength, size_t const idx) override
   {
-    scanDevs[idx].wavelength_m = wavelength;
+    scanDevs[idx].setWavelength(wavelength);
   }
   /**
    * @see Scanner::getAtmosphericExtinction
