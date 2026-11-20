@@ -206,6 +206,19 @@ public:
     return scanDevs[idx];
   }
   /**
+   * @brief Replace the scanning devices owned by this scanner.
+   * @param devices The devices to copy into the scanner
+   */
+  void setScanningDevices(std::vector<ScanningDevice> const& devices)
+  {
+    scanDevs.clear();
+    scanDevs.reserve(devices.size());
+    for (size_t i = 0; i < devices.size(); ++i) {
+      scanDevs.emplace_back(devices[i]);
+      scanDevs.back().devIdx = i;
+    }
+  }
+  /**
    * @see Scanner::setDeviceIndex
    */
   void setDeviceIndex(size_t const newIdx, size_t const oldIdx) override
@@ -231,18 +244,18 @@ public:
    */
   size_t getNumDevices() const override { return scanDevs.size(); }
   /**
-   * @see Scanner::getPulseLength_ns
+   * @see Scanner::getPulseLength
    */
-  double getPulseLength_ns(size_t const idx) const override
+  double getPulseLength(size_t const idx) const override
   {
-    return scanDevs[idx].pulseLength_ns;
+    return scanDevs[idx].pulseLength_s;
   }
   /**
-   * @see Scanner::setPulseLength_ns
+   * @see Scanner::setPulseLength
    */
-  void setPulseLength_ns(double const pulseLength_ns, size_t const idx) override
+  void setPulseLength(double const pulseLength_s, size_t const idx) override
   {
-    scanDevs[idx].pulseLength_ns = pulseLength_ns;
+    scanDevs[idx].pulseLength_s = pulseLength_s;
   }
   /**
    * @see Scanner::getBeamDivergence
@@ -313,21 +326,21 @@ public:
   void setReceiverDiameter(double const receiverDiameter,
                            size_t const idx) override
   {
-    scanDevs[idx].receiverDiameter_m = receiverDiameter;
+    scanDevs[idx].setReceiverDiameter(receiverDiameter);
   }
   /**
    * @see Scanner::getVisibility
    */
   double getVisibility(size_t const idx) const override
   {
-    return scanDevs[idx].visibility_km;
+    return scanDevs[idx].visibility_m;
   }
   /**
    * @see Scanner::setVisibility
    */
   void setVisibility(double const visibility, size_t const idx) override
   {
-    scanDevs[idx].visibility_km = visibility;
+    scanDevs[idx].setAtmosphericVisibility(visibility);
   }
   /**
    * @see Scanner::getWavelength
@@ -341,7 +354,7 @@ public:
    */
   void setWavelength(double const wavelength, size_t const idx) override
   {
-    scanDevs[idx].wavelength_m = wavelength;
+    scanDevs[idx].setWavelength(wavelength);
   }
   /**
    * @see Scanner::getAtmosphericExtinction

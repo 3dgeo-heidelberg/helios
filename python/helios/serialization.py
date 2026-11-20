@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date, datetime, time
 from enum import Enum
 from importlib import import_module
@@ -231,6 +231,9 @@ def _serialize_model_to_yaml_with_context(
     model: Model, path: Path, shallow: bool = True, binary: bool = False
 ) -> tuple[Path, _SerializationContext]:
     """Serialize a model instance into YAML and return the serialization context."""
+
+    if shallow and model._never_serialize_shallow():
+        shallow = False
 
     if binary and not shallow:
         raise ValueError("binary=True requires shallow=True.")
@@ -833,6 +836,9 @@ def _build_model_document(
 ) -> dict[str, Any]:
     """Create the serialized document payload for one model."""
 
+    if context.shallow and model._never_serialize_shallow():
+        context = replace(context, shallow=False)
+
     if context.binary and getattr(model, "_provenance_only_serialization", False):
         raise NotImplementedError(
             f"Binary serialization is not supported for {model.__class__.__name__}; "
@@ -840,7 +846,10 @@ def _build_model_document(
         )
 
     binary_info = None
-    include_fields = not _uses_from_binary_constructor_provenance(model)
+    include_fields = not (
+        _uses_from_binary_constructor_provenance(model)
+        or getattr(model, "_provenance_only_serialization", False)
+    )
     if context.binary and callable(getattr(model, "to_binary", None)):
         if context.root_dir is None:
             raise RuntimeError("A root directory is required for binary serialization.")
@@ -868,8 +877,9 @@ def _build_model_document(
             if _contains_model_instance(value):
                 fields[field_name] = _serialize_runtime_value(value, context)
             else:
-                fields[field_name] = TypeAdapter(annotation).dump_python(
-                    value, mode="json"
+                adapter = TypeAdapter(annotation)
+                fields[field_name] = adapter.dump_python(
+                    adapter.validate_python(value), mode="json"
                 )
 
     document: dict[str, Any] = {

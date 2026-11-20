@@ -398,7 +398,7 @@ def test_fwf_settings_instantiation():
     assert isinstance(fwf, _helios.FWFSettings)
 
     # Check default values
-    assert fwf.bin_size == 0.25
+    assert fwf.bin_size == 0.25e-9
     assert fwf.min_echo_width == 2.5
     assert fwf.peak_energy == 500.0
     assert fwf.aperture_diameter == 0.15
@@ -406,9 +406,9 @@ def test_fwf_settings_instantiation():
     assert fwf.atmospheric_visibility == 0.9
     assert fwf.scanner_wave_length == 1550.0
     assert fwf.beam_divergence_angle == 0.0003
-    assert fwf.pulse_length == 4.0
+    assert fwf.pulse_length == 4.0e-9
     assert fwf.beam_sample_quality == 3
-    assert fwf.win_size == fwf.pulse_length / 4.0
+    assert fwf.window_size == fwf.pulse_length / 4.0
     assert fwf.max_fullwave_range == 0.0
 
 
@@ -416,7 +416,7 @@ def test_fwf_settings_set_get_properties():
     fwf = _helios.FWFSettings()
 
     # Set properties
-    fwf.bin_size = 0.5
+    fwf.bin_size = 0.5e-9
     fwf.min_echo_width = 3.0
     fwf.peak_energy = 600.0
     fwf.aperture_diameter = 0.2
@@ -424,13 +424,13 @@ def test_fwf_settings_set_get_properties():
     fwf.atmospheric_visibility = 0.95
     fwf.scanner_wave_length = 1600.0
     fwf.beam_divergence_angle = 0.0005
-    fwf.pulse_length = 5.0
+    fwf.pulse_length = 5.0e-9
     fwf.beam_sample_quality = 4
-    fwf.win_size = 1.25
-    fwf.max_fullwave_range = 100.0
+    fwf.window_size = 1.25e-9
+    fwf.max_fullwave_range = 100.0e-9
 
     # Verify values
-    assert fwf.bin_size == 0.5
+    assert fwf.bin_size == 0.5e-9
     assert fwf.min_echo_width == 3.0
     assert fwf.peak_energy == 600.0
     assert fwf.aperture_diameter == 0.2
@@ -438,17 +438,17 @@ def test_fwf_settings_set_get_properties():
     assert fwf.atmospheric_visibility == 0.95
     assert fwf.scanner_wave_length == 1600.0
     assert fwf.beam_divergence_angle == 0.0005
-    assert fwf.pulse_length == 5.0
+    assert fwf.pulse_length == 5.0e-9
     assert fwf.beam_sample_quality == 4
-    assert fwf.win_size == 1.25
-    assert fwf.max_fullwave_range == 100.0
+    assert fwf.window_size == 1.25e-9
+    assert fwf.max_fullwave_range == 100.0e-9
 
 
 def test_fwf_settings_to_string():
     fwf = _helios.FWFSettings()
     expected_str = (
         'FWFSettings "":\n'
-        "binSize_ns = 0.25\n"
+        "binSize_s = 2.5e-10\n"
         "minEchoWidth = 2.5\n"
         "peakEnergy = 500\n"
         "apertureDiameter = 0.15\n"
@@ -456,10 +456,10 @@ def test_fwf_settings_to_string():
         "atmosphericVisibility = 0.9\n"
         "scannerWaveLength = 1550\n"
         "beamDivergence_rad = 0.0003\n"
-        "pulseLength_ns = 4\n"
+        "pulseLength_s = 4e-09\n"
         "beamSampleQuality = 3\n"
-        "winSize_ns = 1\n"
-        "maxFullwaveRange_ns = 0\n"
+        "winSize_s = 1e-09\n"
+        "maxFullwaveRange_s = 0\n"
     )
     assert str(fwf) == expected_str
 
@@ -522,8 +522,8 @@ def test_scanner_head_properties():
     assert scanner_head.mount_relative_attitude is not None
 
     # Test read/write properties
-    scanner_head.rotate_per_sec_max = 2.0
-    assert scanner_head.rotate_per_sec_max == 2.0
+    scanner_head.rotation_speed_max = 2.0
+    assert scanner_head.rotation_speed_max == 2.0
 
     scanner_head.rotate_per_sec = 1.0
     assert scanner_head.rotate_per_sec == 1.0
@@ -882,13 +882,6 @@ def test_platform_properties():
     assert platform.device_relative_attitude.axis == (1.0, 0.0, 0.0)
     assert platform.device_relative_attitude.angle == 0.0
 
-    assert platform.position_x_noise_source is None
-    assert platform.position_y_noise_source is None
-    assert platform.position_z_noise_source is None
-    assert platform.attitude_x_noise_source is None
-    assert platform.attitude_y_noise_source is None
-    assert platform.attitude_z_noise_source is None
-
     assert platform.target_waypoint[0] == 0.0
     assert platform.target_waypoint[1] == 0.0
     assert platform.target_waypoint[2] == 0.0
@@ -1044,10 +1037,10 @@ class ExampleScanner(_helios.Scanner):
     def setNumRays(self, numRays, idx):
         pass  # Default implementation
 
-    def getPulseLength_ns(self, idx):
+    def getPulseLength(self, idx):
         return 0.0  # Default implementation
 
-    def setPulseLength_ns(self, pulseLength_ns, idx):
+    def setPulseLength(self, pulseLength_s, idx):
         pass  # Default implementation
 
     def lastPulseWasHit(self, idx):

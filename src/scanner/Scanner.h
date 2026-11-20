@@ -590,33 +590,32 @@ public:
    * @brief Get the pulse length
    * @param idx The index of the scanning device which pulse length must
    *  be obtained (by default 0, it is the first one)
-   * @return Pulse length (nanoseconds)
-   * @see ScanningDevice::cfg_device_pulseLength_ns
+   * @return Pulse length (seconds)
+   * @see ScanningDevice::pulseLength_s
    */
-  virtual double getPulseLength_ns(size_t const idx) const = 0;
+  virtual double getPulseLength(size_t const idx) const = 0;
   /**
-   * @brief No index argument version of the Scanner::getPulseLength_ns
+   * @brief No index argument version of the Scanner::getPulseLength
    *  method
-   * @see Scanner::getPulseLength_ns(size_t const)
+   * @see Scanner::getPulseLength(size_t const)
    */
-  inline double getPulseLength_ns() const { return getPulseLength_ns(0); }
+  inline double getPulseLength() const { return getPulseLength(0); }
   /**
    * @brief Set the pulse length
-   * @param pulseLength_ns New pulse length (nanoseconds)
+   * @param pulseLength_s New pulse length (seconds)
    * @param idx The index of the scanning device which pulse length must
    *  be set (by default 1, it is the first one)
-   * @see ScanningDevice::cfg_device_pulseLength_ns
+   * @see ScanningDevice::pulseLength_s
    */
-  virtual void setPulseLength_ns(double const pulseLength_ns,
-                                 size_t const idx) = 0;
+  virtual void setPulseLength(double const pulseLength_s, size_t const idx) = 0;
   /**
-   * @brief No index argument version of the Scanner::setPulseLength_ns
+   * @brief No index argument version of the Scanner::setPulseLength
    *  method
-   * @see Scanner::setPulseLength_ns(double const, size_t const)
+   * @see Scanner::setPulseLength(double const, size_t const)
    */
-  inline void setPulseLength_ns(double const pulseLength_ns)
+  inline void setPulseLength(double const pulseLength_s)
   {
-    setPulseLength_ns(pulseLength_ns, 0);
+    setPulseLength(pulseLength_s, 0);
   }
 
   /**
@@ -810,8 +809,8 @@ public:
    * @brief Get device visibility
    * @param idx The index of the scanning device which visibility must be
    *  obtained (by default 0, it is the first one)
-   * @return Device visibility (kilometers)
-   * @see ScanningDevice::visibility_km
+   * @return Device visibility (meters)
+   * @see ScanningDevice::visibility_m
    */
   virtual double getVisibility(size_t const idx) const = 0;
   /**
@@ -821,10 +820,10 @@ public:
   inline double getVisibility() const { return getVisibility(0); }
   /**
    * @brief Set device visibility
-   * @param visibility New device visibility (kilometers)
+   * @param visibility New device visibility (meters)
    * @param idx The index of the scanning device which visibility must be
    *  set (by default 0, it is the first one)
-   * @see ScanningDevice::visibility_km
+   * @see ScanningDevice::visibility_m
    */
   virtual void setVisibility(double const visibility, size_t const idx) = 0;
   /**

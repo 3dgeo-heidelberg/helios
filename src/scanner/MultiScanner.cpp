@@ -144,13 +144,13 @@ MultiScanner::doSimStep(unsigned int legIndex,
 void
 MultiScanner::prepareDiscretization(size_t const idx)
 {
-  setNumTimeBins(getPulseLength_ns(idx) / getFWFSettings(idx).binSize_ns, idx);
+  setNumTimeBins(getPulseLength(idx) / getFWFSettings(idx).binSize_s, idx);
   setTimeWave(vector<double>(getNumTimeBins(idx)), idx);
   setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
                           getTimeWave(idx),
                           getNumTimeBins(idx),
-                          getFWFSettings(idx).binSize_ns,
-                          getPulseLength_ns(idx),
+                          getFWFSettings(idx).binSize_s * 1e9,
+                          getPulseLength(idx) * 1e9,
                           7.0 // 3.5 too many ops., 7.0 just one op.
                           ),
                         idx);

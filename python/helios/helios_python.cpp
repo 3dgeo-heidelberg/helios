@@ -9,6 +9,8 @@
 
 #include <gdal_priv.h>
 
+#include <cmath>
+
 #include <assetloading/ScenePart.h>
 #include <platform/GroundVehiclePlatform.h>
 #include <platform/HelicopterPlatform.h>
@@ -66,7 +68,6 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <DynScene.h>
 
 #include <scanner/BuddingScanningPulseProcess.h>
-#include <scanner/EvalScannerHead.h>
 #include <scanner/MultiScanner.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/ScanningDevice.h>
@@ -289,12 +290,12 @@ PYBIND11_MODULE(_helios, m)
     abstract_beam_deflector(m, "AbstractBeamDeflector");
   abstract_beam_deflector
     .def(py::init<double, double, double>(),
-         py::arg("scanAngleMax_rad"),
-         py::arg("scanFreqMax_Hz"),
-         py::arg("scanFreqMin_Hz"))
-    .def_readwrite("scan_freq_max",
+         py::arg("scanAngleMax_rad") = 0.0,
+         py::arg("scanFreqMax_Hz") = 0.0,
+         py::arg("scanFreqMin_Hz") = 0.0)
+    .def_readwrite("scan_frequency_max",
                    &AbstractBeamDeflector::cfg_device_scanFreqMax_Hz)
-    .def_readwrite("scan_freq_min",
+    .def_readwrite("scan_frequency_min",
                    &AbstractBeamDeflector::cfg_device_scanFreqMin_Hz)
     .def_readwrite("scan_angle_max",
                    &AbstractBeamDeflector::cfg_device_scanAngleMax_rad)
@@ -323,10 +324,10 @@ PYBIND11_MODULE(_helios, m)
     oscillating_mirror_beam_deflector(m, "OscillatingMirrorBeamDeflector");
   oscillating_mirror_beam_deflector
     .def(py::init<double, double, double, int>(),
-         py::arg("scanAngleMax_rad"),
-         py::arg("scanFreqMax_Hz"),
-         py::arg("scanFreqMin_Hz"),
-         py::arg("scanProduct"))
+         py::arg("scanAngleMax_rad") = 0.0,
+         py::arg("scanFreqMax_Hz") = 0.0,
+         py::arg("scanFreqMin_Hz") = 0.0,
+         py::arg("scanProduct") = 1)
 
     .def_readwrite("scan_product",
                    &OscillatingMirrorBeamDeflector::cfg_device_scanProduct)
@@ -338,9 +339,9 @@ PYBIND11_MODULE(_helios, m)
     conic_beam_deflector(m, "ConicBeamDeflector");
   conic_beam_deflector
     .def(py::init<double, double, double>(),
-         py::arg("scanAngleMax_rad"),
-         py::arg("scanFreqMax_Hz"),
-         py::arg("scanFreqMin_Hz"))
+         py::arg("scanAngleMax_rad") = 0.0,
+         py::arg("scanFreqMax_Hz") = 0.0,
+         py::arg("scanFreqMin_Hz") = 0.0)
     .def("clone", &ConicBeamDeflector::clone);
 
   py::class_<FiberArrayBeamDeflector,
@@ -349,11 +350,11 @@ PYBIND11_MODULE(_helios, m)
     fiber_array_beam_deflector(m, "FiberArrayBeamDeflector");
   fiber_array_beam_deflector
     .def(py::init<double, double, double, int>(),
-         py::arg("scanAngleMax_rad"),
-         py::arg("scanFreqMax_Hz"),
-         py::arg("scanFreqMin_Hz"),
-         py::arg("numFibers"))
-    .def_property("num_fibers",
+         py::arg("scanAngleMax_rad") = 0.0,
+         py::arg("scanFreqMax_Hz") = 0.0,
+         py::arg("scanFreqMin_Hz") = 0.0,
+         py::arg("numFibers") = 1)
+    .def_property("number_of_fibers",
                   &FiberArrayBeamDeflector::getNumFibers,
                   &FiberArrayBeamDeflector::setNumFibers)
     .def("clone", &FiberArrayBeamDeflector::clone);
@@ -363,25 +364,43 @@ PYBIND11_MODULE(_helios, m)
              std::shared_ptr<PolygonMirrorBeamDeflector>>
     polygon_mirror_beam_deflector(m, "PolygonMirrorBeamDeflector");
   polygon_mirror_beam_deflector
-    .def(py::init<double, double, double, double>(),
-         py::arg("scanAngleMax_rad"),
-         py::arg("scanFreqMax_Hz"),
-         py::arg("scanFreqMin_Hz"),
-         py::arg("ScanAngleEffectiveMax_rad"))
-    .def_property_readonly(
-      "scan_angle_effective_max",
-      &PolygonMirrorBeamDeflector::getScanAngleEffectiveMax_rad)
+    .def(py::init([](double const scanAngleMax_rad,
+                     double const scanFreqMax_Hz,
+                     double const scanFreqMin_Hz,
+                     double const scanAngleEffectiveMax_rad) {
+           return std::make_shared<PolygonMirrorBeamDeflector>(
+             scanFreqMax_Hz,
+             scanFreqMin_Hz,
+             scanAngleMax_rad,
+             scanAngleEffectiveMax_rad);
+         }),
+         py::arg("scanAngleMax_rad") = 0.0,
+         py::arg("scanFreqMax_Hz") = 0.0,
+         py::arg("scanFreqMin_Hz") = 0.0,
+         py::arg("scanAngleEffectiveMax_rad") = 0.0)
+    .def_property("scan_angle_effective_max",
+                  &PolygonMirrorBeamDeflector::getScanAngleEffectiveMax_rad,
+                  &PolygonMirrorBeamDeflector::setScanAngleEffectiveMax_rad)
     .def("clone", &PolygonMirrorBeamDeflector::clone);
 
   py::class_<Prism> prism(m, "Prism");
   prism
     .def(py::init<double, bool, double, double>(),
-         py::arg("angle_rad_"),
-         py::arg("inclined_on_left"),
-         py::arg("refr_index"),
-         py::arg("rotation_speed_rad_"))
+         py::arg("angle_rad_") = 0.0,
+         py::arg("inclined_on_left") = false,
+         py::arg("refr_index") = 1.0,
+         py::arg("rotation_speed_rad_") = 0.0)
     .def_readwrite("refractive_index", &Prism::refractive_index)
-    .def_readwrite("rotation_speed_rad", &Prism::rotation_speed_rad);
+    .def_property(
+      "angle",
+      [](Prism const& self) { return self.angle_rad; },
+      [](Prism& self, double const value) {
+        self.angle_rad = value;
+        self.sin_angle_rad = std::sin(value);
+        self.cos_angle_rad = std::cos(value);
+      })
+    .def_readwrite("inclined_on_left", &Prism::inclinedOnLeft)
+    .def_readwrite("rotation_speed", &Prism::rotation_speed_rad);
 
   py::class_<RisleyBeamDeflector,
              AbstractBeamDeflector,
@@ -389,10 +408,12 @@ PYBIND11_MODULE(_helios, m)
     risley_beam_deflector(m, "RisleyBeamDeflector");
   risley_beam_deflector
     .def(py::init<const std::vector<Prism>&, double, glm::dvec3>(),
-         py::arg("prisms"),
-         py::arg("refrIndex_air"),
+         py::arg("prisms") = std::vector<Prism>(),
+         py::arg("refrIndex_air") = 1.0,
          py::arg("incidentBeam") = Directions::forward)
     .def_readwrite("prisms", &RisleyBeamDeflector::prisms)
+    .def_readwrite("air_refractive_index", &RisleyBeamDeflector::refrIndex_air)
+    .def_readwrite("incident_beam", &RisleyBeamDeflector::incidentBeam)
     .def("clone", &RisleyBeamDeflector::clone);
 
   py::class_<Primitive, PrimitiveWrap, std::shared_ptr<Primitive>> primitive(
@@ -552,9 +573,9 @@ PYBIND11_MODULE(_helios, m)
     full_waveform_pulse_detector(m, "FullWaveformPulseDetector");
   full_waveform_pulse_detector
     .def(py::init<std::shared_ptr<Scanner>, double, double, double>(),
-         py::arg("scanner"),
-         py::arg("accuracy_m"),
-         py::arg("rangeMin_m"),
+         py::arg("scanner") = nullptr,
+         py::arg("accuracy_m") = 0.0,
+         py::arg("rangeMin_m") = 0.0,
          py::arg("rangeMax_m") = std::numeric_limits<double>::max())
 
     .def("clone", &FullWaveformPulseDetector::clone);
@@ -892,7 +913,7 @@ PYBIND11_MODULE(_helios, m)
     m, "FWFSettings");
   fwf_settings.def(py::init<>())
     .def(py::init<const FWFSettings&>(), py::arg("fwfSettings"))
-    .def_readwrite("bin_size", &FWFSettings::binSize_ns)
+    .def_readwrite("bin_size", &FWFSettings::binSize_s)
     .def_readwrite("min_echo_width", &FWFSettings::minEchoWidth)
     .def_readwrite("peak_energy", &FWFSettings::peakEnergy)
     .def_readwrite("aperture_diameter", &FWFSettings::apertureDiameter)
@@ -901,10 +922,16 @@ PYBIND11_MODULE(_helios, m)
                    &FWFSettings::atmosphericVisibility)
     .def_readwrite("scanner_wave_length", &FWFSettings::scannerWaveLength)
     .def_readwrite("beam_divergence_angle", &FWFSettings::beamDivergence_rad)
-    .def_readwrite("pulse_length", &FWFSettings::pulseLength_ns)
+    .def_readwrite("pulse_length", &FWFSettings::pulseLength_s)
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
-    .def_readwrite("win_size", &FWFSettings::winSize_ns)
-    .def_readwrite("max_fullwave_range", &FWFSettings::maxFullwaveRange_ns)
+    .def_property(
+      "window_size",
+      [](FWFSettings const& self) { return self.winSize_s; },
+      [](FWFSettings& self, py::object value) {
+        if (!value.is_none())
+          self.winSize_s = value.cast<double>();
+      })
+    .def_readwrite("max_fullwave_range", &FWFSettings::maxFullwaveRange_s)
     .def("__str__", &FWFSettings::toString);
 
   py::class_<Rotation, std::shared_ptr<Rotation>> rotation(m, "Rotation");
@@ -923,19 +950,22 @@ PYBIND11_MODULE(_helios, m)
     .def_property("q2", &Rotation::getQ2, &Rotation::setQ2)
     .def_property("q3", &Rotation::getQ3, &Rotation::setQ3)
     .def_property_readonly("axis", &Rotation::getAxis)
-    .def_property_readonly("angle", &Rotation::getAngle);
+    .def_property_readonly("angle", &Rotation::getAngle)
+    .def("apply_to",
+         py::overload_cast<Rotation const&>(&Rotation::applyTo, py::const_),
+         py::arg("rotation"));
 
   py::class_<ScannerHead, std::shared_ptr<ScannerHead>> scanner_head(
     m, "ScannerHead");
   scanner_head
     .def(py::init<glm::dvec3, double>(),
-         py::arg("headRotationAxis"),
-         py::arg("headRotatePerSecMax_rad"))
+         py::arg("headRotationAxis") = Directions::up,
+         py::arg("headRotatePerSecMax_rad") = 0.0)
 
     .def_readwrite("rotation_axis", &ScannerHead::cfg_device_rotateAxis)
     .def_property_readonly("mount_relative_attitude",
                            &ScannerHead::getMountRelativeAttitudeByReference)
-    .def_property("rotate_per_sec_max",
+    .def_property("rotation_speed_max",
                   &ScannerHead::getRotatePerSecMax,
                   &ScannerHead::setRotatePerSecMax)
     .def_property("rotate_per_sec",
@@ -953,12 +983,6 @@ PYBIND11_MODULE(_helios, m)
     .def_property("current_rotate_angle",
                   &ScannerHead::getRotateCurrent,
                   &ScannerHead::setCurrentRotateAngle_rad);
-
-  py::class_<EvalScannerHead, ScannerHead, std::shared_ptr<EvalScannerHead>>
-    eval_scanner_head(m, "EvalScannerHead");
-  eval_scanner_head.def(py::init<glm::dvec3, double>(),
-                        py::arg("headRotationAxis"),
-                        py::arg("headRotatePerSecMax_rad"));
 
   py::class_<Material, std::shared_ptr<Material>> material(m, "Material");
   material.def(py::init<>())
@@ -1500,6 +1524,12 @@ PYBIND11_MODULE(_helios, m)
   platform.def(py::init<>())
     .def(py::init<Platform&>(), py::arg("platform"))
 
+    .def_readwrite("id", &Platform::id)
+    .def_readwrite("name", &Platform::name)
+    .def_readwrite("scanner_mount_position",
+                   &Platform::cfg_device_relativeMountPosition)
+    .def_readwrite("scanner_mount_attitude",
+                   &Platform::cfg_device_relativeMountAttitude)
     .def_readwrite("last_check_z", &Platform::lastCheckZ)
     .def_readwrite("dmax", &Platform::dmax)
     .def_readwrite("is_orientation_on_leg_init",
@@ -1513,12 +1543,6 @@ PYBIND11_MODULE(_helios, m)
                    &Platform::cfg_device_relativeMountPosition)
     .def_readwrite("device_relative_attitude",
                    &Platform::cfg_device_relativeMountAttitude)
-    .def_readwrite("position_x_noise_source", &Platform::positionXNoiseSource)
-    .def_readwrite("position_y_noise_source", &Platform::positionYNoiseSource)
-    .def_readwrite("position_z_noise_source", &Platform::positionZNoiseSource)
-    .def_readwrite("attitude_x_noise_source", &Platform::attitudeXNoiseSource)
-    .def_readwrite("attitude_y_noise_source", &Platform::attitudeYNoiseSource)
-    .def_readwrite("attitude_z_noise_source", &Platform::attitudeZNoiseSource)
     .def_readwrite("target_waypoint", &Platform::targetWaypoint)
     .def_readwrite("origin_waypoint", &Platform::originWaypoint)
     .def_readwrite("next_waypoint", &Platform::nextWaypoint)
@@ -1532,6 +1556,7 @@ PYBIND11_MODULE(_helios, m)
                    &Platform::cached_distanceToTarget_xy)
 
     .def_property("position", &Platform::getPosition, &Platform::setPosition)
+    .def("clone", &Platform::clone)
     .def_property(
       "attitude",
       [](Platform& self) { return self.attitude; },
@@ -1614,7 +1639,7 @@ PYBIND11_MODULE(_helios, m)
              std::shared_ptr<SimplePhysicsPlatform>>
     simple_physics_platform(m, "SimplePhysicsPlatform");
   simple_physics_platform.def(py::init<>())
-    .def_readwrite("drag_magnitude", &SimplePhysicsPlatform::mCfg_drag)
+    .def_readwrite("drag", &SimplePhysicsPlatform::mCfg_drag)
 
     .def("prepare_simulation", &SimplePhysicsPlatform::prepareSimulation)
     .def("prepare_leg", &SimplePhysicsPlatform::prepareLeg)
@@ -1691,6 +1716,33 @@ PYBIND11_MODULE(_helios, m)
                    &HelicopterPlatform::cache_xyDistanceThreshold)
     .def_readwrite("cache_speedup_finished",
                    &HelicopterPlatform::cache_speedUpFinished)
+    .def_readwrite("engine_max_force", &HelicopterPlatform::ef_xy_max)
+    .def_readwrite("speedup_magnitude",
+                   &HelicopterPlatform::cfg_speedup_magnitude)
+    .def_readwrite("slowdown_magnitude",
+                   &HelicopterPlatform::cfg_slowdown_magnitude)
+    .def_readwrite("slowdown_distance",
+                   &HelicopterPlatform::cfg_slowdown_dist_xy)
+    .def_property(
+      "base_pitch",
+      [](HelicopterPlatform const& self) { return self.cfg_pitch_base; },
+      [](HelicopterPlatform& self, double const value) {
+        self.cfg_pitch_base = value;
+        self.cfg_max_pitch = value + self.cfg_max_pitch_offset;
+        self.cfg_min_pitch = value - self.cfg_max_pitch_offset;
+      })
+    .def_readwrite("roll_speed", &HelicopterPlatform::cfg_roll_speed)
+    .def_readwrite("pitch_speed", &HelicopterPlatform::cfg_pitch_speed)
+    .def_readwrite("yaw_speed", &HelicopterPlatform::cfg_yaw_speed)
+    .def_readwrite("roll_offset_max", &HelicopterPlatform::cfg_max_roll_offset)
+    .def_property(
+      "pitch_offset_max",
+      [](HelicopterPlatform const& self) { return self.cfg_max_pitch_offset; },
+      [](HelicopterPlatform& self, double const value) {
+        self.cfg_max_pitch_offset = value;
+        self.cfg_max_pitch = self.cfg_pitch_base + value;
+        self.cfg_min_pitch = self.cfg_pitch_base - value;
+      })
 
     .def_property("heading_rad",
                   &HelicopterPlatform::getHeadingRad,
@@ -1779,7 +1831,23 @@ PYBIND11_MODULE(_helios, m)
 
   py::class_<ScanningDevice, std::shared_ptr<ScanningDevice>> scanning_device(
     m, "ScanningDevice");
-  scanning_device.def(py::init<ScanningDevice const&>())
+  scanning_device
+    .def(py::init([]() {
+      return std::make_shared<ScanningDevice>(0,
+                                              "",
+                                              0.0003,
+                                              glm::dvec3(0.0),
+                                              Rotation(),
+                                              std::list<int>{ 0 },
+                                              4.0,
+                                              4.0,
+                                              1.0,
+                                              0.99,
+                                              0.15,
+                                              23.0,
+                                              1064e-9);
+    }))
+    .def(py::init<ScanningDevice const&>())
     .def(py::init<size_t,
                   std::string,
                   double,
@@ -1794,6 +1862,56 @@ PYBIND11_MODULE(_helios, m)
                   double,
                   double>())
 
+    .def_property("id", &ScanningDevice::getId, &ScanningDevice::setId)
+    .def_property("supported_pulse_frequencies",
+                  &ScanningDevice::getSupportedPulseFrequencies,
+                  &ScanningDevice::setSupportedPulseFrequencies)
+    .def_property("beam_origin_position",
+                  &ScanningDevice::getHeadRelativeEmitterPosition,
+                  &ScanningDevice::setHeadRelativeEmitterPosition)
+    .def_property("beam_origin_attitude",
+                  &ScanningDevice::getHeadRelativeEmitterAttitude,
+                  &ScanningDevice::setHeadRelativeEmitterAttitude)
+    .def_property("beam_divergence",
+                  &ScanningDevice::getBeamDivergence,
+                  &ScanningDevice::setBeamDivergence)
+    .def_property("pulse_length",
+                  &ScanningDevice::getPulseLength,
+                  &ScanningDevice::setPulseLength)
+    .def_property("wavelength",
+                  &ScanningDevice::getWavelength,
+                  &ScanningDevice::setWavelength)
+    .def_property("average_power",
+                  &ScanningDevice::getAveragePower,
+                  &ScanningDevice::setAveragePower)
+    .def_property("beam_quality_factor",
+                  &ScanningDevice::getBeamQualityFactor,
+                  &ScanningDevice::setBeamQualityFactor)
+    .def_property("optical_efficiency",
+                  &ScanningDevice::getOpticalEfficiency,
+                  &ScanningDevice::setOpticalEfficiency)
+    .def_property("receiver_diameter",
+                  &ScanningDevice::getReceiverDiameter,
+                  &ScanningDevice::setReceiverDiameter)
+    .def_property("atmospheric_visibility",
+                  &ScanningDevice::getAtmosphericVisibility,
+                  &ScanningDevice::setAtmosphericVisibility)
+    .def_property("received_energy_min",
+                  &ScanningDevice::getReceivedEnergyMin,
+                  &ScanningDevice::setReceivedEnergyMin)
+    .def_property("max_returns",
+                  &ScanningDevice::getMaxReturns,
+                  &ScanningDevice::setMaxReturns)
+    .def_property("head", &ScanningDevice::getHead, &ScanningDevice::setHead)
+    .def_property(
+      "optics", &ScanningDevice::getOptics, &ScanningDevice::setOptics)
+    .def_property(
+      "detector", &ScanningDevice::getDetector, &ScanningDevice::setDetector)
+    .def_property("full_waveform",
+                  &ScanningDevice::getFWFSettings,
+                  [](ScanningDevice& self, std::shared_ptr<FWFSettings> value) {
+                    self.setFWFSettings(std::move(value));
+                  })
     .def_readwrite("cached_dr2", &ScanningDevice::cached_Dr2)
     .def_readwrite("cached_bt2", &ScanningDevice::cached_Bt2)
     .def_readwrite("cached_subray_rotation",
@@ -1807,12 +1925,6 @@ PYBIND11_MODULE(_helios, m)
                   &ScanningDevice::getEnergyModel,
                   &ScanningDevice::setEnergyModel)
 
-    .def_property("fwf_settings",
-                  &ScanningDevice::getFWFSettings,
-                  &ScanningDevice::setFWFSettings)
-    .def_property("received_energy_min",
-                  &ScanningDevice::getReceivedEnergyMin,
-                  &ScanningDevice::setReceivedEnergyMin)
     .def_property("last_pulse_was_hit",
                   &ScanningDevice::lastPulseWasHit,
                   &ScanningDevice::setLastPulseWasHit)
@@ -1839,13 +1951,11 @@ PYBIND11_MODULE(_helios, m)
            &ScanningDevice::calcIntensity, py::const_))
     .def("calcIntensity",
          py::overload_cast<double, double, int>(&ScanningDevice::calcIntensity,
-                                                py::const_))
-    .def("eval_range_error_expression",
-         &ScanningDevice::evalRangeErrorExpression);
+                                                py::const_));
 
   py::class_<Scanner, ScannerWrap, std::shared_ptr<Scanner>> scanner(m,
                                                                      "Scanner");
-  scanner
+  scanner.def(py::init<>())
     .def(py::init<std::string const&,
                   std::list<int> const&,
                   bool,
@@ -1932,10 +2042,10 @@ PYBIND11_MODULE(_helios, m)
     .def("set_specific_num_rays",
          py::overload_cast<int, size_t>(&Scanner::setNumRays))
     .def("get_specific_pulse_length",
-         py::overload_cast<size_t>(&Scanner::getPulseLength_ns, py::const_),
+         py::overload_cast<size_t>(&Scanner::getPulseLength, py::const_),
          py::arg("index"))
     .def("set_specific_pulse_length",
-         py::overload_cast<double, size_t>(&Scanner::setPulseLength_ns),
+         py::overload_cast<double, size_t>(&Scanner::setPulseLength),
          py::arg("value"),
          py::arg("index"))
     .def("get_specific_last_pulse_was_hit",
@@ -2172,8 +2282,8 @@ PYBIND11_MODULE(_helios, m)
                   py::overload_cast<>(&Scanner::getNumRays, py::const_),
                   py::overload_cast<int>(&Scanner::setNumRays))
     .def_property("pulse_length",
-                  py::overload_cast<>(&Scanner::getPulseLength_ns, py::const_),
-                  py::overload_cast<double>(&Scanner::setPulseLength_ns))
+                  py::overload_cast<>(&Scanner::getPulseLength, py::const_),
+                  py::overload_cast<double>(&Scanner::setPulseLength))
     .def_property("last_pulse_was_hit",
                   py::overload_cast<>(&Scanner::lastPulseWasHit, py::const_),
                   py::overload_cast<bool>(&Scanner::setLastPulseWasHit))
@@ -2258,6 +2368,7 @@ PYBIND11_MODULE(_helios, m)
                   &Scanner::isFixedIncidenceAngle,
                   &Scanner::setFixedIncidenceAngle)
     .def_property("id", &Scanner::getScannerId, &Scanner::setScannerId)
+    .def_readwrite("name", &Scanner::name)
     .def_property(
       "FWF_settings",
       py::overload_cast<>(&Scanner::getFWFSettings),
@@ -2440,6 +2551,33 @@ PYBIND11_MODULE(_helios, m)
   py::class_<SingleScanner, Scanner, std::shared_ptr<SingleScanner>>
     single_scanner(m, "SingleScanner");
   single_scanner
+    .def(py::init([]() {
+      ScanningDevice device(0,
+                            "",
+                            0.0003,
+                            glm::dvec3(0.0),
+                            Rotation(),
+                            std::list<int>{ 0 },
+                            4.0,
+                            4.0,
+                            1.0,
+                            0.99,
+                            0.15,
+                            23.0,
+                            1064e-9);
+      return std::make_shared<SingleScanner>(device, "");
+    }))
+    .def(py::init([](ScanningDevice const& device, std::string const& id) {
+           auto result = std::make_shared<SingleScanner>(device, id);
+           auto detector = result->getDetector(0);
+           if (detector != nullptr) {
+             detector->scanner = result;
+             result->initializeSequentialGenerators();
+           }
+           return result;
+         }),
+         py::arg("device"),
+         py::arg("id"))
     .def(py::init<double,
                   glm::dvec3,
                   Rotation,
@@ -2487,6 +2625,23 @@ PYBIND11_MODULE(_helios, m)
                   &SingleScanner::setPulseFreq_Hz)
 
     .def(py::init<SingleScanner&>(), py::arg("scanner"))
+    .def_property(
+      "device",
+      [](SingleScanner& self) -> ScanningDevice& {
+        return self.getScanningDevice(0);
+      },
+      [](std::shared_ptr<SingleScanner> self, ScanningDevice const& device) {
+        self->setScanningDevice(device);
+        auto frequencies = device.getSupportedPulseFrequencies();
+        if (!frequencies.empty())
+          self->setPulseFreq_Hz(frequencies.front());
+        auto detector = self->getDetector(0);
+        if (detector != nullptr) {
+          detector->scanner = self;
+          self->initializeSequentialGenerators();
+        }
+      },
+      py::return_value_policy::reference_internal)
     .def("apply_settings",
          &SingleScanner::applySettings,
          py::arg("settings"),
@@ -2514,11 +2669,10 @@ PYBIND11_MODULE(_helios, m)
          py::overload_cast<size_t>(&SingleScanner::getNumRays, py::const_))
     .def("set_specific_num_rays",
          py::overload_cast<int, size_t>(&SingleScanner::setNumRays))
-    .def(
-      "get_specific_pulse_length",
-      py::overload_cast<size_t>(&SingleScanner::getPulseLength_ns, py::const_))
+    .def("get_specific_pulse_length",
+         py::overload_cast<size_t>(&SingleScanner::getPulseLength, py::const_))
     .def("set_specific_pulse_length",
-         py::overload_cast<double, size_t>(&SingleScanner::setPulseLength_ns))
+         py::overload_cast<double, size_t>(&SingleScanner::setPulseLength))
     .def("get_specific_last_pulse_was_hit",
          py::overload_cast<size_t>(&SingleScanner::lastPulseWasHit, py::const_))
     .def("set_specific_last_pulse_was_hit",
@@ -2709,14 +2863,34 @@ PYBIND11_MODULE(_helios, m)
   py::class_<MultiScanner, Scanner, std::shared_ptr<MultiScanner>>
     multi_scanner(m, "MultiScanner");
   multi_scanner
-    .def(py::init<std::vector<ScanningDevice>,
-                  std::string,
-                  const std::list<int>&,
-                  bool,
-                  bool,
-                  bool,
-                  bool,
-                  bool>(),
+    .def(py::init(
+      []() { return std::make_shared<MultiScanner>("", std::list<int>{ 0 }); }))
+    .def(py::init([](std::vector<ScanningDevice> devices,
+                     std::string const& id,
+                     std::list<int> const& pulse_frequencies,
+                     bool const write_waveform,
+                     bool const write_pulse,
+                     bool const calc_echowidth,
+                     bool const full_wave_noise,
+                     bool const platform_noise_disabled) {
+           auto result =
+             std::make_shared<MultiScanner>(std::move(devices),
+                                            id,
+                                            pulse_frequencies,
+                                            write_waveform,
+                                            write_pulse,
+                                            calc_echowidth,
+                                            full_wave_noise,
+                                            platform_noise_disabled);
+           for (size_t i = 0; i < result->getNumDevices(); ++i) {
+             auto detector = result->getDetector(i);
+             if (detector != nullptr)
+               detector->scanner = result;
+           }
+           if (result->getNumDevices() > 0 && result->getDetector(0) != nullptr)
+             result->initializeSequentialGenerators();
+           return result;
+         }),
          py::arg("scan_devs"),
          py::arg("id"),
          py::arg("pulse_freqs"),
@@ -2733,6 +2907,34 @@ PYBIND11_MODULE(_helios, m)
          py::arg("full_wave_noise") = false,
          py::arg("platform_noise_disabled") = false)
 
+    .def_property(
+      "channels",
+      [](MultiScanner& self) {
+        py::tuple result(self.getNumDevices());
+        py::object parent = py::cast(&self, py::return_value_policy::reference);
+        for (size_t i = 0; i < self.getNumDevices(); ++i) {
+          result[i] = py::cast(&self.getScanningDevice(i),
+                               py::return_value_policy::reference_internal,
+                               parent);
+        }
+        return result;
+      },
+      [](std::shared_ptr<MultiScanner> self,
+         std::vector<ScanningDevice> const& devices) {
+        self->setScanningDevices(devices);
+        if (!devices.empty()) {
+          auto frequencies = devices.front().getSupportedPulseFrequencies();
+          if (!frequencies.empty())
+            self->setPulseFreq_Hz(frequencies.front());
+        }
+        for (size_t i = 0; i < self->getNumDevices(); ++i) {
+          auto detector = self->getDetector(i);
+          if (detector != nullptr)
+            detector->scanner = self;
+        }
+        if (!devices.empty() && self->getDetector(0) != nullptr)
+          self->initializeSequentialGenerators();
+      })
     .def("on_leg_complete", &MultiScanner::onLegComplete)
     .def("prepare_simulation",
          &MultiScanner::prepareSimulation,
@@ -2792,9 +2994,9 @@ PYBIND11_MODULE(_helios, m)
          py::arg("device_id"),
          py::arg("idx"))
 
-    .def("get_pulse_length", &MultiScanner::getPulseLength_ns, py::arg("idx"))
+    .def("get_pulse_length", &MultiScanner::getPulseLength, py::arg("idx"))
     .def("set_pulse_length",
-         &MultiScanner::setPulseLength_ns,
+         &MultiScanner::setPulseLength,
          py::arg("pulse_length"),
          py::arg("idx"))
 

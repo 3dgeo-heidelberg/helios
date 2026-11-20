@@ -191,10 +191,13 @@ class Survey(Model, cpp_class=_helios.Survey):
             check_integrate_survey_and_legs(self)
             apply_scene_shift(self, execution_settings)
 
-        # Set the fullwave form settings on the scanner
-        self.scanner._cpp_object.apply_settings_FWF(
-            self.full_waveform_settings._to_cpp()
-        )
+        # Set the full waveform settings on every scanning device. The
+        # non-indexed overload only updates device 0 of a multi-scanner.
+        for device_index in range(self.scanner._cpp_object.num_devices):
+            self.scanner._cpp_object.apply_settings_FWF(
+                self.full_waveform_settings._cpp_object,
+                device_index,
+            )
 
         # also, for proper writing into the file, we need to set IDs for the scene parts
         if isinstance(scene, StaticScene):

@@ -27,6 +27,7 @@ from helios.validation import (
     validate_xml_file,
     UpdateableMixin,
 )
+from helios.rotation import Rotation
 
 from collections.abc import MutableMapping
 from numpydantic import NDArray, Shape
@@ -222,6 +223,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         from_axis: Optional[R3Vector] = None,
         to_axis: Optional[R3Vector] = None,
         rotation_center: Optional[R3Vector] = None,
+        *,
+        rotation: Optional[Rotation] = None,
     ):
         """Rotate the scene part.
 
@@ -230,6 +233,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         * A quaternion
         * An axis and an angle
         * An origin and an image vector
+        * A :class:`helios.Rotation`
 
         Exactly one of these must be specified.
 
@@ -242,22 +246,24 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param from_axis: The origin vector to use for the rotation. Must be provided together with the 'to_axis' parameter.
         :param to_axis: The image vector to use for the rotation. Must be provided together with the 'from_axis' parameter.
         :param rotation_center: The center to use for the rotation. If omitted, the origin of the coordinate system of the scene part will be used.
+        :param rotation: An already constructed rotation.
         :type quaternion: Optional[Quaternion]
         :type axis: Optional[R3Vector]
         :type angle: Optional[Angle]
         :type from_axis: Optional[R3Vector]
         :type to_axis: Optional[R3Vector]
         :type rotation_center: Optional[R3Vector]
+        :type rotation: Optional[Rotation]
         """
 
         # The rotation object that we want to construct
-        rot = None
+        rot = rotation
 
         # Handle construction via a given quaternion
         if quaternion is not None:
-            rot = _helios.Rotation(
-                quaternion[0], quaternion[1], quaternion[2], quaternion[3], True
-            )
+            if rot is not None:
+                raise ValueError("Too many rotation parameters specified")
+            rot = Rotation.from_quaternion(quaternion)
 
         # Handle construction via an axis and angle
         if axis is not None or angle is not None:
@@ -268,7 +274,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             if angle is None:
                 raise ValueError("Angle must be specified when axis is specified")
 
-            rot = _helios.Rotation(axis, angle)
+            rot = Rotation.from_axis_angle(axis=axis, angle=angle)
 
         # Handle construction via two vectors
         if from_axis is not None or to_axis is not None:
@@ -279,7 +285,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             if to_axis is None:
                 raise ValueError("Image must be specified when origin is specified")
 
-            rot = _helios.Rotation(from_axis, to_axis)
+            rot = Rotation.from_directions(source=from_axis, target=to_axis)
 
         if rot is None:
             raise ValueError("No rotation parameters specified")
@@ -289,7 +295,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             _helios.translate_scene_part(self._cpp_object, -rotation_center)
 
         # Perform the actual rotation
-        _helios.rotate_scene_part(self._cpp_object, rot)
+        _helios.rotate_scene_part(self._cpp_object, rot._cpp_object)
 
         # Undo the shift by the rotation center
         if rotation_center is not None:
@@ -303,6 +309,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             from_axis=from_axis,
             to_axis=to_axis,
             rotation_center=rotation_center,
+            rotation=rotation,
         )
 
         return self

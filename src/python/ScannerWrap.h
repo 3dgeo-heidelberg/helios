@@ -23,7 +23,7 @@ class ScannerWrap : public Scanner
 {
 public:
   ScannerWrap()
-    : Scanner("", std::list<int>())
+    : Scanner("", std::list<int>{ 0 })
   {
   }
 
@@ -226,15 +226,14 @@ public:
     PYBIND11_OVERLOAD_PURE(void, Scanner, setNumRays, numRays, idx);
   }
 
-  double getPulseLength_ns(size_t const idx) const override
+  double getPulseLength(size_t const idx) const override
   {
-    PYBIND11_OVERLOAD_PURE(double, Scanner, getPulseLength_ns, idx);
+    PYBIND11_OVERLOAD_PURE(double, Scanner, getPulseLength, idx);
   }
 
-  void setPulseLength_ns(double const pulseLength_ns, size_t const idx) override
+  void setPulseLength(double const pulseLength_s, size_t const idx) override
   {
-    PYBIND11_OVERLOAD_PURE(
-      void, Scanner, setPulseLength_ns, pulseLength_ns, idx);
+    PYBIND11_OVERLOAD_PURE(void, Scanner, setPulseLength, pulseLength_s, idx);
   }
 
   bool lastPulseWasHit(size_t const idx) const override
@@ -548,8 +547,8 @@ public:
     return WaveMaths::calcPropagationTimeLegacy(
       timeWave,
       numBins,
-      scanner.getFWFSettings(0).binSize_ns,
-      scanner.getPulseLength_ns(0),
+      scanner.getFWFSettings(0).binSize_s * 1e9,
+      scanner.getPulseLength(0) * 1e9,
       7.0 // 3.5 too many ops., 7.0 just one op.
     );
   }
