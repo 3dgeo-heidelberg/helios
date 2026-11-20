@@ -68,11 +68,22 @@ def test_preinstantiated_platforms():
 
 def test_list_platforms_matches_registry():
     assert list_platforms() == list(platform_module.PLATFORM_REGISTRY.keys())
+    assert all(
+        callable(factory) for factory in platform_module.PLATFORM_REGISTRY.values()
+    )
+    assert all(
+        factory is getattr(platform_module, name)
+        for name, factory in platform_module.PLATFORM_REGISTRY.items()
+    )
 
 
 def test_platform_from_name():
     for platform_name in list_platforms():
-        assert isinstance(platform_from_name(platform_name), Platform)
+        platform = platform_from_name(platform_name)
+        assert isinstance(platform, Platform)
+        assert not getattr(platform, "_is_loaded_from_xml", False)
+        assert platform._cpp_object.id == ""
+        assert platform._cpp_object.name == "Unnamed Asset"
 
 
 def test_platform_from_name_invalid():

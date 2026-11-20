@@ -21,11 +21,22 @@ def test_preinstantiated_scanners():
 
 def test_list_scanners_matches_registry():
     assert list_scanners() == list(scanner_module.SCANNER_REGISTRY.keys())
+    assert all(
+        callable(factory) for factory in scanner_module.SCANNER_REGISTRY.values()
+    )
+    assert all(
+        factory is getattr(scanner_module, name)
+        for name, factory in scanner_module.SCANNER_REGISTRY.items()
+    )
 
 
 def test_scanner_from_name():
     for scanner_name in list_scanners():
-        assert isinstance(scanner_from_name(scanner_name), Scanner)
+        scanner = scanner_from_name(scanner_name)
+        assert isinstance(scanner, Scanner)
+        assert not getattr(scanner, "_is_loaded_from_xml", False)
+        assert scanner._cpp_object.id == ""
+        assert scanner._cpp_object.name == "Unnamed Asset"
 
 
 def test_scanner_from_name_invalid():
