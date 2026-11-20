@@ -1,0 +1,74 @@
+name: Detect relevant changes
+
+on:
+  workflow_call:
+    outputs:
+      cpp:
+        description: Changes affecting C++ builds and header checks
+        value: ${{ jobs.changes.outputs.cpp }}
+      python:
+        description: Changes affecting Python tests
+        value: ${{ jobs.changes.outputs.python }}
+      coverage:
+        description: Changes affecting coverage collection
+        value: ${{ jobs.changes.outputs.coverage }}
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      cpp: ${{ steps.filter.outputs.cpp }}
+      python: ${{ steps.filter.outputs.python }}
+      coverage: ${{ steps.filter.outputs.coverage }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Filter changes
+        if: github.event_name != 'workflow_dispatch'
+        uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          # Pushes compare against the previous commit on the same branch.
+          # Pull requests compare against their target branch.
+          base: ${{ github.ref }}
+          filters: |
+            cpp:
+              - '.github/workflows/headercheck.yml'
+              - '.github/workflows/changes.yml'
+              - '.github/workflows/ci.yml'
+              - 'benchmarks/**'
+              - 'cmake/**'
+              - 'doc/CMakeLists.txt'
+              - 'python/**/*.cpp'
+              - 'python/**/*.h'
+              - 'python/**/*.hpp'
+              - 'pyproject.toml'
+              - 'src/**'
+              - 'tests/headercheck/**'
+              - 'CMakeLists.txt'
+              - 'environment-dev.yml'
+            python:
+              - '.github/workflows/build-and-test.yml'
+              - '.github/workflows/changes.yml'
+              - '.github/workflows/ci.yml'
+              - 'data/**'
+              - 'python/**'
+              - 'pyproject.toml'
+              - 'tests/python/**'
+            coverage:
+              - '.github/workflows/changes.yml'
+              - '.github/workflows/ci.yml'
+              - '.github/workflows/coverage.yml'
+              - 'cmake/**'
+              - 'data/**'
+              - 'python/**'
+              - 'src/**'
+              - 'tests/python/**'
+              - 'CMakeLists.txt'
+              - 'environment-dev.yml'
+              - 'pyproject.toml'
+              - 'codecov.yml'

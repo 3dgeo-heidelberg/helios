@@ -1,14 +1,7 @@
 name: Coverage testing
 
 on:
-  push:
-    branches:
-      - main
-      - alpha-dev
-  pull_request:
-    branches:
-      - main
-      - alpha-dev
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -87,7 +80,7 @@ jobs:
 
       - name: Collect C++ coverage report
         run: |
-          lcov --directory build --capture --output-file coverage.info --ignore-errors mismatch
+          lcov --directory build --capture --output-file coverage.info --ignore-errors mismatch,inconsistent
       
       - name: Upload coverage to CodeCov
         uses: codecov/codecov-action@v7
