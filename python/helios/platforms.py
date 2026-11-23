@@ -9,8 +9,10 @@ from helios.validation import (
     AssetPath,
     Model,
     R3Vector,
+    Speed,
     UpdateableMixin,
     get_all_annotations,
+    units,
     validate_xml_file,
 )
 from pydantic import Field, validate_call
@@ -174,7 +176,7 @@ class StaticPlatformSettings(PlatformSettingsBase):
 
 class DynamicPlatformSettings(PlatformSettings):
     trajectory_settings: TrajectorySettings = TrajectorySettings()
-    speed_m_s: Annotated[float, Field(ge=0)] = 70
+    speed_m_s: Speed = 70 * units.m / units.s
 
 
 class Platform(Printable, Model, cpp_class=_helios.Platform):
@@ -325,9 +327,9 @@ def platform_from_name(platform_name: str) -> Platform:
 @registered_platform("sr22")
 def sr22() -> Platform:
     return LinearPathPlatform(
-        scanner_mount_position=(0, 0, 0.7),
+        scanner_mount_position=np.array((0, 0, 0.7)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("x", -np.pi / 2), ("z", np.pi / 2))
+            rotations=(("x", -np.pi / 2 * units.rad), ("z", np.pi / 2 * units.rad))
         ),
     )
 
@@ -335,9 +337,9 @@ def sr22() -> Platform:
 @registered_platform("copter_linearpath")
 def copter_linearpath() -> Platform:
     return LinearPathPlatform(
-        scanner_mount_position=(0, 0, 0.2),
+        scanner_mount_position=np.array((0, 0, 0.2)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("x", np.deg2rad(175)),)
+            rotations=(("x", 175 * units.deg),)
         ),
     )
 
@@ -346,9 +348,10 @@ def copter_linearpath() -> Platform:
 def tractor() -> Platform:
     return GroundVehiclePlatform(
         drag=0.005,
-        scanner_mount_position=(0, 1, 4),
+        scanner_mount_position=np.array((0, 1, 4)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("z", np.pi / 2), ("y", -np.pi / 6)), frame="local"
+            rotations=(("z", np.pi / 2 * units.rad), ("y", -np.pi / 6 * units.rad)),
+            frame="local",
         ),
     )
 
@@ -357,9 +360,9 @@ def tractor() -> Platform:
 def tractor_leftside() -> Platform:
     return GroundVehiclePlatform(
         drag=0.01,
-        scanner_mount_position=(0, 0.8, 4),
+        scanner_mount_position=np.array((0, 0.8, 4)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("y", np.deg2rad(-35)),)
+            rotations=(("y", -35 * units.deg),)
         ),
     )
 
@@ -367,9 +370,9 @@ def tractor_leftside() -> Platform:
 @registered_platform("vehicle_linearpath")
 def vehicle_linearpath() -> Platform:
     return LinearPathPlatform(
-        scanner_mount_position=(0, 0, 2.4),
+        scanner_mount_position=np.array((0, 0, 2.4)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("z", np.pi / 2),), frame="local"
+            rotations=(("z", np.pi / 2 * units.rad),), frame="local"
         ),
     )
 
@@ -377,9 +380,9 @@ def vehicle_linearpath() -> Platform:
 @registered_platform("vmx_450_car_left")
 def vmx_450_car_left() -> Platform:
     return LinearPathPlatform(
-        scanner_mount_position=(-0.18, -2.2, 2.2),
+        scanner_mount_position=np.array((-0.18, -2.2, 2.2)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("x", np.deg2rad(40)), ("z", np.deg2rad(150)))
+            rotations=(("x", 40 * units.deg), ("z", 150 * units.deg))
         ),
     )
 
@@ -387,9 +390,9 @@ def vmx_450_car_left() -> Platform:
 @registered_platform("vmx_450_car_right")
 def vmx_450_car_right() -> Platform:
     return LinearPathPlatform(
-        scanner_mount_position=(0.18, -2.2, 2.2),
+        scanner_mount_position=np.array((0.18, -2.2, 2.2)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("x", np.deg2rad(40)), ("z", np.deg2rad(210)))
+            rotations=(("x", 40 * units.deg), ("z", 210 * units.deg))
         ),
     )
 
@@ -397,9 +400,9 @@ def vmx_450_car_right() -> Platform:
 @registered_platform("vmq_1ha_car")
 def vmq_1ha_car() -> Platform:
     return LinearPathPlatform(
-        scanner_mount_position=(0, -1.15, 2.2),
+        scanner_mount_position=np.array((0, -1.15, 2.2)) * units.m,
         scanner_mount_attitude=Rotation.from_axis_angles(
-            rotations=(("x", np.pi / 4), ("z", 0))
+            rotations=(("x", np.pi / 4 * units.rad), ("z", 0 * units.rad))
         ),
     )
 
@@ -411,4 +414,4 @@ def simple_linearpath() -> Platform:
 
 @registered_platform("tripod")
 def tripod() -> Platform:
-    return StaticPlatform(scanner_mount_position=(0, 0, 1.5))
+    return StaticPlatform(scanner_mount_position=np.array((0, 0, 1.5)) * units.m)

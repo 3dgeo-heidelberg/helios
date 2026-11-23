@@ -48,6 +48,7 @@ ScanFrequency = Annotated[float, _unit_validator(units.Hz), annotated_types.Ge(0
 Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
 Power = Annotated[float, _unit_validator(units.W), annotated_types.Ge(0)]
+Speed = Annotated[float, _unit_validator(units.m / units.s), annotated_types.Ge(0)]
 
 
 def _coerce_vector(length: int, name: str):
@@ -56,6 +57,8 @@ def _coerce_vector(length: int, name: str):
             return value
         if isinstance(value, (list, tuple)) and len(value) != length:
             raise ValueError(f"Value must be a {name} of length {length}.")
+        if isinstance(value, units.Quantity):
+            value = value.magnitude
         try:
             return np.asarray(value, dtype=np.float64)
         except (TypeError, ValueError) as exc:
