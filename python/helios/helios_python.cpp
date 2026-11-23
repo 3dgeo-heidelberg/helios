@@ -114,7 +114,6 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/PyXMLReader.h>
 #include <python/SceneHandling.h>
 #include <python/SurveyHandling.h>
-#include <python/utils.h>
 #include <sim/comps/ScanningStrip.h>
 #include <sim/core/Simulation.h>
 
@@ -3463,12 +3462,6 @@ PYBIND11_MODULE(_helios, m)
                   &ScenePartVisualizationBuffers::triangle_indices)
     .def_readonly("voxel_centers",
                   &ScenePartVisualizationBuffers::voxel_centers);
-
-  m.def("calc_time_propagation",
-        &calcTimePropagation,
-        py::arg("timeWave"),
-        py::arg("numBins"),
-        py::arg("scanner"));
 
   // Add helper methods for XML parsing
   m.def("read_survey_from_xml", &readSurveyFromXml);

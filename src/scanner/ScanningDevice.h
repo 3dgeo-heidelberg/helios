@@ -155,10 +155,7 @@ protected:
    */
   int numTimeBins = -1;
   /**
-   * @brief Index of bin containing the intensity peak. It is computed
-   * through calcTimePropagation function.
-   *
-   * @see Scanner::calcTimePropagation(vector<double> &, int)
+   * @brief Index of the bin containing the intensity peak
    */
   int peakIntensityIndex = -1;
   /**
@@ -455,8 +452,6 @@ public:
   double calcIntensity(double const targetRange,
                        double const sigma,
                        int const subrayRadiusStep) const;
-
-  int calcTimePropagation(std::vector<double>& timeWave);
 
   /**
    * @brief Evaluate the expression tree modeling the mechanical range error
