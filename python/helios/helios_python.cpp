@@ -107,22 +107,12 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <assetloading/Asset.h>
 #include <assetloading/geometryfilter/WavefrontObj.h>
 #include <filems/facade/FMSFacade.h>
-#include <python/AbstractBeamDeflectorWrap.h>
-#include <python/AbstractDetectorWrap.h>
-#include <python/EnergyModelWrap.h>
 #include <python/GLMTypeCaster.h>
 #include <python/InterpolatedPlatformPreparation.h>
-#include <python/KDTreeFactoryWrapper.h>
-#include <python/NoiseSourceWrap.h>
 #include <python/NumpyArrayConversion.h>
-#include <python/PrimitiveWrap.h>
-#include <python/PulseThreadPoolInterfaceWrap.h>
 #include <python/PyHeliosSimulation.h>
 #include <python/PyXMLReader.h>
-#include <python/ScannerWrap.h>
-#include <python/ScanningPulseProcessWrap.h>
 #include <python/SceneHandling.h>
-#include <python/SimulationWrap.h>
 #include <python/SurveyHandling.h>
 #include <python/utils.h>
 #include <sim/comps/ScanningStrip.h>
@@ -231,15 +221,9 @@ PYBIND11_MODULE(_helios, m)
   py::class_<Asset, std::shared_ptr<Asset>> asset(m, "Asset");
   asset.def_readwrite("id", &Asset::id).def_readwrite("name", &Asset::name);
 
-  py::class_<AbstractBeamDeflector,
-             AbstractBeamDeflectorWrap,
-             std::shared_ptr<AbstractBeamDeflector>>
+  py::class_<AbstractBeamDeflector, std::shared_ptr<AbstractBeamDeflector>>
     abstract_beam_deflector(m, "AbstractBeamDeflector");
   abstract_beam_deflector
-    .def(py::init<double, double, double>(),
-         py::arg("scanAngleMax_rad") = 0.0,
-         py::arg("scanFreqMax_Hz") = 0.0,
-         py::arg("scanFreqMin_Hz") = 0.0)
     .def_readwrite("scan_frequency_max",
                    &AbstractBeamDeflector::cfg_device_scanFreqMax_Hz)
     .def_readwrite("scan_frequency_min",
@@ -363,11 +347,8 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("incident_beam", &RisleyBeamDeflector::incidentBeam)
     .def("clone", &RisleyBeamDeflector::clone);
 
-  py::class_<Primitive, PrimitiveWrap, std::shared_ptr<Primitive>> primitive(
-    m, "Primitive");
+  py::class_<Primitive, std::shared_ptr<Primitive>> primitive(m, "Primitive");
   primitive
-    .def(py::init<>())
-
     .def_property(
       "scene_part",
       [](Primitive& prim) { return prim.part.get(); },
@@ -486,17 +467,9 @@ PYBIND11_MODULE(_helios, m)
          py::arg("index"),
          py::arg("value"));
 
-  py::class_<AbstractDetector,
-             AbstractDetectorWrap,
-             std::shared_ptr<AbstractDetector>>
+  py::class_<AbstractDetector, std::shared_ptr<AbstractDetector>>
     abstract_detector(m, "AbstractDetector");
   abstract_detector
-    .def(py::init<std::shared_ptr<Scanner>, double, double, double>(),
-         py::arg("scanner"),
-         py::arg("accuracy_m"),
-         py::arg("rangeMin_m"),
-         py::arg("rangeMax_m") = std::numeric_limits<double>::max())
-
     .def_readwrite("accuracy", &AbstractDetector::cfg_device_accuracy_m)
     .def_readwrite("range_min", &AbstractDetector::cfg_device_rangeMin_m)
     .def_readwrite("range_max", &AbstractDetector::cfg_device_rangeMax_m)
@@ -631,11 +604,8 @@ PYBIND11_MODULE(_helios, m)
     .def("normal_distribution_next",
          &RandomnessGenerator<double>::normalDistributionNext);
 
-  py::class_<NoiseSource<double>, NoiseSourceWrap<double>> noise_source(
-    m, "NoiseSource");
+  py::class_<NoiseSource<double>> noise_source(m, "NoiseSource");
   noise_source
-    .def(py::init<>())
-
     .def_property("clip_min",
                   &NoiseSource<double>::getClipMin,
                   &NoiseSource<double>::setClipMin)
@@ -656,11 +626,8 @@ PYBIND11_MODULE(_helios, m)
                   &NoiseSource<double>::setFixedValueRemainingUses)
     .def("next", &NoiseSource<double>::next);
 
-  py::class_<RandomNoiseSource<double>,
-             NoiseSource<double>,
-             RandomNoiseSourceWrap<double>>(m, "RandomNoiseSource")
-    .def(py::init<>())
-
+  py::class_<RandomNoiseSource<double>, NoiseSource<double>>(
+    m, "RandomNoiseSource")
     .def("get_random_noise_type",
          &RandomNoiseSource<double>::getRandomNoiseType)
     .def("__str__", [](RandomNoiseSource<double>& self) {
@@ -1755,12 +1722,9 @@ PYBIND11_MODULE(_helios, m)
     .def("push_time_to_live", &SwapOnRepeatHandler::pushTimeToLive)
     .def("push_swap_filters", &SwapOnRepeatHandler::pushSwapFilters);
 
-  py::class_<EnergyModel, EnergyModelWrap, std::shared_ptr<EnergyModel>>
-    energy_model(m, "EnergyModel");
-  energy_model
-    .def(py::init<ScanningDevice&>(), py::arg("device"))
-
-    .def("compute_intensity", &EnergyModel::computeIntensity)
+  py::class_<EnergyModel, std::shared_ptr<EnergyModel>> energy_model(
+    m, "EnergyModel");
+  energy_model.def("compute_intensity", &EnergyModel::computeIntensity)
     .def("compute_received_power", &EnergyModel::computeReceivedPower)
     .def("compute_emitted_power", &EnergyModel::computeEmittedPower)
     .def("compute_target_area", &EnergyModel::computeTargetArea)
@@ -1899,25 +1863,8 @@ PYBIND11_MODULE(_helios, m)
          py::overload_cast<double, double, int>(&ScanningDevice::calcIntensity,
                                                 py::const_));
 
-  py::class_<Scanner, ScannerWrap, std::shared_ptr<Scanner>> scanner(m,
-                                                                     "Scanner");
-  scanner.def(py::init<>())
-    .def(py::init<std::string const&,
-                  std::list<int> const&,
-                  bool,
-                  bool,
-                  bool,
-                  bool,
-                  bool>(),
-         py::arg("id"),
-         py::arg("pulseFreqs"),
-         py::arg("writeWaveform") = false,
-         py::arg("writePulse") = false,
-         py::arg("calcEchowidth") = false,
-         py::arg("fullWaveNoise") = false,
-         py::arg("platformNoiseDisabled") = false)
-    .def(py::init<Scanner&>(), py::arg("scanner"))
-
+  py::class_<Scanner, std::shared_ptr<Scanner>> scanner(m, "Scanner");
+  scanner
     .def_readwrite("intersection_handling_noise_source",
                    &Scanner::intersectionHandlingNoiseSource)
     .def_readwrite("rand_gen1", &Scanner::randGen1)
@@ -2324,18 +2271,18 @@ PYBIND11_MODULE(_helios, m)
                            py::overload_cast<>(&Scanner::getTimeWave))
     .def_property(
       "all_measurements_mutex",
-      [](ScannerWrap& self) {
-        if (!self.get_all_measurements_mutex()) {
-          self.set_all_measurements_mutex(std::make_shared<std::mutex>());
+      [](Scanner& self) {
+        if (!self.allMeasurementsMutex) {
+          self.allMeasurementsMutex = std::make_shared<std::mutex>();
         }
-        return self.get_all_measurements_mutex();
+        return self.allMeasurementsMutex;
       },
-      [](ScannerWrap& self, py::object mutex_obj) {
+      [](Scanner& self, py::object mutex_obj) {
         if (mutex_obj.is_none()) {
-          self.set_all_measurements_mutex(nullptr);
+          self.allMeasurementsMutex = std::make_shared<std::mutex>();
         } else {
-          auto mutex_ptr = mutex_obj.cast<std::shared_ptr<std::mutex>>();
-          self.set_all_measurements_mutex(mutex_ptr);
+          self.allMeasurementsMutex =
+            mutex_obj.cast<std::shared_ptr<std::mutex>>();
         }
       },
       "A shared mutex for synchronized operations")
@@ -3127,22 +3074,9 @@ PYBIND11_MODULE(_helios, m)
          py::arg("idx"))
     .def("clone", &MultiScanner::clone);
 
-  py::class_<Simulation, SimulationWrap, std::shared_ptr<Simulation>>
-    simulation(m, "Simulation");
-  simulation
-
-    .def(py::init<int,
-                  std::shared_ptr<PulseThreadPoolInterface>,
-                  int,
-                  std::string,
-                  bool>(),
-         py::arg("parallelizationStrategy"),
-         py::arg("pulseThreadPoolInterface"),
-         py::arg("chunkSize"),
-         py::arg("fixedGpsTimeStart") = "",
-         py::arg("legacyEnergyModel") = false)
-
-    .def_readwrite("current_leg_index", &Simulation::mCurrentLegIndex)
+  py::class_<Simulation, std::shared_ptr<Simulation>> simulation(m,
+                                                                 "Simulation");
+  simulation.def_readwrite("current_leg_index", &Simulation::mCurrentLegIndex)
     .def_readwrite("is_finished", &Simulation::finished)
 
     .def_property("sim_speed_factor",
@@ -3267,10 +3201,8 @@ PYBIND11_MODULE(_helios, m)
          &PulseThreadPoolFactory::makePulseWarehouseThreadPool);
 
   py::class_<PulseThreadPoolInterface,
-             PulseThreadPoolInterfaceWrap,
              std::shared_ptr<PulseThreadPoolInterface>>(
     m, "PulseThreadPoolInterface")
-    .def(py::init<>())
     .def("run_pulse_task", &PulseThreadPoolInterface::run_pulse_task)
     .def("try_run_pulse_task", &PulseThreadPoolInterface::try_run_pulse_task)
     .def("join", &PulseThreadPoolInterface::join);
@@ -3347,12 +3279,8 @@ PYBIND11_MODULE(_helios, m)
                                               RandomnessGenerator<double>&,
                                               NoiseSource<double>&>::drop);
 
-  py::class_<ScanningPulseProcess,
-             ScanningPulseProcessWrap,
-             std::shared_ptr<ScanningPulseProcess>>(m, "ScanningPulseProcess")
-    .def(py::init<std::shared_ptr<Scanner>, Scene&>(),
-         py::arg("scanner"),
-         py::arg("scene"))
+  py::class_<ScanningPulseProcess, std::shared_ptr<ScanningPulseProcess>>(
+    m, "ScanningPulseProcess")
     .def("handle_pulse_computation",
          &ScanningPulseProcess::handlePulseComputation)
     .def("on_leg_complete", &ScanningPulseProcess::onLegComplete)
@@ -3445,9 +3373,7 @@ PYBIND11_MODULE(_helios, m)
                                                               "KDGroveFactory")
     .def(py::init<std::shared_ptr<KDTreeFactory>>(), py::arg("kdtf"));
 
-  py::class_<KDTreeFactory, KDTreeFactoryWrap, std::shared_ptr<KDTreeFactory>>(
-    m, "KDTreeFactory")
-    .def(py::init<>());
+  py::class_<KDTreeFactory, std::shared_ptr<KDTreeFactory>>(m, "KDTreeFactory");
 
   py::class_<SimpleKDTreeFactory,
              KDTreeFactory,

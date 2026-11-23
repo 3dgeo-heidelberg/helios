@@ -7,10 +7,12 @@ import pytest
 from helios import ExecutionSettings, FullWaveformSettings, Rotation, units
 from helios.platforms import StaticPlatform
 from helios.scanner import (
+    BeamDeflector,
     ConicOptics,
     Detector,
     MultiScanner,
     RotatingOptics,
+    Scanner,
     ScannerHead,
     ScanningDevice,
     SingleScanner,
@@ -35,6 +37,15 @@ def make_device(device_id="channel", **kwargs):
 
 def quaternion(rotation):
     return np.array((rotation.q0, rotation.q1, rotation.q2, rotation.q3))
+
+
+def test_abstract_scanner_types_are_not_constructible():
+    with pytest.raises(TypeError, match="No constructor defined"):
+        _helios.Scanner()
+    with pytest.raises(TypeError, match="No constructor defined"):
+        Scanner()
+    with pytest.raises(TypeError, match="No constructor defined"):
+        BeamDeflector()
 
 
 def test_rotation_factories_and_scene_part_share_conversion():
