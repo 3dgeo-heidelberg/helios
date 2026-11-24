@@ -498,8 +498,9 @@ def test_scenepart_from_xyzs(xyz_parts_dir):
 
 
 def test_scenepart_from_vox():
+    # 36 voxels, of which 16 have PAD = 0 or NaN and are discarded
     scene_parts1 = ScenePart.from_vox(
-        "data/test/semitransparent_voxels.vox",
+        "data/test/transmittive_voxels.vox",
         intersection_mode="transmittive",
     )
     scene_parts2 = ScenePart.from_vox(
@@ -516,7 +517,7 @@ def test_scenepart_from_vox():
         intersection_mode="scaled",
     )
 
-    assert len(scene_parts1._cpp_object.primitives) > 0
+    assert len(scene_parts1._cpp_object.primitives) == 20
     assert len(scene_parts2._cpp_object.primitives) > 0
     assert len(scene_parts3._cpp_object.primitives) > 0
     assert len(scene_parts4._cpp_object.primitives) > 0
@@ -530,7 +531,7 @@ def test_scenepart_from_vox():
 
 
 def test_scenepart_from_vox_lad(tmp_path):
-    vox = "data/test/semitransparent_voxels.vox"
+    vox = "data/test/transmittive_voxels.vox"
 
     named = ScenePart.from_vox(vox, lad="Planophile")
     assert len(named._cpp_object.primitives) > 0

@@ -13,17 +13,17 @@ namespace fs = std::filesystem;
 ScenePart*
 DetailedVoxelLoader::run()
 {
-  // Retrieve params
-  bool transmittiveMode = false;
+  // Retrieve params (transmittive is the default mode)
+  bool transmittiveMode = true;
   if (params.find("intersectionMode") != params.end()) {
     primsOut->onRayIntersectionMode =
       std::get<std::string>(params["intersectionMode"]);
     boost::to_upper(primsOut->onRayIntersectionMode);
+    transmittiveMode = primsOut->onRayIntersectionMode == "TRANSMITTIVE";
     if (primsOut->onRayIntersectionMode == "SCALED") {
       primsOut->onRayIntersectionArgument = 0.5;
     }
-  } else
-    transmittiveMode = true;
+  }
   if (params.find("intersectionArgument") != params.end()) {
     primsOut->onRayIntersectionArgument =
       std::get<double>(params["intersectionArgument"]);

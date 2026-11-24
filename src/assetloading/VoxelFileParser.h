@@ -55,7 +55,7 @@ public:
    * @param exactFormat When true it is assumed that only standard parameters
    * should be considering for each voxel. Using this knowledge parsing
    * process can be accelerated.
-   * @param discardNullPad When true, those voxels with a PadBvTotal of 0
+   * @param discardNullPad When true, those voxels with a PadBVTotal of 0 or NaN
    *  will be discarded (by default they are preserved)
    * @param separator The separator between different fields
    *

@@ -105,23 +105,31 @@ TEST_CASE("Voxel Parsing Test ")
 
 namespace {
 
-std::string const testVoxFile = "data/test/semitransparent_voxels.vox";
+// 36 voxels: 20 with PadBVTotal > 0, 15 with 0 and 1 with NaN
+std::string const testVoxFile = "data/test/transmittive_voxels.vox";
 
 std::shared_ptr<ScenePart>
-loadTransmittiveVoxels(std::string const& path,
-                       std::map<std::string, ObjectT> extraParams = {})
+loadVoxels(std::string const& path,
+           std::map<std::string, ObjectT> params)
 {
   DetailedVoxelLoader loader;
   loader.params["filepath"] = path;
-  loader.params["intersectionMode"] = std::string("TRANSMITTIVE");
   loader.setAssetsDir({ "." });
-  for (auto const& [key, value] : extraParams)
+  for (auto const& [key, value] : params)
     loader.params[key] = value;
   std::shared_ptr<ScenePart> sp(loader.run());
   for (auto p : sp->mPrimitives)
     p->part = sp;
   loader.primsOut = nullptr;
   return sp;
+}
+
+std::shared_ptr<ScenePart>
+loadTransmittiveVoxels(std::string const& path,
+                       std::map<std::string, ObjectT> extraParams = {})
+{
+  extraParams["intersectionMode"] = std::string("TRANSMITTIVE");
+  return loadVoxels(path, extraParams);
 }
 
 /**
@@ -158,20 +166,19 @@ struct TempVoxFile
 };
 
 /**
- * Check kappa = PAD * G for all voxels. The test file has PadBVTotal = 0
- * everywhere, so a PAD is assigned first.
+ * Check kappa = PAD * G for all voxels
  */
 void
 checkExtinction(ScenePart const& sp, double gDown, double gHorizontal)
 {
   glm::dvec3 const down(0.0, 0.0, -1.0);
   glm::dvec3 const horizontal(1.0, 0.0, 0.0);
-  double const pad = 2.0;
   REQUIRE_FALSE(sp.mPrimitives.empty());
   for (auto p : sp.mPrimitives) {
     auto* dv = dynamic_cast<DetailedVoxel*>(p);
     REQUIRE(dv != nullptr);
-    (*dv)["PadBVTotal"] = pad;
+    double const pad = (*dv)["PadBVTotal"];
+    REQUIRE(pad > 0.0);
     REQUIRE(dv->computeExtinctionCoefficient(down) ==
             Catch::Approx(gDown * pad).margin(1e-5));
     REQUIRE(dv->computeExtinctionCoefficient(horizontal) ==
@@ -223,4 +230,19 @@ TEST_CASE("Detailed voxels: extinction coefficient from leaf angle distribution"
                              { { "ladlut", std::string("lut/spherical.txt") } }),
       HeliosException);
   }
+}
+
+TEST_CASE("Detailed voxels: discard voxels without plant area in transmittive "
+          "mode")
+{
+  // Default mode is transmittive
+  REQUIRE(loadVoxels(testVoxFile, {})->mPrimitives.size() == 20);
+  // Explicit mode, as passed by the Python API
+  REQUIRE(loadVoxels(testVoxFile,
+                     { { "intersectionMode", std::string("transmittive") } })
+            ->mPrimitives.size() == 20);
+  // Other modes keep all voxels
+  REQUIRE(
+    loadVoxels(testVoxFile, { { "intersectionMode", std::string("fixed") } })
+      ->mPrimitives.size() == 36);
 }
