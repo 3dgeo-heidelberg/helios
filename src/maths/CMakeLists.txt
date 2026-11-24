@@ -17,6 +17,7 @@ target_sources(
   "rigidmotion/RigidMotion.cpp"
   "Rotation.cpp"
   "LadLut.cpp"
+  "LeafAngleDistribution.cpp"
   "RotationOrder.cpp"
   "RayUtils.cpp"
   "Vectorial.cpp"
