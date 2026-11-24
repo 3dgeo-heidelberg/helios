@@ -1052,3 +1052,72 @@ def test_trajectory_fields(survey):
     }
 
     assert set(trajectory.dtype.names) == expected_fields
+
+
+def _write_voxel_slab(path, pad):
+    """Write a .vox file with a 40 m x 10 m x 40 m slab of 10 m voxels
+    (y from 50 to 60) in front of a TLS at the origin."""
+
+    header = [
+        "VOXEL SPACE",
+        "#min_corner: -20.0 50.0 -20.0",
+        "#max_corner: 20.0 60.0 20.0",
+        "#split: 4 1 4",
+        "#res:10.0 #nsubvoxel:8 #nrecordmax:0 #fraction-digits:7 "
+        f"#type:TLS #max_pad:{pad} #build-version:1.4.3",
+        "i j k PadBVTotal angleMean bsEntering bsIntercepted bsPotential "
+        "ground_distance lMeanTotal lgTotal nbEchos nbSampling transmittance "
+        "attenuation attenuationBiasCorrection",
+    ]
+    rows = [
+        f"{i} 0 {k} {pad} 45 0 0 0 0 0 0 0 0 1 0 0"
+        for i in range(4)
+        for k in range(4)
+    ]
+    path.write_text("\n".join(header + rows) + "\n")
+    return path
+
+
+def _run_voxel_slab_survey(vox_file, lad):
+    scene = StaticScene(scene_parts=[ScenePart.from_vox(vox_file, lad=lad)])
+    survey = Survey(scanner=riegl_vz_400(), platform=tripod(), scene=scene)
+    survey.add_leg(
+        scanner_settings=ScannerSettings(
+            pulse_frequency=100_000,
+            vertical_resolution="0.1 deg",
+            horizontal_resolution="0.1 deg",
+            min_vertical_angle="-10 deg",
+            max_vertical_angle="10 deg",
+        ),
+        x=0.0,
+        y=0.0,
+        z=0.0,
+        rotation_start_angle="-5 deg",
+        rotation_stop_angle="5 deg",
+    )
+    points, _ = survey.run(format=OutputFormat.NPY)
+    return points
+
+
+def test_survey_transmittive_voxels(tmp_path):
+    """Hits in transmittive voxels are distributed through the voxel depth,
+    have a positive intensity, and their number follows the extinction
+    coefficient of the leaf angle distribution."""
+
+    vox_file = _write_voxel_slab(tmp_path / "slab.vox", pad=0.1)
+
+    # Nearly horizontal beams: G = 0.540 (erectophile) vs. 0.270 (planophile),
+    # i.e., single-pass hit probabilities of about 0.42 and 0.24
+    erectophile = _run_voxel_slab_survey(vox_file, "erectophile")
+    planophile = _run_voxel_slab_survey(vox_file, "planophile")
+
+    for points in (erectophile, planophile):
+        assert points.shape[0] > 0
+        y = points["position"][:, 1]
+        assert np.all((y > 49.5) & (y < 60.5))
+        # Hits inside the slab, not only on its front face
+        assert np.mean(y > 52.0) > 0.5
+        assert np.all(np.isfinite(points["intensity"]))
+        assert np.all(points["intensity"] > 0)
+
+    assert erectophile.shape[0] > 1.3 * planophile.shape[0]

@@ -60,6 +60,7 @@
             <xs:enumeration value="intersectionMode" />
             <xs:enumeration value="intersectionArgument" />
             <xs:enumeration value="randomShift" />
+            <xs:enumeration value="lad" />
             <xs:enumeration value="matfile" />
             <xs:enumeration value="matname" />
             <xs:enumeration value="offset" />

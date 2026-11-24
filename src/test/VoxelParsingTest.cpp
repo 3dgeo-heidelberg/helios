@@ -6,12 +6,14 @@
 #include <VoxelFileParser.h>
 #include <catch2/catch_approx.hpp>
 #include <chrono>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <logger_core.hpp>
 #include <MathConstants.h>
 #include <noise/UniformNoiseSource.h>
 #include <string>
+#include <vector>
 
 TEST_CASE("Voxel Parsing Test ")
 {
@@ -365,5 +367,71 @@ TEST_CASE("Detailed voxels: default material")
   for (auto p : spF->mPrimitives) {
     REQUIRE(p->material->ks == 0.0);
     REQUIRE_FALSE(p->material->isDirectionIndependent);
+  }
+}
+
+TEST_CASE("Detailed voxels: transmittive mode follows Beer-Lambert")
+{
+  auto const sp = loadTransmittiveVoxels(testVoxFile);
+  REQUIRE(sp->lad != nullptr); // Planophile from the file header
+  auto* dv = dynamic_cast<DetailedVoxel*>(sp->mPrimitives[0]);
+  REQUIRE(dv != nullptr);
+  double const pad = 0.15;
+  (*dv)["PadBVTotal"] = pad;
+  glm::dvec3 const c = dv->getCentroid();
+  double const h = dv->halfSize;
+  double const L = 2.0 * h;
+  std::size_t const n = 40000;
+
+  // Vertical and horizontal ray through the voxel centre. Planophile G:
+  // 0.848826 (vertical), 0.270190 (horizontal)
+  struct Case
+  {
+    glm::dvec3 dir, inside, outside;
+    double G;
+  };
+  std::vector<Case> const cases{
+    { { 0.0, 0.0, -1.0 }, { c.x, c.y, c.z + h }, { c.x, c.y, c.z - h }, 0.848826 },
+    { { 1.0, 0.0, 0.0 }, { c.x - h, c.y, c.z }, { c.x + h, c.y, c.z }, 0.270190 },
+  };
+  for (auto const& tc : cases) {
+    double const kappa = pad * tc.G;
+    double const pPass = std::exp(-kappa * L);
+    // Mean depth of a hit, given a hit within [0, L]
+    double const meanDepth = 1.0 / kappa - L * pPass / (1.0 - pPass);
+
+    UniformNoiseSource<double> noise("11", 0.0, 1.0);
+    glm::dvec3 dir = tc.dir;
+    std::size_t passed = 0;
+    double sumDepth = 0.0;
+    for (std::size_t i = 0; i < n; ++i) {
+      IntersectionHandlingResult ihr =
+        dv->onRayIntersection(noise, dir, tc.inside, tc.outside);
+      if (ihr.canRayContinue())
+        ++passed;
+      else
+        sumDepth += glm::distance(ihr.getIntersectionPoint(), tc.inside);
+    }
+    double const fPass = static_cast<double>(passed) / static_cast<double>(n);
+    // Binomial standard deviation of fPass is below 0.0025 here
+    REQUIRE(fPass == Catch::Approx(pPass).margin(0.01));
+    REQUIRE(sumDepth / static_cast<double>(n - passed) ==
+            Catch::Approx(meanDepth).margin(0.1));
+  }
+
+  SECTION("Same seed, same result")
+  {
+    UniformNoiseSource<double> a("5", 0.0, 1.0), b("5", 0.0, 1.0);
+    glm::dvec3 dir = cases[0].dir;
+    for (std::size_t i = 0; i < 1000; ++i) {
+      IntersectionHandlingResult ra =
+        dv->onRayIntersection(a, dir, cases[0].inside, cases[0].outside);
+      IntersectionHandlingResult rb =
+        dv->onRayIntersection(b, dir, cases[0].inside, cases[0].outside);
+      REQUIRE(ra.canRayContinue() == rb.canRayContinue());
+      REQUIRE(ra.getIntersectionPoint() == rb.getIntersectionPoint());
+      if (ra.hasIncidenceAngle())
+        REQUIRE(ra.getIncidenceAngle_rad() == rb.getIncidenceAngle_rad());
+    }
   }
 }

@@ -662,7 +662,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param intersection_mode: The mode to use for calculating the intersection of rays with the voxels ['transmittive', 'fixed', 'scaled'].
         :param intersection_argument: Scaling factor; only used for intersection mode 'scaled'.
         :param random_shift: Whether to apply a random shift to the scaled cubes within the original voxel resolution; only used for intersection mode 'scaled'.
-        :param lad: Leaf angle distribution (LAD) for intersection mode 'transmittive'. Either the name of a predefined distribution ('planophile', 'erectophile', 'plagiophile', 'extremophile', 'spherical', 'uniform') or the path to a text file with one 'inclination_deg,g_L' pair per line. Defaults to the distribution declared in the file header ('#lad_type'), or 'spherical' if the header declares none or an unsupported one.
+        :param lad: Leaf angle distribution (LAD) for intersection mode 'transmittive'. Either the name of a predefined distribution ('planophile', 'erectophile', 'plagiophile', 'extremophile', 'spherical', 'uniform') or the path to a text file with one 'inclination_deg,g_L' pair per line (see `data/lad` for an example). Defaults to the distribution declared in the file header ('#lad_type'), or 'spherical' if the header declares none or an unsupported one.
         :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
         :type vox_file: AssetPath
         :type intersection_mode: Literal["scaled", "fixed", "transmittive"]

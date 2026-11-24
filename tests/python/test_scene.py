@@ -550,6 +550,26 @@ def test_scenepart_from_vox_lad(tmp_path):
         ScenePart.from_vox(vox, lad="lad_does_not_exist.txt")
 
 
+def test_scenepart_from_xml_vox_lad(tmp_path):
+    vox = Path("data/test/transmittive_voxels.vox").absolute()
+    xml = tmp_path / "vox_scene.xml"
+    xml.write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        "<document>\n"
+        '  <scene id="vox" name="vox">\n'
+        "    <part>\n"
+        '      <filter type="detailedvoxels">\n'
+        f'        <param type="string" key="filepath" value="{vox.as_posix()}" />\n'
+        '        <param type="string" key="lad" value="erectophile" />\n'
+        "      </filter>\n"
+        "    </part>\n"
+        "  </scene>\n"
+        "</document>\n"
+    )
+    part = ScenePart.from_xml(str(xml), id=0)
+    assert len(part._cpp_object.primitives) == 20
+
+
 def test_scenepart_bbox_extraction(box):
     bbox = box.bbox
     assert isinstance(bbox, BoundingBox)
