@@ -405,17 +405,6 @@ public:
                            std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const;
-  double computePowerRatioWithSigma(double targetRange,
-                                    double sigma,
-                                    std::size_t subrayIndex) const;
-
-  /**
-   * @brief Received peak power in watts with externally supplied sigma.
-   * @see ScanningDevice::computeReceivedPowerWithSigma
-   */
-  double computeReceivedPowerWithSigma(double targetRange,
-                                       double sigma,
-                                       std::size_t subrayIndex) const;
 
   /**
    * @brief Evaluate the expression tree modeling the mechanical range error

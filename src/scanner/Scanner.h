@@ -452,21 +452,6 @@ public:
     std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const = 0;
-  virtual double computePowerRatioWithSigma(double targetRange,
-                                            double sigma,
-                                            std::size_t subrayIndex,
-                                            size_t idx) const = 0;
-  /**
-   * @brief Handle to which scanning device request the received-power
-   * computation
-   * @param idx The index of the scanning device that must compute the
-   *  received power
-   * @see ScanningDevice::computeReceivedPowerWithSigma
-   */
-  virtual double computeReceivedPowerWithSigma(double const targetRange,
-                                               double const sigma,
-                                               std::size_t subrayIndex,
-                                               size_t const idx) const = 0;
 
   // ***  SIM STEP UTILS  *** //
   // ************************ //

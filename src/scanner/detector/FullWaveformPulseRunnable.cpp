@@ -241,8 +241,7 @@ FullWaveformPulseRunnable::handleSubray(
           intersect->prim->onRayIntersection(intersectionHandlingNoiseSource,
                                              subrayDirection,
                                              intersect->point,
-                                             outsideIntersectionPoint,
-                                             0.0);
+                                             outsideIntersectionPoint);
         if (ihr.canRayContinue()) { // Subray can continue
           // Move subray origin outside primitive and update tMinMax
           subrayOrigin = outsideIntersectionPoint + 0.00001 * subrayDirection;

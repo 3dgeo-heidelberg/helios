@@ -21,8 +21,7 @@ IntersectionHandlingResult
 Primitive::onRayIntersection(NoiseSource<double>& uniformNoiseSource,
                              glm::dvec3& rayDirection,
                              glm::dvec3 const& insideIntersectionPoint,
-                             glm::dvec3 const& outsideIntersectionPoint,
-                             double rayIntensity)
+                             glm::dvec3 const& outsideIntersectionPoint)
 {
   return IntersectionHandlingResult();
 }

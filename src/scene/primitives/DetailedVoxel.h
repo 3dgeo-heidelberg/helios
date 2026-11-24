@@ -253,8 +253,7 @@ public:
     NoiseSource<double>& uniformNoiseSource,
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
-    glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity) override;
+    glm::dvec3 const& outsideIntersectionPoint) override;
 
   /**
    * @brief Transmittive handler for ray intersections
@@ -263,8 +262,7 @@ public:
     NoiseSource<double>& uniformNoiseSource,
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
-    glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity);
+    glm::dvec3 const& outsideIntersectionPoint);
   /**
    * @brief Scaled handler for ray intersections
    */
@@ -273,7 +271,6 @@ public:
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
     glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity,
     double scaleFactor);
   /**
    * @brief Fixed handler for ray intersections
@@ -283,27 +280,12 @@ public:
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
     glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity,
     double fixedSize);
 
   /**
    * @brief Configure DetailedVoxel size for scaled mode
    */
   void onFinishLoading(NoiseSource<double>& uniformNoiseSource) override;
-
-  // ***  S I G M A  *** //
-  // ******************* //
-  /**
-   * @see Primitive::canComputeSigmaWithLadLut
-   */
-  bool canComputeSigmaWithLadLut() override
-  {
-    return part->lad != nullptr && isTransmittive();
-  }
-  /**
-   * @see Primitive::computeSigmaWithLadLut
-   */
-  double computeSigmaWithLadLut(glm::dvec3 const& direction) override;
 
   // ***  EXTINCTION  *** //
   // ******************** //

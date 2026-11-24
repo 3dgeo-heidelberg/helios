@@ -219,16 +219,6 @@ MultiScanner::computeReceivedPower(
 }
 
 double
-MultiScanner::computeReceivedPowerWithSigma(double targetRange,
-                                            double sigma,
-                                            std::size_t subrayIndex,
-                                            size_t idx) const
-{
-  return scanDevs[idx].computeReceivedPowerWithSigma(
-    targetRange, sigma, subrayIndex);
-}
-
-double
 MultiScanner::computePowerRatio(
   double incidenceCosine,
   double targetRange,
@@ -250,14 +240,4 @@ MultiScanner::computePowerRatio(
                                          radiometryRecords
 #endif
   );
-}
-
-double
-MultiScanner::computePowerRatioWithSigma(double targetRange,
-                                         double sigma,
-                                         std::size_t subrayIndex,
-                                         size_t idx) const
-{
-  return scanDevs[idx].computePowerRatioWithSigma(
-    targetRange, sigma, subrayIndex);
 }

@@ -6,7 +6,7 @@ Full waveform and intensity modelling
 Radiometry calculation API
 -------------------------
 
-``EnergyModel`` and scanner calculation methods use incidence cosine and ranges in metres. ``computeReceivedPower`` and ``computeEmittedPower`` return watts. ``computePowerRatio`` returns received power divided by whole-beam emitted peak power, including the absolute subray share. ``WithSigma`` variants accept the existing external scattering value, including the LadLut convention. ``computeTargetArea`` returns the transverse subray patch area in square metres. Python exposes the corresponding snake_case names and keyword arguments::
+``EnergyModel`` and scanner calculation methods use incidence cosine and ranges in metres. ``computeReceivedPower`` and ``computeEmittedPower`` return watts. ``computePowerRatio`` returns received power divided by whole-beam emitted peak power, including the absolute subray share. ``computeTargetArea`` returns the transverse subray patch area in square metres. Python exposes the corresponding snake_case names and keyword arguments::
 
    power_W = model.compute_received_power(
        incidence_cosine=math.cos(angle_rad), target_range_m=100.0,

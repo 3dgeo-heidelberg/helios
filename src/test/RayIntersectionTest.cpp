@@ -106,16 +106,15 @@ TEST_CASE("RayIntersection: Intersection and handling")
   glm::dvec3 iip(so + it[0] * v1); // Inside Intersection Point
   glm::dvec3 oip =
     RayUtils::obtainPointAfterTraversing(*dv1.getAABB(), so, v1, 0.0);
-  double ints = 0.0;
   IntersectionHandlingResult ihr =
-    dv1.onRayIntersection(uns, v1, iip, oip, ints);
+    dv1.onRayIntersection(uns, v1, iip, oip);
   REQUIRE(ihr.canRayContinue()); // Ray must be able to continue
 
   so = oip + 0.00001 * v1;
   it = dv2.getRayIntersection(so, v1);
   iip = glm::dvec3(so + it[0] * v1);
   oip = RayUtils::obtainPointAfterTraversing(*dv2.getAABB(), so, v1, 0.0);
-  ihr = dv2.onRayIntersection(uns, v1, iip, oip, ints);
+  ihr = dv2.onRayIntersection(uns, v1, iip, oip);
   REQUIRE(ihr.canRayContinue()); // Ray must be able to continue
 
   // Semitransparent voxel test for ray2
@@ -123,7 +122,7 @@ TEST_CASE("RayIntersection: Intersection and handling")
   it = dv1.getRayIntersection(so, v2);
   iip = glm::dvec3(so + it[0] * v2);
   oip = RayUtils::obtainPointAfterTraversing(*dv1.getAABB(), so, v2, 0.0);
-  ihr = dv1.onRayIntersection(uns, v2, iip, oip, ints);
+  ihr = dv1.onRayIntersection(uns, v2, iip, oip);
   REQUIRE(ihr.canRayContinue()); // Ray must be able to continue
 
   // Semitransparent voxel test for ray3
@@ -135,7 +134,7 @@ TEST_CASE("RayIntersection: Intersection and handling")
   it = dv2.getRayIntersection(so, v3);
   iip = glm::dvec3(so + it[0] * v3);
   oip = RayUtils::obtainPointAfterTraversing(*dv2.getAABB(), so, v3, 0.0);
-  ihr = dv2.onRayIntersection(uns, v3, iip, oip, ints);
+  ihr = dv2.onRayIntersection(uns, v3, iip, oip);
   // REQUIRE_FALSE(ihr.canRayContinue()); // Ray must NOT be able to continue
 
   // Semitransparent voxel test for ray4
@@ -147,14 +146,14 @@ TEST_CASE("RayIntersection: Intersection and handling")
   it = dv2.getRayIntersection(so, v4);
   iip = glm::dvec3(so + it[0] * v4);
   oip = RayUtils::obtainPointAfterTraversing(*dv2.getAABB(), so, v4, 0.0);
-  ihr = dv2.onRayIntersection(uns, v4, iip, oip, ints);
+  ihr = dv2.onRayIntersection(uns, v4, iip, oip);
   // REQUIRE_FALSE(ihr.canRayContinue()); // Ray must NOT be able to continue
 
   so = oip + 0.00001 * v4;
   it = dv1.getRayIntersection(so, v4);
   iip = glm::dvec3(so + it[0] * v4);
   oip = RayUtils::obtainPointAfterTraversing(*dv1.getAABB(), so, v4, 0.0);
-  ihr = dv1.onRayIntersection(uns, v4, iip, oip, ints);
+  ihr = dv1.onRayIntersection(uns, v4, iip, oip);
   REQUIRE(ihr.canRayContinue()); // Ray must be able to continue
 
   // Semitransparent voxel test for ray7
@@ -162,6 +161,6 @@ TEST_CASE("RayIntersection: Intersection and handling")
   it = dv1.getRayIntersection(so, v7);
   iip = glm::dvec3(so + it[0] * v7);
   oip = RayUtils::obtainPointAfterTraversing(*dv1.getAABB(), so, v7, 0.0);
-  ihr = dv1.onRayIntersection(uns, v7, iip, oip, ints);
+  ihr = dv1.onRayIntersection(uns, v7, iip, oip);
   REQUIRE(ihr.canRayContinue()); // Ray must be able to continue
 }

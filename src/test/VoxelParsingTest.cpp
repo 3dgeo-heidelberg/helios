@@ -275,7 +275,7 @@ TEST_CASE("Detailed voxels: leaf angle distribution only in transmittive mode")
     }
   }
 
-  SECTION("No sigma from the distribution in other modes")
+  SECTION("Voxels in other modes are not transmittive")
   {
     auto const sp = loadVoxels(testVoxFile,
                                { { "intersectionMode", std::string("fixed") } });
@@ -287,14 +287,12 @@ TEST_CASE("Detailed voxels: leaf angle distribution only in transmittive mode")
       auto* dv = dynamic_cast<DetailedVoxel*>(p);
       REQUIRE(dv != nullptr);
       REQUIRE_FALSE(dv->isTransmittive());
-      REQUIRE_FALSE(dv->canComputeSigmaWithLadLut());
     }
 
     auto const spT = loadTransmittiveVoxels(testVoxFile);
     for (auto p : spT->mPrimitives) {
       auto* dv = dynamic_cast<DetailedVoxel*>(p);
       REQUIRE(dv->isTransmittive());
-      REQUIRE(dv->canComputeSigmaWithLadLut());
     }
   }
 }
@@ -321,7 +319,7 @@ TEST_CASE("Detailed voxels: hit point and incidence angle in transmittive mode")
     std::size_t notHit = 0, noAngle = 0, badAngle = 0, outsideVoxel = 0;
     for (std::size_t i = 0; i < n; ++i) {
       IntersectionHandlingResult ihr =
-        dv->onRayIntersection(noise, dir, inside, outside, 0.0);
+        dv->onRayIntersection(noise, dir, inside, outside);
       notHit += ihr.canRayContinue();
       noAngle += !ihr.hasIncidenceAngle();
       double const alpha = ihr.getIncidenceAngle_rad();
@@ -343,7 +341,7 @@ TEST_CASE("Detailed voxels: hit point and incidence angle in transmittive mode")
   {
     (*dv)["PadBVTotal"] = 1e-12;
     IntersectionHandlingResult ihr =
-      dv->onRayIntersection(noise, dir, inside, outside, 0.0);
+      dv->onRayIntersection(noise, dir, inside, outside);
     REQUIRE(ihr.canRayContinue());
     REQUIRE_FALSE(ihr.hasIncidenceAngle());
   }

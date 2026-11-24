@@ -263,15 +263,6 @@ SingleScanner::computeReceivedPower(
   );
 }
 double
-SingleScanner::computeReceivedPowerWithSigma(double targetRange,
-                                             double sigma,
-                                             std::size_t subrayIndex,
-                                             size_t idx) const
-{
-  return scanDev.computeReceivedPowerWithSigma(targetRange, sigma, subrayIndex);
-}
-
-double
 SingleScanner::computePowerRatio(
   double incidenceCosine,
   double targetRange,
@@ -293,13 +284,4 @@ SingleScanner::computePowerRatio(
                                    radiometryRecords
 #endif
   );
-}
-
-double
-SingleScanner::computePowerRatioWithSigma(double targetRange,
-                                          double sigma,
-                                          std::size_t subrayIndex,
-                                          size_t idx) const
-{
-  return scanDev.computePowerRatioWithSigma(targetRange, sigma, subrayIndex);
 }

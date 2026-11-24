@@ -31,8 +31,7 @@ IntersectionHandlingResult
 DetailedVoxel::onRayIntersection(NoiseSource<double>& uniformNoiseSource,
                                  glm::dvec3& rayDirection,
                                  glm::dvec3 const& insideIntersectionPoint,
-                                 glm::dvec3 const& outsideIntersectionPoint,
-                                 double rayIntensity)
+                                 glm::dvec3 const& outsideIntersectionPoint)
 {
   std::string const& mode = part->onRayIntersectionMode;
   if (mode == "FIXED") {
@@ -40,14 +39,12 @@ DetailedVoxel::onRayIntersection(NoiseSource<double>& uniformNoiseSource,
                                   rayDirection,
                                   insideIntersectionPoint,
                                   outsideIntersectionPoint,
-                                  rayIntensity,
                                   part->onRayIntersectionArgument);
   } else if (mode == "SCALED") {
     return onRayIntersectionScaled(uniformNoiseSource,
                                    rayDirection,
                                    insideIntersectionPoint,
                                    outsideIntersectionPoint,
-                                   rayIntensity,
                                    part->onRayIntersectionArgument);
   }
 
@@ -55,8 +52,7 @@ DetailedVoxel::onRayIntersection(NoiseSource<double>& uniformNoiseSource,
   return onRayIntersectionTransmittive(uniformNoiseSource,
                                        rayDirection,
                                        insideIntersectionPoint,
-                                       outsideIntersectionPoint,
-                                       rayIntensity);
+                                       outsideIntersectionPoint);
 };
 
 IntersectionHandlingResult
@@ -64,8 +60,7 @@ DetailedVoxel::onRayIntersectionTransmittive(
   NoiseSource<double>& uniformNoiseSource,
   glm::dvec3& rayDirection,
   glm::dvec3 const& insideIntersectionPoint,
-  glm::dvec3 const& outsideIntersectionPoint,
-  double rayIntensity)
+  glm::dvec3 const& outsideIntersectionPoint)
 {
   double intersectionLength =
     glm::distance(insideIntersectionPoint, outsideIntersectionPoint);
@@ -98,7 +93,6 @@ DetailedVoxel::onRayIntersectionScaled(
   glm::dvec3& rayDirection,
   glm::dvec3 const& insideIntersectionPoint,
   glm::dvec3 const& outsideIntersectionPoint,
-  double rayIntensity,
   double scaleFactor)
 {
   // Implemented as Fixed mode, might change in the future
@@ -113,7 +107,6 @@ DetailedVoxel::onRayIntersectionFixed(
   glm::dvec3& rayDirection,
   glm::dvec3 const& insideIntersectionPoint,
   glm::dvec3 const& outsideIntersectionPoint,
-  double rayIntensity,
   double fixedSize)
 {
   double transmittance = (*this)["transmittance"];
@@ -146,14 +139,6 @@ DetailedVoxel::onFinishLoading(NoiseSource<double>& uniformNoiseSource)
     halfSize = newHalfSize;
     update();
   }
-}
-
-// ***  S I G M A  *** //
-// ******************* //
-double
-DetailedVoxel::computeSigmaWithLadLut(glm::dvec3 const& direction)
-{
-  return computeExtinctionCoefficient(direction);
 }
 
 // ***  EXTINCTION  *** //

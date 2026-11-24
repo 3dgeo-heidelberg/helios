@@ -331,12 +331,6 @@ TEST_CASE("Far field returns use absolute shares", "[energy]")
     REQUIRE(receivedPower_W == Catch::Approx(expected).epsilon(1e-12));
     REQUIRE(received(*model, 2 * range, material, index) ==
             Catch::Approx(receivedPower_W / 4).epsilon(1e-12));
-    double const patchArea = area(*model, range * range, index);
-    double const sigma = 4 * 0.5 * patchArea;
-    REQUIRE(model->computeReceivedPowerWithSigma(range, sigma, index) ==
-            Catch::Approx(receivedPower_W).epsilon(1e-12));
-    REQUIRE(model->computeReceivedPowerWithSigma(2 * range, sigma, index) ==
-            Catch::Approx(receivedPower_W / 16).epsilon(1e-12));
     sumPower += power;
     sumReturn += receivedPower_W;
   }
@@ -486,8 +480,7 @@ public:
   IntersectionHandlingResult onRayIntersection(NoiseSource<double>&,
                                                glm::dvec3&,
                                                glm::dvec3 const& inside,
-                                               glm::dvec3 const&,
-                                               double) override
+                                               glm::dvec3 const&) override
   {
     return IntersectionHandlingResult(inside, false);
   }
@@ -622,7 +615,14 @@ TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
   Material material;
   material.reflectance = 0.5;
   double const sigma = 4 * 0.5 * area(*model, 10000.0, 0);
-  double const baseline = model->computePowerRatioWithSigma(100.0, sigma, 0);
+  // Baseline before amplitude and pulse frequency are changed
+#if DATA_ANALYTICS >= 2
+  std::vector<std::vector<double>> baselineRecords;
+  double const baseline =
+    model->computePowerRatio(1.0, 100.0, material, 0, baselineRecords);
+#else
+  double const baseline = model->computePowerRatio(1.0, 100.0, material, 0);
+#endif
   double const amplitude = GENERATE(0.0, 1.0, 7.5);
   scanner->setPulseAmplitude(amplitude);
   scanner->setPulseFreq_Hz(GENERATE(50000, 100000));
@@ -653,11 +653,7 @@ TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
   double const powerRatio = model->computePowerRatio(1.0, 100.0, material, 0);
 #endif
   REQUIRE(powerRatio == Catch::Approx(baseline));
-  REQUIRE(model->computePowerRatioWithSigma(100.0, sigma, 0) ==
-          Catch::Approx(baseline));
   REQUIRE(received(*model, 100.0, material, 0) ==
-          Catch::Approx(amplitude * baseline));
-  REQUIRE(model->computeReceivedPowerWithSigma(100.0, sigma, 0) ==
           Catch::Approx(amplitude * baseline));
 }
 
@@ -962,14 +958,6 @@ TEST_CASE("Centered waveform peaks agree with reported ranges and preserve "
 
 #if DATA_ANALYTICS >= 2
 namespace {
-class AnalyticsTriangle : public Triangle
-{
-public:
-  using Triangle::Triangle;
-  bool useSigma = false;
-  bool canComputeSigmaWithLadLut() override { return useSigma; }
-  double computeSigmaWithLadLut(glm::dvec3 const&) override { return 0.01; }
-};
 class AnalyticsTestPulse : public FullWaveformPulseRunnable
 {
 public:
@@ -977,9 +965,8 @@ public:
   using FullWaveformPulseRunnable::FullWaveformPulseRunnable;
 };
 }
-TEST_CASE("Both analytics paths record transverse hit radii", "[energy]")
+TEST_CASE("Analytics record transverse hit radii", "[energy]")
 {
-  bool const useSigma = GENERATE(false, true);
   auto scanner = energyScanner();
   scanner->setBeamDivergences(0.0003, 0.001);
   scanner->setDetector(
@@ -989,14 +976,13 @@ TEST_CASE("Both analytics paths record transverse hit radii", "[energy]")
   auto part = std::make_shared<ScenePart>();
   auto material = std::make_shared<Material>();
   material->reflectance = 0.5;
-  scene.primitives.push_back(new AnalyticsTriangle(
+  scene.primitives.push_back(new Triangle(
     Vertex(-1, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
-  scene.primitives.push_back(new AnalyticsTriangle(
+  scene.primitives.push_back(new Triangle(
     Vertex(-1, 100, -1), Vertex(1, 100, 1), Vertex(-1, 100, 1)));
   for (auto primitive : scene.primitives) {
     primitive->part = part;
     primitive->material = material;
-    static_cast<AnalyticsTriangle*>(primitive)->useSigma = useSigma;
     part->mPrimitives.push_back(primitive);
   }
   REQUIRE(scene.finalizeLoading());

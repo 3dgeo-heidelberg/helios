@@ -412,15 +412,6 @@ ScanningDevice::computeReceivedPower(
 #endif
   );
 }
-double
-ScanningDevice::computeReceivedPowerWithSigma(double targetRange,
-                                              double sigma,
-                                              std::size_t subrayIndex) const
-{
-  return energyModel->computeReceivedPowerWithSigma(
-    targetRange, sigma, subrayIndex);
-}
-
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 void
@@ -463,13 +454,4 @@ ScanningDevice::computePowerRatio(
                                         radiometryRecords
 #endif
   );
-}
-
-double
-ScanningDevice::computePowerRatioWithSigma(double targetRange,
-                                           double sigma,
-                                           std::size_t subrayIndex) const
-{
-  return energyModel->computePowerRatioWithSigma(
-    targetRange, sigma, subrayIndex);
 }

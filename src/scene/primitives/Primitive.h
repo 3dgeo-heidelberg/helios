@@ -200,7 +200,6 @@ public:
    * primitive
    * @param outsideIntersectionPoint The point where the ray exits the
    * primitive
-   * @param rayIntensity Intensity for the ray intersecting the primitive
    * @param extra An extra argument that can be used by handlers which
    * need it
    * @return Result of handling the intersection
@@ -209,8 +208,7 @@ public:
     NoiseSource<double>& uniformNoiseSource,
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
-    glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity);
+    glm::dvec3 const& outsideIntersectionPoint);
 
   // ***  TRANSFORMATIONS  *** //
   // ************************* //
@@ -229,31 +227,6 @@ public:
    * @param shift Translation vector
    */
   virtual void translate(glm::dvec3 const& shift);
-
-  // ***  S I G M A  *** //
-  // ******************* //
-  /**
-   * @brief Check if primitive has a user-specified leaf angle distribution
-   * @return True if primitive can compute sigma from a leaf angle
-   * distribution, false otherwise
-   * @see LeafAngleDistribution
-   */
-  virtual bool canComputeSigmaWithLadLut() { return false; }
-  /**
-   * @brief Compute sigma from the leaf angle distribution
-   *
-   * Returns the extinction coefficient (1/m), which is used as sigma in the
-   * received power computation. This is to be replaced by the leaf
-   * reflectance based intensity computation.
-   *
-   * @return sigma
-   * @see Primitive::canComputeSigmaWithLadLut
-   * @see LeafAngleDistribution
-   */
-  virtual double computeSigmaWithLadLut(glm::dvec3 const& direction)
-  {
-    throw HeliosException("Primitive cannot compute sigma with LadLut");
-  }
 
   // ***  STREAM OPERATORS  *** //
   // ************************** //

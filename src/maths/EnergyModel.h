@@ -37,15 +37,6 @@ public:
     std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const;
-  /** Dimensionless power ratio for externally supplied cross section sigma. */
-  double computePowerRatioWithSigma(double targetRange_m,
-                                    double sigma,
-                                    std::size_t subrayIndex) const;
-  /** Received peak power in watts for externally supplied cross section sigma.
-   */
-  double computeReceivedPowerWithSigma(double targetRange_m,
-                                       double sigma,
-                                       std::size_t subrayIndex) const;
   /** Whole-beam emitted peak power times absolute subray share, in watts. */
   double computeEmittedPower(std::size_t subrayIndex) const;
   /** Transverse subray patch area in square metres.
