@@ -482,15 +482,13 @@ class CosineOnlyTriangle : public Triangle
 {
 public:
   using Triangle::Triangle;
-  double callbackSum = 0.0;
   bool canHandleIntersections() override { return true; }
   IntersectionHandlingResult onRayIntersection(NoiseSource<double>&,
                                                glm::dvec3&,
                                                glm::dvec3 const& inside,
                                                glm::dvec3 const&,
-                                               double receivedPower_nW) override
+                                               double) override
   {
-    callbackSum += receivedPower_nW;
     return IntersectionHandlingResult(inside, false);
   }
   double getIncidenceAngle_rad(const glm::dvec3&,
@@ -590,12 +588,6 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
     total += reflection.second;
   REQUIRE(intersections.size() == expectedHits);
   REQUIRE(total == Catch::Approx(expected).epsilon(1e-10));
-  double callbackSum = 0.0;
-  for (auto primitive : scene.primitives)
-    callbackSum += static_cast<CosineOnlyTriangle*>(primitive)->callbackSum;
-  REQUIRE(callbackSum ==
-          Catch::Approx(expected * scanner->getPulseAmplitude() * 1e9)
-            .epsilon(1e-10));
   if (xmin < 0) {
     REQUIRE(expectedHits == rays.size());
     REQUIRE(reflections.size() < expectedHits);

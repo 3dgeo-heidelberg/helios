@@ -9,6 +9,8 @@
 #include <filesystem>
 #include <fstream>
 #include <logger_core.hpp>
+#include <MathConstants.h>
+#include <noise/UniformNoiseSource.h>
 #include <string>
 
 TEST_CASE("Voxel Parsing Test ")
@@ -294,5 +296,76 @@ TEST_CASE("Detailed voxels: leaf angle distribution only in transmittive mode")
       REQUIRE(dv->isTransmittive());
       REQUIRE(dv->canComputeSigmaWithLadLut());
     }
+  }
+}
+
+TEST_CASE("Detailed voxels: hit point and incidence angle in transmittive mode")
+{
+  auto const sp = loadTransmittiveVoxels(testVoxFile);
+  REQUIRE_FALSE(sp->mPrimitives.empty());
+  auto* dv = dynamic_cast<DetailedVoxel*>(sp->mPrimitives[0]);
+  REQUIRE(dv != nullptr);
+
+  // Vertical ray through the voxel centre
+  glm::dvec3 const c = dv->getCentroid();
+  glm::dvec3 const inside(c.x, c.y, c.z + dv->halfSize);
+  glm::dvec3 const outside(c.x, c.y, c.z - dv->halfSize);
+  glm::dvec3 dir(0.0, 0.0, -1.0);
+  UniformNoiseSource<double> noise("7", 0.0, 1.0);
+
+  SECTION("Dense voxel: hit inside with sampled incidence angle")
+  {
+    (*dv)["PadBVTotal"] = 1e6;
+    std::size_t const n = 20000;
+    double sumCos = 0.0;
+    std::size_t notHit = 0, noAngle = 0, badAngle = 0, outsideVoxel = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+      IntersectionHandlingResult ihr =
+        dv->onRayIntersection(noise, dir, inside, outside, 0.0);
+      notHit += ihr.canRayContinue();
+      noAngle += !ihr.hasIncidenceAngle();
+      double const alpha = ihr.getIncidenceAngle_rad();
+      badAngle += !(alpha >= 0.0 && alpha <= PI_HALF);
+      glm::dvec3 const p = ihr.getIntersectionPoint();
+      outsideVoxel += !(p.z <= inside.z && p.z >= outside.z);
+      sumCos += std::cos(alpha);
+    }
+    REQUIRE(notHit == 0);
+    REQUIRE(noAngle == 0);
+    REQUIRE(badAngle == 0);
+    REQUIRE(outsideVoxel == 0);
+    // Planophile from the file header, vertical beam: E[cos(alpha)]
+    REQUIRE(sumCos / static_cast<double>(n) ==
+            Catch::Approx(0.883573).margin(0.01));
+  }
+
+  SECTION("Pass through: no incidence angle")
+  {
+    (*dv)["PadBVTotal"] = 1e-12;
+    IntersectionHandlingResult ihr =
+      dv->onRayIntersection(noise, dir, inside, outside, 0.0);
+    REQUIRE(ihr.canRayContinue());
+    REQUIRE_FALSE(ihr.hasIncidenceAngle());
+  }
+}
+
+TEST_CASE("Detailed voxels: default material")
+{
+  // Leaves of a turbid medium are Lambertian reflectors: the default
+  // material is purely diffuse (no specular part) and direction dependent
+  auto const spT = loadTransmittiveVoxels(testVoxFile);
+  REQUIRE_FALSE(spT->mPrimitives.empty());
+  for (auto p : spT->mPrimitives) {
+    REQUIRE(p->material->ks == 0.0);
+    REQUIRE_FALSE(p->material->isDirectionIndependent);
+  }
+
+  // Opaque voxels use the same default material
+  auto const spF =
+    loadVoxels(testVoxFile, { { "intersectionMode", std::string("fixed") } });
+  REQUIRE_FALSE(spF->mPrimitives.empty());
+  for (auto p : spF->mPrimitives) {
+    REQUIRE(p->material->ks == 0.0);
+    REQUIRE_FALSE(p->material->isDirectionIndependent);
   }
 }
