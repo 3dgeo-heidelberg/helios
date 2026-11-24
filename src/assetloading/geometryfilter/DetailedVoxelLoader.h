@@ -51,11 +51,14 @@ public:
    * the "lad" parameter (a named type or a file path). If none was
    * specified, the one declared in the voxel file header (#lad_type) is
    * used. If the header declares none or an unsupported one, none is
-   * loaded and the default one (spherical) is used.
+   * loaded and the default one (spherical) is used. Outside transmittive
+   * mode, no leaf angle distribution is loaded.
    * @param filePaths Paths of the loaded voxel files
+   * @param transmittiveMode Whether the voxels are in transmittive mode
    * @throws HeliosException if the removed "ladlut" parameter is given
    */
-  void loadLeafAngleDistribution(std::vector<std::string> const& filePaths);
+  void loadLeafAngleDistribution(std::vector<std::string> const& filePaths,
+                                 bool const transmittiveMode);
 
   /**
    * @brief Read the leaf angle distribution type (#lad_type) from the

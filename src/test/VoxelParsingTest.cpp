@@ -246,3 +246,50 @@ TEST_CASE("Detailed voxels: discard voxels without plant area in transmittive "
     loadVoxels(testVoxFile, { { "intersectionMode", std::string("fixed") } })
       ->mPrimitives.size() == 36);
 }
+
+TEST_CASE("Detailed voxels: leaf angle distribution only in transmittive mode")
+{
+  SECTION("Transmittive modes")
+  {
+    REQUIRE(DetailedVoxel::isTransmittiveMode(""));
+    REQUIRE(DetailedVoxel::isTransmittiveMode("TRANSMITTIVE"));
+    REQUIRE_FALSE(DetailedVoxel::isTransmittiveMode("FIXED"));
+    REQUIRE_FALSE(DetailedVoxel::isTransmittiveMode("SCALED"));
+  }
+
+  SECTION("Explicit distribution and header are ignored in other modes")
+  {
+    for (std::string const mode : { "fixed", "scaled" }) {
+      auto const sp = loadVoxels(
+        testVoxFile,
+        { { "intersectionMode", mode }, { "lad", std::string("erectophile") } });
+      REQUIRE(sp->lad == nullptr);
+      auto const spHeader =
+        loadVoxels(testVoxFile, { { "intersectionMode", mode } });
+      REQUIRE(spHeader->lad == nullptr);
+    }
+  }
+
+  SECTION("No sigma from the distribution in other modes")
+  {
+    auto const sp = loadVoxels(testVoxFile,
+                               { { "intersectionMode", std::string("fixed") } });
+    // Distribution assigned afterwards, e.g. by a scene part split
+    sp->lad = std::make_shared<LeafAngleDistribution const>(
+      LeafAngleDistribution::fromName("spherical"));
+    REQUIRE_FALSE(sp->mPrimitives.empty());
+    for (auto p : sp->mPrimitives) {
+      auto* dv = dynamic_cast<DetailedVoxel*>(p);
+      REQUIRE(dv != nullptr);
+      REQUIRE_FALSE(dv->isTransmittive());
+      REQUIRE_FALSE(dv->canComputeSigmaWithLadLut());
+    }
+
+    auto const spT = loadTransmittiveVoxels(testVoxFile);
+    for (auto p : spT->mPrimitives) {
+      auto* dv = dynamic_cast<DetailedVoxel*>(p);
+      REQUIRE(dv->isTransmittive());
+      REQUIRE(dv->canComputeSigmaWithLadLut());
+    }
+  }
+}

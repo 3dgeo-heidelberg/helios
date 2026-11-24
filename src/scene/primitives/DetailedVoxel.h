@@ -296,7 +296,10 @@ public:
   /**
    * @see Primitive::canComputeSigmaWithLadLut
    */
-  bool canComputeSigmaWithLadLut() override { return part->lad != nullptr; }
+  bool canComputeSigmaWithLadLut() override
+  {
+    return part->lad != nullptr && isTransmittive();
+  }
   /**
    * @see Primitive::computeSigmaWithLadLut
    */
@@ -304,6 +307,17 @@ public:
 
   // ***  EXTINCTION  *** //
   // ******************** //
+  /**
+   * @brief Check whether the voxel is handled as turbid medium, i.e., its
+   * scene part uses the transmittive intersection mode
+   */
+  bool isTransmittive() const;
+  /**
+   * @brief Check whether an intersection mode (upper case) is transmittive.
+   * Any mode other than FIXED and SCALED is handled as transmittive, which
+   * is also the default (empty mode).
+   */
+  static bool isTransmittiveMode(std::string const& mode);
   /**
    * @brief Leaf angle distribution of the scene part, or the default
    * (spherical) one if the scene part has none

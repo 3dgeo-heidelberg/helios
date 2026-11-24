@@ -19,7 +19,8 @@ DetailedVoxelLoader::run()
     primsOut->onRayIntersectionMode =
       std::get<std::string>(params["intersectionMode"]);
     boost::to_upper(primsOut->onRayIntersectionMode);
-    transmittiveMode = primsOut->onRayIntersectionMode == "TRANSMITTIVE";
+    transmittiveMode =
+      DetailedVoxel::isTransmittiveMode(primsOut->onRayIntersectionMode);
     if (primsOut->onRayIntersectionMode == "SCALED") {
       primsOut->onRayIntersectionArgument = 0.5;
     }
@@ -50,8 +51,8 @@ DetailedVoxelLoader::run()
   // Load material if any
   loadMaterial();
 
-  // Load leaf angle distribution if any
-  loadLeafAngleDistribution(filePaths);
+  // Load leaf angle distribution if any (only used in transmittive mode)
+  loadLeafAngleDistribution(filePaths, transmittiveMode);
 
   // Return detailed voxels as ScenePart *
   return primsOut;
@@ -137,7 +138,8 @@ DetailedVoxelLoader::readLadType(std::string const& path)
 
 void
 DetailedVoxelLoader::loadLeafAngleDistribution(
-  std::vector<std::string> const& filePaths)
+  std::vector<std::string> const& filePaths,
+  bool const transmittiveMode)
 {
   // The former look-up tables are no longer supported
   if (params.find("ladlut") != params.end()) {
@@ -148,6 +150,18 @@ DetailedVoxelLoader::loadLeafAngleDistribution(
       "with leaf inclinations (degrees) and their density g_L.";
     LOG_ERR(msg);
     throw HeliosException(msg);
+  }
+
+  // Only voxels in transmittive mode are turbid media
+  if (!transmittiveMode) {
+    if (params.find("lad") != params.end()) {
+      std::stringstream ss;
+      ss << "The leaf angle distribution (\"lad\") is ignored in intersection "
+         << "mode " << primsOut->onRayIntersectionMode
+         << ". It is only used in transmittive mode.";
+      LOG_WARN(ss.str());
+    }
+    return;
   }
 
   // If no leaf angle distribution is specified, use the one the voxel file

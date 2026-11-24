@@ -34,7 +34,7 @@ DetailedVoxel::onRayIntersection(NoiseSource<double>& uniformNoiseSource,
                                  glm::dvec3 const& outsideIntersectionPoint,
                                  double rayIntensity)
 {
-  std::string mode = part->onRayIntersectionMode;
+  std::string const& mode = part->onRayIntersectionMode;
   if (mode == "FIXED") {
     return onRayIntersectionFixed(uniformNoiseSource,
                                   rayDirection,
@@ -51,7 +51,7 @@ DetailedVoxel::onRayIntersection(NoiseSource<double>& uniformNoiseSource,
                                    part->onRayIntersectionArgument);
   }
 
-  // By default: TRANSMITTIVE
+  // By default: TRANSMITTIVE (see isTransmittive)
   return onRayIntersectionTransmittive(uniformNoiseSource,
                                        rayDirection,
                                        insideIntersectionPoint,
@@ -153,6 +153,20 @@ DetailedVoxel::computeSigmaWithLadLut(glm::dvec3 const& direction)
 
 // ***  EXTINCTION  *** //
 // ******************** //
+bool
+DetailedVoxel::isTransmittive() const
+{
+  return isTransmittiveMode(part != nullptr ? part->onRayIntersectionMode
+                                            : std::string());
+}
+
+bool
+DetailedVoxel::isTransmittiveMode(std::string const& mode)
+{
+  // Consistent with onRayIntersection: any mode other than FIXED and SCALED
+  return mode != "FIXED" && mode != "SCALED";
+}
+
 LeafAngleDistribution const&
 DetailedVoxel::getLeafAngleDistribution() const
 {
