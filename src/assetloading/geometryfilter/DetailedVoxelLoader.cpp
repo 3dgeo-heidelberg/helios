@@ -1,10 +1,11 @@
 #include "DetailedVoxelLoader.h"
 #include "VoxelFileParser.h"
 #include <FileUtils.h>
-#include <LadLutLoader.h>
+#include <LeafAngleDistribution.h>
 #include <assetloading/MaterialsFileReader.h>
 #include <boost/algorithm/string.hpp>
 #include <filesystem>
+#include <fstream>
 #include <noise/UniformNoiseSource.h>
 
 namespace fs = std::filesystem;
@@ -49,8 +50,8 @@ DetailedVoxelLoader::run()
   // Load material if any
   loadMaterial();
 
-  // Load ladlut if any
-  loadLadlut();
+  // Load leaf angle distribution if any
+  loadLeafAngleDistribution(filePaths);
 
   // Return detailed voxels as ScenePart *
   return primsOut;
@@ -115,15 +116,88 @@ DetailedVoxelLoader::loadMaterial()
   }
 }
 
-void
-DetailedVoxelLoader::loadLadlut()
+std::string
+DetailedVoxelLoader::readLadType(std::string const& path)
 {
-  // If no LadLut is specified, get out of here
-  if (params.find("ladlut") == params.end())
-    return;
+  // AMAPVox writes e.g. "#lad_type:Planophile" into the header lines
+  static std::string const key = "#lad_type:";
+  static std::size_t const maxHeaderLines = 20;
+  std::ifstream ifs(path);
+  std::string line;
+  for (std::size_t i = 0; i < maxHeaderLines && std::getline(ifs, line); ++i) {
+    std::size_t const pos = line.find(key);
+    if (pos == std::string::npos)
+      continue;
+    std::size_t const start = pos + key.size();
+    std::size_t const end = line.find_first_of(" \t\r\n#", start);
+    return line.substr(start, end == std::string::npos ? end : end - start);
+  }
+  return "";
+}
 
-  // Load LadLut
-  std::string ladlutPath = std::get<std::string>(params["ladlut"]);
-  LadLutLoader ladlutLoader;
-  primsOut->ladlut = ladlutLoader.load(ladlutPath);
+void
+DetailedVoxelLoader::loadLeafAngleDistribution(
+  std::vector<std::string> const& filePaths)
+{
+  // The former look-up tables are no longer supported
+  if (params.find("ladlut") != params.end()) {
+    std::string const msg =
+      "The \"ladlut\" parameter is no longer supported. Use \"lad\" with "
+      "the name of a leaf angle distribution (planophile, erectophile, "
+      "plagiophile, extremophile, spherical, uniform) or the path to a file "
+      "with leaf inclinations (degrees) and their density g_L.";
+    LOG_ERR(msg);
+    throw HeliosException(msg);
+  }
+
+  // If no leaf angle distribution is specified, use the one the voxel file
+  // header declares (the one used to derive PAD), or the default one
+  if (params.find("lad") == params.end()) {
+    std::string ladType;
+    for (std::string const& filePath : filePaths) {
+      std::string const t = readLadType(filePath);
+      if (ladType.empty()) {
+        ladType = t;
+      } else if (!t.empty() && !boost::iequals(t, ladType)) {
+        std::stringstream ss;
+        ss << "Voxel files declare different leaf angle distributions ("
+           << ladType << ", " << t << "). Using " << ladType << ".";
+        LOG_WARN(ss.str());
+      }
+    }
+    if (ladType.empty())
+      return;
+    if (!LeafAngleDistribution::isNamedType(ladType)) {
+      std::stringstream ss;
+      ss << "Leaf angle distribution \"" << ladType << "\" from the voxel "
+         << "file header is not supported. Using the default (spherical). "
+         << "Specify \"lad\" to choose a distribution.";
+      LOG_WARN(ss.str());
+      return;
+    }
+    primsOut->lad = std::make_shared<LeafAngleDistribution const>(
+      LeafAngleDistribution::fromName(ladType));
+    return;
+  }
+
+  std::string const lad = std::get<std::string>(params["lad"]);
+  if (LeafAngleDistribution::isNamedType(lad)) {
+    primsOut->lad = std::make_shared<LeafAngleDistribution const>(
+      LeafAngleDistribution::fromName(lad));
+    return;
+  }
+
+  // Resolve the file path: absolute or relative to the working directory
+  // first, then relative to the asset directories
+  fs::path path(lad);
+  if (path.is_relative() && !fs::exists(path)) {
+    for (auto const& assetPath : assetsDir) {
+      if (fs::exists(fs::path(assetPath) / lad)) {
+        path = fs::path(assetPath) / lad;
+        break;
+      }
+    }
+  }
+  primsOut->lad = std::make_shared<LeafAngleDistribution const>(
+    LeafAngleDistribution::fromFile(path.string()));
 }

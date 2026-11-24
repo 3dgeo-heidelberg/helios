@@ -529,6 +529,26 @@ def test_scenepart_from_vox():
         )
 
 
+def test_scenepart_from_vox_lad(tmp_path):
+    vox = "data/test/semitransparent_voxels.vox"
+
+    named = ScenePart.from_vox(vox, lad="Planophile")
+    assert len(named._cpp_object.primitives) > 0
+
+    lad_file = tmp_path / "erectophile.txt"
+    lad_file.write_text(
+        "# inclination_deg,g_L\n"
+        + "".join(
+            f"{deg},{1 - math.cos(2 * math.radians(deg))}\n" for deg in range(91)
+        )
+    )
+    from_file = ScenePart.from_vox(vox, lad=str(lad_file))
+    assert len(from_file._cpp_object.primitives) > 0
+
+    with pytest.raises(HeliosException, match="lad_does_not_exist"):
+        ScenePart.from_vox(vox, lad="lad_does_not_exist.txt")
+
+
 def test_scenepart_bbox_extraction(box):
     bbox = box.bbox
     assert isinstance(bbox, BoundingBox)

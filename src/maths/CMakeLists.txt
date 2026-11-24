@@ -16,7 +16,6 @@ target_sources(
   "rigidmotion/RigidMotionR3Factory.cpp"
   "rigidmotion/RigidMotion.cpp"
   "Rotation.cpp"
-  "LadLut.cpp"
   "LeafAngleDistribution.cpp"
   "RotationOrder.cpp"
   "RayUtils.cpp"

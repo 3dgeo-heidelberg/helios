@@ -52,12 +52,8 @@ populateMixedScene(Scene& scene)
   partA->mRotation = Rotation(1.0, 0.0, 0.0, 0.0, false);
   partA->mScale = 1.25;
   partA->forceOnGround = 1;
-  partA->ladlut = std::make_shared<LadLut>();
-  partA->ladlut->X = { 1.0, 2.0 };
-  partA->ladlut->Y = { 3.0, 4.0 };
-  partA->ladlut->Z = { 5.0, 6.0 };
-  partA->ladlut->G = { 7.0, 8.0 };
-  partA->ladlut->angles = { 0.25, 0.75 };
+  partA->lad = std::make_shared<LeafAngleDistribution const>(
+    LeafAngleDistribution::fromName("planophile"));
 
   auto partB = std::make_shared<ScenePart>();
   partB->primitiveType = ScenePart::PrimitiveType::VOXEL;
@@ -182,9 +178,12 @@ TEST_CASE("SceneSerialization: round-trip without built KD structures")
   REQUIRE(loaded.primitives[2]->part == loaded.parts[1]);
   REQUIRE(loaded.parts[0]->mPrimitives.size() == 2);
   REQUIRE(loaded.parts[1]->mPrimitives.size() == 1);
-  REQUIRE(loaded.parts[0]->ladlut != nullptr);
-  REQUIRE(loaded.parts[0]->ladlut->angles.size() == 2);
-  REQUIRE(loaded.parts[0]->ladlut->angles[0] == Catch::Approx(0.25));
+  REQUIRE(loaded.parts[0]->lad != nullptr);
+  REQUIRE(loaded.parts[0]->lad->getName() == "planophile");
+  auto const planophile = LeafAngleDistribution::fromName("planophile");
+  REQUIRE(loaded.parts[0]->lad->getDensity() == planophile.getDensity());
+  REQUIRE(loaded.parts[0]->lad->G(0.0) == Catch::Approx(planophile.G(0.0)));
+  REQUIRE(loaded.parts[1]->lad == nullptr);
 
   REQUIRE(loaded.primitives[0]->material != nullptr);
   REQUIRE(loaded.primitives[1]->material != nullptr);

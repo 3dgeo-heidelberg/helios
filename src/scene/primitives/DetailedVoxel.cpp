@@ -1,4 +1,5 @@
 #include <DetailedVoxel.h>
+#include <LeafAngleDistribution.h>
 #include <boost/algorithm/string.hpp>
 
 // ***  CONSTRUCTION  *** //
@@ -68,22 +69,16 @@ DetailedVoxel::onRayIntersectionTransmittive(
 {
   double intersectionLength =
     glm::distance(insideIntersectionPoint, outsideIntersectionPoint);
-  double sigma = (*this)["PadBVTotal"];
+  double const kappa = computeExtinctionCoefficient(rayDirection);
 
-  // Use ladlut if available
-  if (part->ladlut != nullptr) {
-    sigma = part->ladlut->computeSigma(
-      sigma, rayDirection.x, rayDirection.y, rayDirection.z);
-  }
-
-  // Let the ray continue whenever sigma is nan or 0
-  if (isnan(sigma) || sigma == 0.0) {
+  // Let the ray continue whenever kappa is nan or 0
+  if (isnan(kappa) || kappa == 0.0) {
     return IntersectionHandlingResult(insideIntersectionPoint, true);
   }
 
-  // Probabilistic behavior
+  // Probabilistic behavior: free path length following Beer-Lambert
   double const rndProb = uniformNoiseSource.next();
-  double const s = -std::log(rndProb) / sigma;
+  double const s = -std::log(rndProb) / kappa;
   if (s > intersectionLength) {
     return IntersectionHandlingResult(insideIntersectionPoint, true);
   } else {
@@ -153,6 +148,23 @@ DetailedVoxel::onFinishLoading(NoiseSource<double>& uniformNoiseSource)
 double
 DetailedVoxel::computeSigmaWithLadLut(glm::dvec3 const& direction)
 {
-  return part->ladlut->computeSigma(
-    (*this)["PadBVTotal"], direction.x, direction.y, direction.z);
+  return computeExtinctionCoefficient(direction);
+}
+
+// ***  EXTINCTION  *** //
+// ******************** //
+LeafAngleDistribution const&
+DetailedVoxel::getLeafAngleDistribution() const
+{
+  static LeafAngleDistribution const defaultLad =
+    LeafAngleDistribution::fromName("spherical");
+  if (part != nullptr && part->lad != nullptr)
+    return *part->lad;
+  return defaultLad;
+}
+
+double
+DetailedVoxel::computeExtinctionCoefficient(glm::dvec3 const& direction)
+{
+  return (*this)["PadBVTotal"] * getLeafAngleDistribution().G(direction);
 }

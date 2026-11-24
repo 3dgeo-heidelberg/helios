@@ -233,22 +233,22 @@ public:
   // ***  S I G M A  *** //
   // ******************* //
   /**
-   * @brief Check if primitive can compute sigma using LadLut or not
-   * @return True if primitive can compute sigma using LadLut,
-   * false otherwise
-   * @see LadLut
+   * @brief Check if primitive has a user-specified leaf angle distribution
+   * @return True if primitive can compute sigma from a leaf angle
+   * distribution, false otherwise
+   * @see LeafAngleDistribution
    */
   virtual bool canComputeSigmaWithLadLut() { return false; }
   /**
-   * @brief Compute sigma using LadLut
+   * @brief Compute sigma from the leaf angle distribution
    *
-   * This computation will only be possible when primitive is able to do
-   * it. For this purpose, a LadLut is required. Also, the primitive must
-   * be able to use the LadLut.
+   * Returns the extinction coefficient (1/m), which is used as sigma in the
+   * received power computation. This is to be replaced by the leaf
+   * reflectance based intensity computation.
    *
    * @return sigma
-   * @see Primitive::canComputeIntensityWithLadLut
-   * @see LadLut
+   * @see Primitive::canComputeSigmaWithLadLut
+   * @see LeafAngleDistribution
    */
   virtual double computeSigmaWithLadLut(glm::dvec3 const& direction)
   {

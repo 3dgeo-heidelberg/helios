@@ -3,6 +3,8 @@
 #include <Voxel.h>
 #include <string>
 
+class LeafAngleDistribution;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @verison 1.0
@@ -294,9 +296,25 @@ public:
   /**
    * @see Primitive::canComputeSigmaWithLadLut
    */
-  bool canComputeSigmaWithLadLut() override { return part->ladlut != nullptr; }
+  bool canComputeSigmaWithLadLut() override { return part->lad != nullptr; }
   /**
    * @see Primitive::computeSigmaWithLadLut
    */
   double computeSigmaWithLadLut(glm::dvec3 const& direction) override;
+
+  // ***  EXTINCTION  *** //
+  // ******************** //
+  /**
+   * @brief Leaf angle distribution of the scene part, or the default
+   * (spherical) one if the scene part has none
+   */
+  LeafAngleDistribution const& getLeafAngleDistribution() const;
+  /**
+   * @brief Extinction coefficient
+   * \f$\kappa = u_L\,G(\Omega')\f$ in \f$\mathrm{m}^{-1}\f$, with
+   * \f$u_L\f$ the plant area density (PadBVTotal) and \f$G\f$ the
+   * G-function of the leaf angle distribution
+   * @param direction Beam direction
+   */
+  double computeExtinctionCoefficient(glm::dvec3 const& direction);
 };

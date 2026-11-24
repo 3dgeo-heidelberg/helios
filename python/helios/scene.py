@@ -653,7 +653,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         intersection_mode: Literal["scaled", "fixed", "transmittive"] = "transmittive",
         intersection_argument: Optional[float] = None,
         random_shift: bool = False,
-        ladlut_path: Optional[str] = None,
+        lad: Optional[str] = None,
         id: Optional[int] = None,
     ):
         """Load the scene part from a VOX file.
@@ -662,13 +662,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         :param intersection_mode: The mode to use for calculating the intersection of rays with the voxels ['transmittive', 'fixed', 'scaled'].
         :param intersection_argument: Scaling factor; only used for intersection mode 'scaled'.
         :param random_shift: Whether to apply a random shift to the scaled cubes within the original voxel resolution; only used for intersection mode 'scaled'.
-        :param ladlut_path: The path to the txt file with look-up-tables (LUTs) for custom leaf angle distributions (LADs). See `data/lut` for examples.
+        :param lad: Leaf angle distribution (LAD) for intersection mode 'transmittive'. Either the name of a predefined distribution ('planophile', 'erectophile', 'plagiophile', 'extremophile', 'spherical', 'uniform') or the path to a text file with one 'inclination_deg,g_L' pair per line. Defaults to the distribution declared in the file header ('#lad_type'), or 'spherical' if the header declares none or an unsupported one.
         :param id: Optional ID to assign to the scene part. If not provided, the ID will be automatically assigned later.
         :type vox_file: AssetPath
         :type intersection_mode: Literal["scaled", "fixed", "transmittive"]
         :type intersection_argument: Optional[float]
         :type random_shift: bool
-        :type ladlut_path: Optional[str]
+        :type lad: Optional[str]
         :type id: Optional[int]
 
         :return: The loaded scene part.
@@ -686,7 +686,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             intersection_mode,
             intersection_argument if intersection_argument is not None else 0.0,
             random_shift,
-            ladlut_path if ladlut_path is not None else "",
+            lad if lad is not None else "",
         )
 
         scene_part = cls._from_cpp(_cpp_part)
@@ -698,7 +698,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             intersection_mode=intersection_mode,
             intersection_argument=intersection_argument,
             random_shift=random_shift,
-            ladlut_path=ladlut_path,
+            lad=lad,
             id=id,
         )
         return scene_part

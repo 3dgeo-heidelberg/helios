@@ -490,7 +490,10 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
      << craftEntry(
           "onRayIntersectionArgument", sp.onRayIntersectionArgument, d2, true)
      << craftEntry("randomShift", sp.randomShift, d2)
-     << craftEntry("hasLadlut", sp.ladlut != nullptr, d2)
+     << craftEntry("lad",
+                   sp.lad != nullptr ? sp.lad->getName() : std::string("default"),
+                   d2,
+                   true)
      << craftEntry("origin", sp.mOrigin, d2)
      << craftEntry("rotation", sp.mRotation, d2)
      << craftEntry("scale", sp.mScale, d2)

@@ -5,7 +5,7 @@ class Primitive;
 class AABB;
 class WavefrontObj;
 
-#include <LadLut.h>
+#include <LeafAngleDistribution.h>
 #include <Vertex.h>
 #include <maths/Rotation.h>
 
@@ -99,9 +99,10 @@ public:
   bool randomShift = false;
 
   /**
-   * @brief Look-up table for leaf angle distribution
+   * @brief Leaf angle distribution for transmittive detailed voxels.
+   * If nullptr, the default distribution (spherical) is used.
    */
-  std::shared_ptr<LadLut> ladlut = nullptr;
+  std::shared_ptr<LeafAngleDistribution const> lad = nullptr;
 
   /**
    * @brief Specify the origin for the scene part

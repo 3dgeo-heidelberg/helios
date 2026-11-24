@@ -1,8 +1,13 @@
 #include <catch2/catch_test_macros.hpp>
 #undef WARN
 #undef INFO
+#include <DetailedVoxelLoader.h>
+#include <HeliosException.h>
 #include <VoxelFileParser.h>
+#include <catch2/catch_approx.hpp>
+#include <chrono>
 #include <filesystem>
+#include <fstream>
 #include <logger_core.hpp>
 #include <string>
 
@@ -95,5 +100,127 @@ TEST_CASE("Voxel Parsing Test ")
       REQUIRE((zDiff >= -eps && zDiff <= eps));
       REQUIRE(dv->halfSize == 5.0);
     }
+  }
+}
+
+namespace {
+
+std::string const testVoxFile = "data/test/semitransparent_voxels.vox";
+
+std::shared_ptr<ScenePart>
+loadTransmittiveVoxels(std::string const& path,
+                       std::map<std::string, ObjectT> extraParams = {})
+{
+  DetailedVoxelLoader loader;
+  loader.params["filepath"] = path;
+  loader.params["intersectionMode"] = std::string("TRANSMITTIVE");
+  loader.setAssetsDir({ "." });
+  for (auto const& [key, value] : extraParams)
+    loader.params[key] = value;
+  std::shared_ptr<ScenePart> sp(loader.run());
+  for (auto p : sp->mPrimitives)
+    p->part = sp;
+  loader.primsOut = nullptr;
+  return sp;
+}
+
+/**
+ * Copy of the test voxel file with "#lad_type:Planophile" replaced, removed
+ * on destruction (also when an assertion fails)
+ */
+struct TempVoxFile
+{
+  std::filesystem::path path;
+
+  explicit TempVoxFile(std::string const& ladTypeReplacement)
+  {
+    auto const nonce =
+      std::chrono::steady_clock::now().time_since_epoch().count();
+    path = std::filesystem::temp_directory_path() /
+           ("helios_vox_test_" + std::to_string(nonce) + ".vox");
+    std::ifstream ifs(testVoxFile);
+    std::ofstream ofs(path);
+    std::string const key = "#lad_type:Planophile";
+    std::string line;
+    while (std::getline(ifs, line)) {
+      std::size_t const pos = line.find(key);
+      if (pos != std::string::npos)
+        line.replace(pos, key.size(), ladTypeReplacement);
+      ofs << line << "\n";
+    }
+  }
+
+  ~TempVoxFile()
+  {
+    std::error_code ec;
+    std::filesystem::remove(path, ec);
+  }
+};
+
+/**
+ * Check kappa = PAD * G for all voxels. The test file has PadBVTotal = 0
+ * everywhere, so a PAD is assigned first.
+ */
+void
+checkExtinction(ScenePart const& sp, double gDown, double gHorizontal)
+{
+  glm::dvec3 const down(0.0, 0.0, -1.0);
+  glm::dvec3 const horizontal(1.0, 0.0, 0.0);
+  double const pad = 2.0;
+  REQUIRE_FALSE(sp.mPrimitives.empty());
+  for (auto p : sp.mPrimitives) {
+    auto* dv = dynamic_cast<DetailedVoxel*>(p);
+    REQUIRE(dv != nullptr);
+    (*dv)["PadBVTotal"] = pad;
+    REQUIRE(dv->computeExtinctionCoefficient(down) ==
+            Catch::Approx(gDown * pad).margin(1e-5));
+    REQUIRE(dv->computeExtinctionCoefficient(horizontal) ==
+            Catch::Approx(gHorizontal * pad).margin(1e-5));
+  }
+}
+
+} // namespace
+
+TEST_CASE("Detailed voxels: extinction coefficient from leaf angle distribution")
+{
+  SECTION("Default from file header (#lad_type)")
+  {
+    auto const sp = loadTransmittiveVoxels(testVoxFile);
+    REQUIRE(sp->lad != nullptr);
+    REQUIRE(sp->lad->getName() == "planophile");
+    checkExtinction(*sp, 0.848826, 0.270190);
+  }
+
+  SECTION("Explicit distribution overrides the file header")
+  {
+    auto const sp = loadTransmittiveVoxels(
+      testVoxFile, { { "lad", std::string("spherical") } });
+    REQUIRE(sp->lad != nullptr);
+    REQUIRE(sp->lad->getName() == "spherical");
+    checkExtinction(*sp, 0.5, 0.5);
+  }
+
+  SECTION("No distribution in the file header: spherical")
+  {
+    TempVoxFile const vox("");
+    auto const sp = loadTransmittiveVoxels(vox.path.string());
+    REQUIRE(sp->lad == nullptr);
+    checkExtinction(*sp, 0.5, 0.5);
+  }
+
+  SECTION("Unsupported distribution in the file header: spherical")
+  {
+    TempVoxFile const vox("#lad_type:Ellipsoidal");
+    auto const sp = loadTransmittiveVoxels(vox.path.string());
+    REQUIRE(sp->lad == nullptr);
+    checkExtinction(*sp, 0.5, 0.5);
+  }
+
+  SECTION("Removed ladlut parameter")
+  {
+    REQUIRE_THROWS_AS(
+      loadTransmittiveVoxels(testVoxFile,
+                             { { "ladlut", std::string("lut/spherical.txt") } }),
+      HeliosException);
   }
 }
