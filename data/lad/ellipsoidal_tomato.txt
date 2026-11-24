@@ -1,0 +1,116 @@
+# Example leaf angle distribution for HELIOS++ (custom LAD file format)
+#
+# Format: one line per leaf inclination, "inclination_deg,g_L"
+#   inclination_deg: angle between leaf normal and zenith in degrees, [0, 90],
+#                    strictly increasing
+#   g_L:             probability density of the leaf inclination (non-negative;
+#                    HELIOS++ interpolates linearly and normalizes, so the
+#                    values do not need to integrate to 1)
+# Lines starting with '#' and empty lines are ignored.
+#
+# Distribution: ellipsoidal (Campbell 1990), in the form given by Bonan (2019),
+# p. 30, eqs. 2.11-2.14:
+#   g_L(theta_L) = 2 x^3 sin(theta_L) / (Lambda (cos^2(theta_L) + x^2 sin^2(theta_L))^2)
+#   Lambda = x + ln((1 + e) / (1 - e)) / (2 e x),  e = sqrt(1 - x^-2)  (for x > 1)
+# x is the ratio of the horizontal to the vertical semi-axis of the ellipsoid
+# (x = 1: spherical, x > 1: more horizontal leaves, x < 1: more vertical leaves).
+#
+# Parameter: x = 2.7, used for a tomato canopy (Solanum lycopersicum 'Aranca') by
+# Sarlikioti, V., de Visser, P.H.B., Marcelis, L.F.M. (2011). Exploring the
+# spatial distribution of light interception and photosynthesis of canopies by
+# means of a functional-structural plant model. Ann. Bot. 107(5), 875-883,
+# doi:10.1093/aob/mcr006
+#
+# Campbell, G.S. (1990). Derivation of an angle density function for canopies
+#   with ellipsoidal leaf angle distributions. Agric. For. Meteorol. 49, 173-176.
+0,0.000000
+1,0.203815
+2,0.402934
+3,0.592935
+4,0.769914
+5,0.930679
+6,1.072867
+7,1.194990
+8,1.296413
+9,1.377271
+10,1.438346
+11,1.480928
+12,1.506666
+13,1.517428
+14,1.515180
+15,1.501889
+16,1.479444
+17,1.449603
+18,1.413963
+19,1.373940
+20,1.330764
+21,1.285487
+22,1.238990
+23,1.192002
+24,1.145112
+25,1.098791
+26,1.053403
+27,1.009229
+28,0.966472
+29,0.925275
+30,0.885733
+31,0.847900
+32,0.811798
+33,0.777422
+34,0.744750
+35,0.713745
+36,0.684358
+37,0.656534
+38,0.630210
+39,0.605322
+40,0.581805
+41,0.559592
+42,0.538616
+43,0.518814
+44,0.500122
+45,0.482480
+46,0.465831
+47,0.450117
+48,0.435287
+49,0.421290
+50,0.408079
+51,0.395609
+52,0.383838
+53,0.372727
+54,0.362239
+55,0.352337
+56,0.342991
+57,0.334169
+58,0.325842
+59,0.317985
+60,0.310572
+61,0.303579
+62,0.296986
+63,0.290771
+64,0.284916
+65,0.279404
+66,0.274217
+67,0.269342
+68,0.264762
+69,0.260467
+70,0.256442
+71,0.252677
+72,0.249162
+73,0.245886
+74,0.242841
+75,0.240019
+76,0.237411
+77,0.235012
+78,0.232814
+79,0.230812
+80,0.229001
+81,0.227376
+82,0.225933
+83,0.224669
+84,0.223579
+85,0.222661
+86,0.221914
+87,0.221334
+88,0.220921
+89,0.220674
+90,0.220591

@@ -265,3 +265,16 @@ TEST_CASE("LeafAngleDistribution: incidence angle sampling")
     }
   }
 }
+
+TEST_CASE("LeafAngleDistribution: example file (ellipsoidal, x = 2.7)")
+{
+  // Shipped example of the custom file format. Reference G computed with
+  // scipy.integrate.quad from the analytic ellipsoidal distribution.
+  auto const lad =
+    LeafAngleDistribution::fromFile("data/lad/ellipsoidal_tomato.txt");
+  double const G[4] = { 0.804056, 0.712075, 0.477639, 0.297799 };
+  for (std::size_t k = 0; k < 4; ++k) {
+    INFO("zenith " << zenithsDeg[k]);
+    REQUIRE(lad.G(deg2rad(zenithsDeg[k])) == Approx(G[k]).margin(2e-4));
+  }
+}
