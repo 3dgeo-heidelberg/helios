@@ -4,6 +4,7 @@
 #include <LeafAngleDistribution.h>
 #include <assetloading/MaterialsFileReader.h>
 #include <boost/algorithm/string.hpp>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <noise/UniformNoiseSource.h>
@@ -42,9 +43,12 @@ DetailedVoxelLoader::run()
     LOG_INFO(ss.str());
   }
 
-  // Load DV files
+  // Load DV files. Transmittive mode discards voxels without plant area
+  // (PAD 0 or NaN), scaled mode those whose size cannot be derived (NaN)
+  bool const discardNanPad =
+    transmittiveMode || primsOut->onRayIntersectionMode == "SCALED";
   for (std::string const& pathString : filePaths) {
-    loadDv(pathString, transmittiveMode);
+    loadDv(pathString, transmittiveMode, discardNanPad);
     primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
   }
 
@@ -60,7 +64,8 @@ DetailedVoxelLoader::run()
 
 void
 DetailedVoxelLoader::loadDv(std::string const& pathString,
-                            bool const discardNullPad)
+                            bool const discardNullPad,
+                            bool const discardNanPad)
 {
   // Check path exists
   fs::path fsPath(pathString);
@@ -88,6 +93,10 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
 
   // Prepare detailed voxels
   for (DetailedVoxel* dv : dvs) {
+    if (discardNanPad && std::isnan((*dv)["PadBVTotal"])) {
+      delete dv;
+      continue;
+    }
     dv->material = getMaterial(mat.name);
     for (size_t i = 0; i < dv->getNumVertices(); i++) {
       Color4f& color = dv->getVertices()[i].color;

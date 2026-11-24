@@ -232,8 +232,7 @@ TEST_CASE("Detailed voxels: extinction coefficient from leaf angle distribution"
   }
 }
 
-TEST_CASE("Detailed voxels: discard voxels without plant area in transmittive "
-          "mode")
+TEST_CASE("Detailed voxels: discard voxels without plant area")
 {
   // Default mode is transmittive
   REQUIRE(loadVoxels(testVoxFile, {})->mPrimitives.size() == 20);
@@ -241,7 +240,11 @@ TEST_CASE("Detailed voxels: discard voxels without plant area in transmittive "
   REQUIRE(loadVoxels(testVoxFile,
                      { { "intersectionMode", std::string("transmittive") } })
             ->mPrimitives.size() == 20);
-  // Other modes keep all voxels
+  // Scaled mode discards PAD = NaN only (size cannot be derived)
+  REQUIRE(
+    loadVoxels(testVoxFile, { { "intersectionMode", std::string("scaled") } })
+      ->mPrimitives.size() == 35);
+  // Fixed mode keeps all voxels
   REQUIRE(
     loadVoxels(testVoxFile, { { "intersectionMode", std::string("fixed") } })
       ->mPrimitives.size() == 36);

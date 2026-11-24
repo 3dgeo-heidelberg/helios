@@ -37,8 +37,13 @@ public:
    * @param discardNullPad If true, detailed voxels with PadBVTotal == 0 or
    *  NaN will be discarded. Used in transmittive mode, where such voxels
    *  never produce a hit.
+   * @param discardNanPad If true, detailed voxels with PadBVTotal == NaN
+   *  will be discarded. Used in scaled mode, where their size cannot be
+   *  derived.
    */
-  void loadDv(std::string const& pathString, bool const discardNullPad);
+  void loadDv(std::string const& pathString,
+              bool const discardNullPad,
+              bool const discardNanPad = false);
 
   /**
    * @brief Load specified material for Detailed Voxels. If no material
