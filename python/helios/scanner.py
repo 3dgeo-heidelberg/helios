@@ -651,13 +651,13 @@ def riegl_vq_1560i() -> Scanner:
     channel_specs = (
         (
             "0",
-            Rotation(q0=0.992546151641322, q1=0, q2=-0.12186934340514748, q3=0),
+            (("y", 14 * units.deg),),
             5.32e-07 * units.m,
             (0, 1, 0),
         ),
         (
             "1",
-            Rotation(q0=0.992546151641322, q1=0, q2=0.12186934340514748, q3=0),
+            (("y", -14 * units.deg),),
             1.064e-06 * units.m,
             (0, 1, 0),
         ),
@@ -681,7 +681,9 @@ def riegl_vq_1560i() -> Scanner:
                     scan_frequency_max=600 * units.Hz,
                     scan_angle_effective_max=0.5235987755982988 * units.rad,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
+                beam_origin_attitude=Rotation.from_axis_angles(
+                    rotations=beam_origin_rotations
+                ),
                 beam_divergence=0.0007 * units.rad,
                 pulse_length=4e-09 * units.s,
                 wavelength=wavelength,
@@ -690,7 +692,7 @@ def riegl_vq_1560i() -> Scanner:
                     range_min=100 * units.m,
                 ),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, beam_origin_rotations, wavelength, incident_beam in channel_specs
         )
     )
 
@@ -743,14 +745,14 @@ def livox_mid100_als() -> Scanner:
     channel_specs = (
         (
             "0",
-            Rotation(q0=0.9659258262890683, q1=0.25881904510252074, q2=0, q3=0),
+            (("x", -30 * units.deg),),
             9.05e-07 * units.m,
             (0, 1, 0),
         ),
-        ("1", Rotation(q0=1, q1=0, q2=0, q3=0), 9.05e-07 * units.m, (0, 1, 0)),
+        ("1", (), 9.05e-07 * units.m, (0, 1, 0)),
         (
             "2",
-            Rotation(q0=0.9659258262890683, q1=-0.25881904510252074, q2=0, q3=0),
+            (("x", 30 * units.deg),),
             9.05e-07 * units.m,
             (0, 1, 0),
         ),
@@ -778,7 +780,9 @@ def livox_mid100_als() -> Scanner:
                     air_refractive_index=1,
                     incident_beam=incident_beam,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
+                beam_origin_attitude=Rotation.from_axis_angles(
+                    rotations=beam_origin_rotations
+                ),
                 beam_divergence=0.00089 * units.rad,
                 pulse_length=4e-09 * units.s,
                 wavelength=wavelength,
@@ -788,7 +792,7 @@ def livox_mid100_als() -> Scanner:
                     range_min=1 * units.m,
                 ),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, beam_origin_rotations, wavelength, incident_beam in channel_specs
         )
     )
 
@@ -796,42 +800,12 @@ def livox_mid100_als() -> Scanner:
 @registered_scanner("dji_zenmuse_l2_repetitive")
 def dji_zenmuse_l2_repetitive() -> Scanner:
     channel_specs = (
-        (
-            "0",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (-0.02687759, 0.99963873, 0),
-        ),
-        (
-            "1",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (-0.01613028, 0.9998699, 0),
-        ),
-        (
-            "2",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (-0.00537738, 0.99998554, 0),
-        ),
-        (
-            "3",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0.00537738, 0.99998554, 0),
-        ),
-        (
-            "4",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0.01613028, 0.9998699, 0),
-        ),
-        (
-            "5",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0.02687759, 0.99963873, 0),
-        ),
+        ("0", 9.05e-07 * units.m, (-0.02687759, 0.99963873, 0)),
+        ("1", 9.05e-07 * units.m, (-0.01613028, 0.9998699, 0)),
+        ("2", 9.05e-07 * units.m, (-0.00537738, 0.99998554, 0)),
+        ("3", 9.05e-07 * units.m, (0.00537738, 0.99998554, 0)),
+        ("4", 9.05e-07 * units.m, (0.01613028, 0.9998699, 0)),
+        ("5", 9.05e-07 * units.m, (0.02687759, 0.99963873, 0)),
     )
     return MultiScanner(
         channels=tuple(
@@ -862,7 +836,6 @@ def dji_zenmuse_l2_repetitive() -> Scanner:
                     air_refractive_index=1,
                     incident_beam=incident_beam,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
                 beam_divergence=0.00034 * units.rad,
                 pulse_length=4e-09 * units.s,
                 wavelength=wavelength,
@@ -872,7 +845,7 @@ def dji_zenmuse_l2_repetitive() -> Scanner:
                     range_min=2 * units.m,
                 ),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, wavelength, incident_beam in channel_specs
         )
     )
 
@@ -880,42 +853,12 @@ def dji_zenmuse_l2_repetitive() -> Scanner:
 @registered_scanner("dji_zenmuse_l2_non_repetitive")
 def dji_zenmuse_l2_non_repetitive() -> Scanner:
     channel_specs = (
-        (
-            "0",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (-0.02687759, 0.99963873, 0),
-        ),
-        (
-            "1",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (-0.01613028, 0.9998699, 0),
-        ),
-        (
-            "2",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (-0.00537738, 0.99998554, 0),
-        ),
-        (
-            "3",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0.00537738, 0.99998554, 0),
-        ),
-        (
-            "4",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0.01613028, 0.9998699, 0),
-        ),
-        (
-            "5",
-            Rotation(q0=1, q1=0, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0.02687759, 0.99963873, 0),
-        ),
+        ("0", 9.05e-07 * units.m, (-0.02687759, 0.99963873, 0)),
+        ("1", 9.05e-07 * units.m, (-0.01613028, 0.9998699, 0)),
+        ("2", 9.05e-07 * units.m, (-0.00537738, 0.99998554, 0)),
+        ("3", 9.05e-07 * units.m, (0.00537738, 0.99998554, 0)),
+        ("4", 9.05e-07 * units.m, (0.01613028, 0.9998699, 0)),
+        ("5", 9.05e-07 * units.m, (0.02687759, 0.99963873, 0)),
     )
     return MultiScanner(
         channels=tuple(
@@ -946,7 +889,6 @@ def dji_zenmuse_l2_non_repetitive() -> Scanner:
                     air_refractive_index=1,
                     incident_beam=incident_beam,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
                 beam_divergence=0.00034 * units.rad,
                 pulse_length=4e-09 * units.s,
                 wavelength=wavelength,
@@ -956,7 +898,7 @@ def dji_zenmuse_l2_non_repetitive() -> Scanner:
                     range_min=2 * units.m,
                 ),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, wavelength, incident_beam in channel_specs
         )
     )
 
@@ -1158,14 +1100,14 @@ def livox_mid100() -> Scanner:
     channel_specs = (
         (
             "0",
-            Rotation(q0=0.9659258262890683, q1=0, q2=0, q3=0.25881904510252074),
+            (("z", -30 * units.deg),),
             9.05e-07 * units.m,
             (0, 1, 0),
         ),
-        ("1", Rotation(q0=1, q1=0, q2=0, q3=0), 9.05e-07 * units.m, (0, 1, 0)),
+        ("1", (), 9.05e-07 * units.m, (0, 1, 0)),
         (
             "2",
-            Rotation(q0=0.9659258262890683, q1=0, q2=0, q3=-0.25881904510252074),
+            (("z", 30 * units.deg),),
             9.05e-07 * units.m,
             (0, 1, 0),
         ),
@@ -1193,7 +1135,9 @@ def livox_mid100() -> Scanner:
                     air_refractive_index=1,
                     incident_beam=incident_beam,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
+                beam_origin_attitude=Rotation.from_axis_angles(
+                    rotations=beam_origin_rotations
+                ),
                 beam_divergence=0.00089 * units.rad,
                 pulse_length=4e-09 * units.s,
                 wavelength=wavelength,
@@ -1203,7 +1147,7 @@ def livox_mid100() -> Scanner:
                     range_min=1 * units.m,
                 ),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, beam_origin_rotations, wavelength, incident_beam in channel_specs
         )
     )
 
@@ -1246,103 +1190,15 @@ def livox_mid70() -> Scanner:
 
 @registered_scanner("vlp16")
 def vlp16() -> Scanner:
-    channel_specs = (
+    channel_angles = (-15, 1, -13, 3, -11, 5, -9, 7, -7, 9, -5, 11, -3, 13, -1, 15)
+    channel_specs = tuple(
         (
-            "0",
-            Rotation(q0=0.9914448613738104, q1=0.13052619222005157, q2=0, q3=0),
+            str(channel_id),
+            (("x", angle * units.deg),),
             9.05e-07 * units.m,
             (0, 1, 0),
-        ),
-        (
-            "1",
-            Rotation(q0=0.9999619230641713, q1=-0.008726535498373935, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "2",
-            Rotation(q0=0.9935718556765875, q1=0.11320321376790672, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "3",
-            Rotation(q0=0.9996573249755573, q1=-0.026176948307873153, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "4",
-            Rotation(q0=0.9953961983671789, q1=0.09584575252022398, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "5",
-            Rotation(q0=0.9990482215818578, q1=-0.043619387365336, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "6",
-            Rotation(q0=0.996917333733128, q1=0.07845909572784494, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "7",
-            Rotation(q0=0.9981347984218669, q1=-0.06104853953485687, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "8",
-            Rotation(q0=0.9981347984218669, q1=0.06104853953485687, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "9",
-            Rotation(q0=0.996917333733128, q1=-0.07845909572784494, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "10",
-            Rotation(q0=0.9990482215818578, q1=0.043619387365336, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "11",
-            Rotation(q0=0.9953961983671789, q1=-0.09584575252022398, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "12",
-            Rotation(q0=0.9996573249755573, q1=0.026176948307873153, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "13",
-            Rotation(q0=0.9935718556765875, q1=-0.11320321376790672, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "14",
-            Rotation(q0=0.9999619230641713, q1=0.008726535498373935, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "15",
-            Rotation(q0=0.9914448613738104, q1=-0.13052619222005157, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
+        )
+        for channel_id, angle in enumerate(channel_angles)
     )
     return MultiScanner(
         channels=tuple(
@@ -1355,7 +1211,9 @@ def vlp16() -> Scanner:
                     scan_frequency_max=0 * units.Hz,
                     scan_angle_effective_max=0.017453292519943295 * units.rad,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
+                beam_origin_attitude=Rotation.from_axis_angles(
+                    rotations=beam_origin_rotations
+                ),
                 beam_divergence=0.0007 * units.rad,
                 pulse_length=5e-09 * units.s,
                 wavelength=wavelength,
@@ -1370,398 +1228,87 @@ def vlp16() -> Scanner:
                     rotation_speed_max=125.66370614359172 * units.rad / units.s,
                 ),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, beam_origin_rotations, wavelength, incident_beam in channel_specs
         )
     )
 
 
 @registered_scanner("velodyne_hdl_64e")
 def velodyne_hdl_64e() -> Scanner:
-    channel_specs = (
-        (
-            "0",
-            Rotation(q0=0.9766722783341679, q1=0.2147353271670632, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "1",
-            Rotation(q0=0.9774619749435719, q1=0.21111155235896517, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "2",
-            Rotation(q0=0.9782400368169809, q1=0.20747633688763586, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "3",
-            Rotation(q0=0.9790028003834026, q1=0.20384679747657422, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "4",
-            Rotation(q0=0.9797538445727765, q1=0.20020590412089176, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "5",
-            Rotation(q0=0.9804896330291901, q1=0.19657080027889237, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "6",
-            Rotation(q0=0.98121193449322, q1=0.19293299253386653, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "7",
-            Rotation(q0=0.9819223908809145, q1=0.18928396204303352, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "8",
-            Rotation(q0=0.9826176569475028, q1=0.18564089057909533, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "9",
-            Rotation(q0=0.9833009949208249, q1=0.18198668464400342, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "10",
-            Rotation(q0=0.9839691872454873, q1=0.1783385503794824, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "11",
-            Rotation(q0=0.9846238447152292, q1=0.17468796300317962, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "12",
-            Rotation(q0=0.9852664508491874, q1=0.17102637466497936, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "13",
-            Rotation(q0=0.9858939798813239, q1=0.16737102626728376, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "14",
-            Rotation(q0=0.986509376213469, q1=0.16370476670797443, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "15",
-            Rotation(q0=0.9871097421992678, q1=0.16004485888429829, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "16",
-            Rotation(q0=0.9876965301306678, q1=0.15638274958523668, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "17",
-            Rotation(q0=0.9882710646187888, q1=0.15270986489826321, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "18",
-            Rotation(q0=0.9888306404187694, q1=0.14904349891560598, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "19",
-            Rotation(q0=0.9893778830920186, q1=0.14536644884001276, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "20",
-            Rotation(q0=0.9899102158995233, q1=0.14169602837680095, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "21",
-            Rotation(q0=0.9904289321310923, q1=0.13802365883305714, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "22",
-            Rotation(q0=0.9909351970334708, q1=0.1343407431877478, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "23",
-            Rotation(q0=0.9914266268149909, q1=0.13066462276472776, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "24",
-            Rotation(q0=0.9919055272920757, q1=0.12697804899835702, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "25",
-            Rotation(q0=0.9923696435207983, q1=0.12329838043706698, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "26",
-            Rotation(q0=0.9928201093432615, q1=0.11961701586160008, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "27",
-            Rotation(q0=0.9932579302403823, q1=0.11592533810428036, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "28",
-            Rotation(q0=0.9936810446949559, q1=0.11224072974611785, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "29",
-            Rotation(q0=0.9940914379840141, q1=0.10854590239559919, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "30",
-            Rotation(q0=0.9944871777355946, q1=0.10485825346386382, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "31",
-            Rotation(q0=0.9948692379534605, q1=0.10116916216862128, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "32",
-            Rotation(q0=0.9952384640062902, q1=0.09746999416435916, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "33",
-            Rotation(q0=0.99559311736158, q1=0.09377816730055694, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "34",
-            Rotation(q0=0.9959340759705525, q1=0.09008505048387246, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "35",
-            Rotation(q0=0.9962620136233985, q1=0.08638286989358077, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "36",
-            Rotation(q0=0.9965758284605366, q1=0.08268384442075193, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "37",
-            Rotation(q0=0.9968759092179038, q1=0.07898367945960456, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "38",
-            Rotation(q0=0.9971622517600065, q1=0.07528242600310811, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "39",
-            Rotation(q0=0.997434852140681, q1=0.07158013505923284, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "40",
-            Rotation(q0=0.9976937066031479, q1=0.06787685765024688, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "41",
-            Rotation(q0=0.9979388115800644, q1=0.06417264481201317, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "42",
-            Rotation(q0=0.9981701636935727, q1=0.06046754759328597, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "43",
-            Rotation(q0=0.9983877597553471, q1=0.0567616170550075, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "44",
-            Rotation(q0=0.9985915967666377, q1=0.05305490426960412, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "45",
-            Rotation(q0=0.9987816719183118, q1=0.049347460320282595, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "46",
-            Rotation(q0=0.9989579825908924, q1=0.045639336300326024, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "47",
-            Rotation(q0=0.9991205263545949, q1=0.04193058331238976, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "48",
-            Rotation(q0=0.9992692676146443, q1=0.038222124494753366, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "49",
-            Rotation(q0=0.99940427426763, q1=0.034512267030605406, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "50",
-            Rotation(q0=0.9995255078612717, q1=0.03080193394361477, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "51",
-            Rotation(q0=0.9996329667248167, q1=0.027091176366880562, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "52",
-            Rotation(q0=0.9997266493773455, q1=0.023380045439351873, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "53",
-            Rotation(q0=0.9998065545277921, q1=0.019668592305123064, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "54",
-            Rotation(q0=0.9998726810749622, q1=0.0159568681127289, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "55",
-            Rotation(q0=0.999925028107548, q1=0.012244924014439678, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "56",
-            Rotation(q0=0.9999635963933823, q1=0.008532636638984828, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "57",
-            Rotation(q0=0.9999883817745766, q1=0.004820406192807788, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "58",
-            Rotation(q0=0.9999993860466841, q1=0.0011081093153153482, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "59",
-            Rotation(q0=0.999996609285308, q1=-0.0026041155671631764, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "60",
-            Rotation(q0=0.999980051398164, q1=-0.006316391828033058, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "61",
-            Rotation(q0=0.9999497133918914, q1=-0.010028493778932555, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "62",
-            Rotation(q0=0.9999055942582262, q1=-0.013740544789181384, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
-        (
-            "63",
-            Rotation(q0=0.9998476951563913, q1=-0.01745240643728351, q2=0, q3=0),
-            9.05e-07 * units.m,
-            (0, 1, 0),
-        ),
+    channel_angles = (
+        -24.8,
+        -24.375,
+        -23.949,
+        -23.524,
+        -23.098,
+        -22.673,
+        -22.248,
+        -21.822,
+        -21.397,
+        -20.971,
+        -20.546,
+        -20.121,
+        -19.695,
+        -19.27,
+        -18.844,
+        -18.419,
+        -17.994,
+        -17.568,
+        -17.143,
+        -16.717,
+        -16.292,
+        -15.867,
+        -15.441,
+        -15.016,
+        -14.59,
+        -14.165,
+        -13.74,
+        -13.314,
+        -12.889,
+        -12.463,
+        -12.038,
+        -11.613,
+        -11.187,
+        -10.762,
+        -10.337,
+        -9.9111,
+        -9.4857,
+        -9.0603,
+        -8.6349,
+        -8.2095,
+        -7.7841,
+        -7.3587,
+        -6.9333,
+        -6.5079,
+        -6.0825,
+        -5.6571,
+        -5.2317,
+        -4.8063,
+        -4.381,
+        -3.9556,
+        -3.5302,
+        -3.1048,
+        -2.6794,
+        -2.254,
+        -1.8286,
+        -1.4032,
+        -0.97778,
+        -0.55238,
+        -0.12698,
+        0.29841,
+        0.72381,
+        1.1492,
+        1.5746,
+        2.0,
+    )
+    channel_specs = tuple(
+        (
+            str(channel_id),
+            (("x", angle * units.deg),),
+            9.05e-07 * units.m,
+            (0, 1, 0),
+        )
+        for channel_id, angle in enumerate(channel_angles)
     )
     return MultiScanner(
         channels=tuple(
@@ -1774,7 +1321,9 @@ def velodyne_hdl_64e() -> Scanner:
                     scan_frequency_max=0 * units.Hz,
                     scan_angle_effective_max=0.017453292519943295 * units.rad,
                 ),
-                beam_origin_attitude=beam_origin_attitude,
+                beam_origin_attitude=Rotation.from_axis_angles(
+                    rotations=beam_origin_rotations
+                ),
                 beam_divergence=0.0034 * units.rad,
                 pulse_length=5e-09 * units.s,
                 wavelength=wavelength,
@@ -1790,7 +1339,7 @@ def velodyne_hdl_64e() -> Scanner:
                 ),
                 full_waveform=FullWaveformSettings(beam_sample_quality=1),
             )
-            for channel_id, beam_origin_attitude, wavelength, incident_beam in channel_specs
+            for channel_id, beam_origin_rotations, wavelength, incident_beam in channel_specs
         )
     )
 
