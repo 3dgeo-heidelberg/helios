@@ -31,7 +31,7 @@ import yaml
 # Do this only when there is strong need to, you will invalidate all
 # data that users might have serialized already. You can also delete
 # all migrations below in that case, as they are no longer relevant.
-SERIALIZATION_FORMAT_MAJOR_VERSION = 1
+SERIALIZATION_FORMAT_MAJOR_VERSION = 2
 
 # Bump this every time you change the serialization format. Alongside
 # this bump, you should adapt the schema in python/helios/data/serialization_schema.json

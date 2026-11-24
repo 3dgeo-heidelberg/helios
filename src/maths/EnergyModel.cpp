@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <limits>
+#include <maths/ModifiedPhong.h>
 
 namespace {
 // Angular reflectance response, including incidence cosine where applicable.
@@ -12,16 +13,14 @@ double
 computeAngularReflectance(Material const& mat, double incidenceCosine)
 {
   mat.validate();
+  if (!std::isfinite(mat.reflectance))
+    throw std::invalid_argument("Material reflectance must be resolved");
+  if (!std::isfinite(incidenceCosine) || std::abs(incidenceCosine) > 1.0)
+    throw std::invalid_argument("Incidence cosine must be in [-1, 1]");
   if (mat.isDirectionIndependent)
     return mat.reflectance;
-  if (mat.specularity == 0)
-    return mat.reflectance * incidenceCosine;
-
-  /* cos(2x) = 2 cos^2(x) - 1 */
-  double const cosDoubleAngle = 2.0 * incidenceCosine * incidenceCosine - 1.0;
-  return mat.reflectance * ((1.0 - mat.specularity) * incidenceCosine +
-                            mat.specularity * std::pow(std::abs(cosDoubleAngle),
-                                                       mat.specularExponent));
+  double const c = std::abs(incidenceCosine);
+  return modifiedPhongBrdf(mat, 2.0 * c * c - 1.0) * c;
 }
 
 double

@@ -37,6 +37,7 @@ from pydantic import (
     NonNegativeInt,
     validate_call,
     Field,
+    field_validator,
 )
 from enum import Enum, auto
 from pathlib import Path
@@ -56,16 +57,16 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
     :param name: The name of the material. This is used to reference the material when applying it to primitives in a scene part.
     :param is_ground: Whether the material should be considered as ground. This is used to position legs with 'force_on_ground' strategy on the ground level of the scene.
     :param spectra: The name of the spectra file to use for the material. The spectra file should be located in one of the asset directories.
-    :param reflectance: The reflectance of the material. This is used in the intensity calculation for returns on the respective scene parts.
-    :param specularity: The specularity of the material. This is used in the intensity calculation for returns on the respective scene parts.
+    :param reflectance: Fractional reflectance scale in [0,1]; NaN means unresolved.
+    :param ks: Specular mixture weight in [0,1]; diffuse weight is 1-ks.
     :param specular_exponent: The specular exponent of the material. This is used in the intensity calculation for returns on the respective scene parts.
-    :param is_direction_independent: Use reflectance without angular modulation, overriding specularity.
+    :param is_direction_independent: Use reflectance without angular modulation, overriding ks.
     :param classification: The classification of the material. This is used to assign a classification value to points that hit the respective scene parts.
     :type name: str
     :type is_ground: bool
     :type spectra: str
     :type reflectance: float
-    :type specularity: float
+    :type ks: float
     :type specular_exponent: float
     :type classification: int
     """
@@ -74,7 +75,15 @@ class Material(Model, UpdateableMixin, cpp_class=_helios.Material):
     is_ground: bool = False
     spectra: str = ""
     reflectance: float = np.nan
-    specularity: Annotated[float, Field(ge=0, le=1, allow_inf_nan=False)] = 0
+
+    @field_validator("reflectance")
+    @classmethod
+    def _validate_reflectance(cls, value):
+        if not np.isnan(value) and (not np.isfinite(value) or not 0 <= value <= 1):
+            raise ValueError("reflectance must be in [0, 1], or NaN when unresolved")
+        return value
+
+    ks: Annotated[float, Field(ge=0, le=1, allow_inf_nan=False)] = 0
     specular_exponent: Annotated[float, Field(ge=0, allow_inf_nan=False)] = 10
     classification: int = 0
     is_direction_independent: bool = False

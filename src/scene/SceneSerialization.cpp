@@ -35,7 +35,7 @@ void
 writeHeader(std::ostream& out)
 {
   out.write("HELIOSSC", 8);
-  std::uint32_t const version = 1;
+  std::uint32_t const version = 2;
   out.write(reinterpret_cast<char const*>(&version), sizeof(version));
 }
 void
@@ -45,7 +45,7 @@ readHeader(std::istream& in)
   std::uint32_t version = 0;
   in.read(magic, 8);
   in.read(reinterpret_cast<char*>(&version), sizeof(version));
-  if (!in || std::string(magic, 8) != "HELIOSSC" || version != 1)
+  if (!in || std::string(magic, 8) != "HELIOSSC" || version != 2)
     throw HeliosException("Unsupported scene format; regenerate the binary "
                           "scene from source assets");
 }
@@ -175,7 +175,7 @@ struct MaterialDTO
   std::string map_Kd;
   double reflectance = std::numeric_limits<double>::quiet_NaN();
   bool isDirectionIndependent = false;
-  double specularity = 0.0;
+  double ks = 0.0;
   double specularExponent = 10.0;
   int classification = 0;
   std::string spectra;
@@ -189,7 +189,7 @@ struct MaterialDTO
        matFilePath,
        map_Kd,
        reflectance,
-       specularity,
+       ks,
        specularExponent,
        classification,
        spectra,
@@ -388,7 +388,7 @@ struct SceneDTO
   std::string assetId;
   std::string assetName;
   std::string sourceFilePath;
-  double defaultReflectance = 50.0;
+  double defaultReflectance = 0.5;
 
   bool hasBBox = false;
   DVec3DTO bboxMin;
@@ -528,7 +528,7 @@ toDTO(Material const& m)
   dto.matFilePath = m.matFilePath;
   dto.map_Kd = m.map_Kd;
   dto.reflectance = m.reflectance;
-  dto.specularity = m.specularity;
+  dto.ks = m.ks;
   dto.specularExponent = m.specularExponent;
   dto.classification = m.classification;
   dto.spectra = m.spectra;
@@ -547,7 +547,7 @@ fromDTO(MaterialDTO const& dto)
   m->matFilePath = dto.matFilePath;
   m->map_Kd = dto.map_Kd;
   m->reflectance = dto.reflectance;
-  m->specularity = dto.specularity;
+  m->ks = dto.ks;
   m->specularExponent = dto.specularExponent;
   m->classification = dto.classification;
   m->spectra = dto.spectra;

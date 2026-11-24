@@ -34,7 +34,7 @@ public:
   std::shared_ptr<ScenePart> part = nullptr;
   /**
    * @brief Shared pointer to the material defining certain properties such
-   * as reflectance, specularity, ...
+   * as reflectance, ks, ...
    * @see Material
    */
   std::shared_ptr<Material> material = nullptr;

@@ -721,7 +721,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(tri->material != nullptr);
     REQUIRE(tri->material->matFilePath == mtlPath.string());
     REQUIRE(tri->material->name == "SpaceMat");
-    REQUIRE(tri->material->specularity == 0);
+    REQUIRE(tri->material->ks == 0);
     REQUIRE_FALSE(tri->material->isDirectionIndependent);
 
     fs::remove_all(tempDir);
@@ -740,23 +740,31 @@ TEST_CASE("MTL scattering properties are explicit and independent of RGB",
   } cleanup{ path };
   {
     std::ofstream out(path);
-    out << "newmtl first\nhelios_specularity 0.25\nNs 4\nKd 0 0 0\nKs 0 0 0\n"
+    out << "newmtl first\nhelios_ks 0.25\nNs 4\nKd 0 0 0\nKs 0 0 0\n"
            "newmtl second\nhelios_is_direction_independent "
-           "TRUE\nhelios_specularity 0\n"
+           "TRUE\nhelios_ks 0\n"
            "newmtl last\nKd 1 1 1\nKs 1 1 1\n";
   }
   auto mats = MaterialsFileReader::loadMaterials(path.string());
-  REQUIRE(mats.at("first")->specularity == 0.25);
+  REQUIRE(mats.at("first")->ks == 0.25);
   REQUIRE(mats.at("first")->specularExponent == 4);
   REQUIRE_FALSE(mats.at("first")->isDirectionIndependent);
   REQUIRE(mats.at("second")->isDirectionIndependent);
-  REQUIRE(mats.at("second")->specularity == 0);
-  REQUIRE(mats.at("last")->specularity == 0);
+  REQUIRE(mats.at("second")->ks == 0);
+  REQUIRE(mats.at("last")->ks == 0);
+  for (auto line : { "helios_reflectance 50",
+                     "helios_reflectance -0.1",
+                     "helios_reflectance inf" }) {
+    {
+      std::ofstream out(path);
+      out << "newmtl invalid\n" << line << "\n";
+    }
+    REQUIRE_THROWS(MaterialsFileReader::loadMaterials(path.string()));
+  }
   for (auto value : { "-1", "1.1", "nan", "inf" }) {
     {
       std::ofstream out(path);
-      out << "newmtl invalid\nhelios_specularity " << value
-          << "\nnewmtl next\n";
+      out << "newmtl invalid\nhelios_ks " << value << "\nnewmtl next\n";
     }
     REQUIRE_THROWS(MaterialsFileReader::loadMaterials(path.string()));
   }

@@ -1,6 +1,7 @@
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
+#include <maths/ModifiedPhong.h>
 #undef WARN
 #undef INFO
 #include <logger_core.hpp>
@@ -177,7 +178,7 @@ TEST_CASE(
   Material material;
   material.reflectance = 0.4;
   material.isDirectionIndependent = lighting == 0;
-  material.specularity = lighting == 2 ? 0.25 : (lighting == 3 ? 1.0 : 0.0);
+  material.ks = lighting == 2 ? 0.25 : (lighting == 3 ? 1.0 : 0.0);
   material.specularExponent = 2.5;
   double const cosine = std::cos(angle);
   auto scanner = energyScanner();
@@ -188,18 +189,16 @@ TEST_CASE(
     PI * device.getSubrays()[0].share * 0.15 * 0.15 * 0.99 / (4 * 100 * 100);
   double expected = material.reflectance;
   if (lighting == 1)
-    expected *= cosine;
+    expected *= cosine / PI;
   if (lighting >= 2)
-    expected *=
-      (1 - material.specularity) * cosine +
-      material.specularity * std::pow(std::abs(std::cos(2 * angle)), 2.5);
+    expected *= cosine * ((1 - material.ks) / PI +
+                          material.ks * 4.5 / (2 * PI) *
+                            std::pow(std::max(0.0, std::cos(2 * angle)), 2.5));
   REQUIRE(ratio(*model, cosine, 100.0, material) ==
           Catch::Approx(geometry * expected).epsilon(1e-12).margin(1e-20));
   double const grazing = ratio(*model, 0.0, 100.0, material);
   REQUIRE(std::isfinite(grazing));
-  double const expectedGrazing =
-    (lighting == 0) ? material.reflectance
-                    : material.reflectance * material.specularity;
+  double const expectedGrazing = (lighting == 0) ? material.reflectance : 0.0;
   REQUIRE(grazing == Catch::Approx(geometry * expectedGrazing).epsilon(1e-12));
 }
 
@@ -327,13 +326,13 @@ TEST_CASE("Far field returns use absolute shares", "[energy]")
     double const power = model->computeEmittedPower(index);
     REQUIRE(power == Catch::Approx(4.0 * ray.share).epsilon(1e-12));
     double const expected =
-      PI * power * 0.15 * 0.15 * 0.99 * 0.5 / (4.0 * range * range);
+      power * 0.15 * 0.15 * 0.99 * 0.5 / (4.0 * range * range);
     double const receivedPower_W = received(*model, range, material, index);
     REQUIRE(receivedPower_W == Catch::Approx(expected).epsilon(1e-12));
     REQUIRE(received(*model, 2 * range, material, index) ==
             Catch::Approx(receivedPower_W / 4).epsilon(1e-12));
     double const patchArea = area(*model, range * range, index);
-    double const sigma = 4 * PI * 0.5 * patchArea;
+    double const sigma = 4 * 0.5 * patchArea;
     REQUIRE(model->computeReceivedPowerWithSigma(range, sigma, index) ==
             Catch::Approx(receivedPower_W).epsilon(1e-12));
     REQUIRE(model->computeReceivedPowerWithSigma(2 * range, sigma, index) ==
@@ -347,8 +346,8 @@ TEST_CASE("Far field returns use absolute shares", "[energy]")
       ? -std::expm1(-2 * factor * factor)
       : std::pow(std::erf(std::sqrt(2.) * factor), 2);
   REQUIRE(sumPower == Catch::Approx(4 * captured).epsilon(1e-12));
-  REQUIRE(sumReturn == Catch::Approx(PI * 4 * captured * 0.15 * 0.15 * 0.99 *
-                                     0.5 / (4 * range * range))
+  REQUIRE(sumReturn == Catch::Approx(4 * captured * 0.15 * 0.15 * 0.99 * 0.5 /
+                                     (4 * range * range))
                          .epsilon(1e-12));
   scanner->setPulseAmplitude(8.0);
   REQUIRE(model->computeEmittedPower(0) ==
@@ -583,8 +582,8 @@ TEST_CASE("Tracing adds coincident returns without redistributing misses",
       continue;
     ++expectedHits;
     double const range = 100.0 / direction.y;
-    expected += PI * ray.share * 0.15 * 0.15 * 0.99 * 0.5 /
-                (4.0 * range * range) * (fixedIncidence ? 1.0 : direction.y);
+    expected += ray.share * 0.15 * 0.15 * 0.99 * 0.5 / (4.0 * range * range) *
+                (fixedIncidence ? 1.0 : direction.y);
   }
   double total = 0.0;
   for (auto const& reflection : reflections)
@@ -630,7 +629,7 @@ TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
   auto model = scanner->getScanningDevice(0).getEnergyModel();
   Material material;
   material.reflectance = 0.5;
-  double const sigma = 4 * PI * 0.5 * area(*model, 10000.0, 0);
+  double const sigma = 4 * 0.5 * area(*model, 10000.0, 0);
   double const baseline = model->computePowerRatioWithSigma(100.0, sigma, 0);
   double const amplitude = GENERATE(0.0, 1.0, 7.5);
   scanner->setPulseAmplitude(amplitude);
@@ -645,7 +644,7 @@ TEST_CASE("Power ratios are independent of amplitude and pulse frequency",
   REQUIRE(records.back()[4] == 100.0);
   REQUIRE(records.back()[5] ==
           Catch::Approx(model->computeTargetArea(100.0, 0)));
-  REQUIRE(records.back()[7] == material.reflectance);
+  REQUIRE(records.back()[7] == Catch::Approx(material.reflectance / PI));
   REQUIRE(records.back()[8] == Catch::Approx(sigma));
   REQUIRE(records.back()[12] == 0.0);
   // Geometry queries do not append or alter analytics records.
@@ -1142,10 +1141,46 @@ TEST_CASE("Invalid material scattering parameters are rejected",
                         1.1,
                         std::numeric_limits<double>::infinity(),
                         std::numeric_limits<double>::quiet_NaN() }) {
-    material.specularity = value;
+    material.ks = value;
     REQUIRE_THROWS_AS(ratio(*model, 0.8, 100, material), std::invalid_argument);
   }
-  material.specularity = 0;
+  material.ks = 0;
   material.specularExponent = -1;
   REQUIRE_THROWS_AS(ratio(*model, 0.8, 100, material), std::invalid_argument);
+}
+
+TEST_CASE("Modified Phong conserves hemispherical reflected power", "[energy]")
+{
+  Material m;
+  m.reflectance = 0.7;
+  m.ks = GENERATE(0.0, 0.3, 1.0);
+  m.specularExponent = GENERATE(0.0, 0.5, 10.0, 100.0);
+  double const angle = GENERATE(0.0, 0.4, 1.2);
+  double integral = 0;
+  constexpr int nz = 2000, na = 720;
+  for (int iz = 0; iz < nz; ++iz) {
+    double z = (iz + 0.5) / nz;
+    double r = std::sqrt(1 - z * z);
+    for (int ia = 0; ia < na; ++ia) {
+      double az = 2 * PI * (ia + 0.5) / na;
+      double q = std::cos(angle) * z + std::sin(angle) * r * std::cos(az);
+      integral += modifiedPhongBrdf(m, q) * z * 2 * PI / (nz * na);
+    }
+  }
+  REQUIRE(integral <= m.reflectance + 2e-4);
+  if (angle == 0 || m.ks == 0 || m.specularExponent == 0)
+    REQUIRE(integral == Catch::Approx(m.reflectance).margin(2e-4));
+}
+
+TEST_CASE("Modified Phong clips the lobe and defines zero exponent", "[energy]")
+{
+  Material m;
+  m.reflectance = 0.6;
+  m.ks = 1;
+  m.specularExponent = 2.5;
+  REQUIRE(modifiedPhongBrdf(m, -0.5) == 0);
+  REQUIRE(modifiedPhongBrdf(m, 0) == 0);
+  REQUIRE(modifiedPhongBrdf(m, 1) == Catch::Approx(0.6 * 4.5 / (2 * PI)));
+  m.specularExponent = 0;
+  REQUIRE(modifiedPhongBrdf(m, -0.5) == Catch::Approx(0.6 / PI));
 }

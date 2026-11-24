@@ -37,13 +37,13 @@ public:
    */
   std::string map_Kd = "";
   /**
-   * @brief Material reflectance
+   * @brief Fractional reflectance scale in [0,1]; NaN means unresolved.
    */
   double reflectance = NAN;
   /**
-   * @brief Material specularity
+   * @brief Specular mixture weight in [0,1]; diffuse weight is 1-ks.
    */
-  double specularity = 0;
+  double ks = 0;
   /**
    * @brief Material specular exponent
    */
@@ -61,11 +61,11 @@ public:
    */
   std::string spectra = "";
 
-  /** Use reflectance without angular modulation; overrides specularity. */
+  /** Use reflectance without angular modulation; overrides ks. */
   bool isDirectionIndependent = false;
   Material() = default;
   Material(const Material&) = default;
   virtual ~Material() = default;
-  /** Reject invalid specularity and exponent, including nonfinite values. */
+  /** Reject invalid ks and exponent, including nonfinite values. */
   void validate() const;
 };

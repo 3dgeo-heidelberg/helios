@@ -574,8 +574,8 @@ def test_material_properties():
     material.reflectance = 0.5
     assert material.reflectance == 0.5
 
-    material.specularity = 0.8
-    assert material.specularity == 0.8
+    material.ks = 0.8
+    assert material.ks == 0.8
 
     material.specular_exponent = 32
     assert material.specular_exponent == 32
@@ -591,7 +591,7 @@ def test_material_properties():
     assert _helios.Material(material).is_direction_independent is True
     for value in [-0.1, 1.1, float("nan"), float("inf")]:
         with pytest.raises(ValueError):
-            material.specularity = value
+            material.ks = value
 
 
 def test_survey_instantiation():

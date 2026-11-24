@@ -60,11 +60,11 @@ MaterialsFileReader::loadMaterials(std::string filePathString)
 
       // ######### BEGIN HELIOS-specific additions to the wavefront .mtl
       // standard #########
-      else if (lineParts[0] == "helios_specularity") {
+      else if (lineParts[0] == "helios_ks") {
         if (lineParts.size() < 2)
-          throw std::invalid_argument("Missing helios_specularity");
+          throw std::invalid_argument("Missing helios_ks");
 
-        newMat.specularity = boost::lexical_cast<double>(lineParts[1]);
+        newMat.ks = boost::lexical_cast<double>(lineParts[1]);
       } else if (lineParts[0] == "helios_is_direction_independent") {
         if (lineParts.size() < 2)
           throw std::invalid_argument("Missing direction-independent flag");

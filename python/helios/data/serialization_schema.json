@@ -116,7 +116,7 @@
           "format": "uri"
         },
         "serialization_major_version": {
-          "const": 1
+          "const": 2
         },
         "serialization_minor_version": {
           "enum": [
@@ -726,7 +726,7 @@
         "is_ground": {},
         "spectra": {},
         "reflectance": {},
-        "specularity": {},
+        "ks": {},
         "specular_exponent": {},
         "classification": {},
         "is_direction_independent": {}

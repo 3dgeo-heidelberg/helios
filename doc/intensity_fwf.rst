@@ -212,7 +212,7 @@ The received amplitude is derived from the LiDAR equation, considering the follo
    Here :math:`R` is the distance along the individual subray, not axial range.
 
 2. **Material reflectance**  
-   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BRDF) :cite:p:`Phong.1975`.
+   The surface reflectance is modeled using Phong's Bidirectional Reflectance Distribution Function (BRDF) :cite:p:`Phong.1975` in its modified form :cite:p:`Lafortune.1994` (see :ref:`heliospp_intensity_model`).
 
 3. **Target cross section**  
    The effective cross section is computed based on the area illuminated by the subray and the local incidence angle.
@@ -225,7 +225,7 @@ See also: :ref:`intensity-modelling`.
 Incidence evaluation uses the cosine directly during ray tracing. For normalized ray direction and surface normal, the smaller incidence angle has cosine :math:`c = |\mathbf{n}\cdot\mathbf{d}|`. The Phong angular reflectance response is computed without recovering the angle:
 
 .. math::
-   f = \rho\left[(1-K_s)c + K_s |2c^2-1|^{N_s}\right].
+   f = \rho c\left[\frac{1-K_s}{\pi} + K_s\frac{N_s+2}{2\pi}\max(0,2c^2-1)^{N_s}\right].
 
 Angle-based APIs remain available. The cosine path also supports normal-based voxels and their closest-face fallback. Detailed analytics convert the cosine back to radians only when recording the incidence angle.
 
@@ -399,10 +399,10 @@ Currently, for its calculation HELIOS++ takes the following factors into account
      - User: ``helios_reflectance`` in material file (`.mtl`) or ASTER
      - 50% (dimensionless)
 
-   * - Specularity
-     - Specularity of the target surface.
-       Calculated as: :math:`\sum k_d / \sum (k_d + k_s)`
-     - User: ``helios_specularity`` in material file (`.mtl`)
+   * - Specular weight
+     - Specular weight of the target surface.
+       Explicit mixture weight :math:`k_s` with :math:`k_d=1-k_s`.
+     - User: ``helios_ks`` in material file (`.mtl`)
      - —
 
    * - Specular exponent
@@ -428,11 +428,11 @@ The default material, in case no material file is provided, looks like this:
 .. code-block::
 
     newmtl default  
-    helios_specularity 0
+    helios_ks 0
     helios_is_direction_independent false
     Ns 10  
     helios_classification 0  
-    helios_reflectance 50
+    helios_reflectance 0.5
     helios_isGround true
 
 .. _MTL material library files: http://paulbourke.net/dataformats/mtl/
@@ -443,7 +443,7 @@ HELIOS-specific parameters
 
 The following HELIOS-specific parameters that can be added to material files by inserting respective lines in the material definitions.
 
-* ``helios_reflectance``: This parameter specifies the reflectance of the target surface, e.g. ``helios_reflectance 70.8``. (default: 50.0)
+* ``helios_reflectance``: This parameter specifies the reflectance of the target surface, e.g. ``helios_reflectance 0.708``. (default: 0.5)
 * ``helios_spectra``: Instead of setting reflectance values of the materials by hand, they can be retrieved from the ECOSTRESS spectral library (formally ASTER spectral library). For each material, this library provides a file specifying its reflectance for different wavelengths in range [0, 100]. HELIOS includes a small set of these spectra in the ``python/helios/data/spectra`` folder, such as asphalt, grass, wood or gray and red shingles. More spectra can be downloaded from NASA's JPL or users can add their own spectra (resulting from spectrometer measurements). The spectra files contained in any asset directory can be referenced by their name, e.g. ``helios_spectra grass``. Now HELIOS++ will select the appropriate reflectance for the material given the wavelength of the laser. If the selected wavelength is not specified in the library (as they are discrete values) the reflectance will be interpolated. If no spectra or reflectance is specified in the .mtl, the reflectance will be set to the default and a warning will be displayed.
 * ``helios_classification``: This parameter can be used to assign a classification to different sceneparts, e.g., according the ASPRS Standard (see LAS Specification p. 11), e.g. ``helios_classification 2`` for the ground. This classification will appear as an attribute of the respective simulated point reflected from that scenepart. (default: 0)
 * ``helios_isGround``: Boolean parameter, which can have either values "false"/"0" or "true"/"1". If set to "true", geometries with this material are considered ground. This information is used for the ``onGround`` parameters, which can be used to translate sceneparts and platforms. (default: "true")
@@ -457,19 +457,14 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 1. **BRDF Calculation**
 
-   The BRDF is computed from the material reflectance :math:`\rho` (either set via ``helios_reflectance`` in the `.mtl` file or derived from a `helios_spectra` and the scanner's wavelength) and the specularity :math:`\text{spec}` (set explicitly with ``helios_specularity``), together with the specular exponent ``Ns`` :math:`(N_s)`. The incidence angle :math:`\varphi` is determined from the ray-object intersection.
+   The BRDF :math:`f_r(\omega_i,\omega_o)` is computed from fractional material reflectance :math:`\rho`, specular mixture weight :math:`k_s` (set via ``helios_ks``), and exponent :math:`N_s`. The incidence angle :math:`\varphi` is determined from the ray-object intersection.
 
    .. math::
-      \text{BRDF}_r = \rho \cdot BRDF(\varphi, \text{spec}, N_s)
+      f_r(\omega_i,\omega_o) = \rho\left[\frac{1-k_s}{\pi}+k_s\frac{N_s+2}{2\pi}\max(0,\cos\alpha)^{N_s}\right]
 
-   where :math:`BRDF` follows the formulation by :cite:t:`JutziGross.2022`:
+   This follows the modified Phong formulation by :cite:p:`Lafortune.1994`. Here :math:`\alpha` is the angle between the perfect mirror-reflection direction and :math:`\omega_o`. For monostatic lidar, :math:`\alpha=2\varphi`. The angular return response used by the lidar equation is :math:`F_H=f_r(\omega_i,\omega_o)\cos\varphi`, including the projected-area cosine.
 
-   .. math::
-      BRDF(\varphi, \text{spec}, N_s) = (1 - \text{spec}) \cdot \cos(\varphi) + \text{spec} \cdot \left| \cos(2\varphi^*) \right|^{N_s}
-
-   with :math:`\varphi^* = \varphi - \pi/2` if :math:`\varphi > \pi/2`, otherwise :math:`\varphi^* = \varphi`.
-
-   Specularity is supplied explicitly, with default zero. At zero, the response is Lambertian. With ``helios_is_direction_independent true``, the response equals reflectance regardless of incidence angle or specularity.
+   Specular weight is supplied explicitly, with default zero. At zero, the response is Lambertian. With ``helios_is_direction_independent true``, the response equals reflectance regardless of incidence angle or ks.
 
 
 2. **Lidar Cross Section Calculation**
@@ -477,7 +472,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    The lidar cross section :math:`\sigma` is calculated using the illuminated target area :math:`A`, following :cite:p:`Wagner.2010`, Eq. 14. It is assumed that each sub-ray either fully hits the target or does not hit at all. Partial hits are treated as full hits in intensity simulation.
 
    .. math::
-      \sigma_i = 4\pi \cdot \text{BRDF}_r \cdot A_i
+      \sigma_i = 4\pi F_H A_i
 
 3. **Received Intensity via Lidar-Radar Equation**
 
@@ -485,7 +480,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
    received/whole-beam peak-power transfer is:
 
    .. math::
-      H_i = \frac{\pi s_i D_r^2 \eta_{\mathrm{sys}}\,\mathrm{BRDF}_r
+      H_i = \frac{\pi s_i D_r^2 \eta_{\mathrm{sys}}F_H
                   e^{-2Ra_e}}{4R^2}, \qquad I_i = P_0 H_i.
 
    For an externally supplied cross section, the corresponding expression is :math:`H_i=s_iD_r^2\eta_{\mathrm{sys}}\sigma_i e^{-2Ra_e}/(16A_iR^2)`. Here :math:`P_0` is whole-beam peak optical power, :math:`A_i` is the subray's transverse target area, :math:`D_r` is receiver diameter, :math:`R` is target range, and :math:`\eta_{\mathrm{sys}}` is system efficiency. The atmospheric extinction coefficient :math:`a_e` in inverse metres uses the Kruse relation:
@@ -518,17 +513,23 @@ References
 Explicit lidar material properties
 ----------------------------------
 
-Material scattering uses ``specularity`` (finite, between 0 and 1; default 0) and ``specular_exponent`` (finite and nonnegative; default 10). The default response is Lambertian. Set ``is_direction_independent=True`` to use reflectance without angular modulation; this overrides specularity.
+Material scattering uses ``ks`` (finite, between 0 and 1; default 0) and ``specular_exponent`` (finite and nonnegative; default 10). The default response is Lambertian. Set ``is_direction_independent=True`` to use reflectance without angular modulation; this overrides ks.
 
 MTL files accept::
 
    newmtl example
-   helios_specularity 0.25
+   helios_ks 0.25
    helios_is_direction_independent false
    Ns 10
 
 The flag accepts true/false (case-insensitive) or 1/0. ``Ns`` supplies the specular exponent. Both scalar parameters describe the chosen scattering model. They are not inferred from visible-light colors.
 
-``Ka``, ``Kd``, and ``Ks`` are ignored. Python ``ambient_components``, ``diffuse_components``, and ``specular_components`` have been removed, together with XML ``randomMaterials``/``randomRange``. Spectral-library loading only updates reflectance and preserves explicit specularity.
+``Ka``, ``Kd``, and ``Ks`` are ignored. Python ``ambient_components``, ``diffuse_components``, and ``specular_components`` have been removed, together with XML ``randomMaterials``/``randomRange``. Spectral-library loading only updates reflectance and preserves explicit ks.
 
-Python document format is now 1.0. Old documents and binary scene files must be regenerated from source assets. Old binary layouts are rejected before decoding.
+Python document format is now 2.0. Old documents and binary scene files must be regenerated from source assets. Old binary layouts are rejected before decoding.
+
+Modified Phong migration
+------------------------
+
+Surface scattering uses Lafortune and Willems (1994), *Using the Modified Phong BRDF for Physically Based Rendering*. ``ks`` is a mixture weight. ``kd = 1-ks``. The absolute coefficients are reflectance times these weights. Reflectance is fractional [0,1] in MTL and Python. Only spectral library input
+uses percentages. Defaults are 0.5 reflectance, zero ks, and exponent 10. Regenerate old serialized documents and binary scenes (version 2).

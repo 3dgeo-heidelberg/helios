@@ -75,7 +75,7 @@ DetailedVoxelLoader::loadDv(std::string const& pathString,
   /*mat.isGround = false;
   mat.useVertexColors = true;
   mat.reflectance = 0.5;
-  mat.specularity = 0.5;
+  mat.ks = 0.5;
   mat.classification = 1;
   mat.spectra = "wood";*/
 

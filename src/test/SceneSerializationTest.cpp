@@ -39,7 +39,7 @@ populateMixedScene(Scene& scene)
   scene.id = "scene-cereal-id";
   scene.name = "Scene Cereal Roundtrip";
   scene.sourceFilePath = "synthetic_scene";
-  scene.setDefaultReflectance(47.5);
+  scene.setDefaultReflectance(0.475);
 
   auto partA = std::make_shared<ScenePart>();
   partA->primitiveType = ScenePart::PrimitiveType::NONE;
@@ -72,8 +72,8 @@ populateMixedScene(Scene& scene)
 
   auto sharedMat = std::make_shared<Material>();
   sharedMat->name = "shared";
-  sharedMat->reflectance = 18.5;
-  sharedMat->specularity = 0.23;
+  sharedMat->reflectance = 0.185;
+  sharedMat->ks = 0.23;
   sharedMat->isDirectionIndependent = true;
   sharedMat->specularExponent = 6.0;
   sharedMat->classification = 2;
@@ -82,7 +82,7 @@ populateMixedScene(Scene& scene)
 
   auto detailedMat = std::make_shared<Material>();
   detailedMat->name = "detailed";
-  detailedMat->reflectance = 42.0;
+  detailedMat->reflectance = 0.42;
   detailedMat->classification = 6;
   detailedMat->isGround = true;
 
@@ -393,7 +393,7 @@ TEST_CASE("Binary scene rejects obsolete headers and preserves scattering",
     Scene restored;
     restored.loadCereal(archive.path.string());
     REQUIRE(restored.primitives[0]->material->isDirectionIndependent);
-    REQUIRE(restored.primitives[0]->material->specularity == 0.23);
+    REQUIRE(restored.primitives[0]->material->ks == 0.23);
   }
   TempArchivePath old("material_old");
   {
@@ -416,6 +416,6 @@ TEST_CASE("Spectral loading preserves explicit scattering",
   library.readReflectances();
   library.setReflectances(&scene);
   REQUIRE(std::isfinite(material->reflectance));
-  REQUIRE(material->specularity == 0.23);
+  REQUIRE(material->ks == 0.23);
   REQUIRE(material->isDirectionIndependent);
 }

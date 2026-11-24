@@ -66,7 +66,7 @@ private:
     mat.ks[2] = 0.0f;
 
     // Not used by lambert branch, but keep deterministic values.
-    mat.specularity = 0.0;
+    mat.ks = 0.0;
     mat.specularExponent = 10.0;
     mat.classification = 1;
 

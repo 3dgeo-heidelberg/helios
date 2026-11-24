@@ -1,4 +1,6 @@
 #pragma once
+#include <cmath>
+#include <stdexcept>
 
 #include <glm/glm.hpp>
 
@@ -65,7 +67,7 @@ protected:
    * @see SpectralLibrary::defaultReflectance
    * @see XmlSurveyLoader::createSurveyFromXml
    */
-  double defaultReflectance = 50.0;
+  double defaultReflectance = 0.5;
 
 public:
   /**
@@ -449,6 +451,9 @@ public:
    */
   inline void setDefaultReflectance(double const defaultReflectance)
   {
+    if (!std::isfinite(defaultReflectance) || defaultReflectance < 0 ||
+        defaultReflectance > 1)
+      throw std::invalid_argument("Default reflectance must be in [0, 1]");
     this->defaultReflectance = defaultReflectance;
   }
   /**

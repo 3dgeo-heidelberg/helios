@@ -50,7 +50,7 @@ def test_concrete_energy_model_calculations(energy_device):
     assert power == pytest.approx(4 * ratio, rel=1e-12, abs=0)
     assert energy_device.compute_received_power(1.0, 100.0, material, 0) == power
     assert energy_device.compute_power_ratio(1.0, 100.0, material, 0) == ratio
-    sigma = 4 * math.pi * 0.25 * area
+    sigma = 4 * 0.25 * area
     assert model.compute_received_power_with_sigma(100.0, sigma, 0) == pytest.approx(
         power, rel=1e-12, abs=0
     )
@@ -136,13 +136,21 @@ def test_cosine_power_matches_phong_formula(energy_device, angle):
     model = _helios.EnergyModel(energy_device)
     material = _helios.Material()
     material.reflectance = 0.4
-    material.specularity = 0.25
+    material.ks = 0.25
     material.specular_exponent = 2.5
     cosine = math.cos(angle)
-    response = 0.4 * (0.75 * cosine + 0.25 * abs(math.cos(2 * angle)) ** 2.5)
+    response = (
+        0.4
+        * cosine
+        * (
+            0.75 / math.pi
+            + 0.25 * 4.5 / (2 * math.pi) * max(0, math.cos(2 * angle)) ** 2.5
+        )
+    )
     # Divide out an independently evaluated direction-independent reference.
     reference = _helios.Material()
     reference.reflectance = 1.0
+    reference.is_direction_independent = True
     baseline = model.compute_received_power(1.0, 100.0, reference, 0)
     assert model.compute_received_power(cosine, 100.0, material, 0) == pytest.approx(
         baseline * response, rel=1e-12, abs=0
@@ -216,3 +224,37 @@ def test_device_beam_rotation_preserves_power_and_area(energy_device, method):
     energy_device.beam_rotation = 2 * math.pi
     assert energy_device.beam_rotation == 0
     assert copied.beam_rotation == math.pi / 2
+
+
+@pytest.mark.parametrize("value", [-0.1, 1.1, float("inf")])
+def test_fractional_reflectance_validation(value):
+    material = _helios.Material()
+    with pytest.raises(ValueError):
+        material.reflectance = value
+
+
+def test_normalized_lambert_and_clipped_phong(energy_device):
+    model = _helios.EnergyModel(device=energy_device)
+    material = _helios.Material()
+    material.reflectance = 0.5
+    material.ks = 0
+    normal = model.compute_power_ratio(1.0, 100.0, material, 0)
+    assert model.compute_power_ratio(-0.5, 100.0, material, 0) == pytest.approx(
+        normal / 2
+    )
+    material.ks = 1
+    material.specular_exponent = 2.5
+    assert model.compute_power_ratio(0.5, 100.0, material, 0) == 0
+    assert model.compute_power_ratio(0.0, 100.0, material, 0) == 0
+
+
+def test_unresolved_reflectance_and_invalid_cosine(energy_device):
+    model = _helios.EnergyModel(energy_device)
+    material = _helios.Material()
+    with pytest.raises(ValueError):
+        model.compute_power_ratio(1.0, 100.0, material, 0)
+    material.reflectance = 0
+    assert model.compute_power_ratio(0.5, 100.0, material, 0) == 0
+    for cosine in (-1.01, 1.01, float("nan")):
+        with pytest.raises(ValueError):
+            model.compute_power_ratio(cosine, 100.0, material, 0)

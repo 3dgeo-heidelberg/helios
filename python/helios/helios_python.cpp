@@ -1014,15 +1014,23 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("is_ground", &Material::isGround)
     .def_readwrite("use_vertex_colors", &Material::useVertexColors)
     .def_readwrite("mat_file_path", &Material::matFilePath)
-    .def_readwrite("reflectance", &Material::reflectance)
     .def_property(
-      "specularity",
-      [](Material const& m) { return m.specularity; },
+      "reflectance",
+      [](Material const& m) { return m.reflectance; },
       [](Material& m, double value) {
         Material copy(m);
-        copy.specularity = value;
+        copy.reflectance = value;
         copy.validate();
-        m.specularity = value;
+        m.reflectance = value;
+      })
+    .def_property(
+      "ks",
+      [](Material const& m) { return m.ks; },
+      [](Material& m, double value) {
+        Material copy(m);
+        copy.ks = value;
+        copy.validate();
+        m.ks = value;
       })
     .def_property(
       "specular_exponent",

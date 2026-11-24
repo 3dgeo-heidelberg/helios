@@ -174,7 +174,7 @@ def test_roundtrip_yaml_inline(tmp_path):
         document = yaml.safe_load(handle)
     assert "$schema" not in document
     assert "model_ref" not in str(document["fields"]["trajectory_settings"])
-    assert document["serialization_major_version"] == 1
+    assert document["serialization_major_version"] == 2
     assert (
         document["serialization_minor_version"]
         == serialization.SERIALIZATION_FORMAT_MINOR_VERSION
@@ -260,7 +260,7 @@ def test_invalid_yaml_fails_schema_validation(tmp_path):
     with yaml_path.open("w", encoding="utf-8") as handle:
         yaml.safe_dump(
             {
-                "serialization_major_version": 1,
+                "serialization_major_version": 2,
                 "serialization_minor_version": 0,
                 "fields": {},
             },
@@ -352,13 +352,13 @@ def test_from_yaml_raises_for_cyclic_model_references(tmp_path):
     platform_yaml = tmp_path / "platform.yaml"
 
     platform_doc = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": "helios.platforms.Platform",
         "fields": {"platform_settings": {"model_ref": dynamic_yaml.name}},
     }
     dynamic_doc = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": "helios.platforms.DynamicPlatformSettings",
         "fields": {"trajectory_settings": {"model_ref": platform_yaml.name}},
@@ -402,7 +402,7 @@ def test_binary_deserialization_requires_existing_loader(tmp_path):
     yaml_path.write_text(
         yaml.safe_dump(
             {
-                "serialization_major_version": 1,
+                "serialization_major_version": 2,
                 "serialization_minor_version": 0,
                 "model_class": "helios.platforms.Platform",
                 "fields": {},
@@ -422,7 +422,7 @@ def test_binary_deserialization_rejects_unknown_loader_method(tmp_path):
     yaml_path.write_text(
         yaml.safe_dump(
             {
-                "serialization_major_version": 1,
+                "serialization_major_version": 2,
                 "serialization_minor_version": 0,
                 "model_class": "helios.platforms.Platform",
                 "fields": {},
@@ -442,7 +442,7 @@ def test_provenance_deserialization_rejects_unknown_constructor(tmp_path):
     yaml_path.write_text(
         yaml.safe_dump(
             {
-                "serialization_major_version": 1,
+                "serialization_major_version": 2,
                 "serialization_minor_version": 0,
                 "model_class": "helios.platforms.DynamicPlatformSettings",
                 "fields": {},
@@ -466,7 +466,7 @@ def test_provenance_deserialization_rejects_operations_without_constructor(tmp_p
     yaml_path.write_text(
         yaml.safe_dump(
             {
-                "serialization_major_version": 1,
+                "serialization_major_version": 2,
                 "serialization_minor_version": 0,
                 "model_class": "helios.platforms.DynamicPlatformSettings",
                 "fields": {},
@@ -485,7 +485,7 @@ def test_deserialize_model_document_rejects_missing_provenance_operation_method(
     tmp_path,
 ):
     document = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": f"{OperationModel.__module__}.{OperationModel.__qualname__}",
         "fields": {},
@@ -508,7 +508,7 @@ def test_deserialize_model_document_rejects_missing_provenance_operation_method(
 
 def test_deserialize_model_document_rejects_invalid_class_identifier(tmp_path):
     document = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": "InvalidClassName",
         "fields": {},
@@ -525,7 +525,7 @@ def test_deserialize_model_document_rejects_invalid_class_identifier(tmp_path):
 
 def test_deserialize_model_document_rejects_unresolvable_class(tmp_path):
     document = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": "helios.platforms.DoesNotExist",
         "fields": {},
@@ -542,7 +542,7 @@ def test_deserialize_model_document_rejects_unresolvable_class(tmp_path):
 
 def test_deserialize_model_document_rejects_non_model_class(tmp_path):
     document = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": "helios.platforms.Printable",
         "fields": {},
@@ -559,7 +559,7 @@ def test_deserialize_model_document_rejects_non_model_class(tmp_path):
 
 def test_deserialize_model_document_rejects_incompatible_expected_type(tmp_path):
     document = {
-        "serialization_major_version": 1,
+        "serialization_major_version": 2,
         "serialization_minor_version": 0,
         "model_class": "helios.platforms.PlatformSettings",
         "fields": {},
@@ -587,7 +587,7 @@ def test_apply_migrations_raises_if_migration_missing(monkeypatch):
         ):
             serialization._apply_migrations(
                 {
-                    "serialization_major_version": 1,
+                    "serialization_major_version": 2,
                     "serialization_minor_version": 0,
                     "model_class": "helios.scanner.Scanner",
                     "fields": {},
@@ -619,7 +619,7 @@ def test_apply_migrations_rejects_invalid_major_version_from_migration(monkeypat
         with pytest.raises(ValueError, match="Invalid migration result: expected"):
             serialization._apply_migrations(
                 {
-                    "serialization_major_version": 1,
+                    "serialization_major_version": 2,
                     "serialization_minor_version": 0,
                     "model_class": "helios.scanner.Scanner",
                     "fields": {},
@@ -650,7 +650,7 @@ def test_apply_migrations_rejects_non_increasing_minor_version(monkeypatch):
         with pytest.raises(ValueError, match="serialization_minor_version > 0"):
             serialization._apply_migrations(
                 {
-                    "serialization_major_version": 1,
+                    "serialization_major_version": 2,
                     "serialization_minor_version": 0,
                     "model_class": "helios.scanner.Scanner",
                     "fields": {},
@@ -744,7 +744,7 @@ def test_dynamic_scene_yaml_roundtrip_replays_only_xml_provenance(tmp_path):
     with yaml_path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
 
-    assert document["serialization_major_version"] == 1
+    assert document["serialization_major_version"] == 2
     assert (
         document["serialization_minor_version"]
         == serialization.SERIALIZATION_FORMAT_MINOR_VERSION
@@ -1401,10 +1401,10 @@ def test_from_binary_stores_provenance(tmp_path):
 def test_material_document_roundtrip_and_old_major_rejected(tmp_path):
     from helios.scene import Material
 
-    material = Material(specularity=0.3, is_direction_independent=True)
+    material = Material(ks=0.3, is_direction_independent=True)
     path = material.to_yaml(tmp_path / "material.yaml")
     restored = Material.from_yaml(path)
-    assert restored.specularity == 0.3
+    assert restored.ks == 0.3
     assert restored.is_direction_independent
     document = yaml.safe_load(path.read_text())
     document["serialization_major_version"] = 0
@@ -1414,7 +1414,7 @@ def test_material_document_roundtrip_and_old_major_rejected(tmp_path):
 
 @pytest.mark.parametrize("compressed", [False, True])
 @pytest.mark.parametrize(
-    "payload", [b"legacy scene payload", b"HELIOSSC\x02\x00\x00\x00"]
+    "payload", [b"legacy scene payload", b"HELIOSSC\x01\x00\x00\x00"]
 )
 def test_binary_scene_rejects_old_or_unsupported_format(tmp_path, compressed, payload):
     import zlib

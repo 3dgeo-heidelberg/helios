@@ -1155,9 +1155,9 @@ def test_update_material_attribute_for_specific_primitives(xyz_file):
         intersection_mode="scaled",
         intersection_argument=0.5,
     )
-    scene_part_vox.materials["default"].specularity = 0.1437
+    scene_part_vox.materials["default"].ks = 0.1437
     scene_part_vox.materials["default"].is_direction_independent = True
-    assert scene_part_vox._cpp_object.primitives[0].material.specularity == 0.1437
+    assert scene_part_vox._cpp_object.primitives[0].material.ks == 0.1437
     assert scene_part_vox._cpp_object.primitives[0].material.is_direction_independent
 
     scene_part_tif = ScenePart.from_tiff("data/test/dem_hd_sub.tif")
@@ -1948,10 +1948,10 @@ def test_npy_beam_origin_in_scene_coordinates():
 
 
 @pytest.mark.parametrize("value", [-0.1, 1.1, float("nan"), float("inf")])
-def test_material_rejects_invalid_specularity(value):
+def test_material_rejects_invalid_ks(value):
     with pytest.raises(ValueError):
-        Material(specularity=value)
+        Material(ks=value)
     material = Material()
     with pytest.raises(ValueError):
-        material.specularity = value
-    assert material.specularity == 0
+        material.ks = value
+    assert material.ks == 0

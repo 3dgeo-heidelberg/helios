@@ -119,6 +119,7 @@ SpectralLibrary::setReflectances(Scene* scene)
 
   for (Primitive* prim : scene->primitives) {
     if (!isnan(prim->material->reflectance)) {
+      prim->material->validate();
       continue; // if a reflectance was set, this has precedence over spectra
     }
 
@@ -147,5 +148,6 @@ SpectralLibrary::setReflectances(Scene* scene)
 
     prim->material->reflectance =
       reflectanceMap.find(prim->material->spectra)->second;
+    prim->material->validate();
   }
 }
