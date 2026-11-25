@@ -172,18 +172,18 @@ makeScanner()
                                     glm::dvec3(0, 0, 0), // beamOrigin
                                     Rotation(),          // beamOrientation
                                     std::list<int>({ 100000 }), // pulse freqs
-                                    5.0,                // pulseLength_ns
-                                    "benchmarkScanner", // id
-                                    4.0,                // pulseAmplitude
-                                    0.99,               // efficiency
-                                    0.15,               // receiverDiameter
-                                    23.0,               // atmosphericVisibility
-                                    1064,               // wavelength (nm)
-                                    false,              // writeWaveform
-                                    false,              // writePulse
-                                    false,              // calcEchowidth
-                                    false,              // fullWaveNoise
-                                    false               // platformNoiseDisabled
+                                    5e-9,                       // pulseLength_s
+                                    "benchmarkScanner",         // id
+                                    4.0,     // pulseAmplitude
+                                    0.99,    // efficiency
+                                    0.15,    // receiverDiameter
+                                    23000.0, // atmosphericVisibility
+                                    1064,    // wavelength (nm)
+                                    false,   // writeWaveform
+                                    false,   // writePulse
+                                    false,   // calcEchowidth
+                                    false,   // fullWaveNoise
+                                    false    // platformNoiseDisabled
     );
 
   auto platform = std::make_shared<Platform>();

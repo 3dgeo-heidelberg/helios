@@ -299,6 +299,7 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
         for old, new in (
             ("bin_size", "sample_spacing"),
             ("win_size", "peak_window"),
+            ("window_size", "peak_window"),
             ("max_fullwave_range", "max_recording_span"),
         ):
             if old in kwargs:

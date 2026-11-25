@@ -875,8 +875,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
   auto const divergences = readBeamDivergences(scannerNode, 0.0003, 0.0003);
   double const beamDiv_rad = divergences.first;
   double const beamRotation_rad = readBeamRotation(scannerNode, 0.0);
-  double pulseLength_ns =
-    XmlUtils::getAttributeCast<double>(scannerNode, "pulseLength_ns", 4.0);
+  double pulseLength_s = 1e-9 * XmlUtils::getAttributeCast<double>(
+                                  scannerNode, "pulseLength_ns", 4.0);
   std::string id = XmlUtils::getAttributeCast<std::string>(
     scannerNode, "id", std::string("Default"));
   if (XmlUtils::hasAttribute(scannerNode, "averagePower_w"))
@@ -890,8 +890,11 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
     XmlUtils::getAttributeCast<double>(scannerNode, "opticalEfficiency", 0.99);
   double receiverDiameter =
     XmlUtils::getAttributeCast<double>(scannerNode, "receiverDiameter_m", 0.15);
-  double visibility = XmlUtils::getAttributeCast<double>(
-    scannerNode, "atmosphericVisibility_km", 23.0);
+  // XML visibility remains expressed in kilometers for compatibility. The
+  // backend stores it in meters.
+  double visibility_m =
+    1000.0 * XmlUtils::getAttributeCast<double>(
+               scannerNode, "atmosphericVisibility_km", 23.0);
   int wavelength =
     XmlUtils::getAttributeCast<int>(scannerNode, "wavelength_nm", 1064);
   // ########### END Read all the rest #############
@@ -913,11 +916,11 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                emitterPosition,
                                emitterAttitude,
                                pulseFreqs,
-                               pulseLength_ns,
+                               pulseLength_s,
                                pulseAmplitude,
                                efficiency,
                                receiverDiameter,
-                               visibility,
+                               visibility_m,
                                wavelength * 1e-9,
                                rangeErrExpr);
     baseScanDev.setBeamDivergences(divergences.first, divergences.second);
@@ -942,12 +945,12 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
                                               emitterPosition,
                                               emitterAttitude,
                                               pulseFreqs,
-                                              pulseLength_ns,
+                                              pulseLength_s,
                                               id,
                                               pulseAmplitude,
                                               efficiency,
                                               receiverDiameter,
-                                              visibility,
+                                              visibility_m,
                                               wavelength,
                                               false,
                                               false,
@@ -968,7 +971,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement* scannerNode)
     scanner->setScannerHead(createScannerHeadFromXml(scannerNode));
     // Parse full waveform settings
     std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
-    settings->pulseLength_ns = pulseLength_ns;
+    settings->pulseLength_s = pulseLength_s;
     scanner->applySettingsFWF(*createFWFSettingsFromXml(
       scannerNode->FirstChildElement("FWFSettings"), settings));
     // Parse minimum received energy threshold
@@ -1678,8 +1681,10 @@ XmlAssetsLoader::fillScanningDevicesFromChannels(
     scanner->setBeamDivergences(divergences.first, divergences.second, idx);
     scanner->setBeamRotation(
       readBeamRotation(chan, scanner->getBeamRotation(idx)), idx);
-    scanner->setPulseLength_ns(XmlUtils::getAttributeCast<double>(
-      chan, "pulseLength_ns", scanner->getPulseLength_ns(idx)));
+    scanner->setPulseLength(
+      1e-9 * XmlUtils::getAttributeCast<double>(
+               chan, "pulseLength_ns", scanner->getPulseLength(idx) * 1e9),
+      idx);
     if (XmlUtils::hasAttribute(chan, "wavelength_nm")) {
       scanner->setWavelength(
         (XmlUtils::getAttributeCast<int>(chan, "wavelength_nm", 1064)) * 1e-9,

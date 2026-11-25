@@ -16,11 +16,11 @@ def make_energy_device():
         (0, 0, 0),
         _helios.Rotation(),
         [100000],
-        5.0,
+        5e-9,
         4.0,
         0.99,
         0.15,
-        23.0,
+        23000.0,
         1064e-9,
     )
     settings = _helios.FWFSettings()

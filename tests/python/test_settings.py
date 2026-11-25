@@ -96,7 +96,7 @@ def test_full_waveform_settings_defaults():
     assert settings.max_recording_span == 0.0
 
 
-def test_convert_full_waveform_settings_to_cpp():
+def test_full_waveform_settings_propagate_to_cpp():
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
@@ -104,7 +104,7 @@ def test_convert_full_waveform_settings_to_cpp():
         win_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
-    cpp_settings = settings._to_cpp()
+    cpp_settings = settings._cpp_object
 
     assert cpp_settings.sample_spacing == pytest.approx(0.149896229)
     assert cpp_settings.beam_sample_quality == 4
@@ -151,7 +151,7 @@ def test_full_waveform_settings_clone_and_deepcopy_run_survey(survey):
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
-        win_size=2.0 * units.ns,
+        window_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
     settings.runtime_note = "temporary"
@@ -199,7 +199,7 @@ def test_fullwaveform_settings_rejects_invalid_window_in_python():
     with pytest.raises(ValueError, match="peakWindow_m must be >="):
         FullWaveformSettings(
             bin_size=0.2 * units.ns,
-            win_size=0.3 * units.ns,
+            window_size=0.3 * units.ns,
         )
 
 

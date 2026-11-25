@@ -9,7 +9,7 @@ from helios.scene import ScenePart, StaticScene
 from helios.settings import ExecutionSettings, OutputFormat
 from helios.scanner import *
 from helios.survey import Survey
-from helios.utils import set_rng_seed
+from helios.utils import find_file, set_rng_seed
 from helios import HeliosException
 
 
@@ -21,11 +21,22 @@ def test_preinstantiated_scanners():
 
 def test_list_scanners_matches_registry():
     assert list_scanners() == list(scanner_module.SCANNER_REGISTRY.keys())
+    assert all(
+        callable(factory) for factory in scanner_module.SCANNER_REGISTRY.values()
+    )
+    assert all(
+        factory is getattr(scanner_module, name)
+        for name, factory in scanner_module.SCANNER_REGISTRY.items()
+    )
 
 
 def test_scanner_from_name():
     for scanner_name in list_scanners():
-        assert isinstance(scanner_from_name(scanner_name), Scanner)
+        scanner = scanner_from_name(scanner_name)
+        assert isinstance(scanner, Scanner)
+        assert not getattr(scanner, "_is_loaded_from_xml", False)
+        assert scanner._cpp_object.id == ""
+        assert scanner._cpp_object.name == "Unnamed Asset"
 
 
 def test_scanner_from_name_invalid():
@@ -38,6 +49,21 @@ def test_scanneer_flag_from_xml_set():
 
     scanner = Scanner.from_xml("data/scanners_als.xml", scanner_id="leica_als50")
     assert is_xml_loaded(scanner)
+
+
+def test_scanner_xml_visibility_is_converted_to_meters(tmp_path):
+    scanner_xml = find_file("data/scanners_als.xml").read_text()
+    scanner_xml = scanner_xml.replace(
+        '<scanner  id                  = "leica_als50"',
+        '<scanner  atmosphericVisibility_km = "12.5"\n'
+        '          id                  = "leica_als50"',
+        1,
+    )
+    scanner_file = tmp_path / "scanners.xml"
+    scanner_file.write_text(scanner_xml)
+
+    scanner = Scanner.from_xml(scanner_file, scanner_id="leica_als50")
+    assert scanner.device.atmospheric_visibility == 12_500.0
 
 
 def test_scanner_settings_clone_and_deepcopy():
@@ -466,7 +492,7 @@ def test_pulse_length_units_and_channel_isolation(width):
     original = scanner.pulse_length
     scanner.set_pulse_length(width, index=1)
     assert scanner.get_pulse_length(1) == pytest.approx(4e-9)
-    assert scanner._cpp_object.get_specific_pulse_length(1) == pytest.approx(4.0)
+    assert scanner._cpp_object.get_specific_pulse_length(1) == pytest.approx(4e-9)
     assert scanner.pulse_length == original
     scanner.pulse_length = "6 ns"
     assert scanner.pulse_length == pytest.approx(6e-9)
@@ -539,7 +565,7 @@ def test_channel_xml_divergence_is_independent(tmp_path):
     from helios.utils import get_asset_directories
     import _helios
 
-    source = Path(scanner_module.__file__).parent / "data/scanners_als.xml"
+    source = find_file("data/scanners_als.xml")
     xml = (
         source.read_text()
         .replace(
@@ -598,7 +624,7 @@ def _amplitude_xml(tmp_path):
     from pathlib import Path
     from xml.etree import ElementTree
 
-    source = Path(scanner_module.__file__).parent / "data/scanners_als.xml"
+    source = find_file("data/scanners_als.xml")
     tree = ElementTree.parse(source)
     element = tree.getroot().find("scanner[@id='riegl_vq-1560i']")
     path = tmp_path / "scanners.xml"
@@ -779,7 +805,7 @@ def test_elliptical_xml_resolution(tmp_path, attributes, expected):
     from xml.etree import ElementTree as ET
     from helios.scanner import Scanner
 
-    source = Path(scanner_module.__file__).parent / "data/scanners_tls.xml"
+    source = find_file("data/scanners_tls.xml")
     tree = ET.parse(source)
     node = tree.getroot().find("scanner[@id='riegl_vz400']")
     assert node is not None
@@ -814,7 +840,7 @@ def test_elliptical_channel_inheritance(tmp_path, override, expected):
     from xml.etree import ElementTree as ET
     from helios.scanner import Scanner
 
-    source = Path(scanner_module.__file__).parent / "data/scanners_als.xml"
+    source = find_file("data/scanners_als.xml")
     tree = ET.parse(source)
     node = tree.getroot().find("scanner[@id='riegl_vq-1560i']")
     node.attrib.pop("beamDivergence_rad", None)
@@ -895,7 +921,7 @@ def test_single_scanner_xml_beam_rotation(tmp_path, degrees):
     from pathlib import Path
     from xml.etree import ElementTree
 
-    source = Path(scanner_module.__file__).parent / "data/scanners_tls.xml"
+    source = find_file("data/scanners_tls.xml")
     tree = ElementTree.parse(source)
     element = tree.getroot().find("scanner")
     element.set("beamRotation_deg", str(degrees))

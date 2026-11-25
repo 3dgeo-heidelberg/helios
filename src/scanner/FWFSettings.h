@@ -51,9 +51,9 @@ public:
    */
   double scannerWaveLength = 1550.0;
   /**
-   * @brief Pulse length (nanoseconds)
+   * @brief Pulse length (seconds)
    */
-  double pulseLength_ns = 4.0;
+  double pulseLength_s = 4.0e-9;
   /** Sampling geometry; polar preserves the default ray pattern. */
   BeamSamplingMethod beamSamplingMethod = BeamSamplingMethod::Polar;
   /** Ring count, or Cartesian axis cell count (2 * quality - 1). */
@@ -131,7 +131,7 @@ public:
        << "scannerEfficiency = " << scannerEfficiency << "\n"
        << "atmosphericVisibility = " << atmosphericVisibility << "\n"
        << "scannerWaveLength = " << scannerWaveLength << "\n"
-       << "pulseLength_ns = " << pulseLength_ns << "\n"
+       << "pulseLength_s = " << pulseLength_s << "\n"
        << "beamSamplingMethod = " << ::toString(beamSamplingMethod) << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
        << "beamSamplingFactor = " << beamSamplingFactor << "\n"

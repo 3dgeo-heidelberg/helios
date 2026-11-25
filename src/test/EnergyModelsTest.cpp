@@ -27,12 +27,12 @@ energyScanner(double amplitude = 4.0)
                                                  glm::dvec3(0),
                                                  Rotation(),
                                                  std::list<int>{ 100000 },
-                                                 5.0,
+                                                 5e-9,
                                                  "energy-test",
                                                  amplitude,
                                                  0.99,
                                                  0.15,
-                                                 23.0,
+                                                 23000.0,
                                                  1064,
                                                  false,
                                                  false,
@@ -108,7 +108,7 @@ TEST_CASE("Atmospheric extinction uses micrometres and inverse metres",
              std::make_pair(50.0001, 0.000027206932737294658));
   auto scanner = energyScanner();
   auto& device = scanner->getScanningDevice(0);
-  scanner->setVisibility(sample.first);
+  scanner->setVisibility(sample.first * 1000.0);
   double const extinction = device.calcAtmosphericAttenuation();
   scanner->setAtmosphericExtinction(extinction, 0);
   REQUIRE(extinction == Catch::Approx(sample.second).epsilon(1e-12));
@@ -429,11 +429,11 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
                          glm::dvec3(0),
                          Rotation(),
                          std::list<int>{ 100000 },
-                         5.0,
+                         5e-9,
                          4.0,
                          0.99,
                          0.15,
-                         23.0,
+                         23000.0,
                          1064e-9);
   }
   MultiScanner scanner(std::move(devices), "multi", std::list<int>{ 100000 });
@@ -444,7 +444,7 @@ TEST_CASE("Channels own independent subray geometry and weights", "[energy]")
     GENERATE(BeamSamplingMethod::Polar, BeamSamplingMethod::Cartesian);
   scanner.getFWFSettings(1).beamSamplingMethod = method;
   scanner.getFWFSettings(1).pulseShape = "gaussian";
-  scanner.setPulseLength_ns(10.0, 1);
+  scanner.setPulseLength(10e-9, 1);
   scanner.setBeamRotation(PI / 4, 1);
   REQUIRE(scanner.getBeamRotation(0) == 0.0);
   REQUIRE(scanner.getBeamRotation(1) == PI / 4);

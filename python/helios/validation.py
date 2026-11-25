@@ -96,6 +96,9 @@ TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
 # Pulse coordinates are relative to a reference and may precede it.
 TimeOffset = Annotated[float, _unit_validator(units.s), Field(allow_inf_nan=False)]
 
+Power = Annotated[float, _unit_validator(units.W), annotated_types.Ge(0)]
+Speed = Annotated[float, _unit_validator(units.m / units.s), annotated_types.Ge(0)]
+
 
 def _coerce_vector(length: int, name: str):
     def _validator(value: Any):
@@ -103,6 +106,8 @@ def _coerce_vector(length: int, name: str):
             return value
         if isinstance(value, (list, tuple)) and len(value) != length:
             raise ValueError(f"Value must be a {name} of length {length}.")
+        if isinstance(value, units.Quantity):
+            value = value.magnitude
         try:
             return np.asarray(value, dtype=np.float64)
         except (TypeError, ValueError) as exc:
@@ -304,7 +309,7 @@ class ValidatedModelMetaClass(type):
                 # If the property is backed by a C++ object, we first check for
                 # potential updates for the Python object
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
-                    value = getattr(self._cpp_object, f)
+                    value = self._post_get(f, getattr(self._cpp_object, f))
 
                     if _is_optional(a):
                         T = _inner_optional_type(a)
@@ -329,10 +334,15 @@ class ValidatedModelMetaClass(type):
                             return False
 
                         if _check_if_rebuild():
+                            wrapped_values = [
+                                get_args(a)[0]._from_cpp(val) for val in value
+                            ]
+                            if get_origin(a) is tuple:
+                                wrapped_values = tuple(wrapped_values)
                             setattr(
                                 self,
                                 f"_{f}",
-                                [get_args(a)[0]._from_cpp(val) for val in value],
+                                wrapped_values,
                             )
                     else:
                         if hasattr(a, "_cpp_class"):
@@ -344,6 +354,10 @@ class ValidatedModelMetaClass(type):
                                 return value
                             getattr(self, f"_{f}")._cpp_object = value
                             return getattr(self, f"_{f}")
+                        cached = getattr(self, f"_{f}", None)
+                        if isinstance(cached, Model):
+                            cached._cpp_object = value
+                            return cached
                         return value
 
                 # Otherwise, we take the property from a variable with a prefixed underscore
@@ -351,8 +365,11 @@ class ValidatedModelMetaClass(type):
 
             @validate_call
             def _setter(self, value: a):
-                # If a pre_set hook was provided, we execute it
-                self._pre_set(f, value)
+                # Give the pre-set hook an opportunity to validate the Python
+                # value and provide the representation expected by C++.
+                cpp_value = self._pre_set(f, value)
+                if cpp_value is None:
+                    cpp_value = value
 
                 # We always store the object in a variable with a prefixed underscore
                 setattr(self, f"_{f}", value)
@@ -360,14 +377,14 @@ class ValidatedModelMetaClass(type):
                 # If this property is backed by a C++ object, we additionally set it on C++
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
                     if (
-                        is_real_iterable(value)
-                        and len(value) > 0
-                        and hasattr(value[0], "_cpp_object")
+                        is_real_iterable(cpp_value)
+                        and len(cpp_value) > 0
+                        and hasattr(cpp_value[0], "_cpp_object")
                     ):
-                        value = [v._cpp_object for v in value]
-                    if hasattr(value, "_cpp_object"):
-                        value = value._cpp_object
-                    setattr(self._cpp_object, f, value)
+                        cpp_value = [v._cpp_object for v in cpp_value]
+                    if hasattr(cpp_value, "_cpp_object"):
+                        cpp_value = cpp_value._cpp_object
+                    setattr(self._cpp_object, f, cpp_value)
 
                 # If a post_set hook was provided, we execute it
                 self._post_set(f)
@@ -454,10 +471,11 @@ class Model(metaclass=ValidatedModelMetaClass):
         obj = super().__new__(cls)
         obj._yaml_serializable = True
         if cls._cpp_class is not None:
-            cpp_object = kwargs.pop("_cpp_object", None)
+            cpp_object = kwargs.get("_cpp_object", None)
             if cpp_object is None:
                 cpp_object = cls._cpp_class()
-            obj._cpp_object = cpp_object
+            if cpp_object is not None:
+                obj._cpp_object = cpp_object
         return obj
 
     @classmethod
@@ -470,13 +488,28 @@ class Model(metaclass=ValidatedModelMetaClass):
         pass
 
     def _pre_set(self, field, value):
-        """Hook that is called before a property is set"""
-        pass
+        """Validate a value and optionally return its C++ representation.
+
+        Returning ``None`` preserves the original value, which keeps existing
+        validation-only hooks compatible.
+        """
+
+        return value
+
+    def _post_get(self, field, value):
+        """Hook called after retrieving a field value from the C++ object."""
+
+        return value
 
     def _serialization_filename(self) -> str:
         """Hook for naming YAML files in shallow serialization."""
 
         return f"{self.__class__.__name__.lower()}.yaml"
+
+    def _never_serialize_shallow(self) -> bool:
+        """Return whether nested models must always be serialized inline."""
+
+        return False
 
     def _serialization_binary_filename(self) -> str:
         """Hook for naming binary sidecar files."""
@@ -700,12 +733,14 @@ class Model(metaclass=ValidatedModelMetaClass):
 
     @classmethod
     def _from_cpp(cls, value):
+        obj = cls.__new__(cls, _cpp_object=value)
+        obj._during_init = True
         params = {}
         for field, annot in get_all_annotations(cls).items():
             if not hasattr(value, field):
                 continue
 
-            cpp_value = getattr(value, field)
+            cpp_value = obj._post_get(field, getattr(value, field))
 
             if _is_optional(annot):
                 T = _inner_optional_type(annot)
@@ -724,10 +759,29 @@ class Model(metaclass=ValidatedModelMetaClass):
                 args = get_args(annot)
                 if hasattr(args[0], "_from_cpp"):
                     cpp_value = [args[0]._from_cpp(v) for v in cpp_value]
+                    if get_origin(annot) is tuple:
+                        cpp_value = tuple(cpp_value)
 
             params[field] = cpp_value
 
-        return cls(_cpp_object=value, **params)
+        for field, annot in get_all_annotations(cls).items():
+            if field in params:
+                field_value = params[field]
+            elif field in cls._defaults:
+                field_value = cls._defaults[field]
+                if isinstance(field_value, (list, dict, set)) or hasattr(
+                    field_value, "__deepcopy__"
+                ):
+                    field_value = deepcopy(field_value)
+            elif _is_optional(annot):
+                field_value = None
+            else:
+                raise ValueError(f"Missing required argument: {field}")
+
+            setattr(obj, f"_{field}", field_value)
+
+        obj._during_init = False
+        return obj
 
     def _enforce_uniqueness_across_instances(self, field, value):
         """Enforce uniqueness of a field across all instances of a class"""
@@ -892,6 +946,10 @@ class Model(metaclass=ValidatedModelMetaClass):
                 reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
+            if hasattr(self, "_provenance_only_serialization"):
+                reconstructed._provenance_only_serialization = (
+                    self._provenance_only_serialization
+                )
             if hasattr(self, "_provided_fields"):
                 reconstructed._provided_fields = deepcopy(self._provided_fields, memo)
 
@@ -912,6 +970,10 @@ class Model(metaclass=ValidatedModelMetaClass):
                 reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
+            if hasattr(self, "_provenance_only_serialization"):
+                reconstructed._provenance_only_serialization = (
+                    self._provenance_only_serialization
+                )
             if hasattr(self, "_provided_fields"):
                 reconstructed._provided_fields = deepcopy(self._provided_fields, memo)
             return reconstructed

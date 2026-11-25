@@ -1,4 +1,5 @@
 from helios.scene import DynamicScene, StaticScene
+from helios.rotation import Rotation
 from helios.utils import (
     classonlymethod,
     get_asset_directories,
@@ -7,8 +8,11 @@ from helios.utils import (
 from helios.validation import (
     AssetPath,
     Model,
+    R3Vector,
+    Speed,
     UpdateableMixin,
     get_all_annotations,
+    units,
     validate_xml_file,
 )
 from pydantic import Field, validate_call
@@ -172,12 +176,28 @@ class StaticPlatformSettings(PlatformSettingsBase):
 
 class DynamicPlatformSettings(PlatformSettings):
     trajectory_settings: TrajectorySettings = TrajectorySettings()
-    speed_m_s: Annotated[float, Field(ge=0)] = 70
+    speed_m_s: Speed = 70 * units.m / units.s
 
 
 class Platform(Printable, Model, cpp_class=_helios.Platform):
     # TODO: should platform_settings get set from xml as well?
     platform_settings: Optional[PlatformSettings] = None
+    scanner_mount_position: R3Vector = (0.0, 0.0, 0.0)
+    scanner_mount_attitude: Rotation = Rotation()
+
+    def _never_serialize_shallow(self) -> bool:
+        return True
+
+    @classmethod
+    def _from_cpp(cls, value):
+        if cls is Platform:
+            if isinstance(value, _helios.GroundVehiclePlatform):
+                return GroundVehiclePlatform._from_cpp(value)
+            if isinstance(value, _helios.LinearPathPlatform):
+                return LinearPathPlatform._from_cpp(value)
+            if type(value) is _helios.Platform:
+                return StaticPlatform._from_cpp(value)
+        return Model._from_cpp.__func__(cls, value)
 
     @classonlymethod
     @validate_call
@@ -243,23 +263,36 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         return cppplatform
 
 
+class StaticPlatform(Platform, cpp_class=_helios.Platform):
+    pass
+
+
+class LinearPathPlatform(Platform, cpp_class=_helios.LinearPathPlatform):
+    pass
+
+
+class GroundVehiclePlatform(Platform, cpp_class=_helios.GroundVehiclePlatform):
+    drag: float = 1.0
+
+
 #
 # Predefined platforms
 #
 
-PLATFORM_REGISTRY: dict[str, tuple[str, str]] = {
-    "sr22": ("data/platforms.xml", "sr22"),
-    "quadcopter": ("data/platforms.xml", "quadcopter"),
-    "copter_linearpath": ("data/platforms.xml", "copter_linearpath"),
-    "tractor": ("data/platforms.xml", "tractor"),
-    "tractor_leftside": ("data/platforms.xml", "tractor_leftside"),
-    "vehicle_linearpath": ("data/platforms.xml", "vehicle_linearpath"),
-    "vmx_450_car_left": ("data/platforms.xml", "vmx-450-car-left"),
-    "vmx_450_car_right": ("data/platforms.xml", "vmx-450-car-right"),
-    "vmq_1ha_car": ("data/platforms.xml", "vmq-1ha-car-0"),
-    "simple_linearpath": ("data/platforms.xml", "simple_linearpath"),
-    "tripod": ("data/platforms.xml", "tripod"),
-}
+PlatformFactory = Callable[[], Platform]
+PLATFORM_REGISTRY: dict[str, PlatformFactory] = {}
+
+
+def registered_platform(name: str):
+    """Register a predefined platform factory under ``name``."""
+
+    def decorator(factory: PlatformFactory) -> PlatformFactory:
+        if name in PLATFORM_REGISTRY:
+            raise ValueError(f"Platform '{name}' is already registered")
+        PLATFORM_REGISTRY[name] = factory
+        return factory
+
+    return decorator
 
 
 def list_platforms() -> list[str]:
@@ -282,26 +315,103 @@ def platform_from_name(platform_name: str) -> Platform:
     :rtype: Platform
     """
     try:
-        platform_file, platform_id = PLATFORM_REGISTRY[platform_name]
+        factory = PLATFORM_REGISTRY[platform_name]
     except KeyError as exc:
         valid_names = ", ".join(list_platforms())
         raise ValueError(
             f"Unknown platform '{platform_name}'. Available platforms: {valid_names}"
         ) from exc
-    return Platform.from_xml(platform_file, platform_id=platform_id)
+    return factory()
 
 
-def _make_predefined_platform(platform_name: str) -> Callable[[], Platform]:
-    def _platform_factory():
-        return platform_from_name(platform_name)
+@registered_platform("sr22")
+def sr22() -> Platform:
+    return LinearPathPlatform(
+        scanner_mount_position=np.array((0, 0, 0.7)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("x", -np.pi / 2 * units.rad), ("z", np.pi / 2 * units.rad))
+        ),
+    )
 
-    _platform_factory.__name__ = platform_name
-    _platform_factory.__qualname__ = platform_name
-    _platform_factory.__doc__ = f"Create predefined platform '{platform_name}'."
-    return _platform_factory
+
+@registered_platform("copter_linearpath")
+def copter_linearpath() -> Platform:
+    return LinearPathPlatform(
+        scanner_mount_position=np.array((0, 0, 0.2)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("x", 175 * units.deg),)
+        ),
+    )
 
 
-for _platform_name in PLATFORM_REGISTRY:
-    globals()[_platform_name] = _make_predefined_platform(_platform_name)
+@registered_platform("tractor")
+def tractor() -> Platform:
+    return GroundVehiclePlatform(
+        drag=0.005,
+        scanner_mount_position=np.array((0, 1, 4)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("z", np.pi / 2 * units.rad), ("y", -np.pi / 6 * units.rad)),
+            frame="local",
+        ),
+    )
 
-del _platform_name
+
+@registered_platform("tractor_leftside")
+def tractor_leftside() -> Platform:
+    return GroundVehiclePlatform(
+        drag=0.01,
+        scanner_mount_position=np.array((0, 0.8, 4)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("y", -35 * units.deg),)
+        ),
+    )
+
+
+@registered_platform("vehicle_linearpath")
+def vehicle_linearpath() -> Platform:
+    return LinearPathPlatform(
+        scanner_mount_position=np.array((0, 0, 2.4)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("z", np.pi / 2 * units.rad),), frame="local"
+        ),
+    )
+
+
+@registered_platform("vmx_450_car_left")
+def vmx_450_car_left() -> Platform:
+    return LinearPathPlatform(
+        scanner_mount_position=np.array((-0.18, -2.2, 2.2)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("x", 40 * units.deg), ("z", 150 * units.deg))
+        ),
+    )
+
+
+@registered_platform("vmx_450_car_right")
+def vmx_450_car_right() -> Platform:
+    return LinearPathPlatform(
+        scanner_mount_position=np.array((0.18, -2.2, 2.2)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("x", 40 * units.deg), ("z", 210 * units.deg))
+        ),
+    )
+
+
+@registered_platform("vmq_1ha_car")
+def vmq_1ha_car() -> Platform:
+    return LinearPathPlatform(
+        scanner_mount_position=np.array((0, -1.15, 2.2)) * units.m,
+        scanner_mount_attitude=Rotation.from_axis_angles(
+            rotations=(("x", np.pi / 4 * units.rad), ("z", 0 * units.rad))
+        ),
+    )
+
+
+@registered_platform("simple_linearpath")
+def simple_linearpath() -> Platform:
+    return LinearPathPlatform()
+
+
+@registered_platform("tripod")
+def tripod() -> Platform:
+    return StaticPlatform(scanner_mount_position=np.array((0, 0, 1.5)) * units.m)

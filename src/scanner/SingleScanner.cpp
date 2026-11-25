@@ -6,17 +6,38 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
+SingleScanner::SingleScanner(ScanningDevice const& device,
+                             std::string const& id)
+  : Scanner(id,
+            device.supportedPulseFreqs_Hz,
+            false,
+            false,
+            false,
+            false,
+            false)
+  , scanDev(device)
+{
+  scanDev.devIdx = 0;
+}
+
+void
+SingleScanner::setScanningDevice(ScanningDevice const& device)
+{
+  scanDev = ScanningDevice(device);
+  scanDev.devIdx = 0;
+}
+
 SingleScanner::SingleScanner(
   double beamDiv_rad,
   glm::dvec3 beamOrigin,
   Rotation beamOrientation,
   std::list<int> const& pulseFreqs,
-  double pulseLength_ns,
+  double pulseLength_s,
   std::string id,
   double pulseAmplitude,
   double efficiency,
   double receiverDiameter,
-  double atmosphericVisibility,
+  double atmosphericVisibility_m,
   int wavelength,
   bool writeWaveform,
   bool writePulse,
@@ -37,11 +58,11 @@ SingleScanner::SingleScanner(
             beamOrigin,
             beamOrientation,
             pulseFreqs,
-            pulseLength_ns,
+            pulseLength_s,
             pulseAmplitude,
             efficiency,
             receiverDiameter,
-            atmosphericVisibility,
+            atmosphericVisibility_m,
             wavelength / 1000000000.0,
             rangeErrExpr)
 {

@@ -216,7 +216,7 @@ Scanner::toString()
        << "\tBeam Divergence: " << getBeamDivergenceX(i) * 1e3 << " / "
        << getBeamDivergenceY(i) * 1e3 << " mrad (X/Y)\n"
        << "\tWavelength: " << (int)(getWavelength(i) * 1e9) << " nm\n"
-       << "\tVisibility: " << getVisibility(i) << " km\n";
+       << "\tVisibility: " << getVisibility(i) << " m\n";
   }
   return ss.str();
 }

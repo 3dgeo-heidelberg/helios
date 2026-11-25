@@ -2,7 +2,6 @@ import _helios
 import numpy as np
 import math
 import threading
-from unittest.mock import MagicMock, patch
 import pytest
 
 STATIC_SCENE_XML = "data/scenes/demo/box_scene.xml"
@@ -297,8 +296,27 @@ def test_trajectory_property():
     assert traj.yaw == 0.6
 
 
-def test_noise_source_instantiation():
-    noise_src = _helios.NoiseSource()
+@pytest.mark.parametrize(
+    "abstract_type",
+    (
+        _helios.AbstractBeamDeflector,
+        _helios.AbstractDetector,
+        _helios.KDTreeFactory,
+        _helios.NoiseSource,
+        _helios.RandomNoiseSource,
+        _helios.Primitive,
+        _helios.PulseThreadPoolInterface,
+        _helios.ScanningPulseProcess,
+        _helios.Simulation,
+    ),
+)
+def test_abstract_types_are_not_constructible(abstract_type):
+    with pytest.raises(TypeError, match="No constructor defined"):
+        abstract_type()
+
+
+def test_uniform_noise_source_instantiation():
+    noise_src = _helios.UniformNoiseSource()
     assert isinstance(noise_src, _helios.NoiseSource)
 
     # Check default properties
@@ -310,8 +328,8 @@ def test_noise_source_instantiation():
     assert noise_src.fixed_value_remaining_uses == 0
 
 
-def test_noise_source_properties():
-    noise_src = _helios.NoiseSource()
+def test_uniform_noise_source_properties():
+    noise_src = _helios.UniformNoiseSource()
 
     # Test property setters and getters
     noise_src.clip_min = -1.0
@@ -405,7 +423,7 @@ def test_fwf_settings_instantiation():
     assert fwf.scanner_efficiency == 0.9
     assert fwf.atmospheric_visibility == 0.9
     assert fwf.scanner_wave_length == 1550.0
-    assert fwf.pulse_length == 4.0
+    assert fwf.pulse_length == 4.0e-9
     assert fwf.beam_sample_quality == 3
     assert fwf.peak_window == 0.149896229
     assert fwf.max_recording_span == 0.0
@@ -422,7 +440,7 @@ def test_fwf_settings_set_get_properties():
     fwf.scanner_efficiency = 0.85
     fwf.atmospheric_visibility = 0.95
     fwf.scanner_wave_length = 1600.0
-    fwf.pulse_length = 5.0
+    fwf.pulse_length = 5.0e-9
     fwf.beam_sample_quality = 4
     fwf.peak_window = 1.25
     fwf.max_recording_span = 100.0
@@ -435,7 +453,7 @@ def test_fwf_settings_set_get_properties():
     assert fwf.scanner_efficiency == 0.85
     assert fwf.atmospheric_visibility == 0.95
     assert fwf.scanner_wave_length == 1600.0
-    assert fwf.pulse_length == 5.0
+    assert fwf.pulse_length == 5.0e-9
     assert fwf.beam_sample_quality == 4
     assert fwf.peak_window == 1.25
     assert fwf.max_recording_span == 100.0
@@ -455,7 +473,7 @@ def test_fwf_settings_to_string():
         "scannerEfficiency = 0.9\n"
         "atmosphericVisibility = 0.9\n"
         "scannerWaveLength = 1550\n"
-        "pulseLength_ns = 4\n"
+        "pulseLength_s = 4e-09\n"
         "beamSamplingMethod = polar\n"
         "beamSampleQuality = 3\n"
         "beamSamplingFactor = 2\n"
@@ -523,8 +541,8 @@ def test_scanner_head_properties():
     assert scanner_head.mount_relative_attitude is not None
 
     # Test read/write properties
-    scanner_head.rotate_per_sec_max = 2.0
-    assert scanner_head.rotate_per_sec_max == 2.0
+    scanner_head.rotation_speed_max = 2.0
+    assert scanner_head.rotation_speed_max == 2.0
 
     scanner_head.rotate_per_sec = 1.0
     assert scanner_head.rotate_per_sec == 1.0
@@ -879,13 +897,6 @@ def test_platform_properties():
     assert platform.device_relative_attitude.axis == (1.0, 0.0, 0.0)
     assert platform.device_relative_attitude.angle == 0.0
 
-    assert platform.position_x_noise_source is None
-    assert platform.position_y_noise_source is None
-    assert platform.position_z_noise_source is None
-    assert platform.attitude_x_noise_source is None
-    assert platform.attitude_y_noise_source is None
-    assert platform.attitude_z_noise_source is None
-
     assert platform.target_waypoint[0] == 0.0
     assert platform.target_waypoint[1] == 0.0
     assert platform.target_waypoint[2] == 0.0
@@ -923,668 +934,3 @@ def test_platform_properties():
     assert platform.cached_vector_to_target_xy[0] == 0.0
     assert platform.cached_vector_to_target_xy[1] == 0.0
     assert platform.cached_vector_to_target_xy[2] == 0.0
-
-
-class MockBeamDeflector:
-    def __init__(self):
-        pass
-
-    def __eq__(self, other):
-        return isinstance(other, MockBeamDeflector)
-
-
-class MockDetector:
-    def __init__(self):
-        pass
-
-    def __eq__(self, other):
-        return isinstance(other, MockDetector)
-
-
-class ExampleScanner(_helios.Scanner):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._max_nor = 10
-        self._dr2 = 0.1
-        self._head_relative_emitter_attitude = _helios.Rotation()
-        self._head_relative_emitter_position = (0.0, 0.0, 0.0)
-        self._active = True
-        self._write_waveform = False
-        self._calc_echowidth = False
-        self._full_wave_noise = False
-        self._platform_noise_disabled = False
-        self._fixed_incidence_angle = False
-        self._id = "TestScannerID"
-        self._device_id = "Device0"
-        self._num_devices = 1
-        self._pulse_model = _helios.PulseShape.create()
-        self._scanner_head = _helios.ScannerHead((0.0, 0.0, 1.0), 1.0)
-        self._beam_deflector = (
-            MockBeamDeflector()
-        )  # Use a mock or default implementation
-        self._detector = MockDetector()
-        self._supported_pulse_freqs_hz = [1, 2, 3]
-        self._fwf_settings = _helios.FWFSettings()
-        self._received_energy_min = 0.0
-
-    def computeReceivedPower(self, cosine, target_range, material, subray_index, idx):
-        return cosine * 2.0
-
-    def computeReceivedPowerWithSigma(self, target_range, sigma, subray_index, idx):
-        return sigma * 3.0
-
-    def computePowerRatio(self, cosine, target_range, material, subray_index, idx):
-        return cosine * 0.25
-
-    def computePowerRatioWithSigma(self, target_range, sigma, subray_index, idx):
-        return sigma * 0.125
-
-    def getScannerId(self):
-        return "TestScannerID"
-
-    def getNumDevices(self):
-        return 1
-
-    def getDeviceId(self, index):
-        return f"Device{index}"
-
-    def getPulseAmplitude(self, index):
-        return 10.0
-
-    def getBeamDivergence(self, index):
-        return 0.01
-
-    def getWavelength(self, index):
-        return 0.000532
-
-    def getVisibility(self, index):
-        return 10.0
-
-    def prepareSimulation(self):
-        pass
-
-    def retrieveCurrentSettings(self, idx):
-        return _helios.ScannerSettings()
-
-    def applySettings(self, settings, idx):
-        pass
-
-    def applySettingsFWF(self, fwfSettings, idx):
-        pass
-
-    def doSimStep(self, legIndex, currentGpsTime):
-        pass
-
-    def calcRaysNumber(self, idx):
-        pass
-
-    def preparePulse(self, idx):
-        pass
-
-    def getPulseModel(self, idx):
-        return self._pulse_model
-
-    def calcAtmosphericAttenuation(self, idx):
-        return 0.0
-
-    def calcAbsoluteBeamAttitude(self, idx):
-        return _helios.Rotation()
-
-    def checkMaxNOR(self, nor, idx):
-        return True
-
-    def onLegComplete(self):
-        pass
-
-    def onSimulationFinished(self):
-        pass
-
-    def handleTrajectoryOutput(self):
-        pass
-
-    def trackOutputPath(self):
-        pass
-
-    def getCurrentPulseNumber(self, idx):
-        return 0  # Default implementation
-
-    def getNumRays(self, idx):
-        return 0  # Default implementation
-
-    def setNumRays(self, numRays, idx):
-        pass  # Default implementation
-
-    def getPulseLength_ns(self, idx):
-        return 0.0  # Default implementation
-
-    def setPulseLength_ns(self, pulseLength_ns, idx):
-        pass  # Default implementation
-
-    def lastPulseWasHit(self, idx):
-        return False  # Default implementation
-
-    def setLastPulseWasHit(self, lastPulseWasHit, idx):
-        pass  # Default implementation
-
-    def getBeamDivergence(self, idx):
-        return 0.0  # Default implementation
-
-    def getBeamRotation(self, idx):
-        return getattr(self, "_beam_rotation", 0.0)
-
-    def setBeamRotation(self, value, idx):
-        self._beam_rotation = value
-
-    def setBeamDivergence(self, beamDivergence, idx):
-        pass  # Default implementation
-
-    def getPulseAmplitude(self, idx):
-        return 0.0  # Default implementation
-
-    def setPulseAmplitude(self, pulseAmplitude, idx):
-        pass  # Default implementation
-
-    def to_string(self):
-        return "Scanner Info"  # Default implementation
-
-    def getEfficiency(self, idx):
-        # Default value for simplicity
-        return 85.0
-
-    def setEfficiency(self, efficiency, idx):
-        pass
-
-    def getReceiverDiameter(self, idx):
-        # Default value for simplicity
-        return 12.0
-
-    def setReceiverDiameter(self, receiverDiameter, idx):
-        pass
-
-    def getVisibility(self, idx):
-        # Default value for simplicity
-        return 10.0
-
-    def setVisibility(self, visibility, idx):
-        pass
-
-    def getWavelength(self, idx):
-        # Default value for simplicity
-        return 550.0
-
-    def setWavelength(self, wavelength, idx):
-        pass
-
-    def getAtmosphericExtinction(self, idx):
-        # Default value for simplicity
-        return 0.2
-
-    def setAtmosphericExtinction(self, atmosphericExtinction, idx):
-        pass
-
-    def getMaxNOR(self, idx=0):
-        return self._max_nor
-
-    def setMaxNOR(self, maxNOR, idx=0):
-        self._max_nor = maxNOR
-
-    def getHeadRelativeEmitterAttitude(self, idx=0):
-        return self._head_relative_emitter_attitude
-
-    def setHeadRelativeEmitterAttitude(self, attitude, idx=0):
-        self._head_relative_emitter_attitude = attitude
-
-    def getHeadRelativeEmitterPosition(self, idx=0):
-        return self._head_relative_emitter_position
-
-    def setHeadRelativeEmitterPosition(self, position, idx=0):
-        self._head_relative_emitter_position = position
-
-    def getDr2(self, idx=0):
-        return self._dr2
-
-    def setDr2(self, dr2, idx=0):
-        self._dr2 = dr2
-
-    def isActive(self):
-        return self._active
-
-    def setActive(self, active):
-        self._active = active
-
-    def isWriteWaveform(self):
-        return self._write_waveform
-
-    def setWriteWaveform(self, write_waveform):
-        self._write_waveform = write_waveform
-
-    def isCalcEchowidth(self):
-        return self._calc_echowidth
-
-    def setCalcEchowidth(self, calc_echowidth):
-        self._calc_echowidth = calc_echowidth
-
-    def isFullWaveNoise(self):
-        return self._full_wave_noise
-
-    def setFullWaveNoise(self, full_wave_noise):
-        self._full_wave_noise = full_wave_noise
-
-    def isPlatformNoiseDisabled(self):
-        return self._platform_noise_disabled
-
-    def setPlatformNoiseDisabled(self, platform_noise_disabled):
-        self._platform_noise_disabled = platform_noise_disabled
-
-    def isFixedIncidenceAngle(self):
-        return self._fixed_incidence_angle
-
-    def setFixedIncidenceAngle(self, fixed_incidence_angle):
-        self._fixed_incidence_angle = fixed_incidence_angle
-
-    def getScannerHead(self, idx=0):
-        return self._scanner_head
-
-    def setScannerHead(self, scannerHead, idx=0):
-        self._scanner_head = scannerHead
-
-    def getBeamDeflector(self, idx=0):
-        return self._beam_deflector
-
-    def setBeamDeflector(self, beamDeflector, idx=0):
-        self._beam_deflector = beamDeflector
-
-    def getDetector(self, idx=0):
-        return self._detector
-
-    def setDetector(self, detector, idx=0):
-        self._detector = detector
-
-    def getSupportedPulseFreqs_Hz(self, idx):
-        return self._supported_pulse_freqs_hz
-
-    def setSupportedPulseFreqs_Hz(self, supportedPulseFreqs_Hz, idx):
-        self._supported_pulse_freqs_hz = supportedPulseFreqs_Hz
-
-    def getFWFSettings(self, idx):
-        return self._fwf_settings
-
-    def setFWFSettings(self, fwfSettings, idx):
-        self._fwf_settings = fwfSettings
-
-    def getReceivedEnergyMin(self, idx):
-        return self._received_energy_min
-
-    def setReceivedEnergyMin(self, receivedEnergyMin_W, idx):
-        self._received_energy_min = receivedEnergyMin_W
-
-    def getHeadRelativeEmitterPositionByRef(self, idx=0):
-        return self._head_relative_emitter_position
-
-    def getHeadRelativeEmitterAttitudeByRef(self, idx=0):
-        return self._head_relative_emitter_attitude
-
-
-# Test class to define the methods
-class TestScannerMethods:
-    @pytest.fixture
-    def scanner(self):
-        return ExampleScanner(id="SCANNER-ID", pulseFreqs=[1, 2, 3])
-
-    def test_scanner_construction(self, scanner):
-        # Test default construction
-        assert scanner is not None
-
-        # Test parameterized construction
-        scanner1 = scanner
-        scanner = ExampleScanner(scanner1)
-        assert scanner.id == "SCANNER-ID"
-
-    def test_current_pulse_number(self, scanner):
-        # Mocking getCurrentPulseNumber with index
-        with patch.object(
-            scanner, "getCurrentPulseNumber", return_value=42
-        ) as mock_method:
-            assert scanner.getCurrentPulseNumber(0) == 42
-            mock_method.assert_called_once_with(0)
-
-        # Mocking getCurrentPulseNumber without index (default version)
-        with patch.object(
-            scanner, "getCurrentPulseNumber", return_value=42
-        ) as mock_method:
-            assert scanner.getCurrentPulseNumber() == 42
-            mock_method.assert_called_once()  # No argument should be passed
-
-    def test_scanner_methods(self, scanner):
-        # Mocking methods to test calls
-        with patch.object(
-            scanner, "initialize_sequential_generators", return_value=None
-        ) as mock_method:
-            scanner.initialize_sequential_generators()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "build_scanning_pulse_process", return_value=None
-        ) as mock_method:
-            scanner.build_scanning_pulse_process(0, 1, 2)
-            mock_method.assert_called_once_with(0, 1, 2)
-
-        with patch.object(scanner, "apply_settings", return_value=None) as mock_method:
-            settings = _helios.ScannerSettings()
-            scanner.apply_settings(settings)
-            mock_method.assert_called_once_with(settings)
-
-        with patch.object(
-            scanner, "retrieve_current_settings", return_value=None
-        ) as mock_method:
-            scanner.retrieve_current_settings()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "apply_settings_FWF", return_value=None
-        ) as mock_method:
-            fwf_settings = _helios.FWFSettings()
-            scanner.apply_settings_FWF(fwf_settings)
-            mock_method.assert_called_once_with(fwf_settings)
-
-        with patch.object(scanner, "do_sim_step", return_value=None) as mock_method:
-            scanner.do_sim_step(1, 123.456)
-            mock_method.assert_called_once_with(1, 123.456)
-
-        with patch.object(
-            scanner, "calc_rays_number", return_value=None
-        ) as mock_method:
-            scanner.calc_rays_number()
-            mock_method.assert_called_once()
-
-        with patch.object(scanner, "prepare_pulse", return_value=None) as mock_method:
-            scanner.prepare_pulse()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "calc_atmospheric_attenuation", return_value=0.0
-        ) as mock_method:
-            scanner.calc_atmospheric_attenuation()
-            mock_method.assert_called_once()
-
-        with patch.object(scanner, "check_max_NOR", return_value=False) as mock_method:
-            scanner.check_max_NOR(100)
-            mock_method.assert_called_once_with(100)
-
-        with patch.object(
-            scanner, "calc_absolute_beam_attitude", return_value=None
-        ) as mock_method:
-            scanner.calc_absolute_beam_attitude()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "handle_sim_step_noise", return_value=None
-        ) as mock_method:
-            scanner.handle_sim_step_noise()
-            mock_method.assert_called_once()
-
-        with patch.object(scanner, "on_leg_complete", return_value=None) as mock_method:
-            scanner.on_leg_complete()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "on_simulation_finished", return_value=None
-        ) as mock_method:
-            scanner.on_simulation_finished()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "handle_trajectory_output", return_value=None
-        ) as mock_method:
-            scanner.handle_trajectory_output()
-            mock_method.assert_called_once()
-
-        with patch.object(
-            scanner, "track_output_path", return_value=None
-        ) as mock_method:
-            scanner.track_output_path()
-            mock_method.assert_called_once()
-
-    def test_scanner_to_string(self, scanner):
-        result = scanner.to_string()
-        assert isinstance(result, str)
-
-    def test_efficiency(self, scanner):
-        with patch.object(scanner, "getEfficiency", return_value=0.9) as mock_get:
-            assert scanner.getEfficiency(0) == 0.9
-            mock_get.assert_called_once_with(0)
-
-        with patch.object(scanner, "getEfficiency", return_value=0.9) as mock_get:
-            assert scanner.getEfficiency() == 0.9
-            mock_get.assert_called_once()
-
-        with patch.object(scanner, "setEfficiency") as mock_set:
-            scanner.setEfficiency(0.8, 0)
-            mock_set.assert_called_once_with(0.8, 0)
-
-    def test_receiver_diameter(self, scanner):
-        with patch.object(
-            scanner, "getReceiverDiameter", return_value=50.0
-        ) as mock_get:
-            assert scanner.getReceiverDiameter(0) == 50.0
-            mock_get.assert_called_once_with(0)
-
-        with patch.object(
-            scanner, "getReceiverDiameter", return_value=50.0
-        ) as mock_get:
-            assert scanner.getReceiverDiameter() == 50.0
-            mock_get.assert_called_once()
-
-        with patch.object(scanner, "setReceiverDiameter") as mock_set:
-            scanner.setReceiverDiameter(55.0, 0)
-            mock_set.assert_called_once_with(55.0, 0)
-
-    def test_visibility(self, scanner):
-        with patch.object(scanner, "getVisibility", return_value=10.0) as mock_get:
-            assert scanner.getVisibility(0) == 10.0
-            mock_get.assert_called_once_with(0)
-
-        with patch.object(scanner, "getVisibility", return_value=10.0) as mock_get:
-            assert scanner.getVisibility() == 10.0
-            mock_get.assert_called_once()
-
-        with patch.object(scanner, "setVisibility") as mock_set:
-            scanner.setVisibility(12.0, 0)
-            mock_set.assert_called_once_with(12.0, 0)
-
-    def test_wavelength(self, scanner):
-        with patch.object(scanner, "getWavelength", return_value=500.0) as mock_get:
-            assert scanner.getWavelength(0) == 500.0
-            mock_get.assert_called_once_with(0)
-
-        with patch.object(scanner, "getWavelength", return_value=500.0) as mock_get:
-            assert scanner.getWavelength() == 500.0
-            mock_get.assert_called_once()
-
-        with patch.object(scanner, "setWavelength") as mock_set:
-            scanner.setWavelength(510.0, 0)
-            mock_set.assert_called_once_with(510.0, 0)
-
-    def test_atmospheric_extinction(self, scanner):
-        with patch.object(
-            scanner, "getAtmosphericExtinction", return_value=0.1
-        ) as mock_get:
-            assert scanner.getAtmosphericExtinction(0) == 0.1
-            mock_get.assert_called_once_with(0)
-
-        with patch.object(
-            scanner, "getAtmosphericExtinction", return_value=0.1
-        ) as mock_get:
-            assert scanner.getAtmosphericExtinction() == 0.1
-            mock_get.assert_called_once()
-
-        with patch.object(scanner, "setAtmosphericExtinction") as mock_set:
-            scanner.setAtmosphericExtinction(0.2, 0)
-            mock_set.assert_called_once_with(0.2, 0)
-
-    def test_max_nor(self, scanner):
-        assert scanner.getMaxNOR() == 10
-
-    def test_head_relative_emitter_attitude(self, scanner):
-        attitude = _helios.Rotation()
-        scanner.setHeadRelativeEmitterAttitude(attitude)
-        assert scanner.getHeadRelativeEmitterAttitude() == attitude
-
-    def test_head_relative_emitter_position(self, scanner):
-        position = (1.0, 2.0, 3.0)
-        assert scanner.getHeadRelativeEmitterPosition() == (0.0, 0.0, 0.0)
-
-    def test_dr2(self, scanner):
-        assert scanner.getDr2() == 0.1
-
-    def test_is_active(self, scanner):
-        assert scanner.isActive()
-
-    def test_is_write_waveform(self, scanner):
-        assert not scanner.isWriteWaveform()
-
-    def test_is_calc_echowidth(self, scanner):
-        assert not scanner.isCalcEchowidth()
-
-    def test_is_full_wave_noise(self, scanner):
-        assert not scanner.isFullWaveNoise()
-
-    def test_is_platform_noise_disabled(self, scanner):
-        assert not scanner.isPlatformNoiseDisabled()
-
-    def test_is_fixed_incidence_angle(self, scanner):
-        assert not scanner.isFixedIncidenceAngle()
-
-    def test_device_id(self, scanner):
-        assert scanner.getDeviceId(0) == "Device0"
-
-    def test_scanner_head(self, scanner):
-        head = _helios.ScannerHead(
-            (1.0, 0.0, 0.0), 2.0
-        )  # Replace with actual initialization
-        scanner.setScannerHead(head, 0)
-        assert scanner.getScannerHead(0) == head
-
-    def test_beam_deflector(self, scanner):
-        deflector = MockBeamDeflector()  # Use MockBeamDeflector
-        scanner.setBeamDeflector(deflector, 0)
-        assert scanner.getBeamDeflector(0) == deflector
-
-    def test_detector(self, scanner):
-        detector = MockDetector()  # Use MockDetector
-        scanner.setDetector(detector, 0)
-        assert scanner.getDetector(0) == detector
-
-    def test_supported_pulse_freqs_hz(self, scanner):
-        freqs = [1, 2, 3]  # Example frequencies
-        scanner.setSupportedPulseFreqs_Hz(freqs, 0)
-        assert list(scanner.getSupportedPulseFreqs_Hz(0)) == freqs
-
-    def test_fwf_settings(self, scanner):
-        fwf_settings = _helios.FWFSettings()  # Replace with actual initialization
-        scanner.setFWFSettings(fwf_settings, 0)
-        assert scanner.getFWFSettings(0) == fwf_settings
-
-    def test_received_energy_min(self, scanner):
-        scanner.setReceivedEnergyMin(1.5, 0)
-        assert scanner.getReceivedEnergyMin(0) == 1.5
-
-    def test_scanner_head_default(self, scanner):
-        head = _helios.ScannerHead(
-            (1.0, 0.0, 0.0), 2.0
-        )  # Replace with actual initialization
-        scanner.setScannerHead(head)
-        assert scanner.getScannerHead() == head
-
-    def test_beam_deflector_default(self, scanner):
-        deflector = MockBeamDeflector()  # Replace with actual initialization
-        scanner.setBeamDeflector(deflector)
-        assert scanner.getBeamDeflector() == deflector
-
-    def test_detector_default(self, scanner):
-        detector = MockDetector()  # Replace with actual initialization
-        scanner.setDetector(detector)
-        assert scanner.getDetector() == detector
-
-    def test_supported_pulse_freqs_hz_default(self, scanner):
-        freqs = [1, 2, 3]  # Example frequencies
-        scanner.setSupportedPulseFreqs_Hz(freqs, 0)
-        assert list(scanner.getSupportedPulseFreqs_Hz(0)) == freqs
-
-    def test_get_head_relative_emitter_position_by_ref(self, scanner):
-        pos = (1.0, 2.0, 3.0)
-        scanner.setHeadRelativeEmitterPosition(pos)
-        pos_ref = scanner.getHeadRelativeEmitterPositionByRef()
-        assert pos_ref[0] == pos[0]
-        assert pos_ref[1] == pos[1]
-        assert pos_ref[2] == pos[2]
-
-    def test_get_head_relative_emitter_attitude_by_ref(self, scanner):
-        attitude = _helios.Rotation()  # Use appropriate initialization
-        scanner.setHeadRelativeEmitterAttitude(attitude)
-        attitude_ref = scanner.getHeadRelativeEmitterAttitudeByRef()
-        assert attitude_ref == attitude
-
-
-def test_scanner_normalized_transfer_dispatch():
-    scanner = ExampleScanner("transfer-test", [100000])
-    assert scanner.compute_power_ratio(0.5, 100.0, _helios.Material(), 0, 0) == 0.125
-    assert scanner.compute_power_ratio_with_sigma(100.0, 2.0, 0, 0) == 0.25
-
-
-def test_scanner_received_power_dispatch():
-    scanner = ExampleScanner("power-test", [100000])
-    assert scanner.compute_received_power(0.5, 100.0, _helios.Material(), 0, 0) == 1.0
-    assert scanner.compute_received_power_with_sigma(100.0, 2.0, 0, 0) == 6.0
-
-
-@pytest.mark.parametrize("shape", ["gamma", "gaussian"])
-def test_analytic_pulse_bindings(shape):
-    pulse = _helios.PulseShape.create(shape, 5.0, 1e-4)
-    cls = _helios.GammaPulse if shape == "gamma" else _helios.GaussianPulse
-    assert isinstance(pulse, cls)
-    assert isinstance(pulse, _helios.PulseShape)
-    assert not hasattr(pulse, "peak_offset")
-    assert pulse.evaluate(0) == pytest.approx(1)
-    lower, upper = pulse.recording_bounds
-    assert pulse.evaluate(upper) == pytest.approx(1e-4)
-    assert pulse.evaluate(upper + 0.01) > 0
-    assert lower < 0
-
-
-def test_elliptical_subray_metadata():
-    device = _helios.ScanningDevice(
-        0,
-        "ellipse",
-        0.0003,
-        (0.0, 0.0, 0.0),
-        _helios.Rotation(),
-        [100000],
-        5.0,
-        4.0,
-        0.99,
-        0.15,
-        23.0,
-        1064e-9,
-    )
-    device.set_beam_divergences(0.0003, 0.001)
-    rays = device.subrays
-    assert len(rays) == 19
-    assert rays[0].cell.rho == 0.0
-    assert rays[0].cell.inner_rho == 0.0
-    assert rays[-1].cell.outer_rho == 2.0
-    assert not hasattr(rays[0], "outer_angle_rad")
-    assert sum(ray.share for ray in rays) == pytest.approx(1 - np.exp(-8))
-    assert rays[1].share == rays[2].share
-    assert rays[1].angle_rad != rays[2].angle_rad
-    device.beam_divergence_y = 0.0003
-    assert device.beam_divergence_x == device.beam_divergence_y
-    assert device.subrays[1].angle_rad == pytest.approx(device.subrays[2].angle_rad)
-
-
-def test_scanner_beam_rotation_trampoline():
-    scanner = ExampleScanner(id="rotation-test", pulseFreqs=[100000])
-    scanner.set_beam_rotation(0.75)
-    assert scanner.get_beam_rotation() == 0.75
-    scanner.beam_rotation = 1.25
-    assert scanner.beam_rotation == 1.25

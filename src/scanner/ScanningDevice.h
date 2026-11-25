@@ -26,6 +26,7 @@ using helios::analytics::HDA_PulseRecorder;
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 class Scanner;
 class SingleScanner;
@@ -75,9 +76,9 @@ protected:
   double beamDivergenceX_rad = 0;
   double beamDivergenceY_rad = 0;
   /**
-   * @brief Pulse length (nanoseconds)
+   * @brief Pulse length (seconds)
    */
-  double pulseLength_ns = 0;
+  double pulseLength_s = 0;
   /**
    * @brief Whole-beam peak optical power before footprint truncation (watts)
    */
@@ -91,9 +92,9 @@ protected:
    */
   double receiverDiameter_m;
   /**
-   * @brief Visibility (kilometers)
+   * @brief Visibility (meters)
    */
-  double visibility_km;
+  double visibility_m;
   /**
    * @brief Wave length (meters)
    */
@@ -234,11 +235,11 @@ public:
     glm::dvec3 beamOrigin,
     Rotation beamOrientation,
     std::list<int> const& pulseFreqs,
-    double pulseLength_ns,
+    double pulseLength_s,
     double pulseAmplitude,
     double efficiency,
     double receiverDiameter_m,
-    double atmosphericVisibility_km,
+    double atmosphericVisibility_m,
     double wavelength_m,
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr);
   /**
@@ -416,8 +417,6 @@ public:
                                        double sigma,
                                        std::size_t subrayIndex) const;
 
-  int calcTimePropagation(std::vector<double>& timeWave);
-
   /**
    * @brief Evaluate the expression tree modeling the mechanical range error
    * @return Mechanical range error term
@@ -446,7 +445,78 @@ public:
    * @param lastPulseWasHit New last pulse hit specification
    * @see Scanner::state_lastPulseWasHit
    */
-  void setLastPulseWasHit(bool value);
+  void setLastPulseWasHit(bool const value);
+  inline std::string const& getId() const { return id; }
+  inline void setId(std::string const& value) { id = value; }
+  inline std::list<int> const& getSupportedPulseFrequencies() const
+  {
+    return supportedPulseFreqs_Hz;
+  }
+  inline void setSupportedPulseFrequencies(std::list<int> const& value)
+  {
+    supportedPulseFreqs_Hz = value;
+  }
+  inline glm::dvec3 const& getHeadRelativeEmitterPosition() const
+  {
+    return headRelativeEmitterPosition;
+  }
+  inline Rotation const& getHeadRelativeEmitterAttitude() const
+  {
+    return headRelativeEmitterAttitude;
+  }
+  inline double getBeamDivergence() const { return beamDivergenceX_rad; }
+
+  inline double getPulseLength() const { return pulseLength_s; }
+  inline void setPulseLength(double const value)
+  {
+    if (!std::isfinite(value) || value <= 0 || !std::isfinite(value * 1e9))
+      throw std::invalid_argument("Pulse length must be finite and positive");
+    pulseLength_s = value;
+  }
+  inline double getWavelength() const { return wavelength_m; }
+  inline void setWavelength(double const value)
+  {
+    wavelength_m = value;
+    atmosphericExtinction = calcAtmosphericAttenuation();
+  }
+  inline double getPulseAmplitude() const { return pulseAmplitude_W; }
+  inline double getOpticalEfficiency() const { return efficiency; }
+  inline void setOpticalEfficiency(double const value) { efficiency = value; }
+  inline double getReceiverDiameter() const { return receiverDiameter_m; }
+  inline void setReceiverDiameter(double const value)
+  {
+    receiverDiameter_m = value;
+    cached_Dr2 = value * value;
+  }
+  inline double getAtmosphericVisibility() const { return visibility_m; }
+  inline void setAtmosphericVisibility(double const value)
+  {
+    visibility_m = value;
+    atmosphericExtinction = calcAtmosphericAttenuation();
+  }
+  inline int getMaxReturns() const { return maxNOR; }
+  inline void setMaxReturns(int const value) { maxNOR = value; }
+  inline std::shared_ptr<ScannerHead> getHead() const { return scannerHead; }
+  inline void setHead(std::shared_ptr<ScannerHead> value)
+  {
+    scannerHead = std::move(value);
+  }
+  inline std::shared_ptr<AbstractBeamDeflector> getOptics() const
+  {
+    return beamDeflector;
+  }
+  inline void setOptics(std::shared_ptr<AbstractBeamDeflector> value)
+  {
+    beamDeflector = std::move(value);
+  }
+  inline std::shared_ptr<AbstractDetector> getDetector() const
+  {
+    return detector;
+  }
+  inline void setDetector(std::shared_ptr<AbstractDetector> value)
+  {
+    detector = std::move(value);
+  }
   /**
    * @brief Set the relative emitter position
    * @see ScanningDevice::headRelativeEmitterPosition

@@ -76,5 +76,6 @@ public:
   void setScanAngleEffectiveMax_rad(double scanAngleEffectiveMax_rad)
   {
     cfg_device_scanAngleEffectiveMax_rad = scanAngleEffectiveMax_rad;
+    cfg_device_scanAngleEffective_rad = scanAngleEffectiveMax_rad;
   }
 };

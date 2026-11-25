@@ -21,11 +21,11 @@ ScanningDevice::ScanningDevice(
   glm::dvec3 beamOrigin,
   Rotation beamOrientation,
   std::list<int> const& pulseFreqs,
-  double pulseLength_ns,
+  double pulseLength_s,
   double pulseAmplitude_W,
   double efficiency,
   double receiverDiameter_m,
-  double atmosphericVisibility_km,
+  double atmosphericVisibility_m,
   double wavelength_m,
   std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr)
   : devIdx(deviceIndex)
@@ -34,11 +34,11 @@ ScanningDevice::ScanningDevice(
   , headRelativeEmitterAttitude(beamOrientation)
   , beamDivergenceX_rad(beamDiv_rad)
   , beamDivergenceY_rad(beamDiv_rad)
-  , pulseLength_ns(pulseLength_ns)
+  , pulseLength_s(pulseLength_s)
   , pulseAmplitude_W(pulseAmplitude_W)
   , efficiency(efficiency)
   , receiverDiameter_m(receiverDiameter_m)
-  , visibility_km(atmosphericVisibility_km)
+  , visibility_m(atmosphericVisibility_m)
   , wavelength_m(wavelength_m)
   , supportedPulseFreqs_Hz(pulseFreqs)
   , rangeErrExpr(rangeErrExpr)
@@ -58,11 +58,11 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->beamDivergenceX_rad = scdev.beamDivergenceX_rad;
   this->beamDivergenceY_rad = scdev.beamDivergenceY_rad;
   this->beamRotation_rad = scdev.beamRotation_rad;
-  this->pulseLength_ns = scdev.pulseLength_ns;
+  this->pulseLength_s = scdev.pulseLength_s;
   this->pulseAmplitude_W = scdev.pulseAmplitude_W;
   this->efficiency = scdev.efficiency;
   this->receiverDiameter_m = scdev.receiverDiameter_m;
-  this->visibility_km = scdev.visibility_km;
+  this->visibility_m = scdev.visibility_m;
   this->wavelength_m = scdev.wavelength_m;
   this->atmosphericExtinction = scdev.atmosphericExtinction;
   this->FWF_settings = scdev.FWF_settings;
@@ -176,7 +176,7 @@ double
 ScanningDevice::calcAtmosphericAttenuation() const
 {
   double const lambda_um = wavelength_m * 1e6; // Kruse relation in micrometers
-  double const Vm = visibility_km;
+  double const Vm = visibility_m * 1e-3;
 
   if (lambda_um < 0.5 || lambda_um > 2.0) {
     // Do nothing if wavelength is outside range, approximation will be bad
@@ -373,7 +373,7 @@ ScanningDevice::preparePulse()
     return;
   }
   pulseModel = PulseShape::create(FWF_settings.pulseShape,
-                                  pulseLength_ns,
+                                  pulseLength_s * 1e9,
                                   FWF_settings.recordingTailTolerance);
 }
 

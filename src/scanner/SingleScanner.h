@@ -23,6 +23,8 @@ protected:
 public:
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
+  SingleScanner(ScanningDevice const& device, std::string const& id);
+
   /**
    * @brief SingleScanner constructor from given values
    * @see Scanner::Scanner
@@ -33,12 +35,12 @@ public:
     glm::dvec3 const beamOrigin,
     Rotation const beamOrientation,
     std::list<int> const& pulseFreqs,
-    double const pulseLength_ns,
+    double const pulseLength_s,
     std::string const id,
     double const pulseAmplitude,
     double const efficiency,
     double const receiverDiameter,
-    double const atmosphericVisibility,
+    double const atmosphericVisibility_m,
     int const wavelength,
     bool const writeWaveform = false,
     bool const writePulse = false,
@@ -197,6 +199,11 @@ public:
     return scanDev;
   }
   /**
+   * @brief Replace the scanning device owned by this scanner.
+   * @param device The device to copy into the scanner
+   */
+  void setScanningDevice(ScanningDevice const& device);
+  /**
    * @see Scanner::setDeviceIndex
    */
   void setDeviceIndex(size_t const newIdx, size_t const oldIdx) override
@@ -236,18 +243,18 @@ public:
     scanDev.numRays = numRays;
   }
   /**
-   * @see Scanner::getPulseLength_ns
+   * @see Scanner::getPulseLength
    */
-  double getPulseLength_ns(size_t const idx) const override
+  double getPulseLength(size_t const idx) const override
   {
-    return scanDev.pulseLength_ns;
+    return scanDev.pulseLength_s;
   }
   /**
-   * @see Scanner::setPulseLength_ns
+   * @see Scanner::setPulseLength
    */
-  void setPulseLength_ns(double const pulseLength_ns, size_t const idx) override
+  void setPulseLength(double const pulseLength_s, size_t const idx) override
   {
-    scanDev.pulseLength_ns = pulseLength_ns;
+    scanDev.setPulseLength(pulseLength_s);
   }
   /**
    * @see Scanner::getBeamDivergence
@@ -331,14 +338,14 @@ public:
    */
   double getVisibility(size_t const idx) const override
   {
-    return scanDev.visibility_km;
+    return scanDev.visibility_m;
   }
   /**
    * @see Scanner::setVisibility
    */
   void setVisibility(double const visibility, size_t const idx) override
   {
-    scanDev.visibility_km = visibility;
+    scanDev.visibility_m = visibility;
   }
   /**
    * @see Scanner::getWavelength
