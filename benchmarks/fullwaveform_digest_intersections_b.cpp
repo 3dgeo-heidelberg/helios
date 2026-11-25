@@ -151,19 +151,19 @@ struct BenchmarkContext
                                       glm::dvec3(0, 0, 0), // beamOrigin
                                       Rotation(),          // beamOrientation
                                       std::list<int>({ 100000 }), // pulse freqs
-                                      5.0,                // pulseLength_ns
+                                      5.0e-9,             // pulseLength_s
                                       "benchmarkScanner", // id
                                       4.0,                // averagePower
                                       1.0,                // beamQuality
                                       0.99,               // efficiency
                                       0.15,               // receiverDiameter
-                                      23.0,  // atmosphericVisibility
-                                      1064,  // wavelength (nm)
-                                      false, // writeWaveform
-                                      false, // writePulse
-                                      false, // calcEchowidth
-                                      false, // fullWaveNoise
-                                      false  // platformNoiseDisabled
+                                      23000.0, // atmosphericVisibility
+                                      1064,    // wavelength (nm)
+                                      false,   // writeWaveform
+                                      false,   // writePulse
+                                      false,   // calcEchowidth
+                                      false,   // fullWaveNoise
+                                      false    // platformNoiseDisabled
       );
 
     scanner->getFWFSettings(0).beamSampleQuality = beamSampleQuality;

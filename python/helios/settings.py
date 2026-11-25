@@ -220,41 +220,33 @@ class OutputSettings(Model, UpdateableMixin):
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     """Class representing the settings for full waveform processing.
 
-    :param bin_size: The size of the bins to use for full waveform processing in seconds. Default is 0.25 ns.
+    :param bin_size: The bin size in seconds. Default is 0.25 ns.
     :param beam_sample_quality: The beam sample quality to use for full waveform processing. Default is 3.
-    :param win_size: The size of the window to use for full waveform processing in seconds. Default is 1.0 ns.
-    :param max_fullwave_range: The maximum range to use for full waveform processing in seconds. Default is 0.0 ns (no maximum range).
+    :param window_size: The window size in seconds. ``None`` defers its value to the owning scanning device.
+    :param max_fullwave_range: The maximum range in seconds. Default is 0.0 ns (no maximum range).
+    :param aperture_diameter: The receiver aperture diameter in metres.
     :type bin_size: TimeInterval
     :type beam_sample_quality: PositiveInt
-    :type win_size: TimeInterval
+    :type window_size: Optional[TimeInterval]
     :type max_fullwave_range: TimeInterval
+    :type aperture_diameter: Length
     """
 
     bin_size: TimeInterval = 0.25 * units.ns
     beam_sample_quality: PositiveInt = 3
-    win_size: TimeInterval = 1.0 * units.ns
+    window_size: Optional[TimeInterval] = None
     max_fullwave_range: TimeInterval = 0.0 * units.ns
-
-    def _to_cpp(self):
-        # Convert to the underlying C++ structure, undoing SI unit conversion
-
-        fwf = _helios.FWFSettings()
-        fwf.bin_size = self.bin_size * 1e9
-        fwf.beam_sample_quality = self.beam_sample_quality
-        fwf.win_size = self.win_size * 1e9
-        fwf.max_fullwave_range = self.max_fullwave_range * 1e9
-
-        return fwf
+    aperture_diameter: Length = 0.15
 
     def _post_set(self, field):
-        if field not in {"bin_size", "win_size"}:
+        if field not in {"bin_size", "window_size"}:
             return
 
-        if self._during_init and field != "win_size":
+        if self._during_init and field != "window_size":
             return
 
-        if self.win_size < 2 * self.bin_size:
-            raise ValueError("win_size must satisfy win_size >= 2 * bin_size.")
+        if self.window_size is not None and self.window_size < 2 * self.bin_size:
+            raise ValueError("window_size must satisfy window_size >= 2 * bin_size.")
 
 
 # Storage for global settings

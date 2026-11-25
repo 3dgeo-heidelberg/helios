@@ -16,16 +16,37 @@ from helios.logger import (
 from helios.leg import Leg
 from helios.licensing import licensing_report
 from helios.platforms import (
+    GroundVehiclePlatform,
+    LinearPathPlatform,
     Platform,
     PlatformSettings,
     DynamicPlatformSettings,
     load_traj_csv,
     TrajectorySettings,
     StaticPlatformSettings,
+    StaticPlatform,
     list_platforms,
     platform_from_name,
 )
-from helios.scanner import Scanner, ScannerSettings, list_scanners, scanner_from_name
+from helios.rotation import Rotation
+from helios.scanner import (
+    BeamDeflector,
+    ConicOptics,
+    Detector,
+    LineOptics,
+    MultiScanner,
+    OscillatingOptics,
+    Prism,
+    RisleyOptics,
+    RotatingOptics,
+    Scanner,
+    ScannerHead,
+    ScannerSettings,
+    ScanningDevice,
+    SingleScanner,
+    list_scanners,
+    scanner_from_name,
+)
 from helios.scene import DynamicScene, StaticScene, ScenePart, BoundingBox
 from helios.settings import (
     ExecutionSettings,
