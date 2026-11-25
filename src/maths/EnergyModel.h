@@ -8,7 +8,6 @@ class ScanningDevice;
 
 /** Far-field radiometry using the device's absolute subray power shares.
  * Ranges are metres; incidenceCosine is in [-1, 1]. Power is watts.
- * Sigma retains the external scattering convention, including LadLut inputs.
  */
 class EnergyModel
 {

@@ -424,6 +424,15 @@ There are three modes available for handling ray intersections with DetailedVoxe
 2. Scaled mode (``<param type="string" key="intersectionMode" value="scaled" />`` with a scaling factor defined like ``<param type="double" key="intersectionArgument" value="0.5" />``)
 3. Fixed mode (``<param type="string" key="intersectionMode" value="fixed" />``)
 
+In transmittive mode, the leaf angle distribution is set with the ``lad`` parameter, either as a predefined distribution (``planophile``, ``erectophile``, ``plagiophile``, ``extremophile``, ``spherical``, ``uniform``) or as the path to a file with one ``inclination_deg,g_L`` pair per line (example: ``data/lad/ellipsoidal_tomato.txt``):
+
+.. code-block:: xml
+
+    <param type="string" key="lad" value="planophile" />
+
+If ``lad`` is not given, the ``#lad_type`` from the header of the VOX file is used if it names a predefined distribution, and the spherical distribution otherwise.
+The former ``ladlut`` parameter for look-up tables is no longer supported and raises an error.
+
 For detailed information about the VOX file format and the different intersection modes, refer to the Python documentation: `Scene - VOX files <scene.ipynb#4)-VOX-files>`_
 
 

@@ -457,7 +457,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 1. **BRDF Calculation**
 
-   The BRDF :math:`f_r(\omega_i,\omega_o)` is computed from fractional material reflectance :math:`\rho`, specular mixture weight :math:`k_s` (set via ``helios_ks``), and exponent :math:`N_s`. The incidence angle :math:`\varphi` is determined from the ray-object intersection.
+   The BRDF :math:`f_r(\omega_i,\omega_o)` is computed from fractional material reflectance :math:`\rho`, specular mixture weight :math:`k_s` (set via ``helios_ks``), and exponent :math:`N_s`. The incidence angle :math:`\varphi` is determined from the ray-object intersection. For DetailedVoxels in transmittive mode, :math:`\varphi` is the incidence angle on the leaf that is hit, sampled from the leaf angle distribution (see `Scene - VOX files <scene.ipynb#4)-VOX-files>`_).
 
    .. math::
       f_r(\omega_i,\omega_o) = \rho\left[\frac{1-k_s}{\pi}+k_s\frac{N_s+2}{2\pi}\max(0,\cos\alpha)^{N_s}\right]
