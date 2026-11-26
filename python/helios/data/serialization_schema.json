@@ -149,6 +149,9 @@
               },
               {
                 "$ref": "#/$defs/model_document_helios_survey_Survey"
+              },
+              {
+                "$ref": "#/$defs/model_document_helios_settings_SampledPulse"
               }
             ]
           }
@@ -161,10 +164,12 @@
           "format": "uri"
         },
         "serialization_major_version": {
-          "const": 0
+          "const": 2
         },
         "serialization_minor_version": {
-          "const": 0
+          "enum": [
+            0
+          ]
         },
         "model_class": {
           "enum": [
@@ -207,7 +212,8 @@
             "helios.settings.ExecutionSettings",
             "helios.settings.FullWaveformSettings",
             "helios.settings.OutputSettings",
-            "helios.survey.Survey"
+            "helios.survey.Survey",
+            "helios.settings.SampledPulse"
           ]
         },
         "fields": {
@@ -996,7 +1002,6 @@
         "min_vertical_angle": {},
         "max_vertical_angle": {},
         "scan_frequency": {},
-        "beam_divergence_angle": {},
         "trajectory_time_interval": {},
         "vertical_resolution": {},
         "horizontal_resolution": {},
@@ -1027,12 +1032,10 @@
         "is_ground": {},
         "spectra": {},
         "reflectance": {},
-        "specularity": {},
+        "ks": {},
         "specular_exponent": {},
         "classification": {},
-        "ambient_components": {},
-        "diffuse_components": {},
-        "specular_components": {}
+        "is_direction_independent": {}
       }
     },
     "fields_helios_scene_ScenePart": {
@@ -1074,10 +1077,20 @@
       "additionalProperties": false,
       "properties": {
         "bin_size": {},
+        "beam_sampling_method": {},
         "beam_sample_quality": {},
         "window_size": {},
         "max_fullwave_range": {},
-        "aperture_diameter": {}
+        "aperture_diameter": {},
+        "beam_sampling_factor": {},
+        "win_size": {},
+        "sample_spacing": {},
+        "peak_window": {},
+        "max_recording_span": {},
+        "pulse_shape": {},
+        "evaluation_tail_tolerance": {},
+        "recording_tail_tolerance": {},
+        "sampled_pulse": {}
       }
     },
     "fields_helios_platforms_StaticPlatform": {
@@ -1214,8 +1227,6 @@
         "beam_divergence": {},
         "pulse_length": {},
         "wavelength": {},
-        "average_power": {},
-        "beam_quality_factor": {},
         "optical_efficiency": {},
         "receiver_diameter": {},
         "atmospheric_visibility": {},
@@ -1223,7 +1234,11 @@
         "max_returns": {},
         "detector": {},
         "head": {},
-        "full_waveform": {}
+        "full_waveform": {},
+        "pulse_amplitude": {},
+        "beam_divergence_x": {},
+        "beam_divergence_y": {},
+        "beam_rotation": {}
       }
     },
     "fields_helios_scanner_SingleScanner": {
@@ -1269,6 +1284,30 @@
         "gps_time": {},
         "full_waveform_settings": {},
         "trajectory": {}
+      }
+    },
+    "model_document_helios_settings_SampledPulse": {
+      "type": "object",
+      "required": [
+        "model_class",
+        "fields"
+      ],
+      "properties": {
+        "model_class": {
+          "const": "helios.settings.SampledPulse"
+        },
+        "fields": {
+          "$ref": "#/$defs/fields_helios_settings_SampledPulse"
+        }
+      }
+    },
+    "fields_helios_settings_SampledPulse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "offsets": {},
+        "amplitudes": {},
+        "peak_offset": {}
       }
     }
   }

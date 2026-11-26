@@ -58,7 +58,9 @@ SpectralLibrary::readFileAster(fs::path path)
       boost::split(values, line, boost::is_any_of("\t"));
       wavelength = boost::lexical_cast<float>(values.at(0));
       boost::trim_right(values.at(1));
-      reflectance = boost::lexical_cast<float>(values.at(1));
+      // Material::reflectance expects a value in [0, 1], but the spectra files
+      // have it in [0, 100]
+      reflectance = boost::lexical_cast<float>(values.at(1)) / 100.0f;
 
       if (wavelength < wavelength_um) {
         prevWavelength = wavelength;
@@ -117,6 +119,7 @@ SpectralLibrary::setReflectances(Scene* scene)
 
   for (Primitive* prim : scene->primitives) {
     if (!isnan(prim->material->reflectance)) {
+      prim->material->validate();
       continue; // if a reflectance was set, this has precedence over spectra
     }
 
@@ -145,6 +148,6 @@ SpectralLibrary::setReflectances(Scene* scene)
 
     prim->material->reflectance =
       reflectanceMap.find(prim->material->spectra)->second;
-    prim->material->setSpecularity();
+    prim->material->validate();
   }
 }

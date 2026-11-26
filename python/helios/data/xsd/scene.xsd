@@ -62,8 +62,6 @@
             <xs:enumeration value="randomShift" />
             <xs:enumeration value="matfile" />
             <xs:enumeration value="matname" />
-            <xs:enumeration value="randomMaterials" />
-            <xs:enumeration value="randomRange" />
             <xs:enumeration value="offset" />
             <xs:enumeration value="onGround" />
             <xs:enumeration value="rotation" />

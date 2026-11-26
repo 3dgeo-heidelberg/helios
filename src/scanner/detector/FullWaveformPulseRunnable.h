@@ -1,5 +1,7 @@
 #pragma once
 
+#include <maths/WaveMaths.h>
+
 #include <AbstractDetector.h>
 #include <AbstractPulseRunnable.h>
 #include <FullWaveformPulseDetector.h>
@@ -80,23 +82,21 @@ protected:
                       vector<RaySceneIntersection>& intersects
 #if DATA_ANALYTICS >= 2
                       ,
-                      std::vector<std::vector<double>>& calcIntensityRecords,
+                      std::vector<std::vector<double>>& radiometryRecords,
                       std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
 private:
   /**
-   * @brief Handle sub-rays along the circle
+   * @brief Handle a subray of the prepared Gaussian sampling pattern
    * @param[in] tMinMax Minimum and maximum time to intersection with respect
    *  to the axis aligned bounding box that bounds the scene
    * @param[in] subrayRotation The rotation that must be applied to the ray
-   *  to obtain the subray. It is typically a composition of two rotations,
-   *  one to model the radius (i.e., how far from the center) and other
-   *  to model the circumference (i.e., at which angle in the circle).
+   *  to obtain the individual subray direction in the elliptical beam.
    * @see FullWaveformPulseRunnable::computeSubrays
    */
   void handleSubray(Rotation const& subrayRotation,
-                    int const subrayRadiusStep,
+                    std::size_t subrayIndex,
                     NoiseSource<double>& intersectionHandlingNoiseSource,
                     std::map<double, double>& reflections,
                     vector<RaySceneIntersection>& intersects
@@ -104,7 +104,7 @@ private:
                     ,
                     bool& subrayHit,
                     std::vector<double>& subraySimRecord,
-                    std::vector<std::vector<double>>& calcIntensityRecords
+                    std::vector<std::vector<double>>& radiometryRecords
 #endif
   );
 
@@ -123,18 +123,17 @@ protected:
    * @see FullWaveformPulseRunnable::digestFullWaveform
    * @see FullWaveformPulseRunnable::exportOutput
    */
-  void digestIntersections(
-    std::vector<std::vector<double>>& apMatrix,
-    RandomnessGenerator<double>& randGen,
-    RandomnessGenerator<double>& randGen2,
-    glm::dvec3& beamDir,
-    std::map<double, double>& reflections,
-    vector<RaySceneIntersection>& intersects
+  void digestIntersections(std::vector<std::vector<double>>& apMatrix,
+                           RandomnessGenerator<double>& randGen,
+                           RandomnessGenerator<double>& randGen2,
+                           glm::dvec3& beamDir,
+                           std::map<double, double>& reflections,
+                           vector<RaySceneIntersection>& intersects
 #if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords,
-    std::vector<std::vector<int>>& calcIntensityIndices,
-    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+                           ,
+                           std::vector<std::vector<double>>& radiometryRecords,
+                           std::vector<std::vector<int>>& radiometryIndices,
+                           std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
 
@@ -148,39 +147,18 @@ private:
   void findMaxMinHitDistances(std::map<double, double>& reflections,
                               double& minHitDist_m,
                               double& maxHitDist_m);
-  /**
-   * @brief Initialize full waveform
-   * While the vector is not strictly initialized in this function,
-   * necessary variables are computed here.
-   * @param[out] nsPerBin The size of each bin in nano seconds
-   * @param[out] distanceThreshold Limit distance threshold
-   * @param[out] peakIntensityIndex Index of intensity peak
-   * @param[out] numFullwaveBins How many bins are necessary to discretize
-   *  the full waveform
-   * @return True if it is possible to initialize the full waveform,
-   * false otherwise.
-   * @see FullWaveformPulseRunnable::digestIntersections
-   */
-  bool initializeFullWaveform(double const minHitDist_m,
-                              double const maxHitDist_m,
-                              double& minHitTime_ns,
-                              double& maxHitTime_ns,
-                              double& nsPerBin,
-                              double& distanceThreshold,
-                              int& peakIntensityIndex,
-                              int& numFullwaveBins);
-  /**
-   * @brief Populate a previously initialized full waveform vector
-   * @param[out] fullwave Full waveform vector to be populated
-   * @see FullWaveformPulseRunnable::digestIntersections
-   * @see FullWaveformPulseRunnable::initializeFullWaveform
-   */
+  /** Compute the detector recording grid in metres. */
+  bool initializeFullWaveform(double minHitDist_m,
+                              double maxHitDist_m,
+                              WaveformGrid& grid);
+
+protected:
+  /** Evaluate the sum of full analytic returns on the recording grid. */
   void populateFullWaveform(std::map<double, double> const& reflections,
                             std::vector<double>& fullwave,
-                            double const distanceThreshold,
-                            double const minHitTime_ns,
-                            double const nsPerBin,
-                            int const peakIntensityIndex);
+                            WaveformGrid const& grid);
+
+private:
   /**
    * @brief Digest a previously populated full waveform vector,
    * generating measurements
@@ -192,22 +170,18 @@ private:
    * @see FullWaveformPulseRunnable::populateFullWaveform
    * @see Measurement
    */
-  void digestFullWaveform(
-    std::vector<Measurement>& pointsMeasurement,
-    int& numReturns,
-    std::vector<std::vector<double>>& apMatrix,
-    std::vector<double> const& fullwave,
-    vector<RaySceneIntersection> const& intersects,
-    glm::dvec3 const& beamDir,
-    double const nsPerBin,
-    int const numFullwaveBins,
-    int const peakIntensityIndex,
-    double const minHitTime_ns
+  void digestFullWaveform(std::vector<Measurement>& pointsMeasurement,
+                          int& numReturns,
+                          std::vector<std::vector<double>>& apMatrix,
+                          std::vector<double> const& fullwave,
+                          vector<RaySceneIntersection> const& intersects,
+                          glm::dvec3 const& beamDir,
+                          WaveformGrid const& grid
 #if DATA_ANALYTICS >= 2
-    ,
-    std::vector<std::vector<double>>& calcIntensityRecords,
-    std::vector<std::vector<int>>& calcIntensityIndices,
-    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+                          ,
+                          std::vector<std::vector<double>>& radiometryRecords,
+                          std::vector<std::vector<int>>& radiometryIndices,
+                          std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );
   /**
@@ -227,7 +201,7 @@ private:
                              double& echoWidth,
                              int const binIndex,
                              int const winSize,
-                             double const nsPerBin);
+                             double const sampleSpacing_m);
   /**
    * @brief Export measurements and full waveform data
    * @param[in] fullwave Full waveform data to export
@@ -238,14 +212,14 @@ private:
                     int const numReturns,
                     std::vector<Measurement>& pointsMeasurement,
                     glm::dvec3 const& beamDir,
-                    double const minHitTime_ns,
-                    double const maxHitTime_ns,
+                    double const minRange_m,
+                    double const maxRange_m,
                     RandomnessGenerator<double>& randGen,
                     RandomnessGenerator<double>& randGen2
 #if DATA_ANALYTICS >= 2
                     ,
-                    std::vector<std::vector<double>>& calcIntensityRecords,
-                    std::vector<std::vector<int>>& calcIntensityIndices,
+                    std::vector<std::vector<double>>& radiometryRecords,
+                    std::vector<std::vector<int>>& radiometryIndices,
                     std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
   );

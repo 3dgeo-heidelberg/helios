@@ -52,6 +52,7 @@ from helios.settings import (
     ExecutionSettings,
     ForceOnGroundStrategy,
     FullWaveformSettings,
+    SampledPulse,
     KDTreeFactoryType,
     LogVerbosity,
     OutputFormat,

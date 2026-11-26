@@ -17,7 +17,7 @@ from helios.validation import (
 from helios.rotation import Rotation
 from helios.settings import FullWaveformSettings
 from pydantic import Field, NonNegativeInt, PositiveFloat, PositiveInt, validate_call
-from typing import Annotated, Callable
+from typing import Annotated, Callable, Optional
 
 import _helios
 import math
@@ -49,7 +49,6 @@ class ScannerSettings(ScannerSettingsBase):
     :param min_vertical_angle: The minimum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
     :param max_vertical_angle: The maximum vertical angle of the scanner in radians. To be used to define the scan angle for TLS scanners (with non-symmetrical field of view).
     :param scan_frequency: The scan frequency of the scanner in Hz.
-    :param beam_divergence_angle: The beam divergence angle of the scanner in radians.
     :param trajectory_time_interval: The time interval in seconds at which the trajectory points are written.
     :param vertical_resolution: The vertical resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
     :param horizontal_resolution: The horizontal resolution of the scanner in radians. To be used for TLS with rotating optics and rotating head.
@@ -64,7 +63,6 @@ class ScannerSettings(ScannerSettingsBase):
     :type min_vertical_angle: Angle
     :type max_vertical_angle: Angle
     :type scan_frequency: Frequency
-    :type beam_divergence_angle: Angle
     :type trajectory_time_interval: TimeInterval
     :type vertical_resolution: Angle
     :type horizontal_resolution: Angle
@@ -82,7 +80,6 @@ class ScannerSettings(ScannerSettingsBase):
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
     scan_frequency: ScanFrequency = 200
-    beam_divergence_angle: Angle = 0.003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Angle = 0
     horizontal_resolution: Angle = 0
@@ -192,10 +189,12 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
     beam_origin_position: R3Vector = (0.0, 0.0, 0.0)
     beam_origin_attitude: Rotation = Rotation()
     beam_divergence: Angle = 0.0003
+    beam_divergence_x: Optional[Angle] = None
+    beam_divergence_y: Optional[Angle] = None
+    beam_rotation: Angle = 0.0
     pulse_length: TimeInterval = 4.0 * units.ns
     wavelength: Length = 1064.0 * units.nm
-    average_power: Power = 4.0
-    beam_quality_factor: PositiveFloat = 1.0
+    pulse_amplitude: Power = 1.0
     optical_efficiency: Annotated[float, Field(ge=0, le=1)] = 0.99
     receiver_diameter: Length = 0.15
     atmospheric_visibility: Length = 23_000.0
@@ -206,9 +205,10 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
     head: ScannerHead = ScannerHead()
     full_waveform: FullWaveformSettings = FullWaveformSettings()
 
-    def _post_set(self, field):
-        if field == "full_waveform" and self.full_waveform.window_size is None:
-            self.full_waveform.window_size = self.pulse_length / 4.0
+    def _pre_set(self, field, value):
+        if field in {"beam_divergence_x", "beam_divergence_y"} and value is None:
+            return self.beam_divergence
+        return value
 
     @classmethod
     def _from_cpp(cls, value):
@@ -217,7 +217,172 @@ class ScanningDevice(Model, cpp_class=_helios.ScanningDevice):
         return obj
 
 
+# None initializes an axis from the circular divergence; reads expose the
+# resolved backend value, including changes made through Scanner setters.
+ScanningDevice.beam_divergence_x = ScanningDevice.beam_divergence_x.getter(
+    lambda self: self._cpp_object.beam_divergence_x
+)
+ScanningDevice.beam_divergence_y = ScanningDevice.beam_divergence_y.getter(
+    lambda self: self._cpp_object.beam_divergence_y
+)
+
+
 class Scanner(Model, cpp_class=_helios.Scanner):
+    @property
+    def pulse_length(self) -> TimeInterval:
+        """Emitted pulse FWHM of channel 0, in seconds."""
+        return self.get_pulse_length()
+
+    @pulse_length.setter
+    def pulse_length(self, value: TimeInterval) -> None:
+        self.set_pulse_length(value)
+
+    @validate_call
+    def get_pulse_length(self, index: int = 0) -> TimeInterval:
+        """Return a channel's emitted pulse FWHM in seconds."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_pulse_length(index)
+
+    @validate_call
+    def set_pulse_length(self, value: TimeInterval, index: int = 0) -> None:
+        """Set emitted pulse FWHM in seconds or with units, e.g. ``"4 ns"``.
+
+        Set before running the survey; its waveform settings rebuild the pulse model.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        if not np.isfinite(value) or value <= 0 or not np.isfinite(value * 1e9):
+            raise ValueError("Pulse length must be finite and positive")
+        self._cpp_object.set_specific_pulse_length(value, index)
+
+    @property
+    def pulse_amplitude(self) -> float:
+        """Whole-beam peak optical power before footprint truncation, in watts."""
+        return self.get_pulse_amplitude()
+
+    @pulse_amplitude.setter
+    def pulse_amplitude(self, value: float) -> None:
+        self.set_pulse_amplitude(value)
+
+    @validate_call
+    def get_pulse_amplitude(self, index: int = 0) -> float:
+        """Return a channel's whole-beam peak optical power in watts."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_pulse_amplitude(index)
+
+    @validate_call
+    def set_pulse_amplitude(self, value: float, index: int = 0) -> None:
+        """Set finite, nonnegative whole-beam peak power in watts; zero disables returns."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_specific_pulse_amplitude(value, index)
+
+    @property
+    def beam_rotation(self) -> Angle:
+        """Channel 0 footprint rotation in radians, from local right toward up."""
+        return self.get_beam_rotation()
+
+    @beam_rotation.setter
+    def beam_rotation(self, value: Angle) -> None:
+        self.set_beam_rotation(value)
+
+    @validate_call
+    def get_beam_rotation(self, index: int = 0) -> Angle:
+        """Return a channel's footprint rotation in [0, 2*pi) radians."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_rotation(index)
+
+    @validate_call
+    def set_beam_rotation(self, value: Angle, index: int = 0) -> None:
+        """Rotate the footprint before running a survey, e.g. ``"45 deg"``.
+
+        Accepts finite radians or angles with units; wraps complete turns.
+        Positive rotation moves emitter-local right toward up.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_rotation(value, index)
+
+    @property
+    def beam_divergence(self) -> Angle:
+        """Legacy X-axis divergence; assigning a value sets both axes."""
+        return self.get_beam_divergence()
+
+    @beam_divergence.setter
+    def beam_divergence(self, value: Angle) -> None:
+        self.set_beam_divergence(value)
+
+    @validate_call
+    def get_beam_divergence(self, index: int = 0) -> Angle:
+        """Return a channel's X-axis full divergence in radians."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_specific_beam_divergence(index)
+
+    @validate_call
+    def set_beam_divergence(self, value: Angle, index: int = 0) -> None:
+        """Set a channel's full divergence and refresh derived beam state.
+
+        Accepts radians or angles with units, for example ``"0.03 deg"``.
+        """
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_specific_beam_divergence(value, index)
+
+    @property
+    def beam_divergence_x(self) -> Angle:
+        """Full 1/e² divergence along the beam X principal axis (right at zero rotation)."""
+        return self.get_beam_divergence_x()
+
+    @beam_divergence_x.setter
+    def beam_divergence_x(self, value: Angle) -> None:
+        self.set_beam_divergence_x(value)
+
+    @validate_call
+    def get_beam_divergence_x(self, index: int = 0) -> Angle:
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_divergence_x(index)
+
+    @validate_call
+    def set_beam_divergence_x(self, value: Angle, index: int = 0) -> None:
+        """Update only the X axis; accepts radians or angles with units."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergence_x(value, index)
+
+    @property
+    def beam_divergence_y(self) -> Angle:
+        """Full 1/e² divergence along the beam Y principal axis (up at zero rotation)."""
+        return self.get_beam_divergence_y()
+
+    @beam_divergence_y.setter
+    def beam_divergence_y(self, value: Angle) -> None:
+        self.set_beam_divergence_y(value)
+
+    @validate_call
+    def get_beam_divergence_y(self, index: int = 0) -> Angle:
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        return self._cpp_object.get_beam_divergence_y(index)
+
+    @validate_call
+    def set_beam_divergence_y(self, value: Angle, index: int = 0) -> None:
+        """Update only the Y axis; accepts radians or angles with units."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergence_y(value, index)
+
+    @validate_call
+    def set_beam_divergences(self, x: Angle, y: Angle, index: int = 0) -> None:
+        """Atomically set both full-angle divergences before running a survey."""
+        if not 0 <= index < self._cpp_object.num_devices:
+            raise IndexError("Scanner channel index out of range")
+        self._cpp_object.set_beam_divergences(x, y, index)
+
     def _never_serialize_shallow(self) -> bool:
         return True
 
@@ -240,6 +405,20 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         :type scanner_file: AssetPath
         :type scanner_id: str
         """
+
+        # Explain the removed setting before schema validation rejects it.
+        from xml.etree import ElementTree
+
+        for element in ElementTree.parse(scanner_file).iter():
+            if (
+                element.tag in ("scanner", "channel")
+                and "averagePower_w" in element.attrib
+            ):
+                raise ValueError(
+                    "averagePower_w was removed; use pulseAmplitude_W for whole-beam "
+                    "peak power. To preserve legacy waveforms, multiply the old "
+                    "coefficient by 4/exp(2); this is not an average-to-peak conversion."
+                )
 
         # Validate the XML
         validate_xml_file(scanner_file, "xsd/scanner.xsd")
@@ -313,6 +492,7 @@ def scanner_from_name(scanner_name: str) -> Scanner:
 def leica_als50() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="leica_als50",
             supported_pulse_frequencies=(83000 * units.Hz,),
             optics=OscillatingOptics(
@@ -335,6 +515,7 @@ def leica_als50() -> Scanner:
 def leica_als50_ii() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="leica_als50-ii",
             supported_pulse_frequencies=(
                 20000 * units.Hz,
@@ -362,6 +543,7 @@ def leica_als50_ii() -> Scanner:
 def optech_2033() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="optech_2033",
             supported_pulse_frequencies=(33000 * units.Hz,),
             optics=OscillatingOptics(
@@ -386,6 +568,7 @@ def optech_2033() -> Scanner:
 def optech_3100() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="optech_3100",
             supported_pulse_frequencies=(
                 33000 * units.Hz,
@@ -414,6 +597,7 @@ def optech_3100() -> Scanner:
 def optech_galaxy() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="optech_galaxy",
             supported_pulse_frequencies=(35000 * units.Hz, 550000 * units.Hz),
             optics=OscillatingOptics(
@@ -437,6 +621,7 @@ def optech_galaxy() -> Scanner:
 def riegl_lms_q560() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_lms-q560",
             supported_pulse_frequencies=(
                 50000 * units.Hz,
@@ -465,6 +650,7 @@ def riegl_lms_q560() -> Scanner:
 def riegl_lms_q780() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_lms-q780",
             supported_pulse_frequencies=(
                 100000 * units.Hz,
@@ -492,6 +678,7 @@ def riegl_lms_q780() -> Scanner:
 def riegl_vq_780i() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vq_780i",
             supported_pulse_frequencies=(
                 150000 * units.Hz,
@@ -521,6 +708,7 @@ def riegl_vq_780i() -> Scanner:
 def riegl_vux_1uav() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vux-1uav",
             supported_pulse_frequencies=(
                 50000 * units.Hz,
@@ -554,6 +742,7 @@ def riegl_vux_1uav() -> Scanner:
 def riegl_vux_1uav22() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vux-1uav22",
             supported_pulse_frequencies=(
                 50000 * units.Hz,
@@ -588,6 +777,7 @@ def riegl_vux_1uav22() -> Scanner:
 def riegl_vux_1ha22() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vux-1ha22",
             supported_pulse_frequencies=(
                 300000 * units.Hz,
@@ -621,6 +811,7 @@ def riegl_vux_1ha22() -> Scanner:
 def riegl_vq_880g() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vq-880g",
             supported_pulse_frequencies=(
                 200000 * units.Hz,
@@ -665,6 +856,7 @@ def riegl_vq_1560i() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(
                     150000 * units.Hz,
@@ -701,6 +893,7 @@ def riegl_vq_1560i() -> Scanner:
 def livox_mid70_als() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="livox_mid-70",
             supported_pulse_frequencies=(100000 * units.Hz,),
             optics=RisleyOptics(
@@ -760,6 +953,7 @@ def livox_mid100_als() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(100000 * units.Hz,),
                 optics=RisleyOptics(
@@ -810,6 +1004,7 @@ def dji_zenmuse_l2_repetitive() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(40000 * units.Hz,),
                 optics=RisleyOptics(
@@ -863,6 +1058,7 @@ def dji_zenmuse_l2_non_repetitive() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(40000 * units.Hz,),
                 optics=RisleyOptics(
@@ -907,6 +1103,7 @@ def dji_zenmuse_l2_non_repetitive() -> Scanner:
 def riegl_vz_400() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vz400",
             supported_pulse_frequencies=(100000 * units.Hz, 300000 * units.Hz),
             optics=RotatingOptics(
@@ -934,6 +1131,7 @@ def riegl_vz_400() -> Scanner:
 def riegl_vz_1000() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vz1000",
             supported_pulse_frequencies=(
                 70000 * units.Hz,
@@ -965,6 +1163,7 @@ def riegl_vz_1000() -> Scanner:
 def riegl_vz_2000i() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vz2000i",
             supported_pulse_frequencies=(
                 50000 * units.Hz,
@@ -998,6 +1197,7 @@ def riegl_vz_2000i() -> Scanner:
 def riegl_vz_600i() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vz600i",
             supported_pulse_frequencies=(
                 140000 * units.Hz,
@@ -1030,6 +1230,7 @@ def riegl_vz_600i() -> Scanner:
 def riegl_vq_450() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="riegl_vq-450",
             supported_pulse_frequencies=(
                 150000 * units.Hz,
@@ -1063,6 +1264,7 @@ def riegl_vq_450() -> Scanner:
 def livox_mid40() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="livox_mid-40",
             supported_pulse_frequencies=(100000 * units.Hz,),
             optics=RisleyOptics(
@@ -1115,6 +1317,7 @@ def livox_mid100() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(100000 * units.Hz,),
                 optics=RisleyOptics(
@@ -1156,6 +1359,7 @@ def livox_mid100() -> Scanner:
 def livox_mid70() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="livox_mid-70",
             supported_pulse_frequencies=(100000 * units.Hz,),
             optics=RisleyOptics(
@@ -1203,6 +1407,7 @@ def vlp16() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(18750 * units.Hz,),
                 optics=RotatingOptics(
@@ -1313,6 +1518,7 @@ def velodyne_hdl_64e() -> Scanner:
     return MultiScanner(
         channels=tuple(
             ScanningDevice(
+                pulse_amplitude=16.0 / math.exp(2),
                 id=channel_id,
                 supported_pulse_frequencies=(20833 * units.Hz,),
                 optics=RotatingOptics(
@@ -1348,6 +1554,7 @@ def velodyne_hdl_64e() -> Scanner:
 def tractor_scanner() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="tractorscanner",
             supported_pulse_frequencies=(
                 1000 * units.Hz,
@@ -1375,6 +1582,7 @@ def tractor_scanner() -> Scanner:
 def pano_scanner() -> Scanner:
     return SingleScanner(
         device=ScanningDevice(
+            pulse_amplitude=16.0 / math.exp(2),
             id="panoscanner",
             supported_pulse_frequencies=(100000 * units.Hz, 300000 * units.Hz),
             optics=RotatingOptics(

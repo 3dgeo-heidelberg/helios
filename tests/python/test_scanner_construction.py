@@ -99,12 +99,12 @@ def test_single_scanner_construction_and_backend_propagation():
     assert scanner.device.pulse_length == pytest.approx(5e-9)
     assert scanner.device.wavelength == pytest.approx(1064e-9)
     assert scanner.device.atmospheric_visibility == 23_000.0
-    assert scanner.device.full_waveform.window_size == pytest.approx(1.25e-9)
+    assert scanner.device.full_waveform.peak_window == pytest.approx(1e-9)
 
     scanner.device.pulse_length = 8 * units.ns
     assert scanner._cpp_object.device.pulse_length == pytest.approx(8e-9)
-    scanner._cpp_object.device.average_power = 7.0
-    assert scanner.device.average_power == 7.0
+    scanner._cpp_object.device.pulse_amplitude = 7.0
+    assert scanner.device.pulse_amplitude == 7.0
 
     cloned = copy.deepcopy(scanner)
     assert isinstance(cloned, SingleScanner)
@@ -215,3 +215,27 @@ def test_platform_construction_and_backend_propagation(tmp_path):
 
     path = platform.to_yaml(tmp_path / "platform.yaml", shallow=True)
     assert "model_ref" not in path.read_text(encoding="utf-8")
+
+
+def test_elliptical_device_roundtrip_preserves_units_and_amplitude(tmp_path):
+    device = make_device(
+        "elliptical",
+        beam_divergence="0.3 mrad",
+        beam_divergence_y="0.6 mrad",
+        beam_rotation="30 deg",
+        pulse_length="8 ns",
+        pulse_amplitude="2 W",
+        atmospheric_visibility="12.5 km",
+    )
+    scanner = SingleScanner(device=device)
+    path = scanner.to_yaml(tmp_path / "elliptical.yaml")
+    restored = Scanner.from_yaml(path)
+    assert restored.device.beam_divergence_x == pytest.approx(0.0003)
+    assert restored.device.beam_divergence_y == pytest.approx(0.0006)
+    assert restored.device.beam_rotation == pytest.approx(np.pi / 6)
+    assert restored.device.pulse_length == pytest.approx(8e-9)
+    assert restored.device.pulse_amplitude == 2.0
+    assert restored.device.atmospheric_visibility == 12500.0
+    restored.set_beam_divergence_x("0.4 mrad")
+    assert restored.device.beam_divergence_x == pytest.approx(0.0004)
+    assert restored.device.beam_divergence_y == pytest.approx(0.0006)

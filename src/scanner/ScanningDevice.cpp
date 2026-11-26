@@ -1,11 +1,12 @@
 #include <ScanningDevice.h>
 #include <cmath>
+#include <limits>
 #include <logger_core.hpp>
-#include <maths/EnergyMaths.h>
+#include <maths/EnergyModel.h>
 #include <maths/MathConstants.h>
-#include <maths/model/BaseEnergyModel.h>
-#include <maths/model/ImprovedEnergyModel.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <stdexcept>
+#include <utility>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -14,28 +15,27 @@ using namespace helios::analytics;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 ScanningDevice::ScanningDevice(
-  size_t const deviceIndex,
-  std::string const id,
-  double const beamDiv_rad,
-  glm::dvec3 const beamOrigin,
-  Rotation const beamOrientation,
+  size_t deviceIndex,
+  std::string id,
+  double beamDiv_rad,
+  glm::dvec3 beamOrigin,
+  Rotation beamOrientation,
   std::list<int> const& pulseFreqs,
-  double const pulseLength_s,
-  double const averagePower_w,
-  double const beamQuality,
-  double const efficiency,
-  double const receiverDiameter_m,
-  double const atmosphericVisibility_m,
-  double const wavelength_m,
+  double pulseLength_s,
+  double pulseAmplitude_W,
+  double efficiency,
+  double receiverDiameter_m,
+  double atmosphericVisibility_m,
+  double wavelength_m,
   std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr)
   : devIdx(deviceIndex)
   , id(id)
   , headRelativeEmitterPosition(beamOrigin)
   , headRelativeEmitterAttitude(beamOrientation)
-  , beamDivergence_rad(beamDiv_rad)
+  , beamDivergenceX_rad(beamDiv_rad)
+  , beamDivergenceY_rad(beamDiv_rad)
   , pulseLength_s(pulseLength_s)
-  , averagePower_w(averagePower_w)
-  , beamQuality(beamQuality)
+  , pulseAmplitude_W(pulseAmplitude_W)
   , efficiency(efficiency)
   , receiverDiameter_m(receiverDiameter_m)
   , visibility_m(atmosphericVisibility_m)
@@ -43,7 +43,8 @@ ScanningDevice::ScanningDevice(
   , supportedPulseFreqs_Hz(pulseFreqs)
   , rangeErrExpr(rangeErrExpr)
 {
-  configureBeam();
+  setPulseAmplitude(pulseAmplitude_W);
+  preparePulse();
   atmosphericExtinction = calcAtmosphericAttenuation();
   cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
 }
@@ -54,30 +55,28 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->id = scdev.id;
   this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
   this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
-  this->beamDivergence_rad = scdev.beamDivergence_rad;
+  this->beamDivergenceX_rad = scdev.beamDivergenceX_rad;
+  this->beamDivergenceY_rad = scdev.beamDivergenceY_rad;
+  this->beamRotation_rad = scdev.beamRotation_rad;
   this->pulseLength_s = scdev.pulseLength_s;
-  this->averagePower_w = scdev.averagePower_w;
-  this->beamQuality = scdev.beamQuality;
+  this->pulseAmplitude_W = scdev.pulseAmplitude_W;
   this->efficiency = scdev.efficiency;
   this->receiverDiameter_m = scdev.receiverDiameter_m;
   this->visibility_m = scdev.visibility_m;
   this->wavelength_m = scdev.wavelength_m;
   this->atmosphericExtinction = scdev.atmosphericExtinction;
-  this->beamWaistRadius = scdev.beamWaistRadius;
   this->FWF_settings = scdev.FWF_settings;
   this->numRays = scdev.numRays;
   this->supportedPulseFreqs_Hz = scdev.supportedPulseFreqs_Hz;
   this->maxNOR = scdev.maxNOR;
-  this->numTimeBins = scdev.numTimeBins;
-  this->peakIntensityIndex = scdev.peakIntensityIndex;
-  this->time_wave = scdev.time_wave;
+  this->pulseModel = scdev.pulseModel;
+  this->evaluationBounds = scdev.evaluationBounds;
   this->rangeErrExpr = scdev.rangeErrExpr;
   this->state_currentPulseNumber = scdev.state_currentPulseNumber;
   this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
   this->cfg_setting_opticsWarmupPhase_s = scdev.cfg_setting_opticsWarmupPhase_s;
   this->state_opticsWarmupApplied = scdev.state_opticsWarmupApplied;
   this->cached_Dr2 = scdev.cached_Dr2;
-  this->cached_Bt2 = scdev.cached_Bt2;
 
   if (scdev.scannerHead == nullptr)
     this->scannerHead = nullptr;
@@ -91,64 +90,85 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
     this->detector = nullptr;
   else
     this->detector = scdev.detector->clone();
+  if (scdev.isSubrayPatternCurrent()) {
+    buildSubrayPattern();
+    if (scdev.energyModel != nullptr)
+      energyModel = std::make_shared<EnergyModel>(*this);
+  }
 }
 
 // ***  M E T H O D S  *** //
 // *********************** //
 void
-ScanningDevice::prepareSimulation(bool const legacyEnergyModel)
+ScanningDevice::prepareSimulation()
 {
-  // Reset cached subray data for a clean elliptical sampling pass
-  cached_subrayRotation.clear();
-  cached_subrayRadiusStep.clear();
-  cached_subrayDivergenceAngle_rad.clear();
 
-  // Elliptical footprint discrete method
-  int const beamSampleQuality = FWF_settings.beamSampleQuality;
-  double const radiusStep_rad = beamDivergence_rad / beamSampleQuality;
+  preparePulse();
+  buildSubrayPattern();
+  energyModel = std::make_shared<EnergyModel>(*this);
+}
 
-  // Outer loop over radius steps from beam center to outer edge
-  for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++) {
-    double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
-    cached_subrayDivergenceAngle_rad.push_back(subrayDivergenceAngle_rad);
+bool
+ScanningDevice::isSubrayPatternCurrent() const
+{
+  return sampledKey && *sampledKey == samplingKey();
+}
 
-    // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-    Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
+std::vector<ScanningDevice::Subray> const&
+ScanningDevice::getSubrays() const
+{
+  if (!isSubrayPatternCurrent())
+    throw std::logic_error(
+      "Subray settings changed; prepare the scanner before tracing");
+  return subrays;
+}
 
-    // Calculate circle step width:
-    int circleSteps = (int)(PI_2 * radiusStep);
+void
+ScanningDevice::buildSubrayPattern()
+{
+  if (isSubrayPatternCurrent())
+    return;
+  auto const key = samplingKey();
+  auto generated = makeSubrayPattern(key.beam, key.settings);
+  subrays = std::move(generated);
+  numRays = subrays.size();
+  sampledKey = key;
+}
 
-    // Make sure that central ray is not skipped:
-    if (circleSteps == 0) {
-      circleSteps = 1;
-    }
-
-    double const circleStep_rad = PI_2 / circleSteps;
-
-    // # Loop over sub-rays along the circle
-    for (int circleStep = 0; circleStep < circleSteps; circleStep++) {
-      // Rotate around the circle
-      Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
-      r2 = r2.applyTo(r1);
-      // Cache subray generation data
-      cached_subrayRotation.push_back(r2);
-      cached_subrayRadiusStep.push_back(radiusStep);
-    }
-  }
-
-  // Prepare energy model
-  if (legacyEnergyModel) {
-    energyModel = std::make_shared<BaseEnergyModel>(*this);
-  } else {
-    energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+void
+ScanningDevice::setBeamRotation(double radians)
+{
+  double const normalized = normalizeBeamRotation(radians);
+  double const previous = beamRotation_rad;
+  beamRotation_rad = normalized;
+  try {
+    buildSubrayPattern();
+  } catch (...) {
+    beamRotation_rad = previous;
+    throw;
   }
 }
 
 void
-ScanningDevice::configureBeam()
+ScanningDevice::setBeamDivergence(double divergence_rad)
 {
-  cached_Bt2 = beamDivergence_rad * beamDivergence_rad;
-  beamWaistRadius = (beamQuality * wavelength_m) / (PI * beamDivergence_rad);
+  setBeamDivergences(divergence_rad, divergence_rad);
+}
+
+void
+ScanningDevice::setBeamDivergences(double x_rad, double y_rad)
+{
+  double const previousX = beamDivergenceX_rad;
+  double const previousY = beamDivergenceY_rad;
+  beamDivergenceX_rad = x_rad;
+  beamDivergenceY_rad = y_rad;
+  try {
+    buildSubrayPattern();
+  } catch (...) {
+    beamDivergenceX_rad = previousX;
+    beamDivergenceY_rad = previousY;
+    throw;
+  }
 }
 
 // Simulate energy loss from aerial particles (Carlsson et al., 2001)
@@ -156,39 +176,34 @@ ScanningDevice::configureBeam()
 double
 ScanningDevice::calcAtmosphericAttenuation() const
 {
-  double q;
-  double const lambda = wavelength_m * 1e9;
-  // The attenuation model defines meteorological visibility in kilometers.
+  double const lambda_um = wavelength_m * 1e6; // Kruse relation in micrometers
   double const Vm = visibility_m * 1e-3;
 
-  if (lambda < 500 && lambda > 2000) {
+  if (lambda_um < 0.5 || lambda_um > 2.0) {
     // Do nothing if wavelength is outside range, approximation will be bad
-    return 0;
+    LOG_WARN(
+      "calcAtmosphericAttenuation: wavelength outside 0.5-2.0 um, the Kruse "
+      "approximation does not apply, assuming no attenuation");
+    return 0.0;
   }
 
-  if (Vm > 50)
+  double q;
+  if (Vm > 50.0)
     q = 1.6;
-  else if (Vm > 6 && Vm < 50)
+  else if (Vm > 6.0)
     q = 1.3;
   else
-    q = 0.585 * pow(Vm, 0.33);
+    q = 0.585 * std::pow(Vm, 0.33);
 
-  return (3.91 / Vm) * pow((lambda / 0.55), -q);
+  // 3.91/Vm is per kilometre; simulation ranges are measured in metres.
+  return (3.91 / Vm) * std::pow(lambda_um / 0.55, -q) / 1000.0;
 }
 
 void
 ScanningDevice::calcRaysNumber()
 {
-  // Count circle steps
-  int count = 1;
-  for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality;
-       radiusStep++) {
-    int circleSteps = (int)(2 * PI) * radiusStep;
-    count += circleSteps;
-  }
-
-  // Update number of rays
-  numRays = count;
+  buildSubrayPattern();
+  numRays = subrays.size();
   std::stringstream ss;
   ss << "Number of subsampling rays (" << id << "): " << numRays;
   LOG_INFO(ss.str());
@@ -197,9 +212,9 @@ ScanningDevice::calcRaysNumber()
 void
 ScanningDevice::doSimStep(
   unsigned int legIndex,
-  double const currentGpsTime,
-  int const simFreq_Hz,
-  bool const isActive,
+  double currentGpsTime,
+  int simFreq_Hz,
+  bool isActive,
   glm::dvec3 const& platformPosition,
   Rotation const& platformAttitude,
   std::function<void(glm::dvec3&, Rotation&)> handleSimStepNoise,
@@ -218,6 +233,8 @@ ScanningDevice::doSimStep(
   // -------------------//
   if (!isActive)
     return;
+
+  buildSubrayPattern();
 
   // Do what active scanner does
   // ----------------------------//
@@ -260,7 +277,7 @@ ScanningDevice::doSimStep(
 }
 
 void
-ScanningDevice::applyWarmupPhase(int const simFreq_Hz)
+ScanningDevice::applyWarmupPhase(int simFreq_Hz)
 {
   if (state_opticsWarmupApplied || cfg_setting_opticsWarmupPhase_s <= 0.0 ||
       simFreq_Hz <= 0) {
@@ -301,7 +318,7 @@ ScanningDevice::calcExactAbsoluteBeamAttitude(Rotation const& platformAttitude)
 void
 ScanningDevice::computeSubrays(
   std::function<void(Rotation const& subrayRotation,
-                     int const sburayRadiusStep,
+                     std::size_t subrayIndex,
                      NoiseSource<double>& intersectionHandlingNoiseSource,
                      std::map<double, double>& reflections,
                      vector<RaySceneIntersection>& intersects
@@ -320,15 +337,16 @@ ScanningDevice::computeSubrays(
 #endif
 )
 {
-  size_t const numSubrays = cached_subrayRotation.size();
-  for (size_t i = 0; i < numSubrays; ++i) {
+  auto const& table = getSubrays();
+  std::size_t const numSubrays = table.size();
+  for (std::size_t i = 0; i < numSubrays; ++i) {
 #if DATA_ANALYTICS >= 2
     bool subrayHit;
     std::vector<double> subraySimRecord(
       14, std::numeric_limits<double>::quiet_NaN());
 #endif
-    handleSubray(cached_subrayRotation[i],
-                 cached_subrayRadiusStep[i],
+    handleSubray(table[i].rotation,
+                 i,
                  intersectionHandlingNoiseSource,
                  reflections,
                  intersects
@@ -341,111 +359,119 @@ ScanningDevice::computeSubrays(
 #if DATA_ANALYTICS >= 2
     HDA_GV.incrementGeneratedSubraysCount();
     subraySimRecord[0] = (double)subrayHit;
-    subraySimRecord[1] = cached_subrayDivergenceAngle_rad[i];
+    subraySimRecord[1] = table[i].angle_rad;
     pulseRecorder->recordSubraySimulation(subraySimRecord);
 #endif
   }
 }
 
-bool
-ScanningDevice::initializeFullWaveform(double const minHitDist_m,
-                                       double const maxHitDist_m,
-                                       double& minHitTime_ns,
-                                       double& maxHitTime_ns,
-                                       double& nsPerBin,
-                                       double& distanceThreshold,
-                                       int& peakIntensityIndex,
-                                       int& numFullwaveBins)
+void
+ScanningDevice::preparePulse()
 {
-  // Calc time at minimum and maximum distance
-  // (i.e. total beam time in fwf signal)
-  nsPerBin = FWF_settings.binSize_s * 1e9;
-  peakIntensityIndex = this->peakIntensityIndex;
-  double const peakFactor = peakIntensityIndex * nsPerBin;
-  // Time until first maximum minus rising flank
-  minHitTime_ns = minHitDist_m / SPEEDofLIGHT_mPerNanosec - peakFactor;
-  // Time until last maximum time for signal decay with 1 bin for buffer
-  maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec +
-                  pulseLength_s * 1e9 - peakFactor + nsPerBin; // 1 bin buffer
+  FWF_settings.validate();
+  if (FWF_settings.pulseShape == "sampled") {
+    pulseModel = FWF_settings.sampledPulse;
+  } else
+    pulseModel = PulseShape::create(FWF_settings.pulseShape,
+                                    pulseLength_s * 1e9,
+                                    FWF_settings.recordingTailTolerance);
+  evaluationBounds =
+    pulseModel->evaluationBounds(FWF_settings.evaluationTailTolerance);
+}
 
-  // Calc ranges and threshold
-  double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
-  double const maxFullwaveRange_ns = FWF_settings.maxFullwaveRange_s * 1e9;
-  distanceThreshold = maxHitDist_m;
-  if (maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns) {
-    hitTimeDelta_ns = maxFullwaveRange_ns;
-    maxHitTime_ns = minHitTime_ns + maxFullwaveRange_ns;
-    distanceThreshold = SPEEDofLIGHT_mPerNanosec * maxFullwaveRange_ns;
-  }
-
-  // Check if full wave is possible
-  if ((detector->cfg_device_rangeMin_m / SPEEDofLIGHT_mPerNanosec) >
-      minHitTime_ns) {
-    return false;
-  }
-
-  // Compute fullwave variables
-  numFullwaveBins = ((int)std::ceil(maxHitTime_ns / nsPerBin)) -
-                    ((int)ceil(minHitTime_ns / nsPerBin));
-
-  // update maxHitTime to fit the discretized fullwave bins
-  // minus 1 is necessary as the minimum is in bin #0
-  maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
-
-  return true;
+bool
+ScanningDevice::initializeFullWaveform(double minHitDist_m,
+                                       double maxHitDist_m,
+                                       WaveformGrid& grid)
+{
+  grid = WaveMaths::recordingGrid(minHitDist_m,
+                                  maxHitDist_m,
+                                  *pulseModel,
+                                  FWF_settings.sampleSpacingMeters(),
+                                  FWF_settings.maxRecordingSpanMeters());
+  return grid.sampleCount > 0;
 }
 
 double
-ScanningDevice::calcIntensity(
-  double const incidenceAngle,
-  double const targetRange,
+ScanningDevice::computeReceivedPower(
+  double incidenceCosine,
+  double targetRange,
   Material const& mat,
-  int const subrayRadiusStep
+  std::size_t subrayIndex
 #if DATA_ANALYTICS >= 2
   ,
-  std::vector<std::vector<double>>& calcIntensityRecords
+  std::vector<std::vector<double>>& radiometryRecords
 #endif
 ) const
 {
-  return energyModel->computeIntensity(incidenceAngle,
-                                       targetRange,
-                                       mat,
-                                       subrayRadiusStep
+  return energyModel->computeReceivedPower(incidenceCosine,
+                                           targetRange,
+                                           mat,
+                                           subrayIndex
 #if DATA_ANALYTICS >= 2
-                                       ,
-                                       calcIntensityRecords
+                                           ,
+                                           radiometryRecords
 #endif
   );
 }
 double
-ScanningDevice::calcIntensity(double const targetRange,
-                              double const sigma,
-                              int const subrayRadiusStep) const
+ScanningDevice::computeReceivedPowerWithSigma(double targetRange,
+                                              double sigma,
+                                              std::size_t subrayIndex) const
 {
-  return EnergyMaths::calcReceivedPower(
-           averagePower_w,
-           wavelength_m,
-           targetRange,
-           detector->cfg_device_rangeMin_m,
-           targetRange *
-             std::sin(cached_subrayDivergenceAngle_rad[subrayRadiusStep]),
-           beamWaistRadius,
-           cached_Dr2,
-           cached_Bt2,
-           efficiency,
-           atmosphericExtinction,
-           sigma) *
-         1000000000.0;
+  return energyModel->computeReceivedPowerWithSigma(
+    targetRange, sigma, subrayIndex);
 }
 
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 void
-ScanningDevice::setLastPulseWasHit(bool const value)
+ScanningDevice::setLastPulseWasHit(bool value)
 {
   if (value == state_lastPulseWasHit)
     return;
   // TODO see
   // https://www.codeproject.com/Articles/12362/A-quot-synchronized-quot-statement-for-C-like-in-J
   state_lastPulseWasHit = value;
+}
+
+void
+ScanningDevice::setPulseAmplitude(double amplitude)
+{
+  if (!std::isfinite(amplitude) || amplitude < 0.0)
+    throw std::invalid_argument(
+      "Pulse amplitude must be finite and nonnegative (watts)");
+  pulseAmplitude_W = amplitude;
+}
+
+double
+ScanningDevice::computePowerRatio(
+  double incidenceCosine,
+  double targetRange,
+  Material const& mat,
+  std::size_t subrayIndex
+#if DATA_ANALYTICS >= 2
+  ,
+  std::vector<std::vector<double>>& radiometryRecords
+#endif
+) const
+{
+  return energyModel->computePowerRatio(incidenceCosine,
+                                        targetRange,
+                                        mat,
+                                        subrayIndex
+#if DATA_ANALYTICS >= 2
+                                        ,
+                                        radiometryRecords
+#endif
+  );
+}
+
+double
+ScanningDevice::computePowerRatioWithSigma(double targetRange,
+                                           double sigma,
+                                           std::size_t subrayIndex) const
+{
+  return energyModel->computePowerRatioWithSigma(
+    targetRange, sigma, subrayIndex);
 }

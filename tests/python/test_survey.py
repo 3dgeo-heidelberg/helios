@@ -482,13 +482,27 @@ def test_survey_run_trajectory_for_all_scanner_types(light_als_multiscanner_surv
 
 
 def test_full_waveform_settings_effect(light_als_multiscanner_survey):
-    points1, _ = light_als_multiscanner_survey.run(format=OutputFormat.NPY)
+    survey = light_als_multiscanner_survey
+    points1, _ = survey.run(format=OutputFormat.NPY)
+    before = [
+        (
+            len(device._cpp_object.subrays),
+            sum(ray.share for ray in device._cpp_object.subrays),
+        )
+        for device in survey.scanner.channels
+    ]
 
-    light_als_multiscanner_survey.full_waveform_settings.beam_sample_quality = 5
-    points2, _ = light_als_multiscanner_survey.run(format=OutputFormat.NPY)
+    survey.full_waveform_settings.beam_sample_quality = 5
+    points2, _ = survey.run(format=OutputFormat.NPY)
 
-    # A higher beam sample quality should result in more points
-    assert points1.shape[0] < points2.shape[0]
+    # Sampling density increases while captured beam power stays constant.
+    # Detected point counts need not increase as individual subrays get weaker.
+    assert points1.shape[0] > 0
+    assert points2.shape[0] > 0
+    for device, (count, share) in zip(survey.scanner.channels, before):
+        subrays = device._cpp_object.subrays
+        assert len(subrays) > count
+        assert sum(ray.share for ray in subrays) == pytest.approx(share)
 
 
 def test_traj_from_np(survey):

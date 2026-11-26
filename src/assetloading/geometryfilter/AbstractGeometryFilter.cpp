@@ -20,6 +20,10 @@ AbstractGeometryFilter::getMaterial(std::string materialName)
 std::vector<std::shared_ptr<Material>>
 AbstractGeometryFilter::parseMaterials()
 {
+  if (params.count("randomMaterials") || params.count("randomRange"))
+    throw HeliosException(
+      "randomMaterials/randomRange were removed; supply explicit materials");
+
   if (params.find("matfile") == params.end()) {
     return std::vector<std::shared_ptr<Material>>(0);
   }
@@ -59,40 +63,6 @@ AbstractGeometryFilter::parseMaterials()
   } else { // No name, so pick first
     if (!mats.empty())
       matvec.push_back(mats.begin()->second);
-  }
-
-  // Generate randomized materials if requested
-  if (params.find("randomMaterials") != params.end()) {
-    int nRandom = std::get<int>(params["randomMaterials"]);
-    double randomRange = 1.0;
-    if (params.find("randomRange") != params.end()) {
-      randomRange = std::get<double>(params["randomRange"]);
-    }
-    UniformNoiseSource<double> uns(*DEFAULT_RG, -randomRange, randomRange);
-    std::shared_ptr<Material> mat0 = matvec[0];
-    std::shared_ptr<Material> matN;
-    for (int i = 0; i < nRandom; i++) {
-      matN = std::make_shared<Material>(*mat0);
-      for (size_t j = 0; j < 4; j++) {
-        matN->ka[j] += uns.next();
-        if (matN->ka[j] > 1.0)
-          matN->ka[j] = 1.0;
-        if (matN->ka[j] < 0.0)
-          matN->ka[j] = 0.0;
-        matN->kd[j] += uns.next();
-        if (matN->kd[j] > 1.0)
-          matN->kd[j] = 1.0;
-        if (matN->kd[j] < 0.0)
-          matN->kd[j] = 0.0;
-        matN->ks[j] += uns.next();
-        if (matN->ks[j] > 1.0)
-          matN->ks[j] = 1.0;
-        if (matN->ks[j] < 0.0)
-          matN->ks[j] = 0.0;
-      }
-      matN->setSpecularity();
-      matvec.push_back(matN);
-    }
   }
 
   return matvec;

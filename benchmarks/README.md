@@ -81,10 +81,19 @@ More information on the output and on more execution options can be found in the
 
 | Benchmark | Executable | Description |
 | --------- | ---------- | ----------- |
-| base_energy_model_compute_received_power_benchmark | base_energy_model_compute_received_power_b | Tests the performance of BaseEnergyModel::computeReceivedPower. Sets up a minimal SingleScanner/ScanningDevice context and repeatedly evaluates the received power for fixed, synthetic arguments. |
 | fullwaveform_compute_subrays_benchmark | fullwaveform_compute_subrays_b | Tests the performance of the FullWaveformPulseRunnable::computeSubrays. It sets up a mock Scene, SingleScanner and FullWaveformPulseRunnable. The benchmark does not test the performance of testIntersection, and instead returns nullptr for all subray intersections. |
 | fullwaveform_digest_intersections_benchmark | fullwaveform_digest_intersections_b | Tests the performance of FullWaveformPulseRunnable::digestIntersections. It builds a small mock scene + scanner setup and feeds a fixed set of synthetic reflections/intersections into digestIntersections. The goal is to measure the full-waveform digestion path, without including ray casting costs, which are tested via the computeSubrays benchmark. |
 | fullwaveform_find_intersection_benchmark | fullwaveform_find_intersection_b | Tests the performance of the FullWaveformPulseRunnable::findIntersection method. Unlike the computeSubrays benchmark, this focuses on the ray-scene intersection path by repeatedly calling findIntersection against a small, in-memory triangle-grid scene that is finalized (KD-Grove built) once during setup. |
 | fullwaveform_find_intersection_miss_benchmark | fullwaveform_find_intersection_b | Version of fullwaveform_find_intersection_benchmark that exercises the intersection traversal work when the ray intersects the scene AABB but does not intersect any primitive. It uses a sparse scene with a large AABB and a few tiny triangle patches placed in the corners, then shoots a ray through the empty center. |
 | scanning_device_sim_step_benchmark | scanning_device_sim_step_b | Tests the performance of the doSimStep method of ScanningDevice. The benchmark sets up a ScanningDevice with example specifications, with an appropriate PolygonBeamDeflector and ScannerHead. The benchmark isolates the performance of the ScannerHead, BeamDeflector and ScanningDevice parts of the SimStep, and does not include pulse computation. |
 | macro_playback_benchmark | macro_playback_b | **This is a macro benchmark, not intended for microbenchmarking performance analyses!** This benchmark is a macro benchmark for an entire SurveyPlayback. It follows the setup of a SurveyPlayback in LidarSim.cpp with the tls_toyblocks. |
+
+The waveform digestion benchmark initializes the pulse model before timing.
+Its arguments are return count, separation in millimetres, and cutoff exponent
+(0 disables truncation; 6 and 4 select 1e-6 and 1e-4): one return,
+32 overlapping returns (10 mm), and separated returns (5 m and 20 m).
+`sample_buffer_bytes` measures the dense signal buffer only, not total process
+memory; `samples` makes increased recording spans visible. The analytic path
+retains fixed range resolution. Per-return evaluation uses the configured tail
+cutoff; tolerance zero evaluates the entire recording interval. Distant outliers
+still increase dense-buffer memory and downstream processing.

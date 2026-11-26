@@ -172,11 +172,10 @@ makeScanner()
                                     glm::dvec3(0, 0, 0), // beamOrigin
                                     Rotation(),          // beamOrientation
                                     std::list<int>({ 100000 }), // pulse freqs
-                                    5.0e-9,                     // pulseLength_s
+                                    5e-9,                       // pulseLength_s
                                     "benchmarkScanner",         // id
-                                    4.0,                        // averagePower
-                                    1.0,                        // beamQuality
-                                    0.99,                       // efficiency
+                                    4.0,     // pulseAmplitude
+                                    0.99,    // efficiency
                                     0.15,    // receiverDiameter
                                     23000.0, // atmosphericVisibility
                                     1064,    // wavelength (nm)
@@ -197,7 +196,7 @@ makeScanner()
                                                 ),
     0);
 
-  scanner->prepareSimulation(false);
+  scanner->prepareSimulation();
   return scanner;
 }
 
