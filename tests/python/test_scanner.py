@@ -688,6 +688,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
             "sampleSpacing_ns": "0.2",
             "peakWindow_ns": "1",
             "recordingTailTolerance": "0.00001",
+            "evaluationTailTolerance": "0.000001",
         },
     )
     channel = element.find("channels/channel")
@@ -711,6 +712,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     assert first.sample_spacing == pytest.approx(0.25e-9)
     assert first.peak_window == pytest.approx(1e-9)
     assert first.recording_tail_tolerance == 1e-5
+    assert first.evaluation_tail_tolerance == 1e-6
     assert second.pulse_shape == "gamma"
     assert second.sample_spacing == pytest.approx(0.2e-9)
     scanner.prepare_pulse(0)

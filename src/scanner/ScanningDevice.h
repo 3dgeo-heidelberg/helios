@@ -366,6 +366,7 @@ public:
    * @see Scanner::initializeFullWaveform
    */
   void preparePulse();
+  std::pair<double, double> evaluationBounds;
   PulseShape const& getPulseModel() const { return *pulseModel; }
   std::shared_ptr<const PulseShape> getPulseModelShared() const
   {

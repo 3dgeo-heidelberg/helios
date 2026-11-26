@@ -70,6 +70,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->supportedPulseFreqs_Hz = scdev.supportedPulseFreqs_Hz;
   this->maxNOR = scdev.maxNOR;
   this->pulseModel = scdev.pulseModel;
+  this->evaluationBounds = scdev.evaluationBounds;
   this->rangeErrExpr = scdev.rangeErrExpr;
   this->state_currentPulseNumber = scdev.state_currentPulseNumber;
   this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
@@ -370,11 +371,12 @@ ScanningDevice::preparePulse()
   FWF_settings.validate();
   if (FWF_settings.pulseShape == "sampled") {
     pulseModel = FWF_settings.sampledPulse;
-    return;
-  }
-  pulseModel = PulseShape::create(FWF_settings.pulseShape,
-                                  pulseLength_s * 1e9,
-                                  FWF_settings.recordingTailTolerance);
+  } else
+    pulseModel = PulseShape::create(FWF_settings.pulseShape,
+                                    pulseLength_s * 1e9,
+                                    FWF_settings.recordingTailTolerance);
+  evaluationBounds =
+    pulseModel->evaluationBounds(FWF_settings.evaluationTailTolerance);
 }
 
 bool

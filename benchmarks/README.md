@@ -89,9 +89,11 @@ More information on the output and on more execution options can be found in the
 | macro_playback_benchmark | macro_playback_b | **This is a macro benchmark, not intended for microbenchmarking performance analyses!** This benchmark is a macro benchmark for an entire SurveyPlayback. It follows the setup of a SurveyPlayback in LidarSim.cpp with the tls_toyblocks. |
 
 The waveform digestion benchmark initializes the pulse model before timing.
-Its arguments are return count and separation in millimetres: one return,
+Its arguments are return count, separation in millimetres, and cutoff exponent
+(0 disables truncation; 6 and 4 select 1e-6 and 1e-4): one return,
 32 overlapping returns (10 mm), and separated returns (5 m and 20 m).
 `sample_buffer_bytes` measures the dense signal buffer only, not total process
 memory; `samples` makes increased recording spans visible. The analytic path
-retains fixed range resolution and evaluates every return across the recording
-interval, so distant outliers increase both memory and runtime.
+retains fixed range resolution. Per-return evaluation uses the configured tail
+cutoff; tolerance zero evaluates the entire recording interval. Distant outliers
+still increase dense-buffer memory and downstream processing.

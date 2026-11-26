@@ -1088,6 +1088,7 @@
         "peak_window": {},
         "max_recording_span": {},
         "pulse_shape": {},
+        "evaluation_tail_tolerance": {},
         "recording_tail_tolerance": {},
         "sampled_pulse": {}
       }

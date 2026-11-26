@@ -454,8 +454,21 @@ FullWaveformPulseRunnable::populateFullWaveform(
   WaveformGrid const& grid)
 {
   auto const& model = scanner->getPulseModel(pulse.getDeviceIndex());
+  auto const bounds =
+    scanner->getScanningDevice(pulse.getDeviceIndex()).evaluationBounds;
   for (auto const& reflection : reflections) {
-    for (int i = 0; i < grid.sampleCount; ++i)
+    double const lo =
+      (reflection.first + bounds.first - grid.firstSampleRange_m) /
+      grid.spacing_m;
+    double const hi =
+      (reflection.first + bounds.second - grid.firstSampleRange_m) /
+      grid.spacing_m;
+    if (hi < 0 || lo > grid.sampleCount - 1)
+      continue;
+    int const first = static_cast<int>(std::max(0.0, std::floor(lo)));
+    int const last =
+      static_cast<int>(std::min(double(grid.sampleCount - 1), std::ceil(hi)));
+    for (int i = first; i <= last; ++i)
       fullwave[i] +=
         reflection.second * model.evaluate(grid.rangeAt(i) - reflection.first);
   }

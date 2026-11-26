@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 
 namespace {
@@ -160,4 +161,37 @@ std::vector<double>
 SampledPulse::offsetsNanoseconds() const
 {
   return originalOffsets_ns;
+}
+
+namespace {
+void
+validateEvaluationTolerance(double t)
+{
+  if (!std::isfinite(t) || t < 0 || t >= 1)
+    throw std::invalid_argument(
+      "Evaluation tolerance must be finite and in [0, 1)");
+}
+}
+std::pair<double, double>
+GaussianPulse::evaluationBounds(double t) const
+{
+  validateEvaluationTolerance(t);
+  double extent = t == 0 ? std::numeric_limits<double>::infinity()
+                         : sigma_m * std::sqrt(-2 * std::log(t));
+  return { -extent, extent };
+}
+std::pair<double, double>
+GammaPulse::evaluationBounds(double t) const
+{
+  validateEvaluationTolerance(t);
+  if (t == 0)
+    return { -std::numeric_limits<double>::infinity(),
+             std::numeric_limits<double>::infinity() };
+  return { -2 * rho_m, rho_m * fallingFlankCrossing(t) - 2 * rho_m };
+}
+std::pair<double, double>
+SampledPulse::evaluationBounds(double t) const
+{
+  validateEvaluationTolerance(t);
+  return recordingBounds();
 }

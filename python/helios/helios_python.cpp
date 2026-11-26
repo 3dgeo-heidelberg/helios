@@ -918,6 +918,8 @@ PYBIND11_MODULE(_helios, m)
     .def_readwrite("sample_spacing", &FWFSettings::sampleSpacing_s)
     .def_readwrite("pulse_shape", &FWFSettings::pulseShape)
     .def_readwrite("sampled_pulse", &FWFSettings::sampledPulse)
+    .def_readwrite("evaluation_tail_tolerance",
+                   &FWFSettings::evaluationTailTolerance)
     .def_readwrite("recording_tail_tolerance",
                    &FWFSettings::recordingTailTolerance)
     .def("validate", &FWFSettings::validate)

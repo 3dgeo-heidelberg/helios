@@ -15,6 +15,8 @@ class PulseShape
 {
 public:
   virtual ~PulseShape() = default;
+  virtual std::pair<double, double> evaluationBounds(
+    double tolerance) const = 0;
   virtual double evaluate(double offset_m) const = 0;
   virtual std::pair<double, double> recordingBounds() const = 0;
 
@@ -28,6 +30,7 @@ class GaussianPulse : public PulseShape
 {
 public:
   explicit GaussianPulse(double fwhm_ns, double recordingTailTolerance = 1e-4);
+  std::pair<double, double> evaluationBounds(double tolerance) const override;
   double evaluate(double offset_m) const override;
   std::pair<double, double> recordingBounds() const override
   {
@@ -44,6 +47,7 @@ class GammaPulse : public PulseShape
 {
 public:
   explicit GammaPulse(double fwhm_ns, double recordingTailTolerance = 1e-4);
+  std::pair<double, double> evaluationBounds(double tolerance) const override;
   double evaluate(double offset_m) const override;
   std::pair<double, double> recordingBounds() const override
   {
@@ -63,6 +67,7 @@ public:
   SampledPulse(std::vector<double> offsets_ns,
                std::vector<double> amplitudes,
                std::optional<double> peak_offset_ns = std::nullopt);
+  std::pair<double, double> evaluationBounds(double tolerance) const override;
   double evaluate(double offset_m) const override;
   std::pair<double, double> recordingBounds() const override
   {

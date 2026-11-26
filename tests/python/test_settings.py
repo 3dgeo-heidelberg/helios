@@ -239,6 +239,7 @@ def test_analytic_waveform_settings_roundtrip(tmp_path, shape):
         max_recording_span="100 ns",
         pulse_shape=shape,
         recording_tail_tolerance=1e-6,
+        evaluation_tail_tolerance=1e-5,
     )
     path = settings.to_yaml(tmp_path / "waveform.yaml")
     text = path.read_text()
@@ -252,6 +253,7 @@ def test_analytic_waveform_settings_roundtrip(tmp_path, shape):
     assert restored.pulse_shape == shape
     assert not hasattr(restored, "correct_peak_offset")
     assert restored.recording_tail_tolerance == 1e-6
+    assert restored.evaluation_tail_tolerance == 1e-5
 
 
 def test_legacy_waveform_constructor_and_yaml(tmp_path):
@@ -346,3 +348,16 @@ def test_waveform_explicit_times_equal_seconds():
         assert getattr(explicit._to_cpp(), field) == pytest.approx(
             getattr(numeric._to_cpp(), field), rel=1e-12, abs=0
         )
+
+
+def test_evaluation_tail_tolerance():
+    from helios import FullWaveformSettings
+
+    settings = FullWaveformSettings()
+    assert settings.evaluation_tail_tolerance == 1e-4
+    for value in (0, 1e-6, 1e-4):
+        settings.evaluation_tail_tolerance = value
+        assert settings._cpp_object.evaluation_tail_tolerance == value
+    for value in (-1, 1, float("inf"), float("nan")):
+        with pytest.raises(ValueError):
+            settings.evaluation_tail_tolerance = value

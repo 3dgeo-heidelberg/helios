@@ -22,6 +22,7 @@ casting costs, which are tested via the computeSubrays benchmark.
 #include <RaySceneIntersection.h>
 #include <ScenePart.h>
 
+#include <cmath>
 #include <map>
 #include <memory>
 #include <vector>
@@ -166,6 +167,8 @@ struct BenchmarkContext
       );
 
     scanner->getFWFSettings(0).beamSampleQuality = beamSampleQuality;
+    // Match the range spacing of alpha-dev's 0.25 ns bins.
+    scanner->getFWFSettings(0).sampleSpacing_s = 0.5e-9;
 
     auto platform = std::make_shared<Platform>();
     scanner->platform = platform;
@@ -191,6 +194,10 @@ fullwaveform_digest_intersections_benchmark(benchmark::State& state)
 
   BenchmarkContext ctx(
     /*beamSampleQuality=*/3, numReflections, state.range(1) / 1000.0);
+
+  ctx.scanner->getFWFSettings(0).evaluationTailTolerance =
+    state.range(2) == 0 ? 0 : std::pow(10.0, -state.range(2));
+  ctx.scanner->preparePulse(0);
 
   for (auto _ : state) {
     // Keep capture buffers stable.
@@ -222,9 +229,6 @@ fullwaveform_digest_intersections_benchmark(benchmark::State& state)
 } // namespace
 
 BENCHMARK(fullwaveform_digest_intersections_benchmark)
-  ->Args({ 1, 0 })
-  ->Args({ 32, 10 })
-  ->Args({ 32, 5000 })
-  ->Args({ 32, 20000 });
+  ->ArgsProduct({ { 1, 32 }, { 10, 5000, 20000 }, { 0, 6, 4 } });
 
 BENCHMARK_MAIN();

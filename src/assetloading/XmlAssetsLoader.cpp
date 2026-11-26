@@ -1399,6 +1399,8 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
     if (settings->pulseShape == "sampled")
       throw std::invalid_argument(
         "Sampled pulses are supported through Python and YAML only");
+    settings->evaluationTailTolerance = XmlUtils::getAttributeCast<double>(
+      node, "evaluationTailTolerance", settings->evaluationTailTolerance);
     settings->recordingTailTolerance = XmlUtils::getAttributeCast<double>(
       node, "recordingTailTolerance", settings->recordingTailTolerance);
     if (auto const* method = node->Attribute("beamSamplingMethod"))

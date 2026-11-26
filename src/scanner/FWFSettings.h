@@ -27,6 +27,7 @@ public:
   std::string pulseShape = "gamma";
   std::shared_ptr<SampledPulse> sampledPulse;
   double recordingTailTolerance = 1e-4;
+  double evaluationTailTolerance = 1e-4;
   /**
    * @brief Minimum echo width
    */
@@ -98,6 +99,9 @@ public:
   void validate() const
   {
     validateBeamSampling();
+    if (!std::isfinite(evaluationTailTolerance) ||
+        evaluationTailTolerance < 0 || evaluationTailTolerance >= 1)
+      throw std::invalid_argument("evaluationTailTolerance must be in [0, 1)");
     if (sampleSpacingMeters() <= 0 || !std::isfinite(sampleSpacingMeters()) ||
         !std::isfinite(peakWindowMeters()) ||
         !std::isfinite(maxRecordingSpanMeters()))
@@ -140,6 +144,7 @@ public:
   {
     std::stringstream ss;
     ss << "FWFSettings \"" << id << "\":\n"
+       << "evaluationTailTolerance = " << evaluationTailTolerance << "\n"
        << "sampleSpacing_s = " << sampleSpacing_s << "\n"
        << "pulseShape = " << pulseShape << "\n"
        << "sampledPulse = " << (sampledPulse ? "present" : "none") << "\n"

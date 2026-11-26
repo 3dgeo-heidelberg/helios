@@ -589,3 +589,10 @@ Modified Phong migration
 
 Surface scattering uses Lafortune and Willems (1994), *Using the Modified Phong BRDF for Physically Based Rendering*. ``ks`` is a mixture weight. ``kd = 1-ks``. The absolute coefficients are reflectance times these weights. Reflectance is fractional [0,1] in MTL and Python. Only spectral library input
 uses percentages. Defaults are 0.5 reflectance, zero ks, and exponent 10. Regenerate old serialized documents and binary scenes (version 2).
+
+Per-return evaluation cutoff
+---------------------------
+
+``evaluationTailTolerance`` (Python: ``evaluation_tail_tolerance``) defaults to ``1e-4`` and accepts finite values in [0, 1). Each analytic return is evaluated only within its peak-relative tolerance bounds. Zero restores untruncated analytic evaluation. Sampled pulses always use their exact finite support. This setting does not change the recording grid or ``recordingTailTolerance``.
+Fractional-bin alignment and analytic values inside the interval are preserved. For nonnegative return weights, omitted waveform amplitude is bounded by the tolerance times the sum of weights, including the final amplitude scale. This is not a relative-error bound on the combined waveform. Weak returns near strong ones or detection thresholds may change. Dense waveform allocation is
+unchanged.

@@ -809,6 +809,7 @@ TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
   scanner->setDetector(
     std::make_shared<FullWaveformPulseDetector>(scanner, 0.0, 0.01));
   scanner->getFWFSettings().pulseShape = shape;
+  scanner->getFWFSettings().evaluationTailTolerance = 0;
   scanner->preparePulse();
   WaveformTestScene scene;
   SimulatedPulse pulse(glm::dvec3(0), Rotation(), 0, 0, 1, 0);
@@ -837,6 +838,17 @@ TEST_CASE("Waveform evaluates exact fractional returns including distant tails",
     }
     REQUIRE(samples[k] == Catch::Approx(expected * 4e9).margin(1e-10));
   }
+  scanner->getFWFSettings().evaluationTailTolerance = 1e-4;
+  scanner->preparePulse();
+  std::vector<double> bounded(grid.sampleCount, 0);
+  runnable.populateFullWaveform(reflections, bounded, grid);
+  double const errorBound = 1e-4 * 4e-6 * 4e9;
+  for (int k = 0; k < grid.sampleCount; ++k) {
+    REQUIRE(bounded[k] <= samples[k] + 1e-10);
+    REQUIRE(samples[k] - bounded[k] <= errorBound + 1e-10);
+  }
+  scanner->getFWFSettings().evaluationTailTolerance = 0;
+  scanner->preparePulse();
   // A recording cap must not remove a later return's leading tail.
   WaveformGrid clipped{ 12.0, 0.03, 3 };
   std::vector<double> tail(3, 0);
@@ -1183,4 +1195,20 @@ TEST_CASE("Modified Phong clips the lobe and defines zero exponent", "[energy]")
   REQUIRE(modifiedPhongBrdf(m, 1) == Catch::Approx(0.6 * 4.5 / (2 * PI)));
   m.specularExponent = 0;
   REQUIRE(modifiedPhongBrdf(m, -0.5) == Catch::Approx(0.6 / PI));
+}
+
+TEST_CASE("Evaluation bounds are independent of recording bounds",
+          "[energy][waveform]")
+{
+  for (auto const& shape : { "gamma", "gaussian" }) {
+    auto model = PulseShape::create(shape, 5, 1e-4);
+    auto recording = model->recordingBounds();
+    auto bounds = model->evaluationBounds(1e-4);
+    REQUIRE(model->evaluate(bounds.second + 0.01) < 1e-4);
+    REQUIRE(model->evaluate(bounds.first - 0.01) < 1e-4);
+    REQUIRE(model->recordingBounds() == recording);
+    REQUIRE(std::isinf(model->evaluationBounds(0).second));
+    REQUIRE_THROWS(model->evaluationBounds(-1));
+    REQUIRE_THROWS(model->evaluationBounds(1));
+  }
 }

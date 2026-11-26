@@ -291,6 +291,9 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     max_recording_span: Annotated[TimeInterval, Field(ge=0, allow_inf_nan=False)] = 0.0
     pulse_shape: Literal["gamma", "gaussian", "sampled"] = "gamma"
     sampled_pulse: Optional[SampledPulse] = None
+    evaluation_tail_tolerance: Annotated[
+        float, Field(ge=0, lt=1, allow_inf_nan=False)
+    ] = 1e-4
     recording_tail_tolerance: Annotated[
         float, Field(gt=0, lt=1, allow_inf_nan=False)
     ] = 1e-4

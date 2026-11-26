@@ -463,6 +463,7 @@ def test_fwf_settings_to_string():
     fwf = _helios.FWFSettings()
     expected_str = (
         'FWFSettings "":\n'
+        "evaluationTailTolerance = 0.0001\n"
         "sampleSpacing_s = 2.5e-10\n"
         "pulseShape = gamma\n"
         "sampledPulse = none\n"
