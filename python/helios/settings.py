@@ -273,7 +273,9 @@ SampledPulse.peak_offset = SampledPulse.peak_offset.getter(
 
 
 class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
-    """Waveform reconstruction on a fixed grid in metres.
+    """Time-based waveform settings (numeric durations are seconds).
+
+    Reconstruction uses a fixed range grid internally.
 
     Pulse FWHM remains a scanner specification in seconds. All runtime pulses peak at
     zero and retain their negative-offset portions.
@@ -281,12 +283,12 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
     cutoff for individual returns. Waveform and reported ranges share the same peak reference. Legacy time settings are accepted at construction.
     """
 
-    sample_spacing: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.03747405725
+    sample_spacing: Annotated[TimeInterval, Field(gt=0, allow_inf_nan=False)] = 0.25e-9
     beam_sampling_method: Literal["polar", "cartesian"] = "polar"
     beam_sample_quality: PositiveInt = 3
     beam_sampling_factor: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 2.0
-    peak_window: Annotated[Length, Field(gt=0, allow_inf_nan=False)] = 0.149896229
-    max_recording_span: Annotated[Length, Field(ge=0, allow_inf_nan=False)] = 0.0
+    peak_window: Annotated[TimeInterval, Field(gt=0, allow_inf_nan=False)] = 1e-9
+    max_recording_span: Annotated[TimeInterval, Field(ge=0, allow_inf_nan=False)] = 0.0
     pulse_shape: Literal["gamma", "gaussian", "sampled"] = "gamma"
     sampled_pulse: Optional[SampledPulse] = None
     recording_tail_tolerance: Annotated[
@@ -306,12 +308,12 @@ class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
                 if new in kwargs:
                     raise ValueError(f"Specify only one of {old} and {new}")
                 warnings.warn(
-                    f"{old} is deprecated; use {new} in metres",
+                    f"{old} is deprecated; use {new} in seconds",
                     DeprecationWarning,
                     stacklevel=3,
                 )
                 seconds = TypeAdapter(TimeInterval).validate_python(kwargs.pop(old))
-                kwargs[new] = seconds * (299792458.0 / 2.0)
+                kwargs[new] = seconds
         return kwargs
 
     def _to_cpp(self):

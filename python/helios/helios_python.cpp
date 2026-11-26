@@ -915,7 +915,7 @@ PYBIND11_MODULE(_helios, m)
     m, "FWFSettings");
   fwf_settings.def(py::init<>())
     .def(py::init<const FWFSettings&>(), py::arg("fwfSettings"))
-    .def_readwrite("sample_spacing", &FWFSettings::sampleSpacing_m)
+    .def_readwrite("sample_spacing", &FWFSettings::sampleSpacing_s)
     .def_readwrite("pulse_shape", &FWFSettings::pulseShape)
     .def_readwrite("sampled_pulse", &FWFSettings::sampledPulse)
     .def_readwrite("recording_tail_tolerance",
@@ -937,8 +937,8 @@ PYBIND11_MODULE(_helios, m)
       })
     .def_readwrite("beam_sample_quality", &FWFSettings::beamSampleQuality)
     .def_readwrite("beam_sampling_factor", &FWFSettings::beamSamplingFactor)
-    .def_readwrite("peak_window", &FWFSettings::peakWindow_m)
-    .def_readwrite("max_recording_span", &FWFSettings::maxRecordingSpan_m)
+    .def_readwrite("peak_window", &FWFSettings::peakWindow_s)
+    .def_readwrite("max_recording_span", &FWFSettings::maxRecordingSpan_s)
     .def("__str__", &FWFSettings::toString);
 
   py::class_<Rotation, std::shared_ptr<Rotation>> rotation(m, "Rotation");

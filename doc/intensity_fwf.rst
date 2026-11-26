@@ -111,17 +111,17 @@ The quality of the simulation can be adjusted by the ``beamSampleQuality`` attri
      - 2
      - Normalized radial cutoff (polar) or per-axis cutoff (Cartesian).
 
-   * - ``sampleSpacing_m``
-     - 0.03747405725
-     - Fixed sample spacing in metres (equivalent to 0.25 ns round-trip time).
+   * - ``sampleSpacing_ns``
+     - 0.25
+     - Fixed temporal sample spacing in nanoseconds.
 
-   * - ``maxRecordingSpan_m``
+   * - ``maxRecordingSpan_ns``
      - 0
-     - Maximum recording span from its first sample; zero means unlimited.
+     - Maximum recording duration in nanoseconds from its first sample; zero means unlimited.
 
-   * - ``peakWindow_m``
-     - 0.149896229
-     - Peak validation neighborhood in metres; at least twice the sample spacing.
+   * - ``peakWindow_ns``
+     - 1
+     - Peak validation neighborhood in nanoseconds; at least twice the sample spacing.
 
    * - ``pulseShape``
      - gamma
@@ -267,7 +267,7 @@ At each range sample :math:`x_k`, HELIOS++ directly evaluates
 
 For gamma, automatic bounds extend from the nearest return minus :math:`2\rho` to the furthest return plus the falling-flank tolerance crossing minus :math:`2\rho`. For Gaussian, the pulse-relative bounds are :math:`\pm\sigma_r\sqrt{-2\ln\epsilon}`, where :math:`\epsilon` is ``recordingTailTolerance`` (default ``1e-4``), the pulse amplitude relative to its peak at the recording bounds. These bounds are combined with the nearest and furthest return. The tolerance controls the recording interval, not an absolute error bound for the summed signal.
 
-The grid starts at the nearest return plus the pulse's lower recording bound, without rounding this origin to a multiple of the sample spacing. For gamma pulses this is exactly the nearest return; Gaussian and sampled pulses retain any leading flank before their reference. The upper bound rounds outwards to a grid point relative to this origin. Translating all returns translates the grid by the same amount. ``maxRecordingSpan_m``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
+The grid starts at the nearest return plus the pulse's lower recording bound, without rounding this origin to a multiple of the sample spacing. For gamma pulses this is exactly the nearest return; Gaussian and sampled pulses retain any leading flank before their reference. The upper bound rounds outwards to a grid point relative to this origin. Translating all returns translates the grid by the same amount. ``maxRecordingSpan_ns``, if positive, caps the interval from its first sample without including a sample beyond the cap. Distant returns increase sample count and memory, never the sample spacing. Allocation/index overflow raises an error rather than silently reducing resolution.
 
 
 .. figure:: img/onevpeak.png
@@ -291,10 +291,10 @@ Configuration migration
 -----------------------
 
 Python uses ``sample_spacing``, ``peak_window``, ``max_recording_span``,
-``pulse_shape`` and ``recording_tail_tolerance``::
+``pulse_shape`` and ``recording_tail_tolerance``. Numeric durations are seconds; explicit time units are also accepted. Internally durations convert to ranges using ``range = time * c / 2``::
 
    settings = helios.FullWaveformSettings(
-       sample_spacing="2 cm", peak_window="10 cm",
+       sample_spacing="0.25 ns", peak_window="1 ns",
        pulse_shape="gaussian",
        recording_tail_tolerance=1e-4,
    )

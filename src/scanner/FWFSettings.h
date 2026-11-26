@@ -2,6 +2,7 @@
 
 #include "Asset.h"
 #include "BeamSampling.h"
+#include <maths/MathConstants.h>
 #include <maths/PulseShape.h>
 
 #include <cmath>
@@ -20,9 +21,9 @@ public:
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**
-   * @brief Range sample spacing (metres)
+   * @brief Temporal sample spacing (seconds)
    */
-  double sampleSpacing_m = 0.03747405725;
+  double sampleSpacing_s = 0.25e-9;
   std::string pulseShape = "gamma";
   std::shared_ptr<SampledPulse> sampledPulse;
   double recordingTailTolerance = 1e-4;
@@ -61,13 +62,26 @@ public:
   /** Normalized radial cutoff (polar) or per-axis cutoff (Cartesian). */
   double beamSamplingFactor = 2.0;
   /**
-   * @brief Peak validation window (metres)
+   * @brief Peak validation window (seconds)
    */
-  double peakWindow_m = 0.149896229;
+  double peakWindow_s = 1e-9;
   /**
-   * @brief Maximum recording span (metres), zero means unlimited
+   * @brief Maximum recording span (seconds), zero means unlimited
    */
-  double maxRecordingSpan_m = 0.0;
+  double maxRecordingSpan_s = 0.0;
+
+  double sampleSpacingMeters() const
+  {
+    return sampleSpacing_s * (SPEEDofLIGHT_mPerSec / 2.0);
+  }
+  double peakWindowMeters() const
+  {
+    return peakWindow_s * (SPEEDofLIGHT_mPerSec / 2.0);
+  }
+  double maxRecordingSpanMeters() const
+  {
+    return maxRecordingSpan_s * (SPEEDofLIGHT_mPerSec / 2.0);
+  }
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -77,21 +91,26 @@ public:
   FWFSettings() {}
 
   /**
-   * @brief Validate the sampleSpacing_m and peakWindow_m attributes to ensure
+   * @brief Validate the sampleSpacing_s and peakWindow_s attributes to ensure
    * they are valid
    * @throws std::invalid_argument if any setting is invalid
    */
   void validate() const
   {
     validateBeamSampling();
-    if (!std::isfinite(sampleSpacing_m) || sampleSpacing_m <= 0)
-      throw std::invalid_argument("sampleSpacing_m must be finite and > 0");
-    if (!std::isfinite(peakWindow_m) || peakWindow_m < 2 * sampleSpacing_m ||
-        peakWindow_m / sampleSpacing_m > 1000000000)
+    if (sampleSpacingMeters() <= 0 || !std::isfinite(sampleSpacingMeters()) ||
+        !std::isfinite(peakWindowMeters()) ||
+        !std::isfinite(maxRecordingSpanMeters()))
       throw std::invalid_argument(
-        "peakWindow_m must be >= 2 * sampleSpacing_m and representable");
-    if (!std::isfinite(maxRecordingSpan_m) || maxRecordingSpan_m < 0)
-      throw std::invalid_argument("maxRecordingSpan_m must be finite and >= 0");
+        "Waveform durations must be representable as ranges");
+    if (!std::isfinite(sampleSpacing_s) || sampleSpacing_s <= 0)
+      throw std::invalid_argument("sampleSpacing_s must be finite and > 0");
+    if (!std::isfinite(peakWindow_s) || peakWindow_s < 2 * sampleSpacing_s ||
+        peakWindow_s / sampleSpacing_s > 1000000000)
+      throw std::invalid_argument(
+        "peakWindow_s must be >= 2 * sampleSpacing_s and representable");
+    if (!std::isfinite(maxRecordingSpan_s) || maxRecordingSpan_s < 0)
+      throw std::invalid_argument("maxRecordingSpan_s must be finite and >= 0");
     if (!std::isfinite(recordingTailTolerance) || recordingTailTolerance <= 0 ||
         recordingTailTolerance >= 1)
       throw std::invalid_argument(
@@ -121,7 +140,7 @@ public:
   {
     std::stringstream ss;
     ss << "FWFSettings \"" << id << "\":\n"
-       << "sampleSpacing_m = " << sampleSpacing_m << "\n"
+       << "sampleSpacing_s = " << sampleSpacing_s << "\n"
        << "pulseShape = " << pulseShape << "\n"
        << "sampledPulse = " << (sampledPulse ? "present" : "none") << "\n"
        << "recordingTailTolerance = " << recordingTailTolerance << "\n"
@@ -135,8 +154,8 @@ public:
        << "beamSamplingMethod = " << ::toString(beamSamplingMethod) << "\n"
        << "beamSampleQuality = " << beamSampleQuality << "\n"
        << "beamSamplingFactor = " << beamSamplingFactor << "\n"
-       << "peakWindow_m = " << peakWindow_m << "\n"
-       << "maxRecordingSpan_m = " << maxRecordingSpan_m << "\n";
+       << "peakWindow_s = " << peakWindow_s << "\n"
+       << "maxRecordingSpan_s = " << maxRecordingSpan_s << "\n";
     return ss.str();
   }
   /**

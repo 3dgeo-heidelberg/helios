@@ -99,7 +99,7 @@ def test_single_scanner_construction_and_backend_propagation():
     assert scanner.device.pulse_length == pytest.approx(5e-9)
     assert scanner.device.wavelength == pytest.approx(1064e-9)
     assert scanner.device.atmospheric_visibility == 23_000.0
-    assert scanner.device.full_waveform.peak_window == pytest.approx(0.149896229)
+    assert scanner.device.full_waveform.peak_window == pytest.approx(1e-9)
 
     scanner.device.pulse_length = 8 * units.ns
     assert scanner._cpp_object.device.pulse_length == pytest.approx(8e-9)

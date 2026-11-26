@@ -1366,25 +1366,34 @@ XmlAssetsLoader::createFWFSettingsFromXml(tinyxml2::XMLElement* node,
   }
   // Given FWFSettings
   if (node != nullptr) {
-    auto readRange =
-      [&](char const* name, char const* legacy, double fallback) {
-        if (node->Attribute(name) && node->Attribute(legacy))
-          throw std::invalid_argument(std::string("Specify only one of ") +
-                                      name + " and " + legacy);
-        if (node->Attribute(legacy)) {
-          LOG_WARN(std::string(legacy) + " is deprecated; use " + name);
-          return XmlUtils::getAttributeCast<double>(node, legacy, 0.0) *
-                 SPEEDofLIGHT_mPerNanosec / 2.0;
-        }
-        return XmlUtils::getAttributeCast<double>(node, name, fallback);
-      };
-    settings->sampleSpacing_m =
-      readRange("sampleSpacing_m", "binSize_ns", settings->sampleSpacing_m);
-    settings->peakWindow_m =
-      readRange("peakWindow_m", "winSize_ns", settings->peakWindow_m);
-    settings->maxRecordingSpan_m = readRange("maxRecordingSpan_m",
-                                             "maxFullwaveRange_ns",
-                                             settings->maxRecordingSpan_m);
+    auto readTime = [&](char const* name,
+                        char const* legacy,
+                        char const* removed,
+                        double fallback) {
+      if (node->Attribute(removed))
+        throw std::invalid_argument(std::string(removed) +
+                                    " was removed; use " + name);
+      if (node->Attribute(name) && node->Attribute(legacy))
+        throw std::invalid_argument(std::string("Specify only one of ") + name +
+                                    " and " + legacy);
+      if (node->Attribute(legacy)) {
+        LOG_WARN(std::string(legacy) + " is deprecated; use " + name);
+        return XmlUtils::getAttributeCast<double>(node, legacy, 0.0) * 1e-9;
+      }
+      if (node->Attribute(name))
+        return XmlUtils::getAttributeCast<double>(node, name, 0.0) * 1e-9;
+      return fallback;
+    };
+    settings->sampleSpacing_s = readTime("sampleSpacing_ns",
+                                         "binSize_ns",
+                                         "sampleSpacing_m",
+                                         settings->sampleSpacing_s);
+    settings->peakWindow_s = readTime(
+      "peakWindow_ns", "winSize_ns", "peakWindow_m", settings->peakWindow_s);
+    settings->maxRecordingSpan_s = readTime("maxRecordingSpan_ns",
+                                            "maxFullwaveRange_ns",
+                                            "maxRecordingSpan_m",
+                                            settings->maxRecordingSpan_s);
     settings->pulseShape = XmlUtils::getAttributeCast<std::string>(
       node, "pulseShape", settings->pulseShape);
     if (settings->pulseShape == "sampled")

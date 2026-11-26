@@ -385,8 +385,8 @@ ScanningDevice::initializeFullWaveform(double minHitDist_m,
   grid = WaveMaths::recordingGrid(minHitDist_m,
                                   maxHitDist_m,
                                   *pulseModel,
-                                  FWF_settings.sampleSpacing_m,
-                                  FWF_settings.maxRecordingSpan_m);
+                                  FWF_settings.sampleSpacingMeters(),
+                                  FWF_settings.maxRecordingSpanMeters());
   return grid.sampleCount > 0;
 }
 

@@ -860,8 +860,8 @@ TEST_CASE("Centered waveform peaks agree with reported ranges and preserve "
     settings.sampledPulse =
       std::make_shared<SampledPulse>(std::vector<double>{ -4, 0, 2, 5, 9 },
                                      std::vector<double>{ 0, 0.4, 1, 0.5, 0 });
-  settings.sampleSpacing_m = 0.005;
-  settings.peakWindow_m = 0.01;
+  settings.sampleSpacing_s = 0.005 / (SPEEDofLIGHT_mPerSec / 2.0);
+  settings.peakWindow_s = 0.01 / (SPEEDofLIGHT_mPerSec / 2.0);
   scanner->preparePulse();
   scanner->allMeasurements = std::make_shared<std::vector<Measurement>>();
   scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
@@ -920,7 +920,7 @@ TEST_CASE("Centered waveform peaks agree with reported ranges and preserve "
                   Catch::Approx(wave[k] * amplitude / 4));
         double const expected = target;
         REQUIRE(std::abs(points[0].distance - expected) <=
-                settings.sampleSpacing_m);
+                settings.sampleSpacingMeters());
         REQUIRE(points[0].intensity ==
                 Catch::Approx(amplitude *
                               *std::max_element(wave.begin(), wave.end()) / 4));
@@ -958,7 +958,7 @@ TEST_CASE("Centered waveform peaks agree with reported ranges and preserve "
       matrix, rng, rng2, direction, reflections, intersections);
     REQUIRE(scanner->allMeasurements->size() == 1);
     REQUIRE(scanner->allMeasurements->front().distance ==
-            Catch::Approx(target + 0.1).margin(settings.sampleSpacing_m));
+            Catch::Approx(target + 0.1).margin(settings.sampleSpacingMeters()));
   }
   reflections.clear();
   scanner->allMeasurements->clear();

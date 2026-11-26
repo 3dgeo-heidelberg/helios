@@ -142,9 +142,9 @@ These are defined in a separate tag ``<FWFSettings>``, see :doc:`Full waveform a
 - ``beamSamplingMethod`` (``polar`` by default, or ``cartesian``)
 - ``beamSampleQuality``
 - ``beamSamplingFactor``
-- ``sampleSpacing_m``
-- ``maxRecordingSpan_m``
-- ``peakWindow_m``
+- ``sampleSpacing_ns``
+- ``maxRecordingSpan_ns``
+- ``peakWindow_ns``
 
 **Other parameters**:
 

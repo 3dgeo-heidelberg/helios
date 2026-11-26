@@ -685,8 +685,8 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
         {
             "pulseShape": "gamma",
             "beamSamplingMethod": "cartesian",
-            "sampleSpacing_m": "0.02",
-            "peakWindow_m": "0.1",
+            "sampleSpacing_ns": "0.2",
+            "peakWindow_ns": "1",
             "recordingTailTolerance": "0.00001",
         },
     )
@@ -698,7 +698,7 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
             "pulseShape": "gaussian",
             "beamSamplingMethod": "polar",
             "binSize_ns": "0.25",
-            "maxRecordingSpan_m": "20",
+            "maxRecordingSpan_ns": "100",
         },
     )
     tree.write(path, encoding="utf-8", xml_declaration=True)
@@ -708,11 +708,11 @@ def test_waveform_xml_channel_settings_and_legacy_aliases(tmp_path):
     assert first.beam_sampling_method == "polar"
     assert second.beam_sampling_method == "cartesian"
     assert first.pulse_shape == "gaussian"
-    assert first.sample_spacing == pytest.approx(0.03747405725)
-    assert first.peak_window == 0.1
+    assert first.sample_spacing == pytest.approx(0.25e-9)
+    assert first.peak_window == pytest.approx(1e-9)
     assert first.recording_tail_tolerance == 1e-5
     assert second.pulse_shape == "gamma"
-    assert second.sample_spacing == 0.02
+    assert second.sample_spacing == pytest.approx(0.2e-9)
     scanner.prepare_pulse(0)
     scanner.prepare_pulse(1)
     saved_pulse = scanner.get_pulse_model(0)

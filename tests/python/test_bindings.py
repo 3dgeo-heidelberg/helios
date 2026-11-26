@@ -416,7 +416,7 @@ def test_fwf_settings_instantiation():
     assert isinstance(fwf, _helios.FWFSettings)
 
     # Check default values
-    assert fwf.sample_spacing == 0.03747405725
+    assert fwf.sample_spacing == 0.25e-9
     assert fwf.min_echo_width == 2.5
     assert fwf.peak_energy == 500.0
     assert fwf.aperture_diameter == 0.15
@@ -425,7 +425,7 @@ def test_fwf_settings_instantiation():
     assert fwf.scanner_wave_length == 1550.0
     assert fwf.pulse_length == 4.0e-9
     assert fwf.beam_sample_quality == 3
-    assert fwf.peak_window == 0.149896229
+    assert fwf.peak_window == 1e-9
     assert fwf.max_recording_span == 0.0
 
 
@@ -463,7 +463,7 @@ def test_fwf_settings_to_string():
     fwf = _helios.FWFSettings()
     expected_str = (
         'FWFSettings "":\n'
-        "sampleSpacing_m = 0.0374741\n"
+        "sampleSpacing_s = 2.5e-10\n"
         "pulseShape = gamma\n"
         "sampledPulse = none\n"
         "recordingTailTolerance = 0.0001\n"
@@ -477,8 +477,8 @@ def test_fwf_settings_to_string():
         "beamSamplingMethod = polar\n"
         "beamSampleQuality = 3\n"
         "beamSamplingFactor = 2\n"
-        "peakWindow_m = 0.149896\n"
-        "maxRecordingSpan_m = 0\n"
+        "peakWindow_s = 1e-09\n"
+        "maxRecordingSpan_s = 0\n"
     )
     assert str(fwf) == expected_str
 

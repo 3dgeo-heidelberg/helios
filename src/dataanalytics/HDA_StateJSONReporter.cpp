@@ -440,7 +440,7 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
   std::stringstream ss;
   int const d2 = depth + 1;
   ss << openEntry(key, depth, EntryType::OBJECT)
-     << craftEntry("sampleSpacing_m", fs.sampleSpacing_m, d2)
+     << craftEntry("sampleSpacing_s", fs.sampleSpacing_s, d2)
      << craftEntry("pulseShape", fs.pulseShape, d2)
      << craftEntry("hasSampledPulse", static_cast<bool>(fs.sampledPulse), d2)
      << craftEntry("recordingTailTolerance", fs.recordingTailTolerance, d2)
@@ -455,8 +455,8 @@ HDA_StateJSONReporter::craftEntry(std::string const& key,
           "beamSamplingMethod", toString(fs.beamSamplingMethod), d2, true)
      << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
      << craftEntry("beamSamplingFactor", fs.beamSamplingFactor, d2)
-     << craftEntry("peakWindow_m", fs.peakWindow_m, d2)
-     << craftEntry("maxRecordingSpan_m", fs.maxRecordingSpan_m, d2, false, true)
+     << craftEntry("peakWindow_s", fs.peakWindow_s, d2)
+     << craftEntry("maxRecordingSpan_s", fs.maxRecordingSpan_s, d2, false, true)
      << closeEntry(depth, last, EntryType::OBJECT) // Close FWFSettings
     ;
   return ss.str();

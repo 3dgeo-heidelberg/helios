@@ -89,10 +89,10 @@ def test_set_output_settings(reset_global_state):
 def test_full_waveform_settings_defaults():
     settings = FullWaveformSettings()
 
-    assert settings.sample_spacing == 0.03747405725
+    assert settings.sample_spacing == 0.25e-9
     assert settings.beam_sample_quality == 3
     assert settings.beam_sampling_factor == 2.0
-    assert settings.peak_window == 0.149896229
+    assert settings.peak_window == 1e-9
     assert settings.max_recording_span == 0.0
 
 
@@ -106,11 +106,11 @@ def test_full_waveform_settings_propagate_to_cpp():
     )
     cpp_settings = settings._cpp_object
 
-    assert cpp_settings.sample_spacing == pytest.approx(0.149896229)
+    assert cpp_settings.sample_spacing == pytest.approx(1e-9)
     assert cpp_settings.beam_sample_quality == 4
     assert cpp_settings.beam_sampling_factor == 1.5
-    assert cpp_settings.peak_window == pytest.approx(0.299792458)
-    assert cpp_settings.max_recording_span == pytest.approx(1.49896229)
+    assert cpp_settings.peak_window == pytest.approx(2e-9)
+    assert cpp_settings.max_recording_span == pytest.approx(10e-9)
 
 
 def test_execution_settings_clone_and_deepcopy_run_survey(survey):
@@ -196,7 +196,7 @@ def _write_invalid_survey_xml(path: Path) -> None:
 
 
 def test_fullwaveform_settings_rejects_invalid_window_in_python():
-    with pytest.raises(ValueError, match="peakWindow_m must be >="):
+    with pytest.raises(ValueError, match="peakWindow_s must be >="):
         FullWaveformSettings(
             bin_size=0.2 * units.ns,
             window_size=0.3 * units.ns,
@@ -227,16 +227,16 @@ def test_fullwaveform_settings_rejects_invalid_window_from_xml(tmp_path):
     xml_file = tmp_path / "invalid_survey.xml"
     _write_invalid_survey_xml(xml_file)
 
-    with pytest.raises(ValueError, match="peakWindow_m must be >="):
+    with pytest.raises(ValueError, match="peakWindow_s must be >="):
         Survey.from_xml(xml_file)
 
 
 @pytest.mark.parametrize("shape", ["gamma", "gaussian"])
 def test_analytic_waveform_settings_roundtrip(tmp_path, shape):
     settings = FullWaveformSettings(
-        sample_spacing="2 cm",
-        peak_window="10 cm",
-        max_recording_span="25 m",
+        sample_spacing="0.2 ns",
+        peak_window="1 ns",
+        max_recording_span="100 ns",
         pulse_shape=shape,
         recording_tail_tolerance=1e-6,
     )
@@ -246,9 +246,9 @@ def test_analytic_waveform_settings_roundtrip(tmp_path, shape):
     assert "correct_peak_offset" not in text
     assert "gaussian_mean" not in text
     restored = FullWaveformSettings.from_yaml(path)
-    assert restored.sample_spacing == 0.02
-    assert restored.peak_window == 0.1
-    assert restored.max_recording_span == 25
+    assert restored.sample_spacing == pytest.approx(0.2e-9)
+    assert restored.peak_window == pytest.approx(1e-9)
+    assert restored.max_recording_span == pytest.approx(100e-9)
     assert restored.pulse_shape == shape
     assert not hasattr(restored, "correct_peak_offset")
     assert restored.recording_tail_tolerance == 1e-6
@@ -259,8 +259,8 @@ def test_legacy_waveform_constructor_and_yaml(tmp_path):
 
     with pytest.warns(DeprecationWarning):
         settings = FullWaveformSettings(bin_size="0.25 ns", win_size="1 ns")
-    assert settings.sample_spacing == pytest.approx(0.03747405725)
-    assert settings.peak_window == pytest.approx(0.149896229)
+    assert settings.sample_spacing == pytest.approx(0.25e-9)
+    assert settings.peak_window == pytest.approx(1e-9)
     with pytest.raises(ValueError, match="Specify only one"):
         FullWaveformSettings(bin_size="0.25 ns", sample_spacing=0.02)
     path = settings.to_yaml(tmp_path / "legacy.yaml")
@@ -282,7 +282,7 @@ def test_legacy_waveform_constructor_and_yaml(tmp_path):
     [
         {"sample_spacing": 0},
         {"sample_spacing": float("inf")},
-        {"peak_window": 0.01},
+        {"peak_window": 0.1e-9},
         {"recording_tail_tolerance": 0},
         {"recording_tail_tolerance": 1},
         {"pulse_shape": "triangle"},
@@ -298,7 +298,7 @@ def test_range_setting_assignment_validates_before_mutation():
     settings = FullWaveformSettings()
     with pytest.raises(ValueError):
         settings.sample_spacing = 1
-    assert settings.sample_spacing == 0.03747405725
+    assert settings.sample_spacing == 0.25e-9
 
 
 @pytest.mark.parametrize("method", ["Cartesian", "", "sunflower"])
@@ -323,3 +323,26 @@ def test_legacy_yaml_defaults_to_polar(tmp_path):
     del document["fields"]["beam_sampling_method"]
     path.write_text(yaml.safe_dump(document))
     assert FullWaveformSettings.from_yaml(path).beam_sampling_method == "polar"
+
+
+@pytest.mark.parametrize(
+    "field", ["sample_spacing", "peak_window", "max_recording_span"]
+)
+def test_waveform_time_settings_reject_lengths(field):
+    from pint.errors import DimensionalityError
+
+    with pytest.raises(DimensionalityError):
+        FullWaveformSettings(**{field: "1 m"})
+
+
+def test_waveform_explicit_times_equal_seconds():
+    explicit = FullWaveformSettings(
+        sample_spacing="0.25 ns", peak_window="1 ns", max_recording_span="100 ns"
+    )
+    numeric = FullWaveformSettings(
+        sample_spacing=0.25e-9, peak_window=1e-9, max_recording_span=100e-9
+    )
+    for field in ("sample_spacing", "peak_window", "max_recording_span"):
+        assert getattr(explicit._to_cpp(), field) == pytest.approx(
+            getattr(numeric._to_cpp(), field), rel=1e-12, abs=0
+        )
