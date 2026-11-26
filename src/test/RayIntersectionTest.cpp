@@ -106,8 +106,7 @@ TEST_CASE("RayIntersection: Intersection and handling")
   glm::dvec3 iip(so + it[0] * v1); // Inside Intersection Point
   glm::dvec3 oip =
     RayUtils::obtainPointAfterTraversing(*dv1.getAABB(), so, v1, 0.0);
-  IntersectionHandlingResult ihr =
-    dv1.onRayIntersection(uns, v1, iip, oip);
+  IntersectionHandlingResult ihr = dv1.onRayIntersection(uns, v1, iip, oip);
   REQUIRE(ihr.canRayContinue()); // Ray must be able to continue
 
   so = oip + 0.00001 * v1;

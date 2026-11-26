@@ -1070,9 +1070,7 @@ def _write_voxel_slab(path, pad):
         "attenuation attenuationBiasCorrection",
     ]
     rows = [
-        f"{i} 0 {k} {pad} 45 0 0 0 0 0 0 0 0 1 0 0"
-        for i in range(4)
-        for k in range(4)
+        f"{i} 0 {k} {pad} 45 0 0 0 0 0 0 0 0 1 0 0" for i in range(4) for k in range(4)
     ]
     path.write_text("\n".join(header + rows) + "\n")
     return path

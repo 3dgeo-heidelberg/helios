@@ -81,9 +81,8 @@ DetailedVoxel::onRayIntersectionTransmittive(
   // Hit: incidence angle between the ray and the leaf it hits, sampled from
   // the leaf angle distribution
   glm::dvec3 const nip = insideIntersectionPoint + rayDirection * s;
-  double const incidenceAngle =
-    getLeafAngleDistribution().sampleIncidenceAngle(rayDirection,
-                                                    uniformNoiseSource);
+  double const incidenceAngle = getLeafAngleDistribution().sampleIncidenceAngle(
+    rayDirection, uniformNoiseSource);
   return IntersectionHandlingResult(nip, false, incidenceAngle);
 }
 

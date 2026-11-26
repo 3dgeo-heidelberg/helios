@@ -539,9 +539,7 @@ def test_scenepart_from_vox_lad(tmp_path):
     lad_file = tmp_path / "erectophile.txt"
     lad_file.write_text(
         "# inclination_deg,g_L\n"
-        + "".join(
-            f"{deg},{1 - math.cos(2 * math.radians(deg))}\n" for deg in range(91)
-        )
+        + "".join(f"{deg},{1 - math.cos(2 * math.radians(deg))}\n" for deg in range(91))
     )
     from_file = ScenePart.from_vox(vox, lad=str(lad_file))
     assert len(from_file._cpp_object.primitives) > 0

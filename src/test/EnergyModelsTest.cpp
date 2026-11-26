@@ -976,10 +976,10 @@ TEST_CASE("Analytics record transverse hit radii", "[energy]")
   auto part = std::make_shared<ScenePart>();
   auto material = std::make_shared<Material>();
   material->reflectance = 0.5;
-  scene.primitives.push_back(new Triangle(
-    Vertex(-1, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
-  scene.primitives.push_back(new Triangle(
-    Vertex(-1, 100, -1), Vertex(1, 100, 1), Vertex(-1, 100, 1)));
+  scene.primitives.push_back(
+    new Triangle(Vertex(-1, 100, -1), Vertex(1, 100, -1), Vertex(1, 100, 1)));
+  scene.primitives.push_back(
+    new Triangle(Vertex(-1, 100, -1), Vertex(1, 100, 1), Vertex(-1, 100, 1)));
   for (auto primitive : scene.primitives) {
     primitive->part = part;
     primitive->material = material;

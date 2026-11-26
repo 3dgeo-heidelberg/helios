@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <cmath>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <limits>
 #include <utility>

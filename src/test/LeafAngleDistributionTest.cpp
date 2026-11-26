@@ -82,8 +82,8 @@ struct TempFilePath
 struct Reference
 {
   std::string name;
-  double G[4];     // at zenith 0, 30, 60, 90 degrees
-  double Ecos[4];  // mean cosine of incidence angle of hit leaves
+  double G[4];    // at zenith 0, 30, 60, 90 degrees
+  double Ecos[4]; // mean cosine of incidence angle of hit leaves
 };
 
 // Computed independently with scipy.integrate.quad
@@ -152,8 +152,7 @@ TEST_CASE("LeafAngleDistribution: G symmetries")
       REQUIRE(lad.G(directionFromZenith(zeta, deg2rad(aDeg))) ==
               Approx(g).margin(1e-12));
     // Direction does not need to be normalized
-    REQUIRE(lad.G(3.5 * directionFromZenith(zeta)) ==
-            Approx(g).margin(1e-12));
+    REQUIRE(lad.G(3.5 * directionFromZenith(zeta)) == Approx(g).margin(1e-12));
   }
   REQUIRE_THROWS_AS(lad.G(glm::dvec3(0.0)), HeliosException);
 }
@@ -194,8 +193,7 @@ TEST_CASE("LeafAngleDistribution: tabulated input")
 
   SECTION("Invalid input")
   {
-    REQUIRE_THROWS_AS(LeafAngleDistribution({ 0.0 }, { 1.0 }),
-                      HeliosException);
+    REQUIRE_THROWS_AS(LeafAngleDistribution({ 0.0 }, { 1.0 }), HeliosException);
     REQUIRE_THROWS_AS(LeafAngleDistribution({ 0.0, 1.0 }, { 1.0 }),
                       HeliosException);
     REQUIRE_THROWS_AS(LeafAngleDistribution({ 0.0, 2.0 }, { 1.0, 1.0 }),
@@ -231,9 +229,8 @@ TEST_CASE("LeafAngleDistribution: file input")
   REQUIRE_THROWS_AS(LeafAngleDistribution::fromFile(path.string()),
                     HeliosException);
 
-  REQUIRE_THROWS_AS(
-    LeafAngleDistribution::fromFile("does/not/exist/lad.txt"),
-    HeliosException);
+  REQUIRE_THROWS_AS(LeafAngleDistribution::fromFile("does/not/exist/lad.txt"),
+                    HeliosException);
 }
 
 TEST_CASE("LeafAngleDistribution: incidence angle sampling")

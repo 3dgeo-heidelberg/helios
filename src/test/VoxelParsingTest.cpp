@@ -3,6 +3,7 @@
 #undef INFO
 #include <DetailedVoxelLoader.h>
 #include <HeliosException.h>
+#include <MathConstants.h>
 #include <VoxelFileParser.h>
 #include <catch2/catch_approx.hpp>
 #include <chrono>
@@ -10,7 +11,6 @@
 #include <filesystem>
 #include <fstream>
 #include <logger_core.hpp>
-#include <MathConstants.h>
 #include <noise/UniformNoiseSource.h>
 #include <string>
 #include <vector>
@@ -113,8 +113,7 @@ namespace {
 std::string const testVoxFile = "data/test/transmittive_voxels.vox";
 
 std::shared_ptr<ScenePart>
-loadVoxels(std::string const& path,
-           std::map<std::string, ObjectT> params)
+loadVoxels(std::string const& path, std::map<std::string, ObjectT> params)
 {
   DetailedVoxelLoader loader;
   loader.params["filepath"] = path;
@@ -192,7 +191,8 @@ checkExtinction(ScenePart const& sp, double gDown, double gHorizontal)
 
 } // namespace
 
-TEST_CASE("Detailed voxels: extinction coefficient from leaf angle distribution")
+TEST_CASE(
+  "Detailed voxels: extinction coefficient from leaf angle distribution")
 {
   SECTION("Default from file header (#lad_type)")
   {
@@ -230,8 +230,8 @@ TEST_CASE("Detailed voxels: extinction coefficient from leaf angle distribution"
   SECTION("Removed ladlut parameter")
   {
     REQUIRE_THROWS_AS(
-      loadTransmittiveVoxels(testVoxFile,
-                             { { "ladlut", std::string("lut/spherical.txt") } }),
+      loadTransmittiveVoxels(
+        testVoxFile, { { "ladlut", std::string("lut/spherical.txt") } }),
       HeliosException);
   }
 }
@@ -267,9 +267,9 @@ TEST_CASE("Detailed voxels: leaf angle distribution only in transmittive mode")
   SECTION("Explicit distribution and header are ignored in other modes")
   {
     for (std::string const mode : { "fixed", "scaled" }) {
-      auto const sp = loadVoxels(
-        testVoxFile,
-        { { "intersectionMode", mode }, { "lad", std::string("erectophile") } });
+      auto const sp = loadVoxels(testVoxFile,
+                                 { { "intersectionMode", mode },
+                                   { "lad", std::string("erectophile") } });
       REQUIRE(sp->lad == nullptr);
       auto const spHeader =
         loadVoxels(testVoxFile, { { "intersectionMode", mode } });
@@ -279,8 +279,8 @@ TEST_CASE("Detailed voxels: leaf angle distribution only in transmittive mode")
 
   SECTION("Voxels in other modes are not transmittive")
   {
-    auto const sp = loadVoxels(testVoxFile,
-                               { { "intersectionMode", std::string("fixed") } });
+    auto const sp =
+      loadVoxels(testVoxFile, { { "intersectionMode", std::string("fixed") } });
     // Distribution assigned afterwards, e.g. by a scene part split
     sp->lad = std::make_shared<LeafAngleDistribution const>(
       LeafAngleDistribution::fromName("spherical"));
@@ -391,8 +391,14 @@ TEST_CASE("Detailed voxels: transmittive mode follows Beer-Lambert")
     double G;
   };
   std::vector<Case> const cases{
-    { { 0.0, 0.0, -1.0 }, { c.x, c.y, c.z + h }, { c.x, c.y, c.z - h }, 0.848826 },
-    { { 1.0, 0.0, 0.0 }, { c.x - h, c.y, c.z }, { c.x + h, c.y, c.z }, 0.270190 },
+    { { 0.0, 0.0, -1.0 },
+      { c.x, c.y, c.z + h },
+      { c.x, c.y, c.z - h },
+      0.848826 },
+    { { 1.0, 0.0, 0.0 },
+      { c.x - h, c.y, c.z },
+      { c.x + h, c.y, c.z },
+      0.270190 },
   };
   for (auto const& tc : cases) {
     double const kappa = pad * tc.G;

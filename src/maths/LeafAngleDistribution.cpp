@@ -183,8 +183,7 @@ LeafAngleDistribution::G(double zenith_rad) const
     zeta = PI - zeta;
   zeta = std::clamp(zeta, 0.0, PI_HALF);
   double const x = zeta / PI_HALF * static_cast<double>(G_SAMPLES - 1);
-  std::size_t const i =
-    std::min(static_cast<std::size_t>(x), G_SAMPLES - 2);
+  std::size_t const i = std::min(static_cast<std::size_t>(x), G_SAMPLES - 2);
   double const f = x - static_cast<double>(i);
   return (1.0 - f) * gTable[i] + f * gTable[i + 1];
 }
@@ -233,10 +232,8 @@ LeafAngleDistribution::psi(double zenith_rad, double inclination_rad)
 {
   // Mean of |cos(zeta) cos(thetaL) + sin(zeta) sin(thetaL) cos(phi)|
   // over phi in [0, 2pi)
-  double const a =
-    std::abs(std::cos(zenith_rad)) * std::cos(inclination_rad);
-  double const b =
-    std::abs(std::sin(zenith_rad)) * std::sin(inclination_rad);
+  double const a = std::abs(std::cos(zenith_rad)) * std::cos(inclination_rad);
+  double const b = std::abs(std::sin(zenith_rad)) * std::sin(inclination_rad);
   if (a >= b)
     return a;
   double const phi0 = std::acos(-a / b);
