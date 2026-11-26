@@ -135,7 +135,7 @@ SwapOnRepeatHandler::doGeometricSwap(ScenePart& src, ScenePart& dst)
   dst.onRayIntersectionMode = src.onRayIntersectionMode;
   dst.onRayIntersectionArgument = src.onRayIntersectionArgument;
   dst.randomShift = src.randomShift;
-  dst.ladlut = src.ladlut;
+  dst.lad = src.lad;
   dst.mCrs = src.mCrs;
   dst.mEnv = src.mEnv;
 }

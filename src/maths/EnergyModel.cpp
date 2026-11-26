@@ -108,29 +108,6 @@ EnergyModel::computePowerRatio(
 }
 
 double
-EnergyModel::computeReceivedPowerWithSigma(double targetRange,
-                                           double sigma,
-                                           std::size_t subrayIndex) const
-{
-  return sd.pulseAmplitude_W *
-         computePowerRatioWithSigma(targetRange, sigma, subrayIndex);
-}
-
-double
-EnergyModel::computePowerRatioWithSigma(double targetRange,
-                                        double sigma,
-                                        std::size_t subrayIndex) const
-{
-  double const rangeSquared = targetRange * targetRange;
-  double const share = sd.getSubrays().at(subrayIndex).share;
-  double const area = computeTargetArea(targetRange, subrayIndex);
-  double const atmosphere =
-    computeAtmosphericTransmission(targetRange, sd.atmosphericExtinction);
-  return share * sd.cached_Dr2 * sd.efficiency * atmosphere * sigma /
-         (16.0 * area * rangeSquared);
-}
-
-double
 EnergyModel::computeEmittedPower(std::size_t subrayIndex) const
 {
   return sd.pulseAmplitude_W * sd.getSubrays().at(subrayIndex).share;

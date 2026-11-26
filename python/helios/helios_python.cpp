@@ -1820,12 +1820,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_power_ratio_with_sigma",
-         &EnergyModel::computePowerRatioWithSigma,
-         "Dimensionless ratio using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"))
     .def("compute_received_power",
          &EnergyModel::computeReceivedPower,
          "Received peak power in watts.",
@@ -1838,12 +1832,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_received_power_with_sigma",
-         &EnergyModel::computeReceivedPowerWithSigma,
-         "Received peak power in watts using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"))
     .def("compute_emitted_power",
          &EnergyModel::computeEmittedPower,
          "Emitted subray peak power in watts.",
@@ -2010,12 +1998,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_received_power_with_sigma",
-         &ScanningDevice::computeReceivedPowerWithSigma,
-         "Received peak power in watts using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"))
     .def("compute_power_ratio",
          &ScanningDevice::computePowerRatio,
          "Dimensionless received/whole-beam peak-power ratio.",
@@ -2028,12 +2010,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_power_ratio_with_sigma",
-         &ScanningDevice::computePowerRatioWithSigma,
-         "Dimensionless ratio using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"))
     .def("eval_range_error_expression",
          &ScanningDevice::evalRangeErrorExpression);
 
@@ -2197,13 +2173,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_received_power_with_sigma",
-         &Scanner::computeReceivedPowerWithSigma,
-         "Received peak power in watts using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"),
-         py::arg("idx"))
     .def("compute_power_ratio",
          &Scanner::computePowerRatio,
          "Dimensionless received/whole-beam peak-power ratio.",
@@ -2217,13 +2186,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_power_ratio_with_sigma",
-         &Scanner::computePowerRatioWithSigma,
-         "Dimensionless ratio using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"),
-         py::arg("idx"))
     .def("get_specific_pulse_amplitude",
          py::overload_cast<size_t>(&Scanner::getPulseAmplitude, py::const_),
          py::arg("index"))
@@ -3012,13 +2974,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_received_power_with_sigma",
-         &MultiScanner::computeReceivedPowerWithSigma,
-         "Received peak power in watts using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"),
-         py::arg("idx"))
     .def("compute_power_ratio",
          &MultiScanner::computePowerRatio,
          "Dimensionless received/whole-beam peak-power ratio.",
@@ -3032,13 +2987,6 @@ PYBIND11_MODULE(_helios, m)
          py::arg("radiometry_records")
 #endif
            )
-    .def("compute_power_ratio_with_sigma",
-         &MultiScanner::computePowerRatioWithSigma,
-         "Dimensionless ratio using external sigma.",
-         py::arg("target_range_m"),
-         py::arg("sigma"),
-         py::arg("subray_index"),
-         py::arg("idx"))
     .def("set_device_index",
          &MultiScanner::setDeviceIndex,
          py::arg("new_idx"),

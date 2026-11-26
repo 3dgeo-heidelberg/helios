@@ -15,8 +15,6 @@
 #include <dataanalytics/HDA_PulseRecorder.h>
 #endif
 
-#include <LadLut.h>
-
 #include <vector>
 
 /**

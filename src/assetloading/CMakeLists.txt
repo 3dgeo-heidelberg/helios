@@ -24,7 +24,6 @@ target_sources(
   "geometryfilter/ScaleFilter.cpp"
   "geometryfilter/NullGeometryFilter.cpp"
   "XmlSceneLoader.cpp"
-  "LadLutLoader.cpp"
   "MaterialsFileReader.cpp"
   "VoxelFileParser.cpp"
   "SpectralLibrary.cpp"

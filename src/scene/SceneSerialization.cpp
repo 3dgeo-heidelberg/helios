@@ -5,6 +5,7 @@
 #include <KDGroveSubject.h>
 #include <KDTreeFactoryMaker.h>
 #include <KDTreeNodeRoot.h>
+#include <LeafAngleDistribution.h>
 #include <scene/primitives/AABB.h>
 #include <scene/primitives/DetailedVoxel.h>
 #include <scene/primitives/Triangle.h>
@@ -151,18 +152,16 @@ struct VertexDTO
   }
 };
 
-struct LadLutDTO
+struct LeafAngleDistributionDTO
 {
-  std::vector<double> X;
-  std::vector<double> Y;
-  std::vector<double> Z;
-  std::vector<double> G;
-  std::vector<double> angles;
+  std::string name;
+  std::vector<double> inclinations;
+  std::vector<double> density;
 
   template<class Archive>
   void serialize(Archive& ar)
   {
-    ar(X, Y, Z, G, angles);
+    ar(name, inclinations, density);
   }
 };
 
@@ -261,8 +260,8 @@ struct PartDTO
   double onRayIntersectionArgument = 0.0;
   bool randomShift = false;
 
-  bool hasLadLut = false;
-  LadLutDTO ladLut;
+  bool hasLad = false;
+  LeafAngleDistributionDTO lad;
 
   DVec3DTO origin;
   RotationDTO rotation;
@@ -291,8 +290,8 @@ struct PartDTO
        onRayIntersectionMode,
        onRayIntersectionArgument,
        randomShift,
-       hasLadLut,
-       ladLut,
+       hasLad,
+       lad,
        origin,
        rotation,
        scale,
@@ -556,28 +555,22 @@ fromDTO(MaterialDTO const& dto)
   return m;
 }
 
-inline LadLutDTO
-toDTO(LadLut const& lad)
+inline LeafAngleDistributionDTO
+toDTO(LeafAngleDistribution const& lad)
 {
-  LadLutDTO dto;
-  dto.X = lad.X;
-  dto.Y = lad.Y;
-  dto.Z = lad.Z;
-  dto.G = lad.G;
-  dto.angles = lad.angles;
+  LeafAngleDistributionDTO dto;
+  dto.name = lad.getName();
+  dto.inclinations = lad.getInclinations();
+  dto.density = lad.getDensity();
   return dto;
 }
 
-inline std::shared_ptr<LadLut>
-fromDTO(LadLutDTO const& dto)
+inline std::shared_ptr<LeafAngleDistribution const>
+fromDTO(LeafAngleDistributionDTO const& dto)
 {
-  std::shared_ptr<LadLut> lad = std::make_shared<LadLut>();
-  lad->X = dto.X;
-  lad->Y = dto.Y;
-  lad->Z = dto.Z;
-  lad->G = dto.G;
-  lad->angles = dto.angles;
-  return lad;
+  // Tables are rebuilt from the density at the bin centres
+  return std::make_shared<LeafAngleDistribution const>(
+    dto.inclinations, dto.density, dto.name);
 }
 
 inline PrimitiveKindDTO
@@ -724,9 +717,9 @@ partToDTO(std::shared_ptr<ScenePart> const& part,
     dto.boundMax = toDTO(part->bound->getMax());
   }
 
-  if (part->ladlut != nullptr) {
-    dto.hasLadLut = true;
-    dto.ladLut = toDTO(*part->ladlut);
+  if (part->lad != nullptr) {
+    dto.hasLad = true;
+    dto.lad = toDTO(*part->lad);
   }
 
   if (DynObject const* dynObj = dynamic_cast<DynObject const*>(part.get())) {
@@ -799,8 +792,8 @@ partFromDTO(PartDTO const& dto)
       std::make_shared<AABB>(fromDTO(dto.boundMin), fromDTO(dto.boundMax));
   }
 
-  if (dto.hasLadLut) {
-    part->ladlut = fromDTO(dto.ladLut);
+  if (dto.hasLad) {
+    part->lad = fromDTO(dto.lad);
   }
 
   if (DynObject* dynObj = dynamic_cast<DynObject*>(part.get())) {

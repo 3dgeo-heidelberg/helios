@@ -1,5 +1,7 @@
 #include <VoxelFileParser.h>
 
+#include <cmath>
+
 char const VoxelFileParser::BLANK_CHARACTERS[] = { ' ', '\t', '\r', '\n' };
 
 // ***  P A R S E  *** //
@@ -560,8 +562,8 @@ VoxelFileParser::parseDetailedVoxelLine(std::string& line,
     throw HeliosException(
       "VoxelFileParser::parseDetailedVoxelLine failed to parse params2");
   }
-  // Discard when PadBVTotal==0, if requested (e.g., transmittive mode)
-  if (discardNullPad && pad == 0)
+  // Discard when PadBVTotal is 0 or NaN, if requested (transmittive mode)
+  if (discardNullPad && (pad == 0 || std::isnan(pad)))
     return nullptr;
   values.push_back(pad);
   values.push_back(angMean);

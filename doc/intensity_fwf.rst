@@ -6,7 +6,7 @@ Full waveform and intensity modelling
 Radiometry calculation API
 -------------------------
 
-``EnergyModel`` and scanner calculation methods use incidence cosine and ranges in metres. ``computeReceivedPower`` and ``computeEmittedPower`` return watts. ``computePowerRatio`` returns received power divided by whole-beam emitted peak power, including the absolute subray share. ``WithSigma`` variants accept the existing external scattering value, including the LadLut convention. ``computeTargetArea`` returns the transverse subray patch area in square metres. Python exposes the corresponding snake_case names and keyword arguments::
+``EnergyModel`` and scanner calculation methods use incidence cosine and ranges in metres. ``computeReceivedPower`` and ``computeEmittedPower`` return watts. ``computePowerRatio`` returns received power divided by whole-beam emitted peak power, including the absolute subray share. ``computeTargetArea`` returns the transverse subray patch area in square metres. Python exposes the corresponding snake_case names and keyword arguments::
 
    power_W = model.compute_received_power(
        incidence_cosine=math.cos(angle_rad), target_range_m=100.0,
@@ -457,7 +457,7 @@ HELIOS++ intensity is based on Phong's Bidirectional Reflectance Distribution Fu
 
 1. **BRDF Calculation**
 
-   The BRDF :math:`f_r(\omega_i,\omega_o)` is computed from fractional material reflectance :math:`\rho`, specular mixture weight :math:`k_s` (set via ``helios_ks``), and exponent :math:`N_s`. The incidence angle :math:`\varphi` is determined from the ray-object intersection.
+   The BRDF :math:`f_r(\omega_i,\omega_o)` is computed from fractional material reflectance :math:`\rho`, specular mixture weight :math:`k_s` (set via ``helios_ks``), and exponent :math:`N_s`. The incidence angle :math:`\varphi` is determined from the ray-object intersection. For DetailedVoxels in transmittive mode, :math:`\varphi` is the incidence angle on the leaf that is hit, sampled from the leaf angle distribution (see `Scene - VOX files <scene.ipynb#4)-VOX-files>`_).
 
    .. math::
       f_r(\omega_i,\omega_o) = \rho\left[\frac{1-k_s}{\pi}+k_s\frac{N_s+2}{2\pi}\max(0,\cos\alpha)^{N_s}\right]

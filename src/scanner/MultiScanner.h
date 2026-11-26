@@ -198,17 +198,6 @@ public:
                            std::vector<std::vector<double>>& radiometryRecords
 #endif
   ) const override;
-  double computePowerRatioWithSigma(double targetRange,
-                                    double sigma,
-                                    std::size_t subrayIndex,
-                                    size_t idx) const override;
-  /**
-   * @see Scanner::computeReceivedPowerWithSigma
-   */
-  double computeReceivedPowerWithSigma(double const targetRange,
-                                       double const sigma,
-                                       std::size_t subrayIndex,
-                                       size_t const idx) const override;
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //

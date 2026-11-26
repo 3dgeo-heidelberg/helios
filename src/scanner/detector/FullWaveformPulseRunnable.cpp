@@ -227,94 +227,70 @@ FullWaveformPulseRunnable::handleSubray(
       HDA_GV.incrementSubrayIntersectionCount();
       subrayHit = true;
 #endif
-      // Cosine of the smaller incidence angle:
-      if (!scanner->isFixedIncidenceAngle()) {
-        incidenceCosine = intersect->prim->getIncidenceAngleCosine(
-          pulse.getOriginRef(), subrayDirection, intersect->point);
-      }
-
-      // Distance between beam origin and intersection:
-      double distance = glm::distance(intersect->point, pulse.getOriginRef());
-
-      // Distance must be inside [rangeMin, rangeMax] interval
-      if (detector->isDistanceNotInRange(distance))
-        continue;
-
-      // Received/whole-beam peak-power ratio for this subray.
-      double powerRatio = 0.0;
-      if (intersect->prim->canComputeSigmaWithLadLut()) {
-        // LadLut-based power ratio
-        double const sigma =
-          intersect->prim->computeSigmaWithLadLut(subrayDirection);
-        powerRatio = scanner->computePowerRatioWithSigma(
-          distance, sigma, subrayIndex, pulse.getDeviceIndex());
-#if DATA_ANALYTICS >= 2
-        auto model =
-          scanner->getScanningDevice(pulse.getDeviceIndex()).getEnergyModel();
-        double const area = model->computeTargetArea(distance, subrayIndex);
-        radiometryRecords.emplace_back(
-          13, std::numeric_limits<double>::quiet_NaN());
-        auto& record = radiometryRecords.back();
-        record[3] = std::acos(incidenceCosine);
-        record[4] = distance;
-        record[5] = area;
-        auto const& subray = scanner->getScanningDevice(pulse.getDeviceIndex())
-                               .getSubrays()
-                               .at(subrayIndex);
-        record[6] = distance * std::sin(subray.angle_rad);
-        record[8] = sigma;
-        record[9] =
-          powerRatio * scanner->getPulseAmplitude(pulse.getDeviceIndex());
-        record[10] = 0;
-        record[11] = model->computeEmittedPower(subrayIndex);
-        record[12] = subrayIndex;
-#endif
-      } else {
-        // Material-based power ratio
-#if DATA_ANALYTICS >= 2
-        HDA_GV.incrementIntensityComputationsCount();
-#endif
-        powerRatio = scanner->computePowerRatio(incidenceCosine,
-                                                distance,
-                                                *intersect->prim->material,
-                                                subrayIndex,
-                                                pulse.getDeviceIndex()
-#if DATA_ANALYTICS >= 2
-                                                  ,
-                                                radiometryRecords
-#endif
-        );
-      }
-
-      // Intersection handling
+      // Intersection handling first: it decides whether the subray
+      // continues and, for transmittive voxels, where the hit is and the
+      // incidence angle on the leaf that is hit
+      glm::dvec3 hitPoint = intersect->point;
+      double handledIncidenceAngle = std::numeric_limits<double>::quiet_NaN();
       if (intersect->prim->canHandleIntersections()) {
         glm::dvec3 outsideIntersectionPoint =
           RayUtils::obtainPointAfterTraversing(
             *intersect->prim->getAABB(), subrayOrigin, subrayDirection, 0.0);
-        IntersectionHandlingResult ihr = intersect->prim->onRayIntersection(
-          intersectionHandlingNoiseSource,
-          subrayDirection,
-          intersect->point,
-          outsideIntersectionPoint,
-          powerRatio * scanner->getPulseAmplitude(pulse.getDeviceIndex()) *
-            1e9);
+
+        IntersectionHandlingResult ihr =
+          intersect->prim->onRayIntersection(intersectionHandlingNoiseSource,
+                                             subrayDirection,
+                                             intersect->point,
+                                             outsideIntersectionPoint);
         if (ihr.canRayContinue()) { // Subray can continue
           // Move subray origin outside primitive and update tMinMax
           subrayOrigin = outsideIntersectionPoint + 0.00001 * subrayDirection;
           tMinMax =
             scene.getAABB()->getRayIntersection(subrayOrigin, subrayDirection);
           rayContinues = true;
-        } else { // Update distance considering noise
-          distance =
-            glm::distance(ihr.getIntersectionPoint(), pulse.getOriginRef());
+          continue;
         }
+        hitPoint = ihr.getIntersectionPoint();
+        if (ihr.hasIncidenceAngle())
+          handledIncidenceAngle = ihr.getIncidenceAngle_rad();
       }
-      if (!rayContinues) { // If ray is not continuing
-        // Then register hit by default
-        reflections[distance] += powerRatio;
-        intersect->incidenceAngle = std::acos(incidenceCosine);
-        intersects.push_back(*intersect);
+
+      // Cosine of the smaller incidence angle:
+      if (!scanner->isFixedIncidenceAngle()) {
+        incidenceCosine = std::isnan(handledIncidenceAngle)
+                            ? intersect->prim->getIncidenceAngleCosine(
+                                pulse.getOriginRef(), subrayDirection, hitPoint)
+                            : std::cos(handledIncidenceAngle);
       }
+
+      // Distance between beam origin and intersection:
+      double const distance = glm::distance(hitPoint, pulse.getOriginRef());
+
+      // Distance must be inside [rangeMin, rangeMax] interval
+      if (detector->isDistanceNotInRange(distance))
+        continue;
+
+      // Received/whole-beam peak-power ratio for this subray (material-based)
+#if DATA_ANALYTICS >= 2
+      HDA_GV.incrementIntensityComputationsCount();
+#endif
+      double const powerRatio =
+        scanner->computePowerRatio(incidenceCosine,
+                                   distance,
+                                   *intersect->prim->material,
+                                   subrayIndex,
+                                   pulse.getDeviceIndex()
+#if DATA_ANALYTICS >= 2
+                                     ,
+                                   radiometryRecords
+#endif
+        );
+
+      // Register hit
+      reflections[distance] += powerRatio;
+      intersect->point = hitPoint;
+      intersect->incidenceAngle = std::acos(incidenceCosine);
+      intersects.push_back(*intersect);
 #if DATA_ANALYTICS >= 2
       std::vector<double>& radiometryRecord = radiometryRecords.back();
       radiometryRecord[0] = intersect->point.x;

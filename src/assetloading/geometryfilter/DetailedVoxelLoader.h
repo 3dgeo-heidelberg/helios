@@ -2,6 +2,7 @@
 
 #include "AbstractGeometryFilter.h"
 #include <string>
+#include <vector>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -33,10 +34,16 @@ public:
 
   /**
    * @brief Load a Detailed Voxels file
-   * @param discardNullPad If true, detailed voxels with PadBVTotal==0 will
-   *  be discarded (it is useful, for instance, when using transmittive mode)
+   * @param discardNullPad If true, detailed voxels with PadBVTotal == 0 or
+   *  NaN will be discarded. Used in transmittive mode, where such voxels
+   *  never produce a hit.
+   * @param discardNanPad If true, detailed voxels with PadBVTotal == NaN
+   *  will be discarded. Used in scaled mode, where their size cannot be
+   *  derived.
    */
-  void loadDv(std::string const& pathString, bool const discardNullPad);
+  void loadDv(std::string const& pathString,
+              bool const discardNullPad,
+              bool const discardNanPad = false);
 
   /**
    * @brief Load specified material for Detailed Voxels. If no material
@@ -45,8 +52,24 @@ public:
   void loadMaterial();
 
   /**
-   * @brief Load specified ladlut for Detailed Voxels. If no ladlut
-   * was specified, then none is loaded.
+   * @brief Load the leaf angle distribution for Detailed Voxels given by
+   * the "lad" parameter (a named type or a file path). If none was
+   * specified, the one declared in the voxel file header (#lad_type) is
+   * used. If the header declares none or an unsupported one, none is
+   * loaded and the default one (spherical) is used. Outside transmittive
+   * mode, no leaf angle distribution is loaded.
+   * @param filePaths Paths of the loaded voxel files
+   * @param transmittiveMode Whether the voxels are in transmittive mode
+   * @throws HeliosException if the removed "ladlut" parameter is given
    */
-  void loadLadlut();
+  void loadLeafAngleDistribution(std::vector<std::string> const& filePaths,
+                                 bool const transmittiveMode);
+
+  /**
+   * @brief Read the leaf angle distribution type (#lad_type) from the
+   * header of a voxel file
+   * @return The type as written in the file, or an empty string if the
+   * header does not declare one
+   */
+  static std::string readLadType(std::string const& path);
 };

@@ -56,7 +56,7 @@ readVoxScenePart(std::string filePath,
                  std::string intersectionMode,
                  double intersectionArgument,
                  bool randomShift = false,
-                 std::string ladlutPath = "");
+                 std::string lad = "");
 
 void
 rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);

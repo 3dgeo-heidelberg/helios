@@ -50,13 +50,6 @@ def test_concrete_energy_model_calculations(energy_device):
     assert power == pytest.approx(4 * ratio, rel=1e-12, abs=0)
     assert energy_device.compute_received_power(1.0, 100.0, material, 0) == power
     assert energy_device.compute_power_ratio(1.0, 100.0, material, 0) == ratio
-    sigma = 4 * 0.25 * area
-    assert model.compute_received_power_with_sigma(100.0, sigma, 0) == pytest.approx(
-        power, rel=1e-12, abs=0
-    )
-    assert model.compute_power_ratio_with_sigma(100.0, sigma, 0) == pytest.approx(
-        ratio, rel=1e-12, abs=0
-    )
     assert model.compute_emitted_power(subray_index=0) == pytest.approx(
         4 * energy_device.subrays[0].share
     )

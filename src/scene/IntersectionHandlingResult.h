@@ -1,7 +1,9 @@
 #pragma once
 
+#include <cmath>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <limits>
 #include <utility>
 
 /**
@@ -23,6 +25,12 @@ protected:
    */
   glm::dvec3 intersectionPoint;
   bool canContinue;
+  /**
+   * @brief Incidence angle (radians) determined by the intersection
+   * handling, e.g., sampled from a leaf angle distribution. NaN if the
+   * handling does not determine it.
+   */
+  double incidenceAngle_rad;
 
 public:
   // ***  CONSTRUCTION  *** //
@@ -33,10 +41,13 @@ public:
    * @param canContinue Specify if the ray can continue after intersection
    * or not
    */
-  IntersectionHandlingResult(glm::dvec3 intersectionPoint = glm::dvec3(0, 0, 0),
-                             bool canContinue = false)
+  IntersectionHandlingResult(
+    glm::dvec3 intersectionPoint = glm::dvec3(0, 0, 0),
+    bool canContinue = false,
+    double incidenceAngle_rad = std::numeric_limits<double>::quiet_NaN())
     : intersectionPoint(std::move(intersectionPoint))
     , canContinue(canContinue)
+    , incidenceAngle_rad(incidenceAngle_rad)
   {
   }
 
@@ -52,6 +63,20 @@ public:
    * @return Intersection point
    */
   glm::dvec3 getIntersectionPoint() { return intersectionPoint; }
+  /**
+   * @brief Check whether the intersection handling determined the
+   * incidence angle
+   */
+  inline bool hasIncidenceAngle() const
+  {
+    return !std::isnan(incidenceAngle_rad);
+  }
+  /**
+   * @brief Obtain the incidence angle determined by the intersection
+   * handling (radians), NaN if none
+   * @see IntersectionHandlingResult::hasIncidenceAngle
+   */
+  inline double getIncidenceAngle_rad() const { return incidenceAngle_rad; }
 
   // ***  STREAM OPERATORS  *** //
   // ************************** //

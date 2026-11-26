@@ -209,7 +209,7 @@ readVoxScenePart(std::string filePath,
                  std::string intersectionMode,
                  double intersectionArgument,
                  bool randomShift,
-                 std::string ladlutPath)
+                 std::string lad)
 {
   if (intersectionMode == "fixed" && intersectionArgument != 0.0) {
     throw std::invalid_argument("'intersectionArgument' must not be provided "
@@ -222,8 +222,8 @@ readVoxScenePart(std::string filePath,
     loader.params["intersectionArgument"] = intersectionArgument;
   if (randomShift)
     loader.params["randomShift"] = randomShift;
-  if (!ladlutPath.empty())
-    loader.params["ladlut"] = ladlutPath;
+  if (!lad.empty())
+    loader.params["lad"] = lad;
 
   loader.setAssetsDir(assetsPath);
   std::shared_ptr<ScenePart> sp(loader.run());

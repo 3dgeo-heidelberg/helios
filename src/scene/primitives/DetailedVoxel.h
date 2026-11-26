@@ -3,6 +3,8 @@
 #include <Voxel.h>
 #include <string>
 
+class LeafAngleDistribution;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @verison 1.0
@@ -251,8 +253,7 @@ public:
     NoiseSource<double>& uniformNoiseSource,
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
-    glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity) override;
+    glm::dvec3 const& outsideIntersectionPoint) override;
 
   /**
    * @brief Transmittive handler for ray intersections
@@ -261,8 +262,7 @@ public:
     NoiseSource<double>& uniformNoiseSource,
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
-    glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity);
+    glm::dvec3 const& outsideIntersectionPoint);
   /**
    * @brief Scaled handler for ray intersections
    */
@@ -271,7 +271,6 @@ public:
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
     glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity,
     double scaleFactor);
   /**
    * @brief Fixed handler for ray intersections
@@ -281,7 +280,6 @@ public:
     glm::dvec3& rayDirection,
     glm::dvec3 const& insideIntersectionPoint,
     glm::dvec3 const& outsideIntersectionPoint,
-    double rayIntensity,
     double fixedSize);
 
   /**
@@ -289,14 +287,30 @@ public:
    */
   void onFinishLoading(NoiseSource<double>& uniformNoiseSource) override;
 
-  // ***  S I G M A  *** //
-  // ******************* //
+  // ***  EXTINCTION  *** //
+  // ******************** //
   /**
-   * @see Primitive::canComputeSigmaWithLadLut
+   * @brief Check whether the voxel is handled as turbid medium, i.e., its
+   * scene part uses the transmittive intersection mode
    */
-  bool canComputeSigmaWithLadLut() override { return part->ladlut != nullptr; }
+  bool isTransmittive() const;
   /**
-   * @see Primitive::computeSigmaWithLadLut
+   * @brief Check whether an intersection mode (upper case) is transmittive.
+   * Any mode other than FIXED and SCALED is handled as transmittive, which
+   * is also the default (empty mode).
    */
-  double computeSigmaWithLadLut(glm::dvec3 const& direction) override;
+  static bool isTransmittiveMode(std::string const& mode);
+  /**
+   * @brief Leaf angle distribution of the scene part, or the default
+   * (spherical) one if the scene part has none
+   */
+  LeafAngleDistribution const& getLeafAngleDistribution() const;
+  /**
+   * @brief Extinction coefficient
+   * \f$\kappa = u_L\,G(\Omega')\f$ in \f$\mathrm{m}^{-1}\f$, with
+   * \f$u_L\f$ the plant area density (PadBVTotal) and \f$G\f$ the
+   * G-function of the leaf angle distribution
+   * @param direction Beam direction
+   */
+  double computeExtinctionCoefficient(glm::dvec3 const& direction);
 };

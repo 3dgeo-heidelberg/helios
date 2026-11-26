@@ -498,8 +498,9 @@ def test_scenepart_from_xyzs(xyz_parts_dir):
 
 
 def test_scenepart_from_vox():
+    # 36 voxels, of which 16 have PAD = 0 or NaN and are discarded
     scene_parts1 = ScenePart.from_vox(
-        "data/test/semitransparent_voxels.vox",
+        "data/test/transmittive_voxels.vox",
         intersection_mode="transmittive",
     )
     scene_parts2 = ScenePart.from_vox(
@@ -516,7 +517,7 @@ def test_scenepart_from_vox():
         intersection_mode="scaled",
     )
 
-    assert len(scene_parts1._cpp_object.primitives) > 0
+    assert len(scene_parts1._cpp_object.primitives) == 20
     assert len(scene_parts2._cpp_object.primitives) > 0
     assert len(scene_parts3._cpp_object.primitives) > 0
     assert len(scene_parts4._cpp_object.primitives) > 0
@@ -527,6 +528,44 @@ def test_scenepart_from_vox():
             intersection_mode="fixed",
             intersection_argument=0.1,
         )
+
+
+def test_scenepart_from_vox_lad(tmp_path):
+    vox = "data/test/transmittive_voxels.vox"
+
+    named = ScenePart.from_vox(vox, lad="Planophile")
+    assert len(named._cpp_object.primitives) > 0
+
+    lad_file = tmp_path / "erectophile.txt"
+    lad_file.write_text(
+        "# inclination_deg,g_L\n"
+        + "".join(f"{deg},{1 - math.cos(2 * math.radians(deg))}\n" for deg in range(91))
+    )
+    from_file = ScenePart.from_vox(vox, lad=str(lad_file))
+    assert len(from_file._cpp_object.primitives) > 0
+
+    with pytest.raises(HeliosException, match="lad_does_not_exist"):
+        ScenePart.from_vox(vox, lad="lad_does_not_exist.txt")
+
+
+def test_scenepart_from_xml_vox_lad(tmp_path):
+    vox = Path("data/test/transmittive_voxels.vox").absolute()
+    xml = tmp_path / "vox_scene.xml"
+    xml.write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        "<document>\n"
+        '  <scene id="vox" name="vox">\n'
+        "    <part>\n"
+        '      <filter type="detailedvoxels">\n'
+        f'        <param type="string" key="filepath" value="{vox.as_posix()}" />\n'
+        '        <param type="string" key="lad" value="erectophile" />\n'
+        "      </filter>\n"
+        "    </part>\n"
+        "  </scene>\n"
+        "</document>\n"
+    )
+    part = ScenePart.from_xml(str(xml), id=0)
+    assert len(part._cpp_object.primitives) == 20
 
 
 def test_scenepart_bbox_extraction(box):
