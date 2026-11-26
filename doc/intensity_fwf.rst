@@ -132,6 +132,36 @@ The quality of the simulation can be adjusted by the ``beamSampleQuality`` attri
      - Relative unit-peak amplitude for automatic recording bounds only.
 
 
+Polar sampling
+~~~~~~~~~~~~~~
+
+``beamSampleQuality`` (:math:`Q`) generates one central ray plus
+:math:`Q-1` surrounding rings, with :math:`\lfloor 2\pi i\rfloor` rays
+on ring :math:`i`. The total number of subrays per pulse is
+:math:`1 + \sum_{i=1}^{Q-1}\lfloor 2\pi i\rfloor`.
+
+.. list-table:: Polar subray counts
+   :header-rows: 1
+
+   * - Quality :math:`Q`
+     - Surrounding rings
+     - Total subrays
+   * - 1
+     - 0
+     - 1
+   * - 2
+     - 1
+     - 7
+   * - 3
+     - 2
+     - 19
+   * - 4
+     - 3
+     - 37
+   * - 5
+     - 4
+     - 62
+
 For the default ``polar`` method, the quality :math:`Q` is the number of rings, including the central ray. Set :math:`\rho_{\max}=\text{beamSamplingFactor}`. For ring :math:`i`,
 
 .. math::
@@ -139,7 +169,7 @@ For the default ``polar`` method, the quality :math:`Q` is the number of rings, 
    \rho_{i,\mathrm{in}}=\frac{\rho_{\max}\max(0,i-1/2)}{Q-1/2},\qquad
    \rho_{i,\mathrm{out}}=\frac{\rho_{\max}(i+1/2)}{Q-1/2}.
 
-The final boundary is exactly :math:`\rho_{\max}`. A single central ray represents the whole sampled ellipse for :math:`Q=1`. Ring populations are :math:`N_0=1` and :math:`N_i=\lfloor2\pi i\rfloor` for :math:`i>0`. The total is :math:`1+\sum_{i=1}^{Q-1}\lfloor2\pi i\rfloor`.
+The final boundary is exactly :math:`\rho_{\max}`. A single central ray represents the whole sampled ellipse for :math:`Q=1`. Ring populations are :math:`N_0=1` and :math:`N_i=\lfloor2\pi i\rfloor` for :math:`i>0`.
 
 Samples are uniform in scaled azimuth :math:`\phi`, starting at local up and progressing toward local right. With :math:`a_x=\tan(\beta_x/2)` and :math:`a_y=\tan(\beta_y/2)`, transverse slopes are
 
@@ -160,6 +190,32 @@ Subray metadata is available through ``ray.cell`` in Python. Polar samples have 
 
 Cartesian sampling
 ~~~~~~~~~~~~~~~~~~
+
+``beamSampleQuality`` (:math:`Q`) generates an :math:`N \times N` grid
+with :math:`N = 2Q-1`, for a total of :math:`(2Q-1)^2` subrays per pulse.
+The odd number of rays along each axis keeps a ray at the beam centre.
+
+.. list-table:: Cartesian subray counts
+   :header-rows: 1
+
+   * - Quality :math:`Q`
+     - Grid
+     - Total subrays
+   * - 1
+     - 1 x 1
+     - 1
+   * - 2
+     - 3 x 3
+     - 9
+   * - 3
+     - 5 x 5
+     - 25
+   * - 4
+     - 7 x 7
+     - 49
+   * - 5
+     - 9 x 9
+     - 81
 
 Select the optional rectangular grid in XML::
 
