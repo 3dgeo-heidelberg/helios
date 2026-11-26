@@ -523,20 +523,20 @@ FullWaveformPulseRunnable::digestFullWaveform(
 
     // Build list of objects that produced this return
     double minDifference = std::numeric_limits<double>::max();
-    std::shared_ptr<RaySceneIntersection> closestIntersection = nullptr;
+    RaySceneIntersection const* closestIntersection = nullptr;
 
 #ifdef DATA_ANALYTICS
     std::size_t intersectionIdx = 0;
     std::size_t closestIntersectionIdx = 0;
 #endif
-    for (RaySceneIntersection intersect : intersects) {
+    for (RaySceneIntersection const& intersect : intersects) {
       double const intersectDist =
         glm::distance(intersect.point, pulse.getOriginRef());
       double const absDistDiff = std::fabs(intersectDist - distance);
 
       if (absDistDiff < minDifference) {
         minDifference = absDistDiff;
-        closestIntersection = std::make_shared<RaySceneIntersection>(intersect);
+        closestIntersection = &intersect;
 #ifdef DATA_ANALYTICS
         closestIntersectionIdx = intersectionIdx;
 #endif
