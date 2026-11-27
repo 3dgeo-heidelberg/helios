@@ -120,8 +120,7 @@ XmlSceneLoader::loadFilters(tinyxml2::XMLElement* scenePartNode)
     }
 
     std::string filterType(filterTypeAttr);
-    AbstractGeometryFilter* filter =
-      loadFilter(filterNodes, scenePart);
+    AbstractGeometryFilter* filter = loadFilter(filterNodes, scenePart);
     // Apply the filter
     if (filter != nullptr) {
       filter->setAssetsDir(assetsDir);
