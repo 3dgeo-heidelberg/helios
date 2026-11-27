@@ -23,7 +23,10 @@ SpectralLibrary::SpectralLibrary(float wavelength_m,
 float
 SpectralLibrary::interpolateReflectance(float w0, float w1, float r0, float r1)
 {
-
+  if (w0 == w1) {
+    throw HeliosException("Cannot interpolate spectral reflectance "
+                          "between identical wavelengths.");
+  }
   float wRange = w1 - w0;
   float wShift = wavelength_um - w0;
   float factor = wShift / wRange;
@@ -38,15 +41,15 @@ SpectralLibrary::readFileAster(fs::path path)
   try {
     std::ifstream ins(path.string(), std::ifstream::binary);
     if (!ins.is_open()) {
-
-      LOG_ERR("failed to open " + path.string());
-      throw std::exception();
+      LOG_WARN("Failed to open spectral file '" + path.string() + "'.");
+      return;
     }
     float wavelength = 0;
     float reflectance = 0;
     float prevWavelength = 0;
     float prevReflectance = 0;
     std::string line;
+    bool reflectanceFound = false;
 
     // Skip the header
     for (int i = 0; i < 26; i++) {
@@ -69,18 +72,25 @@ SpectralLibrary::readFileAster(fs::path path)
         reflectance = interpolateReflectance(
           prevWavelength, wavelength, prevReflectance, reflectance);
       }
+      reflectanceFound = true;
       break;
     }
     ins.close();
+
+    if (!reflectanceFound) {
+      LOG_WARN("No usable reflectance value found in spectral file '" +
+               path.string() + "'.");
+      return;
+    }
 
     std::string file = path.filename().string();
     if (file.find_first_of(".") > 0) {
       file = file.substr(0, file.find_last_of("."));
     }
     reflectanceMap.insert(std::pair<std::string, float>(file, reflectance));
-  } catch (std::exception& e) {
-    LOG_WARN("Error: readFileAster " + path.string() + "\n" +
-             "EXCEPTION: " + e.what());
+  } catch (const std::exception& e) {
+    LOG_WARN("Failed to read spectral file '" + path.string() +
+             "': " + e.what());
   }
 }
 
@@ -101,7 +111,8 @@ SpectralLibrary::readReflectances()
   }
 
   if (!found) {
-    LOG_ERR("ERROR: folder " + spectra + " not found");
+    LOG_WARN("Spectral library folder '" + spectra +
+             "' was not found; default reflectance values will be used.");
     return;
   }
 
@@ -113,7 +124,8 @@ SpectralLibrary::readReflectances()
 void
 SpectralLibrary::setReflectances(Scene* scene)
 {
-  std::set<std::string> matsMissing;
+  std::set<std::string> materialsWithoutSpectra;
+  std::set<std::string> spectraMissingFromLibrary;
 
   for (Primitive* prim : scene->primitives) {
     if (!isnan(prim->material->reflectance)) {
@@ -124,27 +136,33 @@ SpectralLibrary::setReflectances(Scene* scene)
       defaultReflectance; // otherwise, set the default reflectance
 
     if (prim->material->spectra.empty()) {
-      if (matsMissing.find(prim->material->spectra) == matsMissing.end()) {
-        matsMissing.insert(prim->material->spectra);
-        LOG_WARN("Warning: material " + prim->material->name +
-                 " of primitive " + typeid(*prim).name() + " (" +
-                 prim->material->matFilePath + ") has no spectral definition");
-      }
-      continue;
-    }
+      const std::string& materialKey = prim->material->matFilePath.empty()
+                                         ? prim->material->name
+                                         : prim->material->matFilePath;
 
-    if (reflectanceMap.find(prim->material->spectra) == reflectanceMap.end()) {
-      if (matsMissing.find(prim->material->spectra) == matsMissing.end()) {
-        matsMissing.insert(prim->material->spectra);
-        LOG_WARN("Warning: spectra " + prim->material->spectra + " (" +
+      if (materialsWithoutSpectra.insert(materialKey).second) {
+        LOG_WARN("Material '" + prim->material->name + "' (" +
                  prim->material->matFilePath +
-                 ") is not in the spectral library");
+                 ") has no spectral definition; "
+                 "using default reflectance.");
       }
       continue;
     }
 
-    prim->material->reflectance =
-      reflectanceMap.find(prim->material->spectra)->second;
+    auto it = reflectanceMap.find(prim->material->spectra);
+
+    if (it == reflectanceMap.end()) {
+      if (spectraMissingFromLibrary.insert(prim->material->spectra).second) {
+        LOG_WARN("Spectrum '" + prim->material->spectra +
+                 "' referenced by material '" + prim->material->name + "' (" +
+                 prim->material->matFilePath +
+                 ") was not found in the spectral library; "
+                 "using default reflectance.");
+      }
+      continue;
+    }
+
+    prim->material->reflectance = it->second;
     prim->material->setSpecularity();
   }
 }
