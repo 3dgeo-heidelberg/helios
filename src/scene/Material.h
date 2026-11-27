@@ -51,7 +51,6 @@ public:
   double specularExponent = 10;
   /**
    * @brief Material classification
-   * @see LasSpecification
    */
   int classification = 0;
 

@@ -270,11 +270,10 @@ public:
   int getCurrentLegIndex();
   /**
    * @brief Obtain current leg output prefix
-   * @param format The integer format string to handle how many digits use
-   *  to numerate both strip and leg prefixes
+   * @param width Minimum width of strip and leg IDs, padded with zeros
    * @return Current leg output prefix
    */
-  std::string getLegOutputPrefix(std::string format = "%03d");
+  std::string getLegOutputPrefix(int width = 3);
 
   /**
    * @brief Obtain simulation progress

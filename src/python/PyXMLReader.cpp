@@ -147,7 +147,6 @@ readScenePartFromXml(std::string filePath,
   tinyxml2::XMLElement* part = scene->FirstChildElement("part");
   int currentIndex = 0;
   std::string finalId = "";
-  bool holistic = false;
 
   while (part) {
     const char* partId = part->Attribute("id");
@@ -177,16 +176,14 @@ readScenePartFromXml(std::string filePath,
   }
   XmlSceneLoader xmlSceneLoader(assetsPath);
 
-  std::shared_ptr<ScenePart> scenePart =
-    xmlSceneLoader.loadFilters(part, holistic);
-
+  std::shared_ptr<ScenePart> scenePart = xmlSceneLoader.loadFilters(part);
   scenePart->mId = finalId;
   if (scenePart->mPrimitives.empty()) {
     throw HeliosException("Scene part with id '" + finalId +
                           "' contains no primitives.");
   }
   // For all primitives, set reference to their scene part and transform:
-  ScenePart::computeTransformations(scenePart, holistic);
+  ScenePart::computeTransformations(scenePart);
 
   // Infer type of primitive for the scene part
   auto numVertices = scenePart->mPrimitives[0]->getNumVertices();

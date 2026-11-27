@@ -6,18 +6,39 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
+SingleScanner::SingleScanner(ScanningDevice const& device,
+                             std::string const& id)
+  : Scanner(id,
+            device.supportedPulseFreqs_Hz,
+            false,
+            false,
+            false,
+            false,
+            false)
+  , scanDev(device)
+{
+  scanDev.devIdx = 0;
+}
+
+void
+SingleScanner::setScanningDevice(ScanningDevice const& device)
+{
+  scanDev = ScanningDevice(device);
+  scanDev.devIdx = 0;
+}
+
 SingleScanner::SingleScanner(
   double const beamDiv_rad,
   glm::dvec3 const beamOrigin,
   Rotation const beamOrientation,
   std::list<int> const& pulseFreqs,
-  double const pulseLength_ns,
+  double const pulseLength_s,
   std::string const id,
   double const averagePower,
   double const beamQuality,
   double const efficiency,
   double const receiverDiameter,
-  double const atmosphericVisibility,
+  double const atmosphericVisibility_m,
   int const wavelength,
   bool const writeWaveform,
   bool const writePulse,
@@ -38,12 +59,12 @@ SingleScanner::SingleScanner(
             beamOrigin,
             beamOrientation,
             pulseFreqs,
-            pulseLength_ns,
+            pulseLength_s,
             averagePower,
             beamQuality,
             efficiency,
             receiverDiameter,
-            atmosphericVisibility,
+            atmosphericVisibility_m,
             wavelength / 1000000000.0,
             rangeErrExpr)
 {
@@ -171,13 +192,13 @@ SingleScanner::doSimStep(unsigned int legIndex,
 void
 SingleScanner::prepareDiscretization(size_t const idx)
 {
-  setNumTimeBins(getPulseLength_ns(0) / getFWFSettings(0).binSize_ns, 0);
+  setNumTimeBins(getPulseLength(0) / getFWFSettings(0).binSize_s, 0);
   setTimeWave(vector<double>(getNumTimeBins(0)), 0);
   setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
                           getTimeWave(0),
                           getNumTimeBins(0),
-                          getFWFSettings(0).binSize_ns,
-                          getPulseLength_ns(0),
+                          getFWFSettings(0).binSize_s * 1e9,
+                          getPulseLength(0) * 1e9,
                           7.0 // 3.5 too many ops., 7.0 just one op.
                           ),
                         0);

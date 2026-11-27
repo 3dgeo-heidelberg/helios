@@ -2,6 +2,7 @@
 
 #include <ThreadPool.h>
 #include <boost/asio/post.hpp>
+#include <functional>
 /**
  * @version 1.0
  * @brief Abstract class providing implementation of a simple thread pool which
@@ -68,10 +69,11 @@ public:
     lock.unlock();
 
     // Post a wrapped task into the queue
-    boost::asio::post(io_context_,
-                      boost::bind(&SimpleThreadPool::wrap_task,
-                                  this,
-                                  boost::function<void(TaskArgs...)>(task)));
+    boost::asio::post(
+      io_context_,
+      [this, task = std::function<void(TaskArgs...)>(task)]() mutable {
+        wrap_task(task);
+      });
   }
 
   /**
@@ -91,7 +93,7 @@ protected:
    *  once provided task has been completed
    * @param task Task to be wrapped
    */
-  virtual void wrap_task(boost::function<void(TaskArgs...)>& task)
+  virtual void wrap_task(std::function<void(TaskArgs...)>& task)
   {
     // Run the user supplied task.
     try {
@@ -115,7 +117,7 @@ protected:
    * @brief Invoke task with corresponding arguments
    * @param task Task to be invoked
    */
-  virtual void do_task(boost::function<void(TaskArgs...)>& task) = 0;
+  virtual void do_task(std::function<void(TaskArgs...)>& task) = 0;
 
 public:
   // ***  EXTERNAL HANDLING  *** //

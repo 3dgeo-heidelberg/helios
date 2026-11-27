@@ -9,7 +9,7 @@ from helios.scene import ScenePart, StaticScene
 from helios.settings import ExecutionSettings, OutputFormat
 from helios.scanner import *
 from helios.survey import Survey
-from helios.utils import set_rng_seed
+from helios.utils import find_file, set_rng_seed
 from helios import HeliosException
 
 
@@ -21,11 +21,22 @@ def test_preinstantiated_scanners():
 
 def test_list_scanners_matches_registry():
     assert list_scanners() == list(scanner_module.SCANNER_REGISTRY.keys())
+    assert all(
+        callable(factory) for factory in scanner_module.SCANNER_REGISTRY.values()
+    )
+    assert all(
+        factory is getattr(scanner_module, name)
+        for name, factory in scanner_module.SCANNER_REGISTRY.items()
+    )
 
 
 def test_scanner_from_name():
     for scanner_name in list_scanners():
-        assert isinstance(scanner_from_name(scanner_name), Scanner)
+        scanner = scanner_from_name(scanner_name)
+        assert isinstance(scanner, Scanner)
+        assert not getattr(scanner, "_is_loaded_from_xml", False)
+        assert scanner._cpp_object.id == ""
+        assert scanner._cpp_object.name == "Unnamed Asset"
 
 
 def test_scanner_from_name_invalid():
@@ -38,6 +49,21 @@ def test_scanneer_flag_from_xml_set():
 
     scanner = Scanner.from_xml("data/scanners_als.xml", scanner_id="leica_als50")
     assert is_xml_loaded(scanner)
+
+
+def test_scanner_xml_visibility_is_converted_to_meters(tmp_path):
+    scanner_xml = find_file("data/scanners_als.xml").read_text()
+    scanner_xml = scanner_xml.replace(
+        '<scanner  id                  = "leica_als50"',
+        '<scanner  atmosphericVisibility_km = "12.5"\n'
+        '          id                  = "leica_als50"',
+        1,
+    )
+    scanner_file = tmp_path / "scanners.xml"
+    scanner_file.write_text(scanner_xml)
+
+    scanner = Scanner.from_xml(scanner_file, scanner_id="leica_als50")
+    assert scanner.device.atmospheric_visibility == 12_500.0
 
 
 def test_scanner_settings_clone_and_deepcopy():

@@ -12,7 +12,7 @@
 #include <util/HeliosException.h>
 #include <util/logger/logger_core.hpp>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <glm/glm.hpp>
 
 #include <sstream>

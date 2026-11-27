@@ -217,7 +217,7 @@ Scanner::toString()
        << "\tAverage Power: " << getAveragePower(i) << " W\n"
        << "\tBeam Divergence: " << getBeamDivergence(i) * 1e3 << " mrad\n"
        << "\tWavelength: " << (int)(getWavelength(i) * 1e9) << " nm\n"
-       << "\tVisibility: " << getVisibility(i) << " km\n";
+       << "\tVisibility: " << getVisibility(i) << " m\n";
   }
   return ss.str();
 }

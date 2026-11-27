@@ -11,17 +11,63 @@ from typing_extensions import Annotated, dataclass_transform
 from numpydantic import NDArray, Shape
 
 import annotated_types
+import doiggie
 import inspect
 import multiprocessing
 import numpy as np
 import os
+import pooch
+import tarfile
 import xmlschema
+import zipfile
 
 from copy import deepcopy
+from hashlib import sha256
+from urllib.parse import unquote, urlsplit
 
 # The global registry of physical units used in Helios++. Currently there
 # are no custom units, so we go with Pint's default registry.
 units = UnitRegistry()
+
+
+def _normalize_doi(doi: str) -> str:
+    """Return a bare DOI from either a DOI or a doi.org URL."""
+
+    value = doi.strip()
+    parsed = urlsplit(value)
+    if parsed.scheme.lower() in {"http", "https"}:
+        if parsed.hostname is None or parsed.hostname.lower() not in {
+            "doi.org",
+            "dx.doi.org",
+        }:
+            raise ValueError(f"DOI URL must use the doi.org host: {doi}")
+        value = unquote(parsed.path.lstrip("/"))
+    return value
+
+
+def _doi_cache_directory(doi: str) -> Path:
+    """Return the cache directory dedicated to a DOI."""
+
+    digest = sha256(doi.encode("utf-8")).hexdigest()
+    return Path(pooch.os_cache("helios")) / "doi" / digest
+
+
+class _Unpack:
+    """Pooch processor that delegates ZIP and tar archives appropriately."""
+
+    def __call__(self, fname, action, pooch_instance):
+        if zipfile.is_zipfile(fname):
+            processor = pooch.Unzip()
+        elif tarfile.is_tarfile(fname):
+            processor = pooch.Untar()
+        else:
+            raise ValueError(
+                "Unsupported archive format for "
+                f"{Path(fname).name!r}; expected a ZIP or tar archive."
+            )
+
+        processor(fname, action, pooch_instance)
+        return processor.extract_dir
 
 
 def _unit_validator(default_unit):
@@ -47,6 +93,8 @@ Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
 ScanFrequency = Annotated[float, _unit_validator(units.Hz), annotated_types.Ge(0)]
 Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
 TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
+Power = Annotated[float, _unit_validator(units.W), annotated_types.Ge(0)]
+Speed = Annotated[float, _unit_validator(units.m / units.s), annotated_types.Ge(0)]
 
 
 def _coerce_vector(length: int, name: str):
@@ -55,6 +103,8 @@ def _coerce_vector(length: int, name: str):
             return value
         if isinstance(value, (list, tuple)) and len(value) != length:
             raise ValueError(f"Value must be a {name} of length {length}.")
+        if isinstance(value, units.Quantity):
+            value = value.magnitude
         try:
             return np.asarray(value, dtype=np.float64)
         except (TypeError, ValueError) as exc:
@@ -256,7 +306,7 @@ class ValidatedModelMetaClass(type):
                 # If the property is backed by a C++ object, we first check for
                 # potential updates for the Python object
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
-                    value = getattr(self._cpp_object, f)
+                    value = self._post_get(f, getattr(self._cpp_object, f))
 
                     if _is_optional(a):
                         T = _inner_optional_type(a)
@@ -281,10 +331,15 @@ class ValidatedModelMetaClass(type):
                             return False
 
                         if _check_if_rebuild():
+                            wrapped_values = [
+                                get_args(a)[0]._from_cpp(val) for val in value
+                            ]
+                            if get_origin(a) is tuple:
+                                wrapped_values = tuple(wrapped_values)
                             setattr(
                                 self,
                                 f"_{f}",
-                                [get_args(a)[0]._from_cpp(val) for val in value],
+                                wrapped_values,
                             )
                     else:
                         if hasattr(a, "_cpp_class"):
@@ -296,6 +351,10 @@ class ValidatedModelMetaClass(type):
                                 return value
                             getattr(self, f"_{f}")._cpp_object = value
                             return getattr(self, f"_{f}")
+                        cached = getattr(self, f"_{f}", None)
+                        if isinstance(cached, Model):
+                            cached._cpp_object = value
+                            return cached
                         return value
 
                 # Otherwise, we take the property from a variable with a prefixed underscore
@@ -303,8 +362,11 @@ class ValidatedModelMetaClass(type):
 
             @validate_call
             def _setter(self, value: a):
-                # If a pre_set hook was provided, we execute it
-                self._pre_set(f, value)
+                # Give the pre-set hook an opportunity to validate the Python
+                # value and provide the representation expected by C++.
+                cpp_value = self._pre_set(f, value)
+                if cpp_value is None:
+                    cpp_value = value
 
                 # We always store the object in a variable with a prefixed underscore
                 setattr(self, f"_{f}", value)
@@ -312,14 +374,14 @@ class ValidatedModelMetaClass(type):
                 # If this property is backed by a C++ object, we additionally set it on C++
                 if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
                     if (
-                        is_real_iterable(value)
-                        and len(value) > 0
-                        and hasattr(value[0], "_cpp_object")
+                        is_real_iterable(cpp_value)
+                        and len(cpp_value) > 0
+                        and hasattr(cpp_value[0], "_cpp_object")
                     ):
-                        value = [v._cpp_object for v in value]
-                    if hasattr(value, "_cpp_object"):
-                        value = value._cpp_object
-                    setattr(self._cpp_object, f, value)
+                        cpp_value = [v._cpp_object for v in cpp_value]
+                    if hasattr(cpp_value, "_cpp_object"):
+                        cpp_value = cpp_value._cpp_object
+                    setattr(self._cpp_object, f, cpp_value)
 
                 # If a post_set hook was provided, we execute it
                 self._post_set(f)
@@ -405,10 +467,11 @@ class Model(metaclass=ValidatedModelMetaClass):
         obj = super().__new__(cls)
         obj._yaml_serializable = True
         if cls._cpp_class is not None:
-            cpp_object = kwargs.pop("_cpp_object", None)
+            cpp_object = kwargs.get("_cpp_object", None)
             if cpp_object is None:
                 cpp_object = cls._cpp_class()
-            obj._cpp_object = cpp_object
+            if cpp_object is not None:
+                obj._cpp_object = cpp_object
         return obj
 
     def _post_set(self, field):
@@ -416,18 +479,42 @@ class Model(metaclass=ValidatedModelMetaClass):
         pass
 
     def _pre_set(self, field, value):
-        """Hook that is called before a property is set"""
-        pass
+        """Validate a value and optionally return its C++ representation.
+
+        Returning ``None`` preserves the original value, which keeps existing
+        validation-only hooks compatible.
+        """
+
+        return value
+
+    def _post_get(self, field, value):
+        """Hook called after retrieving a field value from the C++ object."""
+
+        return value
 
     def _serialization_filename(self) -> str:
         """Hook for naming YAML files in shallow serialization."""
 
         return f"{self.__class__.__name__.lower()}.yaml"
 
+    def _never_serialize_shallow(self) -> bool:
+        """Return whether nested models must always be serialized inline."""
+
+        return False
+
     def _serialization_binary_filename(self) -> str:
         """Hook for naming binary sidecar files."""
 
         return f"{Path(self._serialization_filename()).stem}.bin"
+
+    def _ensure_yaml_serializable(self) -> None:
+        """Raise if this model cannot be represented independently."""
+
+        if not getattr(self, "_yaml_serializable", True):
+            raise RuntimeError(
+                f"{self.__class__.__name__} cannot be serialized to YAML because it "
+                "was implicitly constructed via a parent object's from_xml constructor."
+            )
 
     @validate_call
     def to_yaml(self, path: Path, shallow: bool = False):
@@ -449,12 +536,7 @@ class Model(metaclass=ValidatedModelMetaClass):
 
         from helios.serialization import serialize_model_to_yaml
 
-        if not getattr(self, "_yaml_serializable", True):
-            raise RuntimeError(
-                f"{self.__class__.__name__} cannot be serialized to YAML because it "
-                "was implicitly constructed via a parent object's from_xml constructor."
-            )
-
+        self._ensure_yaml_serializable()
         return serialize_model_to_yaml(self, path=path.expanduser(), shallow=shallow)
 
     @validate_call
@@ -544,6 +626,69 @@ class Model(metaclass=ValidatedModelMetaClass):
             return cls.from_yaml(bundle_dir / root_filename)
 
     @classmethod
+    @validate_call
+    def from_doi(
+        cls,
+        doi: str,
+        filename: Optional[Path] = None,
+        *,
+        archive_filename: Optional[str] = None,
+    ):
+        """Load a model instance from a bundle stored in a DOI repository.
+
+        Parameters
+        ----------
+        doi : str
+            A bare DOI or an HTTP(S) URL on ``doi.org``.
+        filename : Optional[Path], optional
+            Relative path to the root YAML file within the bundle. If omitted,
+            the class default serialization filename is used.
+        archive_filename : Optional[str], optional
+            Name of a ZIP or tar archive in the DOI repository. If supplied,
+            only that file is downloaded and its extraction directory is used
+            as the bundle. Otherwise, all repository files are downloaded and
+            the repository content itself is used as the bundle.
+
+        Returns
+        -------
+        Model
+            Deserialized instance of ``cls``.
+        """
+
+        normalized_doi = _normalize_doi(doi)
+        cache_directory = _doi_cache_directory(normalized_doi)
+        repository = doiggie.DOIPooch(
+            str(cache_directory),
+            normalized_doi,
+            registry={},
+            populate_registry=True,
+        )
+
+        repository_licenses = repository.licenses()
+
+        bundle_directory = cache_directory
+        if archive_filename is None:
+            for repository_filename in repository.registry:
+                repository.fetch(repository_filename)
+        else:
+            bundle_directory = Path(
+                repository.fetch(archive_filename, processor=_Unpack())
+            )
+
+        model = cls.from_bundle(bundle_directory, filename=filename)
+
+        from helios.licensing import record_licensing_observation
+
+        record_licensing_observation(
+            doi=normalized_doi,
+            model_class=cls,
+            licenses=repository_licenses,
+            filename=filename,
+            archive_filename=archive_filename,
+        )
+        return model
+
+    @classmethod
     def __get_pydantic_core_schema__(
         cls, source: Type[Any], handler: GetCoreSchemaHandler
     ):
@@ -563,14 +708,30 @@ class Model(metaclass=ValidatedModelMetaClass):
         else:
             return f"<{self.__class__.__name__} at {hex(id(self))}>"
 
+    def _repr_json_(self) -> dict[str, Any]:
+        """Return the inline serialization document for Jupyter rich display."""
+
+        from helios.serialization import (
+            _build_model_document,
+            _SerializationContext,
+            replace_nonfinite_values,
+        )
+
+        self._ensure_yaml_serializable()
+        context = _SerializationContext(shallow=False, binary=False)
+        doc = _build_model_document(self, context)
+        return replace_nonfinite_values(doc)
+
     @classmethod
     def _from_cpp(cls, value):
+        obj = cls.__new__(cls, _cpp_object=value)
+        obj._during_init = True
         params = {}
         for field, annot in get_all_annotations(cls).items():
             if not hasattr(value, field):
                 continue
 
-            cpp_value = getattr(value, field)
+            cpp_value = obj._post_get(field, getattr(value, field))
 
             if _is_optional(annot):
                 T = _inner_optional_type(annot)
@@ -589,10 +750,29 @@ class Model(metaclass=ValidatedModelMetaClass):
                 args = get_args(annot)
                 if hasattr(args[0], "_from_cpp"):
                     cpp_value = [args[0]._from_cpp(v) for v in cpp_value]
+                    if get_origin(annot) is tuple:
+                        cpp_value = tuple(cpp_value)
 
             params[field] = cpp_value
 
-        return cls(_cpp_object=value, **params)
+        for field, annot in get_all_annotations(cls).items():
+            if field in params:
+                field_value = params[field]
+            elif field in cls._defaults:
+                field_value = cls._defaults[field]
+                if isinstance(field_value, (list, dict, set)) or hasattr(
+                    field_value, "__deepcopy__"
+                ):
+                    field_value = deepcopy(field_value)
+            elif _is_optional(annot):
+                field_value = None
+            else:
+                raise ValueError(f"Missing required argument: {field}")
+
+            setattr(obj, f"_{field}", field_value)
+
+        obj._during_init = False
+        return obj
 
     def _enforce_uniqueness_across_instances(self, field, value):
         """Enforce uniqueness of a field across all instances of a class"""
@@ -653,10 +833,15 @@ class Model(metaclass=ValidatedModelMetaClass):
             for model in _iter_models_in_value(getattr(self, field)):
                 model._set_yaml_serializable(False, recursive=True, _seen=_seen)
 
-    def _set_constructor_provenance(self, method: str, **kwargs):
+    def _set_constructor_provenance(
+        self, method: str, primary_filename_key: Optional[str], **kwargs
+    ):
         """Initialize constructor provenance metadata for this model instance."""
 
         from helios.serialization import _normalize_provenance_value
+
+        if primary_filename_key is not None:
+            self._primary_filename = kwargs[primary_filename_key]
 
         self._provenance = {
             "constructor": {
@@ -748,8 +933,14 @@ class Model(metaclass=ValidatedModelMetaClass):
 
             if hasattr(self, "_provenance"):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
+            if hasattr(self, "_primary_filename"):
+                reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
+            if hasattr(self, "_provenance_only_serialization"):
+                reconstructed._provenance_only_serialization = (
+                    self._provenance_only_serialization
+                )
             if hasattr(self, "_provided_fields"):
                 reconstructed._provided_fields = deepcopy(self._provided_fields, memo)
 
@@ -766,8 +957,14 @@ class Model(metaclass=ValidatedModelMetaClass):
 
             if hasattr(self, "_provenance"):
                 reconstructed._provenance = deepcopy(self._provenance, memo)
+            if hasattr(self, "_primary_filename"):
+                reconstructed._primary_filename = deepcopy(self._primary_filename, memo)
             if hasattr(self, "_yaml_serializable"):
                 reconstructed._yaml_serializable = self._yaml_serializable
+            if hasattr(self, "_provenance_only_serialization"):
+                reconstructed._provenance_only_serialization = (
+                    self._provenance_only_serialization
+                )
             if hasattr(self, "_provided_fields"):
                 reconstructed._provided_fields = deepcopy(self._provided_fields, memo)
             return reconstructed

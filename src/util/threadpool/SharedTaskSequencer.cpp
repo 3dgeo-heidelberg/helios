@@ -1,5 +1,4 @@
 #include <SharedTaskSequencer.h>
-#include <SmartSharedFunctorContainer.h>
 
 // ***  SHARED TASK HANDLING  *** //
 // ****************************** //
@@ -29,8 +28,8 @@ SharedTaskSequencer::startThread(std::shared_ptr<SharedSubTask> subTask)
 {
   subTask->setKey(nextSharedSubTaskKey);
   subTasks.emplace(nextSharedSubTaskKey, subTask);
-  subTask->setThread(std::make_shared<boost::thread>(
-    SmartSharedFunctorContainer<SharedSubTask>(subTask)));
+  subTask->setThread(
+    std::make_shared<boost::thread>([subTask] { (*subTask)(); }));
   ++nextSharedSubTaskKey;
 }
 

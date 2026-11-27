@@ -2,12 +2,12 @@
 #include <filems/write/core/MultiVectorialMeasurementWriter.h>
 #include <logger_core.hpp>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <sstream>
 #include <string>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 // ***  BUILD METHODS  *** //
 // *********************** //

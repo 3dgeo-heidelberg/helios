@@ -218,6 +218,7 @@ public:
    */
   void scale(double const factor) override
   {
+    Primitive::scale(factor);
     halfSize *= factor;
     update();
   }

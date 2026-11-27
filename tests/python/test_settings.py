@@ -91,23 +91,24 @@ def test_full_waveform_settings_defaults():
 
     assert settings.bin_size == 2.5e-10
     assert settings.beam_sample_quality == 3
-    assert settings.win_size == 1e-9
+    assert settings.window_size is None
     assert settings.max_fullwave_range == 0.0
+    assert settings.aperture_diameter == 0.15
 
 
-def test_convert_full_waveform_settings_to_cpp():
+def test_full_waveform_settings_propagate_to_cpp():
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
-        win_size=2.0 * units.ns,
+        window_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
-    cpp_settings = settings._to_cpp()
+    cpp_settings = settings._cpp_object
 
-    assert cpp_settings.bin_size == 1.0
+    assert cpp_settings.bin_size == pytest.approx(1.0e-9)
     assert cpp_settings.beam_sample_quality == 4
-    assert cpp_settings.win_size == 2.0
-    assert cpp_settings.max_fullwave_range == 10.0
+    assert cpp_settings.window_size == pytest.approx(2.0e-9)
+    assert cpp_settings.max_fullwave_range == pytest.approx(10.0e-9)
 
 
 def test_execution_settings_clone_and_deepcopy_run_survey(survey):
@@ -148,7 +149,7 @@ def test_full_waveform_settings_clone_and_deepcopy_run_survey(survey):
     settings = FullWaveformSettings(
         bin_size=1.0 * units.ns,
         beam_sample_quality=4,
-        win_size=2.0 * units.ns,
+        window_size=2.0 * units.ns,
         max_fullwave_range=10.0 * units.ns,
     )
     settings.runtime_note = "temporary"
@@ -193,10 +194,10 @@ def _write_invalid_survey_xml(path: Path) -> None:
 
 
 def test_fullwaveform_settings_rejects_invalid_window_in_python():
-    with pytest.raises(ValueError, match="win_size must satisfy"):
+    with pytest.raises(ValueError, match="window_size must satisfy"):
         FullWaveformSettings(
             bin_size=0.2 * units.ns,
-            win_size=0.3 * units.ns,
+            window_size=0.3 * units.ns,
         )
 
 
@@ -204,5 +205,24 @@ def test_fullwaveform_settings_rejects_invalid_window_from_xml(tmp_path):
     xml_file = tmp_path / "invalid_survey.xml"
     _write_invalid_survey_xml(xml_file)
 
-    with pytest.raises(ValueError, match="winSize_ns must be >="):
+    with pytest.raises(ValueError, match="winSize_s must be >="):
         Survey.from_xml(xml_file)
+
+
+def test_fullwaveform_settings_from_xml_are_converted_to_seconds(tmp_path):
+    xml_file = tmp_path / "survey.xml"
+    _write_invalid_survey_xml(xml_file)
+    xml = xml_file.read_text(encoding="utf-8").replace(
+        'winSize_ns="0.3"',
+        'winSize_ns="0.4" maxFullwaveRange_ns="7.0"',
+    )
+    xml = xml.replace(' template="profile1"', "")
+    xml = xml.replace("<scannerSettings", '<scannerSettings scanFreq_hz="10"')
+    xml_file.write_text(xml, encoding="utf-8")
+
+    survey = Survey.from_xml(xml_file)
+    settings = survey.scanner.device.full_waveform
+
+    assert settings.bin_size == pytest.approx(0.2e-9)
+    assert settings.window_size == pytest.approx(0.4e-9)
+    assert settings.max_fullwave_range == pytest.approx(7e-9)

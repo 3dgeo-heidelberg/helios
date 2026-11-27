@@ -20,12 +20,12 @@ ScanningDevice::ScanningDevice(
   glm::dvec3 const beamOrigin,
   Rotation const beamOrientation,
   std::list<int> const& pulseFreqs,
-  double const pulseLength_ns,
+  double const pulseLength_s,
   double const averagePower_w,
   double const beamQuality,
   double const efficiency,
   double const receiverDiameter_m,
-  double const atmosphericVisibility_km,
+  double const atmosphericVisibility_m,
   double const wavelength_m,
   std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr)
   : devIdx(deviceIndex)
@@ -33,12 +33,12 @@ ScanningDevice::ScanningDevice(
   , headRelativeEmitterPosition(beamOrigin)
   , headRelativeEmitterAttitude(beamOrientation)
   , beamDivergence_rad(beamDiv_rad)
-  , pulseLength_ns(pulseLength_ns)
+  , pulseLength_s(pulseLength_s)
   , averagePower_w(averagePower_w)
   , beamQuality(beamQuality)
   , efficiency(efficiency)
   , receiverDiameter_m(receiverDiameter_m)
-  , visibility_km(atmosphericVisibility_km)
+  , visibility_m(atmosphericVisibility_m)
   , wavelength_m(wavelength_m)
   , supportedPulseFreqs_Hz(pulseFreqs)
   , rangeErrExpr(rangeErrExpr)
@@ -55,12 +55,12 @@ ScanningDevice::ScanningDevice(ScanningDevice const& scdev)
   this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
   this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
   this->beamDivergence_rad = scdev.beamDivergence_rad;
-  this->pulseLength_ns = scdev.pulseLength_ns;
+  this->pulseLength_s = scdev.pulseLength_s;
   this->averagePower_w = scdev.averagePower_w;
   this->beamQuality = scdev.beamQuality;
   this->efficiency = scdev.efficiency;
   this->receiverDiameter_m = scdev.receiverDiameter_m;
-  this->visibility_km = scdev.visibility_km;
+  this->visibility_m = scdev.visibility_m;
   this->wavelength_m = scdev.wavelength_m;
   this->atmosphericExtinction = scdev.atmosphericExtinction;
   this->beamWaistRadius = scdev.beamWaistRadius;
@@ -158,7 +158,8 @@ ScanningDevice::calcAtmosphericAttenuation() const
 {
   double q;
   double const lambda = wavelength_m * 1e9;
-  double const Vm = visibility_km;
+  // The attenuation model defines meteorological visibility in kilometers.
+  double const Vm = visibility_m * 1e-3;
 
   if (lambda < 500 && lambda > 2000) {
     // Do nothing if wavelength is outside range, approximation will be bad
@@ -358,18 +359,18 @@ ScanningDevice::initializeFullWaveform(double const minHitDist_m,
 {
   // Calc time at minimum and maximum distance
   // (i.e. total beam time in fwf signal)
-  nsPerBin = FWF_settings.binSize_ns;
+  nsPerBin = FWF_settings.binSize_s * 1e9;
   peakIntensityIndex = this->peakIntensityIndex;
   double const peakFactor = peakIntensityIndex * nsPerBin;
   // Time until first maximum minus rising flank
   minHitTime_ns = minHitDist_m / SPEEDofLIGHT_mPerNanosec - peakFactor;
   // Time until last maximum time for signal decay with 1 bin for buffer
-  maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec + pulseLength_ns -
-                  peakFactor + nsPerBin; // 1 bin for buffer
+  maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec +
+                  pulseLength_s * 1e9 - peakFactor + nsPerBin; // 1 bin buffer
 
   // Calc ranges and threshold
   double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
-  double const maxFullwaveRange_ns = FWF_settings.maxFullwaveRange_ns;
+  double const maxFullwaveRange_ns = FWF_settings.maxFullwaveRange_s * 1e9;
   distanceThreshold = maxHitDist_m;
   if (maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns) {
     hitTimeDelta_ns = maxFullwaveRange_ns;

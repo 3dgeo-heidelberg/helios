@@ -548,6 +548,8 @@ applyMaterialToPrimitivesIndices(std::shared_ptr<ScenePart> scenePart,
       throw std::out_of_range("Index " + std::to_string(index) +
                               " is out of range for primitives.");
     }
+  }
+  for (const auto& index : indices) {
     scenePart->mPrimitives[index]->material = material;
   }
 }

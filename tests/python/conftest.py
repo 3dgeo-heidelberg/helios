@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import helios
+import helios.licensing as licensing
 from helios.platforms import tripod as tripod_platform, sr22
 from helios.scanner import (
     leica_als50,
@@ -28,6 +29,13 @@ def rng_seed():
     """Reset the RNG before each test"""
 
     set_rng_seed(42)
+
+
+@pytest.fixture(autouse=True)
+def isolated_licensing_observations(monkeypatch):
+    """Give every test an empty process-wide licensing ledger."""
+
+    monkeypatch.setattr(licensing, "_OBSERVATIONS", {})
 
 
 @pytest.fixture
@@ -85,6 +93,16 @@ def box_f():
 @pytest.fixture
 def box(box_f):
     return box_f()
+
+
+@pytest.fixture
+def vox_f():
+    return lambda: ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox")
+
+
+@pytest.fixture
+def vox(vox_f):
+    return vox_f()
 
 
 @pytest.fixture

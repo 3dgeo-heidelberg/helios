@@ -1,6 +1,7 @@
-name: Headercheck
+name: Header sanity check
 
 on:
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -8,10 +9,12 @@ jobs:
     defaults:
       run:
         # Conda requires a login shell in order to work properly
-        shell: bash -l {0}  
+        shell: bash -l {0}
 
-    # I am surprised to learn this, but apparently this is compiler-specific
-    # and we have some benefits from testing on both Ubuntu and Windows.
+    env:
+      CONDA_INSTALL_DIR: ${{ github.workspace }}/miniconda
+
+    # Header self-containment can differ between compilers.
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -19,28 +22,46 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Header sanity check (${{ matrix.os }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Create Helios dev environment
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v4
         with:
+          installation-dir: ${{ env.CONDA_INSTALL_DIR }}
           auto-update-conda: true
-          auto-activate-base: false
+          conda-remove-defaults: true
+          channels: conda-forge
+          auto-activate: false
           activate-environment: helios-dev
-          environment-file: environment-dev.yml
-          python-version: "3.9"
+          python-version: "3.14"
           miniconda-version: "latest"
+
+      - name: Restore conda environment cache
+        id: conda-cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.CONDA_INSTALL_DIR }}/envs/helios-dev
+          key: conda-env-v4-${{ runner.os }}-py3.14-${{ hashFiles('environment-dev.yml') }}
+
+      - name: Pin Python version in environment file
+        if: steps.conda-cache.outputs.cache-hit != 'true'
+        run: |
+          sed "s/^  - python$/  - python=3.14/" environment-dev.yml > environment-dev-ci.yml
+
+      - name: Create Helios dev environment
+        if: steps.conda-cache.outputs.cache-hit != 'true'
+        run: |
+          conda env update -n helios-dev -f environment-dev-ci.yml --prune || conda env create -n helios-dev -f environment-dev-ci.yml
+          conda run -n helios-dev python --version
 
       - name: Install Conda GCC
         if: runner.os == 'Linux'
         run: |
           conda install -y -c conda-forge gcc gxx
 
-      - name: Install Helios
+      - name: Build header checks
         run: |
-          mkdir build
-          cd build
-          cmake -DHELIOS_HEADERCHECK="ON" -DBUILD_TESTING="OFF" ..
-          cmake --build . --config Debug
+          cmake -S . -B build -DHELIOS_HEADERCHECK=ON -DBUILD_TESTING=OFF
+          cmake --build build --config Debug

@@ -30,6 +30,73 @@
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 #include <scanner/beamDeflector/RisleyBeamDeflector.h>
 
+TEST_CASE("XML attributes retain their types and defaults", "[assetloading]")
+{
+  tinyxml2::XMLDocument doc;
+  REQUIRE(doc.Parse(R"(<asset enabled="true" count="12" scale="1.5"
+                             name="scanner" invalid="invalid"/>)") ==
+          tinyxml2::XML_SUCCESS);
+  auto* element = doc.RootElement();
+
+  REQUIRE(XmlUtils::getAttributeCast<bool>(element, "enabled", false));
+  REQUIRE(XmlUtils::getAttributeCast<int>(element, "count", 0) == 12);
+  REQUIRE(XmlUtils::getAttributeCast<float>(element, "scale", 0.0f) == 1.5f);
+  REQUIRE(XmlUtils::getAttributeCast<double>(element, "scale", 0.0) == 1.5);
+  REQUIRE(XmlUtils::getAttributeCast<std::string>(element, "name", "") ==
+          "scanner");
+
+  std::string const attribute = GENERATE("missing", "invalid");
+  REQUIRE_FALSE(XmlUtils::getAttributeCast<bool>(element, attribute, false));
+  REQUIRE(XmlUtils::getAttributeCast<int>(element, attribute, 0) == 0);
+  REQUIRE(XmlUtils::getAttributeCast<float>(element, attribute, 2.5f) == 2.5f);
+  REQUIRE(XmlUtils::getAttributeCast<double>(element, attribute, 3.5) == 3.5);
+  REQUIRE(XmlUtils::getAttributeCast<std::string>(element, "missing", "") ==
+          "");
+  REQUIRE(XmlUtils::getAttributeCast<std::string>(element, "missing", "z") ==
+          "z");
+}
+
+TEST_CASE("XML filter parameters retain their variant alternatives",
+          "[assetloading]")
+{
+  tinyxml2::XMLDocument doc;
+  REQUIRE(doc.Parse(R"(
+    <filter>
+      <param type="string" key="filepath" value="model.obj"/>
+      <param type="string" key="empty" value=""/>
+      <param type="bool" key="enabled" value="true"/>
+      <param type="boolean" key="disabled" value="false"/>
+      <param type="int" key="count" value="12"/>
+      <param type="integer" key="index" value="3"/>
+      <param type="double" key="scale" value="1.5"/>
+      <param type="vec3" key="offset" value="1;2;3"/>
+      <param type="rotation" key="rotation">
+        <rot axis="z" angle_deg="90"/>
+      </param>
+      <param type="string" key="filepath" value="ignored.obj"/>
+    </filter>)") == tinyxml2::XML_SUCCESS);
+  auto params = XmlUtils::createParamsFromXml(doc.RootElement());
+
+  REQUIRE(params.size() == 9);
+  REQUIRE(std::get<std::string>(params.at("filepath")) == "model.obj");
+  REQUIRE(std::get<std::string>(params.at("empty")).empty());
+  REQUIRE(std::get<bool>(params.at("enabled")));
+  REQUIRE_FALSE(std::get<bool>(params.at("disabled")));
+  REQUIRE(std::get<int>(params.at("count")) == 12);
+  REQUIRE(std::get<int>(params.at("index")) == 3);
+  REQUIRE(std::get<double>(params.at("scale")) == 1.5);
+  REQUIRE(std::get<glm::dvec3>(params.at("offset")) == glm::dvec3(1, 2, 3));
+  REQUIRE(std::get<Rotation>(params.at("rotation")).getQ0() ==
+          Catch::Approx(std::sqrt(0.5)));
+  REQUIRE(std::visit(stringVisitor{}, params.at("filepath")) == "model.obj");
+  REQUIRE(std::visit(stringVisitor{}, params.at("disabled")) == "0");
+  REQUIRE(std::visit(stringVisitor{}, params.at("count")) == "12");
+  REQUIRE(std::visit(stringVisitor{}, params.at("scale")) == "1.5");
+
+  // Missing boolean options historically default to false via map insertion.
+  REQUIRE_FALSE(std::get<bool>(params["recomputeVertexNormals"]));
+}
+
 TEST_CASE("Asset Loading Tests")
 {
   double const eps = 0.00001;
@@ -82,7 +149,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 83000);
     REQUIRE(scanner->getPulseFreq_Hz() == 83000);
-    REQUIRE(scanner->getPulseLength_ns() == 10);
+    REQUIRE(scanner->getPulseLength() == 10e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 200);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.6544985) <= eps);
@@ -107,7 +174,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(*pfsit++ == 60000);
     REQUIRE(*pfsit++ == 150000);
     REQUIRE(scanner->getPulseFreq_Hz() == 20000);
-    REQUIRE(scanner->getPulseLength_ns() == 10);
+    REQUIRE(scanner->getPulseLength() == 10e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 200);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.6544985) <= eps);
@@ -129,7 +196,7 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 33000);
-    REQUIRE(scanner->getPulseLength_ns() == 8);
+    REQUIRE(scanner->getPulseLength() == 8e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 1);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.3490659) <= eps);
@@ -173,7 +240,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(*pfsit++ == 180000);
     REQUIRE(*pfsit++ == 200000);
     REQUIRE(*pfsit++ == 240000);
-    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getPulseLength() == 4e-9);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.7853982) <= eps);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(
@@ -201,7 +268,7 @@ TEST_CASE("Asset Loading Tests")
     REQUIRE(*pfsit++ == 300000);
     REQUIRE(*pfsit++ == 600000);
     REQUIRE(*pfsit++ == 900000);
-    REQUIRE(scanner->getPulseLength_ns() == 2);
+    REQUIRE(scanner->getPulseLength() == 2e-9);
     REQUIRE(std::fabs(scanner->getBeamDeflector()->cfg_device_scanAngleMax_rad -
                       0.3490659) <= eps);
     REQUIRE(scanner->getBeamDeflector()->cfg_device_scanFreqMin_Hz == 28);
@@ -236,7 +303,7 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 100000);
-    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getPulseLength() == 4e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 2);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector())
@@ -281,7 +348,7 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 240000);
-    REQUIRE(scanner->getPulseLength_ns() == 4);
+    REQUIRE(scanner->getPulseLength() == 4e-9);
     REQUIRE(scanner->getDetector()->cfg_device_rangeMin_m == 2);
     REQUIRE(std::fabs(std::dynamic_pointer_cast<RisleyBeamDeflector>(
                         scanner->getBeamDeflector())
@@ -340,9 +407,9 @@ TEST_CASE("Asset Loading Tests")
     pfs = scanner->getSupportedPulseFreqs_Hz();
     REQUIRE(pfs.size() == 1);
     REQUIRE(pfs.front() == 50000);
-    REQUIRE(scanner->getPulseLength_ns(0) == 4);
-    REQUIRE(scanner->getPulseLength_ns(1) == 4);
-    REQUIRE(scanner->getPulseLength_ns(2) == 4);
+    REQUIRE(scanner->getPulseLength(0) == 4e-9);
+    REQUIRE(scanner->getPulseLength(1) == 4e-9);
+    REQUIRE(scanner->getPulseLength(2) == 4e-9);
     REQUIRE(scanner->getDetector(0)->cfg_device_rangeMin_m == 2);
     REQUIRE(scanner->getDetector(1)->cfg_device_rangeMin_m == 2);
     REQUIRE(scanner->getDetector(2)->cfg_device_rangeMin_m == 2);

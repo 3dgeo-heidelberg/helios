@@ -1,12 +1,18 @@
 import copy
+import json
 import os
 import shutil
 from pathlib import Path
 
 import numpy as np
+import pooch
 import pytest
 import yaml
 
+import doiggie
+from doiggie.license import License, LicenseIdentifier, LicenseIdentifierScheme
+
+import helios
 import helios.serialization as serialization
 from helios.platforms import DynamicPlatformSettings, Platform, TrajectorySettings
 from helios.serialization import _MIGRATIONS, register_migration
@@ -45,6 +51,35 @@ class OperationModel(Model):
 
 class RecursivePayloadModel(Model):
     payload: object = None
+
+
+@pytest.mark.parametrize("version", ["2.2.2", "3.0.0a2"])
+def test_serialization_schema_git_reference_uses_clean_version_tag(version):
+    assert serialization._serialization_schema_git_reference(version) == f"v{version}"
+
+
+@pytest.mark.parametrize(
+    "version",
+    ["3.0.0a3.dev184+gc4b3ea39f", "2.2.2+dirty"],
+)
+def test_serialization_schema_git_reference_uses_main_for_unclean_version(version):
+    assert serialization._serialization_schema_git_reference(version) == "main"
+
+
+def test_replace_nonfinite_values_recursively_replaces_nonfinite_floats():
+    value = {
+        "finite": 1.5,
+        "nested": [float("nan"), {"positive_inf": float("inf")}],
+        "tuple": (float("-inf"), "unchanged"),
+    }
+
+    result = serialization.replace_nonfinite_values(value, replacement="nonfinite")
+
+    assert result == {
+        "finite": 1.5,
+        "nested": ["nonfinite", {"positive_inf": "nonfinite"}],
+        "tuple": ("nonfinite", "unchanged"),
+    }
 
 
 def _build_manual_survey() -> Survey:
@@ -131,12 +166,13 @@ def test_roundtrip_yaml_inline(tmp_path):
     written = root.to_yaml(yaml_path, shallow=False)
     assert written == yaml_path
 
+    first_line = yaml_path.read_text(encoding="utf-8").splitlines()[0]
+    assert first_line == (
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}"
+    )
     with yaml_path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
-    assert document["$schema"] == (
-        "https://raw.githubusercontent.com/3dgeo-heidelberg/helios/"
-        "alpha-dev/python/helios/data/serialization_schema.json"
-    )
+    assert "$schema" not in document
     assert "model_ref" not in str(document["fields"]["trajectory_settings"])
     assert document["serialization_major_version"] == 0
     assert document["serialization_minor_version"] == 0
@@ -146,6 +182,33 @@ def test_roundtrip_yaml_inline(tmp_path):
     assert loaded.trajectory_settings.start_time == 1.5
     assert loaded.trajectory_settings.end_time == 9.0
     assert loaded.trajectory_settings.teleport_to_start is True
+
+
+def test_repr_json_matches_inline_yaml_without_writing_files(tmp_path):
+    root = SerializationRoot(
+        leaf=SerializationLeaf(value=7),
+        label="rich display",
+        values=(4, 5, 6),
+    )
+
+    document = root._repr_json_()
+
+    assert list(tmp_path.iterdir()) == []
+    assert "model_ref" not in str(document)
+    assert "$schema" not in document
+    assert json.loads(json.dumps(document)) == document
+
+    yaml_path = root.to_yaml(tmp_path / "root.yaml", shallow=False)
+    with yaml_path.open("r", encoding="utf-8") as handle:
+        assert yaml.safe_load(handle) == document
+
+
+def test_repr_json_preserves_yaml_serializable_guard():
+    model = SerializationLeaf(value=9)
+    model._yaml_serializable = False
+
+    with pytest.raises(RuntimeError, match="implicitly constructed"):
+        model._repr_json_()
 
 
 def test_roundtrip_yaml_shallow_with_references(tmp_path):
@@ -169,7 +232,10 @@ def test_roundtrip_yaml_shallow_with_references(tmp_path):
     assert trajectory_path.exists()
     with trajectory_path.open("r", encoding="utf-8") as handle:
         trajectory_document = yaml.safe_load(handle)
-    assert trajectory_document["$schema"] == document["$schema"]
+    assert trajectory_path.read_text(encoding="utf-8").startswith(
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}\n"
+    )
+    assert "$schema" not in trajectory_document
 
     loaded = DynamicPlatformSettings.from_yaml(root_yaml)
     assert loaded.speed_m_s == 33.0
@@ -261,6 +327,9 @@ def test_inline_cycle_detection_raises_for_non_shallow_serialization(tmp_path):
 
     with pytest.raises(ValueError, match="Detected cyclic model graph"):
         model.to_yaml(tmp_path / "recursive.yaml", shallow=False)
+
+    with pytest.raises(ValueError, match="Detected cyclic model graph"):
+        model._repr_json_()
 
 
 def test_load_model_from_file_uses_cache(tmp_path):
@@ -596,10 +665,8 @@ def test_apply_migrations_rejects_non_increasing_minor_version(monkeypatch):
 def test_clone_and_deepcopy_keep_provenance():
     obj = SerializationLeaf(value=9)
     obj._yaml_serializable = False
-    obj._provenance = {
-        "constructor": {"method": "from_example", "kwargs": {"path": "example.dat"}},
-        "operations": [{"method": "shift", "kwargs": {"x": 1}}],
-    }
+    obj._set_constructor_provenance("from_example", "path", path=Path("example.dat"))
+    obj._append_operation_provenance("shift", x=1)
 
     cloned = obj.clone()
     copied = copy.deepcopy(obj)
@@ -608,8 +675,27 @@ def test_clone_and_deepcopy_keep_provenance():
     assert copied._provenance == obj._provenance
     assert cloned._provenance is not obj._provenance
     assert copied._provenance is not obj._provenance
+    assert cloned._primary_filename == Path("example.dat")
+    assert copied._primary_filename == Path("example.dat")
     assert cloned._yaml_serializable is False
     assert copied._yaml_serializable is False
+
+
+def test_constructor_provenance_without_primary_filename():
+    obj = SerializationLeaf(value=9)
+
+    obj._set_constructor_provenance("from_example", None, value=9)
+
+    assert not hasattr(obj, "_primary_filename")
+    assert obj._provenance["constructor"]["kwargs"] == {"value": 9}
+
+
+def test_scene_part_filename_is_read_only():
+    part = ScenePart.from_obj("data/sceneparts/toyblocks/cylinder.obj")
+
+    assert part.filename.name == "cylinder.obj"
+    with pytest.raises(AttributeError):
+        part.filename = Path("replacement.obj")
 
 
 def test_scenepart_transform_provenance_roundtrip(tmp_path):
@@ -739,6 +825,9 @@ def test_dynamic_scene_non_binary_bundle_roundtrip(tmp_path):
     bundle_dir = tmp_path / "dynamic_scene_bundle"
     root_yaml = scene.to_bundle(bundle_dir, binary=False)
 
+    assert root_yaml.read_text(encoding="utf-8").startswith(
+        f"# yaml-language-server: $schema={serialization.SERIALIZATION_SCHEMA_URL}\n"
+    )
     with root_yaml.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
     bundled_scene_file = document["provenance"]["constructor"]["kwargs"]["scene_file"]
@@ -792,6 +881,9 @@ def test_from_constructors_store_provenance():
     assert platform._provenance["constructor"]["method"] == "from_xml"
     assert platform._provenance["constructor"]["kwargs"]["platform_id"] == "tripod"
     assert survey._provenance["constructor"]["method"] == "from_xml"
+    assert scanner._primary_filename.name == "scanners_als.xml"
+    assert platform._primary_filename.name == "platforms.xml"
+    assert survey._primary_filename.name == "als_toyblocks.xml"
     assert scanner._yaml_serializable is True
     assert platform._yaml_serializable is True
     assert survey._yaml_serializable is True
@@ -1023,6 +1115,147 @@ def test_from_bundle_uses_custom_default_filename_hook(tmp_path, monkeypatch):
     loaded = DynamicPlatformSettings.from_bundle(bundle_dir)
     assert isinstance(loaded, DynamicPlatformSettings)
     assert loaded.speed_m_s == 11.0
+
+
+def test_from_doi_downloads_repository_contents(tmp_path, monkeypatch):
+    source_directory = tmp_path / "source"
+    root_yaml = DynamicPlatformSettings(speed_m_s=13.0).to_bundle(source_directory)
+    custom_root_yaml = source_directory / "settings.yaml"
+    root_yaml.rename(custom_root_yaml)
+    repository_files = {
+        path.relative_to(source_directory).as_posix(): "unused hash"
+        for path in source_directory.rglob("*")
+        if path.is_file()
+    }
+    fetches = []
+    repository_arguments = {}
+
+    class FakeDOIPooch:
+        def __init__(self, path, doi, **kwargs):
+            self.path = Path(path)
+            self.registry = repository_files
+            repository_arguments.update(path=path, doi=doi, kwargs=kwargs)
+
+        def fetch(self, repository_filename, processor=None):
+            fetches.append((repository_filename, processor))
+            target = self.path / repository_filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_directory / repository_filename, target)
+            return str(target)
+
+        def licenses(self):
+            return [
+                License(
+                    name="Creative Commons Attribution 4.0",
+                    identifiers=(
+                        LicenseIdentifier(
+                            scheme=LicenseIdentifierScheme.SPDX,
+                            value="CC-BY-4.0",
+                        ),
+                    ),
+                )
+            ]
+
+    cache_root = tmp_path / "cache"
+    monkeypatch.setattr(pooch, "os_cache", lambda application: cache_root)
+    monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
+
+    loaded = DynamicPlatformSettings.from_doi(
+        "https://doi.org/10.1234/example%2Fbundle", filename="settings.yaml"
+    )
+
+    assert loaded.speed_m_s == 13.0
+    assert repository_arguments["doi"] == "10.1234/example/bundle"
+    assert Path(repository_arguments["path"]).parent == cache_root / "doi"
+    assert repository_arguments["kwargs"] == {
+        "registry": {},
+        "populate_registry": True,
+    }
+    assert {name for name, _ in fetches} == set(repository_files)
+    assert all(processor is None for _, processor in fetches)
+
+    report = helios.licensing_report()
+    assert "DOI: 10.1234/example/bundle" in report
+    assert "Loaded objects: DynamicPlatformSettings × 1" in report
+    assert "License: Creative Commons Attribution 4.0" in report
+    assert "Identifier (spdx): CC-BY-4.0" in report
+
+
+@pytest.mark.parametrize(
+    ("archive_format", "archive_suffix"),
+    [("zip", ".zip"), ("gztar", ".tar.gz")],
+)
+def test_from_doi_downloads_and_extracts_archive(
+    tmp_path,
+    monkeypatch,
+    archive_format,
+    archive_suffix,
+):
+    source_directory = tmp_path / "source"
+    DynamicPlatformSettings(speed_m_s=17.0).to_bundle(source_directory)
+    archive_path = Path(
+        shutil.make_archive(
+            str(tmp_path / "bundle"), archive_format, root_dir=source_directory
+        )
+    )
+    assert archive_path.name.endswith(archive_suffix)
+    fetches = []
+
+    class FakeDOIPooch:
+        def __init__(self, path, doi, **kwargs):
+            self.path = Path(path)
+            self.registry = {
+                archive_path.name: "unused hash",
+                "not-downloaded.txt": "unused hash",
+            }
+
+        def fetch(self, repository_filename, processor=None):
+            fetches.append((repository_filename, processor))
+            target = self.path / repository_filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(archive_path, target)
+            return processor(str(target), "download", self)
+
+        def licenses(self):
+            return []
+
+    monkeypatch.setattr(pooch, "os_cache", lambda application: tmp_path / "cache")
+    monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
+
+    loaded = DynamicPlatformSettings.from_doi(
+        "10.1234/archive", archive_filename=archive_path.name
+    )
+
+    assert loaded.speed_m_s == 17.0
+    assert len(fetches) == 1
+    assert fetches[0][0] == archive_path.name
+
+
+def test_from_doi_rejects_unsupported_archive_format(tmp_path, monkeypatch):
+    invalid_archive = tmp_path / "bundle.7z"
+    invalid_archive.write_text("not an archive", encoding="utf-8")
+
+    class FakeDOIPooch:
+        def __init__(self, path, doi, **kwargs):
+            self.path = Path(path)
+            self.registry = {invalid_archive.name: "unused hash"}
+
+        def fetch(self, repository_filename, processor=None):
+            target = self.path / repository_filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(invalid_archive, target)
+            return processor(str(target), "download", self)
+
+        def licenses(self):
+            return []
+
+    monkeypatch.setattr(pooch, "os_cache", lambda application: tmp_path / "cache")
+    monkeypatch.setattr(doiggie, "DOIPooch", FakeDOIPooch)
+
+    with pytest.raises(ValueError, match="Unsupported archive format"):
+        DynamicPlatformSettings.from_doi(
+            "10.1234/archive", archive_filename="bundle.7z"
+        )
 
 
 def test_manual_survey_to_bundle_roundtrip_with_assets(tmp_path):

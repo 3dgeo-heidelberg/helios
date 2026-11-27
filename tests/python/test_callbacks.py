@@ -1,3 +1,5 @@
+import multiprocessing
+
 import pytest
 
 import helios.callbacks as callbacks_module
@@ -5,6 +7,12 @@ import helios.callbacks as callbacks_module
 from helios import HookEndOfLegPolicy, HookPayload, HookPoint, Survey, SurveyHook
 from helios.settings import ExecutionSettings, OutputFormat, ProgressBarStrategy
 from tqdm.std import tqdm as tqdm_std
+
+_PARALLEL_TEST_THREADS = min(4, multiprocessing.cpu_count())
+_requires_parallel_workers = pytest.mark.skipif(
+    _PARALLEL_TEST_THREADS < 2,
+    reason="requires at least two CPU cores to exercise pending pulse tasks",
+)
 
 
 def _make_short_survey(scanner, tripod, scene, legs=1):
@@ -274,6 +282,7 @@ def test_payload_all_points_and_trajectories_grows(tls_scanner, tripod, scene):
     assert traj_sizes[-1] == len(trajectories)
 
 
+@_requires_parallel_workers
 def test_barrier_true_includes_pending_points(tls_scanner, tripod, scene):
     survey = _make_short_survey(tls_scanner, tripod, scene)
     payload_sizes = []
@@ -283,7 +292,7 @@ def test_barrier_true_includes_pending_points(tls_scanner, tripod, scene):
 
     survey.run(
         format=OutputFormat.NPY,
-        execution_settings=ExecutionSettings(num_threads=4),
+        execution_settings=ExecutionSettings(num_threads=_PARALLEL_TEST_THREADS),
         callbacks=(
             SurveyHook(
                 point=HookPoint.SIM_TIME_ONCE,
@@ -298,6 +307,7 @@ def test_barrier_true_includes_pending_points(tls_scanner, tripod, scene):
     assert payload_sizes and payload_sizes[0] > 0
 
 
+@_requires_parallel_workers
 def test_barrier_true_includes_pending_trajectories(tls_scanner, tripod, scene):
     survey = _make_short_survey(tls_scanner, tripod, scene)
     payload_sizes = []
@@ -307,7 +317,7 @@ def test_barrier_true_includes_pending_trajectories(tls_scanner, tripod, scene):
 
     survey.run(
         format=OutputFormat.NPY,
-        execution_settings=ExecutionSettings(num_threads=4),
+        execution_settings=ExecutionSettings(num_threads=_PARALLEL_TEST_THREADS),
         callbacks=(
             SurveyHook(
                 point=HookPoint.SIM_TIME_ONCE,

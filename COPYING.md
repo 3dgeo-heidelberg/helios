@@ -27,5 +27,6 @@ For information on the license, see LICENSE.md.
 * Searle, Mark, 2021-2022
 * Vijay, Kirthana, 2025-2026
 * Eaton, Glen, 2025-2026
+* Vincent Verhoeven, 2026
 
 (If you think that your name belongs here, please let the maintainers know!)

@@ -3,8 +3,8 @@
 // Class for loading and applying the material reflectances [0,100] from the
 // ASTER Spectral Library
 
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "Scene.h"
 #include "typedef.h"
@@ -75,7 +75,7 @@ private:
    * @param Assist readReflectances method reading spectra file
    * @see SpectralLibrary::readReflectances
    */
-  void readFileAster(boost::filesystem::path path);
+  void readFileAster(std::filesystem::path path);
 
 public:
   /**
